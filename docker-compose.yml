@@ -1,0 +1,46 @@
+
+version: '3.3'
+
+services:
+  web:
+    build: ./web
+    volumes:
+      - ./web:/code
+      - static:/static
+    networks:
+      - back-tier
+  db:
+    image: mdillon/postgis
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+    networks:
+      - back-tier
+
+#  frontend:
+#    image: node
+#    volumes:
+#     - ./frontend:/code
+#    networks:
+#      - back-tier
+#    working_dir: /code/
+#    command: ./command.sh
+
+  nginx:
+    networks:
+      - back-tier
+    ports:
+      - 80:80
+    image: nginx:1.13
+    volumes:
+     - ./nginx/conf.d:/etc/nginx/conf.d
+     - static:/static
+
+volumes:
+  pg-data:
+    driver: local
+  static:
+    driver: local
+
+networks:
+  back-tier:
+    driver: bridge
