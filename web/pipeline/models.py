@@ -1,4 +1,4 @@
-from django.db import models
+from django.contrib.gis.db import models
 from django.contrib.gis.db.models import PointField
 
 
@@ -24,7 +24,8 @@ class Location(models.Model):
 
 class CensusSubdivision(models.Model):
     # CSUID is used as primary key, just 'id' in Django.
-    pass
+    geom = models.MultiPolygonField(srid=4326, null=True)
+    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
 
 
 class Community(models.Model):

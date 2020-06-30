@@ -27,10 +27,11 @@ docker-compose exec web ./setup.sh
 
 You can visit the Django admin at `http://localhost/admin`. The username is `admin`, password is `pass`.
 
-## Features
 
-  * Fully Dockerized, and configured with docker-compose
-  * Uses PostgreSQL
-  * API-Driven Django. We don't use Django's templates for anything.
-  * Uses Nuxt.js
-  * Proxies all ports through port 80, the default, including websockets, so there's no need to worry about the port of anything when developing.
+# Importing Data
+
+Download and install census subdiv geometry:
+```
+wget http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fichiers/2016/lcsd000b16a_e.zip
+docker-compose exec web python manage.py import_shp lcsd000b16_e.zip
+```
