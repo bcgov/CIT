@@ -14,7 +14,7 @@ Spin up the project.
 docker-compose up
 ```
 
-Your Vue app is served at `http://localhost`
+Your Vue app is served at `http://localhost:8080`
 
 And, your Django app is served at `http://localhost/api`
 
@@ -34,3 +34,21 @@ You can visit the Django admin at `http://localhost/admin`. The username is `adm
   * API-Driven Django. We don't use Django's templates for anything.
   * Uses Nuxt.js
   * Proxies all ports through port 80, the default, including websockets, so there's no need to worry about the port of anything when developing.
+
+
+## VSCode
+
+If the editor of choice is Visual Studio Code during development, one can have automatic linting enabled
+
+In Files -> Settings -> Workspace -> Open Settings
+```
+{
+  "editor.formatOnSave": true,
+  "vetur.validation.template": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
+```
+
+It is recommended that the Workspace is the `cit-web` folder, and not the `cit` project for this to behave correctly.
