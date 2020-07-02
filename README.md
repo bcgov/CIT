@@ -8,16 +8,32 @@ Clone the project.
 
 Install Docker and docker-compose.
 
+
+Development
+```
+cp dc.dev.yml docker-compose.override.yml
+```
+Staging
+```
+cp dc.stage.yml docker-compose.override.yml
+```
+Production
+```
+cp dc.prod.yml docker-compose.override.yml
+```
 Spin up the project.
 
 ```
 docker-compose up
 ```
 
+For development
+
 Your Vue app is served at `http://localhost:8080`
 
-And, your Django app is served at `http://localhost/api`
+The Django app is served at `http://localhost/api`
 
+Ports may be configured by editing the port in the `dc.*.yml` files.
 
 To create a superuser:
 
