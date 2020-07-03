@@ -53,7 +53,7 @@ from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon
 
 # Run from command line :
-# python manage.py load_shapefile <aquifer_id> <shapefile name>
+# python manage.py import_subdivisions
 from django.core.management.base import BaseCommand
 
 import logging
