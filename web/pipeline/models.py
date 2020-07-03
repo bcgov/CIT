@@ -42,6 +42,7 @@ class Hospital(Location):
 
 class CensusSubdivision(models.Model):
     # CSUID is used as primary key, just 'id' in Django.
+    name = models.CharField(max_length=127)
     geom = models.MultiPolygonField(srid=4326, null=True)
     geom_simplified = models.MultiPolygonField(srid=4326, null=True)
 
