@@ -8,16 +8,32 @@ Clone the project.
 
 Install Docker and docker-compose.
 
+
+Development
+```
+cp dc.dev.yml docker-compose.override.yml
+```
+Staging
+```
+cp dc.stage.yml docker-compose.override.yml
+```
+Production
+```
+cp dc.prod.yml docker-compose.override.yml
+```
 Spin up the project.
 
 ```
 docker-compose up
 ```
 
-Your Vue app is served at `http://localhost`
+For development
 
-And, your Django app is served at `http://localhost/api`
+Your Vue app is served at `http://localhost:8080`
 
+The Django app is served at `http://localhost/api`
+
+Ports may be configured by editing the port in the `dc.*.yml` files.
 
 To create a superuser:
 
@@ -36,3 +52,20 @@ wget http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fi
 mv lcsd000b16a_e.zip web/
 docker-compose exec web python manage.py import_subdivisions
 ```
+
+## VSCode (Fronte end Development)
+
+If the editor of choice is Visual Studio Code during development, one can have automatic linting enabled
+
+In Files -> Settings -> Workspace -> Open Settings
+```
+{
+  "editor.formatOnSave": true,
+  "vetur.validation.template": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
+```
+
+It is recommended that the Workspace is the `cit-web` folder, and not the `cit` project for this to behave correctly.
