@@ -24,32 +24,33 @@ PROJCS["PCS_Lambert_Conformal_Conic",
     PARAMETER["Standard_Parallel_2",77.0],
     PARAMETER["Latitude_Of_Origin",63.390675],
     UNIT["Meter",1.0]]
-CSDUID: String (7.0)
-CSDNAME: String (100.0)
-CSDTYPE: String (3.0)
-PRUID: String (2.0)
-PRNAME: String (100.0)
-CDUID: String (4.0)
-CDNAME: String (100.0)
-CDTYPE: String (3.0)
-CCSUID: String (7.0)
-CCSNAME: String (100.0)
-ERUID: String (4.0)
-ERNAME: String (100.0)
-SACCODE: String (3.0)
-SACTYPE: String (1.0)
-CMAUID: String (3.0)
-CMAPUID: String (5.0)
-CMANAME: String (100.0)
-CMATYPE: String (1.0)
+'CSDUID', feat.get('CSDUID'), '\n',
+'CSDNAME', feat.get('CSDNAME'), '\n',
+'CSDTYPE', feat.get('CSDTYPE'), '\n',
+'PRUID', feat.get('PRUID'), '\n',
+'PRNAME', feat.get('PRNAME'), '\n',
+'CDUID', feat.get('CDUID'), '\n',
+'CDNAME', feat.get('CDNAME'), '\n',
+'CDTYPE', feat.get('CDTYPE'), '\n',
+'CCSUID', feat.get('CCSUID'), '\n',
+'CCSNAME', feat.get('CCSNAME'), '\n',
+'ERUID', feat.get('ERUID'), '\n',
+'ERNAME', feat.get('ERNAME'), '\n',
+'SACCODE', feat.get('SACCODE'), '\n',
+'SACTYPE', feat.get('SACTYPE'), '\n',
+'CMAUID', feat.get('CMAUID'), '\n',
+'CMAPUID', feat.get('CMAPUID'), '\n',
+'CMANAME', feat.get('CMANAME'), '\n',
+'CMATYPE', feat.get('CMATYPE'), '\n',
 '''
 
 from pipeline.models import CensusSubdivision
 import zipfile
 import os
+import copy
 import tempfile
 from django.contrib.gis.gdal import DataSource
-from django.contrib.gis.geos import GEOSGeometry
+from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon
 
 # Run from command line :
 # python manage.py load_shapefile <aquifer_id> <shapefile name>
@@ -82,38 +83,59 @@ class Command(BaseCommand):
 
         ds = DataSource(the_shapefile)
         for feat in ds[0]:
+            _save_subdiv(feat)
 
-            feat.fields.get('CSDUID')
-            geom = feat.geom
 
-            # if not geom.srid == 3005:
-            #     logging.info("Non BC-albers feature, skipping.")
-            #     return
+def _save_subdiv(feat):
+    print(
+        'CSDUID', feat.get('CSDUID'), '\n',
+        'CSDUID', feat.get('CSDUID'), '\n',
+        'CSDNAME', feat.get('CSDNAME'), '\n',
+        'CSDTYPE', feat.get('CSDTYPE'), '\n',
+        'PRUID', feat.get('PRUID'), '\n',
+        'PRNAME', feat.get('PRNAME'), '\n',
+        'CDUID', feat.get('CDUID'), '\n',
+        'CDNAME', feat.get('CDNAME'), '\n',
+        'CDTYPE', feat.get('CDTYPE'), '\n',
+        'CCSUID', feat.get('CCSUID'), '\n',
+        'CCSNAME', feat.get('CCSNAME'), '\n',
+        'ERUID', feat.get('ERUID'), '\n',
+        'ERNAME', feat.get('ERNAME'), '\n',
+        'SACCODE', feat.get('SACCODE'), '\n',
+        'SACTYPE', feat.get('SACTYPE'), '\n',
+        'CMAUID', feat.get('CMAUID'), '\n',
+        'CMAPUID', feat.get('CMAPUID'), '\n',
+        'CMANAME', feat.get('CMANAME'), '\n',
+        'CMATYPE', feat.get('CMATYPE'), '\n',
+    )
+    geom = feat.geom
 
-            # Eliminate any 3d geometry so it fits in PostGIS' 2d geometry schema.
-            # Make a GEOSGeometry object using the string representation.
-            wkt = wkt_w(dim=2).write(GEOSGeometry(geom.wkt, srid=3005)).decode()
-            geos_geom = GEOSGeometry(wkt, srid=3005)
-            # # Convert MultiPolygons to plain Polygons,
-            # # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
-            # if isinstance(geos_geom, geos.MultiPolygon):
-            #     geos_geom_out = geos_geom[0]
-            #     for g in geos_geom:
-            #         if len(g.wkt) > len(geos_geom_out.wkt):
-            #             geos_geom_out = g
-            # elif isinstance(geos_geom, geos.Polygon):
-            #     geos_geom_out = geos_geom
-            # else:
-            #     logging.info("Bad geometry type: {}, skipping.".format(
-            #         geos_geom.__class__))
-            #     return
+    geos_geom = GEOSGeometry(geom.wkt, srid=3005)
+    # Convert MultiPolygons to plain Polygons,
+    # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
+    geos_geom_out = _coerce_to_multipolygon(geos_geom)
 
-            geos_geom_simplified = copy.deepcopy(geos_geom_out)
-            geos_geom_simplified.transform(4326)
-            geos_geom_simplified = geos_geom_simplified.simplify(
-                .0005, preserve_topology=True)
+    geos_geom_simplified = copy.deepcopy(geos_geom)
+    geos_geom_simplified.transform(4326)
+    geos_geom_simplified = geos_geom_simplified.simplify(
+        .0005, preserve_topology=True)
 
-            subdiv = CensusSubdivision()
-            subdiv.geom = geos_geom_out
-            subdiv.geom_simplified = geos_geom_simplified
-            subdiv.save()
+    geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified)
+
+    subdiv = CensusSubdivision.objects.get_or_create(
+        id=int(feat.get('CSDUID')),
+        name=feat.get('CSDNAME')
+    )[0]
+
+    subdiv.geom = geos_geom_out
+    subdiv.geom_simplified = geos_geom_simplified
+    subdiv.save()
+
+def _coerce_to_multipolygon(geom):
+    if isinstance(geom, Polygon):
+        return MultiPolygon([geom], srid=3005)
+    elif isinstance(geom, MultiPolygon):
+        return geom
+    else:
+        raise Exception("Bad geometry type: {}, skipping.".format(
+            geom.__class__))

@@ -33,5 +33,6 @@ You can visit the Django admin at `http://localhost/admin`. The username is `adm
 Download and install census subdiv geometry:
 ```
 wget http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fichiers/2016/lcsd000b16a_e.zip
+mv lcsd000b16a_e.zip web/
 docker-compose exec web python manage.py import_shp lcsd000b16_e.zip
 ```
