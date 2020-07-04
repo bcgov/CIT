@@ -2,7 +2,7 @@ import csv
 
 from django.contrib.gis.geos import Point
 
-from web.models import Community
+from pipeline.models import Community
 
 
 def import_communities_from_csv(communities_file_path):
