@@ -2,8 +2,7 @@ import requests
 
 from django.core.management.base import BaseCommand
 
-from pipeline.importers import hospitals
-
+from django.core.exceptions import FieldDoesNotExist
 from pipeline.models import (
     Court,
     Hospital,
@@ -19,7 +18,7 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 
 
-API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}"
+API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}&limit=10000"
 
 RESOURCES = {
     'hospitals': {
@@ -60,38 +59,53 @@ class Command(BaseCommand):
         parser.add_argument('resource_type', type=str, help='Resource Type')
 
     def handle(self, *args, **options):
-        resource_type = options['resource_type']
-        resource = RESOURCES[resource_type]
+        rt = options['resource_type']
 
-        response = requests.get(API_URL.format(resource_id=resource['resource_id']))
+        for resource_type in RESOURCES.keys():
+            if rt != 'all' and rt != resource_type:
+                continue
+            resource = RESOURCES[resource_type]
 
-        if response.status_code != 200:
-            print("Failed to download dataset {} {}".format(resource_type, resource_id))
-            print("Error: {} {}".format(response.status_code, response.content))
-            return
+            response = requests.get(API_URL.format(resource_id=resource['resource_id']))
 
-        data = response.json()["result"]["records"]
+            if response.status_code != 200:
+                print("Failed to download dataset {} {}".format(resource_type, resource_id))
+                print("Error: {} {}".format(response.status_code, response.content))
+                return
 
-        Model = resource['model']
+            data = response.json()["result"]["records"]
+            print(data[0])
+            Model = resource['model']
 
-        for row in data:
-            instance = Model(
-                name=row[Model.NAME_FIELD],
-                point=Point(
-                    float(row[Model.LONGITUDE_FIELD]),
-                    float(row[Model.LATITUDE_FIELD])
-                )
-            )
-            for k,v in row.items():
-                setattr(instance, k.lower(), v)
+            for row in data:
+                try:
+                    point = Point(
+                        float(row[Model.LONGITUDE_FIELD]),
+                        float(row[Model.LATITUDE_FIELD]),
+                        srid=3005
+                    )
+                except TypeError:
+                    print("Skipping error:", row[Model.NAME_FIELD], "has no geometry!")
+                    continue
+                closest_community = Community.objects.annotate(
+                    distance=Distance('point', point)
+                ).order_by('distance').first()
+                #containing_subdiv = CensusSubdivision.objects.get(geom__contains=point)
+                instance = Model.objects.get_or_create(
+                    name=row[Model.NAME_FIELD],
+                    point=point,
+                    location_type=resource_type,
+                    community=closest_community
+                )[0]
+                
+                for k,v in row.items():
+                    if isinstance(v, str):
+                        try:
+                            v=v[:Model._meta.get_field(k.lower()).max_length]
+                        except FieldDoesNotExist:
+                            pass
+                    setattr(instance, k.lower(), v)
 
-            instance.location_type = resource_type
-            print(instance)
-            closest_community = Community.objects.annotate(
-                distance=Distance('point', instance.point)
-            ).order_by('distance').first()
-            instance.community = closest_community
-            # containing_subdiv = CensusSubdivision.objects.get(geom__contains=instance.point)
-            # instance.census_subdivision = containing_subdiv
-            instance.save()
-            
+                print(instance)
+                instance.save()
+                

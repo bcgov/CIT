@@ -13,6 +13,7 @@ urlpatterns = [
     url(r"^auth/$", pipeline.views.auth),
     url(r"^locations/$", pipeline.views.LocationList.as_view()),
     url(r"^communities/$", pipeline.views.CommunityList.as_view()),
+    url(r"^censussubdivisions/$", pipeline.views.CensusSubdivisionList.as_view()),
 
     path('openapi', get_schema_view(
         title="CIT",

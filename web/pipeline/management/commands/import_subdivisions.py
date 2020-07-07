@@ -87,28 +87,31 @@ class Command(BaseCommand):
 
 
 def _save_subdiv(feat):
-    print(
-        'CSDUID', feat.get('CSDUID'), '\n',
-        'CSDUID', feat.get('CSDUID'), '\n',
-        'CSDNAME', feat.get('CSDNAME'), '\n',
-        'CSDTYPE', feat.get('CSDTYPE'), '\n',
-        'PRUID', feat.get('PRUID'), '\n',
-        'PRNAME', feat.get('PRNAME'), '\n',
-        'CDUID', feat.get('CDUID'), '\n',
-        'CDNAME', feat.get('CDNAME'), '\n',
-        'CDTYPE', feat.get('CDTYPE'), '\n',
-        'CCSUID', feat.get('CCSUID'), '\n',
-        'CCSNAME', feat.get('CCSNAME'), '\n',
-        'ERUID', feat.get('ERUID'), '\n',
-        'ERNAME', feat.get('ERNAME'), '\n',
-        'SACCODE', feat.get('SACCODE'), '\n',
-        'SACTYPE', feat.get('SACTYPE'), '\n',
-        'CMAUID', feat.get('CMAUID'), '\n',
-        'CMAPUID', feat.get('CMAPUID'), '\n',
-        'CMANAME', feat.get('CMANAME'), '\n',
-        'CMATYPE', feat.get('CMATYPE'), '\n',
-    )
+    # print(
+    #     'CSDUID', feat.get('CSDUID'), '\n',
+    #     'CSDUID', feat.get('CSDUID'), '\n',
+    #     'CSDNAME', feat.get('CSDNAME'), '\n',
+    #     'CSDTYPE', feat.get('CSDTYPE'), '\n',
+    #     'PRUID', feat.get('PRUID'), '\n',
+    #     'PRNAME', feat.get('PRNAME'), '\n',
+    #     'CDUID', feat.get('CDUID'), '\n',
+    #     'CDNAME', feat.get('CDNAME'), '\n',
+    #     'CDTYPE', feat.get('CDTYPE'), '\n',
+    #     'CCSUID', feat.get('CCSUID'), '\n',
+    #     'CCSNAME', feat.get('CCSNAME'), '\n',
+    #     'ERUID', feat.get('ERUID'), '\n',
+    #     'ERNAME', feat.get('ERNAME'), '\n',
+    #     'SACCODE', feat.get('SACCODE'), '\n',
+    #     'SACTYPE', feat.get('SACTYPE'), '\n',
+    #     'CMAUID', feat.get('CMAUID'), '\n',
+    #     'CMAPUID', feat.get('CMAPUID'), '\n',
+    #     'CMANAME', feat.get('CMANAME'), '\n',
+    #     'CMATYPE', feat.get('CMATYPE'), '\n',
+    # )
     geom = feat.geom
+
+    if "British Columbia" not in feat.get('PRNAME'):
+        return
 
     geos_geom = GEOSGeometry(geom.wkt, srid=3005)
     # Convert MultiPolygons to plain Polygons,
@@ -126,6 +129,8 @@ def _save_subdiv(feat):
         id=int(feat.get('CSDUID')),
         name=feat.get('CSDNAME')
     )[0]
+
+    print(subdiv.name)
 
     subdiv.geom = geos_geom_out
     subdiv.geom_simplified = geos_geom_simplified
