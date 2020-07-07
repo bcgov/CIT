@@ -9,7 +9,7 @@ from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.measure import D
 from django.core.management.base import BaseCommand
 
-from web.importers.communities import import_communities_from_csv
+from pipeline.importers.communities import import_communities_from_csv
 
 
 FILES_DIR = settings.BASE_DIR
