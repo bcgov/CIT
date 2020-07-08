@@ -5,8 +5,7 @@ services:
     command: "yarn build"
     environment:
       - NODE_ENV=production
-    ports:
-      - 80:8080
+
   nginx:
     ports:
       - 80:80
