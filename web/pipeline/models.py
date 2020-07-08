@@ -1,5 +1,6 @@
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models import PointField
+from django.contrib.gis.geos import Point
 
 
 class CensusSubdivision(models.Model):
@@ -14,7 +15,9 @@ class Community(models.Model):
     place_name = models.CharField(null=True, blank=True, max_length=255)
     point = PointField(null=True, blank=True)
     census_subdivision = models.ForeignKey(CensusSubdivision, on_delete=models.CASCADE)
-    hexuid = models.CharField(max_length=15, help_text="ID of spatial hex used to color province by connectivity quality.")
+    hexuid = models.CharField(
+        max_length=15,
+        help_text="ID of spatial hex used to color province by connectivity quality.")
 
     def __str__(self):
         return self.place_name
@@ -76,6 +79,7 @@ class Hospital(Location):
             point=Point(float(row["LONGITUDE"]), float(row["LATITUDE"]))
         )
 
+
 class Court(Location):
     LATITUDE_FIELD = 'Latitude'
     LONGITUDE_FIELD = 'Longitude'
@@ -121,6 +125,7 @@ class EconomicProject(Location):
     {'_id': 1, 'PROJECT_NAME': 'Ajax Copper Mine', 'PROJECT_DESCRIPTION': 'Copper and gold open pit mine', 'LATITUDE': 50.61233, 'LONGITUDE': -120.412388, 'FLNRO_AREA_NAME': 'South', 'FLNRO_REGION_NAME': 'Thompson / Okanagan', 'PROJECT_LOCATION': 'Kamloops', 'FLNRO_PROJECT_STATUS': 'Permitting: Pre-Application', 'PROJECT_TYPE': 'Major Mines', 'PROJECT_CATEGORY': 'Copper, gold', 'PROPONENT': 'KGHM Ajax Mining Inc.', 'EAO_PROJECT_STATUS': 'EAO Process Suspended', 'PROJECT_COMMENTS': '87027 (FCBC ATS); 10399-20 87027AJAX', 'NRS_MAJOR_PROJECT_ID': 1, 'ORGANIZATION_ WEBSITE': 'http://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/major-mine-permitting-office'}
     '''
 
+
 class NaturalResourceProject(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
@@ -128,6 +133,7 @@ class NaturalResourceProject(Location):
     '''
     {'_id': 1, 'PROJECT_ID': 4023, 'PROJECT_NAME': 'RW Bruhn Bridge Replacement', 'PROJECT_DESCRIPTION': 'Proposed construction of a 5-lane bridge to replace existing bridge. Project will include intersection improvements and a multi-use path. Federal government providing $91.082 million funding.', 'ESTIMATED_COST': 225, 'UPDATE_ACTIVITY': 'New proposed project', 'ENVIRONMENTAL_ASSESSMENT_STAGE': '', 'CONSTRUCTION_TYPE': 'Infrastructure', 'CONSTRUCTION_SUBTYPE': 'Roads & Highways', 'PROJECT_TYPE': 'Transportation', 'REGION': '3. Thompson-Okanagan', 'MUNICIPALITY': 'Sicamous', 'DEVELOPER': 'BC Ministry of Transportation and Infrastructure', 'ARCHITECT': '', 'PROJECT_STATUS': 'Proposed', 'PROJECT_STAGE': 'Preliminary/Feasibility', 'PROJECT_CATEGORY_NAME': 'Transportation & Warehousing', 'PUBLIC_FUNDING_IND': 'TRUE', 'PROVINVIAL_FUNDING': 'TRUE', 'FEDERAL_FUNDING': 'TRUE', 'MUNICIPAL_FUNDING': 'FALSE', 'OTHER_PUBLIC_FUNDING': 'FALSE', 'GREEN_BUILDING_IND': 'FALSE', 'GREEN_BUILDING_DESC': '', 'CLEAN_ENERGY_IND': 'FALSE', 'INDIGENOUS_IND': 'FALSE', 'INDIGENOUS_NAMES': '', 'INDIGENOUS_AGREEMENT': '', 'CONSTRUCTION_JOBS': None, 'OPERATING_JOBS': None, 'STANDARDIZED_START_DATE': '2020-Q4', 'STANDARDIZED_COMPLETION_DATE': '2023-Q4', 'LATITUDE': None, 'LONGITUDE': None, 'LATITUDE_DMS': '', 'LONGITUDE_DMS': '', 'TELEPHONE': '(250) 356-1861', 'PROJECT_WEBSITE': '', 'FIRST_ENTRY_DATE': '2018-12-01T00:00:00', 'LAST_UPDATE': '2018-12-01T00:00:00', 'UPDATED_FIELDS': 'Update all available, project added this quarter'}
     '''
+
 
 class ServiceBCLocation(Location):
     NAME_FIELD = 'External Site'
@@ -137,6 +143,7 @@ class ServiceBCLocation(Location):
     {'_id': 1, 'External Site': 'Service BC - 100 Mile House', 'Address': '300 South Hwy 97', 'Locality': '100 Mile House', 'Site_Phone_No': '250 395-7832', 'Site_Fax_no': '250 395-7837', 'Website_URL': 'http://gov.bc.ca/servicebc/100milehouse', 'Site_Email': '', 'Latitude': 51.644455, 'Longitude': -121.297478, 'Office Code': 61, 'Item Type': 'Item', 'Path': 'sites/SBC/SD/HD/ROSites/Lists/GA Site Locations', 'Site': ''}
     '''
 
+
 class School(Location):
     NAME_FIELD = 'SCHOOL_NAME'
     LATITUDE_FIELD = 'SCHOOL_LATITUDE'
@@ -144,6 +151,7 @@ class School(Location):
     '''
     {'_id': 1, 'SCHOOL_YEAR': '2018/2019', 'SCHOOL_NUMBER': 8297024, 'SCHOOL_NAME': "Na Aksa Gyilak'yoo", 'DISTRICT_NUMBER': 82, 'DISTRICT_NAME': 'Coast Mountains', 'PUBLIC_OR_INDEPENDENT': 'Independent School', 'STREET_ADDRESS': '3529 WEST KALUM RD', 'PHYSICAL_ADDRESS_CITY': 'TERRACE', 'FACILITY_TYPE': 'Standard School ', 'SCHOOL_EDUCATION_LEVEL': 'ELEMENTARY SECONDARY', 'HAS_CORE_FRENCH': 'NO', 'HAS_EARLY_FRENCH_IMMERSION': 'NO', 'HAS_LATE_FRENCH_IMMERSION': 'NO', 'HAS_PROG_FRANCOPHONE': 'NO', 'SCHOOL_LATITUDE': 54.52410823, 'SCHOOL_LONGITUDE': -128.6683472}
     '''
+
 
 class Clinic(Location):
     LATITUDE_FIELD = 'LATITUDE'
@@ -154,3 +162,7 @@ class Clinic(Location):
     '''
 
 
+class FirstResponders(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'FCLTY_NM'
