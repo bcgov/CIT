@@ -55,7 +55,7 @@ docker-compose exec web python manage.py import_subdivisions
 
 Also download COMMUNITIES_V2.csv (private)
 ```
-docker-compose exec web python manage.py import_csv communities
+docker-compose exec web python manage.py import_csv all
 ```
 
 Lastly
