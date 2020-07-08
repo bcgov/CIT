@@ -9,4 +9,8 @@ services:
   nginx:
     ports:
       - 80:80
+    volumes:
+     - ./nginx/conf.d:/etc/nginx/conf.d
+     - static:/static
+     - cit-web/dist:/cit-web
 
