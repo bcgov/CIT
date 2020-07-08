@@ -65,7 +65,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        f = open(os.path.join(settings.BASE_DIR, 'lcsd000b16a_e.zip'), 'rb')
+        f = open(os.path.join(settings.BASE_DIR, 'data/lcsd000b16a_e.zip'), 'rb')
 
         zip_ref = zipfile.ZipFile(f)
 
