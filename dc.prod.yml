@@ -10,7 +10,7 @@ services:
     ports:
       - 80:80
     volumes:
-     - ./nginx/conf.d:/etc/nginx/conf.d
-     - static:/static
-     - cit-web/dist:/cit-web
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - static:/static
+      - cit-web/dist:/cit-web
 
