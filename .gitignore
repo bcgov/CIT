@@ -13,6 +13,9 @@ __pycache__/
 *.csv
 *.zip
 *.sql
+*.xls
+*.xlsx
+web/data/
 
 # Distribution / packaging
 .Python

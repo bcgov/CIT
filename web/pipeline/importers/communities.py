@@ -5,6 +5,7 @@ from django.contrib.gis.geos import Point
 from pipeline.models import Community
 from django.db.utils import IntegrityError
 
+
 def import_communities_from_csv(communities_file_path):
     with open(communities_file_path) as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
