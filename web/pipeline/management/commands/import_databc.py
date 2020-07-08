@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from pipeline.importers.databc_resource import import_databc_resource
+from pipeline.importers.databc_resource import import_databc_resources
 
 
 class Command(BaseCommand):
@@ -13,4 +13,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         resource_type = options['resource_type']
 
-        import_databc_resource(resource_type)
+        import_databc_resources(resource_type)

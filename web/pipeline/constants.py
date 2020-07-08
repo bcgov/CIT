@@ -10,9 +10,9 @@ from pipeline.models import (
 )
 
 
-CSV_RESOURCE = {
+CSV_RESOURCES = {
     'communities': {
-        'csv_path': '',
+        'csv_path': 'data/COMMUNITIES_V2.csv',
         'model': Community,
     }
 }
