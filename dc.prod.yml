@@ -12,5 +12,4 @@ services:
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d
       - static:/static
-      - cit-web/dist:/cit-web
-
+      - ./cit-web/dist:/cit-web
