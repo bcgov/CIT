@@ -4,8 +4,8 @@ from django.core.serializers import serialize
 from rest_framework import generics
 from rest_framework.views import APIView
 
-from .models import Location, Community
-from .serializers import LocationSerializer, CommunitySerializer
+from .models import Location, Community, CensusSubdivision
+from .serializers import LocationSerializer, CommunitySerializer, CensusSubdivisionSerializer
 
 
 def auth(request):
@@ -21,5 +21,9 @@ class LocationList(generics.ListAPIView):
 
 
 class CommunityList(generics.ListAPIView):
-    queryset = Community.objects.all().select_related()
+    queryset = Community.objects.all()
     serializer_class = CommunitySerializer
+
+class CensusSubdivisionList(generics.ListAPIView):
+    queryset = CensusSubdivision.objects.all()
+    serializer_class = CensusSubdivisionSerializer

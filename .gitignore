@@ -12,6 +12,10 @@ __pycache__/
 # Potentially private data
 *.csv
 *.zip
+*.sql
+*.xls
+*.xlsx
+web/data/
 
 # Distribution / packaging
 .Python

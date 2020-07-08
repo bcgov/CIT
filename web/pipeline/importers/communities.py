@@ -2,14 +2,15 @@ import csv
 
 from django.contrib.gis.geos import Point
 
-from web.models import Community
+from pipeline.models import Community
+from django.db.utils import IntegrityError
 
 
 def import_communities_from_csv(communities_file_path):
     with open(communities_file_path) as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         for row in csv_reader:
-            place_id = row["Place ID"]
+            place_id = row["Place_ID"]
 
             # **Other fields to consider adding**
             #    BASE_ACCESS_50Mbps,Community Type,FN_Community_Name,Nation,Band_Number
@@ -22,14 +23,14 @@ def import_communities_from_csv(communities_file_path):
             #    CSDUID Repeat Count (used to estimate Pop and Dwelling),Estimated Population,Estimated Total Dwellings,CENSUS DIVISION NAME,CENSUS METRO AREA NAME,CENSUS ECONOMIC REGION NAME,CENSUS SD NAME
             fields = {
                 "place_id": place_id,
-                "place_name": row["Place Name"],
+                "place_name": row["Place_Name"],
                 "census_subdivision_id": row['CSDUID'],
                 "hexuid": row['HEXUID'],
-                "location": Point(float(row["Longitude"]), float(row["Latitude"]))
+                "point": Point(float(row["Longitude"]), float(row["Latitude"]))
             }
+            print('importing', row['Place_Name'])
 
-            existing_community = Community.objects.filter(place_id=place_id)
-            if existing_community:
-                existing_community.update(**fields)
-            else:
-                Community.objects.create(**fields)
+            try:
+                Community.objects.get_or_create(**fields)
+            except IntegrityError as e:
+                print('Failed with IntegrityError', e)

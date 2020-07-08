@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Location, Community
+from .models import Location, Community, CensusSubdivision
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -16,3 +16,10 @@ class CommunitySerializer(serializers.ModelSerializer):
         model = Community
         fields = (
             "id", "place_name", "place_type", "latitude", "longitude")
+
+class CensusSubdivisionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CensusSubdivision
+        fields = (
+            "id", "name")

@@ -53,6 +53,17 @@ mv lcsd000b16a_e.zip web/
 docker-compose exec web python manage.py import_subdivisions
 ```
 
+Also download COMMUNITIES_V2.csv (private)
+```
+docker-compose exec web python manage.py import_csv all
+```
+
+Lastly
+
+```
+docker-compose exec web python manage.py import_databc all
+```
+
 ## VSCode (Fronte end Development)
 
 If the editor of choice is Visual Studio Code during development, one can have automatic linting enabled

@@ -17,11 +17,14 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.urls import path
-from django.views.generic import RedirectView, TemplateView
+
+from web import auth_tokens
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
     url(r"^api/pipeline/", include('pipeline.urls')),
 
+    url(r"^api/token/", auth_tokens.get_access_token),
 ]
