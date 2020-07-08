@@ -21,15 +21,6 @@ services:
     networks:
       - back-tier
 
-#  frontend:
-#    image: node
-#    volumes:
-#     - ./frontend:/code
-#    networks:
-#      - back-tier
-#    working_dir: /code/
-#    command: ./command.sh
-
   nginx:
     networks:
       - back-tier
