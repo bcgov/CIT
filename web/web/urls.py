@@ -23,8 +23,6 @@ from web import auth_tokens
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
     url(r"^api/pipeline/", include('pipeline.urls')),
-
     url(r"^api/token/", auth_tokens.get_access_token),
 ]
