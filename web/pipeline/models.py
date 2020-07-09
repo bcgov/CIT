@@ -43,6 +43,9 @@ class Location(models.Model):
     def latitude(self):
         return self.point[1]
 
+    def longitude(self):
+        return self.point[0]
+
 
 class Hospital(Location):
     LATITUDE_FIELD = 'LATITUDE'

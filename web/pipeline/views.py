@@ -19,7 +19,6 @@ class LocationList(generics.ListAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
 
-
 class CommunityList(generics.ListAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
