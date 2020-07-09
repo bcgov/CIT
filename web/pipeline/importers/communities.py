@@ -26,6 +26,7 @@ def import_communities_from_csv(communities_file_path):
                 #"id": place_id,
                 "place_name": row["Place_Name"],
                 "census_subdivision_id": row['CSDUID'],
+                "community_type": row['Community Type'],
                 "hexuid": row['HEXUID'],
                 "community_type": row['Community Type'],
                 "point": Point(float(row["Longitude"]), float(row["Latitude"]), srid=3005)
