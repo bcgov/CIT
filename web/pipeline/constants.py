@@ -7,7 +7,8 @@ from pipeline.models import (
     School,
     Clinic,
     Community,
-    FirstResponder
+    FirstResponder,
+    DiagnosticFacility,
 )
 
 
@@ -19,6 +20,10 @@ CSV_RESOURCES = {
     'first_responders': {
         'csv_path': 'data/FRST_RSPND.csv',
         'model': FirstResponder,
+    },
+    'diagnostic_facilities': {
+        'csv_path': 'data/DIAG_FACLT.csv',
+        'model': DiagnosticFacility,
     }
 }
 

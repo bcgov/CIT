@@ -26,7 +26,7 @@ def import_resource(resource_type):
 
     if resource_type == "communities":
         import_communities_from_csv(file_path)
-    elif resource_type == "first_responders":
+    elif resource_type in ["first_responders", "diagnostic_facilities"]:
         resource_config = CSV_RESOURCES[resource_type]
         data = read_csv(resource_config["csv_path"])
         import_data_into_model(resource_type, resource_config["model"], data)
