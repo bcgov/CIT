@@ -49,7 +49,7 @@ def import_data_into_model(resource_type, model_class, data):
 
 def read_csv(csv_path):
     data = []
-    with open(csv_path) as f:
+    with open(csv_path, mode='r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         data = list(reader)
 

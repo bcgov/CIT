@@ -182,3 +182,12 @@ class DiagnosticFacility(Location):
     '''
     OrderedDict([('DIA_FAC_ID', '909'), ('FCTY_NAME', 'NORTHERN HAIDA GWAII HOSPITAL AND HEALTH CENTRE'), ('OWNER_CODE', 'Public'), ('OWNER_NAME', 'NORTHERN HEALTH AUTHORITY'), ('ADDRESS', '2520 HARRISON AVE'), ('CITY', 'MASSET'), ('SER_CD_DSC', 'Diagnostic Ultrasound'), ('FAC_EST_DT', ''), ('LATITUDE', '54.020105'), ('LONGITUDE', '-132.157854'), ('GEOMETRY', ''), ('OBJECTID', '25743'), ('X', '597991.0027000001'), ('Y', '1019349.9949000068')])
     '''
+
+
+class TimberFacility(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'COMPANY_NM'
+    '''
+    OrderedDict([('COMPANY_NM', 'Bear Lumber Ltd.'), ('STRTADDRSS', 'P.O. Box 211'), ('LOCALITY', 'Cranbrook'), ('POSTAL_CD', 'V1C 4H7'), ('LATITUDE', '49.450483'), ('LONGITUDE', '-115.87103'), ('MILL_ID', '643'), ('OPRTN_SZE', 'Conventional'), ('OPRTN_RNK', 'Primary'), ('STATUS', 'DNR'), ('PRODUCT_CD', 'LBR'), ('MLN_BD_FT', '3.84'), ('THSND_BDU', ''), ('THSND_TNNE', ''), ('MLN_SQ_FT', ''), ('THSND_SQ', ''), ('MLN_CB_FT', ''), ('THSND_PC6', ''), ('THSND_PC40', ''), ('THSND_PC42', ''), ('CUST_ORG', 'Ministry of Forest, Lands and Natural Resource Operations and Rural Development - GeoBC '), ('BUS_CAT_CL', 'manufacturing'), ('BUS_CAT_DS', 'Manufacturing'), ('OCCPNT_TYP', 'Timber Processing Facilites'), ('UPDATED', '20200318151711'), ('SHAPE', ''), ('OBJECTID', '719'), ('X', '1732441.1482000006'), ('Y', '545173.8356000008')])
+    '''
