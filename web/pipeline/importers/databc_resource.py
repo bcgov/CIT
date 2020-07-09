@@ -51,6 +51,7 @@ def import_resource(resource_type):
         closest_community = Community.objects.annotate(
             distance=Distance('point', point)
         ).order_by('distance').first()
+
         # containing_subdiv = CensusSubdivision.objects.get(geom__contains=point)
         instance = Model.objects.get_or_create(
             name=row[Model.NAME_FIELD],
