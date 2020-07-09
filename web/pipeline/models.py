@@ -13,6 +13,8 @@ class Community(models.Model):
     place_id = models.CharField(null=True, blank=True, max_length=255)
     place_name = models.CharField(null=True, blank=True, max_length=255)
     point = PointField(null=True, blank=True)
+    # TODO SY - make this into a choice field tuple
+    community_type = models.CharField(null=True, blank=True, max_length=255)
     census_subdivision = models.ForeignKey(CensusSubdivision, on_delete=models.CASCADE)
     hexuid = models.CharField(max_length=15, help_text="ID of spatial hex used to color province by connectivity quality.")
 

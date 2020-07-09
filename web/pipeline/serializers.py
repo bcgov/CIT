@@ -14,7 +14,7 @@ class CommunitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Community
         fields = (
-            "id", "place_name", "latitude", "longitude", "census_subdivision")
+            "id", "place_name", "latitude", "longitude", "census_subdivision", "community_type")
 
 class CensusSubdivisionSerializer(serializers.ModelSerializer):
 
