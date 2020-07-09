@@ -13,14 +13,6 @@
     "build-report": "yarn && vue-cli-service build --report"
   },
   "dependencies": {
-    "core-js": "^3.6.5",
-    "powerbi-client": "^2.11.0",
-    "register-service-worker": "^1.7.1",
-    "vue": "^2.6.11",
-    "vue-router": "^3.2.0",
-    "vuex": "^3.4.0"
-  },
-  "devDependencies": {
     "@types/jest": "^24.0.19",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
@@ -36,18 +28,26 @@
     "@vue/eslint-config-prettier": "^6.0.0",
     "@vue/eslint-config-typescript": "^5.0.2",
     "@vue/test-utils": "^1.0.3",
+    "axios": "^0.19.2",
     "chromedriver": "81",
+    "core-js": "^3.6.5",
     "eslint": "^6.7.2",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-vue": "^6.2.2",
     "geckodriver": "^1.19.1",
     "lint-staged": "^9.5.0",
     "node-sass": "^4.12.0",
+    "powerbi-client": "^2.11.0",
     "prettier": "^1.19.1",
+    "register-service-worker": "^1.7.1",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
-    "vue-template-compiler": "^2.6.11"
+    "vue": "^2.6.11",
+    "vue-router": "^3.2.0",
+    "vue-template-compiler": "^2.6.11",
+    "vuex": "^3.4.0"
   },
+  "devDependencies": {},
   "gitHooks": {
     "pre-commit": "lint-staged"
   },

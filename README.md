@@ -6,6 +6,10 @@ A Dockerized boilerplate for a Django API driven web app, with Vue CLI and Postg
 
 Clone the project.
 
+```
+git clone https://github.com/countable/cit
+```
+
 Install Docker and docker-compose.
 
 
@@ -46,20 +50,23 @@ You can visit the Django admin at `http://localhost/admin`. The username is `adm
 
 # Importing Data
 
-Download and install census subdiv geometry:
+Some data must be downloaded locally (data bc warehouse resources). Download all local datasets to the `data` folder. ie, the census subdiv geometry:
 ```
 wget http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fichiers/2016/lcsd000b16a_e.zip
-mv lcsd000b16a_e.zip web/
-docker-compose exec web python manage.py import_subdivisions
+mv lcsd000b16a_e.zip web/data/
 ```
 
-Also download COMMUNITIES_V2.csv (private)
+import local shapefiles
+```
+docker-compose exec web python manage.py import_shp all
+```
+
+import local csv files
 ```
 docker-compose exec web python manage.py import_csv all
 ```
 
-Lastly
-
+Lastly, import data from databc
 ```
 docker-compose exec web python manage.py import_databc all
 ```

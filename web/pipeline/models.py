@@ -11,9 +11,11 @@ class CensusSubdivision(models.Model):
 
 
 class Community(models.Model):
-    place_id = models.CharField(null=True, blank=True, max_length=255)
+    #place_id = models.CharField(null=True, blank=True, max_length=255)
     place_name = models.CharField(null=True, blank=True, max_length=255)
     point = PointField(null=True, blank=True)
+    # TODO SY - make this into a choice field tuple
+    community_type = models.CharField(null=True, blank=True, max_length=255)
     census_subdivision = models.ForeignKey(CensusSubdivision, on_delete=models.CASCADE)
     hexuid = models.CharField(
         max_length=15,
@@ -26,10 +28,10 @@ class Community(models.Model):
         verbose_name_plural = "Communities"
 
     def latitude(self):
-        return self.location[1]
+        return self.point[1]
 
     def longitude(self):
-        return self.location[0]
+        return self.point[0]
 
 
 class Location(models.Model):
@@ -46,6 +48,8 @@ class Location(models.Model):
     def latitude(self):
         return self.point[1]
 
+    def longitude(self):
+        return self.point[0]
 
 class Hospital(Location):
     LATITUDE_FIELD = 'LATITUDE'
