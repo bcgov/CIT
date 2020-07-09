@@ -57,7 +57,7 @@ export default {
             settings: {
               panes: {
                 pageNavigation: {
-                  visible: false
+                  visible: true
                 }
               }
             }
