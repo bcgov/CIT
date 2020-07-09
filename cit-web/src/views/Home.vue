@@ -36,7 +36,7 @@ export default {
     const reportId = "a8ef4003-0cc9-4e6f-a1c3-eb1cbeda2e40";
     const GenerateInTokenUrl = `https://api.powerbi.com/v1.0/myorg/groups/${groupId}/reports/${reportId}/GenerateToken`
 
-    axios.get("https://cit-test.countable.ca/api/token/").then(result => {
+    axios.get("/api/token/").then(result => {
         const receivedAccessToken = result.data.access_token;
 
         axios.post(GenerateInTokenUrl, {
@@ -57,7 +57,7 @@ export default {
             settings: {
               panes: {
                 pageNavigation: {
-                  visible: false
+                  visible: true
                 }
               }
             }
