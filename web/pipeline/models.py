@@ -166,7 +166,7 @@ class Clinic(Location):
     '''
 
 
-class FirstResponders(Location):
+class FirstResponder(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'FCLTY_NM'
