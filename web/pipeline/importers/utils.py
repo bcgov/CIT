@@ -14,7 +14,7 @@ def import_data_into_model(resource_type, model_class, data):
     Model = model_class
 
     for row in data:
-        print("row", row)
+        print(row)
         try:
             point = Point(
                 float(row[Model.LONGITUDE_FIELD]),
@@ -52,9 +52,5 @@ def read_csv(csv_path):
     with open(csv_path) as f:
         reader = csv.DictReader(f)
         data = list(reader)
-        print("data", reader)
-
-        # for row in reader:
-        #     print("here", row)
 
     return data

@@ -170,3 +170,15 @@ class FirstResponder(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'FCLTY_NM'
+    '''
+    OrderedDict([('CUST_ORG', 'Ministry of Forest, Lands and Natural Resource Operations and Rural Development - GeoBC '), ('BUS_CAT_CL', 'provincialProtectiveServices'), ('BUS_CAT_DS', 'Provincial protective services'), ('OCCPNT_TYP', 'BC First Responders'), ('SRCDATA_ID', '1965'), ('SRC_ID_IND', 'N'), ('FCLTY_NM', 'Prince George Community Policing'), ('DESCRIPTN', ''), ('ADDRESS', '1156 4th Ave, Prince George, BC'), ('MAIL_ADD', '1156 4th Ave, Prince George, BC'), ('ST_ADDRESS', '1156 4th Ave'), ('POSTAL_CD', ''), ('LOCALITY', 'Prince George'), ('CONT_PHONE', ''), ('CONT_EMAIL', ''), ('CONT_FAX', ''), ('WEBSITE', ''), ('IMAGE_URL', ''), ('LATITUDE', '53.9157474'), ('LONGITUDE', '-122.7442107'), ('KEYWORDS', 'police; community policing station'), ('DT_UPDATE', '20200131230118'), ('GEOCD_IND', ''), ('RESP_TYPE', 'COMMUNITYSTN'), ('RESP_GRP', 'POLICE'), ('SHAPE', ''), ('SEQ_ID', '2998'), ('X', '1213279.4932'), ('Y', '995112.8456000024')])
+    '''
+
+
+class DiagnosticFacility(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'FCTY_NAME'
+    '''
+    OrderedDict([('DIA_FAC_ID', '909'), ('FCTY_NAME', 'NORTHERN HAIDA GWAII HOSPITAL AND HEALTH CENTRE'), ('OWNER_CODE', 'Public'), ('OWNER_NAME', 'NORTHERN HEALTH AUTHORITY'), ('ADDRESS', '2520 HARRISON AVE'), ('CITY', 'MASSET'), ('SER_CD_DSC', 'Diagnostic Ultrasound'), ('FAC_EST_DT', ''), ('LATITUDE', '54.020105'), ('LONGITUDE', '-132.157854'), ('GEOMETRY', ''), ('OBJECTID', '25743'), ('X', '597991.0027000001'), ('Y', '1019349.9949000068')])
+    '''
