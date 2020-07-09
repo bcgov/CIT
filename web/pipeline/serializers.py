@@ -20,5 +20,4 @@ class CensusSubdivisionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CensusSubdivision
-        fields = (
-            "id", "name")
+        fields = ("id", "name")
