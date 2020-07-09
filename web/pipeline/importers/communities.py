@@ -5,6 +5,7 @@ from django.contrib.gis.geos import Point
 from pipeline.models import Community
 from django.db.utils import IntegrityError
 
+
 def import_communities_from_csv(communities_file_path):
     with open(communities_file_path) as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
@@ -20,11 +21,13 @@ def import_communities_from_csv(communities_file_path):
             #    CDUID, CENSUS SD TYPE,CENSUS 2016 SD POP,CENSUS 2016 SD Total Dwelling,
             # **these seem inaccurate, don't use**
             #    CSDUID Repeat Count (used to estimate Pop and Dwelling),Estimated Population,Estimated Total Dwellings,CENSUS DIVISION NAME,CENSUS METRO AREA NAME,CENSUS ECONOMIC REGION NAME,CENSUS SD NAME
+
             fields = {
                 "place_id": place_id,
                 "place_name": row["Place_Name"],
                 "census_subdivision_id": row['CSDUID'],
                 "hexuid": row['HEXUID'],
+                "community_type": row['Community Type'],
                 "point": Point(float(row["Longitude"]), float(row["Latitude"]))
             }
             print('importing', row['Place_Name'])

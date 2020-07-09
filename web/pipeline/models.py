@@ -13,6 +13,8 @@ class Community(models.Model):
     place_id = models.CharField(null=True, blank=True, max_length=255)
     place_name = models.CharField(null=True, blank=True, max_length=255)
     point = PointField(null=True, blank=True)
+    # TODO SY - make this into a choice field tuple
+    community_type = models.CharField(null=True, blank=True, max_length=255)
     census_subdivision = models.ForeignKey(CensusSubdivision, on_delete=models.CASCADE)
     hexuid = models.CharField(max_length=15, help_text="ID of spatial hex used to color province by connectivity quality.")
 
@@ -23,10 +25,10 @@ class Community(models.Model):
         verbose_name_plural = "Communities"
 
     def latitude(self):
-        return self.location[1]
+        return self.point[1]
 
     def longitude(self):
-        return self.location[0]
+        return self.point[0]
 
 
 class Location(models.Model):
@@ -45,7 +47,6 @@ class Location(models.Model):
 
     def longitude(self):
         return self.point[0]
-
 
 class Hospital(Location):
     LATITUDE_FIELD = 'LATITUDE'
@@ -155,5 +156,3 @@ class Clinic(Location):
     '''
     {'_id': 1, 'SV_TAXONOMY': 'LN-9300', 'TAXONOMY_NAME': 'Walk In Medical Clinics', 'RG_REFERENCE': 17636590, 'RG_NAME': 'Sunwood Medical Clinic', 'SV_REFERENCE': 17636591, 'SV_NAME': 'Walk-in Clinic', 'SV_DESCRIPTION': 'Provides non-emergency health care services on a walk-in basis. Open Saturdays and some evenings.', 'SL_REFERENCE': 17636593, 'LC_REFERENCE': 17636592, 'PHONE_NUMBER': 6044640345, 'WEBSITE': '', 'EMAIL_ADDRESS': '', 'WHEELCHAIR_ACCESSIBLE': 'Y', 'LANGUAGE': '', 'HOURS': 'Mon 09:00 - 20:00; Tue 09:00 - 15:00; Wed 09:00 - 15:00; Fri 09:00 - 14:00; Sat 08:00 - 12:00; Note that hours are subject to physician availability and patient volume. Clinic may stop accepting patients before the listed closing time. Closed on statutory holidays and for lunch 12:00 - 14:00 on Mondays.', 'STREET_NUMBER': '3000 Lougheed Highway', 'STREET_NAME': '', 'STREET_TYPE': '', 'STREET_DIRECTION': '', 'CITY': 'Coquitlam', 'PROVINCE': 'BC', 'POSTAL_CODE': 'V3B 1C5', 'LATITUDE': 49.274338, 'LONGITUDE': -122.793127, '811_LINK': 'http://www.healthlinkbc.ca/find/resource.asp?First=1&org=53965&agencynum=17636591&SiteResourceAgencyNum=17636592'}
     '''
-
-

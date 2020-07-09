@@ -23,6 +23,7 @@ class CommunityList(generics.ListAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
 
+
 class CensusSubdivisionList(generics.ListAPIView):
     queryset = CensusSubdivision.objects.all()
     serializer_class = CensusSubdivisionSerializer
