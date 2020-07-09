@@ -10,6 +10,7 @@ from pipeline.models import (
     FirstResponder,
     DiagnosticFacility,
     TimberFacility,
+    CivicFacility,
 )
 
 
@@ -29,6 +30,10 @@ CSV_RESOURCES = {
     'timber_facilities': {
         'csv_path': 'data/GSRTMBRPRC.csv',
         'model': TimberFacility,
+    },
+    'civic_facilities': {
+        'csv_path': 'data/CIVIC_FAC.csv',
+        'model': CivicFacility,
     },
 }
 
