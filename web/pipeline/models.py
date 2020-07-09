@@ -191,3 +191,12 @@ class TimberFacility(Location):
     '''
     OrderedDict([('COMPANY_NM', 'Bear Lumber Ltd.'), ('STRTADDRSS', 'P.O. Box 211'), ('LOCALITY', 'Cranbrook'), ('POSTAL_CD', 'V1C 4H7'), ('LATITUDE', '49.450483'), ('LONGITUDE', '-115.87103'), ('MILL_ID', '643'), ('OPRTN_SZE', 'Conventional'), ('OPRTN_RNK', 'Primary'), ('STATUS', 'DNR'), ('PRODUCT_CD', 'LBR'), ('MLN_BD_FT', '3.84'), ('THSND_BDU', ''), ('THSND_TNNE', ''), ('MLN_SQ_FT', ''), ('THSND_SQ', ''), ('MLN_CB_FT', ''), ('THSND_PC6', ''), ('THSND_PC40', ''), ('THSND_PC42', ''), ('CUST_ORG', 'Ministry of Forest, Lands and Natural Resource Operations and Rural Development - GeoBC '), ('BUS_CAT_CL', 'manufacturing'), ('BUS_CAT_DS', 'Manufacturing'), ('OCCPNT_TYP', 'Timber Processing Facilites'), ('UPDATED', '20200318151711'), ('SHAPE', ''), ('OBJECTID', '719'), ('X', '1732441.1482000006'), ('Y', '545173.8356000008')])
     '''
+
+
+class CivicFacility(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'FCLTY_NM'
+    '''
+    OrderedDict([('FCLTY_NM', 'Alberni Valley Multiplex'), ('KEYWORDS', 'recreation; rec centre'), ('ST_ADDRESS', '3737 Roger St'), ('LOCALITY', 'Port Alberni'), ('MAIL_ADD', '3737 Roger St, Port Alberni, BC'), ('WEBSITE', ''), ('IMAGE_URL', ''), ('LATITUDE', '49.2557929'), ('LONGITUDE', '-124.7906785'), ('CIV_FAC_TY', 'RECCENTRE'), ('ADDRESS', '3737 Roger St, Port Alberni, BC'), ('DT_UPDATE', '20200131225059'), ('GEOCD_IND', ''), ('SRCDATA_ID', '992'), ('CUST_ORG', 'Ministry of Forest, Lands and Natural Resource Operations and Rural Development - GeoBC '), ('BUS_CAT_CL', 'artsEntertainmentAndRecreation'), ('BUS_CAT_DS', 'Arts, entertainment and recreation'), ('OCCPNT_TYP', 'Civic Facilities'), ('SHAPE', ''), ('SEQ_ID', '1918'), ('X', '-124.79067845384972'), ('Y', '49.25579290744079')])
+    '''
