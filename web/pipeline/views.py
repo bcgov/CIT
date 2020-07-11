@@ -19,6 +19,7 @@ class LocationList(generics.ListAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
 
+
 class CommunityList(generics.ListAPIView):
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
@@ -27,3 +28,37 @@ class CommunityList(generics.ListAPIView):
 class CensusSubdivisionList(generics.ListAPIView):
     queryset = CensusSubdivision.objects.all()
     serializer_class = CensusSubdivisionSerializer
+
+
+class LocationGeoJSONList(APIView):
+    schema = None
+
+    def get(self, request, format=None):
+        return HttpResponse(
+            serialize('geojson', Hospital.objects.all(), geometry_field='location', fields=('name', 'location_type', 'location_subtype')),
+            content_type="application/json",
+        )
+
+
+class CommunityGeoJSONList(APIView):
+    schema = None
+
+    def get(self, request, format=None):
+        return HttpResponse(
+            serialize(
+                'geojson', Community.objects.all(), geometry_field='location', fields=('place_name', 'place_type')
+            ),
+            content_type="application/json",
+        )
+
+
+# class DistanceGeoJSONList(APIView):
+#     schema = None
+
+#     def get(self, request, format=None):
+#         line_strings = generate_line_strings()
+#         return JsonResponse(line_strings, safe=False)
+
+
+class CensusSubdivisionGeoJSONList(APIView):
+    pass
