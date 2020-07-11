@@ -1,4 +1,3 @@
-
 # Import Census Subdiv Shapefile from
 # https://www12.statcan.gc.ca/census-recensement/alternative_alternatif.cfm?l=eng&dispext=zip&teng=lcsd000b16a_e.zip&k=%20%20%20%2047761&loc=http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fichiers/2016/lcsd000b16a_e.zip
 '''
@@ -64,12 +63,14 @@ from django.conf import settings
 logger = logging.getLogger(__name__)
 csduid_to_geo_uid = {}
 
-class Command(BaseCommand):
 
+class Command(BaseCommand):
     def handle(self, *args, **options):
 
         # Get a mapping to GEO UID for loading data on census areas from statscan API.
-        body = requests.get('https://www12.statcan.gc.ca/rest/census-recensement/CR2016Geo.json?lang=E&geos=CSD&cpt=59').text[2:]
+        body = requests.get(
+            'https://www12.statcan.gc.ca/rest/census-recensement/CR2016Geo.json?lang=E&geos=CSD&cpt=59'
+        ).text[2:]
         subdiv_metas = json.loads(body)
         for sd in subdiv_metas['DATA']:
             csduid = sd[3]
@@ -120,8 +121,6 @@ def _save_subdiv(feat):
     #     'CMATYPE', feat.get('CMATYPE'), '\n',
     # )
 
-
-
     if "British Columbia" not in feat.get('PRNAME'):
         return
 
@@ -132,15 +131,11 @@ def _save_subdiv(feat):
 
     geos_geom_simplified = copy.deepcopy(geos_geom)
     geos_geom_simplified.transform(4326)
-    geos_geom_simplified = geos_geom_simplified.simplify(
-        .0005, preserve_topology=True)
+    geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
 
     geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified)
 
-    subdiv = CensusSubdivision.objects.get_or_create(
-        id=int(feat.get('CSDUID')),
-        name=feat.get('CSDNAME')
-    )[0]
+    subdiv = CensusSubdivision.objects.get_or_create(id=int(feat.get('CSDUID')), name=feat.get('CSDNAME'))[0]
 
     print(subdiv.name)
 
@@ -148,55 +143,79 @@ def _save_subdiv(feat):
     subdiv.geom = geos_geom_out
     subdiv.geom_simplified = geos_geom_simplified
 
-    stats = json.loads(requests.get('https://www12.statcan.gc.ca/rest/census-recensement/CPR2016.json?dguid={}'.format(subdiv.geo_uid)).text[2:])
+    stats = json.loads(
+        requests.get(
+            'https://www12.statcan.gc.ca/rest/census-recensement/CPR2016.json?dguid={}'.format(subdiv.geo_uid)
+        ).text[2:]
+    )
 
-    #"1.1.2", "Population, 2016"
+    # "1.1.2", "Population, 2016"
     subdiv.population = _fetch_statscan_value(stats, "1.1.2")
     # "1.1.3", "Population percentage change, 2011 to 2016"
     subdiv.popluation_percentage_change = _fetch_statscan_value(stats, "1.1.3")
-    #"1.1.4", "Total private dwellings"
+    # "1.1.4", "Total private dwellings"
     subdiv.priv_dwel = _fetch_statscan_value(stats, "1.1.4")
-    #"1.1.7",0,"Land area in square kilometres"
+    # "1.1.7",0,"Land area in square kilometres"
     subdiv.area = _fetch_statscan_value(stats, "1.1.7")
 
-    #"1.2.2.1", "  0 to 14 years"
+    # "1.2.2.1", "  0 to 14 years"
     subdiv.pop_pct_0_14 = _fetch_statscan_value(stats, "1.2.2.1")
-    #2029, "1.2.2.2", 1, "  15 to 64 years"
+    # 2029, "1.2.2.2", 1, "  15 to 64 years"
     subdiv.pop_pct_14_65 = _fetch_statscan_value(stats, "1.2.2.2")
-    #2030, "1.2.2.3", 1, "  65 years and over"
+    # 2030, "1.2.2.3", 1, "  65 years and over"
     subdiv.pop_pct_65 = _fetch_statscan_value(stats, "1.2.2.3")
 
     # types of occupied dwellings
-    #"2.1.1.1", 1, "  Single-detached house"
+    # "2.1.1.1", 1, "  Single-detached house"
     subdiv.detached_houses = _fetch_statscan_value(stats, "2.1.1.1")
-    #"2.1.1.2", 1, "  Apartment in a building that has five or more storeys"
+    # "2.1.1.2", 1, "  Apartment in a building that has five or more storeys"
     subdiv.apartments = _fetch_statscan_value(stats, "2.1.1.2")
-    #"2.1.1.3", 1, "  Other attached dwelling", 6, null, 0.0
+    # "2.1.1.3", 1, "  Other attached dwelling", 6, null, 0.0
     subdiv.other_attached_dwellings = _fetch_statscan_value(stats, "2.1.1.3")
-    #"2.1.1.4", 1, "  Movable dwelling", 7, null, 0.0
+    # "2.1.1.4", 1, "  Movable dwelling", 7, null, 0.0
     subdiv.movable_dwellings = _fetch_statscan_value(stats, "2.1.1.4")
 
-    #"2.2.1.1", 1, "  Married or living common law"
+    # "2.2.1.1", 1, "  Married or living common law"
     subdiv.married_or_common_law = _fetch_statscan_value(stats, "2.2.1.1")
-    #"2.3.4.2", 1, "  Couples with children"
+    # "2.3.4.2", 1, "  Couples with children"
     subdiv.couples_with_children = _fetch_statscan_value(stats, "2.3.4.2")
-    #"2.3.5", 0, "Total - Lone-parent census families in private households - 100% data"
+    # "2.3.5", 0, "Total - Lone-parent census families in private households - 100% data"
     subdiv.single_parents = _fetch_statscan_value(stats, "2.3.5")
 
-    #"3.6.1.1.1", 2, "    English"
+    # "3.6.1.1.1", 2, "    English"
     subdiv.eng_known = _fetch_statscan_value(stats, "3.6.1.1.1")
-    #"3.6.1.2", 1, "  Non-official languages"
+    # "3.6.1.2", 1, "  Non-official languages"
     subdiv.other_lang = _fetch_statscan_value(stats, "3.6.1.2")
-    #"3.6.1.2.1", 2, "    Aboriginal languages"
+    # "3.6.1.2.1", 2, "    Aboriginal languages"
     subdiv.aboriginal_lang = _fetch_statscan_value(stats, "3.6.1.2.1")
-    #"3.1.1.4", 1, "  Neither English nor French"
+    # "3.1.1.4", 1, "  Neither English nor French"
     subdiv.eng_fr_not_known = _fetch_statscan_value(stats, "3.1.1.4")
 
-
-    #"4.1.1.1.1", 2, "    Median total income in 2015 among recipients ($)"
+    # "4.1.1.1.1", 2, "    Median total income in 2015 among recipients ($)"
     subdiv.median_total_income = _fetch_statscan_value(stats, "4.1.1.1.1")
 
+    # "Immigration and citizenship", 18010, "5.2.1.3", 1, "  Non-permanent residents"
+    subdiv.non_pr = _fetch_statscan_value(stats, "5.2.1.3")
+
+    # "Visible minority", 25001, "7.1.1.1", 1, "  Total visible minority population"
+    subdiv.visible_minority = _fetch_statscan_value(stats, "7.1.1.1")
+    # "Education", 28002, "10.1.1.2", 1, "  Secondary (high) school diploma or equivalency certificate"
+    subdiv.edu_1 = _fetch_statscan_value(stats, "10.1.1.2")
+    # "Education", 28003, "10.1.1.3", 1, "  Postsecondary certificate, diploma or degree"
+    subdiv.edu_2 = _fetch_statscan_value(stats, "10.1.1.3")
+    # "Education", 28004, "10.1.1.3.1", 2, "    Apprenticeship or trades certificate or diploma"
+    subdiv.edu_3 = _fetch_statscan_value(stats, "10.1.1.3.1")
+    # "Education", 28009, "10.1.1.3.4", 2, "    University certificate, diploma or degree at bachelor level or above"
+    subdiv.edu_4 = _fetch_statscan_value(stats, "10.1.1.3.4")
+    # "Labour", 31002, "11.1.1.1.1", 2, "    Employed"
+    subdiv.employed = _fetch_statscan_value(stats, "11.1.1.1.1")
+    # "Labour", 31003, "11.1.1.1.2", 2, "    Unemployed"
+    subdiv.unemployed = _fetch_statscan_value(stats, "11.1.1.1.2")
+    # "Labour", 33004, "11.3.1.2.2", 2, "    Self-employed"
+    subdiv.self_employed = _fetch_statscan_value(stats, "11.3.1.2.2")
+
     subdiv.save()
+
 
 def _coerce_to_multipolygon(geom):
     if isinstance(geom, Polygon):
@@ -204,8 +223,8 @@ def _coerce_to_multipolygon(geom):
     elif isinstance(geom, MultiPolygon):
         return geom
     else:
-        raise Exception("Bad geometry type: {}, skipping.".format(
-            geom.__class__))
+        raise Exception("Bad geometry type: {}, skipping.".format(geom.__class__))
+
 
 def _fetch_statscan_value(stats, property_name):
     for line in stats['DATA']:

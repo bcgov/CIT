@@ -66,5 +66,9 @@ DATABC_RESOURCES = {
     'courts': {
         'resource_id': '23aa0b75-2715-4ccb-9a36-9a608450dc2d',
         'model': Court
-    }
+    },
+    # 'libraries': {
+    #     'resource_id': 'b6a28bfb-580b-4662-9f00-f7189d52fbe6',
+    #     'model': Library
+    # }
 }

@@ -20,4 +20,4 @@ class CensusSubdivisionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CensusSubdivision
-        fields = ("id", "name")
+        exclude = ['geom', 'geom_simplified']
