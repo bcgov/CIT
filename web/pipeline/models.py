@@ -9,17 +9,199 @@ class CensusSubdivision(models.Model):
     geom = models.MultiPolygonField(srid=4326, null=True)
     geom_simplified = models.MultiPolygonField(srid=4326, null=True)
 
+    #"1.1.2", "Population, 2016"
+    population = models.IntegerField(null=True)
+    # "1.1.3", "Population percentage change, 2011 to 2016"
+    popluation_percentage_change = models.FloatField(null=True)
+    #"1.1.4", "Total private dwellings"
+    priv_dwel = models.IntegerField(null=True)
+    #"1.1.7",0,"Land area in square kilometres"
+    area = models.FloatField(null=True)
+
+    # age of population
+
+    #"1.2.2.1", "  0 to 14 years"
+    pop_pct_0_14 = models.FloatField(null=True)
+    #"1.2.2.2", 1, "  15 to 64 years"
+    pop_pct_14_65 = models.FloatField(null=True)
+    #"1.2.2.3", 1, "  65 years and over"
+    pop_pct_65 = models.FloatField(null=True)
+
+    # types of occupied dwellings
+    #"2.1.1.1", 1, "  Single-detached house"
+    detached_houses = models.IntegerField(null=True)
+    #"2.1.1.2", 1, "  Apartment in a building that has five or more storeys"
+    apartments = models.IntegerField(null=True)
+    #3003, "2.1.1.3", 1, "  Other attached dwelling", 6, null, 0.0
+    other_attached_dwellings = models.IntegerField(null=True)
+    #3009, "2.1.1.4", 1, "  Movable dwelling", 7, null, 0.0
+    movable_dwellings = models.IntegerField(null=True)
+
+    # marital status
+    #"2.2.1.1", 1, "  Married or living common law"
+    married_or_common_law = models.IntegerField(null=True)
+    #"2.3.4.2", 1, "  Couples with children"
+    couples_with_children = models.IntegerField(null=True)
+    #"2.3.5", 0, "Total - Lone-parent census families in private households - 100% data"
+    single_parents = models.IntegerField(null=True)
+
+    #"3.6.1.1.1", 2, "    English"
+    eng_known = models.IntegerField(null=True)
+    #"3.6.1.2", 1, "  Non-official languages"
+    other_lang = models.IntegerField(null=True)
+    #"3.6.1.2.1", 2, "    Aboriginal languages"
+    aboriginal_lang = models.IntegerField(null=True)
+    #"3.1.1.4", 1, "  Neither English nor French"
+    eng_fr_not_known = models.IntegerField(null=True)
+
+
+    # "Income", 12002, "4.1.1.1.1", 2, "    Median total income in 2015 among recipients ($)"
+    median_total_income = models.FloatField(null=True)
+
+    #"Income", 12008, "4.1.1.4.1", 2, "    Median government transfers in 2015 among recipients ($)"
+    #  "Income", 12034, "4.1.5.3.1", 2, "    Under $10,000 (including loss)"
+    #  "Income", 12035, "4.1.5.3.2", 2, "    $10,000 to $19,999"
+    #  "Income", 12036, "4.1.5.3.3", 2, "    $20,000 to $29,999"
+    #  "Income", 12037, "4.1.5.3.4", 2, "    $30,000 to $39,999"
+    #  "Income", 12038, "4.1.5.3.5", 2, "    $40,000 to $49,999"
+    #  "Income", 12039, "4.1.5.3.6", 2, "    $50,000 to $59,999"
+    #  "Income", 12040, "4.1.5.3.7", 2, "    $60,000 to $69,999"
+    #  "Income", 12041, "4.1.5.3.8", 2, "    $70,000 to $79,999"
+    #  "Income", 12042, "4.1.5.3.9", 2, "    $80,000 to $89,999"
+    #  "Income", 12043, "4.1.5.3.10", 2, "    $90,000 to $99,999"
+    #  "Income", 12044, "4.1.5.3.11", 2, "    $100,000 and over"
+    #  "Income", 12045, "4.1.5.3.11.1", 3, "      $100,000 to $149,999"
+    #  "Income", 12046, "4.1.5.3.11.2", 3, "      $150,000 and over"
+
+    #"Income", 13018, "4.2.3", 0, "Total - Household total income groups in 2015 for private households - 100% data", 36, null, 2475.0
+
+    # "Income", 15000, "4.4.1", 0, "Total - Low-income status in 2015 for the population in private households to whom low-income concepts are applicable - 100% data", 43, null, 4860.0, null, 2300.0, null, 2560.0, null],
+    # "Income", 15001, "4.4.1.1", 1, "  0 to 17 years"
+    # "Income", 15002, "4.4.1.1.1", 2, "    0 to 5 years"
+    # "Income", 15003, "4.4.1.2", 1, "  18 to 64 years"
+    # "Income", 15004, "4.4.1.3", 1, "  65 years and over"
+
+    # "Immigration and citizenship", 18010, "5.2.1.3", 1, "  Non-permanent residents", 52, null, 30.0, null, 15.0, null, 15.0, null],
+    non_pr = models.IntegerField(null=True)
+
+    # "Visible minority", 25001, "7.1.1.1", 1, "  Total visible minority population", 96, null, 380.0, null, 205.0, null, 175.0, null],
+    visible_minority = models.IntegerField(null=True)
+
+    # "Housing", 27001, "9.1.1.1", 1, "  Owner"
+    # "Housing", 27002, "9.1.1.2", 1, "  Renter"
+
+    # dwelling condition
+    # "Housing", 27036, "9.1.9.2", 1, "  Major repairs needed"
+    # "Housing", 27052, "9.1.12.2", 1, "  Spending 30% or more of income on shelter costs"
+
+    # owner households
+
+    # "Housing", 27055, "9.1.13.1", 1, "  % of owner households with a mortgage", 142, null, 37.6
+    # "Housing", 27060, "9.1.13.6", 1, "  Average value of dwellings ($)", 144, null, 397139.0
+
+    # "Education", 28002, "10.1.1.2", 1, "  Secondary (high) school diploma or equivalency certificate", 147, null, 1325.0, null, 595.0, null, 730.0, null],
+    edu_1 = models.IntegerField(null=True)
+    # "Education", 28003, "10.1.1.3", 1, "  Postsecondary certificate, diploma or degree"
+    edu_2 = models.IntegerField(null=True)
+    # "Education", 28004, "10.1.1.3.1", 2, "    Apprenticeship or trades certificate or diploma"
+    edu_3 = models.IntegerField(null=True)
+    # "Education", 28009, "10.1.1.3.4", 2, "    University certificate, diploma or degree at bachelor level or above"
+    edu_4 = models.IntegerField(null=True)
+
+    # field of study
+    # "Education", 29002, "10.2.1.2", 1, "  Education"
+    # "Education", 29004, "10.2.1.3", 1, "  Visual and performing arts, and communications technologies"
+    # "Education", 29007, "10.2.1.4", 1, "  Humanities"
+    # "Education", 29016, "10.2.1.5", 1, "  Social and behavioural sciences and law"
+    # "Education", 29024, "10.2.1.6", 1, "  Business, management and public administration"
+    # "Education", 29028, "10.2.1.7", 1, "  Physical and life sciences and technologies"
+    # "Education", 29034, "10.2.1.8", 1, "  Mathematics, computer and information sciences"
+    # "Education", 29039, "10.2.1.9", 1, "  Architecture, engineering, and related technologies"
+    # "Education", 29047, "10.2.1.10", 1, "  Agriculture, natural resources and conservation"
+    # "Education", 29050, "10.2.1.11", 1, "  Health and related fields"
+    # "Education", 29054, "10.2.1.12", 1, "  Personal, protective and transportation services"
+
+    # employment
+    # "Labour", 31002, "11.1.1.1.1", 2, "    Employed"
+    employed = models.IntegerField(null=True)
+    # "Labour", 31003, "11.1.1.1.2", 2, "    Unemployed"
+    unemployed = models.IntegerField(null=True)
+    # "Labour", 33004, "11.3.1.2.2", 2, "    Self-employed", 171, null, 375.0, null, 210.0, null, 160.0, null],
+    self_employed = models.IntegerField(null=True)
+
+    # job types
+    # "Labour", 34003, "11.4.1.2.1", 2, "    0 Management occupations"
+    # "Labour", 34004, "11.4.1.2.2", 2, "    1 Business, finance and administration occupations"
+    # "Labour", 34005, "11.4.1.2.3", 2, "    2 Natural and applied sciences and related occupations"
+    # "Labour", 34006, "11.4.1.2.4", 2, "    3 Health occupations"
+    # "Labour", 34007, "11.4.1.2.5", 2, "    4 Occupations in education, law and social, community and government services"
+    # "Labour", 34008, "11.4.1.2.6", 2, "    5 Occupations in art, culture, recreation and sport"
+    # "Labour", 34009, "11.4.1.2.7", 2, "    6 Sales and service occupations"
+    # "Labour", 34010, "11.4.1.2.8", 2, "    7 Trades, transport and equipment operators and related occupations"
+    # "Labour", 34011, "11.4.1.2.9", 2, "    8 Natural resources, agriculture and related production occupations"
+    # "Labour", 34012, "11.4.1.2.10", 2, "    9 Occupations in manufacturing and utilities"
+
+    # place of work
+    # "Labour", 36001, "11.6.1.1", 1, "  Worked at home"
+    # "Labour", 36003, "11.6.1.3", 1, "  No fixed workplace address"
+    # "Labour", 36004, "11.6.1.4", 1, "  Worked at usual place"
+
+    # "Journey to work", 37001, "12.1.1.1", 1, "  Commute within census subdivision (CSD) of residence"
+    # "Journey to work", 37002, "12.1.1.2", 1, "  Commute to a different census subdivision (CSD) within census division (CD) of residence"
+
+    # "Journey to work", 38001, "12.2.1.1", 1, "  Car, truck, van - as a driver"
+    # "Journey to work", 38002, "12.2.1.2", 1, "  Car, truck, van - as a passenger"
+    # "Journey to work", 38003, "12.2.1.3", 1, "  Public transit"
+    # "Journey to work", 38004, "12.2.1.4", 1, "  Walked"
+    # "Journey to work", 38005, "12.2.1.5", 1, "  Bicycle"
+    # "Journey to work", 38006, "12.2.1.6", 1, "  Other method"
+
+    # "Journey to work", 39001, "12.3.1.1", 1, "  Less than 15 minutes"
+    # "Journey to work", 39002, "12.3.1.2", 1, "  15 to 29 minutes"
+    # "Journey to work", 39003, "12.3.1.3", 1, "  30 to 44 minutes"
+    # "Journey to work", 39004, "12.3.1.4", 1, "  45 to 59 minutes"
+    # "Journey to work", 39005, "12.3.1.5", 1, "  60 minutes and over"
+
+    # 1Y mobility
+
+    # "Mobility", 43001, "14.1.1.1", 1, "  Non-movers"
+    # "Mobility", 43002, "14.1.1.2", 1, "  Movers"
+
+    # 5Y mobility
+
+    # "Mobility", 44001, "14.2.1.1", 1, "  Non-movers"
+    # "Mobility", 44002, "14.2.1.2", 1, "  Movers"
+
 
 class Community(models.Model):
-    #place_id = models.CharField(null=True, blank=True, max_length=255)
-    place_name = models.CharField(null=True, blank=True, max_length=255)
+    # place_id = models.CharField(null=True, blank=True, max_length=255)
+    place_name = models.CharField(null=True, blank=True, max_length=255, unique=True)
     point = PointField(null=True, blank=True)
     # TODO SY - make this into a choice field tuple
+    # Community Type,
     community_type = models.CharField(null=True, blank=True, max_length=255)
     census_subdivision = models.ForeignKey(CensusSubdivision, on_delete=models.CASCADE)
     hexuid = models.CharField(
         max_length=15,
         help_text="ID of spatial hex used to color province by connectivity quality.")
+
+    #BASE_ACCESS_50Mbps
+    base_access_50mbps = models.BooleanField(default=False)
+    #FN_Community_Name
+    fn_community_name = models.CharField(max_length=127, default='')
+    #Nation
+    nation = models.CharField(max_length=127, default='')
+    #Band_Number
+    band_number = models.IntegerField(null=True)
+    #Municipality Classification
+    municipality_classification = models.CharField(max_length=63, default='')
+    #Municapility URL Code
+    municipality_id = models.IntegerField(null=True)
+    #Estimated Population
+    estimated_population = models.IntegerField(default=0)
+    #Estimated Total Dwellings
+    estimated_total_dwellings = models.IntegerField(default=0)
+
 
     def __str__(self):
         return self.place_name

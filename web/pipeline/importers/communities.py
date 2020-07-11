@@ -22,17 +22,27 @@ def import_communities_from_csv(communities_file_path):
             # **these seem inaccurate, don't use**
             #    CSDUID Repeat Count (used to estimate Pop and Dwelling),Estimated Population,Estimated Total Dwellings,CENSUS DIVISION NAME,CENSUS METRO AREA NAME,CENSUS ECONOMIC REGION NAME,CENSUS SD NAME
 
-            fields = {
-                #"id": place_id,
-                "place_name": row["Place_Name"],
-                "census_subdivision_id": row['CSDUID'],
-                "community_type": row['Community Type'],
-                "hexuid": row['HEXUID'],
-                "community_type": row['Community Type'],
-                "point": Point(float(row["Longitude"]), float(row["Latitude"]), srid=3005)
-            }
+            place_name = row["Place_Name"]
+            try:
+                community = Community.objects.get(place_name=place_name)
+            except Community.DoesNotExist:
+                community = Community()
+
+            community.census_subdivision_id = row['CSDUID']
+            community.community_type = row['Community Type']
+            community.hexuid = row['HEXUID']
+            community.community_type = row['Community Type']
+            community.point = Point(float(row["Longitude"]), float(row["Latitude"]), srid=3005)
+            community.base_access_50mbps = row['BASE_ACCESS_50Mbps'].lower() == 'yes'
+            community.fn_community_name = row['FN_Community_Name']
+            community.nation = row['Nation']
+            community.band_number = row['Band_Number'] or None
+            community.municipality_classification = row['Municipality Classification']
+            community.municipality_id = row['Municapility URL Code'] or None
+            community.estimated_population = row['Estimated Population']
+            community.estimated_total_dwellings = row['Estimated Total Dwellings']
 
             try:
-                Community.objects.get_or_create(**fields)
+                community.save()
             except IntegrityError as e:
-                print('Failed with IntegrityError', e)
+                print(e)
