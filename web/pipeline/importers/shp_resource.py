@@ -241,15 +241,16 @@ def _save_subdiv(feat):
     subdiv.save()
 
 
-def _generate_geom(geom):
+def _generate_geom(feat):
     """
     Generate a clean geometry, and simplified snapshot for PostGIS insertion
     """
+    # Source data tends to be in BC Alberts. #TODO: detect this instead?
     geos_geom = GEOSGeometry(feat.geom.wkt, srid=3005)
     # Convert MultiPolygons to plain Polygons,
     # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
     geos_geom_out = _coerce_to_multipolygon(geos_geom)
-
+    geos_geom.transform(4326)
     geos_geom_simplified = copy.deepcopy(geos_geom)
     geos_geom_simplified.transform(4326)
     geos_geom_simplified = geos_geom_simplified.simplify(
