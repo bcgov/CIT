@@ -16,14 +16,20 @@ def import_data_into_model(resource_type, Model, row):
         instance = Model(name=row[Model.NAME_FIELD], location_type=resource_type)
 
     # containing_subdiv = CensusSubdivision.objects.get(geom__contains=point)
+    # Get the point location, and attach to a 'closest' community.
     if hasattr(Model, 'LONGITUDE_FIELD'):
         try:
-            point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=3005)
+            instance.point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=4326)
+            closest_community = Community.objects.annotate(distance=Distance('point', instance.point)).order_by('distance').first()
         except TypeError:
-            print("Skipping error:", row[Model.NAME_FIELD], "has no geometry!")
-            return
-        closest_community = Community.objects.annotate(distance=Distance('point', point)).order_by('distance').first()
-        instance.point = point
+            #print(row, Model.LATITUDE_FIELD)
+            # When no point is present, try the municipality name description
+            if row["MUNICIPALITY"]:
+                closest_community = Community.objects.filter(place_name__icontains=_try_community_name).first()
+                if not closest_community:
+                    print("Skipping error:", row[Model.NAME_FIELD],"in", row["MUNICIPALITY"], "has no geometry or matching municipality name!")
+                    return
+                instance.point = community.point
         instance.community = closest_community
 
     for field_name, field_value in row.items():
@@ -39,6 +45,13 @@ def import_data_into_model(resource_type, Model, row):
     instance.save()
     return instance
 
+
+def _try_community_name(row):
+    """
+    Try to get community name from municipality description in other tables.
+    TODO: reverse geocode these instead?
+    """
+    return row["MUNICIPALITY"].split("/")[0].replace(" Area","")
 
 def read_csv(csv_path):
     data = []

@@ -11,9 +11,15 @@ import pipeline.views
 urlpatterns = [
 
     url(r"^auth/$", pipeline.views.auth),
+    url(r"^locations/geojson/$", pipeline.views.LocationGeoJSONList.as_view()),
     url(r"^locations/$", pipeline.views.LocationList.as_view()),
+    url(r"^communities/geojson/$", pipeline.views.CommunityGeoJSONList.as_view()),
     url(r"^communities/$", pipeline.views.CommunityList.as_view()),
+    url(r"^censussubdivisions/geojson/$", pipeline.views.CensusSubdivisionGeoJSONList.as_view()),
     url(r"^censussubdivisions/$", pipeline.views.CensusSubdivisionList.as_view()),
+
+    # TODO: add distances
+    #url(r"^api/distances/geojson/$", web.views.DistanceGeoJSONList.as_view()),
 
     path('openapi', get_schema_view(
         title="CIT",

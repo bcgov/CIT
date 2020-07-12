@@ -26,7 +26,7 @@ def import_communities_from_csv(communities_file_path):
             try:
                 community = Community.objects.get(place_name=place_name)
             except Community.DoesNotExist:
-                community = Community()
+                community = Community(place_name=place_name)
 
             community.point = Point(float(row["Longitude"]), float(row["Latitude"]), srid=4326)
 
