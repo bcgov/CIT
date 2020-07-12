@@ -16,6 +16,7 @@ def import_data_into_model(resource_type, Model, row):
         instance = Model(name=row[Model.NAME_FIELD], location_type=resource_type)
 
     # containing_subdiv = CensusSubdivision.objects.get(geom__contains=point)
+    # Get the point location, and attach to a 'closest' community.
     if hasattr(Model, 'LONGITUDE_FIELD'):
         try:
             instance.point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=4326)
@@ -28,6 +29,7 @@ def import_data_into_model(resource_type, Model, row):
                 if not closest_community:
                     print("Skipping error:", row[Model.NAME_FIELD],"in", row["MUNICIPALITY"], "has no geometry or matching municipality name!")
                     return
+                instance.point = community.point
         instance.community = closest_community
 
     for field_name, field_value in row.items():
