@@ -11,10 +11,13 @@ from pipeline.models import (
     DiagnosticFacility,
     TimberFacility,
     CivicFacility,
+    WildfireZone,
+    TsunamiZone,
 )
 
 
 CSV_RESOURCES = {
+    # Provided by NetworkBC Team
     'communities': {
         'csv_path': 'data/COMMUNITIES_V2.csv',
         'model': Community,
@@ -71,4 +74,16 @@ DATABC_RESOURCES = {
     #     'resource_id': 'b6a28bfb-580b-4662-9f00-f7189d52fbe6',
     #     'model': Library
     # }
+}
+
+SHP_RESOURCES = {
+
+    'wildfires_zones': {
+        'path': 'data/wildfire_zones.zip',
+        'model': WildfireZone
+    },
+    'tsunami_zones': {
+        'path': 'data/tsunami_zones.zip',
+        'model': TsunamiZone,
+    }
 }

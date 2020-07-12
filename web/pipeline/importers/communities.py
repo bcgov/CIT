@@ -2,7 +2,7 @@ import csv
 
 from django.contrib.gis.geos import Point
 
-from pipeline.models import Community
+from pipeline.models import Community, WildfireZone, TsunamiZone
 from django.db.utils import IntegrityError
 
 
@@ -28,11 +28,18 @@ def import_communities_from_csv(communities_file_path):
             except Community.DoesNotExist:
                 community = Community()
 
+            community.point = Point(float(row["Longitude"]), float(row["Latitude"]), srid=4326)
+
+            # TODO: spatial query?
             community.census_subdivision_id = row['CSDUID']
+
+            # TODO: Consider municipal overlap.
+            community.wildfire_zone = WildfireZone.objects.filter(geom__contains = community.point).first()
+            community.tsunami_zone = TsunamiZone.objects.filter(geom__contains = community.point).first()
+
             community.community_type = row['Community Type']
             community.hexuid = row['HEXUID']
             community.community_type = row['Community Type']
-            community.point = Point(float(row["Longitude"]), float(row["Latitude"]), srid=4326)
             community.base_access_50mbps = row['BASE_ACCESS_50Mbps'].lower() == 'yes'
             community.fn_community_name = row['FN_Community_Name']
             community.nation = row['Nation']
