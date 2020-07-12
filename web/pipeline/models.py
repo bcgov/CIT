@@ -9,6 +9,7 @@ class Area(models.Model):
     geom_simplified = models.MultiPolygonField(srid=4326, null=True)
     location_type = models.CharField(null=True, blank=True, max_length=255)
 
+
 class WildfireZone(Area):
     NAME_FIELD='FIRE_ZONE'
     risk_class = models.CharField(max_length=1, help_text="A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 (extreme).") # 1-5
@@ -16,10 +17,10 @@ class WildfireZone(Area):
 
 class TsunamiZone(Area):
     NAME_FIELD='TNZ_ID'
-    zone_class = models.CharField(max_length=1, help_text="See https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/preparedbc/know-your-hazards/tsunamis")
-    # Tsunamis are rare but serious events. Many areas of coastal B.C. may be threatened in the event
+    zone_class = models.CharField(max_length=1, help_text="See https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/preparedbc/know-your-hazards/tsunamis - A-C:moderate D,E:low")
+    # "Tsunamis are rare but serious events. Many areas of coastal B.C. may be threatened in the event
     # of a tsunami. However, it is generally accepted by scientific and technical experts that Victoria,
-    # eastern Vancouver Island, Vancouver and the lower mainland are low-risk areas.
+    # eastern Vancouver Island, Vancouver and the lower mainland are low-risk areas."
     # --
     # Intretation for labelling purpose:
     # A-C moderate
