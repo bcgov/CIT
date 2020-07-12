@@ -32,7 +32,7 @@ def import_communities_from_csv(communities_file_path):
             community.community_type = row['Community Type']
             community.hexuid = row['HEXUID']
             community.community_type = row['Community Type']
-            community.point = Point(float(row["Longitude"]), float(row["Latitude"]), srid=3005)
+            community.point = Point(float(row["Longitude"]), float(row["Latitude"]), srid=4326)
             community.base_access_50mbps = row['BASE_ACCESS_50Mbps'].lower() == 'yes'
             community.fn_community_name = row['FN_Community_Name']
             community.nation = row['Nation']

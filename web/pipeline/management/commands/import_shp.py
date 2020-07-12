@@ -124,7 +124,7 @@ def _save_subdiv(feat):
     if "British Columbia" not in feat.get('PRNAME'):
         return
 
-    geos_geom = GEOSGeometry(feat.geom.wkt, srid=3005)
+    geos_geom = GEOSGeometry(feat.geom.wkt, srid=4326)
     # Convert MultiPolygons to plain Polygons,
     # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
     geos_geom_out = _coerce_to_multipolygon(geos_geom)
@@ -219,7 +219,7 @@ def _save_subdiv(feat):
 
 def _coerce_to_multipolygon(geom):
     if isinstance(geom, Polygon):
-        return MultiPolygon([geom], srid=3005)
+        return MultiPolygon([geom], srid=4326)
     elif isinstance(geom, MultiPolygon):
         return geom
     else:

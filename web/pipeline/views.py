@@ -35,7 +35,7 @@ class LocationGeoJSONList(APIView):
 
     def get(self, request, format=None):
         return HttpResponse(
-            serialize('geojson', Hospital.objects.all(), geometry_field='location', fields=('name', 'location_type', 'location_subtype')),
+            serialize('geojson', Location.objects.all(), geometry_field='point', fields=('name', 'location_type')),
             content_type="application/json",
         )
 
@@ -46,7 +46,7 @@ class CommunityGeoJSONList(APIView):
     def get(self, request, format=None):
         return HttpResponse(
             serialize(
-                'geojson', Community.objects.all(), geometry_field='location', fields=('place_name', 'place_type')
+                'geojson', Community.objects.all(), geometry_field='point', fields=('place_name', 'place_type')
             ),
             content_type="application/json",
         )

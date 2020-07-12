@@ -14,7 +14,7 @@ def import_data_into_model(resource_type, model_class, data):
     for row in data:
         print(row)
         try:
-            point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=3005)
+            point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=4326)
         except TypeError:
             print("Skipping error:", row[Model.NAME_FIELD], "has no geometry!")
             continue
