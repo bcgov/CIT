@@ -3,6 +3,22 @@ from django.contrib.gis.db.models import PointField
 from django.contrib.gis.geos import Point
 
 
+class Area(models.Model):
+    name = models.CharField(max_length=127)
+    geom = models.MultiPolygonField(srid=4326, null=True)
+    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
+
+
+class WildfireZone(Area):
+    NAME_FIELD='FIRE_ZONE'
+    risk_class = models.CharField(max_length=1) # 1-5
+
+
+class TsunamiZone(Area):
+    NAME_FIELD='TNZ_ID'
+    zone_class = models.CharField(max_length=1) # A,B,C,D
+
+
 class CensusSubdivision(models.Model):
     # CSUID is used as primary key, just 'id' in Django.
     name = models.CharField(max_length=127)
@@ -180,6 +196,9 @@ class Community(models.Model):
     # Community Type,
     community_type = models.CharField(null=True, blank=True, max_length=255)
     census_subdivision = models.ForeignKey(CensusSubdivision, on_delete=models.CASCADE)
+    wildfire_zone = models.ForeignKey(WildfireZone, null=True, on_delete=models.SET_NULL)
+    tsunami_zone = models.ForeignKey(TsunamiZone, null=True, on_delete=models.SET_NULL)
+
     hexuid = models.CharField(
         max_length=15, help_text="ID of spatial hex used to color province by connectivity quality."
     )

@@ -32,7 +32,8 @@ def import_resource(resource_type):
     elif resource_type in location_csv_resources:
         resource_config = CSV_RESOURCES[resource_type]
         data = read_csv(resource_config["csv_path"])
-        import_data_into_model(resource_type, resource_config["model"], data)
+        for row in data:
+            import_data_into_model(resource_type, resource_config["model"], row)
 
 
 # TODO: this is unused right now

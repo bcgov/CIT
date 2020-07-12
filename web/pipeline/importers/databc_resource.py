@@ -32,4 +32,5 @@ def import_resource(resource_type):
 
     data = response.json()["result"]["records"]
 
-    import_data_into_model(resource_type, resource_config["model"], data)
+    for row in data:
+        import_data_into_model(resource_type, resource_config["model"], row)
