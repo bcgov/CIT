@@ -19,7 +19,8 @@ urlpatterns = [
     url(r"^censussubdivisions/$", pipeline.views.CensusSubdivisionList.as_view()),
 
     # TODO: add distances
-    #url(r"^api/distances/geojson/$", web.views.DistanceGeoJSONList.as_view()),
+    url(r"^locationdistances/geojson/$", pipeline.views.LocationDistanceGeoJSONList.as_view()),
+    url(r"^locationdistances/$", pipeline.views.LocationDistanceList.as_view()),
 
     path('openapi', get_schema_view(
         title="CIT",

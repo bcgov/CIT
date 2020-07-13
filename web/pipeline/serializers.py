@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Location, Community, CensusSubdivision
+from .models import Location, Community, CensusSubdivision, LocationDistance
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -31,3 +31,13 @@ class CensusSubdivisionSerializer(serializers.ModelSerializer):
     class Meta:
         model = CensusSubdivision
         exclude = ['geom', 'geom_simplified']
+
+
+class LocationDistanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LocationDistance
+        fields = (
+            "id", "community", "location", "distance",
+            #"travel_time",
+            #"travel_time_display", "driving_route_available"
+            )
