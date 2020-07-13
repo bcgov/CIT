@@ -237,10 +237,20 @@ class Community(models.Model):
         verbose_name_plural = "Communities"
 
     def latitude(self):
-        return self.point[1]
+        if self.point:
+            return self.point[1]
+        else:
+            # debugging; remove later
+            print("Community {} has no location".format(self.place_name))
+            return None
 
     def longitude(self):
-        return self.point[0]
+        if self.point:
+            return self.point[0]
+        else:
+            # debugging; remove later
+            print("Community {} has no location".format(self.place_name))
+            return None
 
 
 class Location(models.Model):
@@ -256,10 +266,20 @@ class Location(models.Model):
         return self.name
 
     def latitude(self):
-        return self.point[1]
+        if self.point:
+            return self.point[1]
+        else:
+            # debugging; remove later
+            print("Location {} has no location".format(self.name))
+            return None
 
     def longitude(self):
-        return self.point[0]
+        if self.point:
+            return self.point[0]
+        else:
+            # debugging; remove later
+            print("Location {} has no location".format(self.name))
+            return None
 
     class Meta:
         unique_together = [['name', 'location_type']]
