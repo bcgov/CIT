@@ -13,7 +13,6 @@ def import_data_into_model(resource_type, Model, row):
 
     print(row)
 
-
     try:
         instance = Model.objects.get(name=row[Model.NAME_FIELD], location_type=resource_type)
     except Model.DoesNotExist:
@@ -62,8 +61,7 @@ def import_data_into_model(resource_type, Model, row):
 
 def calculate_distances(location):
     communities_within_50k = (
-        Community.objects
-        .filter(point__distance_lte=(location.point, D(m=50000)))
+        Community.objects.filter(point__distance_lte=(location.point, D(m=50000)))
         .annotate(distance=Distance("point", location.point))
         .order_by("distance")
     )

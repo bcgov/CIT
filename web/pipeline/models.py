@@ -11,13 +11,19 @@ class Area(models.Model):
 
 
 class WildfireZone(Area):
-    NAME_FIELD='FIRE_ZONE'
-    risk_class = models.CharField(max_length=1, help_text="A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 (extreme).") # 1-5
+    NAME_FIELD = 'FIRE_ZONE'
+    risk_class = models.CharField(
+        max_length=1,
+        help_text="A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 (extreme).",
+    )  # 1-5
 
 
 class TsunamiZone(Area):
-    NAME_FIELD='TNZ_ID'
-    zone_class = models.CharField(max_length=1, help_text="See https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/preparedbc/know-your-hazards/tsunamis - A-C:moderate D,E:low")
+    NAME_FIELD = 'TNZ_ID'
+    zone_class = models.CharField(
+        max_length=1,
+        help_text="See https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/preparedbc/know-your-hazards/tsunamis - A-C:moderate D,E:low",
+    )
     # "Tsunamis are rare but serious events. Many areas of coastal B.C. may be threatened in the event
     # of a tsunami. However, it is generally accepted by scientific and technical experts that Victoria,
     # eastern Vancouver Island, Vancouver and the lower mainland are low-risk areas."
@@ -646,6 +652,7 @@ class CivicFacility(Location):
         ('Y', '49.25579290744079')])
     '''
 
+
 # class Library(Location):
 #     '''
 #     {"_id":5,"LIBRARY_SYSTEM":"Burnaby Public Library","LOCATION":"Cameron Library & Recreation Centre","BRANCH_UNIQUE_ID":"BB002","SCHOOL_DISTRICT_SERVED":"41","PHONE":"(604) 421-5454","PHYSICAL_ADDRESS":"9523 Cameron Street","CITY":"Burnaby","PROVINCE":"BC","POSTAL_CODE":"V3J 1L6","LATITUDE":49.25381414,"LONGITUDE":-122.898601,"MTLS_OUTLET":59958,"MTLS_CIRC_B":454254,"CIRC_CHILD_MTLS_B":227553,"REF_TRANS_B":20436,"VISITS_B":247701,"AD_INLIB_PGMS_B":50,"AD_OUT_PGMS_B":8,"ADULT_ATTEND_B":1067,"CH_INLIB_PGMS_B":221,"CH_OUT_PGMS_B":18,"CHILD_ATTEND_B":11112,"YA_INLIB_PGMS_B":4,"YA_OUT_PGMS_B":0,"YA_ATTEND_B":38,"ESL_INLIB_PGMS_B":11,"ESL_OUT_PGMS_B":0,"ESL_ATTEND_B":78,"LIBRARIAN_HRS_B":6834,"LIB_TECH_HRS_B":null,"COMM_LIB_HRS_B":null,"OTH_HRS_B":16311,"branch_copiers":1,"LEED_CERT_B":"No","SHRD_FAC":"Yes","FLOORSPACE":465,"HRS_OPEN":2901,"DAYS_OPEN":341}
@@ -656,18 +663,21 @@ class LocationDistance(models.Model):
     community = models.ForeignKey(Community, on_delete=models.DO_NOTHING, related_name='distances')
     location = models.ForeignKey(Location, on_delete=models.DO_NOTHING, related_name='distances')
     distance = models.DecimalField(
-        null=True, blank=True, max_digits=24, decimal_places=4,
-        help_text="Driving distance from community to Location")
+        null=True, blank=True, max_digits=24, decimal_places=4, help_text="Driving distance from community to Location"
+    )
     travel_time = models.IntegerField(
-        null=True, blank=True,
-        help_text="Travel time (in minutes) corresponding to driving distance")
+        null=True, blank=True, help_text="Travel time (in minutes) corresponding to driving distance"
+    )
     travel_time_display = models.CharField(
-        null=True, blank=True, max_length=255,
-        help_text="Travel time, in human-readable units (e.g. 15 minutes 22 seconds)")
+        null=True,
+        blank=True,
+        max_length=255,
+        help_text="Travel time, in human-readable units (e.g. 15 minutes 22 seconds)",
+    )
     driving_route_available = models.BooleanField(null=True, blank=True)
 
     class Meta:
-        unique_together = ('community', 'location',)
+        unique_together = ('community', 'location')
         verbose_name = "Location Distance"
         verbose_name_plural = "Location Distances"
 
