@@ -106,7 +106,7 @@ def import_census():
         geo_uid = sd[0]
         csduid_to_geo_uid[int(csduid)] = geo_uid
 
-    ds = get_datasource('data/lcsd000b16a_e.zip')
+    ds = _get_datasource('data/lcsd000b16a_e.zip')
     for feat in ds[0]:
         _save_subdiv(feat)
 

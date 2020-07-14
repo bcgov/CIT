@@ -56,6 +56,13 @@ wget http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fi
 mv lcsd000b16a_e.zip web/data/
 ```
 
+To import all data, run:
+```
+docker-compose exec web python manage.py bootstrap
+```
+
+Alternatively, resources can be imported individually.
+
 import local shapefiles
 ```
 docker-compose exec web python manage.py import_shp all
@@ -66,10 +73,12 @@ import local csv files
 docker-compose exec web python manage.py import_csv all
 ```
 
-Lastly, import data from databc
+import data from databc
 ```
 docker-compose exec web python manage.py import_databc all
 ```
+
+Use the `all` parameter in the three above commands to import all resources from each source, or see `web/pipeline/constants.py` for a list of valid resources to import individually.
 
 ## VSCode (Fronte end Development)
 
