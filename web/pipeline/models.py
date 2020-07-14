@@ -236,6 +236,11 @@ class Community(models.Model):
     # Estimated Total Dwellings
     estimated_total_dwellings = models.IntegerField(default=0)
 
+    # Calculated fields (cached in the model for performance reasons)
+    num_courts = models.IntegerField(null=True)
+    num_schools = models.IntegerField(null=True)
+    num_hospitals = models.IntegerField(null=True)
+
     def __str__(self):
         return self.place_name
 
