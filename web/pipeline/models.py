@@ -262,6 +262,11 @@ class Community(models.Model):
 class Location(models.Model):
     name = models.CharField(null=True, blank=True, max_length=255)
     point = PointField(null=True, blank=True)
+    location_fuzzy = models.BooleanField(
+        default=False,
+        help_text="This field should be set to True if the `point` field was not present in the original dataset "
+        "and is inferred or approximated by other fields.")
+
     location_type = models.CharField(null=True, blank=True, max_length=255)
 
     community = models.ForeignKey(Community, on_delete=models.CASCADE)

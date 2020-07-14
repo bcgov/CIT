@@ -13,18 +13,15 @@ def import_data_into_model(resource_type, Model, row):
 
     print(row)
 
-    try:
-        instance = Model.objects.get(name=row[Model.NAME_FIELD], location_type=resource_type)
-    except Model.DoesNotExist:
-        instance = Model(name=row[Model.NAME_FIELD], location_type=resource_type)
-
     # containing_subdiv = CensusSubdivision.objects.get(geom__contains=point)
     # Get the point location, and attach to a 'closest' community.
+    point = None
+    location_fuzzy = False
     if hasattr(Model, 'LONGITUDE_FIELD'):
         try:
-            instance.point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=4326)
+            point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=4326)
             closest_community = (
-                Community.objects.annotate(distance=Distance('point', instance.point)).order_by('distance').first()
+                Community.objects.annotate(distance=Distance('point', point)).order_by('distance').first()
             )
         except TypeError:
             # print(row, Model.LATITUDE_FIELD)
@@ -40,8 +37,17 @@ def import_data_into_model(resource_type, Model, row):
                         "has no geometry or matching municipality name!",
                     )
                     return
-                instance.point = closest_community.point
+                point = closest_community.point
+                # if the point is inferred, set the location_fuzzy flag to True
+                location_fuzzy = True
+
+        try:
+            instance = Model.objects.get(name=row[Model.NAME_FIELD], location_type=resource_type, point=point)
+        except Model.DoesNotExist:
+            instance = Model(name=row[Model.NAME_FIELD], location_type=resource_type, point=point)
+
         instance.community = closest_community
+        instance.location_fuzzy = location_fuzzy
 
     for field_name, field_value in row.items():
         # loop over fields, and if the field exists
