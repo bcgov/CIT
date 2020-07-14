@@ -40,7 +40,7 @@ def import_data_into_model(resource_type, Model, row):
                         "has no geometry or matching municipality name!",
                     )
                     return
-                instance.point = community.point
+                instance.point = closest_community.point
         instance.community = closest_community
 
     for field_name, field_value in row.items():
@@ -53,9 +53,10 @@ def import_data_into_model(resource_type, Model, row):
                 pass
         setattr(instance, field_name.lower(), field_value)
 
+    instance.save()
+
     calculate_distances(instance)
 
-    instance.save()
     return instance
 
 
