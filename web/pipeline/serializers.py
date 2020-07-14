@@ -30,6 +30,9 @@ class CommunitySerializer(serializers.ModelSerializer):
             'estimated_total_dwellings',
             "wildfire_zone",
             "tsunami_zone",
+            "num_schools",
+            "num_courts",
+            "num_hospitals",
         )
 
 

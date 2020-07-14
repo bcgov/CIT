@@ -136,3 +136,31 @@ def read_csv(csv_path):
         data = list(reader)
 
     return data
+
+
+# TODO SY - these three helper functions are very similar, but
+# they are simple and I'm not sure what the final abstraction will be
+# so I'm leaving them as is for now.
+def calculate_community_num_schools():
+    for community in Community.objects.all():
+        # TODO SY - make resource types constants?
+        num_schools = LocationDistance.objects.filter(community=community, location__location_type="schools").count()
+        community.num_schools = num_schools
+        community.save()
+
+
+def calculate_community_num_courts():
+    for community in Community.objects.all():
+        # TODO - make resource types constants?
+        num_courts = LocationDistance.objects.filter(community=community, location__location_type="courts").count()
+        community.num_courts = num_courts
+        community.save()
+
+
+def calculate_community_num_hospitals():
+    for community in Community.objects.all():
+        # TODO - make resource types constants?
+        num_hospitals = LocationDistance.objects.filter(
+            community=community, location__location_type="hospitals").count()
+        community.num_hospitals = num_hospitals
+        community.save()
