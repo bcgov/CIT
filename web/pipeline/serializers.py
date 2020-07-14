@@ -6,7 +6,7 @@ from .models import Location, Community, CensusSubdivision, LocationDistance
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = ("id", "name", "community_id", "location_type", "latitude", "longitude")
+        fields = ("id", "name", "community_id", "location_type", "latitude", "longitude", "location_fuzzy")
 
 
 class CommunitySerializer(serializers.ModelSerializer):
