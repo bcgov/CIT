@@ -95,34 +95,40 @@ In Files -> Settings -> Workspace -> Open Settings
 }
 ```
 
-It is recommended that the Workspace is the `cit-web` folder, and not the `cit` project for this to behave correctly.
+It is recommended that the Workspace is the `cit-web` folder, and not the `cit` project for this to behave correctly. Otherwise, it won't read the ESLint & Prettier config files properly (VSCode expects them in root workspace by default).
 
-## PowerBI REST API OAuth tokens
+## Deployment
 
-Log in to the [Azure portal](https://portal.azure.com/).
+We are currently using the **Service Principal** method to deploy PowerBI onto the website. A Service Principal is the `local representation` of a global application object. In other words, Service Principal is a concrete instance from the application object and inherits certain properties from that application object. This means that we first need an **Application Object** to use a Service Principal.
 
-In [Azure Active Directory] under [App registrations] select [New registration]
+### App Registration (Application Object)
+----
 
-Enter a Name: APP_NAME
+We first need an **App Registration**, which acts as a blueprint to create `Service Principal` objects. We can perform the follwing steps to achieve this.
 
-Select: Accounts in any organizational directory (Any Azure AD directory - Multitenant)
-## Single tenancy may also work, this is the current setting for this in our initial testing 
+1. Log in to the [Azure portal](https://portal.azure.com/).
+2. Go to `App Registrations`
+3. Click `New Registration`
+4. Fill out the form. (Single Tenant recommended)
 
-Click [Register]
+Once this is done, we should be given details such as `Application ID`, `Tenant ID` and etc. Since we have a application object now, we need to configure this application object to contain the permissions and settings that we intend to use it for, so the instances of our Service Principal will be valid for whatever we want to perform. For the **CIT** we want one main purpose. To use the **PowerBI Rest API**. In order to do this, we need to let this App Registration know about it.
 
-Browse to the newly created App, and look at the [Overview] page
+1. Click `API Permissions` on from the left menu inside the App
+2. Click `Add Permissions`
+3. Click `Power Bi Service`
+4. Click `Delegated Permissions`
+5. Select everything besides **Tenant**, **UserState**, **Group** and **Metadata**
+6. Click `Add Permissions`
 
-Copy down the Application (client) ID: CLIENT_ID
+We also need something called a **Client Secret**. This will be the proof that an owner has access to this App registration.
 
-Open [API permissions] and click [Add a permission]
+1. Click `Certificates & Secrets` from the left menu inside the App
+2. Under Client Secrets, click `New Client Secret`
+3. Fill out the form, we recommend `Never` as expiry date.
+4. Click `Add`
+5. You will be shown the **Client Secret Value** one time here, **make sure you save this value**
 
-Select [Power BI Service] and then [Delegated permissions]
-
-Select everything in the [App], [Capacity], [Content], [Dashboard], [Dataflow], [Dataset], [Gateway], [Report], [StorageAccount], and [Workspace] sections
-
-## I think Aaron did this a different way? through some link?
-
-## Perhaps there is something that happened in the [Certificates & secrets] section? It looks like we have some generated
+---
 
 Optionally go to [Groups] in Azure Active Directory
 
@@ -163,6 +169,9 @@ This should allow the workspace to be called from the API
 
 [TODO: Add info about Azure/PowerBI permissions that need to be configured]
 
+## PowerBI REST API OAuth tokens
+---
+
 We use the [msal](https://github.com/AzureAD/microsoft-authentication-library-for-python) library for Python to generate OAuth access tokens. To generate a token, send a GET request to `/api/token/`, which will return a JSON object in the following format:
 
 ```
@@ -172,7 +181,6 @@ We use the [msal](https://github.com/AzureAD/microsoft-authentication-library-fo
 ```
 
 These access tokens have an expiry time of one hour and are cached in the session. If a token that expires in 30 minutes or later exists, calling the API again will return the existing token.
-
 This token is used in the Authorization header when using the PowerBI REST API:
 
 `Authorization: Bearer [OAUTH ACCESS TOKEN]`
