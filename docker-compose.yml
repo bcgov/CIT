@@ -36,8 +36,8 @@ services:
       - 80:80
     image: nginx:1.13
     volumes:
-     - ./nginx/conf.d:/etc/nginx/conf.d
-     - static:/static
+      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - static:/static
 
 volumes:
   pg-data:

@@ -141,3 +141,5 @@ dmypy.json
 .pyre/
 
 docker-compose.override.yml
+
+.htpasswd
