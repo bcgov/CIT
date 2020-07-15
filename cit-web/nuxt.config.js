@@ -55,7 +55,7 @@ export default {
     '@nuxtjs/eslint-module',
     // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
-    '@nuxtjs/vuetify',
+    ['@nuxtjs/vuetify'],
   ],
   /*
    ** Nuxt.js modules
@@ -64,6 +64,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/pwa',
+    '@nuxtjs/style-resources'
   ],
   /*
    ** Axios module configuration
@@ -80,7 +81,7 @@ export default {
       dark: true,
       themes: {
         dark: {
-          primary: colors.blue.darken2,
+          primary: "#000000",
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
@@ -91,9 +92,12 @@ export default {
       },
     },
   },
+  styleResources: {
+    scss: ['./assets/scss/globals/variables/*.scss']
+  },
   /*
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
+  build: {}
 }
