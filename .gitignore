@@ -142,3 +142,4 @@ dmypy.json
 
 docker-compose.override.yml
 cit-web/dist
+.vscode
