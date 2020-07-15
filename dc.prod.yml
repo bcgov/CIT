@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   cit-web:
-    command: "yarn build"
+    command: "yarn build && yarn start"
     environment:
       - NODE_ENV=production
 
