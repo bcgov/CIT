@@ -136,46 +136,38 @@ We believe this can be done in either two ways.
 
 **This detail needs to confirmed, we may need to perform both actions**
 
+
+### Adding service principal to the security group
 ---
+1. Go to `Power BI Embedded` through the Azure Portal
+2. Select `Add` and create an instance depending on the processing requirements (A1 low, A2 medium... etc)
+
+ **This service is pay per use and will begin billing once started. It can be paused to save cost.**
+
+ 1. Log in to the [Power BI portal](powerbi.microsoft.com)
+ 2. Click the cog at the top right and select `Admin Portal`
+ 3. Click `Tenant Settings` then scroll to `Developer Settings`
+ 4. Expand `Allow service principals to use Power BI APIs`
+ 5. Make sure `Enabled` is selected. Then click `Apply to Specific Security Groups`
+ 6. Add the security group created above.
+ 7. Click `apply`
+ 9. Go back to the `Admin Portal` then select `Workspaces`
+ 10. Select a workspace, then click the `3 dots` then click `access`
+ 11. Enter the Service Principal (APP ID) in the box. Select `Admin` then click `Add`
 
 
+### Assigning Capacity
+---
+ 1. Log in to the [Power BI portal](powerbi.microsoft.com)
+ 2. Click the cog at the top right and select `Admin Portal`
+ 3. Click `Capacity Settings`
+ 4. Click `Power BI Embedded`
 
-Optionally go to [Groups] in Azure Active Directory
+If the instance is already made in Azure, there should be a capacity shown here, if it is greyed out, it is probably Paused. Go to back to Azure Portal and Start it. Once its started you can hit the name on the far left, just under `Capacity Name`
 
-Click [New group], select Security for [Group Type], Add a name: SECURITY_GROUP, and description
+At the bottom of the page on the right you can click `Assign workspaces`, You can select `Specific workspace` and type the one you like. Or you can go to the far left, in the main powerbi menu, select the workspace tab, and under the workspace you want you can select the 4 dots in the side menu and select worskpace settings, you should be able to set the capacity in the `Advanced` drop down, you can select the Azure capacity in a list.
 
-It may also require adding Members to this (we have 3 currently)
-
-Now go to [Power BI Embedded] in the main [Azure Portal]
-
-Select [Add], create an instance depending on the processing requirements (A1 low, A2, medium, A4 high, etc..)
-## Note that this service is pay per use and will begin billing once it is started, it can be paused to save cost.
-
-Log in to the [Power BI portal](powerbi.microsoft.com)
-
-Hit the cog at the top right and select [Admin portal]
-
-Go to [Tenant settings] and then to [Developer settings] and open the section for [Allow service principals to use Power BI APIs]
-
-Make sure this is Enabled, and Apply to: is set to [the entire organization], alternatively, set a specific security group: SECURITY_GROUP
-
-This would refer back to the security group made in Azure: SECURITY_GROUP
-
-Now go to [Capacity settings] in the [Admin portal]
-
-Select [Power BI Embedded]
-
-If the instance is already made in Azure, there should be a capacity shown here, if it is greyed out, it is probably Paused. Go to azure and Start it. Once its started you can hit the name on the far left, just under [Capacity Name], it is actually a link to the settings. This was very confusing at first and is not well documented, take care to read these instructions to find this.
-
-At the bottom of the page on the right you can click [Assign workspaces], You can select [Specific workspace] and type the one you like. Or you can go to the far left, in the main powerbi menu, select the workspace tab, and under the workspace you want you can select the 4 dots in the side menu and select worskpace settings, you should be able to set the capacity in the [Advanced] drop down, you can select the Azure capacity in a list.
-
-Under the main [Admin portal] select [Workspaces]
-
-Find the workspace you want to use, and there are 3 dots on the right side of the name column on the row of interest, click this and select [Access], enter in the service principal (APP_ID) to the box, select Admin from the list and select [Add]
-
-This should allow the workspace to be called from the API
-
-## Note, if you want to pause the Azure Power BI Instance, it will prevent the page from loading. In a Dev environment, it is useful to run everything on the free service so you can leave it up 24/7 without paying. In order to unassign the workspace from the capacity, either go into the capacity settings (the capacity MUST be active for you to access this page), or in the workspace tab on the left, under the 4 dot menu, you can uncheck [Dedicated capacity] in the advanced tab.
+* Note, if you want to pause the Azure Power BI Instance, it will prevent the page from loading. In a Dev environment, it is useful to run everything on the free service so you can leave it up 24/7 without paying. In order to unassign the workspace from the capacity, either go into the capacity settings (the capacity MUST be active for you to access this page), or in the workspace tab on the left, under the 4 dot menu, you can uncheck [Dedicated capacity] in the advanced tab.
 
 [TODO: Add info about Azure/PowerBI permissions that need to be configured]
 
