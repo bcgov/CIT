@@ -101,7 +101,7 @@ It is recommended that the Workspace is the `cit-web` folder, and not the `cit` 
 
 We are currently using the **Service Principal** method to deploy PowerBI onto the website. A Service Principal is the `local representation` of a global application object. In other words, Service Principal is a concrete instance from the application object and inherits certain properties from that application object. This means that we first need an **Application Object** to use a Service Principal.
 
-### App Registration (Application Object)
+### App Registration (Application Object) & Security Groups
 ----
 
 We first need an **App Registration**, which acts as a blueprint to create `Service Principal` objects. We can perform the follwing steps to achieve this.
@@ -128,7 +128,17 @@ We also need something called a **Client Secret**. This will be the proof that a
 4. Click `Add`
 5. You will be shown the **Client Secret Value** one time here, **make sure you save this value**
 
+We have now defined the capabilities this application has, and we need now to give service principal **access** to it.
+We believe this can be done in either two ways.
+
+1. Create an [Azure AD Security Group](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-groups-create-azure-portal), and add the service principal to that security group (More on the next section)
+2. Or, in your application, click `Api Permissions` and click `Grant admin consent ******` button.
+
+**This detail needs to confirmed, we may need to perform both actions**
+
 ---
+
+
 
 Optionally go to [Groups] in Azure Active Directory
 
