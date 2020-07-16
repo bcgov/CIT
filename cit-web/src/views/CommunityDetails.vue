@@ -55,7 +55,9 @@ export default {
           .then(response => {
             const census = response.data.results;
             console.log(census);
-            const communityCensus = census.find(c => c.id === 5915810);
+            const communityCensus = census.find(
+              c => c.id === censusSubdivision
+            );
             this.census = communityCensus;
           });
       });
