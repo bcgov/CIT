@@ -42,23 +42,19 @@ export default {
     const id = parseInt(this.$route.params.id);
 
     axios
-      .get("https://cit-test.countable.ca/api/pipeline/communities/")
+      .get(`https://cit-test.countable.ca/api/pipeline/communities/${id}/`)
       .then(response => {
-        const communities = response.data.results;
-        const community = communities.find(c => c.id === id);
+        const community = response.data;
         map.setCenter([community.longitude, community.latitude]);
-
         const censusSubdivision = community.census_subdivision;
 
         axios
-          .get("https://cit-test.countable.ca/api/pipeline/censussubdivisions/")
+          .get(
+            `https://cit-test.countable.ca/api/pipeline/censussubdivisions/${censusSubdivision}`
+          )
           .then(response => {
-            const census = response.data.results;
-            console.log(census);
-            const communityCensus = census.find(
-              c => c.id === censusSubdivision
-            );
-            this.census = communityCensus;
+            const census = response.data;
+            this.census = census;
           });
       });
   }
