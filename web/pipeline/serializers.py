@@ -33,6 +33,7 @@ class CommunitySerializer(serializers.ModelSerializer):
             "num_schools",
             "num_courts",
             "num_hospitals",
+            "num_timber_facilities",
         )
 
 

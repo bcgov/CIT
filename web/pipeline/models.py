@@ -240,6 +240,7 @@ class Community(models.Model):
     num_courts = models.IntegerField(null=True)
     num_schools = models.IntegerField(null=True)
     num_hospitals = models.IntegerField(null=True)
+    num_timber_facilities = models.IntegerField(null=True)
 
     def __str__(self):
         return self.place_name

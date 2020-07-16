@@ -142,3 +142,5 @@ dmypy.json
 
 docker-compose.override.yml
 cit-web/.nuxt
+
+.htpasswd

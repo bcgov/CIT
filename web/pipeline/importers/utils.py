@@ -164,3 +164,12 @@ def calculate_community_num_hospitals():
             community=community, location__location_type="hospitals").count()
         community.num_hospitals = num_hospitals
         community.save()
+
+
+def calculate_community_num_timber_facilities():
+    for community in Community.objects.all():
+        # TODO - make resource types constants?
+        num_timber_facilities = LocationDistance.objects.filter(
+            community=community, location__location_type="timber_facilities").count()
+        community.num_timber_facilities = num_timber_facilities
+        community.save()
