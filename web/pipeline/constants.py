@@ -13,6 +13,7 @@ from pipeline.models import (
     CivicFacility,
     WildfireZone,
     TsunamiZone,
+    Municipality,
 )
 
 
@@ -46,4 +47,5 @@ DATABC_RESOURCES = {
 SHP_RESOURCES = {
     'wildfires_zones': {'path': 'data/wildfire_zones.zip', 'model': WildfireZone},
     'tsunami_zones': {'path': 'data/tsunami_zones.zip', 'model': TsunamiZone},
+    'municipalities': {'path': 'data/municipalities.zip', 'model': Municipality},
 }
