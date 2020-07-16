@@ -167,9 +167,21 @@ If the instance is already made in Azure, there should be a capacity shown here,
 
 At the bottom of the page on the right you can click `Assign workspaces`, You can select `Specific workspace` and type the one you like. Or you can go to the far left, in the main powerbi menu, select the workspace tab, and under the workspace you want you can select the 4 dots in the side menu and select worskpace settings, you should be able to set the capacity in the `Advanced` drop down, you can select the Azure capacity in a list.
 
-* Note, if you want to pause the Azure Power BI Instance, it will prevent the page from loading. In a Dev environment, it is useful to run everything on the free service so you can leave it up 24/7 without paying. In order to unassign the workspace from the capacity, either go into the capacity settings (the capacity MUST be active for you to access this page), or in the workspace tab on the left, under the 4 dot menu, you can uncheck [Dedicated capacity] in the advanced tab.
+*Note, if you want to pause the Azure Power BI Instance, it will prevent the page from loading. In a Dev environment, it is useful to run everything on the free service so you can leave it up 24/7 without paying. In order to unassign the workspace from the capacity, either go into the capacity settings (the capacity MUST be active for you to access this page), or in the workspace tab on the left, under the 4 dot menu, you can uncheck [Dedicated capacity] in the advanced tab.*
 
-[TODO: Add info about Azure/PowerBI permissions that need to be configured]
+We should now be configured deploy the application. This is an extensive setup, however it should be a one-time setup.
+The following information should be updated in `docker-compose.yml`
+```
+    environment:
+      - TENANT_ID=
+      - CLIENT_ID=
+      - AUTHORITY=https://login.microsoftonline.com/
+      - SCOPE=https://analysis.windows.net/powerbi/api/.default
+      - CLIENT_SECRET=
+```
+
+`TENANT_ID`, `CLIENT_ID`, `CLIENT_SECRET` are all available in `App Registrations -> Application created above`.
+
 
 ## PowerBI REST API OAuth tokens
 ---
@@ -187,4 +199,5 @@ This token is used in the Authorization header when using the PowerBI REST API:
 
 `Authorization: Bearer [OAUTH ACCESS TOKEN]`
 
-[TODO: Add info about the PowerBI REST API]
+This token is now consumed in the frontend and is added whenever we make a PowerBI Rest API Call.
+
