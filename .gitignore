@@ -141,3 +141,4 @@ dmypy.json
 .pyre/
 
 docker-compose.override.yml
+cit-web/.nuxt
