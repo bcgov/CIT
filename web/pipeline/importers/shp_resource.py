@@ -54,7 +54,7 @@ from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon
 from django.conf import settings
 from pipeline.models import CensusSubdivision
 from pipeline.constants import SHP_RESOURCES
-from pipeline.importers.utils import import_data_into_model
+from pipeline.importers.utils import import_data_into_area_model
 
 import logging
 
@@ -84,9 +84,10 @@ def import_resource(resource_type):
 
         for f in feat.fields:
             row[f] = feat.get(f)
-            print(f, feat.get(f))
-        instance = import_data_into_model(resource_type,
-                                          resource_config["model"], row)
+            # print(f, feat.get(f))
+
+        instance = import_data_into_area_model(
+            resource_type, resource_config["model"], row)
 
         geos_geom_out, geos_geom_simplified = _generate_geom(feat)
         instance.geom = geos_geom_out

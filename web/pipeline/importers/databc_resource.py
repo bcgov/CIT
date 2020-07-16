@@ -2,7 +2,7 @@ import requests
 
 from pipeline.constants import DATABC_RESOURCES
 
-from pipeline.importers.utils import import_data_into_model
+from pipeline.importers.utils import import_data_into_point_model
 
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}&limit=10000"
 
@@ -33,4 +33,4 @@ def import_resource(resource_type):
     data = response.json()["result"]["records"]
 
     for row in data:
-        import_data_into_model(resource_type, resource_config["model"], row)
+        import_data_into_point_model(resource_type, resource_config["model"], row)

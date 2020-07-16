@@ -4,7 +4,7 @@ from django.conf import settings
 
 from pipeline.constants import CSV_RESOURCES
 from pipeline.importers.communities import import_communities_from_csv
-from pipeline.importers.utils import import_data_into_model, read_csv
+from pipeline.importers.utils import import_data_into_point_model, read_csv
 
 FILES_DIR = settings.BASE_DIR
 
@@ -33,7 +33,7 @@ def import_resource(resource_type):
         resource_config = CSV_RESOURCES[resource_type]
         data = read_csv(resource_config["csv_path"])
         for row in data:
-            import_data_into_model(resource_type, resource_config["model"], row)
+            import_data_into_point_model(resource_type, resource_config["model"], row)
 
 
 # TODO: this is unused right now
