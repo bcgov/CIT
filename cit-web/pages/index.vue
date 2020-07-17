@@ -91,5 +91,11 @@ export default {
     Logo,
     VuetifyLogo,
   },
+
+  asyncData({ $axios }) {
+    $axios.get('api/token').then((response) => {
+      console.log('Response', response)
+    })
+  },
 }
 </script>
