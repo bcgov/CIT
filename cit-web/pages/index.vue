@@ -85,6 +85,7 @@
 <script>
 import Logo from '~/components/Logo.vue'
 import VuetifyLogo from '~/components/VuetifyLogo.vue'
+import { getAuthToken } from '~/api/ms-auth-api/'
 
 export default {
   components: {
@@ -93,9 +94,7 @@ export default {
   },
 
   asyncData({ $axios }) {
-    $axios.get('api/token').then((response) => {
-      console.log('Response', response)
-    })
+    getAuthToken().then((response) => console.log('Response', response))
   },
 }
 </script>
