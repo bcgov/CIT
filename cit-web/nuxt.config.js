@@ -71,8 +71,12 @@ export default {
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: 'http://web:8000/',
-    browserBaseURL: 'http://localhost:8000/',
+    baseURL:
+      process.env.NODE_ENV === 'development'
+        ? 'http://web:8000/'
+        : 'http://nginx',
+    browserBaseURL:
+      process.env.NODE_ENV === 'development' ? 'http://localhost:8000/' : '/',
   },
   /*
    ** vuetify module configuration
