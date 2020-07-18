@@ -18,8 +18,8 @@ export default {
     MainReport,
   },
 
-  asyncData({ store }) {
-    getAuthToken().then((response) => {
+  fetch({ store }) {
+    return getAuthToken().then((response) => {
       const { status } = response
       if (status === 200) {
         const accessToken = response.data && response.data.access_token
