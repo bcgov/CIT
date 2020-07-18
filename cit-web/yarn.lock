@@ -857,6 +857,11 @@
     lodash "^4.17.19"
     to-fast-properties "^2.0.0"
 
+"@bcgov/bc-sans@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@bcgov/bc-sans/-/bc-sans-1.0.1.tgz#8b622032465463934319771ea92fa3df74e6c9d3"
+  integrity sha512-4suRUBFeHcuFkwXXJu9pKJNB5Z2G3bpuLEHIq203KVCKC8KrsnqvsyUOf645TypgLwqOTOYCETiXYzfxF4gLAw==
+
 "@bcoe/v8-coverage@^0.2.3":
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
@@ -4185,6 +4190,11 @@ es6-object-assign@^1.1.0:
   resolved "https://registry.yarnpkg.com/es6-object-assign/-/es6-object-assign-1.1.0.tgz#c2c3582656247c39ea107cb1e6652b6f9f24523c"
   integrity sha1-wsNYJlYkfDnqEHyx5mUrb58kUjw=
 
+es6-promise@^3.1.2, es6-promise@^3.2.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-3.3.1.tgz#a08cdde84ccdbf34d027a1451bc91d4bcd28a613"
+  integrity sha1-oIzd6EzNvzTQJ6FFG8kdS80ophM=
+
 escalade@^3.0.1:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/escalade/-/escalade-3.0.2.tgz#6a580d70edb87880f22b4c91d0d56078df6962c4"
@@ -5531,6 +5541,13 @@ http-errors@~1.7.2:
     setprototypeof "1.1.1"
     statuses ">= 1.5.0 < 2"
     toidentifier "1.0.0"
+
+http-post-message@^0.2:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/http-post-message/-/http-post-message-0.2.3.tgz#32c560ac615f310a7e459ffc71277b579b242e1e"
+  integrity sha1-MsVgrGFfMQp+RZ/8cSd7V5skLh4=
+  dependencies:
+    es6-promise "^3.2.1"
 
 http-proxy-middleware@^1.0.4:
   version "1.0.5"
@@ -8820,6 +8837,29 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.16, postcss@^7.0.1
     source-map "^0.6.1"
     supports-color "^6.1.0"
 
+powerbi-client@^2.13.2:
+  version "2.13.2"
+  resolved "https://registry.yarnpkg.com/powerbi-client/-/powerbi-client-2.13.2.tgz#2917597d86e3c9923ec7f0c16980b84c21d975fc"
+  integrity sha512-8kcNaMHzka5Ja0zSu3IGC24G5oasvbL2Oa7GcOA4GOXov/P5EQRu8RSZwcOOqlrm/Lc0hQmccwi08ze6sqDRBw==
+  dependencies:
+    http-post-message "^0.2"
+    powerbi-models "^1.4"
+    powerbi-router "^0.1"
+    window-post-message-proxy "^0.2"
+
+powerbi-models@^1.4:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/powerbi-models/-/powerbi-models-1.4.0.tgz#09c2d926ae1c544b6f44f98e789bcf8f0e925399"
+  integrity sha512-SNdY3SSjOU1DHs3mgyvi2jv1UvTIXoxrbdZBEjsePQ7bo6Rp425Q6qKCE7kHgJz5fjOZ6tPU5+zT+J4J7xYFQQ==
+
+powerbi-router@^0.1:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/powerbi-router/-/powerbi-router-0.1.5.tgz#dd2d2d0474f8cb76690a85f6a51d8ca9fea93a32"
+  integrity sha1-3S0tBHT4y3ZpCoX2pR2Mqf6pOjI=
+  dependencies:
+    es6-promise "^3.2.1"
+    route-recognizer "^0.1.11"
+
 prelude-ls@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/prelude-ls/-/prelude-ls-1.2.1.tgz#debc6489d7a6e6b0e7611888cec880337d316396"
@@ -9502,6 +9542,11 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+route-recognizer@^0.1.11:
+  version "0.1.11"
+  resolved "https://registry.yarnpkg.com/route-recognizer/-/route-recognizer-0.1.11.tgz#810d8e5702abb4056d6dcb8e865c5685e7c14eb7"
+  integrity sha1-gQ2OVwKrtAVtbcuOhlxWhefBTrc=
 
 rsvp@^4.8.4:
   version "4.8.5"
@@ -11432,6 +11477,13 @@ widest-line@^3.1.0:
   integrity sha512-NsmoXalsWVDMGupxZ5R08ka9flZjjiLvHVAWYOKtiKM8ujtZWr9cRffak+uSE48+Ob8ObalXpwyeUiyDD6QFgg==
   dependencies:
     string-width "^4.0.0"
+
+window-post-message-proxy@^0.2:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/window-post-message-proxy/-/window-post-message-proxy-0.2.6.tgz#8d9800d441629c8bff0a8cb2bf9e0119702940ca"
+  integrity sha512-IwNWtUWVFarBa2F9vhmfv2yr0PfPm57QuOBCw3qSLaunhD3THcHUKQ4HrJQiCuYUT7LEjhUtaoA+hrV+wQzNmQ==
+  dependencies:
+    es6-promise "^3.1.2"
 
 word-wrap@^1.2.3, word-wrap@~1.2.3:
   version "1.2.3"

@@ -36,12 +36,18 @@ export default {
   /*
    ** Global CSS
    */
-  css: [],
+  css: ['@bcgov/bc-sans/css/BCSans.css'],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['~/plugins/nuxt-axios-port.js'],
+  plugins: [
+    '~/plugins/nuxt-axios-port.js',
+    {
+      src: '~plugins/powerbi-client.js',
+      mode: 'client',
+    },
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -83,18 +89,21 @@ export default {
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    treeShake: true,
+    customVariables: ['~/assets/scss/vuetify/variables.scss'],
     theme: {
-      dark: true,
       themes: {
         dark: {
-          primary: '#000000',
+          primary: '#073366',
           accent: colors.grey.darken3,
           secondary: colors.amber.darken3,
           info: colors.teal.lighten1,
           warning: colors.amber.base,
           error: colors.deepOrange.accent4,
           success: colors.green.accent3,
+        },
+        light: {
+          primary: '#073366',
         },
       },
     },
