@@ -10,6 +10,36 @@ class Area(models.Model):
     location_type = models.CharField(null=True, blank=True, max_length=255)
 
 
+class Municipality(Area):
+    NAME_FIELD = 'ABRVN'
+    oc_m_yr = models.CharField(
+        max_length=4,
+        help_text="The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
+        " e.g., 2014.")
+
+    """
+    AA_ID 3
+    * AA_NAME The Corporation of the Village of Burns Lake
+    * ABRVN Burns Lake
+    BDY_TYPE Legal
+    AA_PARENT Regional District of Bulkley-Nechako
+    CHNG_ORG MCSCD
+    UPT_TYPE E
+    UPT_DATE 20130429
+    MAP_STATUS Not Appended
+    OC_M_NMBR 1576
+    * OC_M_YR 1994
+    OC_M_TYPE OIC
+    * WBST_RL
+    IMAGE_URL
+    AFCTD_AREA
+    AREA_SQM 8986418.5648
+    LENGTH_M 58666.4092
+    * SHAPE 0
+    OBEJCTID 1442
+    """
+
+
 class WildfireZone(Area):
     NAME_FIELD = 'FIRE_ZONE'
     risk_class = models.CharField(
@@ -240,6 +270,7 @@ class Community(models.Model):
     num_courts = models.IntegerField(null=True)
     num_schools = models.IntegerField(null=True)
     num_hospitals = models.IntegerField(null=True)
+    num_timber_facilities = models.IntegerField(null=True)
 
     def __str__(self):
         return self.place_name

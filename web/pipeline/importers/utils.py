@@ -9,45 +9,66 @@ from django.contrib.gis.measure import D
 from pipeline.models import Community, LocationDistance
 
 
-def import_data_into_model(resource_type, Model, row):
-
+def import_data_into_point_model(resource_type, Model, row):
     print(row)
 
     # containing_subdiv = CensusSubdivision.objects.get(geom__contains=point)
-    # Get the point location, and attach to a 'closest' community.
+
     point = None
     location_fuzzy = False
-    if hasattr(Model, 'LONGITUDE_FIELD'):
-        try:
-            point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=4326)
-            closest_community = (
-                Community.objects.annotate(distance=Distance('point', point)).order_by('distance').first()
-            )
-        except TypeError:
-            # print(row, Model.LATITUDE_FIELD)
-            # When no point is present, try the municipality name description
-            if row["MUNICIPALITY"]:
-                closest_community = Community.objects.filter(place_name__icontains=_try_community_name).first()
-                if not closest_community:
-                    print(
-                        "Skipping error:",
-                        row[Model.NAME_FIELD],
-                        "in",
-                        row["MUNICIPALITY"],
-                        "has no geometry or matching municipality name!",
-                    )
-                    return
-                point = closest_community.point
-                # if the point is inferred, set the location_fuzzy flag to True
-                location_fuzzy = True
+    try:
+        point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=4326)
+        closest_community = (
+            Community.objects.annotate(distance=Distance('point', point)).order_by('distance').first()
+        )
+    except TypeError:
+        # print(row, Model.LATITUDE_FIELD)
+        # When no point is present, try the municipality name description
+        if row["MUNICIPALITY"]:
+            closest_community = Community.objects.filter(place_name__icontains=_try_community_name).first()
+            if not closest_community:
+                print(
+                    "Skipping error:",
+                    row[Model.NAME_FIELD],
+                    "in",
+                    row["MUNICIPALITY"],
+                    "has no geometry or matching municipality name!",
+                )
+                return
+            point = closest_community.point
+            # if the point is inferred, set the location_fuzzy flag to True
+            location_fuzzy = True
 
-        try:
-            instance = Model.objects.get(name=row[Model.NAME_FIELD], location_type=resource_type, point=point)
-        except Model.DoesNotExist:
-            instance = Model(name=row[Model.NAME_FIELD], location_type=resource_type, point=point)
+    try:
+        instance = Model.objects.get(name=row[Model.NAME_FIELD], location_type=resource_type, point=point)
+    except Model.DoesNotExist:
+        instance = Model(name=row[Model.NAME_FIELD], location_type=resource_type, point=point)
 
-        instance.community = closest_community
-        instance.location_fuzzy = location_fuzzy
+    instance.community = closest_community
+    instance.location_fuzzy = location_fuzzy
+    import_variable_fields(instance, row, Model)
+    instance.save()
+
+    calculate_distances(instance)
+
+    return instance
+
+
+def import_data_into_area_model(resource_type, Model, row):
+    print(row)
+
+    try:
+        instance = Model.objects.get(name=row[Model.NAME_FIELD], location_type=resource_type)
+    except Model.DoesNotExist:
+        instance = Model(name=row[Model.NAME_FIELD], location_type=resource_type)
+
+    import_variable_fields(instance, row, Model)
+
+    instance.save()
+    return instance
+
+
+def import_variable_fields(instance, row, Model):
 
     for field_name, field_value in row.items():
         # loop over fields, and if the field exists
@@ -58,12 +79,6 @@ def import_data_into_model(resource_type, Model, row):
             except FieldDoesNotExist:
                 pass
         setattr(instance, field_name.lower(), field_value)
-
-    instance.save()
-
-    calculate_distances(instance)
-
-    return instance
 
 
 def calculate_distances(location):
@@ -163,4 +178,13 @@ def calculate_community_num_hospitals():
         num_hospitals = LocationDistance.objects.filter(
             community=community, location__location_type="hospitals").count()
         community.num_hospitals = num_hospitals
+        community.save()
+
+
+def calculate_community_num_timber_facilities():
+    for community in Community.objects.all():
+        # TODO - make resource types constants?
+        num_timber_facilities = LocationDistance.objects.filter(
+            community=community, location__location_type="timber_facilities").count()
+        community.num_timber_facilities = num_timber_facilities
         community.save()

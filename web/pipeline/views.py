@@ -30,7 +30,17 @@ class CommunityList(generics.ListAPIView):
     serializer_class = CommunitySerializer
 
 
+class CommunityDetail(generics.RetrieveAPIView):
+    queryset = Community.objects.all()
+    serializer_class = CommunitySerializer
+
+
 class CensusSubdivisionList(generics.ListAPIView):
+    queryset = CensusSubdivision.objects.all()
+    serializer_class = CensusSubdivisionSerializer
+
+
+class CensusSubdivisionDetail(generics.RetrieveAPIView):
     queryset = CensusSubdivision.objects.all()
     serializer_class = CensusSubdivisionSerializer
 
