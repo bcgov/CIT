@@ -6,6 +6,8 @@ module.exports = {
   },
   parserOptions: {
     parser: 'babel-eslint',
+    ecmaVersion: 2015,
+    ecmaFeatures: { legacyDecorators: true },
   },
   extends: [
     '@nuxtjs',

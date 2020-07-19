@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "yarn && nuxt",
-    "build": "yarn && nuxt build",
-    "start": "yarn && nuxt start",
-    "export": "yarn && nuxt export",
-    "serve": "yarn && nuxt serve",
+    "dev": " nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "export": "nuxt export",
+    "serve": "nuxt serve",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
     "lint": "yarn lint:js && yarn lint:style",
@@ -19,7 +19,9 @@
     "@bcgov/bc-sans": "^1.0.1",
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
+    "mapbox-gl": "^1.11.1",
     "nuxt": "^2.13.0",
+    "nuxt-property-decorator": "^2.7.2",
     "powerbi-client": "^2.13.2"
   },
   "devDependencies": {
