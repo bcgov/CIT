@@ -7,15 +7,18 @@
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
 require('mapbox-gl/dist/mapbox-gl.css')
-const MAPBOX_GL_ACCESS_TOKEN =
-  'pk.eyJ1IjoiY291bnRhYmxlLXdlYiIsImEiOiJjamQyZG90dzAxcmxmMndtdzBuY3Ywa2ViIn0.MU-sGTVDS9aGzgdJJ3EwHA'
 const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 
 @Component()
 export default class MyComponent extends Vue {
+  asyncData({ $config: { MAPBOX_API_KEY } }) {
+    return {
+      MAPBOX_API_KEY,
+    }
+  }
+
   mounted() {
-    console.log('Mounted')
-    mapboxgl.accessToken = MAPBOX_GL_ACCESS_TOKEN
+    mapboxgl.accessToken = this.MAPBOX_API_KEY
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/countable-web/ckci0202t2kue1is2cqoe7wv1',

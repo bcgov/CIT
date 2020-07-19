@@ -129,4 +129,8 @@ export default {
       plugins: ['@babel/plugin-proposal-optional-chaining'],
     },
   },
+  publicRuntimeConfig: {
+    MAPBOX_API_KEY:
+      'pk.eyJ1IjoiY291bnRhYmxlLXdlYiIsImEiOiJjamQyZG90dzAxcmxmMndtdzBuY3Ywa2ViIn0.MU-sGTVDS9aGzgdJJ3EwHA',
+  },
 }
