@@ -89,7 +89,6 @@ export default {
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
-    treeShake: true,
     customVariables: ['~/assets/scss/vuetify/variables.scss'],
     theme: {
       themes: {
@@ -115,5 +114,19 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
+  build: {
+    babel: {
+      presets(env, [preset, options]) {
+        return [
+          [
+            '@nuxt/babel-preset-app',
+            {
+              loose: true,
+            },
+          ],
+        ]
+      },
+      plugins: ['@babel/plugin-proposal-optional-chaining'],
+    },
+  },
 }
