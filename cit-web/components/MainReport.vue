@@ -1,7 +1,6 @@
 <template>
   <div>
-    Main Report 2
-    <div ref="reportContainer"></div>
+    <div ref="reportContainer" class="reportContainer"></div>
   </div>
 </template>
 
@@ -73,3 +72,8 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+.reportContainer {
+  height: 800px;
+}
+</style>
