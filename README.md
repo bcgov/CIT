@@ -47,6 +47,20 @@ docker-compose exec web ./setup.sh
 
 You can visit the Django admin at `http://localhost/admin`. The username is `admin`, password is `pass`.
 
+## Prepping Data
+
+Some data are loaded from locally stored csv and shapefiles since have no public API.
+
+Roads need to be trimmed for upload to mapbox.
+```
+unzip NBD_Roads_ShapeFile.zip
+cd NBD_Roads_ShapeFile
+ogr2ogr -t_srs EPSG:4326 ll.shp NBD_ROAD_SPEEDS.shp
+ogr2ogr -clipsrc -140 48 -115 60 BC_Roads.shp ll.shp
+cd ..
+mkdir BC_Roads
+mv NBD_Roads_ShapeFile/BC_Roads* BC_Roads/
+```
 
 ## Importing Data
 
@@ -200,4 +214,3 @@ This token is used in the Authorization header when using the PowerBI REST API:
 `Authorization: Bearer [OAUTH ACCESS TOKEN]`
 
 This token is now consumed in the frontend and is added whenever we make a PowerBI Rest API Call.
-
