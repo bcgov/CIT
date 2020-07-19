@@ -2,12 +2,18 @@ version: '3.3'
 
 services:
   cit-web:
-    command: "yarn build && yarn start"
+    command: bash -c "yarn && yarn build && yarn start"
     environment:
       - NODE_ENV=production
+      - MAPBOX_API_KEY=pk.eyJ1IjoiY291bnRhYmxlLXdlYiIsImEiOiJjamQyZG90dzAxcmxmMndtdzBuY3Ywa2ViIn0.MU-sGTVDS9aGzgdJJ3EwHA
     ports:
       - 8080:8080
   nginx:
     ports:
       - 80:80
+    volumes:
+      - ./nginx/conf.d/default_password_auth.conf:/etc/nginx/conf.d/default.conf
+      - .htpasswd:/etc/nginx/.htpasswd
+      - static:/static
+      - ./cit-web/dist:/cit-web
 
