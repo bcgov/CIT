@@ -2,14 +2,16 @@ import csv
 
 from django.contrib.gis.geos import Point
 
-from pipeline.models import Community, WildfireZone, TsunamiZone
+from pipeline.models import Community, WildfireZone, TsunamiZone, Municipality, Road
 from django.db.utils import IntegrityError
-
+from django.contrib.gis.measure import D
 
 def import_communities_from_csv(communities_file_path):
+    wct = 0
     with open(communities_file_path) as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         for row in csv_reader:
+            print(row["Place_Name"])
             #place_id = row["Place_ID"]
 
             # **Other fields to consider adding**
@@ -34,8 +36,13 @@ def import_communities_from_csv(communities_file_path):
             community.census_subdivision_id = row['CSDUID']
 
             # TODO: Consider municipal overlap.
-            community.wildfire_zone = WildfireZone.objects.filter(geom__contains = community.point).first()
-            community.tsunami_zone = TsunamiZone.objects.filter(geom__contains = community.point).first()
+            # community.wildfire_zone = WildfireZone.objects.filter(geom__distance_lt = (community.point, D(m=1000))).first()
+            # community.tsunami_zone = TsunamiZone.objects.filter(geom__distance_lt = (community.point, D(m=1000))).first()
+
+            # if community.wildfire_zone:
+            #     wct+=1
+            # if community.tsunami_zone:
+            #     tct+=1
 
             community.community_type = row['Community Type']
             community.hexuid = row['HEXUID']
@@ -45,7 +52,12 @@ def import_communities_from_csv(communities_file_path):
             community.nation = row['Nation']
             community.band_number = row['Band_Number'] or None
             community.municipality_classification = row['Municipality Classification']
-            community.municipality_id = row['Municapility URL Code'] or None
+            is_mun = row['Municipality or is within the boundaries of one (1=Yes)']
+            if is_mun == '1':
+                try:
+                    community.municipality = Municipality.objects.get(geom__contains=community.point)
+                except Municipality.DoesNotExist:
+                    print("Error: Municipality not found for {}!".format(community.place_name))
             community.estimated_population = row['Estimated Population']
             community.estimated_total_dwellings = row['Estimated Total Dwellings']
 
@@ -53,3 +65,10 @@ def import_communities_from_csv(communities_file_path):
                 community.save()
             except IntegrityError as e:
                 print(e)
+            
+            if community.municipality:
+                roads = Road.objects.filter(geom__intersects=community.municipality.geom)
+                print(roads)
+
+
+    print (wct, tct)

@@ -52,7 +52,7 @@ import requests
 from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon
 from django.conf import settings
-from pipeline.models import CensusSubdivision
+from pipeline.models import CensusSubdivision, Road
 from pipeline.constants import SHP_RESOURCES
 from pipeline.importers.utils import import_data_into_area_model
 
@@ -63,18 +63,19 @@ csduid_to_geo_uid = {}
 
 
 def import_shp_resources(resource_type):
-    if resource_type not in ['all', 'census', *SHP_RESOURCES.keys()]:
-        print("Error: Resource type {} not supported".format(resource_type))
-        return
 
     if resource_type == "census":
         import_census()
+    elif resource_type == "roads":
+        import_roads()
     elif resource_type == "all":
         for available_resource_type in SHP_RESOURCES.keys():
             import_resource(available_resource_type)
-    else:
+    elif resource_type in SHP_RESOURCES.keys():
         import_resource(resource_type)
-
+    else:
+        print("Error: Resource type {} not supported".format(resource_type))
+        
 
 def import_resource(resource_type):
     resource_config = SHP_RESOURCES[resource_type]
@@ -112,6 +113,30 @@ def import_census():
         _save_subdiv(feat)
 
 
+def import_roads():
+    ds = _get_datasource('data/BC_Roads.zip')
+    print(len(ds[0]), 'features')
+    i=0
+    for feat in ds[0]:
+        i += 1
+        if not i % 1000:
+            print(i) 
+        try:
+            road=Road.objects.get(id=feat.get('NGDUID'))
+        except:
+            road=Road(id=feat.get('NGDUID'))
+        if feat.get('Avail_5_1_'):
+            road.best_broadband = '5/1'
+        if feat.get('Avail_10_2'):
+            road.best_broadband = '10/2'
+        if feat.get('Avail_25_5'):
+            road.best_broadband = '25/5'
+        if feat.get('Avail_50_1'):
+            road.best_broadband = '50/10'
+        road.geom = feat.geom.transform(4326)
+        road.save()
+
+
 def _get_datasource(filename):
     f = open(os.path.join(settings.BASE_DIR, filename), 'rb')
 
@@ -126,7 +151,7 @@ def _get_datasource(filename):
         if item.endswith('.shp'):
             # Extract a single file from zip
             the_shapefile = os.path.join(output_dir, item)
-            # break
+            # break        print(feat.geom)
     zip_ref.close()
 
     ds = DataSource(the_shapefile)

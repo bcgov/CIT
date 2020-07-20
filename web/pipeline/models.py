@@ -10,7 +10,13 @@ class Area(models.Model):
     location_type = models.CharField(null=True, blank=True, max_length=255)
 
 
+class Road(models.Model):
+    geom = models.LineStringField(srid=4326, null=True)
+    best_broadband = models.CharField(max_length=5)
+
+
 class Municipality(Area):
+    ID_FIELD = 'AA_ID'
     NAME_FIELD = 'ABRVN'
     oc_m_yr = models.CharField(
         max_length=4,
@@ -260,7 +266,8 @@ class Community(models.Model):
     # Municipality Classification
     municipality_classification = models.CharField(max_length=63, default='')
     # Municapility URL Code
-    municipality_id = models.IntegerField(null=True)
+    #municipality_id = models.IntegerField(null=True)
+    municipality = models.ForeignKey(Municipality, null=True, on_delete=models.SET_NULL)
     # Estimated Population
     estimated_population = models.IntegerField(default=0)
     # Estimated Total Dwellings
