@@ -4,13 +4,16 @@ from django.core.serializers import serialize
 from rest_framework import generics
 from rest_framework.views import APIView
 
-from .models import Location, Community, CensusSubdivision, LocationDistance
-from .serializers import (
+from pipeline.models import (
+    Location, Community, CensusSubdivision, LocationDistance,
+)
+from pipeline.serializers.general import (
     LocationSerializer,
     CommunitySerializer,
     CensusSubdivisionSerializer,
     LocationDistanceSerializer,
 )
+from pipeline.utils import generate_line_strings
 
 
 def auth(request):
@@ -80,31 +83,3 @@ class LocationDistanceList(generics.ListAPIView):
 
 class CensusSubdivisionGeoJSONList(APIView):
     pass
-
-
-def generate_line_strings():
-    line_strings = {"type": "FeatureCollection", "features": []}
-
-    _map = {}
-    for location_distance in LocationDistance.objects.select_related('community', 'hospital'):
-        if location_distance.community.id not in _map:
-            _map[location_distance.community.id] = location_distance
-        if location_distance.distance < _map[location_distance.community.id].distance:
-            _map[location_distance.community.id] = location_distance
-
-    for k, location_distance in _map.items():
-        line_strings["features"].append(
-            {
-                "type": "Feature",
-                "properties": {"distance": float(location_distance.distance)},
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": [
-                        [location_distance.community.longitude(), location_distance.community.latitude()],
-                        [location_distance.location.longitude(), location_distance.location.latitude()],
-                    ],
-                },
-            }
-        )
-
-    return line_strings
