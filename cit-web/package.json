@@ -22,9 +22,7 @@
     "mapbox-gl": "^1.11.1",
     "nuxt": "^2.13.0",
     "nuxt-property-decorator": "^2.7.2",
-    "powerbi-client": "^2.13.2"
-  },
-  "devDependencies": {
+    "powerbi-client": "^2.13.2",
     "@nuxtjs/eslint-config": "^3.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/style-resources": "^1.0.0",
@@ -44,5 +42,8 @@
     "stylelint-config-prettier": "^8.0.1",
     "stylelint-config-standard": "^20.0.0",
     "vue-jest": "^3.0.4"
+  },
+  "devDependencies": {
+
   }
 }
