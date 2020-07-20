@@ -70,7 +70,6 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa',
     '@nuxtjs/style-resources',
   ],
   /*
