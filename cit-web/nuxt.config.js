@@ -2,7 +2,7 @@ import colors from 'vuetify/es5/util/colors'
 
 export default {
   server: {
-    port: 8080,
+    port: 80,
     host: '0.0.0.0',
   },
   /*
