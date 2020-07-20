@@ -6,6 +6,7 @@
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
+import { getCommunity } from '~/api/cit-api'
 require('mapbox-gl/dist/mapbox-gl.css')
 const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 
@@ -17,15 +18,30 @@ export default class MyComponent extends Vue {
     }
   }
 
-  mounted() {
-    mapboxgl.accessToken = this.MAPBOX_API_KEY
-    const map = new mapboxgl.Map({
+  addNavigationControl(map) {
+    map.addControl(new mapboxgl.NavigationControl())
+  }
+
+  getMapboxOptions() {
+    return {
       container: 'map',
       style: 'mapbox://styles/countable-web/ckci0202t2kue1is2cqoe7wv1',
       center: [-122.970072, 49.299062],
       zoom: 12,
-    })
-    map.addControl(new mapboxgl.NavigationControl())
+    }
+  }
+
+  created() {
+    mapboxgl.accessToken = this.MAPBOX_API_KEY
+  }
+
+  mounted() {
+    const cid = this.$route.params?.id
+    const options = this.getMapboxOptions()
+    const map = new mapboxgl.Map(options)
+    this.addNavigationControl(map)
+
+    getCommunity(cid).then((response) => console.log(response))
   }
 }
 </script>
