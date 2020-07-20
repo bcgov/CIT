@@ -43,7 +43,7 @@ export default class MyComponent extends Vue {
   getMapboxOptions() {
     return {
       container: 'map',
-      style: 'mapbox://styles/countable-web/ckci0202t2kue1is2cqoe7wv1',
+      style: 'mapbox://styles/countable-web/ckcspnxxz0ji81iliywxxclk0',
       center: [-122.970072, 49.299062],
       zoom: 12,
     }
