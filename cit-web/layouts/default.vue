@@ -1,11 +1,12 @@
 <template>
   <v-app light class="h-100">
-    <v-app-bar
-      class="main-navigation"
-      fixed
-      height="66"
-      color="primary"
-    ></v-app-bar>
+    <v-app-bar class="main-navigation" fixed height="66" color="primary">
+      <v-toolbar-title>
+        <nuxt-link class="main-title d-block" to="/"
+          >Community Information Tool 2.0</nuxt-link
+        >
+      </v-toolbar-title>
+    </v-app-bar>
     <div class="content">
       <nuxt />
     </div>
@@ -41,5 +42,10 @@ body {
 .v-application .primary.main-navigation {
   border-bottom: 2px solid #fcba19;
   border-color: #fcba19 !important;
+}
+
+.main-title {
+  color: white !important;
+  text-decoration: none;
 }
 </style>
