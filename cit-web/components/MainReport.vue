@@ -19,7 +19,7 @@ export default {
     return {
       embedToken: null,
       groupId: '99dbfebe-3c0b-4b2d-affb-3af843c67549',
-      reportId: 'a8ef4003-0cc9-4e6f-a1c3-eb1cbeda2e40',
+      reportId: '2df94147-e5bc-48f2-bdfa-4a78f059e7c9',
       embedUrl: null,
       report: null,
     }
