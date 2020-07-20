@@ -141,6 +141,9 @@ dmypy.json
 .pyre/
 
 docker-compose.override.yml
+cit-web/dist
+.vscode
 cit-web/.nuxt
+cit-web/static/sw.js
 
 .htpasswd

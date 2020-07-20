@@ -7,6 +7,8 @@ services:
     volumes:
       - ./cit-web:/code
     working_dir: /code/
+    networks:
+      - back-tier
   web:
     build: ./web
     ports:
