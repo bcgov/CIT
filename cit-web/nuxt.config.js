@@ -5,7 +5,7 @@ export default {
     port: 80,
     host: '0.0.0.0',
   },
-  buildDir: 'dist'
+
   /*
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
