@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from .models import Location, Community, CensusSubdivision, LocationDistance
+from pipeline.models import (
+    Location, Community, CensusSubdivision, LocationDistance,
+)
 
 
 class LocationSerializer(serializers.ModelSerializer):
