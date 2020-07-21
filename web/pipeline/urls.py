@@ -20,6 +20,7 @@ urlpatterns = [
     url(r"^locations/economic_projects/$", pipeline.views.location_types.EconomicProjectList.as_view()),
     url(r"^locations/servicebc_locations/$", pipeline.views.location_types.ServiceBCLocationList.as_view()),
     url(r"^locations/schools/$", pipeline.views.location_types.SchoolList.as_view()),
+    url(r"^locations/post_secondary_institutions/$", pipeline.views.location_types.PostSecondaryInstitutionList.as_view()),
     url(r"^locations/clinics/$", pipeline.views.location_types.ClinicList.as_view()),
     url(r"^locations/courts/$", pipeline.views.location_types.CourtList.as_view()),
     url(r"^locations/$", pipeline.views.general.LocationList.as_view()),
