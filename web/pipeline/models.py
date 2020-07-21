@@ -73,7 +73,7 @@ class CensusSubdivision(models.Model):
     # "1.1.2", "Population, 2016"
     population = models.IntegerField(null=True)
     # "1.1.3", "Population percentage change, 2011 to 2016"
-    popluation_percentage_change = models.FloatField(null=True)
+    population_percentage_change = models.FloatField(null=True)
     # "1.1.4", "Total private dwellings"
     priv_dwel = models.IntegerField(null=True)
     # "1.1.7",0,"Land area in square kilometres"
