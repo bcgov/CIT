@@ -30,28 +30,27 @@
         </v-col>
       </v-row>
     </v-container>
-    <!--
+
     <v-container>
       <CensusSubdivision
         :classification="communityDetails.municipality_classification"
         :census-subdivision="censusSubdivision"
       ></CensusSubdivision>
     </v-container>
-    -->
   </div>
 </template>
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
 import MainHeader from '~/components/MainHeader.vue'
-// import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
+import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
 import { getCommunity, getCensusSubDivision } from '~/api/cit-api'
 require('mapbox-gl/dist/mapbox-gl.css')
 const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 
 @Component({
   MainHeader,
-  // CensusSubdivision,
+  CensusSubdivision,
 })
 export default class MyComponent extends Vue {
   communityDetails = {}
