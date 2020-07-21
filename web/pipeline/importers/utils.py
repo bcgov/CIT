@@ -17,6 +17,10 @@ def import_data_into_point_model(resource_type, Model, row):
 
     point = None
     location_fuzzy = False
+
+    name_fields = Model.NAME_FIELD.split(",")
+    name = ", ".join([row[name_field] for name_field in name_fields])
+
     try:
         point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=4326)
         closest_community = (
@@ -30,7 +34,7 @@ def import_data_into_point_model(resource_type, Model, row):
             if not closest_community:
                 print(
                     "Skipping error:",
-                    row[Model.NAME_FIELD],
+                    name,
                     "in",
                     row["MUNICIPALITY"],
                     "has no geometry or matching municipality name!",
@@ -41,9 +45,9 @@ def import_data_into_point_model(resource_type, Model, row):
             location_fuzzy = True
 
     try:
-        instance = Model.objects.get(name=row[Model.NAME_FIELD], location_type=resource_type, point=point)
+        instance = Model.objects.get(name=name, location_type=resource_type, point=point)
     except Model.DoesNotExist:
-        instance = Model(name=row[Model.NAME_FIELD], location_type=resource_type, point=point)
+        instance = Model(name=name, location_type=resource_type, point=point)
 
     instance.community = closest_community
     instance.location_fuzzy = location_fuzzy
