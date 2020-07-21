@@ -11,7 +11,7 @@ class Area(models.Model):
 
 
 class Road(models.Model):
-    geom = models.LineStringField(srid=4326, null=True)
+    geom = models.MultiLineStringField(srid=4326, null=True)
     best_broadband = models.CharField(max_length=5)
 
 

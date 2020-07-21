@@ -50,7 +50,7 @@ import tempfile
 import json
 import requests
 from django.contrib.gis.gdal import DataSource
-from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon
+from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 from django.conf import settings
 from pipeline.models import CensusSubdivision, Road
 from pipeline.constants import SHP_RESOURCES
@@ -75,7 +75,7 @@ def import_shp_resources(resource_type):
         import_resource(resource_type)
     else:
         print("Error: Resource type {} not supported".format(resource_type))
-        
+
 
 def import_resource(resource_type):
     resource_config = SHP_RESOURCES[resource_type]
@@ -116,15 +116,17 @@ def import_census():
 def import_roads():
     ds = _get_datasource('data/BC_Roads.zip')
     print(len(ds[0]), 'features')
-    i=0
+
+    i = 0
+
     for feat in ds[0]:
         i += 1
         if not i % 1000:
-            print(i) 
+            print(i)
         try:
-            road=Road.objects.get(id=feat.get('NGDUID'))
-        except:
-            road=Road(id=feat.get('NGDUID'))
+            road = Road.objects.get(id=feat.get('NGDUID'))
+        except Road.DoesNotExist:
+            road = Road(id=feat.get('NGDUID'))
         if feat.get('Avail_5_1_'):
             road.best_broadband = '5/1'
         if feat.get('Avail_10_2'):
@@ -133,8 +135,10 @@ def import_roads():
             road.best_broadband = '25/5'
         if feat.get('Avail_50_1'):
             road.best_broadband = '50/10'
-        road.geom = feat.geom.transform(4326)
-        road.save()
+        if not road.geom:
+            feat.geom.transform(4326)
+            road.geom = _coerce_to_multilinestring(GEOSGeometry(feat.geom.wkt, srid=4326))
+            road.save()
 
 
 def _get_datasource(filename):
@@ -291,6 +295,15 @@ def _coerce_to_multipolygon(geom):
     if isinstance(geom, Polygon):
         return MultiPolygon([geom], srid=3005)
     elif isinstance(geom, MultiPolygon):
+        return geom
+    else:
+        raise Exception("Bad geometry type: {}, skipping.".format(
+            geom.__class__))
+
+def _coerce_to_multilinestring(geom):
+    if isinstance(geom, LineString):
+        return MultiPolygon([geom], srid=3005)
+    elif isinstance(geom, MultiLineString):
         return geom
     else:
         raise Exception("Bad geometry type: {}, skipping.".format(
