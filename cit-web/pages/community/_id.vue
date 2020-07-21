@@ -31,10 +31,12 @@
       </v-row>
     </v-container>
 
-    <CensusSubdivision
-      :classification="communityDetails.municipality_classification"
-      :census-subdivision="censusSubdivision"
-    ></CensusSubdivision>
+    <v-container>
+      <CensusSubdivision
+        :classification="communityDetails.municipality_classification"
+        :census-subdivision="censusSubdivision"
+      ></CensusSubdivision>
+    </v-container>
   </div>
 </template>
 
@@ -54,15 +56,6 @@ export default class MyComponent extends Vue {
   communityDetails = {}
   censusSubdivision = {}
   placeName = ''
-
-  get groupedCensus() {
-    const groupedCensus = {}
-    /*
-    for (const key in groupedCensus) {
-
-    } */
-    return groupedCensus
-  }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
     try {

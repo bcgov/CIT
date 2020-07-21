@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div>
     <h2 class="mb-2">Census Subvision</h2>
     <v-alert
       v-if="classification === 'Not Incorporated'"
@@ -27,13 +27,13 @@
         </v-list-item>
       </v-list>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import groupBy from 'lodash-es/groupBy'
-@Component({})
+@Component()
 export default class MyComponent extends Vue {
   @Prop({ default: '', type: String })
   classification
@@ -42,7 +42,10 @@ export default class MyComponent extends Vue {
   censusSubdivision
 
   get groupedCensus() {
-    return groupBy(this.censusSubdivision.groups, 'group')
+    if (this.censusSubdivision.groups) {
+      return groupBy(this.censusSubdivision.groups, 'group')
+    }
+    return {}
   }
 }
 </script>
