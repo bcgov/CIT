@@ -11,6 +11,7 @@ from pipeline.serializers.general import (
     LocationSerializer,
     CommunitySerializer,
     CensusSubdivisionSerializer,
+    CensusSubdivisionDetailSerializer,
     LocationDistanceSerializer,
 )
 from pipeline.utils import generate_line_strings
@@ -45,7 +46,7 @@ class CensusSubdivisionList(generics.ListAPIView):
 
 class CensusSubdivisionDetail(generics.RetrieveAPIView):
     queryset = CensusSubdivision.objects.all()
-    serializer_class = CensusSubdivisionSerializer
+    serializer_class = CensusSubdivisionDetailSerializer
 
 
 class LocationGeoJSONList(APIView):

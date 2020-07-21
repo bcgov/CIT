@@ -2,6 +2,8 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models import PointField
 from django.contrib.gis.geos import Point
 
+from pipeline.utils import serialize_api_field_groups
+
 
 class Area(models.Model):
     name = models.CharField(max_length=127)
@@ -73,7 +75,7 @@ class CensusSubdivision(models.Model):
     # "1.1.2", "Population, 2016"
     population = models.IntegerField(null=True)
     # "1.1.3", "Population percentage change, 2011 to 2016"
-    popluation_percentage_change = models.FloatField(null=True)
+    population_percentage_change = models.FloatField(null=True)
     # "1.1.4", "Total private dwellings"
     priv_dwel = models.IntegerField(null=True)
     # "1.1.7",0,"Land area in square kilometres"
@@ -231,6 +233,9 @@ class CensusSubdivision(models.Model):
 
     # "Mobility", 44001, "14.2.1.1", 1, "  Non-movers"
     # "Mobility", 44002, "14.2.1.2", 1, "  Movers"
+
+    def api_field_groups(self):
+        return serialize_api_field_groups(self)
 
 
 class Community(models.Model):
