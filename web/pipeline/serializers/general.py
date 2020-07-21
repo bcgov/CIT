@@ -45,6 +45,18 @@ class CensusSubdivisionSerializer(serializers.ModelSerializer):
         exclude = ['geom', 'geom_simplified']
 
 
+class CensusSubdivisionDetailSerializer(serializers.ModelSerializer):
+    groups = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CensusSubdivision
+        fields = (
+            "id", "name", "groups",)
+
+    def get_groups(self, obj):
+        return obj.api_field_groups()
+
+
 class LocationDistanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = LocationDistance

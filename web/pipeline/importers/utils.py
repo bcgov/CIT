@@ -1,6 +1,7 @@
 import csv
 import requests
 
+from django.conf import settings
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from django.core.exceptions import FieldDoesNotExist

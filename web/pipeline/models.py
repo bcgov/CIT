@@ -2,6 +2,8 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models import PointField
 from django.contrib.gis.geos import Point
 
+from pipeline.utils import serialize_api_field_groups
+
 
 class Area(models.Model):
     name = models.CharField(max_length=127)
@@ -231,6 +233,9 @@ class CensusSubdivision(models.Model):
 
     # "Mobility", 44001, "14.2.1.1", 1, "  Non-movers"
     # "Mobility", 44002, "14.2.1.2", 1, "  Movers"
+
+    def api_field_groups(self):
+        return serialize_api_field_groups(self)
 
 
 class Community(models.Model):
