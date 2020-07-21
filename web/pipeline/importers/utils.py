@@ -85,12 +85,13 @@ def import_variable_fields(instance, row, Model):
     for field_name, field_value in row.items():
         # loop over fields, and if the field exists
         # on the model, import this field
+        transformed_field_name = field_name.replace(" ", "_").lower()
         if isinstance(field_value, str):
             try:
-                field_value = field_value[: Model._meta.get_field(field_name.lower()).max_length]
+                field_value = field_value[: Model._meta.get_field(transformed_field_name).max_length]
             except FieldDoesNotExist:
                 pass
-        setattr(instance, field_name.lower(), field_value)
+        setattr(instance, transformed_field_name, field_value)
 
 
 def calculate_distances(location):
