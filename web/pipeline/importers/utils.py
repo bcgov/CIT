@@ -29,20 +29,27 @@ def import_data_into_point_model(resource_type, Model, row):
     except TypeError:
         # print(row, Model.LATITUDE_FIELD)
         # When no point is present, try the municipality name description
-        if row["MUNICIPALITY"]:
-            closest_community = Community.objects.filter(place_name__icontains=_try_community_name).first()
-            if not closest_community:
-                print(
-                    "Skipping error:",
-                    name,
-                    "in",
-                    row["MUNICIPALITY"],
-                    "has no geometry or matching municipality name!",
-                )
-                return
-            point = closest_community.point
-            # if the point is inferred, set the location_fuzzy flag to True
-            location_fuzzy = True
+        if not row.get("MUNICIPALITY"):
+            print(
+                "Skipping error:",
+                name,
+                "has no municipality, geometry, or matching municipality name!",
+            )
+            return
+
+        closest_community = Community.objects.filter(place_name__icontains=_try_community_name).first()
+        if not closest_community:
+            print(
+                "Skipping error:",
+                name,
+                "in",
+                row["MUNICIPALITY"],
+                "has no geometry or matching municipality name!",
+            )
+            return
+        point = closest_community.point
+        # if the point is inferred, set the location_fuzzy flag to True
+        location_fuzzy = True
 
     try:
         instance = Model.objects.get(name=name, location_type=resource_type, point=point)

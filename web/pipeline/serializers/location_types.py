@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from pipeline.models import (
     FirstResponder, DiagnosticFacility, TimberFacility, CivicFacility, Hospital, NaturalResourceProject,
-    EconomicProject, ServiceBCLocation, School, Clinic, Court
+    EconomicProject, ServiceBCLocation, School, Clinic, Court, PostSecondaryInstitution,
 )
 
 
@@ -160,6 +160,21 @@ class SchoolSerializer(serializers.ModelSerializer):
             "district_number",
             "public_or_independent",
             "school_education_level",
+        )
+
+
+class PostSecondaryInstitutionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PostSecondaryInstitution
+        fields = (
+            "id",
+            "name",
+            "latitude",
+            "longitude",
+            "location_fuzzy",
+            "community",
+            "institution_type",
+            "economic_development_region",
         )
 
 
