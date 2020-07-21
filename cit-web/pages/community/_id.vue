@@ -29,16 +29,12 @@
           <div id="map" ref="map"></div>
         </v-col>
       </v-row>
-
-      <v-row>
-        <v-col col="6">
-          <CensusSubdivision
-            :classification="communityDetails.municipality_classification"
-            :census-subdivision="censusSubdivision"
-          ></CensusSubdivision>
-        </v-col>
-      </v-row>
     </v-container>
+
+    <CensusSubdivision
+      :classification="communityDetails.municipality_classification"
+      :census-subdivision="censusSubdivision"
+    ></CensusSubdivision>
   </div>
 </template>
 
@@ -56,7 +52,7 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 })
 export default class MyComponent extends Vue {
   communityDetails = {}
-  censusSubdivision = []
+  censusSubdivision = {}
   placeName = ''
 
   get groupedCensus() {
@@ -69,18 +65,22 @@ export default class MyComponent extends Vue {
   }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
-    const cid = params?.id
-    let response = await getCommunity(cid)
-    const { data: communityDetails } = response
+    try {
+      const cid = params?.id
+      let response = await getCommunity(cid)
+      const { data: communityDetails } = response
 
-    const csid = communityDetails.census_subdivision
-    response = await getCensusSubDivision(csid)
-    const { data: censusSubdivision } = response
+      const csid = communityDetails.census_subdivision
+      response = await getCensusSubDivision(csid)
+      const { data: censusSubdivision } = response
 
-    return {
-      MAPBOX_API_KEY,
-      communityDetails,
-      censusSubdivision,
+      return {
+        MAPBOX_API_KEY,
+        communityDetails,
+        censusSubdivision,
+      }
+    } catch (e) {
+      console.error(e)
     }
   }
 
