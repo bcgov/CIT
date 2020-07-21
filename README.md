@@ -12,26 +12,17 @@ git clone https://github.com/countable/cit
 
 Install Docker and docker-compose.
 
+Copy a local config template:
 
-Development
 ```
 cp dc.dev.yml docker-compose.override.yml
 ```
-Staging
-```
-cp dc.stage.yml docker-compose.override.yml
-```
-Production
-```
-cp dc.prod.yml docker-compose.override.yml
-```
+
 Spin up the project.
 
 ```
 docker-compose up
 ```
-
-For development
 
 Your Vue app is served at `http://localhost:8080`
 
@@ -39,7 +30,9 @@ The Django app is served at `http://localhost/api`
 
 Ports may be configured by editing the port in the `dc.*.yml` files.
 
-To create a superuser:
+You can create a new terminal, and run commands to interact with the application. `docker-compose ps` to show services, and `docker-compose exec web bash` to open a shell in inside the django service.
+
+To create a superuser for data administration.
 
 ```
 docker-compose exec web ./setup.sh
@@ -49,7 +42,11 @@ You can visit the Django admin at `http://localhost/admin`. The username is `adm
 
 ## Prepping Data
 
-Some data are loaded from locally stored csv and shapefiles since have no public API.
+Some data are loaded from locally stored csv (that you save in ./web/data) and shapefiles since have no public API.
+
+```
+mkdir web/data
+```
 
 Roads need to be trimmed for upload to mapbox.
 ```

@@ -68,6 +68,8 @@ def import_shp_resources(resource_type):
         import_census()
     elif resource_type == "roads":
         import_roads()
+    elif resource_type == "hexes":
+        import_hexes()
     elif resource_type == "all":
         for available_resource_type in SHP_RESOURCES.keys():
             import_resource(available_resource_type)
@@ -95,6 +97,12 @@ def import_resource(resource_type):
         instance.geom_simplified = geos_geom_simplified
 
         instance.save()
+
+
+def import_hexes():
+    ds = DataSource("data/hexes.kml")
+    for feat in ds[0]:
+        print({k:feat.get(k) for k in feat.fields})
 
 
 def import_census():
@@ -300,9 +308,10 @@ def _coerce_to_multipolygon(geom):
         raise Exception("Bad geometry type: {}, skipping.".format(
             geom.__class__))
 
+
 def _coerce_to_multilinestring(geom):
     if isinstance(geom, LineString):
-        return MultiPolygon([geom], srid=3005)
+        return MultiLineString([geom], srid=3005)
     elif isinstance(geom, MultiLineString):
         return geom
     else:
