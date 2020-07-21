@@ -45,9 +45,7 @@ export default class MyComponent extends Vue {
   censusSubdivision
 
   get groupedCensus() {
-    if (this.censusSubdivision.groups) {
-      return groupBy(this.censusSubdivision.groups, 'group')
-    }
+    console.log(groupBy)
     return {}
   }
 }
