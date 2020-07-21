@@ -74,6 +74,9 @@ export default class MyComponent extends Vue {
       }
     } catch (e) {
       console.error(e)
+      return {
+        MAPBOX_API_KEY,
+      }
     }
   }
 

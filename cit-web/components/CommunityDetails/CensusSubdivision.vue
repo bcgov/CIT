@@ -13,8 +13,6 @@
       enclosing census subdivision, which may include other communities.
     </v-alert>
 
-    {{ censusSubdivision }}
-    <!--
     <v-card v-for="(value, key) in groupedCensus" :key="key" class="mb-5">
       <v-card-title class="subheading font-weight-bold">{{
         key === 'null' ? 'Miscellaneous' : key
@@ -29,13 +27,13 @@
         </v-list-item>
       </v-list>
     </v-card>
-    -->
   </div>
 </template>
 
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import groupBy from 'lodash-es/groupBy'
+import { groupBy } from 'lodash'
+
 @Component
 export default class MyComponent extends Vue {
   @Prop({ default: '', type: String })
@@ -45,7 +43,9 @@ export default class MyComponent extends Vue {
   censusSubdivision
 
   get groupedCensus() {
-    console.log(groupBy)
+    if (this.censusSubdivision.groups) {
+      return groupBy(this.censusSubdivision.groups, 'group')
+    }
     return {}
   }
 }
