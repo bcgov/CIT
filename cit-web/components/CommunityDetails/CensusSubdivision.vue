@@ -35,22 +35,21 @@
 
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-// import groupBy from 'lodash-es/groupBy'
-@Component()
+import groupBy from 'lodash-es/groupBy'
+@Component
 export default class MyComponent extends Vue {
   @Prop({ default: '', type: String })
   classification
 
   @Prop({ default: () => {}, type: Object })
   censusSubdivision
-  /*
+
   get groupedCensus() {
     if (this.censusSubdivision.groups) {
       return groupBy(this.censusSubdivision.groups, 'group')
     }
     return {}
   }
-  */
 }
 </script>
 
