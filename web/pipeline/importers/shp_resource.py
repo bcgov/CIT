@@ -49,12 +49,14 @@ import copy
 import tempfile
 import json
 import requests
+from django.contrib.gis.geos.prototypes.io import wkt_w
+
 from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 from django.conf import settings
 from pipeline.models import CensusSubdivision, Road, Hex, ISP, Service
 from pipeline.constants import SHP_RESOURCES
-from pipeline.importers.utils import import_data_into_area_model
+from pipeline.importers.utils import import_data_into_area_model, read_csv
 
 import logging
 
@@ -108,11 +110,19 @@ def import_hexes():
             hex = Hex.objects.get(pk=hex_id)[0]
         except Hex.DoesNotExist:
             hex = Hex(id=hex_id)
-        hex.geom = GEOSGeometry(feat.geom.wkt, srid=4326)
+        wkt = wkt_w(dim=2).write(GEOSGeometry(feat.geom.wkt, srid=4326)).decode()
+        hex.geom = GEOSGeometry(wkt, srid=4326)
         print(feat.geom)
         hex.save()
     
-    #open("data/hex/", "r")
+    isps = read_csv('./data/ISP_Hex_FSI.csv')
+    for isp in isps:
+        created, isp_obj = ISP.objects.get_or_create(name=isp["ISPname_NomFSI"])
+        created, service = Service.objects.get_or_create(
+            isp=isp_obj,
+            hex=Hex.objects.get(isp['HEXuid_HEXidu']),
+            technology=isp['Technology'])
+    
 
 def import_census():
     # Get a mapping to GEO UID for loading data on census areas from statscan API.

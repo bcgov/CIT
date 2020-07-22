@@ -27,6 +27,7 @@ class ISP(models.Model):
 class Service(models.Model):
     isp = models.ForeignKey(ISP, on_delete=models.CASCADE)
     hex = models.ForeignKey(Hex, on_delete=models.DO_NOTHING)
+    technology = models.CharField(max_length=63)
 
 class Road(models.Model):
     geom = models.MultiLineStringField(srid=4326, null=True)
@@ -271,8 +272,8 @@ class Community(models.Model):
     wildfire_zone = models.ForeignKey(WildfireZone, null=True, on_delete=models.SET_NULL)
     tsunami_zone = models.ForeignKey(TsunamiZone, null=True, on_delete=models.SET_NULL)
 
-    hexuid = models.CharField(
-        max_length=15, help_text="ID of spatial hex used to color province by connectivity quality."
+    hexuid = models.ForeignKey(
+        Hex, db_column='hexuid', on_delete=models.DO_NOTHING, null=True, help_text="ID of spatial hex used to color province by connectivity quality."
     )
 
     # BASE_ACCESS_50Mbps

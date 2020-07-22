@@ -44,7 +44,6 @@ def import_communities_from_csv(communities_file_path):
             # if community.tsunami_zone:
             #     tct+=1
 
-            community.community_type = row['Community Type']
             community.hexuid = row['HEXUID']
             community.community_type = row['Community Type']
             community.base_access_50mbps = row['BASE_ACCESS_50Mbps'].lower() == 'yes'
