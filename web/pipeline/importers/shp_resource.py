@@ -115,6 +115,7 @@ def import_hexes():
         print(feat.geom)
         hex.save()
     
+    
     isps = read_csv('./data/ISP_Hex_FSI.csv')
     for isp in isps:
         created, isp_obj = ISP.objects.get_or_create(name=isp["ISPname_NomFSI"])
