@@ -38,8 +38,6 @@
         :census-subdivision="censusSubdivision"
       ></CensusSubdivision>
     </v-container>
-
-    {{ displayFields }}
   </div>
 </template>
 
