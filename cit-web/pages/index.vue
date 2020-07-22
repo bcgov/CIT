@@ -9,12 +9,20 @@
 </template>
 
 <script>
+import { Component, Vue } from 'nuxt-property-decorator'
 import MainHeader from '~/components/MainHeader.vue'
 import MainReport from '~/components/MainReport.vue'
-export default {
-  components: {
-    MainHeader,
-    MainReport,
-  },
+@Component({
+  MainHeader,
+  MainReport,
+})
+export default class Index extends Vue {
+  mounted() {
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+      for (const registration of registrations) {
+        registration.unregister()
+      }
+    })
+  }
 }
 </script>
