@@ -12,6 +12,22 @@ class Area(models.Model):
     location_type = models.CharField(null=True, blank=True, max_length=255)
 
 
+class Hex(models.Model):
+    # "PHH_ID","Avail_5_1_Dispo","Avail_10_2_Dispo","Avail_25_5_Dispo","Avail_50_10_Dispo","Avail_LTE_Mobile_Dispo"
+    id = models.CharField(primary_key=True, max_length=12)
+    geom = models.PolygonField()
+    avail_5_1 = models.BooleanField(default=False)
+    avail_10_2 = models.BooleanField(default=False)
+    avail_25_5 = models.BooleanField(default=False)
+    avail_50_10 = models.BooleanField(default=False)
+
+class ISP(models.Model):
+    name = models.CharField(max_length=127)
+
+class Service(models.Model):
+    isp = models.ForeignKey(ISP, on_delete=models.CASCADE)
+    hex = models.ForeignKey(Hex, on_delete=models.DO_NOTHING)
+
 class Road(models.Model):
     geom = models.MultiLineStringField(srid=4326, null=True)
     best_broadband = models.CharField(max_length=5)

@@ -52,7 +52,7 @@ import requests
 from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 from django.conf import settings
-from pipeline.models import CensusSubdivision, Road
+from pipeline.models import CensusSubdivision, Road, Hex, ISP, Service
 from pipeline.constants import SHP_RESOURCES
 from pipeline.importers.utils import import_data_into_area_model
 
@@ -100,10 +100,19 @@ def import_resource(resource_type):
 
 
 def import_hexes():
-    ds = DataSource("data/hexes.kml")
+    ds = DataSource("data/hex/hexes.kml")
     for feat in ds[0]:
         print({k:feat.get(k) for k in feat.fields})
-
+        hex_id = feat.get('description').split("=")[1].strip()
+        try:
+            hex = Hex.objects.get(pk=hex_id)[0]
+        except Hex.DoesNotExist:
+            hex = Hex(id=hex_id)
+        hex.geom = GEOSGeometry(feat.geom.wkt, srid=4326)
+        print(feat.geom)
+        hex.save()
+    
+    #open("data/hex/", "r")
 
 def import_census():
     # Get a mapping to GEO UID for loading data on census areas from statscan API.
