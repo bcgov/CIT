@@ -1,10 +1,6 @@
 <template>
   <div>
-    <MainHeader
-      :title="communityName"
-      subtitle="Community Details"
-      class="mb-5"
-    />
+    <MainHeader :title="placeName" subtitle="Community Details" class="mb-5" />
 
     <v-container>
       <v-row>
@@ -67,7 +63,6 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 export default class CommunityDetail extends Vue {
   communityDetails = {}
   censusSubdivision = {}
-  placeName = ''
 
   get communityDisplayFields() {
     let dfs = this.communityDetails.display_fields
@@ -81,8 +76,13 @@ export default class CommunityDetail extends Vue {
     return dfs
   }
 
-  get communityName() {
-    return 'Fort Nelson'
+  get placeName() {
+    const dfs = this.communityDetails.display_fields
+    if (!dfs) {
+      return ''
+    }
+    const placeName = dfs.find((df) => df.key === 'place_name')
+    return placeName?.value
   }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
