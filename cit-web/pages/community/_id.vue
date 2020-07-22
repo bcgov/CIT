@@ -1,34 +1,82 @@
 <template>
   <div>
-    <MainHeader :title="placeName" subtitle="Community Details" class="mb-5" />
-    <div id="map" ref="map"></div>
-    <div class="community-list">
-      <ul class="mt-10 mb-10">
-        <li v-for="(value, key) in censusSubdivision" :key="key">
-          {{ key }}: {{ value }}
-        </li>
-      </ul>
-    </div>
+    <MainHeader
+      :title="communityDetails.place_name"
+      subtitle="Community Details"
+      class="mb-5"
+    />
+
+    <v-container>
+      <v-row>
+        <v-col col="6">
+          <v-card>
+            <v-card-title class="subheading font-weight-bold"
+              >Community Details</v-card-title
+            >
+
+            <v-divider></v-divider>
+            <v-list dense>
+              <v-list-item v-for="(value, key) in communityDetails" :key="key">
+                <v-list-item-content>{{ key }}</v-list-item-content>
+                <v-list-item-content class="align-end">{{
+                  value
+                }}</v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-col>
+        <v-col col="6">
+          <div id="map" ref="map"></div>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <v-container>
+      <CensusSubdivision
+        :classification="communityDetails.municipality_classification"
+        :census-subdivision="censusSubdivision"
+      ></CensusSubdivision>
+    </v-container>
   </div>
 </template>
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
 import MainHeader from '~/components/MainHeader.vue'
+import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
 import { getCommunity, getCensusSubDivision } from '~/api/cit-api'
 require('mapbox-gl/dist/mapbox-gl.css')
 const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 
 @Component({
   MainHeader,
+  CensusSubdivision,
 })
 export default class MyComponent extends Vue {
-  censusSubdivision = []
+  communityDetails = {}
+  censusSubdivision = {}
   placeName = ''
 
-  asyncData({ $config: { MAPBOX_API_KEY } }) {
-    return {
-      MAPBOX_API_KEY,
+  async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
+    try {
+      const cid = params?.id
+      let response = await getCommunity(cid)
+      const { data: communityDetails } = response
+
+      const csid = communityDetails.census_subdivision
+      response = await getCensusSubDivision(csid)
+      const { data: censusSubdivision } = response
+
+      return {
+        MAPBOX_API_KEY,
+        communityDetails,
+        censusSubdivision,
+      }
+    } catch (e) {
+      console.error(e)
+      return {
+        MAPBOX_API_KEY,
+      }
     }
   }
 
@@ -43,7 +91,7 @@ export default class MyComponent extends Vue {
   getMapboxOptions() {
     return {
       container: 'map',
-      style: 'mapbox://styles/countable-web/ckci0202t2kue1is2cqoe7wv1',
+      style: 'mapbox://styles/countable-web/ckcspnxxz0ji81iliywxxclk0',
       center: [-122.970072, 49.299062],
       zoom: 12,
     }
@@ -54,33 +102,21 @@ export default class MyComponent extends Vue {
   }
 
   mounted() {
-    const cid = this.$route.params?.id
     const options = this.getMapboxOptions()
     const map = new mapboxgl.Map(options)
     this.addNavigationControl(map)
-
-    getCommunity(cid)
-      .then((response) => {
-        const { status, data } = response
-        if (status === 200) {
-          console.log(data)
-          const censusSubdivision = data.census_subdivision
-          this.setCenter(map, data.longitude, data.latitude)
-          this.placeName = data.place_name
-          getCensusSubDivision(censusSubdivision).then(
-            (response) => (this.censusSubdivision = response.data)
-          )
-        }
-      })
-      .catch((e) => console.error(e))
+    this.setCenter(
+      map,
+      this.communityDetails.longitude,
+      this.communityDetails.latitude
+    )
   }
 }
 </script>
 <style lang="scss" scoped>
 #map {
-  width: 800px;
-  height: 800px;
-  margin: 0 auto;
+  width: 100%;
+  height: 761px;
 }
 
 .community-list {

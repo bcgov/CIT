@@ -70,7 +70,6 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa',
     '@nuxtjs/style-resources',
   ],
   /*
@@ -79,11 +78,8 @@ export default {
    */
   axios: {
     baseURL:
-      process.env.NODE_ENV === 'development'
-        ? 'http://web:8000/'
-        : 'http://nginx',
-    browserBaseURL:
-      process.env.NODE_ENV === 'development' ? 'http://localhost:8000/' : '/',
+      process.env.NODE_ENV === 'development' ? 'http://nginx/' : 'http://nginx',
+    browserBaseURL: process.env.NODE_ENV === 'development' ? '/' : '/',
   },
   /*
    ** vuetify module configuration

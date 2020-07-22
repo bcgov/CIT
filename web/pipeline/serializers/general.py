@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from .models import Location, Community, CensusSubdivision, LocationDistance
+from pipeline.models import (
+    Location, Community, CensusSubdivision, LocationDistance,
+)
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -41,6 +43,18 @@ class CensusSubdivisionSerializer(serializers.ModelSerializer):
     class Meta:
         model = CensusSubdivision
         exclude = ['geom', 'geom_simplified']
+
+
+class CensusSubdivisionDetailSerializer(serializers.ModelSerializer):
+    groups = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CensusSubdivision
+        fields = (
+            "id", "name", "groups",)
+
+    def get_groups(self, obj):
+        return obj.api_field_groups()
 
 
 class LocationDistanceSerializer(serializers.ModelSerializer):

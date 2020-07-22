@@ -2,6 +2,8 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models import PointField
 from django.contrib.gis.geos import Point
 
+from pipeline.utils import serialize_api_field_groups
+
 
 class Area(models.Model):
     name = models.CharField(max_length=127)
@@ -79,7 +81,7 @@ class CensusSubdivision(models.Model):
     # "1.1.2", "Population, 2016"
     population = models.IntegerField(null=True)
     # "1.1.3", "Population percentage change, 2011 to 2016"
-    popluation_percentage_change = models.FloatField(null=True)
+    population_percentage_change = models.FloatField(null=True)
     # "1.1.4", "Total private dwellings"
     priv_dwel = models.IntegerField(null=True)
     # "1.1.7",0,"Land area in square kilometres"
@@ -161,7 +163,6 @@ class CensusSubdivision(models.Model):
     # "Housing", 27052, "9.1.12.2", 1, "  Spending 30% or more of income on shelter costs"
 
     # owner households
-
     # "Housing", 27055, "9.1.13.1", 1, "  % of owner households with a mortgage", 142, null, 37.6
     # "Housing", 27060, "9.1.13.6", 1, "  Average value of dwellings ($)", 144, null, 397139.0
 
@@ -237,6 +238,9 @@ class CensusSubdivision(models.Model):
 
     # "Mobility", 44001, "14.2.1.1", 1, "  Non-movers"
     # "Mobility", 44002, "14.2.1.2", 1, "  Movers"
+
+    def api_field_groups(self):
+        return serialize_api_field_groups(self)
 
 
 class Community(models.Model):
@@ -398,6 +402,9 @@ class Court(Location):
     LONGITUDE_FIELD = 'Longitude'
     NAME_FIELD = 'Placemark_name'
 
+    hours_of_operation = models.CharField(null=True, blank=True, max_length=255)
+    court_level = models.CharField(null=True, blank=True, max_length=255)
+
     '''
     {
         "_id": 4,
@@ -434,6 +441,14 @@ class EconomicProject(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'PROJECT_NAME'
+
+    flnro_project_status = models.CharField(null=True, blank=True, max_length=255)
+    project_type = models.CharField(null=True, blank=True, max_length=255)
+    project_category = models.CharField(null=True, blank=True, max_length=255)
+    proponent = models.CharField(null=True, blank=True, max_length=255)
+    eao_project_status = models.CharField(null=True, blank=True, max_length=255)
+    project_comments = models.CharField(null=True, blank=True, max_length=255)
+
     '''
     {
         '_id': 1,
@@ -460,6 +475,30 @@ class NaturalResourceProject(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'PROJECT_NAME'
+
+    project_comments = models.TextField(null=True, blank=True)
+    project_description = models.CharField(null=True, blank=True, max_length=255)
+    estimated_cost = models.CharField(null=True, blank=True, max_length=255)
+    update_activity = models.CharField(null=True, blank=True, max_length=255)
+    construction_type = models.CharField(null=True, blank=True, max_length=255)
+    construction_subtype = models.CharField(null=True, blank=True, max_length=255)
+    project_type = models.CharField(null=True, blank=True, max_length=255)
+    developer = models.CharField(null=True, blank=True, max_length=255)
+    architect = models.CharField(null=True, blank=True, max_length=255)
+    project_status = models.CharField(null=True, blank=True, max_length=255)
+    project_stage = models.CharField(null=True, blank=True, max_length=255)
+    project_category_name = models.CharField(null=True, blank=True, max_length=255)
+    provinvial_funding = models.CharField(null=True, blank=True, max_length=255)
+    federal_funding = models.CharField(null=True, blank=True, max_length=255)
+    municipal_funding = models.CharField(null=True, blank=True, max_length=255)
+    green_building_ind = models.CharField(null=True, blank=True, max_length=255)
+    green_building_desc = models.CharField(null=True, blank=True, max_length=255)
+    clean_energy_ind = models.CharField(null=True, blank=True, max_length=255)
+    construction_jobs = models.CharField(null=True, blank=True, max_length=255)
+    operating_jobs = models.CharField(null=True, blank=True, max_length=255)
+    standardized_start_date = models.CharField(null=True, blank=True, max_length=255)
+    standardized_completion_date = models.CharField(null=True, blank=True, max_length=255)
+
     '''
     {
         '_id': 1,
@@ -535,6 +574,11 @@ class School(Location):
     NAME_FIELD = 'SCHOOL_NAME'
     LATITUDE_FIELD = 'SCHOOL_LATITUDE'
     LONGITUDE_FIELD = 'SCHOOL_LONGITUDE'
+
+    district_number = models.CharField(null=True, blank=True, max_length=255)
+    public_or_independent = models.CharField(null=True, blank=True, max_length=255)
+    school_education_level = models.CharField(null=True, blank=True, max_length=255)
+
     '''
     {
         '_id': 1,
@@ -558,10 +602,39 @@ class School(Location):
     '''
 
 
+class PostSecondaryInstitution(Location):
+
+    NAME_FIELD = 'Institution,Location'
+    LATITUDE_FIELD = 'Latitude'
+    LONGITUDE_FIELD = 'Longitude'
+
+    institution_type = models.CharField(null=True, blank=True, max_length=255)
+    economic_development_region = models.CharField(null=True, blank=True, max_length=255)
+
+    '''
+    {
+        '_id': 137,
+        'Institution': 'Regent College - Vancouver',
+        'Location': 'Regent College Vancouver Campus',
+        *'Institution Type': 'Theological',
+        *'Economic Development Region': 'Mainland/Southwest',
+        'City': 'Vancouver',
+        'Address': '5800 University Boulevard',
+        'Location Description': 'Main Campus',
+        'Latitude': 49.265748,
+        'Longitude': -123.244077
+    }
+    '''
+
+
 class Clinic(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'RG_NAME'
+
+    sv_description = models.CharField(null=True, blank=True, max_length=255)
+    hours = models.TextField(null=True, blank=True)
+
     '''
     {
         '_id': 1,
@@ -598,6 +671,9 @@ class FirstResponder(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'FCLTY_NM'
+
+    keywords = models.CharField(null=True, blank=True, max_length=255)
+
     '''
     OrderedDict([
         ('CUST_ORG', 'Ministry of Forest, Lands and Natural Resource Operations and Rural Development - GeoBC '),
@@ -636,6 +712,8 @@ class DiagnosticFacility(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'FCTY_NAME'
+
+    ser_cd_dsc = models.CharField(null=True, blank=True, max_length=255)
     '''
     OrderedDict([
         ('DIA_FAC_ID', '909'),
@@ -659,6 +737,8 @@ class TimberFacility(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'COMPANY_NM'
+
+    bus_cat_ds = models.CharField(null=True, blank=True, max_length=255)
     '''
     OrderedDict([
         ('COMPANY_NM','Bear Lumber Ltd.'),
@@ -697,6 +777,10 @@ class CivicFacility(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'FCLTY_NM'
+
+    keywords = models.CharField(null=True, blank=True, max_length=255)
+    bus_cat_cl = models.CharField(null=True, blank=True, max_length=255)
+    bus_cat_ds = models.CharField(null=True, blank=True, max_length=255)
     '''
     OrderedDict([
         ('FCLTY_NM', 'Alberni Valley Multiplex'),
