@@ -16,10 +16,15 @@
 
             <v-divider></v-divider>
             <v-list dense>
-              <v-list-item v-for="(value, key) in communityDetails" :key="key">
-                <v-list-item-content>{{ key }}</v-list-item-content>
+              <v-list-item
+                v-for="(df, key) in communityDetails.display_fields"
+                :key="key"
+              >
+                <v-list-item-content>{{
+                  df.metadata.name
+                }}</v-list-item-content>
                 <v-list-item-content class="align-end">{{
-                  value
+                  df.value
                 }}</v-list-item-content>
               </v-list-item>
             </v-list>
@@ -63,8 +68,10 @@ export default class CommunityDetail extends Vue {
       let response = await getCommunity(cid)
       const { data: communityDetails } = response
 
-      const csid = communityDetails.census_subdivision
-      response = await getCensusSubDivision(csid)
+      const csid = communityDetails.display_fields.find(
+        (df) => df.key === 'census_subdivision_id'
+      )
+      response = await getCensusSubDivision(csid?.value)
       const { data: censusSubdivision } = response
 
       return {
@@ -116,7 +123,7 @@ export default class CommunityDetail extends Vue {
 <style lang="scss" scoped>
 #map {
   width: 100%;
-  height: 761px;
+  height: 450px;
 }
 
 .community-list {
