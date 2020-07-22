@@ -9,25 +9,20 @@
 </template>
 
 <script>
-import { getAuthToken } from '~/api/ms-auth-api/'
+import { Component, Vue } from 'nuxt-property-decorator'
 import MainHeader from '~/components/MainHeader.vue'
 import MainReport from '~/components/MainReport.vue'
-export default {
-  components: {
-    MainHeader,
-    MainReport,
-  },
-
-  fetch({ store }) {
-    return getAuthToken().then((response) => {
-      const { status } = response
-      if (status === 200) {
-        const accessToken = response.data && response.data.access_token
-        if (accessToken) {
-          store.commit('msauth/setAccessToken', accessToken)
-        }
+@Component({
+  MainHeader,
+  MainReport,
+})
+export default class Index extends Vue {
+  mounted() {
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+      for (const registration of registrations) {
+        registration.unregister()
       }
     })
-  },
+  }
 }
 </script>

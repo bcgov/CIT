@@ -3,7 +3,7 @@ version: '3.3'
 
 services:
   cit-web:
-    image: 'node'
+    image: 'node:14'
     volumes:
       - ./cit-web:/code
     working_dir: /code/

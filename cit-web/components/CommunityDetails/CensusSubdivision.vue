@@ -35,7 +35,7 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import { groupBy } from 'lodash'
 
 @Component
-export default class MyComponent extends Vue {
+export default class CensusSubdivision extends Vue {
   @Prop({ default: '', type: String })
   classification
 

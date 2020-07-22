@@ -52,7 +52,7 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
   MainHeader,
   CensusSubdivision,
 })
-export default class MyComponent extends Vue {
+export default class CommunityDetail extends Vue {
   communityDetails = {}
   censusSubdivision = {}
   placeName = ''
