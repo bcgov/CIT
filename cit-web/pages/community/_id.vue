@@ -16,7 +16,10 @@
 
             <v-divider></v-divider>
             <v-list dense>
-              <v-list-item v-for="(df, key) in displayFields" :key="key">
+              <v-list-item
+                v-for="(df, key) in communityDisplayFields"
+                :key="key"
+              >
                 <v-list-item-content>{{
                   df.metadata.name
                 }}</v-list-item-content>
@@ -50,6 +53,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import MainHeader from '~/components/MainHeader.vue'
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
 import { getCommunity, getCensusSubDivision } from '~/api/cit-api'
+import { yesno } from '~/utils/filters'
 require('mapbox-gl/dist/mapbox-gl.css')
 const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 
@@ -57,15 +61,7 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
   MainHeader,
   CensusSubdivision,
   filters: {
-    yesno(str) {
-      if (str === true) {
-        return 'Yes'
-      }
-      if (str === false) {
-        return 'No'
-      }
-      return str
-    },
+    yesno,
   },
 })
 export default class CommunityDetail extends Vue {
@@ -73,7 +69,7 @@ export default class CommunityDetail extends Vue {
   censusSubdivision = {}
   placeName = ''
 
-  get displayFields() {
+  get communityDisplayFields() {
     let dfs = this.communityDetails.display_fields
     if (!dfs) {
       return []
