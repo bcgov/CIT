@@ -313,4 +313,11 @@ def serialize_community_detail_fields(obj):
                 "name": "Community Type",
             },
         },
+        {
+            "key": "census_subdivision_id",
+            "value": obj.census_subdivision_id,
+            "metadata": {
+                "name": "Census Subdivision",
+            },
+        },
     ]

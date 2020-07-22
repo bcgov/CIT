@@ -47,6 +47,8 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "display_fields",
+            "latitude",
+            "longitude"
         )
 
     def get_display_fields(self, obj):

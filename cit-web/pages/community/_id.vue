@@ -1,7 +1,7 @@
 <template>
   <div>
     <MainHeader
-      :title="communityDetails.place_name"
+      :title="communityName"
       subtitle="Community Details"
       class="mb-5"
     />
@@ -16,10 +16,15 @@
 
             <v-divider></v-divider>
             <v-list dense>
-              <v-list-item v-for="(value, key) in communityDetails" :key="key">
-                <v-list-item-content>{{ key }}</v-list-item-content>
+              <v-list-item
+                v-for="(df, key) in communityDisplayFields"
+                :key="key"
+              >
+                <v-list-item-content>{{
+                  df.metadata.name
+                }}</v-list-item-content>
                 <v-list-item-content class="align-end">{{
-                  value
+                  df.value | yesno
                 }}</v-list-item-content>
               </v-list-item>
             </v-list>
@@ -37,25 +42,48 @@
         :census-subdivision="censusSubdivision"
       ></CensusSubdivision>
     </v-container>
+
+    {{ displayFields }}
   </div>
 </template>
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
+// import { omitBy } from 'lodash'
 import MainHeader from '~/components/MainHeader.vue'
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
 import { getCommunity, getCensusSubDivision } from '~/api/cit-api'
+import { yesno } from '~/utils/filters'
 require('mapbox-gl/dist/mapbox-gl.css')
 const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 
 @Component({
   MainHeader,
   CensusSubdivision,
+  filters: {
+    yesno,
+  },
 })
 export default class CommunityDetail extends Vue {
   communityDetails = {}
   censusSubdivision = {}
   placeName = ''
+
+  get communityDisplayFields() {
+    let dfs = this.communityDetails.display_fields
+    if (!dfs) {
+      return []
+    }
+    const excludes = {
+      census_subdivision_id: true,
+    }
+    dfs = dfs.filter((df) => !excludes[df.key])
+    return dfs
+  }
+
+  get communityName() {
+    return 'Fort Nelson'
+  }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
     try {
@@ -63,8 +91,10 @@ export default class CommunityDetail extends Vue {
       let response = await getCommunity(cid)
       const { data: communityDetails } = response
 
-      const csid = communityDetails.census_subdivision
-      response = await getCensusSubDivision(csid)
+      const csid = communityDetails.display_fields.find(
+        (df) => df.key === 'census_subdivision_id'
+      )
+      response = await getCensusSubDivision(csid?.value)
       const { data: censusSubdivision } = response
 
       return {
@@ -116,7 +146,7 @@ export default class CommunityDetail extends Vue {
 <style lang="scss" scoped>
 #map {
   width: 100%;
-  height: 761px;
+  height: 450px;
 }
 
 .community-list {
