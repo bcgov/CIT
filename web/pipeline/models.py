@@ -157,7 +157,6 @@ class CensusSubdivision(models.Model):
     # "Housing", 27052, "9.1.12.2", 1, "  Spending 30% or more of income on shelter costs"
 
     # owner households
-
     # "Housing", 27055, "9.1.13.1", 1, "  % of owner households with a mortgage", 142, null, 37.6
     # "Housing", 27060, "9.1.13.6", 1, "  Average value of dwellings ($)", 144, null, 397139.0
 
