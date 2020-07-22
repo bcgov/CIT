@@ -29,7 +29,6 @@ export default {
       .then((response) => {
         const { status, data } = response
         if (status === 200) {
-          console.log(data)
           this.embedUrl = data.embedUrl
         } else {
           throw new Error(response)
