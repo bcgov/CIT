@@ -10,6 +10,7 @@ from pipeline.models import (
 from pipeline.serializers.general import (
     LocationSerializer,
     CommunitySerializer,
+    CommunityDetailSerializer,
     CensusSubdivisionSerializer,
     CensusSubdivisionDetailSerializer,
     LocationDistanceSerializer,
@@ -36,7 +37,7 @@ class CommunityList(generics.ListAPIView):
 
 class CommunityDetail(generics.RetrieveAPIView):
     queryset = Community.objects.all()
-    serializer_class = CommunitySerializer
+    serializer_class = CommunityDetailSerializer
 
 
 class CensusSubdivisionList(generics.ListAPIView):

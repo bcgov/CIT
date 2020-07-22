@@ -39,6 +39,20 @@ class CommunitySerializer(serializers.ModelSerializer):
         )
 
 
+class CommunityDetailSerializer(serializers.ModelSerializer):
+    display_fields = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Community
+        fields = (
+            "id",
+            "display_fields",
+        )
+
+    def get_display_fields(self, obj):
+        return obj.get_display_fields()
+
+
 class CensusSubdivisionSerializer(serializers.ModelSerializer):
     class Meta:
         model = CensusSubdivision
