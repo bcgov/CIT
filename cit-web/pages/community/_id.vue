@@ -1,7 +1,7 @@
 <template>
   <div>
     <MainHeader
-      :title="communityDetails.place_name"
+      :title="communityName"
       subtitle="Community Details"
       class="mb-5"
     />
@@ -16,15 +16,12 @@
 
             <v-divider></v-divider>
             <v-list dense>
-              <v-list-item
-                v-for="(df, key) in communityDetails.display_fields"
-                :key="key"
-              >
+              <v-list-item v-for="(df, key) in displayFields" :key="key">
                 <v-list-item-content>{{
                   df.metadata.name
                 }}</v-list-item-content>
                 <v-list-item-content class="align-end">{{
-                  df.value
+                  df.value | yesno
                 }}</v-list-item-content>
               </v-list-item>
             </v-list>
@@ -42,11 +39,14 @@
         :census-subdivision="censusSubdivision"
       ></CensusSubdivision>
     </v-container>
+
+    {{ displayFields }}
   </div>
 </template>
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
+// import { omitBy } from 'lodash'
 import MainHeader from '~/components/MainHeader.vue'
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
 import { getCommunity, getCensusSubDivision } from '~/api/cit-api'
@@ -56,11 +56,38 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 @Component({
   MainHeader,
   CensusSubdivision,
+  filters: {
+    yesno(str) {
+      if (str === true) {
+        return 'Yes'
+      }
+      if (str === false) {
+        return 'No'
+      }
+      return str
+    },
+  },
 })
 export default class CommunityDetail extends Vue {
   communityDetails = {}
   censusSubdivision = {}
   placeName = ''
+
+  get displayFields() {
+    let dfs = this.communityDetails.display_fields
+    if (!dfs) {
+      return []
+    }
+    const excludes = {
+      census_subdivision_id: true,
+    }
+    dfs = dfs.filter((df) => !excludes[df.key])
+    return dfs
+  }
+
+  get communityName() {
+    return 'Fort Nelson'
+  }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
     try {
