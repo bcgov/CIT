@@ -28,7 +28,7 @@ def generate_line_strings():
     return line_strings
 
 
-def serialize_api_field_groups(obj):
+def serialize_census_subdivision_groups(obj):
     return [
         {
             "group": None,
@@ -251,5 +251,66 @@ def serialize_api_field_groups(obj):
             },
             "key": "self_employed",
             "value": obj.self_employed,
+        },
+    ]
+
+
+def serialize_community_detail_fields(obj):
+    return [
+        {
+            "key": "place_name",
+            "value": obj.place_name,
+            "metadata": {
+                "name": "Community Name",
+            },
+        },
+        {
+            "key": "community_type",
+            "value": obj.community_type,
+            "metadata": {
+                "name": "Community Type",
+            },
+        },
+        {
+            "key": "base_access_50mbps",
+            "value": obj.base_access_50mbps,
+            "metadata": {
+                "name": "Broadband Available (50mbps)",
+            },
+        },
+        {
+            "key": "fn_community_name",
+            "value": obj.fn_community_name,
+            "metadata": {
+                "name": "First Nations' Community Name",
+            },
+        },
+        {
+            "key": "municipality_classification",
+            "value": obj.municipality_classification,
+            "metadata": {
+                "name": "Municipality Classification",
+            },
+        },
+        {
+            "key": "estimated_population",
+            "value": obj.estimated_population,
+            "metadata": {
+                "name": "Estimated Population",
+            },
+        },
+        {
+            "key": "estimated_total_dwellings",
+            "value": obj.estimated_total_dwellings,
+            "metadata": {
+                "name": "Estimated Total Dwellings",
+            },
+        },
+        {
+            "key": "fn_community_name",
+            "value": obj.fn_community_name,
+            "metadata": {
+                "name": "Community Type",
+            },
         },
     ]

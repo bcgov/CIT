@@ -2,7 +2,7 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models import PointField
 from django.contrib.gis.geos import Point
 
-from pipeline.utils import serialize_api_field_groups
+from pipeline.utils import serialize_census_subdivision_groups, serialize_community_detail_fields
 
 
 class Area(models.Model):
@@ -234,7 +234,7 @@ class CensusSubdivision(models.Model):
     # "Mobility", 44002, "14.2.1.2", 1, "  Movers"
 
     def api_field_groups(self):
-        return serialize_api_field_groups(self)
+        return serialize_census_subdivision_groups(self)
 
 
 class Community(models.Model):
@@ -297,6 +297,9 @@ class Community(models.Model):
             # debugging; remove later
             print("Community {} has no location".format(self.place_name))
             return None
+
+    def get_display_fields(self):
+        return serialize_community_detail_fields(self)
 
 
 class Location(models.Model):

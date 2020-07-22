@@ -39,7 +39,10 @@ DATABC_RESOURCES = {
     'schools': {'resource_id': '5832eff2-3380-435e-911b-5ada41c1d30b', 'model': School},
     'clinics': {'resource_id': '3ca6b086-c92b-4654-ae82-ff5723d00611', 'model': Clinic},
     'courts': {'resource_id': '23aa0b75-2715-4ccb-9a36-9a608450dc2d', 'model': Court},
-    'post_secondary_institutions': {'resource_id': '8e4e2a87-2d1d-4931-828e-6327b49f310e', 'model': PostSecondaryInstitution},
+    'post_secondary_institutions': {
+        'resource_id': '8e4e2a87-2d1d-4931-828e-6327b49f310e',
+        'model': PostSecondaryInstitution
+    },
     # 'libraries': {
     #     'resource_id': 'b6a28bfb-580b-4662-9f00-f7189d52fbe6',
     #     'model': Library
