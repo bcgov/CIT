@@ -2,7 +2,8 @@ from rest_framework import generics
 
 from pipeline.models import (
     FirstResponder, DiagnosticFacility, TimberFacility, CivicFacility, Hospital, NaturalResourceProject,
-    EconomicProject, ServiceBCLocation, School, Clinic, Court
+    EconomicProject, ServiceBCLocation, School, Clinic, Court,
+    PostSecondaryInstitution,
 )
 from pipeline.serializers.location_types import (
     FirstResponderSerializer,
@@ -14,8 +15,9 @@ from pipeline.serializers.location_types import (
     EconomicProjectSerializer,
     ServiceBCLocationSerializer,
     SchoolSerializer,
+    PostSecondaryInstitutionSerializer,
     ClinicSerializer,
-    CourtSerializer
+    CourtSerializer,
 )
 
 
@@ -62,6 +64,11 @@ class ServiceBCLocationList(generics.ListAPIView):
 class SchoolList(generics.ListAPIView):
     queryset = School.objects.all()
     serializer_class = SchoolSerializer
+
+
+class PostSecondaryInstitutionList(generics.ListAPIView):
+    queryset = PostSecondaryInstitution.objects.all()
+    serializer_class = PostSecondaryInstitutionSerializer
 
 
 class ClinicList(generics.ListAPIView):

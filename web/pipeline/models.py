@@ -595,6 +595,31 @@ class School(Location):
     '''
 
 
+class PostSecondaryInstitution(Location):
+
+    NAME_FIELD = 'Institution,Location'
+    LATITUDE_FIELD = 'Latitude'
+    LONGITUDE_FIELD = 'Longitude'
+
+    institution_type = models.CharField(null=True, blank=True, max_length=255)
+    economic_development_region = models.CharField(null=True, blank=True, max_length=255)
+
+    '''
+    {
+        '_id': 137,
+        'Institution': 'Regent College - Vancouver',
+        'Location': 'Regent College Vancouver Campus',
+        *'Institution Type': 'Theological',
+        *'Economic Development Region': 'Mainland/Southwest',
+        'City': 'Vancouver',
+        'Address': '5800 University Boulevard',
+        'Location Description': 'Main Campus',
+        'Latitude': 49.265748,
+        'Longitude': -123.244077
+    }
+    '''
+
+
 class Clinic(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'

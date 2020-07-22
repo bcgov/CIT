@@ -17,6 +17,10 @@ def import_data_into_point_model(resource_type, Model, row):
 
     point = None
     location_fuzzy = False
+
+    name_fields = Model.NAME_FIELD.split(",")
+    name = ", ".join([row[name_field] for name_field in name_fields])
+
     try:
         point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=4326)
         closest_community = (
@@ -25,25 +29,32 @@ def import_data_into_point_model(resource_type, Model, row):
     except TypeError:
         # print(row, Model.LATITUDE_FIELD)
         # When no point is present, try the municipality name description
-        if row["MUNICIPALITY"]:
-            closest_community = Community.objects.filter(place_name__icontains=_try_community_name).first()
-            if not closest_community:
-                print(
-                    "Skipping error:",
-                    row[Model.NAME_FIELD],
-                    "in",
-                    row["MUNICIPALITY"],
-                    "has no geometry or matching municipality name!",
-                )
-                return
-            point = closest_community.point
-            # if the point is inferred, set the location_fuzzy flag to True
-            location_fuzzy = True
+        if not row.get("MUNICIPALITY"):
+            print(
+                "Skipping error:",
+                name,
+                "has no municipality, geometry, or matching municipality name!",
+            )
+            return
+
+        closest_community = Community.objects.filter(place_name__icontains=_try_community_name).first()
+        if not closest_community:
+            print(
+                "Skipping error:",
+                name,
+                "in",
+                row["MUNICIPALITY"],
+                "has no geometry or matching municipality name!",
+            )
+            return
+        point = closest_community.point
+        # if the point is inferred, set the location_fuzzy flag to True
+        location_fuzzy = True
 
     try:
-        instance = Model.objects.get(name=row[Model.NAME_FIELD], location_type=resource_type, point=point)
+        instance = Model.objects.get(name=name, location_type=resource_type, point=point)
     except Model.DoesNotExist:
-        instance = Model(name=row[Model.NAME_FIELD], location_type=resource_type, point=point)
+        instance = Model(name=name, location_type=resource_type, point=point)
 
     instance.community = closest_community
     instance.location_fuzzy = location_fuzzy
@@ -74,12 +85,13 @@ def import_variable_fields(instance, row, Model):
     for field_name, field_value in row.items():
         # loop over fields, and if the field exists
         # on the model, import this field
+        transformed_field_name = field_name.replace(" ", "_").lower()
         if isinstance(field_value, str):
             try:
-                field_value = field_value[: Model._meta.get_field(field_name.lower()).max_length]
+                field_value = field_value[: Model._meta.get_field(transformed_field_name).max_length]
             except FieldDoesNotExist:
                 pass
-        setattr(instance, field_name.lower(), field_value)
+        setattr(instance, transformed_field_name, field_value)
 
 
 def calculate_distances(location):
