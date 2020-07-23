@@ -2,7 +2,8 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models import PointField
 from django.contrib.gis.geos import Point
 
-from pipeline.utils import serialize_census_subdivision_groups, serialize_community_detail_fields
+from pipeline.utils import (
+    serialize_census_subdivision_groups, serialize_community_detail_fields, get_community_type_display_name)
 
 
 # class Cacheable(models.Model):
@@ -360,6 +361,9 @@ class Community(models.Model):
 
     def get_display_fields(self):
         return serialize_community_detail_fields(self)
+
+    def get_display_community_type(self):
+        return get_community_type_display_name(self.community_type)
 
 
 class Location(models.Model):

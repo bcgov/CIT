@@ -1,3 +1,6 @@
+from pipeline.constants import COMMUNITY_TYPES
+
+
 def generate_line_strings():
     from pipeline.models import LocationDistance   # local import to avoid circular import # noqa
 
@@ -321,3 +324,7 @@ def serialize_community_detail_fields(obj):
             },
         },
     ]
+
+
+def get_community_type_display_name(community_type):
+    return COMMUNITY_TYPES[community_type]
