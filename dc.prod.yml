@@ -9,7 +9,7 @@ services:
       - 8080:8080
   nginx:
     ports:
-      - 80:80
+      - 10080:80
     volumes:
       - ./nginx/conf.d/default_password_auth.conf:/etc/nginx/conf.d/default.conf
       - .htpasswd:/etc/nginx/.htpasswd
