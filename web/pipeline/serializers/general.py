@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from pipeline.models import (
-    Location, Community, CensusSubdivision, LocationDistance,
+    Location, Community, CensusSubdivision, LocationDistance, Service
 )
 
 
@@ -11,10 +11,25 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "community_id", "location_type", "latitude", "longitude", "location_fuzzy")
 
 
-class CommunitySerializer(serializers.ModelSerializer):
+class ServiceSerializer(serializers.ModelSerializer):
+    queryset = Service.objects.all()
+    isp = serializers.SlugRelatedField(read_only=True, slug_field='name')
 
+    class Meta:
+        model = Service
+        fields = ("technology", "isp", "hex__community")
+
+
+class CommunitySerializer(serializers.ModelSerializer):
+    queryset = Community.objects.all().select_related('hexuid', 'hexuid__service__isp').prefetch_related('hexuid__service')
     wildfire_zone = serializers.SlugRelatedField(read_only=True, slug_field='risk_class')
     tsunami_zone = serializers.SlugRelatedField(read_only=True, slug_field='zone_class')
+    # services = ServiceSerializer(many=True, read_only=True)
+
+    def to_representation(self, instance):
+        repr = super().to_representation(instance)
+        repr['services'] = [ServiceSerializer(x).data for x in instance.hexuid.service_set.all()]
+        return repr
 
     class Meta:
         model = Community
@@ -36,6 +51,8 @@ class CommunitySerializer(serializers.ModelSerializer):
             "num_courts",
             "num_hospitals",
             "num_timber_facilities",
+            "percent_50_10",
+            "percent_25_5"
         )
 
 

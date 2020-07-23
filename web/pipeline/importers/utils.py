@@ -73,6 +73,8 @@ def import_data_into_area_model(resource_type, Model, row):
         instance = Model.objects.get(name=row[Model.NAME_FIELD], location_type=resource_type)
     except Model.DoesNotExist:
         instance = Model(name=row[Model.NAME_FIELD], location_type=resource_type)
+        if hasattr(Model, 'ID_FIELD'):
+            instance.id = row[Model.ID_FIELD]
 
     import_variable_fields(instance, row, Model)
 
