@@ -18,16 +18,6 @@ from pipeline.models import (
 )
 
 
-COMMUNITY_TYPES = {
-    "Urban": "Urban",
-    "Rural": "Rural",
-    "Remote Community": "Rural",
-    "Urban First Nations Primary Reserve": "Indigenous",
-    "Urban First Nations Secondary Reserve": "Indigenous",
-    "Rural First Nations Primary Reserve": "Indigenous",
-    "Rural First Nations Secondary Reserve": "Indigenous",
-    "Remote First Nations Primary Reserve": "Indigenous",
-}
 
 CSV_RESOURCES = {
     # Provided by NetworkBC Team
