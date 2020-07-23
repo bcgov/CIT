@@ -14,11 +14,10 @@ class LocationSerializer(serializers.ModelSerializer):
 class ServiceSerializer(serializers.ModelSerializer):
     queryset = Service.objects.all()
     isp = serializers.SlugRelatedField(read_only=True, slug_field='name')
-    community = serializers.SlugRelatedField(read_only=True, slug_field='hex__community')
 
     class Meta:
         model = Service
-        fields = ("technology", "isp", "community")
+        fields = ("technology", "isp")
 
 
 class CommunitySerializer(serializers.ModelSerializer):
