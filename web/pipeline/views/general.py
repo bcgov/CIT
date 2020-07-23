@@ -39,7 +39,6 @@ class CommunityList(generics.ListAPIView):
 
 class ServiceList(generics.ListAPIView):
     serializer_class = ServiceListSerializer
-    pagination_class = LimitOffsetPagination
 
     def get_queryset(self):
         return Service.objects.filter(hex__community__isnull=False)\
