@@ -1,9 +1,10 @@
 from django.http import JsonResponse, HttpResponse
 from django.core.serializers import serialize
-import json
 
 from rest_framework import generics
+from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.pagination import LimitOffsetPagination
 
 from pipeline.models import Location, Community, CensusSubdivision, LocationDistance, Service
 from pipeline.serializers.general import (
@@ -13,7 +14,7 @@ from pipeline.serializers.general import (
     CensusSubdivisionSerializer,
     CensusSubdivisionDetailSerializer,
     LocationDistanceSerializer,
-    ServiceSerializer,
+    ServiceListSerializer,
 )
 from pipeline.utils import generate_line_strings
 
@@ -37,24 +38,13 @@ class CommunityList(generics.ListAPIView):
 
 
 class ServiceList(generics.ListAPIView):
+    serializer_class = ServiceListSerializer
+    pagination_class = LimitOffsetPagination
 
-    queryset = Service.objects.all()
-
-    def get(self, request, format=None):
-        service_values = (
-            Service.objects.filter(hex__community__isnull=False)
-            .prefetch_related('hex__community')
-            .select_related("isp__name")
-            .values('hex__community', 'isp__name', 'technology')
-        )
-        output = []
-        for service in service_values:
-            output.append({
-                'tech': service['technology'],
-                'community': service['hex__community'],
-                'isp': service['isp__name']
-            })
-        return HttpResponse(json.dumps(output), content_type="application/json")
+    def get_queryset(self):
+        return Service.objects.filter(hex__community__isnull=False)\
+            .prefetch_related("hex__community")\
+            .select_related("isp")
 
 
 class CommunityDetail(generics.RetrieveAPIView):
