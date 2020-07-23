@@ -35,6 +35,7 @@ class CommunitySerializer(serializers.ModelSerializer):
     queryset = Community.objects.all().select_related('hexuid', 'hexuid__service__isp').prefetch_related('hexuid__service')
     wildfire_zone = serializers.SlugRelatedField(read_only=True, slug_field='risk_class')
     tsunami_zone = serializers.SlugRelatedField(read_only=True, slug_field='zone_class')
+    community_type = serializers.CharField(source='get_display_community_type', read_only=True)
     # services = ServiceSerializer(many=True, read_only=True)
 
     #def to_representation(self, instance):
