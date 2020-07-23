@@ -59,12 +59,27 @@ mkdir BC_Roads
 mv NBD_Roads_ShapeFile/BC_Roads* BC_Roads/
 ```
 
+Hexes can be pre-processed as follows: ```
+wget <nbd site>/CHX_EXO_geo.kmz
+ogr2ogr -f kml -t_srs EPSG:4326 hexes.kml CHX_EXO_geo.kmz
+ogr2ogr -f kml -clipsrc -144 48 -110 60 hexbc.kml hexes.kml
+```
+
 ## Importing Data
 
 Some data must be downloaded locally (data bc warehouse resources). Download all local datasets to the `data` folder. ie, the census subdiv geometry:
 ```
 wget http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fichiers/2016/lcsd000b16a_e.zip
 mv lcsd000b16a_e.zip web/data/
+```
+
+This SRS is not recognized in this file, so reprojecting is necessary.
+```
+unzip lcsd000b16a_e.zip
+ogr2ogr -t_srs EPSG:4326 census.shp lcsd000b16a_e.shp
+mkdir census
+mv census* census/
+zip census.zip census/*
 ```
 
 To import all data, run:
@@ -211,3 +226,8 @@ This token is used in the Authorization header when using the PowerBI REST API:
 `Authorization: Bearer [OAUTH ACCESS TOKEN]`
 
 This token is now consumed in the frontend and is added whenever we make a PowerBI Rest API Call.
+
+
+## MapBox Layer Management
+
+TODO: Document mapbox layers and indicate how data were sourced, and how to update them.

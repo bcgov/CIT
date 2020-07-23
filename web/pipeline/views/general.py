@@ -4,9 +4,7 @@ from django.core.serializers import serialize
 from rest_framework import generics
 from rest_framework.views import APIView
 
-from pipeline.models import (
-    Location, Community, CensusSubdivision, LocationDistance,
-)
+from pipeline.models import Location, Community, CensusSubdivision, LocationDistance, Service
 from pipeline.serializers.general import (
     LocationSerializer,
     CommunitySerializer,
@@ -30,6 +28,7 @@ class LocationList(generics.ListAPIView):
 
 
 class CommunityList(generics.ListAPIView):
+
     queryset = Community.objects.all()
     serializer_class = CommunitySerializer
 
@@ -83,4 +82,15 @@ class LocationDistanceList(generics.ListAPIView):
 
 
 class CensusSubdivisionGeoJSONList(APIView):
-    pass
+    schema = None
+
+    def get(self, request, format=None):
+        return HttpResponse(
+            serialize(
+                'geojson',
+                CensusSubdivision.objects.all(),
+                geometry_field='geom',
+                fields=('population', 'population_percent_change'),
+            ),
+            content_type="application/json",
+        )

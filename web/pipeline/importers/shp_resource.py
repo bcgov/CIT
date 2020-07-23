@@ -91,10 +91,9 @@ def import_resource(resource_type):
             row[f] = feat.get(f)
             # print(f, feat.get(f))
 
-        instance = import_data_into_area_model(
-            resource_type, resource_config["model"], row)
+        instance = import_data_into_area_model(resource_type, resource_config["model"], row)
 
-        geos_geom_out, geos_geom_simplified = _generate_geom(feat)
+        geos_geom_out, geos_geom_simplified = _generate_geom(feat, 3005)
         instance.geom = geos_geom_out
         instance.geom_simplified = geos_geom_simplified
 
@@ -102,28 +101,59 @@ def import_resource(resource_type):
 
 
 def import_hexes():
-    ds = DataSource("data/hex/hexes.kml")
-    for feat in ds[0]:
-        print({k:feat.get(k) for k in feat.fields})
+    ds = DataSource("data/hex/hexbc.kml")
+
+    # Just clear all old data and rewrite it.
+    Service.objects.all().delete()
+    ISP.objects.all().delete()
+    Hex.objects.all().delete()
+
+    hexes = {}
+    print(len(ds[0]), 'features')
+
+    for i, feat in enumerate(ds[0]):
+        if not i % 1000:
+            print(i)
+
         hex_id = feat.get('description').split("=")[1].strip()
         try:
-            hex = Hex.objects.get(pk=hex_id)[0]
+            hex = Hex.objects.get(pk=hex_id)
         except Hex.DoesNotExist:
             hex = Hex(id=hex_id)
         wkt = wkt_w(dim=2).write(GEOSGeometry(feat.geom.wkt, srid=4326)).decode()
-        hex.geom = GEOSGeometry(wkt, srid=4326)
-        print(feat.geom)
-        hex.save()
-    
-    
-    isps = read_csv('./data/ISP_Hex_FSI.csv')
-    for isp in isps:
-        created, isp_obj = ISP.objects.get_or_create(name=isp["ISPname_NomFSI"])
-        created, service = Service.objects.get_or_create(
-            isp=isp_obj,
-            hex=Hex.objects.get(isp['HEXuid_HEXidu']),
-            technology=isp['Technology'])
-    
+        try:
+            hex.geom = GEOSGeometry(wkt, srid=4326)
+        except TypeError:
+            print('skipping bad geom')
+        if not hex.geom: continue
+        hexes[hex_id] = hex
+
+    Hex.objects.bulk_create(hexes.values())
+
+    isps = read_csv('./data/hex/ISP_Hex_FSI.csv')
+
+    # avoid re-querying for each row with ISP reference.
+    isp_cache = {}
+    services = []
+    print(len(isps))
+    for i, isp in enumerate(isps):
+        if not i % 1000: print(i)
+        try:
+            hex = Hex.objects.get(pk=isp['HEXuid_HEXidu'])
+        except Hex.DoesNotExist:
+            continue
+        if isp["ISPname_NomFSI"] in isp_cache:
+            isp_obj = isp_cache[isp["ISPname_NomFSI"]]
+        else:
+            isp_obj = ISP(name=isp["ISPname_NomFSI"])
+            print(isp_obj)
+            isp_cache[isp["ISPname_NomFSI"]] = isp_obj
+            isp_obj.save()
+        service = Service(isp=isp_obj, hex=hex, technology=isp['Technology'])
+        services.append(service)
+
+    Service.objects.bulk_create(services)
+
 
 def import_census():
     # Get a mapping to GEO UID for loading data on census areas from statscan API.
@@ -136,7 +166,8 @@ def import_census():
         geo_uid = sd[0]
         csduid_to_geo_uid[int(csduid)] = geo_uid
 
-    ds = _get_datasource('data/lcsd000b16a_e.zip')
+    ds = _get_datasource('data/census.zip')
+
     for feat in ds[0]:
         _save_subdiv(feat)
 
@@ -147,14 +178,14 @@ def import_roads():
 
     i = 0
 
+    Road.objects.all().delete()
+    roads = []
     for feat in ds[0]:
         i += 1
         if not i % 1000:
             print(i)
-        try:
-            road = Road.objects.get(id=feat.get('NGDUID'))
-        except Road.DoesNotExist:
-            road = Road(id=feat.get('NGDUID'))
+
+        road = Road()
         if feat.get('Avail_5_1_'):
             road.best_broadband = '5/1'
         if feat.get('Avail_10_2'):
@@ -163,10 +194,11 @@ def import_roads():
             road.best_broadband = '25/5'
         if feat.get('Avail_50_1'):
             road.best_broadband = '50/10'
-        if not road.geom:
-            feat.geom.transform(4326)
-            road.geom = _coerce_to_multilinestring(GEOSGeometry(feat.geom.wkt, srid=4326))
-            road.save()
+
+        road.geom = _coerce_to_multilinestring(GEOSGeometry(feat.geom.wkt, srid=4326))
+        roads.append(road)
+
+    Road.objects.bulk_create(roads, 1000)
 
 
 def _get_datasource(filename):
@@ -216,9 +248,8 @@ def _save_subdiv(feat):
     if "British Columbia" not in feat.get('PRNAME'):
         return
 
-    geos_geom_out, geos_geom_simplified = _generate_geom(feat)
-    subdiv = CensusSubdivision.objects.get_or_create(
-        id=int(feat.get('CSDUID')), name=feat.get('CSDNAME'))[0]
+    geos_geom_out, geos_geom_simplified = _generate_geom(feat, 4326)
+    subdiv = CensusSubdivision.objects.get_or_create(id=int(feat.get('CSDUID')), name=feat.get('CSDNAME'))[0]
 
     print(subdiv.name)
 
@@ -228,8 +259,9 @@ def _save_subdiv(feat):
 
     stats = json.loads(
         requests.get(
-            'https://www12.statcan.gc.ca/rest/census-recensement/CPR2016.json?dguid={}'
-            .format(subdiv.geo_uid)).text[2:])
+            'https://www12.statcan.gc.ca/rest/census-recensement/CPR2016.json?dguid={}'.format(subdiv.geo_uid)
+        ).text[2:]
+    )
 
     # "1.1.2", "Population, 2016"
     subdiv.population = _fetch_statscan_value(stats, "1.1.2")
@@ -299,44 +331,41 @@ def _save_subdiv(feat):
     subdiv.save()
 
 
-def _generate_geom(feat):
+def _generate_geom(feat, srid=None):
     """
     Generate a clean geometry, and simplified snapshot for PostGIS insertion
     """
     # Source data tends to be in BC Alberts. #TODO: detect this instead?
-    geos_geom = GEOSGeometry(feat.geom.wkt, srid=3005)
+    geos_geom = GEOSGeometry(feat.geom.wkt, srid=srid or feat.geom.srid)
     # Convert MultiPolygons to plain Polygons,
     # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
-    geos_geom_out = _coerce_to_multipolygon(geos_geom)
+    geos_geom_out = _coerce_to_multipolygon(geos_geom, srid)
     geos_geom.transform(4326)
     geos_geom_simplified = copy.deepcopy(geos_geom)
     geos_geom_simplified.transform(4326)
-    geos_geom_simplified = geos_geom_simplified.simplify(
-        0.0005, preserve_topology=True)
+    geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
 
-    geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified)
+    geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, srid)
 
     return geos_geom_out, geos_geom_simplified
 
 
-def _coerce_to_multipolygon(geom):
+def _coerce_to_multipolygon(geom, srid=4326):
     if isinstance(geom, Polygon):
-        return MultiPolygon([geom], srid=3005)
+        return MultiPolygon([geom], srid=srid)
     elif isinstance(geom, MultiPolygon):
         return geom
     else:
-        raise Exception("Bad geometry type: {}, skipping.".format(
-            geom.__class__))
+        raise Exception("Bad geometry type: {}, skipping.".format(geom.__class__))
 
 
-def _coerce_to_multilinestring(geom):
+def _coerce_to_multilinestring(geom, srid=4326):
     if isinstance(geom, LineString):
-        return MultiLineString([geom], srid=3005)
+        return MultiLineString([geom], srid=srid)
     elif isinstance(geom, MultiLineString):
         return geom
     else:
-        raise Exception("Bad geometry type: {}, skipping.".format(
-            geom.__class__))
+        raise Exception("Bad geometry type: {}, skipping.".format(geom.__class__))
 
 
 def _fetch_statscan_value(stats, property_name):

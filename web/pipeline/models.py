@@ -5,6 +5,14 @@ from django.contrib.gis.geos import Point
 from pipeline.utils import serialize_api_field_groups
 
 
+# class Cacheable(models.Model):
+
+#     @staticmethod
+#     def get_cached(kls, **kwargs):
+#         key = json.dumps(kwargs)
+#         kls.objects.get(**kwargs)
+
+
 class Area(models.Model):
     name = models.CharField(max_length=127)
     geom = models.MultiPolygonField(srid=4326, null=True)
@@ -21,13 +29,19 @@ class Hex(models.Model):
     avail_25_5 = models.BooleanField(default=False)
     avail_50_10 = models.BooleanField(default=False)
 
+
 class ISP(models.Model):
-    name = models.CharField(max_length=127)
+    name = models.CharField(max_length=127, unique=True)
+
 
 class Service(models.Model):
     isp = models.ForeignKey(ISP, on_delete=models.CASCADE)
     hex = models.ForeignKey(Hex, on_delete=models.DO_NOTHING)
     technology = models.CharField(max_length=63)
+
+    class Meta:
+        unique_together = ('isp', 'hex', 'technology')
+
 
 class Road(models.Model):
     geom = models.MultiLineStringField(srid=4326, null=True)
@@ -40,7 +54,8 @@ class Municipality(Area):
     oc_m_yr = models.CharField(
         max_length=4,
         help_text="The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
-        " e.g., 2014.")
+        " e.g., 2014.",
+    )
 
     """
     AA_ID 3
@@ -69,8 +84,8 @@ class WildfireZone(Area):
     NAME_FIELD = 'FIRE_ZONE'
     risk_class = models.CharField(
         max_length=1,
-        help_text="A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 "
-        "(extreme).")  # 1-5
+        help_text="A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 " "(extreme).",
+    )  # 1-5
 
 
 class TsunamiZone(Area):
@@ -78,7 +93,8 @@ class TsunamiZone(Area):
     zone_class = models.CharField(
         max_length=1,
         help_text="See https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/"
-        "preparedbc/know-your-hazards/tsunamis - A-C:moderate D,E:low")
+        "preparedbc/know-your-hazards/tsunamis - A-C:moderate D,E:low",
+    )
     # "Tsunamis are rare but serious events. Many areas of coastal B.C. may be threatened in the event
     # of a tsunami. However, it is generally accepted by scientific and technical experts that Victoria,
     # eastern Vancouver Island, Vancouver and the lower mainland are low-risk areas."
@@ -272,8 +288,15 @@ class Community(models.Model):
     wildfire_zone = models.ForeignKey(WildfireZone, null=True, on_delete=models.SET_NULL)
     tsunami_zone = models.ForeignKey(TsunamiZone, null=True, on_delete=models.SET_NULL)
 
+    percent_50_10 = models.FloatField(help_text='portion (0-1) of area with 50/10 speeds (calc. by road length)')
+    percent_25_5 = models.FloatField(help_text='portion (0-1) of area with 25/5 speeds (calc. by road length)')
+
     hexuid = models.ForeignKey(
-        Hex, db_column='hexuid', on_delete=models.DO_NOTHING, null=True, help_text="ID of spatial hex used to color province by connectivity quality."
+        Hex,
+        db_column='hexuid',
+        on_delete=models.SET_NULL,
+        null=True,
+        help_text="ID of spatial hex used to color province by connectivity quality.",
     )
 
     # BASE_ACCESS_50Mbps
@@ -287,7 +310,7 @@ class Community(models.Model):
     # Municipality Classification
     municipality_classification = models.CharField(max_length=63, default='')
     # Municapility URL Code
-    #municipality_id = models.IntegerField(null=True)
+    # municipality_id = models.IntegerField(null=True)
     municipality = models.ForeignKey(Municipality, null=True, on_delete=models.SET_NULL)
     # Estimated Population
     estimated_population = models.IntegerField(default=0)
@@ -329,7 +352,8 @@ class Location(models.Model):
     location_fuzzy = models.BooleanField(
         default=False,
         help_text="This field should be set to True if the `point` field was not present in the original dataset "
-        "and is inferred or approximated by other fields.")
+        "and is inferred or approximated by other fields.",
+    )
 
     location_type = models.CharField(null=True, blank=True, max_length=255)
 

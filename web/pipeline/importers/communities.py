@@ -5,6 +5,8 @@ from django.contrib.gis.geos import Point
 from pipeline.models import Community, WildfireZone, TsunamiZone, Municipality, Road
 from django.db.utils import IntegrityError
 from django.contrib.gis.measure import D
+from django.contrib.gis.db.models.functions import Distance
+
 
 def import_communities_from_csv(communities_file_path):
     wct = 0
@@ -12,7 +14,7 @@ def import_communities_from_csv(communities_file_path):
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         for row in csv_reader:
             print(row["Place_Name"])
-            #place_id = row["Place_ID"]
+            # place_id = row["Place_ID"]
 
             # **Other fields to consider adding**
             #    BASE_ACCESS_50Mbps,Community Type,FN_Community_Name,Nation,Band_Number
@@ -36,15 +38,17 @@ def import_communities_from_csv(communities_file_path):
             community.census_subdivision_id = row['CSDUID']
 
             # TODO: Consider municipal overlap.
-            # community.wildfire_zone = WildfireZone.objects.filter(geom__distance_lt = (community.point, D(m=1000))).first()
-            # community.tsunami_zone = TsunamiZone.objects.filter(geom__distance_lt = (community.point, D(m=1000))).first()
+            community.wildfire_zone = WildfireZone.objects.filter(
+                geom__distance_lt=(community.point, D(m=1000))
+            ).first()
+            community.tsunami_zone = TsunamiZone.objects.filter(geom__distance_lt=(community.point, D(m=1000))).first()
 
             # if community.wildfire_zone:
             #     wct+=1
             # if community.tsunami_zone:
             #     tct+=1
 
-            community.hexuid = row['HEXUID']
+            community.hexuid_id = row['HEXUID']
             community.community_type = row['Community Type']
             community.base_access_50mbps = row['BASE_ACCESS_50Mbps'].lower() == 'yes'
             community.fn_community_name = row['FN_Community_Name']
@@ -60,14 +64,26 @@ def import_communities_from_csv(communities_file_path):
             community.estimated_population = row['Estimated Population']
             community.estimated_total_dwellings = row['Estimated Total Dwellings']
 
+
+            if community.municipality:
+                roads = Road.objects.filter(geom__intersects=community.municipality.geom)
+            else:
+                roads = Road.objects.filter(geom__distance_lt=(community.point, D(km=10)))
+
+            speeds_map = {}
+            total_length = 0
+            for road in roads:
+                if road.best_broadband not in speeds_map:
+                    speeds_map[road.best_broadband] = 0
+                speeds_map[road.best_broadband] += road.geom.length
+                total_length += road.geom.length
+
+            if '50/10' in speeds_map:
+                community.percent_50_10 = speeds_map['50/10'] / total_length
+            if '25/5' in speeds_map:
+                community.percent_25_5 = speeds_map['25/5'] / total_length
+
             try:
                 community.save()
             except IntegrityError as e:
                 print(e)
-            
-            if community.municipality:
-                roads = Road.objects.filter(geom__intersects=community.municipality.geom)
-                print(roads)
-
-
-    print (wct, tct)
