@@ -1,6 +1,3 @@
-from pipeline.constants import COMMUNITY_TYPES
-
-
 def generate_line_strings():
     from pipeline.models import LocationDistance   # local import to avoid circular import # noqa
 
@@ -327,4 +324,15 @@ def serialize_community_detail_fields(obj):
 
 
 def get_community_type_display_name(community_type):
+    # TODO SY - move this into constants.py after resolving circular import
+    COMMUNITY_TYPES = {
+        "Urban": "Urban",
+        "Rural": "Rural",
+        "Remote Community": "Rural",
+        "Urban First Nations Primary Reserve": "Indigenous",
+        "Urban First Nations Secondary Reserve": "Indigenous",
+        "Rural First Nations Primary Reserve": "Indigenous",
+        "Rural First Nations Secondary Reserve": "Indigenous",
+        "Remote First Nations Primary Reserve": "Indigenous",
+    }
     return COMMUNITY_TYPES[community_type]
