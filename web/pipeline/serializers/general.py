@@ -26,10 +26,10 @@ class CommunitySerializer(serializers.ModelSerializer):
     tsunami_zone = serializers.SlugRelatedField(read_only=True, slug_field='zone_class')
     # services = ServiceSerializer(many=True, read_only=True)
 
-    def to_representation(self, instance):
-        repr = super().to_representation(instance)
-        repr['services'] = [ServiceSerializer(x).data for x in instance.hexuid.service_set.all()]
-        return repr
+    #def to_representation(self, instance):
+    #    repr = super().to_representation(instance)
+    #    repr['services'] = [ServiceSerializer(x).data for x in instance.hexuid.service_set.all()]
+    #    return repr
 
     class Meta:
         model = Community
