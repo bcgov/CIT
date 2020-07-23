@@ -28,6 +28,7 @@ urlpatterns = [
     url(r"^communities/geojson/$", pipeline.views.general.CommunityGeoJSONList.as_view()),
     url(r"^communities/(?P<pk>[0-9]+)/$", pipeline.views.general.CommunityDetail.as_view()),
     url(r"^communities/$", pipeline.views.general.CommunityList.as_view()),
+    url(r"^services/$", pipeline.views.general.ServiceList.as_view()),
     url(r"^censussubdivisions/geojson/$", pipeline.views.general.CensusSubdivisionGeoJSONList.as_view()),
     url(r"^censussubdivisions/(?P<pk>[0-9]+)/$", pipeline.views.general.CensusSubdivisionDetail.as_view()),
     url(r"^censussubdivisions/$", pipeline.views.general.CensusSubdivisionList.as_view()),
