@@ -84,6 +84,19 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
 
 
 class CensusSubdivisionSerializer(serializers.ModelSerializer):
+    population_percentage_change = serializers.DecimalField(
+        source='get_population_percentage_change_as_decimal',
+        decimal_places=2, max_digits=6)
+    pop_pct_0_14 = serializers.DecimalField(
+        source='get_pop_pct_0_14_as_decimal',
+        decimal_places=2, max_digits=6)
+    pop_pct_14_65 = serializers.DecimalField(
+        source='get_pop_pct_14_65_as_decimal',
+        decimal_places=2, max_digits=6)
+    pop_pct_65 = serializers.DecimalField(
+        source='get_pop_pct_65_as_decimal',
+        decimal_places=2, max_digits=6)
+
     class Meta:
         model = CensusSubdivision
         exclude = ['geom', 'geom_simplified']

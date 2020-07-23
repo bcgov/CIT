@@ -275,6 +275,18 @@ class CensusSubdivision(models.Model):
     def api_field_groups(self):
         return serialize_census_subdivision_groups(self)
 
+    def get_population_percentage_change_as_decimal(self):
+        return self.population_percentage_change / 100 if self.population_percentage_change else 0
+
+    def get_pop_pct_0_14_as_decimal(self):
+        return self.pop_pct_0_14 / 100 if self.pop_pct_0_14 else 0
+
+    def get_pop_pct_14_65_as_decimal(self):
+        return self.pop_pct_14_65 / 100 if self.pop_pct_14_65 else 0
+
+    def get_pop_pct_65_as_decimal(self):
+        return self.pop_pct_65 / 100 if self.pop_pct_65 else 0
+
 
 class Community(models.Model):
     # place_id = models.CharField(null=True, blank=True, max_length=255)
@@ -862,7 +874,7 @@ class LocationDistance(models.Model):
     community = models.ForeignKey(Community, on_delete=models.DO_NOTHING, related_name='distances')
     location = models.ForeignKey(Location, on_delete=models.DO_NOTHING, related_name='distances')
     distance = models.DecimalField(
-        null=True, blank=True, max_digits=24, decimal_places=4, help_text="Driving distance from community to Location"
+        null=True, blank=True, max_digits=24, decimal_places=4, help_text="Driving distance from community to Location (km)"
     )
     travel_time = models.IntegerField(
         null=True, blank=True, help_text="Travel time (in minutes) corresponding to driving distance"
