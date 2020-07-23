@@ -296,6 +296,7 @@ class Community(models.Model):
         db_column='hexuid',
         on_delete=models.SET_NULL,
         null=True,
+        related_name='community',
         help_text="ID of spatial hex used to color province by connectivity quality.",
     )
 
