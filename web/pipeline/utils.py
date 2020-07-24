@@ -272,13 +272,6 @@ def serialize_community_detail_fields(obj):
             },
         },
         {
-            "key": "base_access_50mbps",
-            "value": obj.base_access_50mbps,
-            "metadata": {
-                "name": "Broadband Available (50mbps)",
-            },
-        },
-        {
             "key": "fn_community_name",
             "value": obj.fn_community_name,
             "metadata": {
@@ -286,31 +279,10 @@ def serialize_community_detail_fields(obj):
             },
         },
         {
-            "key": "municipality_classification",
-            "value": obj.municipality_classification,
+            "key": "incorporated",
+            "value": obj.incorporated,
             "metadata": {
-                "name": "Municipality Classification",
-            },
-        },
-        {
-            "key": "estimated_population",
-            "value": obj.estimated_population,
-            "metadata": {
-                "name": "Estimated Population",
-            },
-        },
-        {
-            "key": "estimated_total_dwellings",
-            "value": obj.estimated_total_dwellings,
-            "metadata": {
-                "name": "Estimated Total Dwellings",
-            },
-        },
-        {
-            "key": "fn_community_name",
-            "value": obj.fn_community_name,
-            "metadata": {
-                "name": "Community Type",
+                "name": "Incorporated",
             },
         },
         {
@@ -318,6 +290,27 @@ def serialize_community_detail_fields(obj):
             "value": obj.census_subdivision_id,
             "metadata": {
                 "name": "Census Subdivision",
+            },
+        },
+        {
+            "key": "last_mile_status",
+            "value": obj.last_mile_status,
+            "metadata": {
+                "name": "Last Mile Status (June 2020)",
+            },
+        },
+        {
+            "key": "transport_mile_status",
+            "value": obj.transport_mile_status,
+            "metadata": {
+                "name": "Transport Status (June 2020)",
+            },
+        },
+        {
+            "key": "cbc_phase",
+            "value": obj.cbc_phase,
+            "metadata": {
+                "name": "CBC Phase",
             },
         },
     ]
