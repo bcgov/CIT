@@ -329,6 +329,8 @@ def get_community_type_display_name(community_type):
         "Urban": "Urban",
         "Rural": "Rural",
         "Remote Community": "Rural",
+        "Urban First Nations Reserve": "Indigenous",
+        "Rural First Nations Reserve": "Indigenous",
         "Urban First Nations Primary Reserve": "Indigenous",
         "Urban First Nations Secondary Reserve": "Indigenous",
         "Rural First Nations Primary Reserve": "Indigenous",

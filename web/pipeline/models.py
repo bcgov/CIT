@@ -301,8 +301,8 @@ class Community(models.Model):
     wildfire_zone = models.ForeignKey(WildfireZone, null=True, on_delete=models.SET_NULL)
     tsunami_zone = models.ForeignKey(TsunamiZone, null=True, on_delete=models.SET_NULL)
 
-    percent_50_10 = models.FloatField(help_text='portion (0-1) of area with 50/10 speeds (calc. by road length)')
-    percent_25_5 = models.FloatField(help_text='portion (0-1) of area with 25/5 speeds (calc. by road length)')
+    percent_50_10 = models.FloatField(null=True, blank=True, help_text='portion (0-1) of area with 50/10 speeds (calc. by road length)')
+    percent_25_5 = models.FloatField(null=True, blank=True, help_text='portion (0-1) of area with 25/5 speeds (calc. by road length)')
 
     hexuid = models.ForeignKey(
         Hex,
@@ -313,23 +313,27 @@ class Community(models.Model):
         help_text="ID of spatial hex used to color province by connectivity quality.",
     )
 
-    # BASE_ACCESS_50Mbps
-    base_access_50mbps = models.BooleanField(default=False)
     # FN_Community_Name
     fn_community_name = models.CharField(max_length=127, default='')
     # Nation
     nation = models.CharField(max_length=127, default='')
     # Band_Number
     band_number = models.IntegerField(null=True)
-    # Municipality Classification
-    municipality_classification = models.CharField(max_length=63, default='')
+
+    incorporated = models.NullBooleanField()
+
     # Municapility URL Code
     # municipality_id = models.IntegerField(null=True)
     municipality = models.ForeignKey(Municipality, null=True, on_delete=models.SET_NULL)
-    # Estimated Population
-    estimated_population = models.IntegerField(default=0)
-    # Estimated Total Dwellings
-    estimated_total_dwellings = models.IntegerField(default=0)
+
+    # Last-Mile Status (June2020)
+    last_mile_status = models.CharField(max_length=255, null=True, blank=True)
+
+    # Transport Status (June2020)
+    transport_mile_status = models.CharField(max_length=255, null=True, blank=True)
+
+    # CBC Phase
+    cbc_phase = models.CharField(max_length=255, null=True, blank=True)
 
     # Calculated fields (cached in the model for performance reasons)
     num_courts = models.IntegerField(null=True)
