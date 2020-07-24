@@ -1,32 +1,46 @@
 <template>
   <div>
-    <h2 class="mb-2">Census Subvision</h2>
-    <v-alert
-      v-if="classification === 'Not Incorporated'"
-      border="right"
-      colored-border
-      type="error"
-      elevation="2"
-      class="mt-2"
-    >
-      Unincorporated municipalities include census data from the entire
-      enclosing census subdivision, which may include other communities.
-    </v-alert>
-
-    <v-card v-for="(value, key) in groupedCensus" :key="key" class="mb-5">
-      <v-card-title class="subheading font-weight-bold">{{
-        key === 'null' ? 'Miscellaneous' : key
-      }}</v-card-title>
-      <v-divider></v-divider>
-      <v-list dense>
-        <v-list-item v-for="item in value" :key="item.key">
-          <v-list-item-content>{{ item.metadata.name }}</v-list-item-content>
-          <v-list-item-content class="align-end">{{
-            item.value
-          }}</v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-card>
+    <v-expansion-panels multiple>
+      <v-expansion-panel>
+        <v-expansion-panel-header>Census Subdivision</v-expansion-panel-header>
+        <v-expansion-panel-content eager>
+          <v-alert
+            v-if="classification === 'Not Incorporated'"
+            border="right"
+            colored-border
+            type="error"
+            elevation="2"
+            class="mt-2"
+          >
+            Unincorporated municipalities include census data from the entire
+            enclosing census subdivision, which may include other communities.
+          </v-alert>
+          <v-col
+            v-for="(value, key) in groupedCensus"
+            :key="key"
+            class="mb-5"
+            cols="12"
+          >
+            <v-card>
+              <v-card-title class="subheading font-weight-bold">{{
+                key === 'null' ? 'Miscellaneous' : key
+              }}</v-card-title>
+              <v-divider></v-divider>
+              <v-list dense>
+                <v-list-item v-for="item in value" :key="item.key">
+                  <v-list-item-content>{{
+                    item.metadata.name
+                  }}</v-list-item-content>
+                  <v-list-item-content class="align-end justify-center">{{
+                    item.value
+                  }}</v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
+    </v-expansion-panels>
   </div>
 </template>
 

@@ -4,7 +4,7 @@
 
     <v-container>
       <v-row>
-        <v-col col="6">
+        <v-col col="4">
           <v-card>
             <v-card-title class="subheading font-weight-bold"
               >Community Details</v-card-title
@@ -26,16 +26,14 @@
             </v-list>
           </v-card>
         </v-col>
-        <v-col col="6">
+        <v-col col="8">
           <div id="map" ref="map"></div>
         </v-col>
       </v-row>
-    </v-container>
 
-    <v-container>
       <v-row>
         <v-col col="12">
-          <v-expansion-panels multiple>
+          <v-expansion-panels v-model="panels" multiple>
             <v-expansion-panel>
               <v-expansion-panel-header>Demographics</v-expansion-panel-header>
               <v-expansion-panel-content eager>
@@ -66,9 +64,7 @@
           </v-expansion-panels>
         </v-col>
       </v-row>
-    </v-container>
 
-    <v-container>
       <v-row>
         <v-col col="12">
           <CensusSubdivision
@@ -103,6 +99,7 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 export default class CommunityDetail extends Vue {
   communityDetails = {}
   censusSubdivision = {}
+  panels = [0]
 
   get communityDisplayFields() {
     let dfs = this.communityDetails.display_fields
@@ -180,6 +177,27 @@ export default class CommunityDetail extends Vue {
       this.communityDetails.longitude,
       this.communityDetails.latitude
     )
+    new mapboxgl.Marker()
+      .setLngLat([
+        this.communityDetails.longitude,
+        this.communityDetails.latitude,
+      ])
+      .addTo(map)
+
+    map.on('click', function (e) {
+      console.log(e)
+      const features = map.queryRenderedFeatures(e.point)
+      const location = features.find(
+        (f) => f.sourceLayer === 'locations-2bvop8'
+      )
+      if (location) {
+        console.log(location)
+        new mapboxgl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(location.properties.name)
+          .addTo(map)
+      }
+    })
   }
 }
 </script>
