@@ -286,8 +286,8 @@ def serialize_community_detail_fields(obj):
             },
         },
         {
-            "key": "fn_community_name",
-            "value": obj.fn_community_name,
+            "key": "community_type",
+            "value": obj.community_type,
             "metadata": {
                 "name": "Community Type",
             },
