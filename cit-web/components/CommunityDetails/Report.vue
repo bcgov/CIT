@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div ref="reportContainer" class="reportContainer"></div>
+    <div class="desktop-view">
+      <div ref="reportContainer" class="reportContainer"></div>
+    </div>
   </div>
 </template>
 
@@ -91,6 +93,11 @@ export default class MainReport extends Vue {
   }
 }
 </script>
+<style lang="scss">
+iframe {
+  border: none !important;
+}
+</style>
 <style lang="scss" scoped>
 .reportContainer {
   height: 800px;
