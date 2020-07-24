@@ -1,3 +1,6 @@
+import datetime
+
+
 def generate_line_strings():
     from pipeline.models import LocationDistance   # local import to avoid circular import # noqa
 
@@ -272,45 +275,17 @@ def serialize_community_detail_fields(obj):
             },
         },
         {
-            "key": "base_access_50mbps",
-            "value": obj.base_access_50mbps,
-            "metadata": {
-                "name": "Broadband Available (50mbps)",
-            },
-        },
-        {
             "key": "fn_community_name",
             "value": obj.fn_community_name,
             "metadata": {
-                "name": "First Nations' Community Name",
+                "name": "Indigenous Community Name",
             },
         },
         {
-            "key": "municipality_classification",
-            "value": obj.municipality_classification,
+            "key": "incorporated",
+            "value": obj.incorporated,
             "metadata": {
-                "name": "Municipality Classification",
-            },
-        },
-        {
-            "key": "estimated_population",
-            "value": obj.estimated_population,
-            "metadata": {
-                "name": "Estimated Population",
-            },
-        },
-        {
-            "key": "estimated_total_dwellings",
-            "value": obj.estimated_total_dwellings,
-            "metadata": {
-                "name": "Estimated Total Dwellings",
-            },
-        },
-        {
-            "key": "fn_community_name",
-            "value": obj.fn_community_name,
-            "metadata": {
-                "name": "Community Type",
+                "name": "Incorporated",
             },
         },
         {
@@ -318,6 +293,27 @@ def serialize_community_detail_fields(obj):
             "value": obj.census_subdivision_id,
             "metadata": {
                 "name": "Census Subdivision",
+            },
+        },
+        {
+            "key": "last_mile_status",
+            "value": obj.last_mile_status,
+            "metadata": {
+                "name": "Last Mile Status (June 2020)",
+            },
+        },
+        {
+            "key": "transport_mile_status",
+            "value": obj.transport_mile_status,
+            "metadata": {
+                "name": "Transport Status (June 2020)",
+            },
+        },
+        {
+            "key": "cbc_phase",
+            "value": obj.cbc_phase,
+            "metadata": {
+                "name": "CBC Phase",
             },
         },
     ]
@@ -338,3 +334,34 @@ def get_community_type_display_name(community_type):
         "Remote First Nations Primary Reserve": "Indigenous",
     }
     return COMMUNITY_TYPES[community_type]
+
+
+def get_quarterly_date_str_as_date(quarterly_date_str):
+    """
+    Get a quarterly date string, such as "2020-Q1" and return a Date object corresponding to
+    the start date of the quarter (2020-01-01).
+    """
+    QUARTERLY_DATE_MAPPING = {
+        "Q1": {
+            "month": 1,
+            "day": 1,
+        },
+        "Q2": {
+            "month": 4,
+            "day": 1,
+        },
+        "Q3": {
+            "month": 7,
+            "day": 1,
+        },
+        "Q4": {
+            "month": 10,
+            "day": 1,
+        }
+    }
+
+    year_str, quarter = quarterly_date_str.split("-")
+    year = int(year_str)
+    month = QUARTERLY_DATE_MAPPING[quarter]["month"]
+    day = QUARTERLY_DATE_MAPPING[quarter]["day"]
+    return datetime.date(year, month, day)
