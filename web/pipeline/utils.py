@@ -1,3 +1,6 @@
+import datetime
+
+
 def generate_line_strings():
     from pipeline.models import LocationDistance   # local import to avoid circular import # noqa
 
@@ -331,3 +334,34 @@ def get_community_type_display_name(community_type):
         "Remote First Nations Primary Reserve": "Indigenous",
     }
     return COMMUNITY_TYPES[community_type]
+
+
+def get_quarterly_date_str_as_date(quarterly_date_str):
+    """
+    Get a quarterly date string, such as "2020-Q1" and return a Date object corresponding to
+    the start date of the quarter (2020-01-01).
+    """
+    QUARTERLY_DATE_MAPPING = {
+        "Q1": {
+            "month": 1,
+            "day": 1,
+        },
+        "Q2": {
+            "month": 4,
+            "day": 1,
+        },
+        "Q3": {
+            "month": 7,
+            "day": 1,
+        },
+        "Q4": {
+            "month": 10,
+            "day": 1,
+        }
+    }
+
+    year_str, quarter = quarterly_date_str.split("-")
+    year = int(year_str)
+    month = QUARTERLY_DATE_MAPPING[quarter]["month"]
+    day = QUARTERLY_DATE_MAPPING[quarter]["day"]
+    return datetime.date(year, month, day)
