@@ -275,7 +275,7 @@ def serialize_community_detail_fields(obj):
             "key": "fn_community_name",
             "value": obj.fn_community_name,
             "metadata": {
-                "name": "First Nations' Community Name",
+                "name": "Indigenous Community Name",
             },
         },
         {
