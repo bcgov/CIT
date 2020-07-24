@@ -9,11 +9,10 @@ from django.contrib.gis.db.models.functions import Distance
 
 
 def import_communities_from_csv(communities_file_path):
-    wct = 0
     with open(communities_file_path) as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         for row in csv_reader:
-            print(row["Place_Name"])
+            print(row["Place Name"])
             # place_id = row["Place_ID"]
 
             # **Other fields to consider adding**
@@ -26,7 +25,7 @@ def import_communities_from_csv(communities_file_path):
             # **these seem inaccurate, don't use**
             #    CSDUID Repeat Count (used to estimate Pop and Dwelling),Estimated Population,Estimated Total Dwellings,CENSUS DIVISION NAME,CENSUS METRO AREA NAME,CENSUS ECONOMIC REGION NAME,CENSUS SD NAME
 
-            place_name = row["Place_Name"]
+            place_name = row["Place Name"]
             try:
                 community = Community.objects.get(place_name=place_name)
             except Community.DoesNotExist:
@@ -48,22 +47,28 @@ def import_communities_from_csv(communities_file_path):
             # if community.tsunami_zone:
             #     tct+=1
 
-            community.hexuid_id = row['HEXUID']
-            community.community_type = row['Community Type']
-            community.base_access_50mbps = row['BASE_ACCESS_50Mbps'].lower() == 'yes'
-            community.fn_community_name = row['FN_Community_Name']
-            community.nation = row['Nation']
-            community.band_number = row['Band_Number'] or None
-            community.municipality_classification = row['Municipality Classification']
-            is_mun = row['Municipality or is within the boundaries of one (1=Yes)']
-            if is_mun == '1':
-                try:
-                    community.municipality = Municipality.objects.get(geom__contains=community.point)
-                except Municipality.DoesNotExist:
-                    print("Error: Municipality not found for {}!".format(community.place_name))
-            community.estimated_population = row['Estimated Population']
-            community.estimated_total_dwellings = row['Estimated Total Dwellings']
+            community.hexuid_id = row['HEXID']
+            community.community_type = row['Place Type']
 
+            community.fn_community_name = row['FN Alt Name']
+            community.nation = row['Nation']
+            community.band_number = row['Band Number'] or None
+            # community.municipality_classification = row['Municipality Classification']
+            # is_mun = row['Municipality or is within the boundaries of one (1=Yes)']
+            # if is_mun == '1':
+            #     try:
+            #         community.municipality = Municipality.objects.get(geom__contains=community.point)
+            #     except Municipality.DoesNotExist:
+            #         print("Error: Municipality not found for {}!".format(community.place_name))
+
+            if row['Incorporated'] == "Yes":
+                community.incorporated = True
+            elif row['Incorporated'] == "No":
+                community.incorporated = False
+
+            community.last_mile_status = row['Last-Mile Status (Sept2020)']
+            community.transport_status = row['Transport Status (Sept2020)']
+            community.cbc_phase = row['CBC Phase']
 
             if community.municipality:
                 roads = Road.objects.filter(geom__intersects=community.municipality.geom)
