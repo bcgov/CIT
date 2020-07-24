@@ -81,6 +81,9 @@ class HospitalSerializer(serializers.ModelSerializer):
 
 
 class NaturalResourceProjectSerializer(serializers.ModelSerializer):
+    standardized_start_date = serializers.DateField(source='get_standardized_start_date_as_date')
+    standardized_completion_date = serializers.DateField(source='get_standardized_completion_date_as_date')
+
     class Meta:
         model = NaturalResourceProject
         fields = (

@@ -3,7 +3,8 @@ from django.contrib.gis.db.models import PointField
 from django.contrib.gis.geos import Point
 
 from pipeline.utils import (
-    serialize_census_subdivision_groups, serialize_community_detail_fields, get_community_type_display_name)
+    serialize_census_subdivision_groups, serialize_community_detail_fields, get_community_type_display_name,
+    get_quarterly_date_str_as_date)
 
 
 # class Cacheable(models.Model):
@@ -563,6 +564,18 @@ class NaturalResourceProject(Location):
     operating_jobs = models.CharField(null=True, blank=True, max_length=255)
     standardized_start_date = models.CharField(null=True, blank=True, max_length=255)
     standardized_completion_date = models.CharField(null=True, blank=True, max_length=255)
+
+    def get_standardized_start_date_as_date(self):
+        if not self.standardized_start_date:
+            return None
+
+        return get_quarterly_date_str_as_date(self.standardized_start_date)
+
+    def get_standardized_completion_date_as_date(self):
+        if not self.standardized_completion_date:
+            return None
+
+        return get_quarterly_date_str_as_date(self.standardized_completion_date)
 
     '''
     {
