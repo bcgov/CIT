@@ -38,7 +38,7 @@
           <v-expansion-panels multiple>
             <v-expansion-panel>
               <v-expansion-panel-header>Demographics</v-expansion-panel-header>
-              <v-expansion-panel-content>
+              <v-expansion-panel-content eager>
                 <Report
                   page-name="ReportSection3f0e4e05d2cefefb8f2c"
                   :cid="communityDetails.id"
@@ -47,7 +47,7 @@
             </v-expansion-panel>
             <v-expansion-panel>
               <v-expansion-panel-header>Connectivity</v-expansion-panel-header>
-              <v-expansion-panel-content>
+              <v-expansion-panel-content eager>
                 <Report
                   page-name="ReportSectionafe2f332b411e5127156"
                   :cid="communityDetails.id"
@@ -56,7 +56,7 @@
             </v-expansion-panel>
             <v-expansion-panel>
               <v-expansion-panel-header>Projects</v-expansion-panel-header>
-              <v-expansion-panel-content>
+              <v-expansion-panel-content eager>
                 <Report
                   page-name="ReportSection1486ad00d6b6d6e826a3"
                   :cid="communityDetails.id"
