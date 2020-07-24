@@ -33,10 +33,50 @@
     </v-container>
 
     <v-container>
-      <CensusSubdivision
-        :classification="communityDetails.municipality_classification"
-        :census-subdivision="censusSubdivision"
-      ></CensusSubdivision>
+      <v-row>
+        <v-col col="12">
+          <v-expansion-panels multiple>
+            <v-expansion-panel>
+              <v-expansion-panel-header>Demographics</v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <Report
+                  page-name="ReportSection3f0e4e05d2cefefb8f2c"
+                  :cid="communityDetails.id"
+                ></Report>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+            <v-expansion-panel>
+              <v-expansion-panel-header>Connectivity</v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <Report
+                  page-name="ReportSectionafe2f332b411e5127156"
+                  :cid="communityDetails.id"
+                ></Report>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+            <v-expansion-panel>
+              <v-expansion-panel-header>Projects</v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <Report
+                  page-name="ReportSection1486ad00d6b6d6e826a3"
+                  :cid="communityDetails.id"
+                ></Report>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-col>
+      </v-row>
+    </v-container>
+
+    <v-container>
+      <v-row>
+        <v-col col="12">
+          <CensusSubdivision
+            :classification="communityDetails.municipality_classification"
+            :census-subdivision="censusSubdivision"
+          ></CensusSubdivision>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>
@@ -45,6 +85,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 // import { omitBy } from 'lodash'
 import MainHeader from '~/components/MainHeader.vue'
+import Report from '~/components/CommunityDetails/Report.vue'
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
 import { getCommunity, getCensusSubDivision } from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
@@ -54,6 +95,7 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 @Component({
   MainHeader,
   CensusSubdivision,
+  Report,
   filters: {
     yesno,
   },
