@@ -18,6 +18,11 @@ from pipeline.models import (
 )
 
 
+LOCATION_TYPES = [
+    'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities',
+    'hospitals', 'natural_resource_projects', 'economic_projects', 'servicebc_locations',
+    'schools', 'clinics', 'courts', 'post_secondary_institutions',
+]
 
 CSV_RESOURCES = {
     # Provided by NetworkBC Team

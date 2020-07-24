@@ -8,6 +8,7 @@ from django.core.exceptions import FieldDoesNotExist
 from django.contrib.gis.measure import D
 
 from pipeline.models import Community, LocationDistance
+from pipeline.constants import LOCATION_TYPES, CSV_RESOURCES, DATABC_RESOURCES
 
 
 def import_data_into_point_model(resource_type, Model, row):
@@ -105,6 +106,21 @@ def calculate_distances(location):
 
     for community in communities_within_50k:
         create_distance(location, community)
+
+
+def calculate_nearest_location_types_outside_50k_for_communities():
+    for community in Community.objects.all():
+        for location_type in LOCATION_TYPES:
+            locations_within_50k = LocationDistance.objects.filter(
+                community=community, location__location_type=location_type, distance__lte=50)
+            # if there are no locations of this location type within 50km,
+            # just get the closest location and create a LocationDistance object for that
+            if not locations_within_50k:
+                print("community", community, location_type)
+                location_type_model = {**CSV_RESOURCES, **DATABC_RESOURCES}[location_type]["model"]
+                closest_location_type = location_type_model.objects.all()\
+                    .annotate(distance=Distance("point", community.point))\
+                    .order_by("distance").first()
 
 
 def create_distance(location, community):
