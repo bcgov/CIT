@@ -286,13 +286,6 @@ def serialize_community_detail_fields(obj):
             },
         },
         {
-            "key": "community_type",
-            "value": obj.community_type,
-            "metadata": {
-                "name": "Community Type",
-            },
-        },
-        {
             "key": "census_subdivision_id",
             "value": obj.census_subdivision_id,
             "metadata": {
