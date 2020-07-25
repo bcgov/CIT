@@ -291,8 +291,8 @@ class CensusSubdivision(models.Model):
 
 
 class Community(models.Model):
-    # place_id = models.CharField(null=True, blank=True, max_length=255)
-    place_name = models.CharField(null=True, blank=True, max_length=255, unique=True)
+    place_id = models.CharField(null=True, blank=True, max_length=255, unique=True)
+    place_name = models.CharField(null=True, blank=True, max_length=255)
     point = PointField(null=True, blank=True)
     # TODO SY - make this into a choice field tuple
     # Community Type,
