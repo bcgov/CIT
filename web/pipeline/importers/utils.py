@@ -105,10 +105,10 @@ def calculate_distances(location):
     )
 
     for community in communities_within_50k:
-        create_distance(location, community)
+        create_distance(location, community, community.distance)
 
 
-def calculate_nearest_location_types_outside_50k_for_communities():
+def calculate_nearest_location_types_outside_50k():
     for community in Community.objects.all():
         for location_type in LOCATION_TYPES:
             locations_within_50k = LocationDistance.objects.filter(
@@ -116,16 +116,23 @@ def calculate_nearest_location_types_outside_50k_for_communities():
             # if there are no locations of this location type within 50km,
             # just get the closest location and create a LocationDistance object for that
             if not locations_within_50k:
-                print("community", community, location_type)
+                print("community {community_name} has no {location_type} within 50km".format(
+                    community_name=community.place_name,
+                    location_type=location_type))
                 location_type_model = {**CSV_RESOURCES, **DATABC_RESOURCES}[location_type]["model"]
                 closest_location_type = location_type_model.objects.all()\
                     .annotate(distance=Distance("point", community.point))\
                     .order_by("distance").first()
+                print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
+                    location_type=location_type,
+                    community_name=community.place_name,
+                    closest_location_type=closest_location_type.name,
+                    distance=closest_location_type.distance.km))
 
-                create_distance(closest_location_type, community)
+                create_distance(closest_location_type, community, closest_location_type.distance)
 
 
-def create_distance(location, community):
+def create_distance(location, community, distance):
     """
     Uses Route Planner API to get distances and travel times and populate
     theDistance join table if a travel route is found.
@@ -138,7 +145,7 @@ def create_distance(location, community):
     fields = {
         "location": location,
         "community": community,
-        "distance": community.distance.km,
+        "distance": distance.km,
         # "travel_time": travel_time,
         # "travel_time_display": travel_time_display,
         # "driving_route_available": True,
