@@ -12,8 +12,14 @@ def import_communities_from_csv(communities_file_path):
     with open(communities_file_path) as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         for row in csv_reader:
-            print(row["Place Name"])
-            # place_id = row["Place_ID"]
+            print("{place_name} ({place_id})".format(
+                place_name=row["Place Name"], place_id=row["Place ID"]))
+            place_id = row["Place ID"]
+
+            try:
+                community = Community.objects.get(place_id=place_id)
+            except Community.DoesNotExist:
+                community = Community(place_id=place_id)
 
             # **Other fields to consider adding**
             #    BASE_ACCESS_50Mbps,Community Type,FN_Community_Name,Nation,Band_Number
@@ -25,11 +31,7 @@ def import_communities_from_csv(communities_file_path):
             # **these seem inaccurate, don't use**
             #    CSDUID Repeat Count (used to estimate Pop and Dwelling),Estimated Population,Estimated Total Dwellings,CENSUS DIVISION NAME,CENSUS METRO AREA NAME,CENSUS ECONOMIC REGION NAME,CENSUS SD NAME
 
-            place_name = row["Place Name"]
-            try:
-                community = Community.objects.get(place_name=place_name)
-            except Community.DoesNotExist:
-                community = Community(place_name=place_name)
+            community.place_name = row["Place Name"]
 
             community.point = Point(float(row["Longitude"]), float(row["Latitude"]), srid=4326)
 
