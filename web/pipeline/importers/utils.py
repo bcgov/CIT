@@ -122,6 +122,8 @@ def calculate_nearest_location_types_outside_50k_for_communities():
                     .annotate(distance=Distance("point", community.point))\
                     .order_by("distance").first()
 
+                create_distance(closest_location_type, community)
+
 
 def create_distance(location, community):
     """
