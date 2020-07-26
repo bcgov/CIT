@@ -362,6 +362,9 @@ def get_quarterly_date_str_as_date(quarterly_date_str):
 
     year_str, quarter = quarterly_date_str.split("-")
     year = int(year_str)
-    month = QUARTERLY_DATE_MAPPING[quarter]["month"]
-    day = QUARTERLY_DATE_MAPPING[quarter]["day"]
-    return datetime.date(year, month, day)
+    try:
+        month = QUARTERLY_DATE_MAPPING[quarter]["month"]
+        day = QUARTERLY_DATE_MAPPING[quarter]["day"]
+        return datetime.date(year, month, day)
+    except KeyError:
+        return None
