@@ -77,18 +77,20 @@ def import_communities_from_csv(communities_file_path):
             else:
                 roads = Road.objects.filter(geom__distance_lt=(community.point, D(km=10)))
 
-            speeds_map = {}
+            speeds_map = {'50/10': 0, '25/5':0, '10/2':0, '5/1':0, '':0}
+            sk = ['50/10', '25/5', '10/2', '5/1', '']
             total_length = 0
             for road in roads:
-                if road.best_broadband not in speeds_map:
-                    speeds_map[road.best_broadband] = 0
-                speeds_map[road.best_broadband] += road.geom.length
+                key_index = sk.index(road.best_broadband)
+                for k in sk[key_index:]:
+                    speeds_map[k] += road.geom.length
                 total_length += road.geom.length
-
-            if '50/10' in speeds_map:
+            
+            if total_length:
                 community.percent_50_10 = speeds_map['50/10'] / total_length
-            if '25/5' in speeds_map:
                 community.percent_25_5 = speeds_map['25/5'] / total_length
+                community.percent_10_2 = speeds_map['10/2'] / total_length
+                community.percent_5_1 = speeds_map['5/1'] / total_length
 
             try:
                 community.save()
