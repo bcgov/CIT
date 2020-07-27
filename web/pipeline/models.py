@@ -304,6 +304,8 @@ class Community(models.Model):
 
     percent_50_10 = models.FloatField(null=True, blank=True, help_text='portion (0-1) of area with 50/10 speeds (calc. by road length)')
     percent_25_5 = models.FloatField(null=True, blank=True, help_text='portion (0-1) of area with 25/5 speeds (calc. by road length)')
+    percent_10_2 = models.FloatField(null=True, blank=True, help_text='portion (0-1) of area with 10/2 speeds (calc. by road length)')
+    percent_5_1 = models.FloatField(null=True, blank=True, help_text='portion (0-1) of area with 5/1 speeds (calc. by road length)')
 
     hexuid = models.ForeignKey(
         Hex,
