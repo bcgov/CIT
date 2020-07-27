@@ -52,7 +52,10 @@ export default class MainReport extends Vue {
       settings: {
         panes: {
           pageNavigation: {
-            visible: true,
+            visible: false,
+          },
+          filters: {
+            visible: false,
           },
         },
       },
