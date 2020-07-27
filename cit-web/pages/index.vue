@@ -1,19 +1,13 @@
 <template>
-  <div>
-    <MainHeader
-      title="Welcome to the Community Information Tool"
-      subtitle="Click through the pages of this dashboard to analyze how B.C. communities are being served ….."
-    />
+  <div class="main-report-container">
     <MainReport />
   </div>
 </template>
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
-import MainHeader from '~/components/MainHeader.vue'
 import MainReport from '~/components/MainReport.vue'
 @Component({
-  MainHeader,
   MainReport,
 })
 export default class Index extends Vue {
@@ -26,3 +20,14 @@ export default class Index extends Vue {
   }
 }
 </script>
+<style lang="scss">
+.main-report-container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2em;
+}
+
+iframe {
+  border: 0 !important;
+}
+</style>
