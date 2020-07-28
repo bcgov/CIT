@@ -11,6 +11,10 @@ import MainReport from '~/components/MainReport.vue'
   MainReport,
 })
 export default class Index extends Vue {
+  layout(context) {
+    return 'fixed'
+  }
+
   mounted() {
     navigator.serviceWorker.getRegistrations().then(function (registrations) {
       for (const registration of registrations) {
@@ -24,7 +28,7 @@ export default class Index extends Vue {
 .main-report-container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 2em;
+  padding: 4em 2em;
 }
 
 iframe {

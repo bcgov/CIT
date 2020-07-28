@@ -1,85 +1,100 @@
 <template>
   <div>
-    <MainHeader :title="placeName" subtitle="Community Details" class="mb-5" />
+    <div v-if="isCommunityEmpty" class="d-flex mt-5 justify-center">
+      <v-alert type="info">
+        Sorry, we could not find a communtiy with that ID.
+      </v-alert>
+    </div>
+    <div v-else>
+      <MainHeader
+        :title="placeName"
+        subtitle="Community Details"
+        class="mb-5"
+      />
 
-    <v-container>
-      <v-row>
-        <v-col col="4">
-          <v-card>
-            <v-card-title class="subheading font-weight-bold"
-              >Community Details</v-card-title
-            >
-
-            <v-divider></v-divider>
-            <v-list dense>
-              <v-list-item
-                v-for="(df, key) in communityDisplayFields"
-                :key="key"
+      <v-container>
+        <v-row>
+          <v-col col="4">
+            <v-card>
+              <v-card-title class="subheading font-weight-bold"
+                >Community Details</v-card-title
               >
-                <v-list-item-content>{{
-                  df.metadata.name
-                }}</v-list-item-content>
-                <v-list-item-content class="align-end">{{
-                  df.value | yesno
-                }}</v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </v-col>
-        <v-col col="8">
-          <div id="map" ref="map"></div>
-        </v-col>
-      </v-row>
 
-      <v-row>
-        <v-col col="12">
-          <v-expansion-panels v-model="panels" multiple>
-            <v-expansion-panel>
-              <v-expansion-panel-header>Demographics</v-expansion-panel-header>
-              <v-expansion-panel-content eager>
-                <Report
-                  page-name="ReportSection3f0e4e05d2cefefb8f2c"
-                  :cid="communityDetails.id"
-                ></Report>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-            <v-expansion-panel>
-              <v-expansion-panel-header>Connectivity</v-expansion-panel-header>
-              <v-expansion-panel-content eager>
-                <Report
-                  page-name="ReportSectionafe2f332b411e5127156"
-                  :cid="communityDetails.id"
-                ></Report>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-            <v-expansion-panel>
-              <v-expansion-panel-header>Projects</v-expansion-panel-header>
-              <v-expansion-panel-content eager>
-                <Report
-                  page-name="ReportSection1486ad00d6b6d6e826a3"
-                  :cid="communityDetails.id"
-                ></Report>
-              </v-expansion-panel-content>
-            </v-expansion-panel>
-          </v-expansion-panels>
-        </v-col>
-      </v-row>
+              <v-divider></v-divider>
+              <v-list dense>
+                <v-list-item
+                  v-for="(df, key) in communityDisplayFields"
+                  :key="key"
+                >
+                  <v-list-item-content>{{
+                    df.metadata.name
+                  }}</v-list-item-content>
+                  <v-list-item-content class="align-end">{{
+                    df.value | yesno
+                  }}</v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
+          <v-col col="8">
+            <div id="map" ref="map"></div>
+          </v-col>
+        </v-row>
 
-      <v-row>
-        <v-col col="12">
-          <CensusSubdivision
-            :classification="communityDetails.municipality_classification"
-            :census-subdivision="censusSubdivision"
-          ></CensusSubdivision>
-        </v-col>
-      </v-row>
-    </v-container>
+        <v-row>
+          <v-col col="12">
+            <v-expansion-panels v-model="panels" multiple>
+              <v-expansion-panel>
+                <v-expansion-panel-header
+                  >Demographics</v-expansion-panel-header
+                >
+                <v-expansion-panel-content eager>
+                  <Report
+                    page-name="ReportSection3f0e4e05d2cefefb8f2c"
+                    :cid="communityDetails.id"
+                  ></Report>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel>
+                <v-expansion-panel-header
+                  >Connectivity</v-expansion-panel-header
+                >
+                <v-expansion-panel-content eager>
+                  <Report
+                    page-name="ReportSectionafe2f332b411e5127156"
+                    :cid="communityDetails.id"
+                  ></Report>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel>
+                <v-expansion-panel-header>Projects</v-expansion-panel-header>
+                <v-expansion-panel-content eager>
+                  <Report
+                    page-name="ReportSection1486ad00d6b6d6e826a3"
+                    :cid="communityDetails.id"
+                  ></Report>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col col="12">
+            <CensusSubdivision
+              :classification="communityDetails.municipality_classification"
+              :census-subdivision="censusSubdivision"
+            ></CensusSubdivision>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
   </div>
 </template>
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
-// import { omitBy } from 'lodash'
+import { isEmpty } from 'lodash'
 import MainHeader from '~/components/MainHeader.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
@@ -100,6 +115,12 @@ export default class CommunityDetail extends Vue {
   communityDetails = {}
   censusSubdivision = {}
   panels = [0]
+
+  // Methods
+
+  get isCommunityEmpty() {
+    return isEmpty(this.communityDetails)
+  }
 
   get communityDisplayFields() {
     let dfs = this.communityDetails.display_fields
@@ -169,6 +190,9 @@ export default class CommunityDetail extends Vue {
   }
 
   mounted() {
+    if (this.isCommunityEmpty) {
+      return
+    }
     const options = this.getMapboxOptions()
     const map = new mapboxgl.Map(options)
     this.addNavigationControl(map)
