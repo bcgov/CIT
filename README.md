@@ -7,7 +7,7 @@ A Dockerized boilerplate for a Django API driven web app, with Vue CLI and Postg
 Clone the project.
 
 ```
-git clone https://github.com/countable/cit
+git clone https://github.com/bcgov/CIT
 ```
 
 Install Docker and docker-compose.
