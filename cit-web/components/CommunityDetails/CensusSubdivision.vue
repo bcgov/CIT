@@ -2,7 +2,7 @@
   <div>
     <v-expansion-panels multiple>
       <v-expansion-panel>
-        <v-expansion-panel-header>Census Subdivision</v-expansion-panel-header>
+        <v-expansion-panel-header>Census Data</v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-alert
             v-if="classification === 'Not Incorporated'"

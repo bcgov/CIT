@@ -28,7 +28,7 @@ export default class Index extends Vue {
 .main-report-container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 4em 2em;
+  padding: 0;
 }
 
 iframe {
