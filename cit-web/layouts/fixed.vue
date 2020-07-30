@@ -10,9 +10,9 @@
     <div class="fixed-content">
       <nuxt />
     </div>
-    <div class="fixed-footer">
+    <!--<div class="fixed-footer">
       <v-footer color="primary" height="66"></v-footer>
-    </div>
+    </div>-->
   </v-app>
 </template>
 
