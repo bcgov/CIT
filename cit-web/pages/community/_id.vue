@@ -210,6 +210,7 @@ export default class CommunityDetail extends Vue {
 
   addNavigationControl(map) {
     map.addControl(new mapboxgl.NavigationControl())
+    map.addControl(new mapboxgl.FullscreenControl());
   }
 
   setCenter(map, lng, lat) {
