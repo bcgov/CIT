@@ -107,7 +107,9 @@
                 </v-expansion-panel-content>
               </v-expansion-panel>
               <v-expansion-panel>
-                <v-expansion-panel-header>Projects</v-expansion-panel-header>
+                <v-expansion-panel-header>
+                  Community Assets</v-expansion-panel-header
+                >
                 <v-expansion-panel-content eager>
                   <Report
                     page-name="ReportSection1486ad00d6b6d6e826a3"
@@ -210,7 +212,7 @@ export default class CommunityDetail extends Vue {
 
   addNavigationControl(map) {
     map.addControl(new mapboxgl.NavigationControl())
-    map.addControl(new mapboxgl.FullscreenControl());
+    map.addControl(new mapboxgl.FullscreenControl())
   }
 
   setCenter(map, lng, lat) {
