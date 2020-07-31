@@ -86,7 +86,7 @@ class WildfireZone(Area):
     NAME_FIELD = 'FIRE_ZONE'
     risk_class = models.CharField(
         max_length=1,
-        help_text="A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 " "(extreme).",
+        help_text="A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 (extreme).",
     )  # 1-5
 
 
