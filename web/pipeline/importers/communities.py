@@ -2,10 +2,9 @@ import csv
 
 from django.contrib.gis.geos import Point
 
-from pipeline.models import Community, WildfireZone, TsunamiZone, Municipality, Road
+from pipeline.models import Community, WildfireZone, TsunamiZone, Road, CensusSubdivision
 from django.db.utils import IntegrityError
 from django.contrib.gis.measure import D
-from django.contrib.gis.db.models.functions import Distance
 
 
 def import_communities_from_csv(communities_file_path):
@@ -36,7 +35,17 @@ def import_communities_from_csv(communities_file_path):
             community.point = Point(float(row["Longitude"]), float(row["Latitude"]), srid=4326)
 
             # TODO: spatial query?
-            community.census_subdivision_id = row['CSDUID']
+            try:
+                census_subdivision = CensusSubdivision.objects.get(id=row['CSDUID'])
+                community.census_subdivision_id = census_subdivision.id
+            except CensusSubdivision.DoesNotExist:
+                # TODO: spatial query
+                print("CensusSubdivision {} corresponding to Community {} was not found in the CensusSubdivision data"
+                      .format(row['CSDUID'], community.place_name))
+                census_subdivisions = CensusSubdivision.objects.filter(geom__contains=community.point)
+                print("performing spatial search for census subdivision", census_subdivisions)
+                if census_subdivisions:
+                    community.census_subdivision_id = census_subdivisions.first().id
 
             # TODO: Consider municipal overlap.
             community.wildfire_zone = WildfireZone.objects.filter(
