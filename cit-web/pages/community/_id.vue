@@ -90,7 +90,7 @@
                 >
                 <v-expansion-panel-content eager>
                   <Report
-                    page-name="ReportSection3f0e4e05d2cefefb8f2c"
+                    page-name="ReportSection05fe7b2a55e727a0a41e"
                     :cid="communityDetails.id"
                   ></Report>
                 </v-expansion-panel-content>
@@ -101,7 +101,7 @@
                 >
                 <v-expansion-panel-content eager>
                   <Report
-                    page-name="ReportSectionafe2f332b411e5127156"
+                    page-name="ReportSectionbc899e8fac8c2b494765"
                     :cid="communityDetails.id"
                   ></Report>
                 </v-expansion-panel-content>
@@ -112,7 +112,7 @@
                 >
                 <v-expansion-panel-content eager>
                   <Report
-                    page-name="ReportSection1486ad00d6b6d6e826a3"
+                    page-name="ReportSectionc87b6c3907e9321ae830"
                     :cid="communityDetails.id"
                   ></Report>
                 </v-expansion-panel-content>
