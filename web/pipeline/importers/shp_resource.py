@@ -279,6 +279,49 @@ def _save_subdiv(feat):
     # 2030, "1.2.2.3", 1, "  65 years and over"
     subdiv.pop_pct_65 = _fetch_statscan_value(stats, "1.2.2.3")
 
+    # "1.2.1.1.1", "    0 to 4 years"
+    subdiv.pop_0_4 = _fetch_statscan_value(stats, "1.2.1.1.1")
+    # "1.2.1.1.2", "    5 to 9 years"
+    subdiv.pop_5_9 = _fetch_statscan_value(stats, "1.2.1.1.2")
+    # "1.2.1.1.3", "    10 to 14 years"
+    subdiv.pop_10_14 = _fetch_statscan_value(stats, "1.2.1.1.3")
+    # "1.2.1.2.1", "    15 to 19 years"
+    subdiv.pop_15_19 = _fetch_statscan_value(stats, "1.2.1.2.1")
+    # "1.2.1.2.2", "    20 to 24 years"
+    subdiv.pop_20_24 = _fetch_statscan_value(stats, "1.2.1.2.2")
+    # "1.2.1.2.3", "    25 to 29 years"
+    subdiv.pop_25_29 = _fetch_statscan_value(stats, "1.2.1.2.3")
+    # "1.2.1.2.4", "    30 to 34 years"
+    subdiv.pop_30_34 = _fetch_statscan_value(stats, "1.2.1.2.4")
+    # "1.2.1.2.5", "    35 to 39 years"
+    subdiv.pop_35_39 = _fetch_statscan_value(stats, "1.2.1.2.5")
+    # "1.2.1.2.6", "    40 to 44 years"
+    subdiv.pop_40_44 = _fetch_statscan_value(stats, "1.2.1.2.6")
+    # "1.2.1.2.7", "    45 to 49 years"
+    subdiv.pop_45_49 = _fetch_statscan_value(stats, "1.2.1.2.7")
+    # "1.2.1.2.8", "    50 to 54 years"
+    subdiv.pop_50_54 = _fetch_statscan_value(stats, "1.2.1.2.8")
+    # "1.2.1.2.9", "    55 to 59 years"
+    subdiv.pop_55_59 = _fetch_statscan_value(stats, "1.2.1.2.9")
+    # "1.2.1.2.10", "    60 to 64 years"
+    subdiv.pop_60_64 = _fetch_statscan_value(stats, "1.2.1.2.10")
+    # "1.2.1.3.1", "    65 to 69 years"
+    subdiv.pop_65_69 = _fetch_statscan_value(stats, "1.2.1.3.1")
+    # "1.2.1.3.2", "    70 to 74 years"
+    subdiv.pop_70_74 = _fetch_statscan_value(stats, "1.2.1.3.2")
+    # "1.2.1.3.3", "    75 to 79 years"
+    subdiv.pop_75_79 = _fetch_statscan_value(stats, "1.2.1.3.3")
+    # "1.2.1.3.4", "    80 to 84 years"
+    subdiv.pop_80_84 = _fetch_statscan_value(stats, "1.2.1.3.4")
+    # "1.2.1.3.5.1", "      85 to 89 years"
+    subdiv.pop_85_89 = _fetch_statscan_value(stats, "1.2.1.3.5.1")
+    # "1.2.1.3.5.2", "      90 to 94 years"
+    subdiv.pop_90_94 = _fetch_statscan_value(stats, "1.2.1.3.5.2")
+    # "1.2.1.3.5.3", "      95 to 99 years"
+    subdiv.pop_95_99 = _fetch_statscan_value(stats, "1.2.1.3.5.3")
+    # "1.2.1.3.5.4", "      100 years and over"
+    subdiv.pop_100 = _fetch_statscan_value(stats, "1.2.1.3.5.4")
+
     # types of occupied dwellings
     # "2.1.1.1", 1, "  Single-detached house"
     subdiv.detached_houses = _fetch_statscan_value(stats, "2.1.1.1")

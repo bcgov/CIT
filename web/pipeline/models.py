@@ -123,13 +123,57 @@ class CensusSubdivision(models.Model):
     area = models.FloatField(null=True)
 
     # age of population
-
+    # broad categories
     # "1.2.2.1", "  0 to 14 years"
     pop_pct_0_14 = models.FloatField(null=True)
     # "1.2.2.2", 1, "  15 to 64 years"
     pop_pct_14_65 = models.FloatField(null=True)
     # "1.2.2.3", 1, "  65 years and over"
     pop_pct_65 = models.FloatField(null=True)
+
+    # fine grained categories
+    # "1.2.1.1.1", "    0 to 4 years"
+    pop_0_4 = models.IntegerField(null=True)
+    # "1.2.1.1.2", "    5 to 9 years"
+    pop_5_9 = models.IntegerField(null=True)
+    # "1.2.1.1.3", "    10 to 14 years"
+    pop_10_14 = models.IntegerField(null=True)
+    # "1.2.1.2.1", "    15 to 19 years"
+    pop_15_19 = models.IntegerField(null=True)
+    # "1.2.1.2.2", "    20 to 24 years"
+    pop_20_24 = models.IntegerField(null=True)
+    # "1.2.1.2.3", "    25 to 29 years"
+    pop_25_29 = models.IntegerField(null=True)
+    # "1.2.1.2.4", "    30 to 34 years"
+    pop_30_34 = models.IntegerField(null=True)
+    # "1.2.1.2.5", "    35 to 39 years"
+    pop_35_39 = models.IntegerField(null=True)
+    # "1.2.1.2.6", "    40 to 44 years"
+    pop_40_44 = models.IntegerField(null=True)
+    # "1.2.1.2.7", "    45 to 49 years"
+    pop_45_49 = models.IntegerField(null=True)
+    # "1.2.1.2.8", "    50 to 54 years"
+    pop_50_54 = models.IntegerField(null=True)
+    # "1.2.1.2.9", "    55 to 59 years"
+    pop_55_59 = models.IntegerField(null=True)
+    # "1.2.1.2.10", "    60 to 64 years"
+    pop_60_64 = models.IntegerField(null=True)
+    # "1.2.1.3.1", "    65 to 69 years"
+    pop_65_69 = models.IntegerField(null=True)
+    # "1.2.1.3.2", "    70 to 74 years"
+    pop_70_74 = models.IntegerField(null=True)
+    # "1.2.1.3.3", "    75 to 79 years"
+    pop_75_79 = models.IntegerField(null=True)
+    # "1.2.1.3.4", "    80 to 84 years"
+    pop_80_84 = models.IntegerField(null=True)
+    # "1.2.1.3.5.1", "      85 to 89 years"
+    pop_85_89 = models.IntegerField(null=True)
+    # "1.2.1.3.5.2", "      90 to 94 years"
+    pop_90_94 = models.IntegerField(null=True)
+    # "1.2.1.3.5.3", "      95 to 99 years"
+    pop_95_99 = models.IntegerField(null=True)
+    # "1.2.1.3.5.4", "      100 years and over"
+    pop_100 = models.IntegerField(null=True)
 
     # types of occupied dwellings
     # "2.1.1.1", 1, "  Single-detached house"
