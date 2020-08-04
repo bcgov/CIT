@@ -69,6 +69,6 @@ export default class MainReport extends Vue {
 </script>
 <style lang="scss" scoped>
 .reportContainer {
-  height: 800px;
+  height: 1272px;
 }
 </style>
