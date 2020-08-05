@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="desktop-view">
-      <div ref="reportContainer" class="reportContainer" :class="extraClassname"></div>
+      <div
+        ref="reportContainer"
+        class="reportContainer"
+        :class="extraClassname"
+      ></div>
     </div>
   </div>
 </template>
@@ -19,7 +23,7 @@ export default class MainReport extends Vue {
   @Prop({ default: null, type: Number })
   cid
 
-  @Prop({ default: '', type: String})
+  @Prop({ default: '', type: String })
   extraClassname
 
   embedToken = null
