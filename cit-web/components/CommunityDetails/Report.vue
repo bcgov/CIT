@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="desktop-view">
-      <div ref="reportContainer" class="reportContainer"></div>
+      <div ref="reportContainer" class="reportContainer" :class="extraClassname"></div>
     </div>
   </div>
 </template>
@@ -18,6 +18,9 @@ export default class MainReport extends Vue {
 
   @Prop({ default: null, type: Number })
   cid
+
+  @Prop({ default: '', type: String})
+  extraClassname
 
   embedToken = null
   groupId = '99dbfebe-3c0b-4b2d-affb-3af843c67549'
@@ -101,5 +104,9 @@ iframe {
 <style lang="scss" scoped>
 .reportContainer {
   height: 800px;
+}
+
+.reportContainer.demographics {
+  height: 1400px;
 }
 </style>

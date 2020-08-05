@@ -92,6 +92,7 @@
                   <Report
                     page-name="ReportSection05fe7b2a55e727a0a41e"
                     :cid="communityDetails.id"
+                    extra-classname="demographics"
                   ></Report>
                 </v-expansion-panel-content>
               </v-expansion-panel>
