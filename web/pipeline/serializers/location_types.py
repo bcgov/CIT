@@ -16,6 +16,9 @@ class FirstResponderSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_phone",
+            "location_website",
+            "location_email",
             "keywords",
         )
 
@@ -58,6 +61,7 @@ class CivicFacilitySerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_website",
             "keywords",
             "bus_cat_cl",
             "bus_cat_ds",
@@ -74,6 +78,9 @@ class HospitalSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_phone",
+            "location_website",
+            "location_email",
             "rg_name",
             "sv_description",
             "hours",
@@ -93,6 +100,8 @@ class NaturalResourceProjectSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_phone",
+            "location_website",
             "project_comments",
             "project_description",
             "estimated_cost",
@@ -128,6 +137,7 @@ class EconomicProjectSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_website",
             "flnro_project_status",
             "project_type",
             "project_category",
@@ -147,6 +157,8 @@ class ServiceBCLocationSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_phone",
+            "location_website",
         )
 
 
@@ -191,6 +203,9 @@ class ClinicSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_phone",
+            "location_website",
+            "location_email",
             "sv_description",
             "hours",
         )
@@ -206,6 +221,7 @@ class CourtSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_phone",
             "hours_of_operation",
             "court_level",
         )
