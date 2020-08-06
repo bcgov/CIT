@@ -59,6 +59,7 @@ def import_data_into_point_model(resource_type, Model, row):
 
     instance.community = closest_community
     instance.location_fuzzy = location_fuzzy
+    import_contact_fields(instance, row, Model)
     import_variable_fields(instance, row, Model)
     instance.save()
 
@@ -81,6 +82,27 @@ def import_data_into_area_model(resource_type, Model, row):
 
     instance.save()
     return instance
+
+
+def import_contact_fields(instance, row, Model):
+    website_field = getattr(Model, "WEBSITE_FIELD", None)
+    alt_website_field = getattr(Model, "ALT_WEBSITE_FIELD", None)
+    instance.location_website = None
+    if website_field or alt_website_field:
+        if row[website_field]:
+            instance.location_website = row[website_field]
+        elif alt_website_field and row[alt_website_field]:
+            instance.location_website = row[alt_website_field]
+
+    instance.location_phone = None
+    phone_field = getattr(Model, "PHONE_FIELD", None)
+    if phone_field:
+        instance.location_phone = row[phone_field]
+
+    instance.location_email = None
+    email_field = getattr(Model, "EMAIL_FIELD", None)
+    if email_field:
+        instance.location_email = row[email_field]
 
 
 def import_variable_fields(instance, row, Model):

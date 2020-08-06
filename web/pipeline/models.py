@@ -432,6 +432,10 @@ class Location(models.Model):
     # We don't need the following at this time, since we're focused on community access.
     # census_subdivision = models.ForeignKey(CensusSubdivision, null=True, on_delete=models.CASCADE)
 
+    location_phone = models.CharField(null=True, blank=True, max_length=255)
+    location_email = models.EmailField(null=True, blank=True)
+    location_website = models.URLField(null=True, blank=True)
+
     def __str__(self):
         return self.name
 
@@ -461,6 +465,9 @@ class Hospital(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'SV_NAME'
+    PHONE_FIELD = 'PHONE_NUMBER'
+    WEBSITE_FIELD = 'WEBSITE'
+    EMAIL_FIELD = 'EMAIL_ADDRESS'
 
     rg_name = models.CharField(null=True, blank=True, max_length=255)
     sv_description = models.TextField(null=True, blank=True)
@@ -513,6 +520,7 @@ class Court(Location):
     LATITUDE_FIELD = 'Latitude'
     LONGITUDE_FIELD = 'Longitude'
     NAME_FIELD = 'Placemark_name'
+    PHONE_FIELD = 'Contact_Phone'
 
     hours_of_operation = models.CharField(null=True, blank=True, max_length=255)
     court_level = models.CharField(null=True, blank=True, max_length=255)
@@ -553,6 +561,7 @@ class EconomicProject(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'PROJECT_NAME'
+    WEBSITE_FIELD = 'ORGANIZATION_ WEBSITE'
 
     flnro_project_status = models.CharField(null=True, blank=True, max_length=255)
     project_type = models.CharField(null=True, blank=True, max_length=255)
@@ -587,6 +596,8 @@ class NaturalResourceProject(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'PROJECT_NAME'
+    PHONE_FIELD = 'TELEPHONE'
+    WEBSITE_FIELD = 'PROJECT_WEBSITE'
 
     project_comments = models.TextField(null=True, blank=True)
     project_description = models.CharField(null=True, blank=True, max_length=255)
@@ -674,6 +685,9 @@ class ServiceBCLocation(Location):
     NAME_FIELD = 'External Site'
     LATITUDE_FIELD = 'Latitude'
     LONGITUDE_FIELD = 'Longitude'
+    PHONE_FIELD = 'Site_Phone_No'
+    WEBSITE_FIELD = 'Website_URL'
+
     '''
     {
         '_id': 1,
@@ -755,6 +769,10 @@ class Clinic(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'RG_NAME'
+    PHONE_FIELD = 'PHONE_NUMBER'
+    WEBSITE_FIELD = 'WEBSITE'
+    ALT_WEBSITE_FIELD = '811_LINK'
+    EMAIL_FIELD = 'EMAIL_ADDRESS'
 
     sv_description = models.CharField(null=True, blank=True, max_length=255)
     hours = models.TextField(null=True, blank=True)
@@ -795,6 +813,9 @@ class FirstResponder(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'FCLTY_NM'
+    PHONE_FIELD = 'CONT_PHONE'
+    WEBSITE_FIELD = 'WEBSITE'
+    EMAIL_FIELD = 'CONT_EMAIL'
 
     keywords = models.CharField(null=True, blank=True, max_length=255)
 
@@ -901,6 +922,7 @@ class CivicFacility(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'FCLTY_NM'
+    WEBSITE_FIELD = 'WEBSITE'
 
     keywords = models.CharField(null=True, blank=True, max_length=255)
     bus_cat_cl = models.CharField(null=True, blank=True, max_length=255)
@@ -941,7 +963,8 @@ class LocationDistance(models.Model):
     community = models.ForeignKey(Community, on_delete=models.DO_NOTHING, related_name='distances')
     location = models.ForeignKey(Location, on_delete=models.DO_NOTHING, related_name='distances')
     distance = models.DecimalField(
-        null=True, blank=True, max_digits=24, decimal_places=4, help_text="Driving distance from community to Location (km)"
+        null=True, blank=True, max_digits=24, decimal_places=4,
+        help_text="Driving distance from community to Location (km)"
     )
     travel_time = models.IntegerField(
         null=True, blank=True, help_text="Travel time (in minutes) corresponding to driving distance"
