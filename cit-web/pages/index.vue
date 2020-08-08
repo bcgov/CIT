@@ -4,8 +4,8 @@
       <h2>Explore communities in BC</h2>
     </div>
     <div class="main-report-container">
-      <CommunityQuerySidebar @update-filters="updateFilters" />
-      <CommunityQueryContent :filters="filters" />
+      <CommunityQuerySidebar class="sidebar" @update-filters="updateFilters" />
+      <CommunityQueryContent class="main-report" :filters="filters" />
     </div>
   </div>
 </template>
@@ -48,6 +48,14 @@ export default class Index extends Vue {
   margin: 0 auto;
   padding: 0;
   display: flex;
+}
+
+.sidebar {
+  flex: 1;
+}
+
+.main-report {
+  flex: 3;
 }
 
 iframe {
