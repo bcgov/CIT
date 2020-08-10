@@ -25,6 +25,7 @@ export default class CommunityQueryContent extends Vue {
   reportId = '2df94147-e5bc-48f2-bdfa-4a78f059e7c9'
   embedUrl = null
   report = null
+  communityCountReport = null
 
   cid = 11302
 
@@ -33,7 +34,7 @@ export default class CommunityQueryContent extends Vue {
     investors: 'ReportSection668fd80adbb838852446',
     assets: 'ReportSection864e9b323cb5914f8a55',
     homepage: 'ReportSection0eea901e3d74bb16d21c',
-    communitiesCount: 'ReportSectionac96eedf9d065e66718d',
+    communityCount: 'ReportSectionac96eedf9d065e66718d',
   }
 
   currentReport = 'demographics'
@@ -126,7 +127,11 @@ export default class CommunityQueryContent extends Vue {
           console.log('report loaded')
           this.updateReportFilters()
         })
-        this.embedCommunityCount()
+        this.communityCountReport = this.embedCommunityCount()
+        this.communityCountReport.on('loaded', (event) => {
+          console.log('report loaded')
+          this.updateReportFilters()
+        })
       }
     })
   }
@@ -139,7 +144,7 @@ export default class CommunityQueryContent extends Vue {
   }
 
   embedCommunityCount() {
-    const pageName = this.pageNameMap.communitiesCount
+    const pageName = this.pageNameMap.communityCount
     const container = this.$refs.communityCount
     const configuration = this.getReportEmbedConfiguration(pageName)
     return this.embedReport(container, configuration)
@@ -199,25 +204,36 @@ export default class CommunityQueryContent extends Vue {
       return
     }
 
+    const powerBiFilters = this.serializePowerBiFilters()
+
     this.report.getPages().then((pages) => {
       console.log('currentReport', this.pageNameMap[this.currentReport])
-      const page = pages.find(
+      const activePage = pages.find(
         (p) => p.name === this.pageNameMap[this.currentReport]
       )
-      const communitiesCountPage = pages.find(
-        (p) => p.name === this.pageNameMap.communitiesCount
-      )
-      const powerBiFilters = this.serializePowerBiFilters()
       if (powerBiFilters.length > 0) {
         // todo: add loading spinner
-        page.setFilters(powerBiFilters).then((data) => {
+        activePage.setFilters(powerBiFilters).then((data) => {
           // todo: remove loading spinner
         })
-        console.log('page', page)
-        console.log('communitiesCountPage', communitiesCountPage)
-        communitiesCountPage.setFilters(powerBiFilters).then((data) => {
-          console.log('communities count updated')
+        console.log('activePage', activePage)
+      }
+    })
+
+    this.communityCountReport.getPages().then((pages) => {
+      const communityCountPage = pages.find(
+        (p) => p.name === this.pageNameMap.communityCount
+      )
+      console.log('communityCountPage', communityCountPage)
+      communityCountPage.setFilters(powerBiFilters).then((data) => {
+        console.log('communities count updated')
+      })
+      if (powerBiFilters.length > 0) {
+        // todo: add loading spinner
+        communityCountPage.setFilters(powerBiFilters).then((data) => {
+          // todo: remove loading spinner
         })
+        console.log('communityCountPage', communityCountPage)
       }
     })
   }
