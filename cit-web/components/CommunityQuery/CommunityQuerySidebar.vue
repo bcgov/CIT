@@ -24,7 +24,7 @@
       <div>
         <span>Estimated Population</span>
         <!-- TODO -->
-        slider
+        <div>[TODO] slider</div>
       </div>
 
       <div>
