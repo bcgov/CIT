@@ -86,7 +86,7 @@ export default class CommunityQueryContent extends Vue {
   filters
 
   @Watch('filters') onFiltersChanged() {
-    console.log('filters changed', this.filters, this.filters.communityType)
+    console.log('filters changed', this.filters)
     this.updateReportFilters()
   }
 

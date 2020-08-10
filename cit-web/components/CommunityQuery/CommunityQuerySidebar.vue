@@ -1,156 +1,331 @@
 <template>
   <div>
     <!-- TODO SY - get fields and value from API -->
-    <v-form>
-      <div>
-        <span>Community Type</span>
-        <v-checkbox
-          v-model="communityType"
-          value="Indigenous"
-          label="Indigenous"
-        ></v-checkbox>
-        <v-checkbox
-          v-model="communityType"
-          value="Rural"
-          label="Rural"
-        ></v-checkbox>
-        <v-checkbox
-          v-model="communityType"
-          value="Urban"
-          label="Urban"
-        ></v-checkbox>
+    <form>
+      <div class="field-group">
+        <strong>Community Type</strong>
+        <div>
+          <input
+            id="communityTypeIndigenous"
+            v-model="communityType"
+            type="checkbox"
+            value="Indigenous"
+          />
+          <label for="communityTypeIndigenous">Indigenous</label>
+        </div>
+        <div>
+          <input
+            id="communityTypeRural"
+            v-model="communityType"
+            type="checkbox"
+            value="Rural"
+          />
+          <label for="communityTypeRural">Rural</label>
+        </div>
+        <div>
+          <input
+            id="communityTypeUrban"
+            v-model="communityType"
+            type="checkbox"
+            value="Urban"
+          />
+          <label for="communityTypeUrban">Urban</label>
+        </div>
       </div>
 
-      <div>
-        <span>Estimated Population</span>
+      <div class="field-group">
+        <strong>Estimated Population</strong>
         <!-- TODO -->
         <div>[TODO] slider</div>
       </div>
 
-      <div>
-        <span>Population Growth</span>
-        <v-checkbox
-          v-model="populationGrowth"
-          value="Shrinking"
-          label="Shrinking"
-        ></v-checkbox>
-        <v-checkbox
-          v-model="populationGrowth"
-          value="No Change"
-          label="No Change"
-        ></v-checkbox>
-        <v-checkbox
-          v-model="populationGrowth"
-          value="Growing"
-          label="Growing (<25%)"
-        ></v-checkbox>
-        <v-checkbox
-          v-model="populationGrowth"
-          value="Rapid"
-          label="Rapid Grown (>25%)"
-        ></v-checkbox>
+      <div class="field-group">
+        <strong>Population Growth</strong>
+        <div>
+          <input
+            id="populationGrowthShrinking"
+            v-model="populationGrowth"
+            type="checkbox"
+            value="Shrinking"
+          />
+          <label for="populationGrowthShrinking">Shrinking</label>
+        </div>
+        <div>
+          <input
+            id="populationGrowthNoChange"
+            v-model="populationGrowth"
+            type="checkbox"
+            value="No Change"
+          />
+          <label for="populationGrowthNoChange">No Change</label>
+        </div>
+        <div>
+          <input
+            id="populationGrowthGrowing"
+            v-model="populationGrowth"
+            type="checkbox"
+            value="Growing (&lt;25%)"
+          />
+          <label for="populationGrowthGrowing">Growing (&lt;25%)</label>
+        </div>
+        <div>
+          <input
+            id="populationGrowthRapid"
+            v-model="populationGrowth"
+            type="checkbox"
+            value="Rapid Growth(&gt;25%)"
+          />
+          <label for="populationGrowthRapid">Rapid Growth (&gt;25%)</label>
+        </div>
       </div>
 
-      <div>
-        <span>Has Any K-12 School</span>
-        <v-radio-group v-model="hasK12">
-          <v-radio label="No" value="no"></v-radio>
-          <v-radio label="Yes" value="yes"></v-radio>
-        </v-radio-group>
+      <div class="field-group">
+        <strong>Has Any K-12 School</strong>
+        <div>
+          <input id="hasK12No" v-model="hasK12" type="checkbox" value="No" />
+          <label for="hasK12No">No</label>
+        </div>
+        <div>
+          <input id="hasK12Yes" v-model="hasK12" type="checkbox" value="Yes" />
+          <label for="hasK12Yes">Yes</label>
+        </div>
       </div>
 
-      <div>
-        <span>Has Any Post Secondary</span>
-        <v-radio-group v-model="hasPostSecondary">
-          <v-radio label="No" value="no"></v-radio>
-          <v-radio label="Yes" value="yes"></v-radio>
-        </v-radio-group>
+      <div class="field-group">
+        <strong>Has Any Post Secondary</strong>
+        <div>
+          <input
+            id="hasPostSecondaryNo"
+            v-model="hasPostSecondary"
+            type="checkbox"
+            value="No"
+          />
+          <label for="hasPostSecondaryNo">No</label>
+        </div>
+        <div>
+          <input
+            id="hasPostSecondaryYes"
+            v-model="hasPostSecondary"
+            type="checkbox"
+            value="Yes"
+          />
+          <label for="hasPostSecondaryYes">Yes</label>
+        </div>
       </div>
 
-      <div>
-        <span>Has Clinics</span>
-        <v-radio-group v-model="hasClinics">
-          <v-radio label="No" value="no"></v-radio>
-          <v-radio label="Yes" value="yes"></v-radio>
-        </v-radio-group>
+      <div class="field-group">
+        <strong>Has Clinics</strong>
+        <div>
+          <input
+            id="hasClinicsNo"
+            v-model="hasClinics"
+            type="checkbox"
+            value="No"
+          />
+          <label for="hasClinicsNo">No</label>
+        </div>
+        <div>
+          <input
+            id="hasClinicsYes"
+            v-model="hasClinics"
+            type="checkbox"
+            value="Yes"
+          />
+          <label for="hasClinicsYes">Yes</label>
+        </div>
       </div>
 
-      <div>
-        <span>Has Hospitals</span>
-        <v-radio-group v-model="hasHospitals">
-          <v-radio label="No" value="no"></v-radio>
-          <v-radio label="Yes" value="yes"></v-radio>
-        </v-radio-group>
+      <div class="field-group">
+        <strong>Has Hospitals</strong>
+        <div>
+          <input
+            id="hasHospitalsNo"
+            v-model="hasHospitals"
+            type="checkbox"
+            value="No"
+          />
+          <label for="hasHospitalsNo">No</label>
+        </div>
+        <div>
+          <input
+            id="hasHospitalsYes"
+            v-model="hasHospitals"
+            type="checkbox"
+            value="Yes"
+          />
+          <label for="hasHospitalsYes">Yes</label>
+        </div>
       </div>
 
-      <div>
-        <span>Has 50Mbps Access</span>
-        <v-radio-group v-model="has50Mbps">
-          <v-radio label="No" value="no"></v-radio>
-          <v-radio label="Yes" value="yes"></v-radio>
-        </v-radio-group>
+      <div class="field-group">
+        <strong>Has 50Mbps Access</strong>
+        <div>
+          <input
+            id="has50Mbps5010"
+            v-model="has50Mbps"
+            type="checkbox"
+            value="50/10 75+% Availability"
+          />
+          <label for="has50Mbps5010">50/10 75+% Availability</label>
+        </div>
+        <div>
+          <input
+            id="has50Mbps255"
+            v-model="has50Mbps"
+            type="checkbox"
+            value="25/5 75+% Availability"
+          />
+          <label for="has50Mbps255">25/5 75+% Availability</label>
+        </div>
+        <div>
+          <input
+            id="has50MbpsLow"
+            v-model="has50Mbps"
+            type="checkbox"
+            value="Low/No Availability"
+          />
+          <label for="has50MbpsLow">Low/No Availability</label>
+        </div>
       </div>
 
-      <div>
-        <span>Has Mills</span>
-        <v-radio-group v-model="hasMills">
-          <v-radio label="No" value="no"></v-radio>
-          <v-radio label="Yes" value="yes"></v-radio>
-        </v-radio-group>
+      <div class="field-group">
+        <strong>Has Mills</strong>
+        <div>
+          <input
+            id="hasMillsNo"
+            v-model="hasMills"
+            type="checkbox"
+            value="No"
+          />
+          <label for="hasMillsNo">No</label>
+        </div>
+        <div>
+          <input
+            id="hasMillsYes"
+            v-model="hasMills"
+            type="checkbox"
+            value="Yes"
+          />
+          <label for="hasMillsYes">Yes</label>
+        </div>
       </div>
 
-      <div>
-        <span>Wildfire Zone</span>
-        <v-checkbox
-          v-model="wildfireZone"
-          value="1"
-          label="1 (low)"
-        ></v-checkbox>
-        <v-checkbox v-model="wildfireZone" value="2" label="2 ()"></v-checkbox>
-        <v-checkbox v-model="wildfireZone" value="3" label="3 ()"></v-checkbox>
-        <v-checkbox v-model="wildfireZone" value="4" label="4 ()"></v-checkbox>
-        <v-checkbox
-          v-model="wildfireZone"
-          value="5"
-          label="5 (extreme)"
-        ></v-checkbox>
-        <v-checkbox
-          v-model="wildfireZone"
-          value=""
-          label="No data"
-        ></v-checkbox>
+      <div class="field-group">
+        <strong>Wildfire Zone</strong>
+        <div>
+          <input
+            id="wildfireZone1"
+            v-model="wildfireZone"
+            type="checkbox"
+            value="1 (very low)"
+          />
+          <label for="wildfireZone1">1 (low)</label>
+        </div>
+        <div>
+          <input
+            id="wildfireZone2"
+            v-model="wildfireZone"
+            type="checkbox"
+            value="2 (low)"
+          />
+          <label for="wildfireZone2">2</label>
+        </div>
+        <div>
+          <input
+            id="wildfireZone3"
+            v-model="wildfireZone"
+            type="checkbox"
+            value="3"
+          />
+          <label for="wildfireZone3">3</label>
+        </div>
+        <div>
+          <input
+            id="wildfireZone4"
+            v-model="wildfireZone"
+            type="checkbox"
+            value="4"
+          />
+          <label for="wildfireZone4">4</label>
+        </div>
+        <div>
+          <input
+            id="wildfireZone5"
+            v-model="wildfireZone"
+            type="checkbox"
+            value="5 (extreme)"
+          />
+          <label for="wildfireZone5">5 (extreme)</label>
+        </div>
+        <div>
+          <input
+            id="wildfireZoneNone"
+            v-model="wildfireZone"
+            type="checkbox"
+            value="None"
+          />
+          <label for="wildfireZoneNone">No data</label>
+        </div>
       </div>
 
-      <div>
-        <span>Tsunami Zone</span>
-        <v-checkbox
-          v-model="tsunamiZone"
-          value="a"
-          label="A (moderate)"
-        ></v-checkbox>
-        <v-checkbox
-          v-model="tsunamiZone"
-          value="b"
-          label="B (moderate)"
-        ></v-checkbox>
-        <v-checkbox
-          v-model="tsunamiZone"
-          value="c"
-          label="C (moderate)"
-        ></v-checkbox>
-        <v-checkbox
-          v-model="tsunamiZone"
-          value="d"
-          label="D (low)"
-        ></v-checkbox>
-        <v-checkbox
-          v-model="tsunamiZone"
-          value="e"
-          label="E (low)"
-        ></v-checkbox>
-        <v-checkbox v-model="tsunamiZone" value="" label="No data"></v-checkbox>
+      <div class="field-group">
+        <strong>Tsunami Zone</strong>
+        <div>
+          <input
+            id="tsunamiZoneA"
+            v-model="tsunamiZone"
+            type="checkbox"
+            value="A (moderate)"
+          />
+          <label for="tsunamiZoneNone">A (moderate)</label>
+        </div>
+        <div>
+          <input
+            id="tsunamiZoneB"
+            v-model="tsunamiZone"
+            type="checkbox"
+            value="B (moderate)"
+          />
+          <label for="tsunamiZoneB">B (moderate)</label>
+        </div>
+        <div>
+          <input
+            id="tsunamiZoneC"
+            v-model="tsunamiZone"
+            type="checkbox"
+            value="C (moderate)"
+          />
+          <label for="tsunamiZoneC">C (moderate)</label>
+        </div>
+        <div>
+          <input
+            id="tsunamiZoneD"
+            v-model="tsunamiZone"
+            type="checkbox"
+            value="D (low)"
+          />
+          <label for="tsunamiZoneD">D (low)</label>
+        </div>
+        <div>
+          <input
+            id="tsunamiZoneE"
+            v-model="tsunamiZone"
+            type="checkbox"
+            value="E (low)"
+          />
+          <label for="tsunamiZoneE">E (low)</label>
+        </div>
+        <div>
+          <input
+            id="tsunamiZoneNone"
+            v-model="tsunamiZone"
+            type="checkbox"
+            value="None"
+          />
+          <label for="tsunamiZoneNone">No data</label>
+        </div>
       </div>
-    </v-form>
+    </form>
   </div>
 </template>
 
@@ -163,14 +338,14 @@ export default class CommunityQuerySidebar extends Vue {
     return {
       communityType: [],
       populationGrowth: [],
-      hasK12: undefined,
-      hasPostSecondary: undefined,
-      hasClinics: undefined,
-      hasHospitals: undefined,
-      has50Mbps: undefined,
-      hasMills: undefined,
-      wildfireZone: undefined,
-      tsunamiZone: undefined,
+      hasK12: [],
+      hasPostSecondary: [],
+      hasClinics: [],
+      hasHospitals: [],
+      has50Mbps: [],
+      hasMills: [],
+      wildfireZone: [],
+      tsunamiZone: [],
     }
   }
 
@@ -231,3 +406,8 @@ export default class CommunityQuerySidebar extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+.field-group {
+  margin-bottom: 1rem;
+}
+</style>
