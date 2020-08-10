@@ -28,11 +28,12 @@ export default class CommunityQueryContent extends Vue {
 
   cid = 11302
 
-  reportMap = {
+  pageNameMap = {
     demographics: 'ReportSection8d04d6af6c305669df44',
     investors: 'ReportSection668fd80adbb838852446',
     assets: 'ReportSection864e9b323cb5914f8a55',
     homepage: 'ReportSection0eea901e3d74bb16d21c',
+    communitiesCount: 'ReportSectionac96eedf9d065e66718d',
   }
 
   currentReport = 'demographics'
@@ -120,9 +121,7 @@ export default class CommunityQueryContent extends Vue {
       const { status, data } = response
       if (status === 200) {
         this.embedToken = data.token
-        const configuration = this.getReportEmbedConfiguration()
-        const container = this.$refs.reportContainer
-        this.report = this.embedReport(container, configuration)
+        this.report = this.embedMainReport()
         this.report.on('loaded', (event) => {
           console.log('report loaded')
           this.updateReportFilters()
@@ -132,11 +131,25 @@ export default class CommunityQueryContent extends Vue {
     })
   }
 
-  getReportEmbedConfiguration() {
+  embedMainReport() {
+    const pageName = this.pageNameMap[this.currentReport]
+    const configuration = this.getReportEmbedConfiguration(pageName)
+    const container = this.$refs.reportContainer
+    return this.embedReport(container, configuration)
+  }
+
+  embedCommunityCount() {
+    const pageName = this.pageNameMap.communitiesCount
+    const container = this.$refs.communityCount
+    const configuration = this.getReportEmbedConfiguration(pageName)
+    return this.embedReport(container, configuration)
+  }
+
+  getReportEmbedConfiguration(pageName) {
     const models = this.$pbi.models
     return {
       type: 'report',
-      pageName: this.reportMap[this.currentReport],
+      pageName,
       id: this.reportId,
       embedUrl: `https://app.powerbi.com/reportEmbed?reportId=${this.reportId}&groupId=${this.groupId}`,
       tokenType: models.TokenType.Embed,
@@ -154,29 +167,31 @@ export default class CommunityQueryContent extends Vue {
     }
   }
 
-  getVisualEmbedConfiguration() {
-    const models = this.$pbi.models
-    const visualName = 'cbbe70f42ea172e72ae1'
-    return {
-      type: 'visual',
-      id: this.reportId,
-      pageName: this.reportMap.homepage,
-      visualName,
-      embedUrl: `https://app.powerbi.com/reportEmbed?reportId=${this.reportId}&groupId=${this.groupId}`,
-      accessToken: this.embedToken,
-      tokenType: models.TokenType.Embed,
-    }
-  }
-
-  embedCommunityCount() {
-    return window.powerbi.embed(
-      this.$refs.communityCount,
-      this.getVisualEmbedConfiguration()
-    )
-  }
-
   embedReport(container, configuration) {
     return window.powerbi.embed(container, configuration)
+  }
+
+  serializePowerBiFilters() {
+    return Object.keys(this.filters).reduce((acc, filter) => {
+      const filterValue = this.filters[filter]
+      const filterIsNonNull =
+        (!Array.isArray(filterValue) && filterValue !== undefined) ||
+        (Array.isArray(filterValue) && filterValue.length > 0)
+      if (filterIsNonNull) {
+        acc.push({
+          $schema: 'http://powerbi.com/product/schema#basic',
+          target: {
+            table: this.filterMap[filter].table,
+            column: this.filterMap[filter].column,
+          },
+          operator: 'In',
+          values: Array.isArray(filterValue) ? filterValue : [filterValue],
+          filterType: 1, // pbi.models.FilterType.BasicFilter
+          requireSingleSelection: false, // Limits selection of values to one.
+        })
+      }
+      return acc
+    }, [])
   }
 
   updateReportFilters() {
@@ -185,48 +200,23 @@ export default class CommunityQueryContent extends Vue {
     }
 
     this.report.getPages().then((pages) => {
-      console.log('currentReport', this.reportMap[this.currentReport])
+      console.log('currentReport', this.pageNameMap[this.currentReport])
       const page = pages.find(
-        (p) => p.name === this.reportMap[this.currentReport]
+        (p) => p.name === this.pageNameMap[this.currentReport]
       )
-      const powerBiFilters = Object.keys(this.filters).reduce((acc, filter) => {
-        const filterValue = this.filters[filter]
-        const filterIsNonNull =
-          (!Array.isArray(filterValue) && filterValue !== undefined) ||
-          (Array.isArray(filterValue) && filterValue.length > 0)
-        if (filterIsNonNull) {
-          acc.push({
-            $schema: 'http://powerbi.com/product/schema#basic',
-            target: {
-              table: this.filterMap[filter].table,
-              column: this.filterMap[filter].column,
-            },
-            operator: 'In',
-            values: Array.isArray(filterValue) ? filterValue : [filterValue],
-            filterType: 1, // pbi.models.FilterType.BasicFilter
-            requireSingleSelection: false, // Limits selection of values to one.
-          })
-        }
-        return acc
-      }, [])
+      const communitiesCountPage = pages.find(
+        (p) => p.name === this.pageNameMap.communitiesCount
+      )
+      const powerBiFilters = this.serializePowerBiFilters()
       if (powerBiFilters.length > 0) {
         // todo: add loading spinner
         page.setFilters(powerBiFilters).then((data) => {
           // todo: remove loading spinner
         })
-        const homepage = pages.find((p) => p.name === this.reportMap.homepage)
-
-        const visualName = 'cbbe70f42ea172e72ae1'
-        homepage.getVisuals().then(function (visuals) {
-          console.log(visuals)
-          const visual = visuals.find((visual) => {
-            return visual.name === visualName
-          })
-          console.log('visual', visual)
-          visual.setFilters(powerBiFilters).then((data) => {
-            console.log('setfilters', data)
-            // todo: remove loading spinner
-          })
+        console.log('page', page)
+        console.log('communitiesCountPage', communitiesCountPage)
+        communitiesCountPage.setFilters(powerBiFilters).then((data) => {
+          console.log('communities count updated')
         })
       }
     })
