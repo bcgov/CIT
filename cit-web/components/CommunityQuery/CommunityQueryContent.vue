@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div ref="communityCount" class="communityCount"></div>
     <div>
       <button type="button" @click="navigate('map')">Map</button>
       <button type="button" @click="navigate('demographics')">
@@ -31,6 +32,7 @@ export default class CommunityQueryContent extends Vue {
     demographics: 'ReportSection8d04d6af6c305669df44',
     investors: 'ReportSection668fd80adbb838852446',
     assets: 'ReportSection864e9b323cb5914f8a55',
+    homepage: 'ReportSection0eea901e3d74bb16d21c',
   }
 
   currentReport = 'demographics'
@@ -118,18 +120,19 @@ export default class CommunityQueryContent extends Vue {
       const { status, data } = response
       if (status === 200) {
         this.embedToken = data.token
-        const configuration = this.getEmbedConfiguration()
+        const configuration = this.getReportEmbedConfiguration()
         const container = this.$refs.reportContainer
         this.report = this.embedReport(container, configuration)
         this.report.on('loaded', (event) => {
           console.log('report loaded')
           this.updateReportFilters()
         })
+        this.embedCommunityCount()
       }
     })
   }
 
-  getEmbedConfiguration() {
+  getReportEmbedConfiguration() {
     const models = this.$pbi.models
     return {
       type: 'report',
@@ -149,6 +152,27 @@ export default class CommunityQueryContent extends Vue {
         },
       },
     }
+  }
+
+  getVisualEmbedConfiguration() {
+    const models = this.$pbi.models
+    const visualName = 'cbbe70f42ea172e72ae1'
+    return {
+      type: 'visual',
+      id: this.reportId,
+      pageName: this.reportMap.homepage,
+      visualName,
+      embedUrl: `https://app.powerbi.com/reportEmbed?reportId=${this.reportId}&groupId=${this.groupId}`,
+      accessToken: this.embedToken,
+      tokenType: models.TokenType.Embed,
+    }
+  }
+
+  embedCommunityCount() {
+    return window.powerbi.embed(
+      this.$refs.communityCount,
+      this.getVisualEmbedConfiguration()
+    )
   }
 
   embedReport(container, configuration) {
@@ -189,6 +213,20 @@ export default class CommunityQueryContent extends Vue {
         // todo: add loading spinner
         page.setFilters(powerBiFilters).then((data) => {
           // todo: remove loading spinner
+        })
+        const homepage = pages.find((p) => p.name === this.reportMap.homepage)
+
+        const visualName = 'cbbe70f42ea172e72ae1'
+        homepage.getVisuals().then(function (visuals) {
+          console.log(visuals)
+          const visual = visuals.find((visual) => {
+            return visual.name === visualName
+          })
+          console.log('visual', visual)
+          visual.setFilters(powerBiFilters).then((data) => {
+            console.log('setfilters', data)
+            // todo: remove loading spinner
+          })
         })
       }
     })
