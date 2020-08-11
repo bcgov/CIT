@@ -12,13 +12,12 @@
         </ul>
 
         <div class="buttons">
-          <!-- todo open in new tab -->
-          <nuxt-link to="/explore" class="btn" target="_blank"
-            >Explore BC Communities</nuxt-link
-          >
-          <p class="btn-spacer">or</p>
           <nuxt-link to="/community" class="btn" target="_blank"
             >Choose a specific community</nuxt-link
+          >
+          <p class="btn-spacer">or</p>
+          <nuxt-link to="/explore" class="btn" target="_blank"
+            >Explore BC Communities by attributes</nuxt-link
           >
         </div>
       </div>

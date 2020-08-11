@@ -20,14 +20,13 @@ export default class CommunityList extends Vue {
 
   async getCommunities() {
     let response = await getCommunityList()
-    const communities = [...response.data.results]
+    this.communities = [...response.data.results]
     while (response.data.next) {
       const nextUrl = response.data.next.split('/')
       const nextParams = nextUrl[nextUrl.length - 1]
       response = await getCommunityList(nextParams)
-      communities.push(...response.data.results)
+      this.communities.push(...response.data.results)
     }
-    this.communities = communities
   }
 }
 </script>
