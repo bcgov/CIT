@@ -5,21 +5,21 @@
       <div class="landing-page-info">
         <p>Explore BC communities and analyze data from a community lens.</p>
 
-        <ul>
-          <li>Search BC communities</li>
-          <li>View Reports</li>
-          <li>Drill down to specific communities</li>
-        </ul>
+        <p>
+          Interested in a specific community?<br />
+          Search for it below to view details.
+        </p>
 
-        <div class="buttons">
-          <nuxt-link to="/community" class="btn" target="_blank"
-            >Choose a specific community</nuxt-link
-          >
-          <p class="btn-spacer">or</p>
-          <nuxt-link to="/explore" class="btn" target="_blank"
-            >Explore BC Communities by attributes</nuxt-link
-          >
-        </div>
+        <CommunityList></CommunityList>
+
+        <p class="spacer">Or:</p>
+        <p>
+          Interested in looking at multiple communities which share specific
+          attributes?
+        </p>
+        <nuxt-link to="/explore" class="btn" target="_blank"
+          >Explore BC Communities</nuxt-link
+        >
       </div>
 
       <div class="landing-page-illustration">
@@ -30,7 +30,9 @@
 </template>
 
 <script>
-import { Vue } from 'nuxt-property-decorator'
+import { Vue, Component } from 'nuxt-property-decorator'
+import CommunityList from '~/components/CommunityList.vue'
+@Component({ CommunityList })
 export default class Index extends Vue {
   layout(context) {
     return 'default'
@@ -78,12 +80,12 @@ h1 {
   padding: 0.5rem 1rem;
   background-color: #073366;
   color: white !important;
+  font-weight: bold;
   text-decoration: none !important;
-  border-radius: 5px;
   margin: 0.5rem 0;
 }
 
-p.btn-spacer {
-  margin-bottom: 0;
+p.spacer {
+  margin-top: 1rem;
 }
 </style>
