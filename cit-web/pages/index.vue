@@ -1,10 +1,9 @@
 <template>
   <div class="landing-page-container">
     <h1>Welcome to the Community Information Tool</h1>
+    <p>Explore BC communities and analyze data from a community lens.</p>
     <div class="landing-page-content">
       <div class="landing-page-info">
-        <p>Explore BC communities and analyze data from a community lens.</p>
-
         <p>
           Interested in a specific community?<br />
           Search for it below to view details.
@@ -56,13 +55,18 @@ export default class Index extends Vue {
 }
 
 h1 {
-  font-size: 3rem;
-  margin: 2rem 0;
+  font-size: 2rem;
+  margin-top: 2rem;
 }
 
 .landing-page-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  margin-top: 6rem;
+}
+
+.landing-page-info {
+  margin-top: 2rem;
 }
 
 .landing-page-illustration {

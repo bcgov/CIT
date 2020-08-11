@@ -22,8 +22,8 @@
         >
           {{ community.place_name }}
         </a>
+        <span v-if="communityName && loading">Loading...</span>
       </div>
-      <span v-if="communityName && loading">Loading...</span>
     </div>
   </div>
 </template>
@@ -90,9 +90,16 @@ export default class CommunityList extends Vue {
 </script>
 <style lang="scss">
 .community-results-wrapper {
+  position: relative;
+}
+
+.community-results {
+  position: absolute;
   width: 20rem;
-  max-height: 10rem;
+  height: 12rem;
   overflow: auto;
+  background-color: white;
+  border: 1px solid #cdcdcd;
 }
 
 .community-result {
