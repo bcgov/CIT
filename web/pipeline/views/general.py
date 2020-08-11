@@ -32,8 +32,7 @@ class LocationList(generics.ListAPIView):
 
 
 class CommunityList(generics.ListAPIView):
-
-    queryset = Community.objects.all()
+    queryset = Community.objects.all().order_by('place_name')
     serializer_class = CommunitySerializer
 
 

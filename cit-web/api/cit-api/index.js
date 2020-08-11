@@ -4,6 +4,10 @@ export function setNuxtAxios(nuxtAxios) {
   $axios = nuxtAxios
 }
 
+export function getCommunityList(params) {
+  return $axios.get(`api/pipeline/communities/${params || ''}`)
+}
+
 export function getCommunity(id) {
   return $axios.get(`api/pipeline/communities/${id}/`)
 }

@@ -5,11 +5,9 @@ services:
     command: bash -c "yarn && yarn build && yarn start"
     environment:
       - NODE_ENV=production
-    ports:
-      - 8080:8080
   nginx:
     ports:
-      - 80:80
+      - 10082:80
     volumes:
       - ./nginx/conf.d/default_password_auth.conf:/etc/nginx/conf.d/default.conf
       - .htpasswd:/etc/nginx/.htpasswd
