@@ -819,6 +819,12 @@ class FirstResponder(Location):
 
     keywords = models.CharField(null=True, blank=True, max_length=255)
 
+    def category(self):
+        return self.keywords.split(';')[0].strip()
+
+    def subcategory(self):
+        return self.keywords.split(';')[-1].strip()
+
     '''
     OrderedDict([
         ('CUST_ORG', 'Ministry of Forest, Lands and Natural Resource Operations and Rural Development - GeoBC '),
