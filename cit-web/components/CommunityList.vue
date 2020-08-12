@@ -132,8 +132,13 @@ export default class CommunityList extends Vue {
 
 .community-search-btn {
   background-color: #073366;
-  border: 1px solid white;
   color: white;
-  padding: 0.35rem 1rem;
+  padding: 0.4rem 1rem;
+  margin-left: 0.5rem;
+  border-radius: 5px;
+}
+
+.nav-bar .community-search-btn {
+  border: 1px solid white;
 }
 </style>
