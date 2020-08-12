@@ -63,7 +63,8 @@ class CivicFacilitySerializer(serializers.ModelSerializer):
             "location_fuzzy",
             "community",
             "location_website",
-            "keywords",
+            "category",
+            "subcategory",
             "bus_cat_cl",
             "bus_cat_ds",
         )

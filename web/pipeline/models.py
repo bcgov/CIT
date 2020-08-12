@@ -937,6 +937,12 @@ class CivicFacility(Location):
     keywords = models.CharField(null=True, blank=True, max_length=255)
     bus_cat_cl = models.CharField(null=True, blank=True, max_length=255)
     bus_cat_ds = models.CharField(null=True, blank=True, max_length=255)
+
+    def category(self):
+        return self.keywords.split(';')[0].strip()
+
+    def subcategory(self):
+        return self.keywords.split(';')[-1].strip()
     '''
     OrderedDict([
         ('FCLTY_NM', 'Alberni Valley Multiplex'),
