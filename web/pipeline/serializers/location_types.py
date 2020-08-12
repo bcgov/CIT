@@ -19,7 +19,8 @@ class FirstResponderSerializer(serializers.ModelSerializer):
             "location_phone",
             "location_website",
             "location_email",
-            "keywords",
+            "category",
+            "subcategory",
         )
 
 
