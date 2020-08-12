@@ -70,6 +70,17 @@ class CommunitySerializer(serializers.ModelSerializer):
         )
 
 
+class CommunitySearchSerializer(serializers.ModelSerializer):
+    queryset = Community.objects.all()
+
+    class Meta:
+        model = Community
+        fields = (
+            "id",
+            "place_name",
+        )
+
+
 class CommunityDetailSerializer(serializers.ModelSerializer):
     display_fields = serializers.SerializerMethodField()
 

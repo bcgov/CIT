@@ -34,7 +34,7 @@ import CommunityList from '~/components/CommunityList.vue'
 @Component({ CommunityList })
 export default class Index extends Vue {
   layout(context) {
-    return 'default'
+    return 'landing'
   }
 
   mounted() {

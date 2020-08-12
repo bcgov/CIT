@@ -2,7 +2,7 @@
   <div>
     <div v-if="isCommunityEmpty" class="d-flex mt-5 justify-center">
       <v-alert type="info">
-        Sorry, we could not find a communtiy with that ID.
+        Sorry, we could not find a community with that ID.
       </v-alert>
     </div>
     <div v-else>
