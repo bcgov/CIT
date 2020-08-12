@@ -2,14 +2,13 @@ from django.http import JsonResponse, HttpResponse
 from django.core.serializers import serialize
 
 from rest_framework import generics
-from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.pagination import LimitOffsetPagination
 
 from pipeline.models import Location, Community, CensusSubdivision, LocationDistance, Service
 from pipeline.serializers.general import (
     LocationSerializer,
     CommunitySerializer,
+    CommunitySearchSerializer,
     CommunityDetailSerializer,
     CensusSubdivisionSerializer,
     CensusSubdivisionDetailSerializer,
@@ -34,6 +33,12 @@ class LocationList(generics.ListAPIView):
 class CommunityList(generics.ListAPIView):
     queryset = Community.objects.all().order_by('place_name')
     serializer_class = CommunitySerializer
+
+
+class CommunitySearchList(generics.ListAPIView):
+    queryset = Community.objects.all().order_by('place_name')
+    serializer_class = CommunitySearchSerializer
+    pagination_class = None
 
 
 class ServiceList(generics.ListAPIView):

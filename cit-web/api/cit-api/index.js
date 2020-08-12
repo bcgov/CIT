@@ -5,7 +5,7 @@ export function setNuxtAxios(nuxtAxios) {
 }
 
 export function getCommunityList(params) {
-  return $axios.get(`api/pipeline/communities/${params || ''}`)
+  return $axios.get(`api/pipeline/communities/search/`)
 }
 
 export function getCommunity(id) {

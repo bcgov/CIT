@@ -1,11 +1,10 @@
 <template>
   <v-app light class="h-100">
     <v-app-bar class="main-navigation" fixed height="66" color="primary">
-      <v-toolbar-title class="navigation-wrapper">
+      <v-toolbar-title>
         <nuxt-link class="main-title d-block" to="/"
           >Community Information Tool 2.0</nuxt-link
         >
-        <CommunityList></CommunityList>
       </v-toolbar-title>
     </v-app-bar>
     <div class="content">
@@ -43,14 +42,6 @@ body {
 .v-application .primary.main-navigation {
   border-bottom: 2px solid #fcba19;
   border-color: #fcba19 !important;
-}
-
-.navigation-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  overflow: unset;
-  white-space: normal;
 }
 
 .main-title {

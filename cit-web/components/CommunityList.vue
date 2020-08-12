@@ -5,7 +5,10 @@
       type="text"
       class="community-name"
       placeholder="Community name"
+      @click="toggleResults"
       @keyup="communitySearch"
+      @keyup.enter="communitySearch"
+      @keyup.escape="hideResults"
     />
     <button type="button" class="community-search-btn" @click="goToCommunity()">
       Go
@@ -37,7 +40,7 @@ export default class CommunityList extends Vue {
   communities = []
   filteredCommunities = []
   loading = false
-  communityName = undefined
+  communityName = ''
   selectedCommunityId = undefined
 
   mounted() {
@@ -46,14 +49,8 @@ export default class CommunityList extends Vue {
 
   async getCommunities() {
     this.loading = true
-    let response = await getCommunityList()
-    this.communities = [...response.data.results]
-    while (response.data.next) {
-      const nextUrl = response.data.next.split('/')
-      const nextParams = nextUrl[nextUrl.length - 1]
-      response = await getCommunityList(nextParams)
-      this.communities.push(...response.data.results)
-    }
+    const response = await getCommunityList()
+    this.communities = [...response.data]
     this.loading = false
 
     if (this.communityName) {
@@ -85,6 +82,16 @@ export default class CommunityList extends Vue {
 
     console.log('goToCommunity', this.selectedCommunityId)
     window.open(`/community/${this.selectedCommunityId}`)
+  }
+
+  toggleResults() {
+    if (this.communityName) {
+      if (this.filteredCommunities.length) {
+        this.filteredCommunities = []
+      } else {
+        this.communitySearch()
+      }
+    }
   }
 }
 </script>
@@ -119,11 +126,13 @@ export default class CommunityList extends Vue {
   width: 20rem;
   box-sizing: border-box;
   border: 1px solid #787878;
+  background-color: white;
   padding: 0.3rem 0.5rem;
 }
 
 .community-search-btn {
   background-color: #073366;
+  border: 1px solid white;
   color: white;
   padding: 0.35rem 1rem;
 }
