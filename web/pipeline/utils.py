@@ -40,6 +40,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "population",
             "value": commaize(obj.population),
+            "units": "people",
         },
         {
             "group": None,
@@ -48,6 +49,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "population_percentage_change",
             "value": commaize(obj.population_percentage_change),
+            "units": "%",
         },
         {
             "group": None,
@@ -56,6 +58,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "priv_dwel",
             "value": commaize(obj.priv_dwel),
+            "units": "dwellings",
         },
         {
             "group": None,
@@ -64,6 +67,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "area",
             "value": commaize(obj.area),
+            "units": "k\u00B2",
         },
         {
             "group": "Age of Population",
@@ -72,6 +76,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "pop_pct_0_14",
             "value": commaize(obj.pop_pct_0_14),
+            "units": "people",
         },
         {
             "group": "Age of Population",
@@ -80,6 +85,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "pop_pct_14_65",
             "value": commaize(obj.pop_pct_14_65),
+            "units": "people",
         },
         {
             "group": "Age of Population",
@@ -88,6 +94,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "pop_pct_65",
             "value": commaize(obj.pop_pct_65),
+            "units": "people",
         },
         {
             "group": "Types of Occupied Dwellings",
@@ -96,6 +103,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "detached_houses",
             "value": commaize(obj.detached_houses),
+            "units": "dwellings",
         },
         {
             "group": "Types of Occupied Dwellings",
@@ -104,6 +112,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "apartments",
             "value": commaize(obj.apartments),
+            "units": "dwellings",
         },
         {
             "group": "Types of Occupied Dwellings",
@@ -112,6 +121,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "other_attached_dwellings",
             "value": commaize(obj.other_attached_dwellings),
+            "units": "dwellings",
         },
         {
             "group": "Types of Occupied Dwellings",
@@ -120,6 +130,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "movable_dwellings",
             "value": commaize(obj.movable_dwellings),
+            "units": "dwellings",
         },
         {
             "group": "Marital Status",
@@ -128,6 +139,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "married_or_common_law",
             "value": commaize(obj.married_or_common_law),
+            "units": "people",
         },
         {
             "group": "Marital Status",
@@ -136,6 +148,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "couples_with_children",
             "value": commaize(obj.couples_with_children),
+            "units": "people",
         },
         {
             "group": "Marital Status",
@@ -144,6 +157,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "single_parents",
             "value": commaize(obj.single_parents),
+            "units": "people",
         },
         {
             "group": "Languages",
@@ -152,6 +166,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "eng_known",
             "value": commaize(obj.eng_known),
+            "units": "people",
         },
         {
             "group": "Languages",
@@ -160,6 +175,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "other_lang",
             "value": commaize(obj.other_lang),
+            "units": "people",
         },
         {
             "group": "Languages",
@@ -168,6 +184,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "aboriginal_lang",
             "value": commaize(obj.aboriginal_lang),
+            "units": "people",
         },
         {
             "group": "Languages",
@@ -176,6 +193,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "eng_fr_not_known",
             "value": commaize(obj.eng_fr_not_known),
+            "units": "people",
         },
         {
             "group": "Income",
@@ -183,7 +201,8 @@ def serialize_census_subdivision_groups(obj):
                 "name": "Median total income in 2015 among recipients ($)",
             },
             "key": "median_total_income",
-            "value": commaize(obj.median_total_income),
+            "value": to_currency(commaize(obj.median_total_income)),
+            "units": None,
         },
         {
             "group": "Immigration and citizenship",
@@ -191,7 +210,8 @@ def serialize_census_subdivision_groups(obj):
                 "name": "Non-permanent residents",
             },
             "key": "non_pr",
-            "value": commaize(obj.non_pr),
+            "value": to_currency(commaize(obj.non_pr)),
+            "units": None,
         },
         {
             "group": "Visible minority",
@@ -200,6 +220,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "visible_minority",
             "value": commaize(obj.visible_minority),
+            "units": "people",
         },
         {
             "group": "Education",
@@ -208,6 +229,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "edu_1",
             "value": commaize(obj.edu_1),
+            "units": "people",
         },
         {
             "group": "Education",
@@ -216,6 +238,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "edu_2",
             "value": commaize(obj.edu_2),
+            "units": "people",
         },
         {
             "group": "Education",
@@ -224,6 +247,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "edu_3",
             "value": commaize(obj.edu_3),
+            "units": "people",
         },
         {
             "group": "Education",
@@ -232,6 +256,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "edu_4",
             "value": commaize(obj.edu_4),
+            "units": "people",
         },
         {
             "group": "Employment",
@@ -240,6 +265,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "employed",
             "value": commaize(obj.employed),
+            "units": "people",
         },
         {
             "group": "Employment",
@@ -248,6 +274,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "unemployed",
             "value": commaize(obj.unemployed),
+            "units": "people",
         },
         {
             "group": "Employment",
@@ -256,6 +283,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "self_employed",
             "value": commaize(obj.self_employed),
+            "units": "people",
         },
     ]
 
@@ -389,4 +417,17 @@ def get_quarterly_date_str_as_date(quarterly_date_str):
 
 
 def commaize(number):
-    return '{:,}'.format(number)
+    if not number:
+        return
+
+    if isinstance(number, float):
+        return '{:,.2f}'.format(number)
+    elif isinstance(number, int):
+        return '{:,}'.format(number)
+
+
+def to_currency(string):
+    if not string:
+        return
+
+    return '$' + string

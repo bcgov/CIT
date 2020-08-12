@@ -193,12 +193,16 @@ class CensusSubdivision(models.Model):
     # "2.3.5", 0, "Total - Lone-parent census families in private households - 100% data"
     single_parents = models.IntegerField(null=True)
 
+    # 3.6.1 Total - Knowledge of languages for the population in private households - 25% sample data
     # "3.6.1.1.1", 2, "    English"
     eng_known = models.IntegerField(null=True)
     # "3.6.1.2", 1, "  Non-official languages"
     other_lang = models.IntegerField(null=True)
     # "3.6.1.2.1", 2, "    Aboriginal languages"
     aboriginal_lang = models.IntegerField(null=True)
+
+    # 3.1.1 Total - Knowledge of official languages for the total population excluding institutional
+    # residents - 100% data
     # "3.1.1.4", 1, "  Neither English nor French"
     eng_fr_not_known = models.IntegerField(null=True)
 
