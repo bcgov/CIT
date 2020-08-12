@@ -53,7 +53,7 @@ class CommunitySerializer(serializers.ModelSerializer):
             "census_subdivision",
             "community_type",
             "incorporated",
-            'fn_community_name',
+            "fn_community_name",
             "wildfire_zone",
             "tsunami_zone",
             "last_mile_status",
@@ -64,7 +64,9 @@ class CommunitySerializer(serializers.ModelSerializer):
             "num_hospitals",
             "num_timber_facilities",
             "percent_50_10",
-            "percent_25_5"
+            "percent_25_5",
+            "percent_10_2",
+            "percent_5_1",
         )
 
 
