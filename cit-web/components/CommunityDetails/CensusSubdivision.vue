@@ -31,9 +31,10 @@
                   <v-list-item-content>{{
                     item.metadata.name
                   }}</v-list-item-content>
-                  <v-list-item-content class="align-end justify-center">{{
-                    item.value
-                  }}</v-list-item-content>
+                  <v-list-item-content class="align-end justify-center"
+                    >{{ item.value || 'No data'
+                    }}{{ item.value ? item.units : '' }}</v-list-item-content
+                  >
                 </v-list-item>
               </v-list>
             </v-card>
