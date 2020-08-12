@@ -298,19 +298,35 @@ def serialize_community_detail_fields(obj):
             },
         },
         {
-            "key": "last_mile_status",
-            "value": obj.last_mile_status,
+            "key": "wildfire_zone_risk_class",
+            "value": obj.wildfire_zone.risk_class if obj.wildfire_zone else "None",
             "metadata": {
-                "name": "Last Mile Status (June 2020)",
+                "name": "Wildfire Zone Risk Class",
+                "description": "WUI Risk Class rating between 1 (low) and 5 (extreme)",
             },
         },
         {
-            "key": "transport_mile_status",
-            "value": obj.transport_mile_status,
+            "key": "tsunami_zone",
+            "value": obj.tsunami_zone.zone_class if obj.tsunami_zone else "None",
             "metadata": {
-                "name": "Transport Status (June 2020)",
+                "name": "Tsunami Zone Classification",
+                "description": "A - C (moderate); D and E (low)",
             },
         },
+        # {
+        #     "key": "last_mile_status",
+        #     "value": obj.last_mile_status,
+        #     "metadata": {
+        #         "name": "Last Mile Status (June 2020)",
+        #     },
+        # },
+        # {
+        #     "key": "transport_mile_status",
+        #     "value": obj.transport_mile_status,
+        #     "metadata": {
+        #         "name": "Transport Status (June 2020)",
+        #     },
+        # },
         # {
         #     "key": "cbc_phase",
         #     "value": obj.cbc_phase,

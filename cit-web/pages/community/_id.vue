@@ -166,15 +166,11 @@ export default class CommunityDetail extends Vue {
   }
 
   get communityDisplayFields() {
-    let dfs = this.communityDetails.display_fields
+    const dfs = this.communityDetails.display_fields
     if (!dfs) {
       return []
     }
-    const excludes = {
-      census_subdivision_id: true,
-    }
-    dfs = dfs.filter((df) => !excludes[df.key])
-    return dfs
+    return dfs.filter((df) => this.filterCommunityDetailFields(df))
   }
 
   get placeName() {
@@ -184,6 +180,15 @@ export default class CommunityDetail extends Vue {
     }
     const placeName = dfs.find((df) => df.key === 'place_name')
     return placeName?.value
+  }
+
+  filterCommunityDetailFields(field) {
+    if (field.key === 'census_subdivision_id') {
+      return false
+    } else if (field.key === 'fn_community_name' && !field.value) {
+      return false
+    }
+    return true
   }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
