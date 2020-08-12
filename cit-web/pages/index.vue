@@ -11,8 +11,7 @@
 
         <CommunityList></CommunityList>
 
-        <p class="spacer">Or:</p>
-        <p>
+        <p class="explore-communities">
           Interested in looking at multiple communities which share specific
           attributes?
         </p>
@@ -55,14 +54,14 @@ export default class Index extends Vue {
 }
 
 h1 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-top: 2rem;
 }
 
 .landing-page-content {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  margin-top: 6rem;
+  grid-template-columns: 3fr 2fr;
+  margin-top: 3rem;
 }
 
 .landing-page-info {
@@ -81,15 +80,15 @@ h1 {
 
 .btn {
   display: inline-block;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 2rem;
   background-color: #073366;
   color: white !important;
-  font-weight: bold;
   text-decoration: none !important;
   margin: 0.5rem 0;
+  border-radius: 5px;
 }
 
-p.spacer {
-  margin-top: 1rem;
+.explore-communities {
+  margin-top: 4rem;
 }
 </style>
