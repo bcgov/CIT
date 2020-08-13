@@ -179,6 +179,11 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
   filters: {
     yesno,
   },
+  head() {
+    return {
+      title: this.placeName,
+    }
+  },
 })
 export default class CommunityDetail extends Vue {
   communityDetails = {}

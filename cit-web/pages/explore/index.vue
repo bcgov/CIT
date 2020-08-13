@@ -9,6 +9,11 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import MainReport from '~/components/MainReport.vue'
 @Component({
   MainReport,
+  head() {
+    return {
+      title: 'Explore',
+    }
+  },
 })
 export default class CommunityQuery extends Vue {
   layout(context) {

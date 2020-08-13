@@ -1,7 +1,7 @@
 <template>
   <div class="landing-page-container">
     <h1>Welcome to the Community Information Tool</h1>
-    <p>Explore BC communities and analyze data from a community lens.</p>
+    <p>Explore B.C. communities and analyze data from a community lens.</p>
     <div class="landing-page-content">
       <div class="landing-page-info">
         <p>
@@ -16,7 +16,7 @@
           attributes?
         </p>
         <nuxt-link to="/explore" class="btn" target="_blank"
-          >Explore BC Communities</nuxt-link
+          >Explore B.C. Communities</nuxt-link
         >
       </div>
 
@@ -30,7 +30,9 @@
 <script>
 import { Vue, Component } from 'nuxt-property-decorator'
 import CommunitySearch from '~/components/CommunitySearch.vue'
-@Component({ CommunitySearch })
+@Component({
+  CommunitySearch,
+})
 export default class Index extends Vue {
   layout(context) {
     return 'landing'
