@@ -137,7 +137,8 @@ export default class CommunityList extends Vue {
   border-radius: 5px;
 }
 
-.nav-bar {
+.nav-bar.community-search {
+  margin-top: 0;
   font-size: 1rem;
 
   .community-name {
