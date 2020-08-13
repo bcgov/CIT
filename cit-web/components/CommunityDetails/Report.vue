@@ -108,9 +108,21 @@ iframe {
 <style lang="scss" scoped>
 .reportContainer {
   height: 800px;
-}
 
-.reportContainer.demographics {
-  height: 1400px;
+  &.demographics {
+    height: 1842px;
+  }
+  &.connectivity {
+    height: 960px;
+  }
+  &.community-assets {
+    height: 2298px;
+  }
+  &.economic-projects {
+    height: 1387px;
+  }
+  &.natural-resource-projects {
+    height: 2070px;
+  }
 }
 </style>
