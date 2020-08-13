@@ -2,7 +2,7 @@ import datetime
 
 
 def generate_line_strings():
-    from pipeline.models import LocationDistance   # local import to avoid circular import # noqa
+    from pipeline.models.general import LocationDistance   # local import to avoid circular import # noqa
 
     line_strings = {"type": "FeatureCollection", "features": []}
 

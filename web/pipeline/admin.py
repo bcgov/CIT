@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.contrib.gis import forms
 from django.contrib.gis.db.models import PointField
 
-from .models import Location, Community
+from pipeline.models.location_assets import Location
+from pipeline.models.community import Community
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -17,7 +18,6 @@ class CommunityAdmin(admin.ModelAdmin):
         PointField: {'widget': forms.OSMWidget(attrs={
             'display_raw': True})}
     }
-
 
 
 admin.site.register(Location, LocationAdmin)

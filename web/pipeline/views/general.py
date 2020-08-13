@@ -4,7 +4,10 @@ from django.core.serializers import serialize
 from rest_framework import generics
 from rest_framework.views import APIView
 
-from pipeline.models import Location, Community, CensusSubdivision, LocationDistance, Service
+from pipeline.models.location_assets import Location
+from pipeline.models.community import Community
+from pipeline.models.census import CensusSubdivision
+from pipeline.models.general import LocationDistance, Service
 from pipeline.serializers.general import (
     LocationSerializer,
     CommunitySerializer,

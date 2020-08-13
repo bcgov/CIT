@@ -1,8 +1,9 @@
 from rest_framework import serializers
 
-from pipeline.models import (
-    Location, Community, CensusSubdivision, LocationDistance, Service
-)
+from pipeline.models.location_assets import Location
+from pipeline.models.general import LocationDistance, Service
+from pipeline.models.community import Community
+from pipeline.models.census import CensusSubdivision
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -32,7 +33,8 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 class CommunitySerializer(serializers.ModelSerializer):
-    queryset = Community.objects.all().select_related('hexuid', 'hexuid__service__isp').prefetch_related('hexuid__service')
+    queryset = Community.objects.all().select_related(
+        'hexuid', 'hexuid__service__isp').prefetch_related('hexuid__service')
     wildfire_zone = serializers.SlugRelatedField(read_only=True, slug_field='risk_class')
     tsunami_zone = serializers.SlugRelatedField(read_only=True, slug_field='zone_class')
     community_type = serializers.CharField(source='get_display_community_type', read_only=True)
