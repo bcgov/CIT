@@ -74,6 +74,7 @@ h1 {
 .landing-page-content {
   display: grid;
   grid-template-columns: 4fr 3fr;
+  grid-gap: 1rem;
   margin-top: 3rem;
 }
 
