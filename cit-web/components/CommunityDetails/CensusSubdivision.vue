@@ -2,7 +2,9 @@
   <div>
     <v-expansion-panels multiple>
       <v-expansion-panel>
-        <v-expansion-panel-header>Raw Census Data (in above charts)</v-expansion-panel-header>
+        <v-expansion-panel-header
+          >Raw Census Data (in above charts)
+        </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-alert
             v-if="classification === 'Not Incorporated'"
