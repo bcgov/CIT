@@ -9,7 +9,7 @@
           Search for it below to view details.
         </p>
 
-        <CommunityList></CommunityList>
+        <CommunitySearch class="community-search"></CommunitySearch>
 
         <p class="explore-communities">
           Interested in looking at multiple communities which share specific
@@ -29,8 +29,8 @@
 
 <script>
 import { Vue, Component } from 'nuxt-property-decorator'
-import CommunityList from '~/components/CommunityList.vue'
-@Component({ CommunityList })
+import CommunitySearch from '~/components/CommunitySearch.vue'
+@Component({ CommunitySearch })
 export default class Index extends Vue {
   layout(context) {
     return 'landing'
@@ -47,20 +47,31 @@ export default class Index extends Vue {
 </script>
 
 <style lang="scss">
+h1 {
+  font-size: 2.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #073366;
+  color: white !important;
+  text-decoration: none !important;
+  margin: 0.5rem 0;
+  border-radius: 5px;
+}
+
 .landing-page-container {
-  max-width: 1280px;
+  max-width: 960px;
   margin: 1rem auto 0;
   padding: 0;
 }
 
-h1 {
-  font-size: 2.5rem;
-  margin-top: 2rem;
-}
-
 .landing-page-content {
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 4fr 3fr;
   margin-top: 3rem;
 }
 
@@ -74,21 +85,12 @@ h1 {
   }
 }
 
-.buttons {
-  margin-top: 1rem;
-}
-
-.btn {
-  display: inline-block;
-  padding: 0.5rem 2rem;
-  background-color: #073366;
-  color: white !important;
-  text-decoration: none !important;
-  margin: 0.5rem 0;
-  border-radius: 5px;
-}
-
 .explore-communities {
-  margin-top: 4rem;
+  margin-top: 5rem;
+  margin-bottom: 1.5rem;
+}
+
+.community-search {
+  margin-top: 0.5rem;
 }
 </style>

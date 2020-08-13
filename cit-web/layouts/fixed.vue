@@ -5,7 +5,7 @@
         <nuxt-link class="main-title d-block" to="/"
           >Community Information Tool 2.0</nuxt-link
         >
-        <CommunityList class="nav-bar"></CommunityList>
+        <CommunitySearch class="nav-bar"></CommunitySearch>
       </v-toolbar-title>
     </v-app-bar>
     <div class="fixed-content">
