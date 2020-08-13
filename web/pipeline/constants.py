@@ -1,4 +1,5 @@
-from pipeline.models import (
+from pipeline.models.general import Municipality, WildfireZone, TsunamiZone
+from pipeline.models.location_assets import (
     Court,
     Hospital,
     EconomicProject,
@@ -6,16 +7,13 @@ from pipeline.models import (
     ServiceBCLocation,
     School,
     Clinic,
-    Community,
     FirstResponder,
     DiagnosticFacility,
     TimberFacility,
     CivicFacility,
-    WildfireZone,
-    TsunamiZone,
-    Municipality,
     PostSecondaryInstitution,
 )
+from pipeline.models.community import Community
 
 
 LOCATION_TYPES = [

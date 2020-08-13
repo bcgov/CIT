@@ -54,7 +54,8 @@ from django.contrib.gis.geos.prototypes.io import wkt_w
 from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 from django.conf import settings
-from pipeline.models import CensusSubdivision, Road, Hex, ISP, Service
+from pipeline.models.census import CensusSubdivision
+from pipeline.models.general import Road, Hex, ISP, Service
 from pipeline.constants import SHP_RESOURCES
 from pipeline.importers.utils import import_data_into_area_model, read_csv
 
@@ -356,6 +357,65 @@ def _save_subdiv(feat):
 
     # "Visible minority", 25001, "7.1.1.1", 1, "  Total visible minority population"
     subdiv.visible_minority = _fetch_statscan_value(stats, "7.1.1.1")
+
+    # "Housing", 27001, "9.1.1.1", 1, "  Owner"
+    subdiv.housing_owner = _fetch_statscan_value(stats, "9.1.1.1")
+    # "Housing", 27002, "9.1.1.2", 1, "  Renter"
+    subdiv.housing_renter = _fetch_statscan_value(stats, "9.1.1.2")
+    # "Housing", 27003, "9.1.1.3", 1, "  Band housing",
+    subdiv.housing_band_housing = _fetch_statscan_value(stats, "9.1.1.3")
+
+    # dwelling condition
+    # "Housing", 27035, "9.1.9.1", 1, "  Only regular maintenance or minor repairs needed",
+    subdiv.housing_cond_regular_maintenance = _fetch_statscan_value(stats, "9.1.9.1")
+    # "Housing", 27036, "9.1.9.2", 1, "  Major repairs needed"
+    subdiv.housing_cond_major_repairs = _fetch_statscan_value(stats, "9.1.9.2")
+
+    # Total - Owner and tenant households with household total income greater than zero, in non-farm,
+    # non-reserve private dwellings by shelter-cost-to-income ratio - 25% sample data
+    # "Housing", 27051, "9.1.12.1", 1, "  Spending less than 30% of income on shelter costs",
+    subdiv.housing_cost_less_30_pct_income = _fetch_statscan_value(stats, "9.1.12.1")
+    # "Housing", 27052, "9.1.12.2", 1, "  Spending 30% or more of income on shelter costs"
+    subdiv.housing_cost_30_pct_more_income = _fetch_statscan_value(stats, "9.1.12.2")
+
+    # "Families, households and marital status", 3017, "2.1.4", 0, "Average household size",
+    subdiv.avg_household_size = _fetch_statscan_value(stats, "2.1.4")
+
+    # "Families, households and marital status", 3011, "2.1.2.1", 1, "  1 person",
+    subdiv.household_size_1 = _fetch_statscan_value(stats, "2.1.2.1")
+    # "Families, households and marital status", 3012, "2.1.2.2", 1, "  2 persons",
+    subdiv.household_size_2 = _fetch_statscan_value(stats, "2.1.2.2")
+    # "Families, households and marital status", 3013, "2.1.2.3", 1, "  3 persons",
+    subdiv.household_size_3 = _fetch_statscan_value(stats, "2.1.2.3")
+    # "Families, households and marital status", 3014, "2.1.2.4", 1, "  4 persons",
+    subdiv.household_size_4 = _fetch_statscan_value(stats, "2.1.2.4")
+    # "Families, households and marital status", 3015, "2.1.2.5", 1, "  5 or more persons",
+    subdiv.household_size_5_more = _fetch_statscan_value(stats, "2.1.2.5")
+
+    # Total - Owner households in non-farm, non-reserve private dwellings - 25% sample data
+    # "Housing", 27055, "9.1.13.1", 1, "  % of owner households with a mortgage", 142, null, 37.6
+    subdiv.households_owner_pct_mortgage = _fetch_statscan_value(stats, "9.1.13.1")
+    # "Housing", 27056, "9.1.13.2", 1, "  % of owner households spending 30% or more of its income on shelter costs",
+    subdiv.households_owner_spending_30_pct_income = _fetch_statscan_value(stats, "9.1.13.2")
+    # "Housing", 27057, "9.1.13.3", 1, "  Median monthly shelter costs for owned dwellings ($)",
+    subdiv.households_owner_median_monthly_shelter_costs = _fetch_statscan_value(stats, "9.1.13.3")
+    # "Housing", 27058, "9.1.13.4", 1, "  Average monthly shelter costs for owned dwellings ($)",
+    subdiv.households_owner_avg_monthly_shelter_costs = _fetch_statscan_value(stats, "9.1.13.4")
+    # "Housing", 27059, "9.1.13.5", 1, "  Median value of dwellings ($)",
+    subdiv.households_owner_median_dwelling_value = _fetch_statscan_value(stats, "9.1.13.5")
+    # "Housing", 27060, "9.1.13.6", 1, "  Average value of dwellings ($)"
+    subdiv.households_owner_avg_dwelling_value = _fetch_statscan_value(stats, "9.1.13.6")
+
+    # Total - Tenant households in non-farm, non-reserve private dwellings - 25% sample data
+    # "Housing", 27062, "9.1.14.1", 1, "  % of tenant households in subsidized housing",
+    subdiv.households_tenant_pct_subsidized_housing = _fetch_statscan_value(stats, "9.1.14.1")
+    # "Housing", 27063, "9.1.14.2", 1, "  % of tenant households spending 30% or more of its income on shelter costs",
+    subdiv.households_tenant_spending_30_pct_income = _fetch_statscan_value(stats, "9.1.14.2")
+    # "Housing", 27064, "9.1.14.3", 1, "  Median monthly shelter costs for rented dwellings ($)",
+    subdiv.households_tenant_median_shelter_cost = _fetch_statscan_value(stats, "9.1.14.3")
+    # "Housing", 27065, "9.1.14.4", 1, "  Average monthly shelter costs for rented dwellings ($)",
+    subdiv.households_tenant_avg_shelter_cost = _fetch_statscan_value(stats, "9.1.14.4")
+
     # "Education", 28002, "10.1.1.2", 1, "  Secondary (high) school diploma or equivalency certificate"
     subdiv.edu_1 = _fetch_statscan_value(stats, "10.1.1.2")
     # "Education", 28003, "10.1.1.3", 1, "  Postsecondary certificate, diploma or degree"
@@ -364,6 +424,32 @@ def _save_subdiv(feat):
     subdiv.edu_3 = _fetch_statscan_value(stats, "10.1.1.3.1")
     # "Education", 28009, "10.1.1.3.4", 2, "    University certificate, diploma or degree at bachelor level or above"
     subdiv.edu_4 = _fetch_statscan_value(stats, "10.1.1.3.4")
+
+    # "Education", 29001, "10.2.1.1", 1, "  No postsecondary certificate, diploma or degree",
+    subdiv.edu_field_no_post_secondary = _fetch_statscan_value(stats, "10.2.1.1")
+    # "Education", 29002, "10.2.1.2", 1, "  Education"
+    subdiv.edu_field_education = _fetch_statscan_value(stats, "10.2.1.2")
+    # "Education", 29004, "10.2.1.3", 1, "  Visual and performing arts, and communications technologies"
+    subdiv.edu_field_visual_arts_comms = _fetch_statscan_value(stats, "10.2.1.3")
+    # "Education", 29007, "10.2.1.4", 1, "  Humanities"
+    subdiv.edu_field_humanities = _fetch_statscan_value(stats, "10.2.1.4")
+    # "Education", 29016, "10.2.1.5", 1, "  Social and behavioural sciences and law"
+    subdiv.edu_field_social_sciences_law = _fetch_statscan_value(stats, "10.2.1.5")
+    # "Education", 29024, "10.2.1.6", 1, "  Business, management and public administration"
+    subdiv.edu_field_business = _fetch_statscan_value(stats, "10.2.1.6")
+    # "Education", 29028, "10.2.1.7", 1, "  Physical and life sciences and technologies"
+    subdiv.edu_field_physical_life_sciences = _fetch_statscan_value(stats, "10.2.1.7")
+    # "Education", 29034, "10.2.1.8", 1, "  Mathematics, computer and information sciences"
+    subdiv.edu_field_math_cs = _fetch_statscan_value(stats, "10.2.1.8")
+    # "Education", 29039, "10.2.1.9", 1, "  Architecture, engineering, and related technologies"
+    subdiv.edu_field_architecture_eng = _fetch_statscan_value(stats, "10.2.1.9")
+    # "Education", 29047, "10.2.1.10", 1, "  Agriculture, natural resources and conservation"
+    subdiv.edu_field_agriculture = _fetch_statscan_value(stats, "10.2.1.10")
+    # "Education", 29050, "10.2.1.11", 1, "  Health and related fields"
+    subdiv.edu_field_health = _fetch_statscan_value(stats, "10.2.1.11")
+    # "Education", 29054, "10.2.1.12", 1, "  Personal, protective and transportation services"
+    subdiv.edu_field_personal_protective_transportation = _fetch_statscan_value(stats, "10.2.1.12")
+
     # "Labour", 31002, "11.1.1.1.1", 2, "    Employed"
     subdiv.employed = _fetch_statscan_value(stats, "11.1.1.1.1")
     # "Labour", 31003, "11.1.1.1.2", 2, "    Unemployed"

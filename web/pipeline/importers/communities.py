@@ -2,7 +2,9 @@ import csv
 
 from django.contrib.gis.geos import Point
 
-from pipeline.models import Community, WildfireZone, TsunamiZone, Road, CensusSubdivision
+from pipeline.models.community import Community
+from pipeline.models.general import WildfireZone, TsunamiZone, Road
+from pipeline.models.census import CensusSubdivision
 from django.db.utils import IntegrityError
 from django.contrib.gis.measure import D
 
@@ -94,7 +96,7 @@ def import_communities_from_csv(communities_file_path):
                 for k in sk[key_index:]:
                     speeds_map[k] += road.geom.length
                 total_length += road.geom.length
-            
+
             if total_length:
                 community.percent_50_10 = speeds_map['50/10'] / total_length
                 community.percent_25_5 = speeds_map['25/5'] / total_length
