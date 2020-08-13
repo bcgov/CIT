@@ -104,6 +104,7 @@
                   <Report
                     page-name="ReportSectionbc899e8fac8c2b494765"
                     :cid="communityDetails.id"
+                    extra-classname="connectivity"
                   ></Report>
                 </v-expansion-panel-content>
               </v-expansion-panel>
@@ -115,6 +116,31 @@
                   <Report
                     page-name="ReportSectionc87b6c3907e9321ae830"
                     :cid="communityDetails.id"
+                    extra-classname="community-assets"
+                  ></Report>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel>
+                <v-expansion-panel-header>
+                  Economic Projects</v-expansion-panel-header
+                >
+                <v-expansion-panel-content eager>
+                  <Report
+                    page-name="ReportSectionf2b8f5bb464e6d79a9ed"
+                    :cid="communityDetails.id"
+                    extra-classname="economic-projects"
+                  ></Report>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel>
+                <v-expansion-panel-header>
+                  Natural Resource Projects</v-expansion-panel-header
+                >
+                <v-expansion-panel-content eager>
+                  <Report
+                    page-name="ReportSection8f523b520a86970e96d4"
+                    :cid="communityDetails.id"
+                    extra-classname="natural-resource-projects"
                   ></Report>
                 </v-expansion-panel-content>
               </v-expansion-panel>
