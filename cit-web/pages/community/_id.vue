@@ -188,7 +188,7 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 export default class CommunityDetail extends Vue {
   communityDetails = {}
   censusSubdivision = {}
-  panels = [0, 4]
+  panels = [0, 1, 2, 3, 4]
 
   // Methods
 
