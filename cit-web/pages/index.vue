@@ -1,19 +1,19 @@
 <template>
   <div class="landing-page-container">
     <h1>Welcome to the Community Information Tool</h1>
-    <p>Explore B.C. communities and analyze data from a community lens.</p>
+    <p>Explore B.C. communities and analyze data from a B.C. community lens.</p>
     <div class="landing-page-content">
       <div class="landing-page-info">
         <p>
           Interested in a specific community?<br />
-          Search for it below to view details.
+          Search for it below to get details.
         </p>
 
         <CommunitySearch class="community-search"></CommunitySearch>
 
         <p class="explore-communities">
-          Interested in looking at multiple communities which share specific
-          attributes?
+          Interested in building a community profile to generate a list of
+          matching B.C. communities?
         </p>
         <nuxt-link to="/explore" class="btn" target="_blank"
           >Explore B.C. Communities</nuxt-link
