@@ -82,7 +82,7 @@
         </v-row>
 
         <v-row>
-          <v-col col="12">
+          <v-col col="12" class="powerbi-reports">
             <v-expansion-panels v-model="panels" multiple>
               <v-expansion-panel>
                 <v-expansion-panel-header
@@ -149,7 +149,7 @@
         </v-row>
 
         <v-row>
-          <v-col col="12">
+          <v-col col="12" class="powerbi-reports">
             <CensusSubdivision
               :classification="communityDetails.municipality_classification"
               :census-subdivision="censusSubdivision"
@@ -313,6 +313,12 @@ export default class CommunityDetail extends Vue {
 
 .community-list {
   width: 800px;
+  margin: 0 auto;
+}
+
+.powerbi-reports {
+  /* 960px powerBI report + 24px padding on each side */
+  max-width: 1008px;
   margin: 0 auto;
 }
 
