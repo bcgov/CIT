@@ -298,10 +298,27 @@ def serialize_community_detail_fields(obj):
             },
         },
         {
-            "key": "community_type",
-            "value": obj.community_type,
+            "key": "population",
+            "value": obj.incorporated and obj.census_subdivision.population,
             "metadata": {
-                "name": "Community Type",
+                "name": "Population",
+                "description": "Number of people living here",
+            },
+        },
+        {
+            "key": "population_percentage_change",
+            "value": obj.incorporated and (str(obj.census_subdivision.population_percentage_change) + "%"),
+            "metadata": {
+                "name": "Population Change",
+                "description": "Change in # of people living here",
+            },
+        },
+        {
+            "key": "priv_dwel",
+            "value": obj.incorporated and obj.census_subdivision.priv_dwel,
+            "metadata": {
+                "name": "Homes",
+                "description": "Number of homes build in this community",
             },
         },
         {
@@ -327,20 +344,21 @@ def serialize_community_detail_fields(obj):
         },
         {
             "key": "wildfire_zone_risk_class",
-            "value": obj.wildfire_zone.risk_class if obj.wildfire_zone else "None",
+            "value": obj.wildfire_zone.risk_class if obj.wildfire_zone else "N/A",
             "metadata": {
-                "name": "Wildfire Zone Risk Class",
+                "name": "Wildfire Risk",
                 "description": "WUI Risk Class rating between 1 (low) and 5 (extreme)",
             },
         },
         {
             "key": "tsunami_zone",
-            "value": obj.tsunami_zone.zone_class if obj.tsunami_zone else "None",
+            "value": obj.tsunami_zone.zone_class if obj.tsunami_zone else None,
             "metadata": {
-                "name": "Tsunami Zone Classification",
+                "name": "Tsunami Zone",
                 "description": "A - C (moderate); D and E (low)",
             },
         },
+
         # {
         #     "key": "last_mile_status",
         #     "value": obj.last_mile_status,

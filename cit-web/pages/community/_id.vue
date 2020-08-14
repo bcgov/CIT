@@ -8,7 +8,7 @@
     <div v-else>
       <MainHeader
         :title="placeName"
-        subtitle="Community Details"
+        :subtitle="censusSubdivision.name"
         class="mb-5"
       />
 
@@ -16,11 +16,6 @@
         <v-row>
           <v-col :cols="4">
             <v-card>
-              <v-card-title class="subheading font-weight-bold"
-                >Community Details</v-card-title
-              >
-
-              <v-divider></v-divider>
               <v-list dense>
                 <v-list-item
                   v-for="(df, key) in communityDisplayFields"
@@ -35,49 +30,48 @@
                 </v-list-item>
               </v-list>
             </v-card>
-            <v-card>
-              <v-card-title class="subheading font-weight-bold"
-                >Map Legend</v-card-title
-              >
-              <v-list>
-                <v-list-item two-line>
-                  <v-list-item-content>
-                    <v-list-item-title>Internet Speeds</v-list-item-title>
-                    <v-list-item-subtitle
-                      >50/10
-                      <div
-                        class="legend-icon"
-                        style="background-color: #8572d3;"
-                      ></div
-                    ></v-list-item-subtitle>
-                    <v-list-item-subtitle
-                      >25/5
-                      <div
-                        class="legend-icon"
-                        style="background-color: #ec67ad;"
-                      ></div
-                    ></v-list-item-subtitle>
-                    <v-list-item-subtitle
-                      >10/2
-                      <div
-                        class="legend-icon"
-                        style="background-color: #ff826f;"
-                      ></div
-                    ></v-list-item-subtitle>
-                    <v-list-item-subtitle
-                      >5/1
-                      <div
-                        class="legend-icon"
-                        style="background-color: #f7ba44;"
-                      ></div
-                    ></v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-card>
           </v-col>
           <v-col :cols="8">
-            <div id="map" ref="map"></div>
+            <div style="position: relative;">
+              <div id="map" ref="map"></div>
+              <v-card class="legend">
+                <v-list>
+                  <v-list-item two-line>
+                    <v-list-item-content>
+                      <v-list-item-title>Internet Speeds</v-list-item-title>
+                      <v-list-item-subtitle
+                        >50/10
+                        <div
+                          class="legend-icon"
+                          style="background-color: #8572d3;"
+                        ></div
+                      ></v-list-item-subtitle>
+                      <v-list-item-subtitle
+                        >25/5
+                        <div
+                          class="legend-icon"
+                          style="background-color: #ec67ad;"
+                        ></div
+                      ></v-list-item-subtitle>
+                      <v-list-item-subtitle
+                        >10/2
+                        <div
+                          class="legend-icon"
+                          style="background-color: #ff826f;"
+                        ></div
+                      ></v-list-item-subtitle>
+                      <v-list-item-subtitle
+                        >5/1
+                        <div
+                          class="legend-icon"
+                          style="background-color: #f7ba44;"
+                        ></div
+                      ></v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </div>
           </v-col>
         </v-row>
 
@@ -197,7 +191,9 @@ export default class CommunityDetail extends Vue {
   }
 
   get communityDisplayFields() {
-    const dfs = this.communityDetails.display_fields
+    const dfs = this.communityDetails.display_fields.filter((v) => {
+      return v.value
+    })
     if (!dfs) {
       return []
     }
@@ -328,5 +324,15 @@ export default class CommunityDetail extends Vue {
   width: 35px;
   margin-right: 50%;
   margin-top: 10px;
+}
+
+.legend {
+  bottom: 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px;
+  position: absolute;
+  right: 10px;
+  z-index: 1;
+  width: 180px;
 }
 </style>
