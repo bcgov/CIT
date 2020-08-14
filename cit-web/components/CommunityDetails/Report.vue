@@ -110,19 +110,19 @@ iframe {
   height: 800px;
 
   &.demographics {
-    height: 1842px;
+    height: 1600px;
   }
   &.connectivity {
     height: 960px;
   }
   &.community-assets {
-    height: 2298px;
+    height: 1200px;
   }
   &.economic-projects {
-    height: 1387px;
+    height: 1200px;
   }
   &.natural-resource-projects {
-    height: 2070px;
+    height: 1550px;
   }
 }
 </style>
