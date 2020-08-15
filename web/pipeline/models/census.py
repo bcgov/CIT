@@ -103,31 +103,63 @@ class CensusSubdivision(models.Model):
     # "3.1.1.4", 1, "  Neither English nor French"
     eng_fr_not_known = models.IntegerField(null=True)
 
+    # 3.4.1.1 Total - Language spoken most often at home for the total population excluding institutional
+    # residents - 100% data, Single responses
+    # three most common languages for census subdivision, ordered by frequency
+    lang_1_name = models.CharField(null=True, max_length=255)
+    lang_1_count = models.IntegerField(null=True)
+    lang_2_name = models.CharField(null=True, max_length=255)
+    lang_2_count = models.IntegerField(null=True)
+    lang_3_name = models.CharField(null=True, max_length=255)
+    lang_3_count = models.IntegerField(null=True)
+
+    # Total - Income statistics in 2015 for the population aged 15 years and over in
+    # private households - 100% dataCensus data footnote
     # "Income", 12002, "4.1.1.1.1", 2, "    Median total income in 2015 among recipients ($)"
     median_total_income = models.FloatField(null=True)
 
-    # "Income", 12008, "4.1.1.4.1", 2, "    Median government transfers in 2015 among recipients ($)"
+    # Total - Income statistics in 2015 for private households by household size - 100% data
+    # "Income", 13001, "4.2.1.1", 1, "  Median total income of households in 2015 ($)",
+    median_total_household_income = models.FloatField(null=True)
+    # "Income", 13004, "4.2.1.2.1.1", 3, "      Median total income of one-person households in 2015 ($)",
+    median_total_household_income_one_person = models.FloatField(null=True)
+    # "Income", 13007, "4.2.1.2.2.1", 3, "      Median total income of two-or-more-person households in 2015 ($)",
+    median_total_household_income_two_or_more_person = models.FloatField(null=True)
+
+    # Total - Total income groups in 2015 for the population aged 15 years and over in private households - 100% data
     #  "Income", 12034, "4.1.5.3.1", 2, "    Under $10,000 (including loss)"
+    total_income_under_10000 = models.IntegerField(null=True)
     #  "Income", 12035, "4.1.5.3.2", 2, "    $10,000 to $19,999"
+    total_income_10000_to_19999 = models.IntegerField(null=True)
     #  "Income", 12036, "4.1.5.3.3", 2, "    $20,000 to $29,999"
+    total_income_20000_to_29999 = models.IntegerField(null=True)
     #  "Income", 12037, "4.1.5.3.4", 2, "    $30,000 to $39,999"
+    total_income_30000_to_39999 = models.IntegerField(null=True)
     #  "Income", 12038, "4.1.5.3.5", 2, "    $40,000 to $49,999"
+    total_income_40000_to_49999 = models.IntegerField(null=True)
     #  "Income", 12039, "4.1.5.3.6", 2, "    $50,000 to $59,999"
+    total_income_50000_to_59999 = models.IntegerField(null=True)
     #  "Income", 12040, "4.1.5.3.7", 2, "    $60,000 to $69,999"
+    total_income_60000_to_69999 = models.IntegerField(null=True)
     #  "Income", 12041, "4.1.5.3.8", 2, "    $70,000 to $79,999"
+    total_income_70000_to_79999 = models.IntegerField(null=True)
     #  "Income", 12042, "4.1.5.3.9", 2, "    $80,000 to $89,999"
+    total_income_80000_to_89999 = models.IntegerField(null=True)
     #  "Income", 12043, "4.1.5.3.10", 2, "    $90,000 to $99,999"
-    #  "Income", 12044, "4.1.5.3.11", 2, "    $100,000 and over"
+    total_income_90000_to_99999 = models.IntegerField(null=True)
     #  "Income", 12045, "4.1.5.3.11.1", 3, "      $100,000 to $149,999"
+    total_income_100000_to_149999 = models.IntegerField(null=True)
     #  "Income", 12046, "4.1.5.3.11.2", 3, "      $150,000 and over"
+    total_income_150000_and_over = models.IntegerField(null=True)
 
-    # "Income", 13018, "4.2.3", 0, "Total - Household total income groups in 2015 for private households - 100% data", 36, null, 2475.0
-
-    # "Income", 15000, "4.4.1", 0, "Total - Low-income status in 2015 for the population in private households to whom low-income concepts are applicable - 100% data", 43, null, 4860.0, null, 2300.0, null, 2560.0, null],
+    # "Income", 15000, "4.4.1", 0, "Total - Low-income status in 2015 for the population in private
+    # households to whom low-income concepts are applicable - 100% data"
     # "Income", 15001, "4.4.1.1", 1, "  0 to 17 years"
-    # "Income", 15002, "4.4.1.1.1", 2, "    0 to 5 years"
+    low_income_status_0_to_17 = models.IntegerField(null=True)
     # "Income", 15003, "4.4.1.2", 1, "  18 to 64 years"
+    low_income_status_18_to_64 = models.IntegerField(null=True)
     # "Income", 15004, "4.4.1.3", 1, "  65 years and over"
+    low_income_status_65_and_over = models.IntegerField(null=True)
 
     # "Immigration and citizenship", 18010, "5.2.1.3", 1, "  Non-permanent residents", 52, null, 30.0, null, 15.0, null, 15.0, null],
     non_pr = models.IntegerField(null=True)
