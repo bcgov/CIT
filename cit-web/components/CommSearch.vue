@@ -6,7 +6,10 @@
       item-text="place_name"
       label="Community Name"
       append-icon="mdi-map-search"
-      :color="color"
+      :solo="solo"
+      hide-details
+      placeholder="Search for a community here"
+      :dense="dense"
       @input="handleClick"
     ></v-autocomplete>
   </div>
@@ -19,6 +22,12 @@ const commModule = namespace('communities')
 export default class CommSearch extends Vue {
   @Prop({ default: 'black', type: String })
   color
+
+  @Prop({ default: false, type: Boolean })
+  dense
+
+  @Prop({ default: false, type: Boolean })
+  solo
 
   communities = []
 

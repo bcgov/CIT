@@ -5,8 +5,10 @@
         <nuxt-link class="main-title d-block" to="/"
           >Community Information Tool 2.0</nuxt-link
         >
-        <CommSearch color="white"></CommSearch>
       </v-toolbar-title>
+      <div style="min-width: 300px;">
+        <CommSearch color="white" :solo="true" :dense="true"></CommSearch>
+      </div>
     </v-app-bar>
     <div class="fixed-content">
       <nuxt />

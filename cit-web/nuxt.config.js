@@ -22,8 +22,8 @@ export default {
    */
   head: {
     titleTemplate: (titleChunk) => {
-      const appTitle = 'B.C. Community Information Tool 2.0';
-      return titleChunk ? `${titleChunk} | ${appTitle}` : appTitle;
+      const appTitle = 'B.C. Community Information Tool 2.0'
+      return titleChunk ? `${titleChunk} | ${appTitle}` : appTitle
     },
     title: '',
     meta: [
