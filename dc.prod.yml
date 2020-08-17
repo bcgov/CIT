@@ -5,8 +5,6 @@ services:
     command: bash -c "yarn && yarn build && yarn start"
     environment:
       - NODE_ENV=production
-    ports:
-      - 8080:8080
   nginx:
     ports:
       - 10081:80
