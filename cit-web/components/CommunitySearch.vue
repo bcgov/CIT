@@ -66,7 +66,6 @@ export default class CommunityList extends Vue {
       return
     }
 
-    console.log('communitySearch', this.communityName)
     this.filteredCommunities = this.communities.filter((community) => {
       return community.place_name
         .toLowerCase()
