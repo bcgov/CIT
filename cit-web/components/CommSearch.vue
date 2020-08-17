@@ -5,6 +5,7 @@
       item-value="id"
       item-text="place_name"
       label="Community Name"
+      append-icon="mdi-map-search"
       @input="handleClick"
     ></v-autocomplete>
   </div>
