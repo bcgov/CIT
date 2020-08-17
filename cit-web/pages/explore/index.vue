@@ -1,23 +1,44 @@
 <template>
-  <div class="main-report-container">
-    <MainReport />
+  <div>
+    <div>
+      <h2>Explore communities in BC</h2>
+    </div>
+    <div class="main-report-container">
+      <CommunityQuerySidebar class="sidebar" @update-filters="updateFilters" />
+      <CommunityQueryContent class="main-report" :filters="filters" />
+    </div>
   </div>
 </template>
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
-import MainReport from '~/components/MainReport.vue'
+import CommunityQuerySidebar from '~/components/CommunityQuery/CommunityQuerySidebar.vue'
+import CommunityQueryContent from '~/components/CommunityQuery/CommunityQueryContent.vue'
 @Component({
-  MainReport,
-  head() {
-    return {
-      title: 'Explore',
-    }
-  },
+  CommunityQuerySidebar,
+  CommunityQueryContent,
 })
-export default class CommunityQuery extends Vue {
+export default class Explore extends Vue {
+  data() {
+    return {
+      filters: undefined,
+    }
+  }
+
   layout(context) {
-    return 'fixed'
+    return 'default'
+  }
+
+  mounted() {
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+      for (const registration of registrations) {
+        registration.unregister()
+      }
+    })
+  }
+
+  updateFilters(filters) {
+    this.filters = filters
   }
 }
 </script>
@@ -26,8 +47,14 @@ export default class CommunityQuery extends Vue {
   max-width: 1280px;
   margin: 0 auto;
   padding: 0;
+  display: flex;
 }
-
+.sidebar {
+  flex: 1;
+}
+.main-report {
+  flex: 3;
+}
 iframe {
   border: 0 !important;
 }
