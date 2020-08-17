@@ -5,26 +5,30 @@
         <nuxt-link class="main-title d-block" to="/"
           >Community Information Tool 2.0</nuxt-link
         >
-        <CommunitySearch class="nav-bar"></CommunitySearch>
       </v-toolbar-title>
+      <div style="min-width: 300px;">
+        <CommSearch color="white" :solo="true" :dense="true"></CommSearch>
+      </div>
     </v-app-bar>
     <div class="fixed-content">
       <nuxt />
     </div>
-    <!--<div class="fixed-footer">
-      <v-footer color="primary" height="66"></v-footer>
-    </div>-->
   </v-app>
 </template>
-
 <script>
-export default {
+import { Component, Vue } from 'nuxt-property-decorator'
+import CommSearch from '~/components/CommSearch.vue'
+@Component({
+  CommSearch,
+})
+export default class FixedLayout extends Vue {
   mounted() {
     const element = document.documentElement
     element.classList.add('fixed-layout')
-  },
+  }
 }
 </script>
+
 <style lang="scss">
 .fixed-layout {
   width: 100%;

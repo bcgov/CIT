@@ -9,7 +9,7 @@
           Search for it below to get details.
         </p>
 
-        <CommSearch :communities="communities"></CommSearch>
+        <CommSearch></CommSearch>
 
         <p class="explore-communities">
           Interested in building a community profile to generate a list of
@@ -30,7 +30,6 @@
 <script>
 import { Vue, Component } from 'nuxt-property-decorator'
 import CommSearch from '~/components/CommSearch.vue'
-import { getCommunityList } from '~/api/cit-api'
 @Component({
   CommSearch,
 })
@@ -45,14 +44,6 @@ export default class Index extends Vue {
         registration.unregister()
       }
     })
-  }
-
-  async asyncData() {
-    const result = await getCommunityList()
-    const communities = result.data
-    return {
-      communities,
-    }
   }
 }
 </script>
