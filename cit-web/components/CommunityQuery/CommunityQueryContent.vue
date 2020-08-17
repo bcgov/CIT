@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div ref="communityCount" class="communityCount"></div>
+    <!-- <div ref="communityCount" class="communityCount"></div> -->
     <div>
       <button type="button" @click="navigate('map')">Map</button>
       <button type="button" @click="navigate('demographics')">
@@ -127,11 +127,11 @@ export default class CommunityQueryContent extends Vue {
           console.log('report loaded')
           this.updateReportFilters()
         })
-        this.communityCountReport = this.embedCommunityCount()
-        this.communityCountReport.on('loaded', (event) => {
-          console.log('report loaded')
-          this.updateReportFilters()
-        })
+        // this.communityCountReport = this.embedCommunityCount()
+        // this.communityCountReport.on('loaded', (event) => {
+        //   console.log('report loaded')
+        //   this.updateReportFilters()
+        // })
       }
     })
   }
