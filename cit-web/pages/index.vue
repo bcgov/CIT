@@ -9,10 +9,10 @@
           Search for it below to get details.
         </p>
 
-        <CommunitySearch class="community-search"></CommunitySearch>
+        <CommSearch :communities="communities"></CommSearch>
 
         <p class="explore-communities">
-          Interested in building a community profile to generate a list of
+          Interested in building a csommunity profile to generate a list of
           matching B.C. communities?
         </p>
         <nuxt-link to="/explore" class="btn" target="_blank"
@@ -29,9 +29,10 @@
 
 <script>
 import { Vue, Component } from 'nuxt-property-decorator'
-import CommunitySearch from '~/components/CommunitySearch.vue'
+import CommSearch from '~/components/CommSearch.vue'
+import { getCommunityList } from '~/api/cit-api'
 @Component({
-  CommunitySearch,
+  CommSearch,
 })
 export default class Index extends Vue {
   layout(context) {
@@ -44,6 +45,14 @@ export default class Index extends Vue {
         registration.unregister()
       }
     })
+  }
+
+  async asyncData() {
+    const result = await getCommunityList()
+    const communities = result.data
+    return {
+      communities,
+    }
   }
 }
 </script>
