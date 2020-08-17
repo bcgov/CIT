@@ -54,8 +54,12 @@ from django.contrib.gis.geos.prototypes.io import wkt_w
 from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 from django.conf import settings
-from pipeline.models import CensusSubdivision, Road, Hex, ISP, Service
+from pipeline.models.census import CensusSubdivision
+from pipeline.models.general import Road, Hex, ISP, Service
 from pipeline.constants import SHP_RESOURCES
+from pipeline.importers.census import (
+    import_census_population_data, import_census_languages_data,
+    import_census_income_data, import_census_housing_data, import_census_education_employment_data)
 from pipeline.importers.utils import import_data_into_area_model, read_csv
 
 import logging
@@ -223,28 +227,6 @@ def _get_datasource(filename):
 
 
 def _save_subdiv(feat):
-    # print(
-    #     'CSDUID', feat.get('CSDUID'), '\n',
-    #     'CSDUID', feat.get('CSDUID'), '\n',
-    #     'CSDNAME', feat.get('CSDNAME'), '\n',
-    #     'CSDTYPE', feat.get('CSDTYPE'), '\n',
-    #     'PRUID', feat.get('PRUID'), '\n',
-    #     'PRNAME', feat.get('PRNAME'), '\n',
-    #     'CDUID', feat.get('CDUID'), '\n',
-    #     'CDNAME', feat.get('CDNAME'), '\n',
-    #     'CDTYPE', feat.get('CDTYPE'), '\n',
-    #     'CCSUID', feat.get('CCSUID'), '\n',
-    #     'CCSNAME', feat.get('CCSNAME'), '\n',
-    #     'ERUID', feat.get('ERUID'), '\n',
-    #     'ERNAME', feat.get('ERNAME'), '\n',
-    #     'SACCODE', feat.get('SACCODE'), '\n',
-    #     'SACTYPE', feat.get('SACTYPE'), '\n',
-    #     'CMAUID', feat.get('CMAUID'), '\n',
-    #     'CMAPUID', feat.get('CMAPUID'), '\n',
-    #     'CMANAME', feat.get('CMANAME'), '\n',
-    #     'CMATYPE', feat.get('CMATYPE'), '\n',
-    # )
-
     if "British Columbia" not in feat.get('PRNAME'):
         return
 
@@ -263,113 +245,12 @@ def _save_subdiv(feat):
         ).text[2:]
     )
 
-    # "1.1.2", "Population, 2016"
-    subdiv.population = _fetch_statscan_value(stats, "1.1.2")
-    # "1.1.3", "Population percentage change, 2011 to 2016"
-    subdiv.popluation_percentage_change = _fetch_statscan_value(stats, "1.1.3")
-    # "1.1.4", "Total private dwellings"
-    subdiv.priv_dwel = _fetch_statscan_value(stats, "1.1.4")
-    # "1.1.7",0,"Land area in square kilometres"
-    subdiv.area = _fetch_statscan_value(stats, "1.1.7")
-
-    # "1.2.2.1", "  0 to 14 years"
-    subdiv.pop_pct_0_14 = _fetch_statscan_value(stats, "1.2.2.1")
-    # 2029, "1.2.2.2", 1, "  15 to 64 years"
-    subdiv.pop_pct_14_65 = _fetch_statscan_value(stats, "1.2.2.2")
-    # 2030, "1.2.2.3", 1, "  65 years and over"
-    subdiv.pop_pct_65 = _fetch_statscan_value(stats, "1.2.2.3")
-
-    # "1.2.1.1.1", "    0 to 4 years"
-    subdiv.pop_0_4 = _fetch_statscan_value(stats, "1.2.1.1.1")
-    # "1.2.1.1.2", "    5 to 9 years"
-    subdiv.pop_5_9 = _fetch_statscan_value(stats, "1.2.1.1.2")
-    # "1.2.1.1.3", "    10 to 14 years"
-    subdiv.pop_10_14 = _fetch_statscan_value(stats, "1.2.1.1.3")
-    # "1.2.1.2.1", "    15 to 19 years"
-    subdiv.pop_15_19 = _fetch_statscan_value(stats, "1.2.1.2.1")
-    # "1.2.1.2.2", "    20 to 24 years"
-    subdiv.pop_20_24 = _fetch_statscan_value(stats, "1.2.1.2.2")
-    # "1.2.1.2.3", "    25 to 29 years"
-    subdiv.pop_25_29 = _fetch_statscan_value(stats, "1.2.1.2.3")
-    # "1.2.1.2.4", "    30 to 34 years"
-    subdiv.pop_30_34 = _fetch_statscan_value(stats, "1.2.1.2.4")
-    # "1.2.1.2.5", "    35 to 39 years"
-    subdiv.pop_35_39 = _fetch_statscan_value(stats, "1.2.1.2.5")
-    # "1.2.1.2.6", "    40 to 44 years"
-    subdiv.pop_40_44 = _fetch_statscan_value(stats, "1.2.1.2.6")
-    # "1.2.1.2.7", "    45 to 49 years"
-    subdiv.pop_45_49 = _fetch_statscan_value(stats, "1.2.1.2.7")
-    # "1.2.1.2.8", "    50 to 54 years"
-    subdiv.pop_50_54 = _fetch_statscan_value(stats, "1.2.1.2.8")
-    # "1.2.1.2.9", "    55 to 59 years"
-    subdiv.pop_55_59 = _fetch_statscan_value(stats, "1.2.1.2.9")
-    # "1.2.1.2.10", "    60 to 64 years"
-    subdiv.pop_60_64 = _fetch_statscan_value(stats, "1.2.1.2.10")
-    # "1.2.1.3.1", "    65 to 69 years"
-    subdiv.pop_65_69 = _fetch_statscan_value(stats, "1.2.1.3.1")
-    # "1.2.1.3.2", "    70 to 74 years"
-    subdiv.pop_70_74 = _fetch_statscan_value(stats, "1.2.1.3.2")
-    # "1.2.1.3.3", "    75 to 79 years"
-    subdiv.pop_75_79 = _fetch_statscan_value(stats, "1.2.1.3.3")
-    # "1.2.1.3.4", "    80 to 84 years"
-    subdiv.pop_80_84 = _fetch_statscan_value(stats, "1.2.1.3.4")
-    # "1.2.1.3.5.1", "      85 to 89 years"
-    subdiv.pop_85_89 = _fetch_statscan_value(stats, "1.2.1.3.5.1")
-    # "1.2.1.3.5.2", "      90 to 94 years"
-    subdiv.pop_90_94 = _fetch_statscan_value(stats, "1.2.1.3.5.2")
-    # "1.2.1.3.5.3", "      95 to 99 years"
-    subdiv.pop_95_99 = _fetch_statscan_value(stats, "1.2.1.3.5.3")
-    # "1.2.1.3.5.4", "      100 years and over"
-    subdiv.pop_100 = _fetch_statscan_value(stats, "1.2.1.3.5.4")
-
-    # types of occupied dwellings
-    # "2.1.1.1", 1, "  Single-detached house"
-    subdiv.detached_houses = _fetch_statscan_value(stats, "2.1.1.1")
-    # "2.1.1.2", 1, "  Apartment in a building that has five or more storeys"
-    subdiv.apartments = _fetch_statscan_value(stats, "2.1.1.2")
-    # "2.1.1.3", 1, "  Other attached dwelling", 6, null, 0.0
-    subdiv.other_attached_dwellings = _fetch_statscan_value(stats, "2.1.1.3")
-    # "2.1.1.4", 1, "  Movable dwelling", 7, null, 0.0
-    subdiv.movable_dwellings = _fetch_statscan_value(stats, "2.1.1.4")
-
-    # "2.2.1.1", 1, "  Married or living common law"
-    subdiv.married_or_common_law = _fetch_statscan_value(stats, "2.2.1.1")
-    # "2.3.4.2", 1, "  Couples with children"
-    subdiv.couples_with_children = _fetch_statscan_value(stats, "2.3.4.2")
-    # "2.3.5", 0, "Total - Lone-parent census families in private households - 100% data"
-    subdiv.single_parents = _fetch_statscan_value(stats, "2.3.5")
-
-    # "3.6.1.1.1", 2, "    English"
-    subdiv.eng_known = _fetch_statscan_value(stats, "3.6.1.1.1")
-    # "3.6.1.2", 1, "  Non-official languages"
-    subdiv.other_lang = _fetch_statscan_value(stats, "3.6.1.2")
-    # "3.6.1.2.1", 2, "    Aboriginal languages"
-    subdiv.aboriginal_lang = _fetch_statscan_value(stats, "3.6.1.2.1")
-    # "3.1.1.4", 1, "  Neither English nor French"
-    subdiv.eng_fr_not_known = _fetch_statscan_value(stats, "3.1.1.4")
-
-    # "4.1.1.1.1", 2, "    Median total income in 2015 among recipients ($)"
-    subdiv.median_total_income = _fetch_statscan_value(stats, "4.1.1.1.1")
-
-    # "Immigration and citizenship", 18010, "5.2.1.3", 1, "  Non-permanent residents"
-    subdiv.non_pr = _fetch_statscan_value(stats, "5.2.1.3")
-
-    # "Visible minority", 25001, "7.1.1.1", 1, "  Total visible minority population"
-    subdiv.visible_minority = _fetch_statscan_value(stats, "7.1.1.1")
-    # "Education", 28002, "10.1.1.2", 1, "  Secondary (high) school diploma or equivalency certificate"
-    subdiv.edu_1 = _fetch_statscan_value(stats, "10.1.1.2")
-    # "Education", 28003, "10.1.1.3", 1, "  Postsecondary certificate, diploma or degree"
-    subdiv.edu_2 = _fetch_statscan_value(stats, "10.1.1.3")
-    # "Education", 28004, "10.1.1.3.1", 2, "    Apprenticeship or trades certificate or diploma"
-    subdiv.edu_3 = _fetch_statscan_value(stats, "10.1.1.3.1")
-    # "Education", 28009, "10.1.1.3.4", 2, "    University certificate, diploma or degree at bachelor level or above"
-    subdiv.edu_4 = _fetch_statscan_value(stats, "10.1.1.3.4")
-    # "Labour", 31002, "11.1.1.1.1", 2, "    Employed"
-    subdiv.employed = _fetch_statscan_value(stats, "11.1.1.1.1")
-    # "Labour", 31003, "11.1.1.1.2", 2, "    Unemployed"
-    subdiv.unemployed = _fetch_statscan_value(stats, "11.1.1.1.2")
-    # "Labour", 33004, "11.3.1.2.2", 2, "    Self-employed"
-    subdiv.self_employed = _fetch_statscan_value(stats, "11.3.1.2.2")
+    import_census_population_data(stats, subdiv)
+    import_census_housing_data(stats, subdiv)
+    import_census_languages_data(stats, subdiv)
+    import_census_income_data(stats, subdiv)
+    import_census_housing_data(stats, subdiv)
+    import_census_education_employment_data(stats, subdiv)
 
     subdiv.save()
 
@@ -409,12 +290,3 @@ def _coerce_to_multilinestring(geom, srid=4326):
         return geom
     else:
         raise Exception("Bad geometry type: {}, skipping.".format(geom.__class__))
-
-
-def _fetch_statscan_value(stats, property_name):
-    for line in stats['DATA']:
-        if line[8] == property_name:
-            print(line[10], line[13])
-            return line[13]
-
-    raise Exception('stat not found: {}'.format(property_name))

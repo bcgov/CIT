@@ -1,11 +1,7 @@
 <template>
   <div>
-    <div class="desktop-view">
-      <div
-        ref="reportContainer"
-        class="reportContainer"
-        :class="extraClassname"
-      ></div>
+    <div class="desktop-view" :class="extraClassname">
+      <div ref="reportContainer" class="reportContainer"></div>
     </div>
   </div>
 </template>
@@ -106,11 +102,32 @@ iframe {
 }
 </style>
 <style lang="scss" scoped>
-.reportContainer {
-  height: 800px;
+.desktop-view {
+  height: 0;
+  position: relative;
+
+  &.demographics {
+    padding-bottom: 167%; /* 1600px */
+  }
+  &.connectivity {
+    padding-bottom: 100%; /* 960px */
+  }
+  &.community-assets {
+    padding-bottom: 125%; /* 1200px */
+  }
+  &.economic-projects {
+    padding-bottom: 125%; /* 1200px */
+  }
+  &.natural-resource-projects {
+    padding-bottom: 161%; /* 1550px */
+  }
 }
 
-.reportContainer.demographics {
-  height: 1400px;
+.reportContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>

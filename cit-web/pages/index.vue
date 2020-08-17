@@ -1,32 +1,42 @@
 <template>
-  <div>
-    <div>
-      <h2>Explore communities in BC</h2>
-    </div>
-    <div class="main-report-container">
-      <CommunityQuerySidebar class="sidebar" @update-filters="updateFilters" />
-      <CommunityQueryContent class="main-report" :filters="filters" />
+  <div class="landing-page-container">
+    <h1>Welcome to the Community Information Tool</h1>
+    <p>Explore B.C. communities and analyze data from a B.C. community lens.</p>
+    <div class="landing-page-content">
+      <div class="landing-page-info">
+        <p>
+          Interested in a specific community?<br />
+          Search for it below to get details.
+        </p>
+
+        <CommSearch :communities="communities"></CommSearch>
+
+        <p class="explore-communities">
+          Interested in building a community profile to generate a list of
+          matching B.C. communities?
+        </p>
+        <nuxt-link to="/explore" class="btn" target="_blank"
+          >Explore B.C. Communities</nuxt-link
+        >
+      </div>
+
+      <div class="landing-page-illustration">
+        <img src="~/static/landing_page_illustration.png" />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
-import CommunityQuerySidebar from '~/components/CommunityQuery/CommunityQuerySidebar.vue'
-import CommunityQueryContent from '~/components/CommunityQuery/CommunityQueryContent.vue'
+import { Vue, Component } from 'nuxt-property-decorator'
+import CommSearch from '~/components/CommSearch.vue'
+import { getCommunityList } from '~/api/cit-api'
 @Component({
-  CommunityQuerySidebar,
-  CommunityQueryContent,
+  CommSearch,
 })
 export default class Index extends Vue {
-  data() {
-    return {
-      filters: undefined,
-    }
-  }
-
   layout(context) {
-    return 'default'
+    return 'landing'
   }
 
   mounted() {
@@ -37,28 +47,62 @@ export default class Index extends Vue {
     })
   }
 
-  updateFilters(filters) {
-    this.filters = filters
+  async asyncData() {
+    const result = await getCommunityList()
+    const communities = result.data
+    return {
+      communities,
+    }
   }
 }
 </script>
+
 <style lang="scss">
-.main-report-container {
-  max-width: 1280px;
-  margin: 0 auto;
+h1 {
+  font-size: 2.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #073366;
+  color: white !important;
+  text-decoration: none !important;
+  margin: 0.5rem 0;
+  border-radius: 5px;
+}
+
+.landing-page-container {
+  max-width: 960px;
+  margin: 1rem auto 0;
   padding: 0;
-  display: flex;
 }
 
-.sidebar {
-  flex: 1;
+.landing-page-content {
+  display: grid;
+  grid-template-columns: 4fr 3fr;
+  grid-gap: 1rem;
+  margin-top: 3rem;
 }
 
-.main-report {
-  flex: 3;
+.landing-page-info {
+  margin-top: 2rem;
 }
 
-iframe {
-  border: 0 !important;
+.landing-page-illustration {
+  img {
+    width: 100%;
+  }
+}
+
+.explore-communities {
+  margin-top: 5rem;
+  margin-bottom: 1.5rem;
+}
+
+.community-search {
+  margin-top: 0.5rem;
 }
 </style>

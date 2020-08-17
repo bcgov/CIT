@@ -8,7 +8,7 @@
     <div v-else>
       <MainHeader
         :title="placeName"
-        subtitle="Community Details"
+        :subtitle="censusSubdivision.name"
         class="mb-5"
       />
 
@@ -16,11 +16,6 @@
         <v-row>
           <v-col :cols="4">
             <v-card>
-              <v-card-title class="subheading font-weight-bold"
-                >Community Details</v-card-title
-              >
-
-              <v-divider></v-divider>
               <v-list dense>
                 <v-list-item
                   v-for="(df, key) in communityDisplayFields"
@@ -35,54 +30,53 @@
                 </v-list-item>
               </v-list>
             </v-card>
-            <v-card>
-              <v-card-title class="subheading font-weight-bold"
-                >Map Legend</v-card-title
-              >
-              <v-list>
-                <v-list-item two-line>
-                  <v-list-item-content>
-                    <v-list-item-title>Internet Speeds</v-list-item-title>
-                    <v-list-item-subtitle
-                      >50/10
-                      <div
-                        class="legend-icon"
-                        style="background-color: #8572d3;"
-                      ></div
-                    ></v-list-item-subtitle>
-                    <v-list-item-subtitle
-                      >25/5
-                      <div
-                        class="legend-icon"
-                        style="background-color: #ec67ad;"
-                      ></div
-                    ></v-list-item-subtitle>
-                    <v-list-item-subtitle
-                      >10/2
-                      <div
-                        class="legend-icon"
-                        style="background-color: #ff826f;"
-                      ></div
-                    ></v-list-item-subtitle>
-                    <v-list-item-subtitle
-                      >5/1
-                      <div
-                        class="legend-icon"
-                        style="background-color: #f7ba44;"
-                      ></div
-                    ></v-list-item-subtitle>
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-card>
           </v-col>
           <v-col :cols="8">
-            <div id="map" ref="map"></div>
+            <div style="position: relative;">
+              <div id="map" ref="map"></div>
+              <v-card class="legend">
+                <v-list>
+                  <v-list-item two-line>
+                    <v-list-item-content>
+                      <v-list-item-title>Internet Speeds</v-list-item-title>
+                      <v-list-item-subtitle
+                        >50/10
+                        <div
+                          class="legend-icon"
+                          style="background-color: #8572d3;"
+                        ></div
+                      ></v-list-item-subtitle>
+                      <v-list-item-subtitle
+                        >25/5
+                        <div
+                          class="legend-icon"
+                          style="background-color: #ec67ad;"
+                        ></div
+                      ></v-list-item-subtitle>
+                      <v-list-item-subtitle
+                        >10/2
+                        <div
+                          class="legend-icon"
+                          style="background-color: #ff826f;"
+                        ></div
+                      ></v-list-item-subtitle>
+                      <v-list-item-subtitle
+                        >5/1
+                        <div
+                          class="legend-icon"
+                          style="background-color: #f7ba44;"
+                        ></div
+                      ></v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </div>
           </v-col>
         </v-row>
 
         <v-row>
-          <v-col col="12">
+          <v-col col="12" class="powerbi-reports">
             <v-expansion-panels v-model="panels" multiple>
               <v-expansion-panel>
                 <v-expansion-panel-header
@@ -104,6 +98,7 @@
                   <Report
                     page-name="ReportSectionbc899e8fac8c2b494765"
                     :cid="communityDetails.id"
+                    extra-classname="connectivity"
                   ></Report>
                 </v-expansion-panel-content>
               </v-expansion-panel>
@@ -115,6 +110,31 @@
                   <Report
                     page-name="ReportSectionc87b6c3907e9321ae830"
                     :cid="communityDetails.id"
+                    extra-classname="community-assets"
+                  ></Report>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel>
+                <v-expansion-panel-header>
+                  Economic Projects</v-expansion-panel-header
+                >
+                <v-expansion-panel-content eager>
+                  <Report
+                    page-name="ReportSectionf2b8f5bb464e6d79a9ed"
+                    :cid="communityDetails.id"
+                    extra-classname="economic-projects"
+                  ></Report>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+              <v-expansion-panel>
+                <v-expansion-panel-header>
+                  Natural Resource Projects</v-expansion-panel-header
+                >
+                <v-expansion-panel-content eager>
+                  <Report
+                    page-name="ReportSection8f523b520a86970e96d4"
+                    :cid="communityDetails.id"
+                    extra-classname="natural-resource-projects"
                   ></Report>
                 </v-expansion-panel-content>
               </v-expansion-panel>
@@ -123,7 +143,7 @@
         </v-row>
 
         <v-row>
-          <v-col col="12">
+          <v-col col="12" class="powerbi-reports">
             <CensusSubdivision
               :classification="communityDetails.municipality_classification"
               :census-subdivision="censusSubdivision"
@@ -153,11 +173,16 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
   filters: {
     yesno,
   },
+  head() {
+    return {
+      title: this.placeName,
+    }
+  },
 })
 export default class CommunityDetail extends Vue {
   communityDetails = {}
   censusSubdivision = {}
-  panels = [0]
+  panels = [0, 1, 2, 3, 4]
 
   // Methods
 
@@ -166,15 +191,13 @@ export default class CommunityDetail extends Vue {
   }
 
   get communityDisplayFields() {
-    let dfs = this.communityDetails.display_fields
+    const dfs = this.communityDetails.display_fields.filter((v) => {
+      return v.value
+    })
     if (!dfs) {
       return []
     }
-    const excludes = {
-      census_subdivision_id: true,
-    }
-    dfs = dfs.filter((df) => !excludes[df.key])
-    return dfs
+    return dfs.filter((df) => this.filterCommunityDetailFields(df))
   }
 
   get placeName() {
@@ -184,6 +207,15 @@ export default class CommunityDetail extends Vue {
     }
     const placeName = dfs.find((df) => df.key === 'place_name')
     return placeName?.value
+  }
+
+  filterCommunityDetailFields(field) {
+    if (field.key === 'census_subdivision_id') {
+      return false
+    } else if (field.key === 'fn_community_name' && !field.value) {
+      return false
+    }
+    return true
   }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
@@ -280,11 +312,27 @@ export default class CommunityDetail extends Vue {
   margin: 0 auto;
 }
 
+.powerbi-reports {
+  /* 960px powerBI report + 24px padding on each side */
+  max-width: 1008px;
+  margin: 0 auto;
+}
+
 .legend-icon {
   height: 2px;
   float: right;
   width: 35px;
   margin-right: 50%;
   margin-top: 10px;
+}
+
+.legend {
+  bottom: 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  font: 12px/20px;
+  position: absolute;
+  right: 10px;
+  z-index: 1;
+  width: 180px;
 }
 </style>

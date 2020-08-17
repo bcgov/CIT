@@ -2,7 +2,9 @@
   <div>
     <v-expansion-panels multiple>
       <v-expansion-panel>
-        <v-expansion-panel-header>Census Data</v-expansion-panel-header>
+        <v-expansion-panel-header
+          >Raw Census Data (in above charts)
+        </v-expansion-panel-header>
         <v-expansion-panel-content eager>
           <v-alert
             v-if="classification === 'Not Incorporated'"
@@ -31,9 +33,10 @@
                   <v-list-item-content>{{
                     item.metadata.name
                   }}</v-list-item-content>
-                  <v-list-item-content class="align-end justify-center">{{
-                    item.value
-                  }}</v-list-item-content>
+                  <v-list-item-content class="align-end justify-center"
+                    >{{ item.value || 'No data'
+                    }}{{ item.value ? item.units : '' }}</v-list-item-content
+                  >
                 </v-list-item>
               </v-list>
             </v-card>

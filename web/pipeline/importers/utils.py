@@ -7,7 +7,8 @@ from django.contrib.gis.db.models.functions import Distance
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.gis.measure import D
 
-from pipeline.models import Community, LocationDistance
+from pipeline.models.community import Community
+from pipeline.models.general import LocationDistance
 from pipeline.constants import LOCATION_TYPES, CSV_RESOURCES, DATABC_RESOURCES
 
 
