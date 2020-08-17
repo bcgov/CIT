@@ -125,6 +125,9 @@ export default class CommunityQueryContent extends Vue {
         this.report = this.embedMainReport()
         this.report.on('loaded', (event) => {
           console.log('report loaded')
+          this.report.on('dataSelected', (dataSelectedEvent) => {
+            console.log('dataSelected', dataSelectedEvent)
+          })
           this.updateReportFilters()
         })
         // this.communityCountReport = this.embedCommunityCount()
@@ -143,12 +146,12 @@ export default class CommunityQueryContent extends Vue {
     return this.embedReport(container, configuration)
   }
 
-  embedCommunityCount() {
-    const pageName = this.pageNameMap.communityCount
-    const container = this.$refs.communityCount
-    const configuration = this.getReportEmbedConfiguration(pageName)
-    return this.embedReport(container, configuration)
-  }
+  // embedCommunityCount() {
+  //   const pageName = this.pageNameMap.communityCount
+  //   const container = this.$refs.communityCount
+  //   const configuration = this.getReportEmbedConfiguration(pageName)
+  //   return this.embedReport(container, configuration)
+  // }
 
   getReportEmbedConfiguration(pageName) {
     const models = this.$pbi.models
@@ -220,22 +223,22 @@ export default class CommunityQueryContent extends Vue {
       }
     })
 
-    this.communityCountReport.getPages().then((pages) => {
-      const communityCountPage = pages.find(
-        (p) => p.name === this.pageNameMap.communityCount
-      )
-      console.log('communityCountPage', communityCountPage)
-      communityCountPage.setFilters(powerBiFilters).then((data) => {
-        console.log('communities count updated')
-      })
-      if (powerBiFilters.length > 0) {
-        // todo: add loading spinner
-        communityCountPage.setFilters(powerBiFilters).then((data) => {
-          // todo: remove loading spinner
-        })
-        console.log('communityCountPage', communityCountPage)
-      }
-    })
+    // this.communityCountReport.getPages().then((pages) => {
+    //   const communityCountPage = pages.find(
+    //     (p) => p.name === this.pageNameMap.communityCount
+    //   )
+    //   console.log('communityCountPage', communityCountPage)
+    //   communityCountPage.setFilters(powerBiFilters).then((data) => {
+    //     console.log('communities count updated')
+    //   })
+    //   if (powerBiFilters.length > 0) {
+    //     // todo: add loading spinner
+    //     communityCountPage.setFilters(powerBiFilters).then((data) => {
+    //       // todo: remove loading spinner
+    //     })
+    //     console.log('communityCountPage', communityCountPage)
+    //   }
+    // })
   }
 }
 </script>
