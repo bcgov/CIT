@@ -12,7 +12,7 @@
         <CommSearch :communities="communities"></CommSearch>
 
         <p class="explore-communities">
-          Interested in building a csommunity profile to generate a list of
+          Interested in building a community profile to generate a list of
           matching B.C. communities?
         </p>
         <nuxt-link to="/explore" class="btn" target="_blank"
