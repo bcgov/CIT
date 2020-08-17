@@ -5,7 +5,7 @@
         <nuxt-link class="main-title d-block" to="/"
           >Community Information Tool 2.0</nuxt-link
         >
-        <CommunitySearch class="nav-bar"></CommunitySearch>
+        <CommSearch color="white"></CommSearch>
       </v-toolbar-title>
     </v-app-bar>
     <div class="content">
@@ -18,7 +18,12 @@
 </template>
 
 <script>
-export default {}
+import { Component, Vue } from 'nuxt-property-decorator'
+import CommSearch from '~/components/CommSearch.vue'
+@Component({
+  CommSearch,
+})
+export default class DefaultLayout extends Vue {}
 </script>
 
 <style lang="scss" scoped>

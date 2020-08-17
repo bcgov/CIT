@@ -1,4 +1,5 @@
 import { getAuthToken } from '~/api/ms-auth-api/'
+import { getCommunityList } from '~/api/cit-api'
 
 export const actions = {
   // Special action hook provided by nuxt for initialization, only works in index.js with module mode enabled
@@ -14,6 +15,19 @@ export const actions = {
       }
     } catch (e) {
       commit('msauth/setAccessToken', null)
+    }
+
+    try {
+      const response = await getCommunityList()
+      const { status } = response
+      if (status === 200) {
+        const communities = response.data
+        if (communities) {
+          commit('communities/setCommunities', communities)
+        }
+      }
+    } catch (e) {
+      commit('communities/setCommunities', [])
     }
   },
 }
