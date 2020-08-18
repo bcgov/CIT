@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div ref="reportContainer" class="reportContainer"></div>
+    <div class="desktop-view" :class="extraClassname">
+      <div ref="reportContainer" class="reportContainer"></div>
+    </div>
   </div>
 </template>
 
@@ -17,9 +19,12 @@ export default class MainReport extends Vue {
   @Prop({ default: null, type: Number })
   cid
 
+  @Prop({ default: '', type: String })
+  extraClassname
+
   embedToken = null
   groupId = '99dbfebe-3c0b-4b2d-affb-3af843c67549'
-  reportId = 'fdf45800-e782-4a80-8c95-66d2af1c5016'
+  reportId = '2df94147-e5bc-48f2-bdfa-4a78f059e7c9'
   embedUrl = null
   report = null
 
@@ -91,8 +96,38 @@ export default class MainReport extends Vue {
   }
 }
 </script>
+<style lang="scss">
+iframe {
+  border: none !important;
+}
+</style>
 <style lang="scss" scoped>
+.desktop-view {
+  height: 0;
+  position: relative;
+
+  &.demographics {
+    padding-bottom: 167%; /* 1600px */
+  }
+  &.connectivity {
+    padding-bottom: 100%; /* 960px */
+  }
+  &.community-assets {
+    padding-bottom: 125%; /* 1200px */
+  }
+  &.economic-projects {
+    padding-bottom: 125%; /* 1200px */
+  }
+  &.natural-resource-projects {
+    padding-bottom: 161%; /* 1550px */
+  }
+}
+
 .reportContainer {
-  height: 800px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>

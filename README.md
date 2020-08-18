@@ -7,7 +7,7 @@ A Dockerized boilerplate for a Django API driven web app, with Vue CLI and Postg
 Clone the project.
 
 ```
-git clone https://github.com/countable/cit
+git clone https://github.com/bcgov/CIT
 ```
 
 Install Docker and docker-compose.
@@ -59,7 +59,8 @@ mkdir BC_Roads
 mv NBD_Roads_ShapeFile/BC_Roads* BC_Roads/
 ```
 
-Hexes can be pre-processed as follows: ```
+Hexes can be pre-processed as follows: 
+```
 wget <nbd site>/CHX_EXO_geo.kmz
 ogr2ogr -f kml -t_srs EPSG:4326 hexes.kml CHX_EXO_geo.kmz
 ogr2ogr -f kml -clipsrc -144 48 -110 60 hexbc.kml hexes.kml

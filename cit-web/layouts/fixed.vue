@@ -10,41 +10,43 @@
         <CommSearch color="white" :solo="true" :dense="true"></CommSearch>
       </div>
     </v-app-bar>
-    <div class="content">
+    <div class="fixed-content">
       <nuxt />
-    </div>
-    <div class="footer">
-      <v-footer color="primary" height="66"></v-footer>
     </div>
   </v-app>
 </template>
-
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
 import CommSearch from '~/components/CommSearch.vue'
 @Component({
   CommSearch,
 })
-export default class DefaultLayout extends Vue {}
+export default class FixedLayout extends Vue {
+  mounted() {
+    const element = document.documentElement
+    element.classList.add('fixed-layout')
+  }
+}
 </script>
 
-<style lang="scss" scoped>
-html,
-body {
+<style lang="scss">
+.fixed-layout {
+  width: 100%;
   height: 100%;
-  margin: 0;
-  padding: 0;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
-body {
-  display: flex;
-  flex-direction: column;
-}
-.content {
+</style>
+<style lang="scss" scoped>
+.fixed-content {
   margin-top: 66px;
-  flex: 1 0 auto;
 }
-.footer {
-  flex-shrink: 0;
+
+.fixed-footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }
 
 .v-application .primary.main-navigation {

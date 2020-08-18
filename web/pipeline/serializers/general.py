@@ -1,8 +1,9 @@
 from rest_framework import serializers
 
-from pipeline.models import (
-    Location, Community, CensusSubdivision, LocationDistance, Service
-)
+from pipeline.models.location_assets import Location
+from pipeline.models.general import LocationDistance, Service
+from pipeline.models.community import Community
+from pipeline.models.census import CensusSubdivision
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -14,8 +15,8 @@ class LocationSerializer(serializers.ModelSerializer):
 class ServiceListSerializer(serializers.ModelSerializer):
     queryset = Service.objects.all()
     isp = serializers.SlugRelatedField(read_only=True, slug_field='name')
-    communities = serializers.SlugRelatedField(
-        read_only=True, many=True, source='hex.community', slug_field='place_name')
+    communities = serializers.PrimaryKeyRelatedField(
+        read_only=True, many=True, source='hex.community')
 
     class Meta:
         model = Service
@@ -32,7 +33,8 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 
 class CommunitySerializer(serializers.ModelSerializer):
-    queryset = Community.objects.all().select_related('hexuid', 'hexuid__service__isp').prefetch_related('hexuid__service')
+    queryset = Community.objects.all().select_related(
+        'hexuid', 'hexuid__service__isp').prefetch_related('hexuid__service')
     wildfire_zone = serializers.SlugRelatedField(read_only=True, slug_field='risk_class')
     tsunami_zone = serializers.SlugRelatedField(read_only=True, slug_field='zone_class')
     community_type = serializers.CharField(source='get_display_community_type', read_only=True)
@@ -53,7 +55,7 @@ class CommunitySerializer(serializers.ModelSerializer):
             "census_subdivision",
             "community_type",
             "incorporated",
-            'fn_community_name',
+            "fn_community_name",
             "wildfire_zone",
             "tsunami_zone",
             "last_mile_status",
@@ -64,7 +66,20 @@ class CommunitySerializer(serializers.ModelSerializer):
             "num_hospitals",
             "num_timber_facilities",
             "percent_50_10",
-            "percent_25_5"
+            "percent_25_5",
+            "percent_10_2",
+            "percent_5_1",
+        )
+
+
+class CommunitySearchSerializer(serializers.ModelSerializer):
+    queryset = Community.objects.all()
+
+    class Meta:
+        model = Community
+        fields = (
+            "id",
+            "place_name",
         )
 
 

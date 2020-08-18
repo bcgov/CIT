@@ -1,14 +1,11 @@
 <template>
   <v-app light class="h-100">
     <v-app-bar class="main-navigation" fixed height="66" color="primary">
-      <v-toolbar-title class="navigation-wrapper">
+      <v-toolbar-title>
         <nuxt-link class="main-title d-block" to="/"
           >Community Information Tool 2.0</nuxt-link
         >
       </v-toolbar-title>
-      <div style="min-width: 300px;">
-        <CommSearch color="white" :solo="true" :dense="true"></CommSearch>
-      </div>
     </v-app-bar>
     <div class="content">
       <nuxt />
@@ -20,12 +17,7 @@
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
-import CommSearch from '~/components/CommSearch.vue'
-@Component({
-  CommSearch,
-})
-export default class DefaultLayout extends Vue {}
+export default {}
 </script>
 
 <style lang="scss" scoped>
@@ -50,14 +42,6 @@ body {
 .v-application .primary.main-navigation {
   border-bottom: 2px solid #fcba19;
   border-color: #fcba19 !important;
-}
-
-.navigation-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  overflow: unset;
-  white-space: normal;
 }
 
 .main-title {

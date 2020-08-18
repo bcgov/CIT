@@ -1,7 +1,7 @@
 <template>
   <div class="main-header-container">
     <h1 class="main-header-title">{{ title }}</h1>
-    <h6 class="main-header-subtitle">{{ subtitle }}</h6>
+    <h6 class="main-header-subtitle">Census Subdivision: {{ subtitle }}</h6>
   </div>
 </template>
 

@@ -52,7 +52,10 @@ export default class MainReport extends Vue {
       settings: {
         panes: {
           pageNavigation: {
-            visible: true,
+            visible: false,
+          },
+          filters: {
+            visible: false,
           },
         },
       },
@@ -66,6 +69,10 @@ export default class MainReport extends Vue {
 </script>
 <style lang="scss" scoped>
 .reportContainer {
-  height: 800px;
+  position: fixed;
+  bottom: 0;
+  top: 66px;
+  left: 0;
+  right: 0;
 }
 </style>

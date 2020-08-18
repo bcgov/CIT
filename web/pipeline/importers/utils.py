@@ -7,7 +7,9 @@ from django.contrib.gis.db.models.functions import Distance
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.gis.measure import D
 
-from pipeline.models import Community, LocationDistance
+from pipeline.models.community import Community
+from pipeline.models.general import LocationDistance
+from pipeline.constants import LOCATION_TYPES, CSV_RESOURCES, DATABC_RESOURCES
 
 
 def import_data_into_point_model(resource_type, Model, row):
@@ -58,6 +60,7 @@ def import_data_into_point_model(resource_type, Model, row):
 
     instance.community = closest_community
     instance.location_fuzzy = location_fuzzy
+    import_contact_fields(instance, row, Model)
     import_variable_fields(instance, row, Model)
     instance.save()
 
@@ -82,6 +85,27 @@ def import_data_into_area_model(resource_type, Model, row):
     return instance
 
 
+def import_contact_fields(instance, row, Model):
+    website_field = getattr(Model, "WEBSITE_FIELD", None)
+    alt_website_field = getattr(Model, "ALT_WEBSITE_FIELD", None)
+    instance.location_website = None
+    if website_field or alt_website_field:
+        if row[website_field]:
+            instance.location_website = row[website_field]
+        elif alt_website_field and row[alt_website_field]:
+            instance.location_website = row[alt_website_field]
+
+    instance.location_phone = None
+    phone_field = getattr(Model, "PHONE_FIELD", None)
+    if phone_field:
+        instance.location_phone = row[phone_field]
+
+    instance.location_email = None
+    email_field = getattr(Model, "EMAIL_FIELD", None)
+    if email_field:
+        instance.location_email = row[email_field]
+
+
 def import_variable_fields(instance, row, Model):
 
     for field_name, field_value in row.items():
@@ -104,10 +128,34 @@ def calculate_distances(location):
     )
 
     for community in communities_within_50k:
-        create_distance(location, community)
+        create_distance(location, community, community.distance)
 
 
-def create_distance(location, community):
+def calculate_nearest_location_types_outside_50k():
+    for community in Community.objects.all():
+        for location_type in LOCATION_TYPES:
+            locations_within_50k = LocationDistance.objects.filter(
+                community=community, location__location_type=location_type, distance__lte=50)
+            # if there are no locations of this location type within 50km,
+            # just get the closest location and create a LocationDistance object for that
+            if not locations_within_50k:
+                print("community {community_name} has no {location_type} within 50km".format(
+                    community_name=community.place_name,
+                    location_type=location_type))
+                location_type_model = {**CSV_RESOURCES, **DATABC_RESOURCES}[location_type]["model"]
+                closest_location_type = location_type_model.objects.all()\
+                    .annotate(distance=Distance("point", community.point))\
+                    .order_by("distance").first()
+                print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
+                    location_type=location_type,
+                    community_name=community.place_name,
+                    closest_location_type=closest_location_type.name,
+                    distance=closest_location_type.distance.km))
+
+                create_distance(closest_location_type, community, closest_location_type.distance)
+
+
+def create_distance(location, community, distance):
     """
     Uses Route Planner API to get distances and travel times and populate
     theDistance join table if a travel route is found.
@@ -120,7 +168,7 @@ def create_distance(location, community):
     fields = {
         "location": location,
         "community": community,
-        "distance": community.distance.km,
+        "distance": distance.km,
         # "travel_time": travel_time,
         # "travel_time_display": travel_time_display,
         # "driving_route_available": True,

@@ -2,18 +2,25 @@ import csv
 
 from django.contrib.gis.geos import Point
 
-from pipeline.models import Community, WildfireZone, TsunamiZone, Municipality, Road
+from pipeline.models.community import Community
+from pipeline.models.general import WildfireZone, TsunamiZone, Road
+from pipeline.models.census import CensusSubdivision
 from django.db.utils import IntegrityError
 from django.contrib.gis.measure import D
-from django.contrib.gis.db.models.functions import Distance
 
 
 def import_communities_from_csv(communities_file_path):
     with open(communities_file_path) as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         for row in csv_reader:
-            print(row["Place Name"])
-            # place_id = row["Place_ID"]
+            print("{place_name} ({place_id})".format(
+                place_name=row["Place Name"], place_id=row["Place ID"]))
+            place_id = row["Place ID"]
+
+            try:
+                community = Community.objects.get(place_id=place_id)
+            except Community.DoesNotExist:
+                community = Community(place_id=place_id)
 
             # **Other fields to consider adding**
             #    BASE_ACCESS_50Mbps,Community Type,FN_Community_Name,Nation,Band_Number
@@ -25,16 +32,22 @@ def import_communities_from_csv(communities_file_path):
             # **these seem inaccurate, don't use**
             #    CSDUID Repeat Count (used to estimate Pop and Dwelling),Estimated Population,Estimated Total Dwellings,CENSUS DIVISION NAME,CENSUS METRO AREA NAME,CENSUS ECONOMIC REGION NAME,CENSUS SD NAME
 
-            place_name = row["Place Name"]
-            try:
-                community = Community.objects.get(place_name=place_name)
-            except Community.DoesNotExist:
-                community = Community(place_name=place_name)
+            community.place_name = row["Place Name"]
 
             community.point = Point(float(row["Longitude"]), float(row["Latitude"]), srid=4326)
 
             # TODO: spatial query?
-            community.census_subdivision_id = row['CSDUID']
+            try:
+                census_subdivision = CensusSubdivision.objects.get(id=row['CSDUID'])
+                community.census_subdivision_id = census_subdivision.id
+            except CensusSubdivision.DoesNotExist:
+                # TODO: spatial query
+                print("CensusSubdivision {} corresponding to Community {} was not found in the CensusSubdivision data"
+                      .format(row['CSDUID'], community.place_name))
+                census_subdivisions = CensusSubdivision.objects.filter(geom__contains=community.point)
+                print("performing spatial search for census subdivision", census_subdivisions)
+                if census_subdivisions:
+                    community.census_subdivision_id = census_subdivisions.first().id
 
             # TODO: Consider municipal overlap.
             community.wildfire_zone = WildfireZone.objects.filter(
@@ -75,18 +88,20 @@ def import_communities_from_csv(communities_file_path):
             else:
                 roads = Road.objects.filter(geom__distance_lt=(community.point, D(km=10)))
 
-            speeds_map = {}
+            speeds_map = {'50/10': 0, '25/5':0, '10/2':0, '5/1':0, '':0}
+            sk = ['50/10', '25/5', '10/2', '5/1', '']
             total_length = 0
             for road in roads:
-                if road.best_broadband not in speeds_map:
-                    speeds_map[road.best_broadband] = 0
-                speeds_map[road.best_broadband] += road.geom.length
+                key_index = sk.index(road.best_broadband)
+                for k in sk[key_index:]:
+                    speeds_map[k] += road.geom.length
                 total_length += road.geom.length
 
-            if '50/10' in speeds_map:
+            if total_length:
                 community.percent_50_10 = speeds_map['50/10'] / total_length
-            if '25/5' in speeds_map:
                 community.percent_25_5 = speeds_map['25/5'] / total_length
+                community.percent_10_2 = speeds_map['10/2'] / total_length
+                community.percent_5_1 = speeds_map['5/1'] / total_length
 
             try:
                 community.save()

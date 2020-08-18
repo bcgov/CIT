@@ -21,8 +21,11 @@ export default {
    ** See https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s - ' + process.env.npm_package_name,
-    title: process.env.npm_package_name || '',
+    titleTemplate: (titleChunk) => {
+      const appTitle = 'B.C. Community Information Tool 2.0'
+      return titleChunk ? `${titleChunk} | ${appTitle}` : appTitle
+    },
+    title: '',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

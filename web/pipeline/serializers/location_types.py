@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from pipeline.models import (
+from pipeline.models.location_assets import (
     FirstResponder, DiagnosticFacility, TimberFacility, CivicFacility, Hospital, NaturalResourceProject,
     EconomicProject, ServiceBCLocation, School, Clinic, Court, PostSecondaryInstitution,
 )
@@ -16,7 +16,11 @@ class FirstResponderSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
-            "keywords",
+            "location_phone",
+            "location_website",
+            "location_email",
+            "category",
+            "subcategory",
         )
 
 
@@ -58,7 +62,9 @@ class CivicFacilitySerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
-            "keywords",
+            "location_website",
+            "category",
+            "subcategory",
             "bus_cat_cl",
             "bus_cat_ds",
         )
@@ -74,6 +80,9 @@ class HospitalSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_phone",
+            "location_website",
+            "location_email",
             "rg_name",
             "sv_description",
             "hours",
@@ -81,6 +90,9 @@ class HospitalSerializer(serializers.ModelSerializer):
 
 
 class NaturalResourceProjectSerializer(serializers.ModelSerializer):
+    standardized_start_date = serializers.DateField(source='get_standardized_start_date_as_date')
+    standardized_completion_date = serializers.DateField(source='get_standardized_completion_date_as_date')
+
     class Meta:
         model = NaturalResourceProject
         fields = (
@@ -90,6 +102,8 @@ class NaturalResourceProjectSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_phone",
+            "location_website",
             "project_comments",
             "project_description",
             "estimated_cost",
@@ -125,6 +139,7 @@ class EconomicProjectSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_website",
             "flnro_project_status",
             "project_type",
             "project_category",
@@ -144,6 +159,8 @@ class ServiceBCLocationSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_phone",
+            "location_website",
         )
 
 
@@ -188,6 +205,9 @@ class ClinicSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_phone",
+            "location_website",
+            "location_email",
             "sv_description",
             "hours",
         )
@@ -203,6 +223,7 @@ class CourtSerializer(serializers.ModelSerializer):
             "longitude",
             "location_fuzzy",
             "community",
+            "location_phone",
             "hours_of_operation",
             "court_level",
         )
