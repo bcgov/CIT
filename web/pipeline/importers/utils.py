@@ -224,6 +224,12 @@ def calculate_community_num_schools():
         # TODO SY - make resource types constants?
         num_schools = LocationDistance.objects.filter(community=community, location__location_type="schools").count()
         community.num_schools = num_schools
+
+        if num_schools > 0:
+            community.has_any_k12_school = True
+        else:
+            community.has_any_k12_school = False
+
         community.save()
 
 
