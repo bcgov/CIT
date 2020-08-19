@@ -14,6 +14,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import CommunityQuerySidebar from '~/components/CommunityQuery/CommunityQuerySidebar.vue'
 import CommunityQueryContent from '~/components/CommunityQuery/CommunityQueryContent.vue'
+
 @Component({
   CommunityQuerySidebar,
   CommunityQueryContent,
@@ -25,16 +26,10 @@ export default class Explore extends Vue {
     }
   }
 
-  layout(context) {
-    return 'default'
-  }
-
-  mounted() {
-    navigator.serviceWorker.getRegistrations().then(function (registrations) {
-      for (const registration of registrations) {
-        registration.unregister()
-      }
-    })
+  asyncData({ $config: { MAPBOX_API_KEY } }) {
+    return {
+      MAPBOX_API_KEY,
+    }
   }
 
   updateFilters(filters) {

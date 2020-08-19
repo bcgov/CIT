@@ -1,6 +1,10 @@
 <template>
   <v-app light class="h-100">
     <v-app-bar class="main-navigation" fixed height="66" color="primary">
+      <v-app-bar-nav-icon
+        color="white"
+        @click="handleClick"
+      ></v-app-bar-nav-icon>
       <v-toolbar-title class="navigation-wrapper">
         <nuxt-link class="main-title d-block" to="/"
           >Community Information Tool 2.0</nuxt-link
@@ -11,7 +15,7 @@
       </div>
     </v-app-bar>
     <div class="fixed-content">
-      <nuxt />
+      <nuxt class="h-100" />
     </div>
   </v-app>
 </template>
@@ -26,6 +30,10 @@ export default class FixedLayout extends Vue {
     const element = document.documentElement
     element.classList.add('fixed-layout')
   }
+
+  handleClick(e) {
+    this.$root.$emit('sidebar-toggle')
+  }
 }
 </script>
 
@@ -39,7 +47,8 @@ export default class FixedLayout extends Vue {
 </style>
 <style lang="scss" scoped>
 .fixed-content {
-  margin-top: 66px;
+  padding-top: 66px;
+  height: 100%;
 }
 
 .fixed-footer {
@@ -47,6 +56,9 @@ export default class FixedLayout extends Vue {
   bottom: 0;
   right: 0;
   left: 0;
+}
+.h-100 {
+  height: 100%;
 }
 
 .v-application .primary.main-navigation {
