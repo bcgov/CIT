@@ -1,6 +1,25 @@
 import datetime
 
 
+def filter_communities(filters):
+    from pipeline.models.community import Community
+    queryset_filters = {}
+
+    if 'community_type' in filters:
+        community_types = Community.objects.values_list('community_type', flat=True).distinct()
+        if filters['community_type'] in community_types:
+            queryset_filters['community_type'] = filters['community_type']
+
+    if 'has_any_k12_school' in filters:
+        queryset_filters['has_any_k12_school'] = True if filters['has_any_k12_school'] == "true" else False
+
+    # todo: figure out what filters there need to be
+
+    communities = Community.objects.filter(**queryset_filters).order_by('place_name')
+
+    return communities
+
+
 def generate_line_strings():
     from pipeline.models.general import LocationDistance   # local import to avoid circular import # noqa
 

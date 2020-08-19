@@ -62,6 +62,9 @@ class Community(models.Model):
     num_hospitals = models.IntegerField(null=True)
     num_timber_facilities = models.IntegerField(null=True)
 
+    # Filters for mapbox
+    has_any_k12_school = models.NullBooleanField(null=True)
+
     def __str__(self):
         return self.place_name
 
