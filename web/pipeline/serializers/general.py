@@ -73,8 +73,6 @@ class CommunitySerializer(serializers.ModelSerializer):
 
 
 class CommunitySearchSerializer(serializers.ModelSerializer):
-    queryset = Community.objects.all()
-
     class Meta:
         model = Community
         fields = (
