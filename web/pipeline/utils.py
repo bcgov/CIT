@@ -419,6 +419,46 @@ def get_community_type_display_name(community_type):
     return COMMUNITY_TYPES[community_type]
 
 
+def serialize_location_assets(obj):
+    # from pipeline.constants import LOCATION_TYPES
+    from pipeline.models.location_assets import School, Hospital
+
+    # todo: refactor into serializers and make generic
+    locations = []
+    location_assets = School.objects.filter(community=obj)
+    for location_asset in location_assets:
+        locations.append({
+            "type": "schools",
+            "id": location_asset.id,
+            "name": location_asset.name,
+            "latitude": location_asset.latitude(),
+            "longitude": location_asset.longitude(),
+            "location_fuzzy": location_asset.location_fuzzy,
+            "district_number": location_asset.district_number,
+            "public_or_independent": location_asset.public_or_independent,
+            "school_education_level": location_asset.school_education_level,
+        })
+
+    location_assets = Hospital.objects.filter(community=obj)
+    for location_asset in location_assets:
+        locations.append({
+            "type": "schools",
+            "id": location_asset.id,
+            "name": location_asset.name,
+            "latitude": location_asset.latitude(),
+            "longitude": location_asset.longitude(),
+            "location_fuzzy": location_asset.location_fuzzy,
+            "location_phone": location_asset.location_phone,
+            "location_website": location_asset.location_website,
+            "location_email": location_asset.location_email,
+            "rg_name": location_asset.rg_name,
+            "sv_description": location_asset.sv_description,
+            "hours": location_asset.hours,
+        })
+
+    return locations
+
+
 def get_quarterly_date_str_as_date(quarterly_date_str):
     """
     Get a quarterly date string, such as "2020-Q1" and return a Date object corresponding to

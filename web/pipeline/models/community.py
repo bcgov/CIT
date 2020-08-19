@@ -2,7 +2,8 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models import PointField
 
 from pipeline.utils import (
-    serialize_community_detail_fields, get_community_type_display_name)
+    serialize_community_detail_fields, get_community_type_display_name,
+    serialize_location_assets)
 
 
 class Community(models.Model):
@@ -92,3 +93,6 @@ class Community(models.Model):
 
     def get_display_community_type(self):
         return get_community_type_display_name(self.community_type)
+
+    def get_location_assets(self):
+        return serialize_location_assets(self)

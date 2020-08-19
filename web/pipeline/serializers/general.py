@@ -83,6 +83,7 @@ class CommunitySearchSerializer(serializers.ModelSerializer):
 
 class CommunityDetailSerializer(serializers.ModelSerializer):
     display_fields = serializers.SerializerMethodField()
+    locations = serializers.SerializerMethodField()
 
     class Meta:
         model = Community
@@ -90,11 +91,15 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
             "id",
             "display_fields",
             "latitude",
-            "longitude"
+            "longitude",
+            "locations",
         )
 
     def get_display_fields(self, obj):
         return obj.get_display_fields()
+
+    def get_locations(self, obj):
+        return obj.get_location_assets()
 
 
 class CensusSubdivisionSerializer(serializers.ModelSerializer):
