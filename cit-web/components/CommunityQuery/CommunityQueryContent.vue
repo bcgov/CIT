@@ -1,13 +1,13 @@
 <template>
   <div>
     <!-- <div ref="communityCount" class="communityCount"></div> -->
-    <div>
-      <button type="button" @click="navigate('map')">Map</button>
-      <button type="button" @click="navigate('demographics')">
+    <div class="mb-5">
+      <v-btn color="primary" @click="navigate('map')">Map</v-btn>
+      <v-btn color="primary" @click="navigate('demographics')">
         Demographics
-      </button>
-      <button type="button" @click="navigate('investors')">Investing</button>
-      <button type="button" @click="navigate('assets')">Assets</button>
+      </v-btn>
+      <v-btn color="primary" @click="navigate('investors')">Investing</v-btn>
+      <v-btn color="primary" @click="navigate('assets')">Assets</v-btn>
     </div>
     <div ref="reportContainer" class="reportContainer"></div>
   </div>
@@ -242,17 +242,13 @@ export default class CommunityQueryContent extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .reportContainer {
   height: 100%;
+  border: none !important;
 }
 
-/* temporary styling */
-button {
-  background-color: #073366;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  margin-right: 0.5rem;
+iframe {
+  border: none !important;
 }
 </style>
