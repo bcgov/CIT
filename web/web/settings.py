@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", '**5ghswp2+x=2(3)m&y+&012y6qiirl6_d3t6p#-w5grdl_z5d')
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", 'devsecret')  # default secret key for dev environments
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -132,3 +132,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 100
 }
+
+# API Keys
+ROUTE_PLANNER_API_KEY = os.environ.get("ROUTE_PLANNER_API_KEY")
