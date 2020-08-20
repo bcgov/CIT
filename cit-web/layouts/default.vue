@@ -42,6 +42,7 @@ body {
 .content {
   margin-top: 66px;
   flex: 1 0 auto;
+  position: relative;
 }
 .footer {
   flex-shrink: 0;

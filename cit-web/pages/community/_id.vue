@@ -266,6 +266,7 @@ export default class CommunityDetail extends Vue {
   }
 
   mounted() {
+    console.log(this.communityDetails)
     if (this.isCommunityEmpty) {
       return
     }
