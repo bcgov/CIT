@@ -513,11 +513,14 @@ def to_currency(string):
 def serialize_community_search_names(communities):
     place_names = communities.values('id', 'place_name')
     indigenous_names = communities.exclude(fn_community_name='').values(
-        'id', 'fn_community_name')
-    indigenous_field_renamed = [
+        'id', 'place_name', 'fn_community_name')
+    indigenous_field_formatted = [
         {
             "id": x["id"],
             "place_name": x["fn_community_name"],
-        } for x in list(indigenous_names)]
-    communities = list(place_names) + list(indigenous_field_renamed)
+        } for x in list(indigenous_names)
+        # don't add indigenous names to list of community names
+        # if the indigenous name is the same as the place_name field
+        if x["place_name"] != x["fn_community_name"]]
+    communities = list(place_names) + list(indigenous_field_formatted)
     return sorted(communities, key=lambda d: d["place_name"])
