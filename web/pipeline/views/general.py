@@ -15,14 +15,13 @@ from pipeline.models.general import LocationDistance, Service
 from pipeline.serializers.general import (
     LocationSerializer,
     CommunitySerializer,
-    CommunitySearchSerializer,
     CommunityDetailSerializer,
     CensusSubdivisionSerializer,
     CensusSubdivisionDetailSerializer,
     LocationDistanceSerializer,
     ServiceListSerializer,
 )
-from pipeline.utils import generate_line_strings, filter_communities
+from pipeline.utils import generate_line_strings, filter_communities, serialize_community_search_names
 
 
 def auth(request):
@@ -61,8 +60,8 @@ class CommunityViewSet(viewsets.GenericViewSet):
 
     @action(detail=False)
     def search(self, request):
-        serializer = CommunitySearchSerializer(self.get_queryset(), many=True)
-        return Response(serializer.data)
+        communities = serialize_community_search_names(self.get_queryset())
+        return Response(communities)
 
     @action(detail=False)
     def geojson(self, request):

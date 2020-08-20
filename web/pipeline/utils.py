@@ -508,3 +508,16 @@ def to_currency(string):
         return
 
     return '$' + string
+
+
+def serialize_community_search_names(communities):
+    place_names = communities.values('id', 'place_name')
+    indigenous_names = communities.exclude(fn_community_name='').values(
+        'id', 'fn_community_name')
+    indigenous_field_renamed = [
+        {
+            "id": x["id"],
+            "place_name": x["fn_community_name"],
+        } for x in list(indigenous_names)]
+    communities = list(place_names) + list(indigenous_field_renamed)
+    return sorted(communities, key=lambda d: d["place_name"])
