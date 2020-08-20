@@ -102,17 +102,6 @@ class LocationGeoJSONList(APIView):
         )
 
 
-class CommunityGeoJSONList(APIView):
-    schema = None
-
-    def get(self, request, format=None):
-        return HttpResponse(
-            serialize('geojson', Community.objects.all(), geometry_field='point',
-                      fields=('place_name', 'place_type', 'has_any_k12_school')),
-            content_type="application/json",
-        )
-
-
 class LocationDistanceGeoJSONList(APIView):
     schema = None
 
