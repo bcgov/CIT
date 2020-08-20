@@ -72,15 +72,6 @@ class CommunitySerializer(serializers.ModelSerializer):
         )
 
 
-class CommunitySearchSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Community
-        fields = (
-            "id",
-            "place_name",
-        )
-
-
 class CommunityDetailSerializer(serializers.ModelSerializer):
     display_fields = serializers.SerializerMethodField()
     locations = serializers.SerializerMethodField()
