@@ -442,7 +442,7 @@ def serialize_location_assets(obj):
     location_assets = Hospital.objects.filter(community=obj)
     for location_asset in location_assets:
         locations.append({
-            "type": "schools",
+            "type": "hospitals",
             "id": location_asset.id,
             "name": location_asset.name,
             "latitude": location_asset.latitude(),
