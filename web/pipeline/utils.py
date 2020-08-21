@@ -524,3 +524,7 @@ def serialize_community_search_names(communities):
         if x["place_name"] != x["fn_community_name"]]
     communities = list(place_names) + list(indigenous_field_formatted)
     return sorted(communities, key=lambda d: d["place_name"])
+
+
+def get_pct_field_as_decimal(field):
+    return field / 100 if field else 0
