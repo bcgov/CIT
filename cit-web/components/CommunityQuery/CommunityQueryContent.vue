@@ -154,7 +154,7 @@ export default class CommunityQueryContent extends Vue {
   // }
 
   getReportEmbedConfiguration(pageName) {
-    const models = this.$pbi.models
+    const models = window['powerbi-client'].models
     return {
       type: 'report',
       pageName,

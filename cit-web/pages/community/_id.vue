@@ -157,7 +157,7 @@
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
-import { isEmpty } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
 import MainHeader from '~/components/MainHeader.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
@@ -274,7 +274,6 @@ export default class CommunityDetail extends Vue {
     window.mapboxgl.accessToken = this.MAPBOX_API_KEY
     const mapboxgl = window.mapboxgl
 
-    console.log(this.communityDetails)
     if (this.isCommunityEmpty) {
       return
     }

@@ -35,6 +35,12 @@ export default {
         content: process.env.npm_package_description || '',
       },
     ],
+    script: [
+      {
+        src:
+          'https://cdn.jsdelivr.net/npm/powerbi-client@2.13.3/dist/powerbi.min.js ',
+      },
+    ],
     link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
   },
   /*
@@ -45,13 +51,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [
-    '~/plugins/nuxt-axios-port.js',
-    {
-      src: '~plugins/powerbi-client.js',
-      mode: 'client',
-    },
-  ],
+  plugins: ['~/plugins/nuxt-axios-port.js'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components

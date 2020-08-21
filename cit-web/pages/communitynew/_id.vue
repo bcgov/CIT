@@ -132,7 +132,9 @@
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
-import { isEmpty, groupBy, startCase } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
+import groupBy from 'lodash/groupBy'
+import startCase from 'lodash/startCase'
 import MainHeader from '~/components/MainHeader.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
