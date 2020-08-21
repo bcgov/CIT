@@ -68,6 +68,31 @@ class Municipality(Area):
     """
 
 
+class SchoolDistrict(Area):
+    ID_FIELD = 'ADMIN_SID'
+    NAME_FIELD = 'SD_NAME'
+    sd_num = models.CharField(
+        max_length=5,
+    )
+    """
+    {'ADMIN_SID': 121, 'SD_NAME': 'Southeast Kootenay', 'SD_NUM': 5, 'FCODE': 'FA91800600', 'SHAPE': 0, 'AREA_SQM': 12518364167.6713, 'FEAT_LEN': 729284.9581, 'OBJECTID': 1}
+    """
+
+
+class RegionalDistrict(Area):
+    ID_FIELD = 'AA_ID'
+    NAME_FIELD = 'AA_NAME'
+    oc_m_yr = models.CharField(
+        null=True,
+        max_length=4,
+        help_text="The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
+        " e.g., 2014.",
+    )
+    """
+    {'AA_ID': 2, 'AA_NAME': 'Regional District of Bulkley-Nechako', 'ABRVN': 'RDBN', 'BDY_TYPE': 'Legal', 'AA_PARENT': 'Province of British Columbia', 'CHNG_ORG': 'MCSCD', 'UPT_TYPE': 'E', 'UPT_DATE': '20130606', 'MAP_STATUS': 'Not Appended', 'OC_M_NMBR': '', 'OC_M_YR': '', 'OC_M_TYPE': '', 'WBST_RL': '', 'IMAGE_URL': '', 'AFCTD_AREA': '', 'AREA_SQM': 78266556471.7951, 'LENGTH_M': 2057088.3374, 'SHAPE': 0, 'OBEJCTID': 2901}
+    """
+
+
 class LocationDistance(models.Model):
     community = models.ForeignKey('Community', on_delete=models.DO_NOTHING, related_name='distances')
     location = models.ForeignKey('Location', on_delete=models.DO_NOTHING, related_name='distances')
