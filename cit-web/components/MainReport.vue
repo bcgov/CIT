@@ -42,7 +42,7 @@ export default class MainReport extends Vue {
   }
 
   getEmbedConfiguration() {
-    const models = this.$pbi.models
+    const models = window['powerbi-client'].models
     return {
       type: 'report',
       id: this.reportId,

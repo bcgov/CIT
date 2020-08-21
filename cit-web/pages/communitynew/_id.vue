@@ -132,15 +132,14 @@
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
-import { isEmpty, groupBy, startCase } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
+import groupBy from 'lodash/groupBy'
+import startCase from 'lodash/startCase'
 import MainHeader from '~/components/MainHeader.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
 import { getCommunity, getCensusSubDivision } from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
-
-require('mapbox-gl/dist/mapbox-gl.css')
-const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
 
 @Component({
   MainHeader,
@@ -153,6 +152,17 @@ const mapboxgl = require('mapbox-gl/dist/mapbox-gl')
   head() {
     return {
       title: this.placeName,
+      script: [
+        {
+          src: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js',
+        },
+      ],
+      link: [
+        {
+          rel: 'stylesheet',
+          href: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css',
+        },
+      ],
     }
   },
 })
@@ -225,8 +235,8 @@ export default class CommunityDetail extends Vue {
   }
 
   addNavigationControl(map) {
-    map.addControl(new mapboxgl.NavigationControl())
-    map.addControl(new mapboxgl.FullscreenControl())
+    map.addControl(new window.mapboxgl.NavigationControl())
+    map.addControl(new window.mapboxgl.FullscreenControl())
   }
 
   setCenter(map, lng, lat) {
@@ -242,11 +252,10 @@ export default class CommunityDetail extends Vue {
     }
   }
 
-  created() {
-    mapboxgl.accessToken = this.MAPBOX_API_KEY
-  }
-
   mounted() {
+    window.mapboxgl.accessToken = this.MAPBOX_API_KEY
+    const mapboxgl = window.mapboxgl
+
     console.log(this.communityDetails)
     if (this.isCommunityEmpty) {
       return
