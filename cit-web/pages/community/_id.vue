@@ -161,8 +161,13 @@ import isEmpty from 'lodash/isEmpty'
 import MainHeader from '~/components/MainHeader.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
-import { getCommunity, getCensusSubDivision } from '~/api/cit-api'
+import {
+  getCommunity,
+  getCensusSubDivision,
+  getCommunityList,
+} from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
+import { getAuthToken } from '~/api/ms-auth-api/'
 
 @Component({
   MainHeader,
@@ -225,6 +230,34 @@ export default class CommunityDetail extends Vue {
       return false
     }
     return true
+  }
+
+  async fetch({ store }) {
+    try {
+      const response = await getAuthToken()
+      const { status } = response
+      if (status === 200) {
+        const accessToken = response.data && response.data.access_token
+        if (accessToken) {
+          store.commit('msauth/setAccessToken', accessToken)
+        }
+      }
+    } catch (e) {
+      store.commit('msauth/setAccessToken', null)
+    }
+
+    try {
+      const response = await getCommunityList()
+      const { status } = response
+      if (status === 200) {
+        const communities = response.data
+        if (communities) {
+          store.commit('communities/setCommunities', communities)
+        }
+      }
+    } catch (e) {
+      store.commit('communities/setCommunities', [])
+    }
   }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {

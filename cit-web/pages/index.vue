@@ -35,18 +35,6 @@ import { getCommunityList } from '~/api/cit-api'
   CommSearch,
 })
 export default class Index extends Vue {
-  layout(context) {
-    return 'landing'
-  }
-
-  mounted() {
-    navigator.serviceWorker.getRegistrations().then(function (registrations) {
-      for (const registration of registrations) {
-        registration.unregister()
-      }
-    })
-  }
-
   async fetch({ store }) {
     try {
       const response = await getCommunityList()
