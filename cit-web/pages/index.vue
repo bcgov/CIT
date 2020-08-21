@@ -30,6 +30,7 @@
 <script>
 import { Vue, Component } from 'nuxt-property-decorator'
 import CommSearch from '~/components/CommSearch.vue'
+import { getCommunityList } from '~/api/cit-api'
 @Component({
   CommSearch,
 })
@@ -44,6 +45,21 @@ export default class Index extends Vue {
         registration.unregister()
       }
     })
+  }
+
+  async fetch({ store }) {
+    try {
+      const response = await getCommunityList()
+      const { status } = response
+      if (status === 200) {
+        const communities = response.data
+        if (communities) {
+          store.commit('communities/setCommunities', communities)
+        }
+      }
+    } catch (e) {
+      store.commit('communities/setCommunities', [])
+    }
   }
 }
 </script>
