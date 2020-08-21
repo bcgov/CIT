@@ -73,6 +73,10 @@ class LocationDistance(models.Model):
     location = models.ForeignKey('Location', on_delete=models.DO_NOTHING, related_name='distances')
     distance = models.DecimalField(
         null=True, blank=True, max_digits=24, decimal_places=4,
+        help_text="Birds' eye distance from community to Location (km)"
+    )
+    driving_distance = models.DecimalField(
+        null=True, blank=True, max_digits=24, decimal_places=4,
         help_text="Driving distance from community to Location (km)"
     )
     travel_time = models.IntegerField(
@@ -84,7 +88,6 @@ class LocationDistance(models.Model):
         max_length=255,
         help_text="Travel time, in human-readable units (e.g. 15 minutes 22 seconds)",
     )
-    driving_route_available = models.BooleanField(null=True, blank=True)
 
     class Meta:
         unique_together = ('community', 'location')
