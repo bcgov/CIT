@@ -156,25 +156,24 @@ def calculate_nearest_location_types_outside_50k():
 
 
 def create_distance(location, community, distance):
-    """
-    Uses Route Planner API to get distances and travel times and populate
-    theDistance join table if a travel route is found.
-    """
-    # TODO: use route planner.
-    # distance, travel_time, travel_time_display = get_route_planner_distance(community, hospital)
+    existing_distance = LocationDistance.objects.filter(location=location, community=community)
 
-    # if there is a route found, create a HospitalDistance object
-    # if travel_time != -1:
     fields = {
         "location": location,
         "community": community,
         "distance": distance.km,
-        # "travel_time": travel_time,
-        # "travel_time_display": travel_time_display,
-        # "driving_route_available": True,
     }
 
-    existing_distance = LocationDistance.objects.filter(location=location, community=community)
+    if not (existing_distance and existing_distance.first().driving_distance):
+        try:
+            driving_distance, travel_time, travel_time_display = get_route_planner_distance(community, location)
+            fields["driving_distance"] = driving_distance
+            fields["travel_time"] = travel_time
+            fields["travel_time_display"] = travel_time_display
+        except Exception as e:
+            print("Error getting driving distance for {} to {}".format(community, location))
+            print(e)
+
     if existing_distance:
         existing_distance.update(**fields)
     else:
@@ -182,19 +181,31 @@ def create_distance(location, community, distance):
 
 
 def get_route_planner_distance(origin, destination):
-    api_url = "https://router.api.gov.bc.ca/distance.json?points={origin_lng}%2C{origin_lat}%2C{destination_lng}%2C{destination_lat}".format(
-        origin_lng=origin.longitude(),
-        origin_lat=origin.latitude(),
-        destination_lng=destination.longitude(),
-        destination_lat=destination.latitude(),
-    )
+    print("calculating distance", origin, destination)
+    api_url = "https://router.api.gov.bc.ca/distance.json?points={origin_lng}%2C{origin_lat}%2C{destination_lng}"\
+        "%2C{destination_lat}".format(
+            origin_lng=origin.longitude(),
+            origin_lat=origin.latitude(),
+            destination_lng=destination.longitude,
+            destination_lat=destination.latitude,
+        )
 
-    response = requests.get(api_url, headers={"accept": "*/*", "apikey": settings.ROUTE_PLANNER_API_KEY})
+    print(api_url)
 
+    response = requests.get(
+        api_url,
+        headers={"accept": "*/*", "apikey": settings.ROUTE_PLANNER_API_KEY})
+
+    print("response", response, response.content)
     route = response.json()
-    distance = route["distance"]
-    travel_time = route["time"]
-    travel_time_display = route["timeText"]
+    distance = None
+    travel_time = None
+    travel_time_display = None
+
+    if route["time"] != -1:
+        distance = route["distance"]
+        travel_time = route["time"]
+        travel_time_display = route["timeText"]
 
     return distance, travel_time, travel_time_display
 

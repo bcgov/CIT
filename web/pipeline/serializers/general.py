@@ -141,6 +141,7 @@ class LocationDistanceSerializer(serializers.ModelSerializer):
             "community",
             "location",
             "distance",
-            # "travel_time",
-            # "travel_time_display", "driving_route_available"
+            "driving_distance",
+            "travel_time",
+            "travel_time_display",
         )
