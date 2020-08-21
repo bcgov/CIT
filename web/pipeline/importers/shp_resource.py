@@ -56,7 +56,7 @@ from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineStr
 from django.conf import settings
 from pipeline.models.census import CensusSubdivision
 from pipeline.models.general import Road, Hex, ISP, Service
-from pipeline.constants import SHP_RESOURCES
+from pipeline.constants import SHP_RESOURCES, BC_ALBERS_SRID, WGS84_SRID
 from pipeline.importers.census import (
     import_census_population_data, import_census_languages_data,
     import_census_income_data, import_census_housing_data, import_census_education_employment_data)
@@ -97,7 +97,7 @@ def import_resource(resource_type):
 
         instance = import_data_into_area_model(resource_type, resource_config["model"], row)
 
-        geos_geom_out, geos_geom_simplified = _generate_geom(feat, 3005)
+        geos_geom_out, geos_geom_simplified = _generate_geom(feat, srid=BC_ALBERS_SRID)
         instance.geom = geos_geom_out
         instance.geom_simplified = geos_geom_simplified
 
@@ -124,12 +124,13 @@ def import_hexes():
             hex = Hex.objects.get(pk=hex_id)
         except Hex.DoesNotExist:
             hex = Hex(id=hex_id)
-        wkt = wkt_w(dim=2).write(GEOSGeometry(feat.geom.wkt, srid=4326)).decode()
+        wkt = wkt_w(dim=2).write(GEOSGeometry(feat.geom.wkt, srid=WGS84_SRID)).decode()
         try:
-            hex.geom = GEOSGeometry(wkt, srid=4326)
+            hex.geom = GEOSGeometry(wkt, srid=WGS84_SRID)
         except TypeError:
             print('skipping bad geom')
-        if not hex.geom: continue
+        if not hex.geom:
+            continue
         hexes[hex_id] = hex
 
     Hex.objects.bulk_create(hexes.values())
@@ -141,7 +142,8 @@ def import_hexes():
     services = []
     print(len(isps))
     for i, isp in enumerate(isps):
-        if not i % 1000: print(i)
+        if not i % 1000:
+            print(i)
         try:
             hex = Hex.objects.get(pk=isp['HEXuid_HEXidu'])
         except Hex.DoesNotExist:
@@ -199,7 +201,7 @@ def import_roads():
         if feat.get('Avail_50_1'):
             road.best_broadband = '50/10'
 
-        road.geom = _coerce_to_multilinestring(GEOSGeometry(feat.geom.wkt, srid=4326))
+        road.geom = _coerce_to_multilinestring(GEOSGeometry(feat.geom.wkt, srid=WGS84_SRID))
         roads.append(road)
 
     Road.objects.bulk_create(roads, 1000)
@@ -230,7 +232,7 @@ def _save_subdiv(feat):
     if "British Columbia" not in feat.get('PRNAME'):
         return
 
-    geos_geom_out, geos_geom_simplified = _generate_geom(feat, 4326)
+    geos_geom_out, geos_geom_simplified = _generate_geom(feat, WGS84_SRID)
     subdiv = CensusSubdivision.objects.get_or_create(id=int(feat.get('CSDUID')), name=feat.get('CSDNAME'))[0]
 
     print(subdiv.name)
@@ -264,9 +266,9 @@ def _generate_geom(feat, srid=None):
     # Convert MultiPolygons to plain Polygons,
     # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
     geos_geom_out = _coerce_to_multipolygon(geos_geom, srid)
-    geos_geom.transform(4326)
+    geos_geom.transform(WGS84_SRID)
     geos_geom_simplified = copy.deepcopy(geos_geom)
-    geos_geom_simplified.transform(4326)
+    geos_geom_simplified.transform(WGS84_SRID)
     geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
 
     geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, srid)
@@ -274,7 +276,7 @@ def _generate_geom(feat, srid=None):
     return geos_geom_out, geos_geom_simplified
 
 
-def _coerce_to_multipolygon(geom, srid=4326):
+def _coerce_to_multipolygon(geom, srid=WGS84_SRID):
     if isinstance(geom, Polygon):
         return MultiPolygon([geom], srid=srid)
     elif isinstance(geom, MultiPolygon):
@@ -283,7 +285,7 @@ def _coerce_to_multipolygon(geom, srid=4326):
         raise Exception("Bad geometry type: {}, skipping.".format(geom.__class__))
 
 
-def _coerce_to_multilinestring(geom, srid=4326):
+def _coerce_to_multilinestring(geom, srid=WGS84_SRID):
     if isinstance(geom, LineString):
         return MultiLineString([geom], srid=srid)
     elif isinstance(geom, MultiLineString):
