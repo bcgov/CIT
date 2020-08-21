@@ -14,6 +14,8 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import CommunityQuerySidebar from '~/components/CommunityQuery/CommunityQuerySidebar.vue'
 import CommunityQueryContent from '~/components/CommunityQuery/CommunityQueryContent.vue'
+import { getAuthToken } from '~/api/ms-auth-api/'
+import { getCommunityList } from '~/api/cit-api'
 
 @Component({
   CommunityQuerySidebar,
@@ -23,6 +25,34 @@ export default class Explore extends Vue {
   data() {
     return {
       filters: undefined,
+    }
+  }
+
+  async fetch({ store }) {
+    try {
+      const response = await getAuthToken()
+      const { status } = response
+      if (status === 200) {
+        const accessToken = response.data && response.data.access_token
+        if (accessToken) {
+          store.commit('msauth/setAccessToken', accessToken)
+        }
+      }
+    } catch (e) {
+      store.commit('msauth/setAccessToken', null)
+    }
+
+    try {
+      const response = await getCommunityList()
+      const { status } = response
+      if (status === 200) {
+        const communities = response.data
+        if (communities) {
+          store.commit('communities/setCommunities', communities)
+        }
+      }
+    } catch (e) {
+      store.commit('communities/setCommunities', [])
     }
   }
 
