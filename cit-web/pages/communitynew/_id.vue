@@ -27,7 +27,7 @@
             v-for="(locationGroup, key) in groupedLocations"
             :key="key"
             :v-model="true"
-            :prepend-icon="'mdi-database'"
+            :prepend-icon="getLocationMetaData(key).icon"
             no-action
           >
             <template v-slot:activator>
@@ -37,35 +37,17 @@
                 </v-list-item-title>
               </v-list-item-content>
 
-              <v-chip x-small>
+              <v-chip x-small class="font-weight-bold">
                 {{ locationGroup.length }}
               </v-chip>
             </template>
-            <!--
-            <v-list-item
-              v-for="subItem in item.items"
-              :key="subItem.title"
-              @click=""
-            >
-              <v-list-item-content>
-                <v-list-item-title v-text="subItem.title"></v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            -->
+
             <div
               v-for="location in locationGroup"
               :key="location.id"
               class="pa-2"
             >
-              <v-card class="mx-auto pa-3" outlined dense>
-                <div class="d-flex align-center">
-                  <v-icon class="mr-2">mdi-school</v-icon>
-                  <div class="ma-0 pa-0">{{ location.name }}</div>
-                </div>
-                <div class="overline pa-0 ma-0">
-                  {{ location.public_or_independent }}
-                </div>
-              </v-card>
+              <LocationCard :location="location" :type="key"></LocationCard>
             </div>
           </v-list-group>
         </v-list>
@@ -162,8 +144,10 @@ import {
 } from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
 import { getAuthToken } from '~/api/ms-auth-api/'
+import LocationCard from '~/components/Location/LocationCard.vue'
 
 @Component({
+  LocationCard,
   MainHeader,
   CensusSubdivision,
   Report,
@@ -302,6 +286,17 @@ export default class CommunityDetail extends Vue {
       center: [-122.970072, 49.299062],
       zoom: 12,
     }
+  }
+
+  getLocationMetaData(location) {
+    return {
+      schools: {
+        icon: 'mdi-school',
+      },
+      hospitals: {
+        icon: 'mdi-hospital-box',
+      },
+    }[location]
   }
 
   mounted() {
