@@ -7,51 +7,50 @@
     </div>
     <div v-else>
       <div class="community-details-sidebar elevation-5">
-        <div class="pa-5">
-          <v-card>
-            <v-list dense>
-              <v-list-item
-                v-for="(df, key) in communityDisplayFields"
-                :key="key"
-              >
-                <v-list-item-content>{{
-                  df.metadata.name
-                }}</v-list-item-content>
-                <v-list-item-content class="align-end">{{
-                  df.value | yesno
-                }}</v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card>
-        </div>
-
-        <v-chip
-          v-for="(locationGroup, key) in groupedLocations"
-          :key="key"
-          class="ma-2"
-          color="deep-purple accent-4"
-          outlined
-        >
-          <v-icon left>mdi-school</v-icon>
-          {{ locationGroup.length }} {{ key | startCase }}
-        </v-chip>
-        <div v-for="(locationGroup, key) in groupedLocations" :key="key">
-          <div
-            v-for="location in locationGroup"
-            :key="location.id"
-            class="pa-2"
-          >
-            <v-card class="mx-auto pa-3" outlined dense>
-              <div class="d-flex align-center">
-                <v-icon class="mr-2">mdi-school</v-icon>
-                <div class="ma-0 pa-0">{{ location.name }}</div>
-              </div>
-              <div class="overline pa-0 ma-0">
-                {{ location.public_or_independent }}
-              </div>
-            </v-card>
+        <div class="pt-5 pb-5">
+          <div class="d-flex justify-center">
+            <v-icon large>mdi-map-legend</v-icon>
+            <h2>Vancouver</h2>
+          </div>
+          <h6 class="text-center">Population: 603502</h6>
+          <div class="text-center">
+            <v-btn color="primary" x-small
+              >View Raw Data
+              <v-icon right dark>mdi-database</v-icon>
+            </v-btn>
           </div>
         </div>
+        <v-divider></v-divider>
+
+        <v-list dense>
+          <v-list-group
+            v-for="(locationGroup, key) in groupedLocations"
+            :key="key"
+            :v-model="true"
+            :prepend-icon="getLocationMetaData(key).icon"
+            no-action
+          >
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ startCase(key) }}
+                </v-list-item-title>
+              </v-list-item-content>
+
+              <v-chip x-small class="font-weight-bold">
+                {{ locationGroup.length }}
+              </v-chip>
+            </template>
+
+            <div
+              v-for="location in locationGroup"
+              :key="location.id"
+              class="pa-2"
+            >
+              <LocationCard :location="location" :type="key"></LocationCard>
+            </div>
+          </v-list-group>
+        </v-list>
       </div>
       <div class="comm-details-content">
         <v-container>
@@ -138,15 +137,24 @@ import startCase from 'lodash/startCase'
 import MainHeader from '~/components/MainHeader.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
-import { getCommunity, getCensusSubDivision } from '~/api/cit-api'
+import {
+  getCommunity,
+  getCensusSubDivision,
+  getCommunityList,
+} from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
+import { getAuthToken } from '~/api/ms-auth-api/'
+import LocationCard from '~/components/Location/LocationCard.vue'
 
 @Component({
+  LocationCard,
   MainHeader,
   CensusSubdivision,
   Report,
   filters: {
     yesno,
+  },
+  methods: {
     startCase,
   },
   head() {
@@ -209,6 +217,34 @@ export default class CommunityDetail extends Vue {
     return true
   }
 
+  async fetch({ store }) {
+    try {
+      const response = await getAuthToken()
+      const { status } = response
+      if (status === 200) {
+        const accessToken = response.data && response.data.access_token
+        if (accessToken) {
+          store.commit('msauth/setAccessToken', accessToken)
+        }
+      }
+    } catch (e) {
+      store.commit('msauth/setAccessToken', null)
+    }
+
+    try {
+      const response = await getCommunityList()
+      const { status } = response
+      if (status === 200) {
+        const communities = response.data
+        if (communities) {
+          store.commit('communities/setCommunities', communities)
+        }
+      }
+    } catch (e) {
+      store.commit('communities/setCommunities', [])
+    }
+  }
+
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
     try {
       const cid = params?.id
@@ -250,6 +286,17 @@ export default class CommunityDetail extends Vue {
       center: [-122.970072, 49.299062],
       zoom: 12,
     }
+  }
+
+  getLocationMetaData(location) {
+    return {
+      schools: {
+        icon: 'mdi-school',
+      },
+      hospitals: {
+        icon: 'mdi-hospital-box',
+      },
+    }[location]
   }
 
   mounted() {
