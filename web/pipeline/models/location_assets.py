@@ -110,8 +110,13 @@ class Court(Location):
     NAME_FIELD = 'Placemark_name'
     PHONE_FIELD = 'Contact_Phone'
 
-    hours_of_operation = models.CharField(null=True, blank=True, max_length=255)
-    court_level = models.CharField(null=True, blank=True, max_length=255)
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=50)
+    postal_code = models.CharField(max_length=7)
+    contact_phone = models.CharField(max_length=30)
+    fax_number = models.CharField(max_length=30)
+    hours_of_operation = models.CharField(max_length=255)
+    court_level = models.CharField(max_length=20)
 
     '''
     {
@@ -135,14 +140,6 @@ class Court(Location):
         *"Court_Level": "Provincial"
     }
     '''
-
-    address = models.CharField(max_length=255)
-    city = models.CharField(max_length=50)
-    postal_code = models.CharField(max_length=7)
-    contact_phone = models.CharField(max_length=30)
-    fax_number = models.CharField(max_length=30)
-    hours_of_operation = models.CharField(max_length=255)
-    court_level = models.CharField(max_length=20)
 
 
 class EconomicProject(Location):

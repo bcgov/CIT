@@ -420,43 +420,53 @@ def get_community_type_display_name(community_type):
 
 
 def serialize_location_assets(obj):
-    # from pipeline.constants import LOCATION_TYPES
-    from pipeline.models.location_assets import School, Hospital
+    from pipeline.constants import LOCATION_TYPES
 
-    # todo: refactor into serializers and make generic
     locations = []
-    location_assets = School.objects.filter(community=obj)
-    for location_asset in location_assets:
-        locations.append({
-            "type": "schools",
-            "id": location_asset.id,
-            "name": location_asset.name,
-            "latitude": location_asset.latitude(),
-            "longitude": location_asset.longitude(),
-            "location_fuzzy": location_asset.location_fuzzy,
-            "district_number": location_asset.district_number,
-            "public_or_independent": location_asset.public_or_independent,
-            "school_education_level": location_asset.school_education_level,
-        })
+    for location_type, model_class in LOCATION_TYPES.items():
+        location_assets = model_class.objects.filter(community=obj)
 
-    location_assets = Hospital.objects.filter(community=obj)
-    for location_asset in location_assets:
-        locations.append({
-            "type": "hospitals",
-            "id": location_asset.id,
-            "name": location_asset.name,
-            "latitude": location_asset.latitude(),
-            "longitude": location_asset.longitude(),
-            "location_fuzzy": location_asset.location_fuzzy,
-            "location_phone": location_asset.location_phone,
-            "location_website": location_asset.location_website,
-            "location_email": location_asset.location_email,
-            "rg_name": location_asset.rg_name,
-            "sv_description": location_asset.sv_description,
-            "hours": location_asset.hours,
-        })
+        for location_asset in location_assets:
+            locations.append({
+                "type": location_asset.location_type,
+                "latitude": location_asset.latitude(),
+                "longitude": location_asset.longitude(),
+                **{field: getattr(location_asset, field) for
+                   field in get_fields_for_location_type(location_asset.location_type)},
+            })
 
     return locations
+
+
+def get_fields_for_location_type(location_type):
+    common_fields = [
+        "id", "name", "location_fuzzy", "location_phone", "location_email", "location_website"]
+
+    location_specific_fields = {
+        "hospitals": ["rg_name", "sv_description", "hours"],
+        "courts": [
+            "address", "city", "postal_code", "contact_phone", "fax_number",
+            "hours_of_operation", "court_level"],
+        "economic_projects": [
+            "flnro_project_status", "project_type", "project_category", "proponent", "eao_project_status",
+            "project_comments"],
+        "natural_resource_projects": [
+            "project_comments", "project_description", "estimated_cost", "update_activity", "construction_type",
+            "construction_subtype", "project_type", "developer", "architect", "project_status", "project_stage",
+            "project_category_name", "provinvial_funding", "federal_funding", "municipal_funding",
+            "green_building_ind", "green_building_desc", "clean_energy_ind", "construction_jobs", "operating_jobs",
+            "standardized_start_date", "standardized_completion_date"],
+        "servicebc_locations": [],
+        "schools": ["district_number", "public_or_independent", "school_education_level"],
+        "post_secondary_institutions": ["institution_type", "economic_development_region"],
+        "clinics": ["sv_description", "hours"],
+        "first_responders": ["keywords"],
+        "diagnostic_facilities": ["ser_cd_dsc"],
+        "timber_facilities": ["bus_cat_ds"],
+        "civic_facilities": ["keywords", "bus_cat_cl", "bus_cat_ds"],
+    }
+
+    return common_fields + location_specific_fields[location_type]
 
 
 def get_quarterly_date_str_as_date(quarterly_date_str):

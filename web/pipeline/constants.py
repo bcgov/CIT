@@ -16,11 +16,20 @@ from pipeline.models.location_assets import (
 from pipeline.models.community import Community
 
 
-LOCATION_TYPES = [
-    'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities',
-    'hospitals', 'natural_resource_projects', 'economic_projects', 'servicebc_locations',
-    'schools', 'clinics', 'courts', 'post_secondary_institutions',
-]
+LOCATION_TYPES = {
+    'first_responders': FirstResponder,
+    'diagnostic_facilities': DiagnosticFacility,
+    'timber_facilities': TimberFacility,
+    'civic_facilities': CivicFacility,
+    'hospitals': Hospital,
+    'natural_resource_projects': NaturalResourceProject,
+    'economic_projects': EconomicProject,
+    'servicebc_locations': ServiceBCLocation,
+    'schools': School,
+    'clinics': Clinic,
+    'courts': Court,
+    'post_secondary_institutions': PostSecondaryInstitution,
+}
 
 CSV_RESOURCES = {
     # Provided by NetworkBC Team
