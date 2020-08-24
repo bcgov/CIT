@@ -1,4 +1,4 @@
-from pipeline.models.general import Municipality, WildfireZone, TsunamiZone
+from pipeline.models.general import Municipality, WildfireZone, TsunamiZone, SchoolDistrict, RegionalDistrict
 from pipeline.models.location_assets import (
     Court,
     Hospital,
@@ -57,6 +57,8 @@ SHP_RESOURCES = {
     'wildfires_zones': {'path': 'data/wildfire_zones.zip', 'model': WildfireZone},
     'tsunami_zones': {'path': 'data/tsunami_zones.zip', 'model': TsunamiZone},
     'municipalities': {'path': 'data/municipalities.zip', 'model': Municipality},
+    'school_districts': {'path': 'data/school_districts.zip', 'model': SchoolDistrict},
+    'regional_districts': {'path': 'data/regional_districts.zip', 'model': RegionalDistrict},
 }
 
 CENSUS_LANGUAGE_MAP = {
@@ -274,3 +276,6 @@ CENSUS_LANGUAGE_MAP = {
     "3.4.1.1.2.2.18.4": "Uralic languages, n.i.e.",
     "3.4.1.1.2.2.19": "Other languages, n.i.e.",
 }
+
+BC_ALBERS_SRID = 3005
+WGS84_SRID = 4326

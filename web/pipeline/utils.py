@@ -512,15 +512,21 @@ def to_currency(string):
 
 def serialize_community_search_names(communities):
     place_names = communities.values('id', 'place_name')
-    indigenous_names = communities.exclude(fn_community_name='').values(
-        'id', 'place_name', 'fn_community_name')
+    indigenous_names = communities.exclude(nation='').values(
+        'id', 'place_name', 'nation')
+    indigenous_names_unique = communities.values_list('nation', flat=True).distinct()
     indigenous_field_formatted = [
         {
             "id": x["id"],
-            "place_name": x["fn_community_name"],
+            "place_name": x["nation"],
         } for x in list(indigenous_names)
         # don't add indigenous names to list of community names
         # if the indigenous name is the same as the place_name field
-        if x["place_name"] != x["fn_community_name"]]
+        if x["nation"].lower() not in x["place_name"].lower() and
+        x["nation"] in indigenous_names_unique]
     communities = list(place_names) + list(indigenous_field_formatted)
     return sorted(communities, key=lambda d: d["place_name"])
+
+
+def get_pct_field_as_decimal(field):
+    return field / 100 if field else 0
