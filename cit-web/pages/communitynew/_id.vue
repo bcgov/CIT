@@ -53,7 +53,7 @@
         </v-list>
       </div>
       <div class="comm-details-content">
-        <v-container>
+        <v-container fluid>
           <v-row no-gutters>
             <v-col :cols="12">
               <div style="position: relative;">

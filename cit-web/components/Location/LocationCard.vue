@@ -2,7 +2,7 @@
   <div>
     <v-card>
       <v-card-title class="body-2 pb-0" dense>{{ location.name }}</v-card-title>
-      <v-card-text class="pb-2">
+      <v-card-text class="pb-0">
         <div class="caption">
           {{ location.public_or_independent }}
         </div>
