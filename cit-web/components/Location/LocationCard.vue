@@ -8,7 +8,7 @@
         </div>
       </v-card-text>
       <v-card-actions class="pt-0">
-        <v-btn x-small text color="primary accent-4">
+        <v-btn x-small text color="primary accent-4" @click="triggerFind">
           Find On Map
           <v-icon small dark>mdi-map-marker</v-icon>
         </v-btn>
@@ -61,6 +61,10 @@ export default class LocationCard extends Vue {
         icon: 'mdi-hospital-box',
       },
     }[location]
+  }
+
+  triggerFind(e) {
+    this.$emit('map-find', [this.location.longitude, this.location.latitude])
   }
 }
 </script>
