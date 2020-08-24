@@ -13,7 +13,7 @@ import { GetReportInGroup } from '~/api/powerbi-rest-api/Report.js'
 export default class MainReport extends Vue {
   embedToken = null
   groupId = '99dbfebe-3c0b-4b2d-affb-3af843c67549'
-  reportId = '2df94147-e5bc-48f2-bdfa-4a78f059e7c9'
+  reportId = '3972090f-aa22-405d-ab75-2a26ab512010'
   embedUrl = null
   report = null
 
