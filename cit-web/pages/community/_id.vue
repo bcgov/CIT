@@ -294,7 +294,7 @@ V<template>
 
     <v-dialog v-model="dialog" max-width="800">
       <v-toolbar color="primary" dense elevation="3">
-        <v-toolbar-title style="color: white;">Vancouver</v-toolbar-title>
+        <v-toolbar-title style="color: white;">{{ placeName }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-icon color="white" @click="dialog = false">mdi-close</v-icon>
       </v-toolbar>
@@ -388,22 +388,26 @@ export default class CommunityDetail extends Vue {
   dialog = false
   mapLoaded = false
   panels = [0, 1, 2, 3, 4]
-  breadcrumbs = [
-    {
-      text: 'Home',
-      href: '',
-    },
-    {
-      text: 'Explore',
-      href: '',
-    },
-    {
-      text: 'Vancouver',
-      href: '',
-    },
-  ]
 
   // Methods
+
+  get breadcrumbs() {
+    const temp = [
+      {
+        text: 'Home',
+        href: '',
+      },
+      {
+        text: 'Explore',
+        href: '',
+      },
+    ]
+    temp.push({
+      text: this.placeName,
+      href: '',
+    })
+    return temp
+  }
 
   get groupedCensus() {
     if (this.censusSubdivision.groups) {
