@@ -33,26 +33,6 @@ V<template>
                   <v-divider></v-divider>
 
                   <v-list dense nav class="ma-0">
-                    <v-list-group :prepend-icon="'mdi-map'" no-action>
-                      <template v-slot:activator>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Legends
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </template>
-
-                      <div class="d-flex align-center mt-0">
-                        <h5 class="ml-3">Broadband Speeds</h5>
-                        <v-spacer></v-spacer>
-                        <v-switch
-                          class="mt-0"
-                          hide-details
-                          dense
-                          :v-model="true"
-                        ></v-switch>
-                      </div>
-                    </v-list-group>
                     <v-list-group
                       :v-model="true"
                       :prepend-icon="'mdi-map'"
@@ -331,8 +311,50 @@ V<template>
       </v-card>
     </v-dialog>
 
-    <div ref="centerControl">
-      Re-center
+    <div ref="centerControl" @click="handleResetCenter">
+      <v-btn x-small fab color="primary">
+        <v-icon small>mdi-bullseye</v-icon>
+      </v-btn>
+    </div>
+
+    <div ref="legendControl">
+      <v-card max-width="190">
+        <v-list>
+          <v-list-item two-line>
+            <v-list-item-content>
+              <v-list-item-title>Internet Speeds</v-list-item-title>
+              <v-list-item-subtitle
+                >50/10
+                <div
+                  class="legend-icon"
+                  style="background-color: #8572d3;"
+                ></div
+              ></v-list-item-subtitle>
+              <v-list-item-subtitle
+                >25/5
+                <div
+                  class="legend-icon"
+                  style="background-color: #ec67ad;"
+                ></div
+              ></v-list-item-subtitle>
+              <v-list-item-subtitle
+                >10/2
+                <div
+                  class="legend-icon"
+                  style="background-color: #ff826f;"
+                ></div
+              ></v-list-item-subtitle>
+              <v-list-item-subtitle
+                >5/1
+                <div
+                  class="legend-icon"
+                  style="background-color: #f7ba44;"
+                ></div
+              ></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-card>
     </div>
   </div>
 </template>
@@ -430,10 +452,6 @@ export default class CommunityDetail extends Vue {
     }
   }
 
-  testClick(e) {
-    console.log(e)
-  }
-
   get groupedCensus() {
     if (this.censusSubdivision.groups) {
       return groupBy(this.censusSubdivision.groups, 'group')
@@ -473,8 +491,8 @@ export default class CommunityDetail extends Vue {
     return true
   }
 
-  getCenterControl() {
-    return class CenterControl {
+  getControlFactory() {
+    return class getControlFactory {
       el = null
       constructor(el) {
         this.el = el
@@ -483,6 +501,7 @@ export default class CommunityDetail extends Vue {
       onAdd(map) {
         this.map = map
         this.container = document.createElement('div')
+        this.container.className = 'mapboxgl-ctrl'
         this.container.appendChild(this.el)
         return this.container
       }
@@ -562,6 +581,23 @@ export default class CommunityDetail extends Vue {
   addNavigationControl(map) {
     map.addControl(new window.mapboxgl.NavigationControl())
     map.addControl(new window.mapboxgl.FullscreenControl())
+  }
+
+  handleResetCenter() {
+    const zoom = 12
+    this.whenMapLoaded((map) => {
+      this.resetCenter(
+        map,
+        this.communityDetails.longitude,
+        this.communityDetails.latitude,
+        zoom
+      )
+    })
+  }
+
+  resetCenter(map, lng, lat, zoom) {
+    map.setCenter([lng, lat])
+    map.setZoom(zoom)
   }
 
   setCenter(map, lng, lat) {
@@ -644,9 +680,12 @@ export default class CommunityDetail extends Vue {
       ])
       .addTo(map)
 
-    const CenterControl = this.getCenterControl()
-    const centerControl = new CenterControl(this.$refs.centerControl)
-    map.addControl(centerControl, 'bottom-right')
+    const MapBoxControl = this.getControlFactory()
+    const centerControl = new MapBoxControl(this.$refs.centerControl)
+    map.addControl(centerControl, 'top-right')
+
+    const legendControl = new MapBoxControl(this.$refs.legendControl)
+    map.addControl(legendControl, 'bottom-right')
 
     map.on('click', function (e) {
       console.log(e)
@@ -704,16 +743,6 @@ export default class CommunityDetail extends Vue {
   width: 35px;
   margin-right: 50%;
   margin-top: 10px;
-}
-
-.legend {
-  bottom: 30px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  font: 12px/20px;
-  position: absolute;
-  right: 10px;
-  z-index: 1;
-  width: 180px;
 }
 
 .community-details-sidebar {
