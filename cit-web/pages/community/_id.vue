@@ -1,4 +1,4 @@
-<template>
+V<template>
   <div class="community-new-container">
     <div v-if="isCommunityEmpty" class="d-flex mt-5 justify-center">
       <v-alert type="info">
@@ -20,7 +20,7 @@
                   <div class="pt-5 pb-5">
                     <div class="d-flex justify-center">
                       <v-icon large>mdi-map-legend</v-icon>
-                      <h2>Vancouver</h2>
+                      <h2>{{ placeName }}</h2>
                     </div>
                     <h6 class="text-center">Population: 603502</h6>
                     <div class="text-center">
