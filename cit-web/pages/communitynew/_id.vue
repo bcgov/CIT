@@ -14,7 +14,7 @@
           </div>
           <h6 class="text-center">Population: 603502</h6>
           <div class="text-center">
-            <v-btn color="primary" x-small
+            <v-btn color="primary" x-small @click="dialog = true"
               >View Raw Data
               <v-icon right dark>mdi-database</v-icon>
             </v-btn>
@@ -47,55 +47,20 @@
               :key="location.id"
               class="pa-2"
             >
-              <LocationCard :location="location" :type="key"></LocationCard>
+              <LocationCard
+                :location="location"
+                :type="key"
+                @map-find="handleFind"
+              ></LocationCard>
             </div>
           </v-list-group>
         </v-list>
       </div>
       <div class="comm-details-content">
-        <v-container>
+        <v-container fluid>
           <v-row no-gutters>
             <v-col :cols="12">
-              <div style="position: relative;">
-                <div id="map" ref="map"></div>
-                <v-card class="legend">
-                  <v-list>
-                    <v-list-item two-line>
-                      <v-list-item-content>
-                        <v-list-item-title>Internet Speeds</v-list-item-title>
-                        <v-list-item-subtitle
-                          >50/10
-                          <div
-                            class="legend-icon"
-                            style="background-color: #8572d3;"
-                          ></div
-                        ></v-list-item-subtitle>
-                        <v-list-item-subtitle
-                          >25/5
-                          <div
-                            class="legend-icon"
-                            style="background-color: #ec67ad;"
-                          ></div
-                        ></v-list-item-subtitle>
-                        <v-list-item-subtitle
-                          >10/2
-                          <div
-                            class="legend-icon"
-                            style="background-color: #ff826f;"
-                          ></div
-                        ></v-list-item-subtitle>
-                        <v-list-item-subtitle
-                          >5/1
-                          <div
-                            class="legend-icon"
-                            style="background-color: #f7ba44;"
-                          ></div
-                        ></v-list-item-subtitle>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list>
-                </v-card>
-              </div>
+              <div id="map" ref="map"></div>
             </v-col>
           </v-row>
         </v-container>
@@ -126,6 +91,46 @@
         ></Report>
       </div>
     </div>
+
+    <v-dialog v-model="dialog" max-width="800">
+      <v-toolbar color="primary" dense elevation="3">
+        <v-toolbar-title style="color: white;">Vancouver</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-icon color="white" @click="dialog = false">mdi-close</v-icon>
+      </v-toolbar>
+      <v-card>
+        <v-col
+          v-for="(value, key) in groupedCensus"
+          :key="key"
+          class="mb-5"
+          cols="12"
+        >
+          <v-card>
+            <v-card-title class="subheading font-weight-bold">{{
+              key === 'null' ? 'Miscellaneous' : key
+            }}</v-card-title>
+            <v-divider></v-divider>
+            <v-list dense>
+              <v-list-item v-for="item in value" :key="item.key">
+                <v-list-item-content>{{
+                  item.metadata.name
+                }}</v-list-item-content>
+                <v-list-item-content class="align-end justify-center"
+                  >{{ item.value || 'No data'
+                  }}{{ item.value ? item.units : '' }}</v-list-item-content
+                >
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-col>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text color="primary" @click="dialog = false">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -177,9 +182,18 @@ import LocationCard from '~/components/Location/LocationCard.vue'
 export default class CommunityDetail extends Vue {
   communityDetails = {}
   censusSubdivision = {}
+  dialog = false
+  mapLoaded = false
   panels = [0, 1, 2, 3, 4]
 
   // Methods
+
+  get groupedCensus() {
+    if (this.censusSubdivision.groups) {
+      return groupBy(this.censusSubdivision.groups, 'group')
+    }
+    return {}
+  }
 
   get groupedLocations() {
     return groupBy(this.communityDetails.locations, 'type')
@@ -299,7 +313,32 @@ export default class CommunityDetail extends Vue {
     }[location]
   }
 
+  handleFind(center) {
+    this.whenMapLoaded((map) => {
+      map.flyTo({
+        center,
+        zoom: 17,
+        essential: true,
+      })
+    })
+  }
+
+  whenMapLoaded(cb) {
+    if (this.mapLoaded) {
+      cb(this.map)
+    } else {
+      this.$root.$on('comm-map-loaded', cb)
+    }
+  }
+
+  created() {
+    this.map = null
+  }
+
   mounted() {
+    this.whenMapLoaded((map) => {
+      console.log('Map Loaded Event', map)
+    })
     window.mapboxgl.accessToken = this.MAPBOX_API_KEY
     const mapboxgl = window.mapboxgl
 
@@ -309,6 +348,7 @@ export default class CommunityDetail extends Vue {
     }
     const options = this.getMapboxOptions()
     const map = new mapboxgl.Map(options)
+    this.map = map
     this.addNavigationControl(map)
     this.setCenter(
       map,
@@ -335,6 +375,11 @@ export default class CommunityDetail extends Vue {
           .setHTML(location.properties.name)
           .addTo(map)
       }
+    })
+
+    map.on('load', () => {
+      this.mapLoaded = true
+      this.$root.$emit('comm-map-loaded', this.map)
     })
   }
 }
