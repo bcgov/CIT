@@ -1,4 +1,4 @@
-<template>
+V<template>
   <div class="community-new-container">
     <div v-if="isCommunityEmpty" class="d-flex mt-5 justify-center">
       <v-alert type="info">
@@ -20,7 +20,7 @@
                   <div class="pt-5 pb-5">
                     <div class="d-flex justify-center">
                       <v-icon large>mdi-map-legend</v-icon>
-                      <h2>Vancouver</h2>
+                      <h2>{{ placeName }}</h2>
                     </div>
                     <h6 class="text-center">Population: 603502</h6>
                     <div class="text-center">
@@ -294,7 +294,7 @@
 
     <v-dialog v-model="dialog" max-width="800">
       <v-toolbar color="primary" dense elevation="3">
-        <v-toolbar-title style="color: white;">Vancouver</v-toolbar-title>
+        <v-toolbar-title style="color: white;">{{ placeName }}</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-icon color="white" @click="dialog = false">mdi-close</v-icon>
       </v-toolbar>
@@ -388,22 +388,25 @@ export default class CommunityDetail extends Vue {
   dialog = false
   mapLoaded = false
   panels = [0, 1, 2, 3, 4]
-  breadcrumbs = [
-    {
-      text: 'Home',
-      href: '',
-    },
-    {
-      text: 'Explore',
-      href: '',
-    },
-    {
-      text: 'Vancouver',
-      href: '',
-    },
-  ]
 
   // Methods
+
+  get breadcrumbs() {
+    return [
+      {
+        text: 'Home',
+        href: '',
+      },
+      {
+        text: 'Explore',
+        href: '',
+      },
+      {
+        text: this.placeName,
+        href: '',
+      },
+    ]
+  }
 
   get groupedCensus() {
     if (this.censusSubdivision.groups) {
