@@ -33,11 +33,7 @@ V<template>
                   <v-divider></v-divider>
 
                   <v-list dense nav class="ma-0">
-                    <v-list-group
-                      :v-model="true"
-                      :prepend-icon="'mdi-map'"
-                      no-action
-                    >
+                    <v-list-group :prepend-icon="'mdi-map'" no-action>
                       <template v-slot:activator>
                         <v-list-item-content>
                           <v-list-item-title>
@@ -97,32 +93,35 @@ V<template>
                   <v-divider></v-divider>
                   <v-list dense nav>
                     <v-list-group
-                      v-for="(locationGroup, key) in groupedLocations"
-                      :key="key"
-                      :v-model="true"
-                      :prepend-icon="getLocationMetaData(key).icon"
+                      v-for="groupedLocation in groupedLocations"
+                      :key="groupedLocation.group"
+                      v-model.lazy="groupedLocation.active"
+                      :prepend-icon="
+                        getLocationMetaData(groupedLocation.group).icon
+                      "
                       no-action
+                      @click="handleExpand(groupedLocation)"
                     >
                       <template v-slot:activator>
                         <v-list-item-content>
                           <v-list-item-title>
-                            {{ startCase(key) }}
+                            {{ startCase(groupedLocation.group) }}
                           </v-list-item-title>
                         </v-list-item-content>
 
                         <v-chip x-small class="font-weight-bold ma-0 ml-0">
-                          {{ locationGroup.length }}
+                          {{ groupedLocation.locations.length }}
                         </v-chip>
                       </template>
 
                       <div
-                        v-for="location in locationGroup"
+                        v-for="location in groupedLocation.locations"
                         :key="location.id"
                         class="pa-2"
                       >
                         <LocationCard
                           :location="location"
-                          :type="key"
+                          :type="groupedLocation.group"
                           @map-find="handleFind"
                         ></LocationCard>
                       </div>
@@ -331,12 +330,17 @@ V<template>
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+    <div ref="centerControl">
+      Re-center
+    </div>
   </div>
 </template>
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
+import map from 'lodash/map'
 import groupBy from 'lodash/groupBy'
 import startCase from 'lodash/startCase'
 import MainHeader from '~/components/MainHeader.vue'
@@ -408,15 +412,33 @@ export default class CommunityDetail extends Vue {
     ]
   }
 
+  handleExpand(e) {
+    const { active, group } = e
+    console.log(group)
+    if (active === false) {
+      this.whenMapLoaded((map) => {
+        map.setFilter('locations-2bvop8-label', [
+          '==',
+          ['get', 'location_type'],
+          group,
+        ])
+      })
+    } else {
+      this.whenMapLoaded((map) => {
+        map.setFilter('locations-2bvop8-label', null)
+      })
+    }
+  }
+
+  testClick(e) {
+    console.log(e)
+  }
+
   get groupedCensus() {
     if (this.censusSubdivision.groups) {
       return groupBy(this.censusSubdivision.groups, 'group')
     }
     return {}
-  }
-
-  get groupedLocations() {
-    return groupBy(this.communityDetails.locations, 'type')
   }
 
   get isCommunityEmpty() {
@@ -449,6 +471,27 @@ export default class CommunityDetail extends Vue {
       return false
     }
     return true
+  }
+
+  getCenterControl() {
+    return class CenterControl {
+      el = null
+      constructor(el) {
+        this.el = el
+      }
+
+      onAdd(map) {
+        this.map = map
+        this.container = document.createElement('div')
+        this.container.appendChild(this.el)
+        return this.container
+      }
+
+      onRemove() {
+        this.container.parentNode.removeChild(this.container)
+        this.map = undefined
+      }
+    }
   }
 
   async fetch({ store }) {
@@ -491,10 +534,22 @@ export default class CommunityDetail extends Vue {
       response = await getCensusSubDivision(csid?.value)
       const { data: censusSubdivision } = response
 
+      const groupedLocations = map(
+        groupBy(communityDetails.locations, 'type'),
+        (o, k) => {
+          return {
+            group: k,
+            locations: o,
+            active: false,
+          }
+        }
+      )
+
       return {
         MAPBOX_API_KEY,
         communityDetails,
         censusSubdivision,
+        groupedLocations,
       }
     } catch (e) {
       console.error(e)
@@ -589,9 +644,14 @@ export default class CommunityDetail extends Vue {
       ])
       .addTo(map)
 
+    const CenterControl = this.getCenterControl()
+    const centerControl = new CenterControl(this.$refs.centerControl)
+    map.addControl(centerControl, 'bottom-right')
+
     map.on('click', function (e) {
       console.log(e)
       const features = map.queryRenderedFeatures(e.point)
+      console.log('Features', features)
       const location = features.find(
         (f) => f.sourceLayer === 'locations-2bvop8'
       )
