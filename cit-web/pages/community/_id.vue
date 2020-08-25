@@ -1,166 +1,348 @@
 <template>
-  <div>
+  <div class="community-new-container">
     <div v-if="isCommunityEmpty" class="d-flex mt-5 justify-center">
       <v-alert type="info">
         Sorry, we could not find a community with that ID.
       </v-alert>
     </div>
     <div v-else>
-      <MainHeader
-        :title="placeName"
-        :subtitle="censusSubdivision.name"
-        class="mb-5"
-      />
+      <div class="comm-details-content">
+        <v-container fluid>
+          <v-row no-gutters>
+            <v-col :cols="12">
+              <v-breadcrumbs class="pa-0 ma-0 mb-7 mt-3" :items="breadcrumbs">
+                <template v-slot:divider>
+                  <v-icon>mdi-chevron-right</v-icon>
+                </template>
+              </v-breadcrumbs>
+              <div class="map-container elevation-5">
+                <div class="community-details-sidebar">
+                  <div class="pt-5 pb-5">
+                    <div class="d-flex justify-center">
+                      <v-icon large>mdi-map-legend</v-icon>
+                      <h2>Vancouver</h2>
+                    </div>
+                    <h6 class="text-center">Population: 603502</h6>
+                    <div class="text-center">
+                      <v-btn color="primary" x-small @click="dialog = true"
+                        >View Raw Data
+                        <v-icon right dark>mdi-database</v-icon>
+                      </v-btn>
+                    </div>
+                  </div>
+                  <v-divider></v-divider>
 
-      <v-container>
-        <v-row>
-          <v-col :cols="4">
-            <v-card>
-              <v-list dense>
-                <v-list-item
-                  v-for="(df, key) in communityDisplayFields"
-                  :key="key"
-                >
-                  <v-list-item-content>{{
-                    df.metadata.name
-                  }}</v-list-item-content>
-                  <v-list-item-content class="align-end">{{
-                    df.value | yesno
-                  }}</v-list-item-content>
-                </v-list-item>
-              </v-list>
-            </v-card>
-          </v-col>
-          <v-col :cols="8">
-            <div style="position: relative;">
-              <div id="map" ref="map"></div>
-              <v-card class="legend">
-                <v-list>
-                  <v-list-item two-line>
-                    <v-list-item-content>
-                      <v-list-item-title>Internet Speeds</v-list-item-title>
-                      <v-list-item-subtitle
-                        >50/10
-                        <div
-                          class="legend-icon"
-                          style="background-color: #8572d3;"
-                        ></div
-                      ></v-list-item-subtitle>
-                      <v-list-item-subtitle
-                        >25/5
-                        <div
-                          class="legend-icon"
-                          style="background-color: #ec67ad;"
-                        ></div
-                      ></v-list-item-subtitle>
-                      <v-list-item-subtitle
-                        >10/2
-                        <div
-                          class="legend-icon"
-                          style="background-color: #ff826f;"
-                        ></div
-                      ></v-list-item-subtitle>
-                      <v-list-item-subtitle
-                        >5/1
-                        <div
-                          class="legend-icon"
-                          style="background-color: #f7ba44;"
-                        ></div
-                      ></v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list>
-              </v-card>
-            </div>
-          </v-col>
-        </v-row>
+                  <v-list dense nav class="ma-0">
+                    <v-list-group
+                      :v-model="true"
+                      :prepend-icon="'mdi-map'"
+                      no-action
+                    >
+                      <template v-slot:activator>
+                        <v-list-item-content>
+                          <v-list-item-title>
+                            Legends
+                          </v-list-item-title>
+                        </v-list-item-content>
+                      </template>
 
-        <v-row>
-          <v-col col="12" class="powerbi-reports">
-            <v-expansion-panels v-model="panels" multiple>
-              <v-expansion-panel>
-                <v-expansion-panel-header
-                  >Demographics</v-expansion-panel-header
-                >
-                <v-expansion-panel-content eager>
-                  <Report
-                    page-name="ReportSection05fe7b2a55e727a0a41e"
-                    :cid="communityDetails.id"
-                    extra-classname="demographics"
-                  ></Report>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel>
-                <v-expansion-panel-header
-                  >Connectivity</v-expansion-panel-header
-                >
-                <v-expansion-panel-content eager>
-                  <Report
-                    page-name="ReportSectionbc899e8fac8c2b494765"
-                    :cid="communityDetails.id"
-                    extra-classname="connectivity"
-                  ></Report>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel>
-                <v-expansion-panel-header>
-                  Community Assets</v-expansion-panel-header
-                >
-                <v-expansion-panel-content eager>
-                  <Report
-                    page-name="ReportSectionc87b6c3907e9321ae830"
-                    :cid="communityDetails.id"
-                    extra-classname="community-assets"
-                  ></Report>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel>
-                <v-expansion-panel-header>
-                  Economic Projects</v-expansion-panel-header
-                >
-                <v-expansion-panel-content eager>
-                  <Report
-                    page-name="ReportSectionf2b8f5bb464e6d79a9ed"
-                    :cid="communityDetails.id"
-                    extra-classname="economic-projects"
-                  ></Report>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-              <v-expansion-panel>
-                <v-expansion-panel-header>
-                  Natural Resource Projects</v-expansion-panel-header
-                >
-                <v-expansion-panel-content eager>
-                  <Report
-                    page-name="ReportSection8f523b520a86970e96d4"
-                    :cid="communityDetails.id"
-                    extra-classname="natural-resource-projects"
-                  ></Report>
-                </v-expansion-panel-content>
-              </v-expansion-panel>
-            </v-expansion-panels>
-          </v-col>
-        </v-row>
+                      <div class="d-flex align-center mt-0">
+                        <h5 class="ml-3">Broadband Speeds</h5>
+                        <v-spacer></v-spacer>
+                        <v-switch
+                          class="mt-0"
+                          hide-details
+                          dense
+                          :v-model="true"
+                        ></v-switch>
+                      </div>
+                    </v-list-group>
+                    <v-list-group
+                      :v-model="true"
+                      :prepend-icon="'mdi-map'"
+                      no-action
+                    >
+                      <template v-slot:activator>
+                        <v-list-item-content>
+                          <v-list-item-title>
+                            Layers
+                          </v-list-item-title>
+                        </v-list-item-content>
+                      </template>
 
-        <v-row>
-          <v-col col="12" class="powerbi-reports">
-            <CensusSubdivision
-              :classification="communityDetails.municipality_classification"
-              :census-subdivision="censusSubdivision"
-            ></CensusSubdivision>
-          </v-col>
-        </v-row>
-      </v-container>
+                      <v-list-item-content>
+                        <div class="d-flex align-center mt-0">
+                          <h5 class="ml-3">Schools</h5>
+                          <v-spacer></v-spacer>
+                          <v-switch
+                            class="mt-0"
+                            hide-details
+                            dense
+                            :v-model="true"
+                          ></v-switch>
+                        </div>
+                        <div class="d-flex align-center mt-0">
+                          <h5 class="ml-3">Hospitals</h5>
+                          <v-spacer></v-spacer>
+                          <v-switch
+                            class="mt-0"
+                            hide-details
+                            dense
+                            :v-model="true"
+                          ></v-switch>
+                        </div>
+                      </v-list-item-content>
+                    </v-list-group>
+                  </v-list>
+                  <v-divider></v-divider>
+                  <v-list dense nav>
+                    <v-list-group
+                      v-for="(locationGroup, key) in groupedLocations"
+                      :key="key"
+                      :v-model="true"
+                      :prepend-icon="getLocationMetaData(key).icon"
+                      no-action
+                    >
+                      <template v-slot:activator>
+                        <v-list-item-content>
+                          <v-list-item-title>
+                            {{ startCase(key) }}
+                          </v-list-item-title>
+                        </v-list-item-content>
+
+                        <v-chip x-small class="font-weight-bold ma-0 ml-0">
+                          {{ locationGroup.length }}
+                        </v-chip>
+                      </template>
+
+                      <div
+                        v-for="location in locationGroup"
+                        :key="location.id"
+                        class="pa-2"
+                      >
+                        <LocationCard
+                          :location="location"
+                          :type="key"
+                          @map-find="handleFind"
+                        ></LocationCard>
+                      </div>
+                    </v-list-group>
+                  </v-list>
+                </div>
+                <div id="map" ref="map"></div>
+              </div>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col col="12">
+              <div class="mt-10">
+                <h2>Reports</h2>
+                <h6 class="subtitle-1">Description can go here....</h6>
+                <v-divider class="mt-5"></v-divider>
+              </div>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col col="12">
+              <h3 class="d-flex align-center">
+                <v-icon inline class="mr-3" color="primary">mdi-home</v-icon
+                >Housing
+              </h3>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col xl="3" lg="3">
+              <ReportCard
+                page-name="ReportSection05fe7b2a55e727a0a41e"
+                :cid="communityDetails.id"
+                extra-classname="demographics"
+                title="Housing"
+              ></ReportCard>
+            </v-col>
+            <v-col xl="3" lg="3">
+              <ReportCard
+                page-name="ReportSection05fe7b2a55e727a0a41e"
+                :cid="communityDetails.id"
+                extra-classname="demographics"
+                title="Families"
+              ></ReportCard>
+            </v-col>
+            <v-col xl="3" lg="3">
+              <ReportCard
+                page-name="ReportSection05fe7b2a55e727a0a41e"
+                :cid="communityDetails.id"
+                extra-classname="demographics"
+                title="Education"
+              ></ReportCard>
+            </v-col>
+            <v-col xl="3" lg="3">
+              <ReportCard
+                page-name="ReportSection05fe7b2a55e727a0a41e"
+                :cid="communityDetails.id"
+                extra-classname="demographics"
+                title="Culture"
+              ></ReportCard>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col col="12">
+              <h3 class="d-flex align-center">
+                <v-icon inline class="mr-3" color="primary"
+                  >mdi-currency-usd</v-icon
+                >Economics/Employment
+              </h3>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col xl="3" lg="3">
+              <ReportCard
+                page-name="ReportSection05fe7b2a55e727a0a41e"
+                :cid="communityDetails.id"
+                extra-classname="demographics"
+                title="Income/Jobs"
+              ></ReportCard>
+            </v-col>
+            <v-col xl="3" lg="3">
+              <ReportCard
+                page-name="ReportSection05fe7b2a55e727a0a41e"
+                :cid="communityDetails.id"
+                extra-classname="demographics"
+                title="Natural Resources"
+              ></ReportCard>
+            </v-col>
+            <v-col xl="3" lg="3">
+              <ReportCard
+                page-name="ReportSection05fe7b2a55e727a0a41e"
+                :cid="communityDetails.id"
+                extra-classname="demographics"
+                title="Environment"
+              ></ReportCard>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col col="12">
+              <h3 class="d-flex align-center">
+                <v-icon inline class="mr-3" color="primary">mdi-road</v-icon
+                >Assets & Infrastructure
+              </h3>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col xl="3" lg="3">
+              <ReportCard
+                page-name="ReportSection05fe7b2a55e727a0a41e"
+                :cid="communityDetails.id"
+                extra-classname="demographics"
+                title="Healthcare"
+              ></ReportCard>
+            </v-col>
+            <v-col xl="3" lg="3">
+              <ReportCard
+                page-name="ReportSection05fe7b2a55e727a0a41e"
+                :cid="communityDetails.id"
+                extra-classname="demographics"
+                title="Government Services"
+              ></ReportCard>
+            </v-col>
+            <v-col xl="3" lg="3">
+              <ReportCard
+                page-name="ReportSection05fe7b2a55e727a0a41e"
+                :cid="communityDetails.id"
+                extra-classname="demographics"
+                title="Emergency Responses"
+              ></ReportCard>
+            </v-col>
+            <v-col xl="3" lg="3">
+              <ReportCard
+                page-name="ReportSection05fe7b2a55e727a0a41e"
+                :cid="communityDetails.id"
+                extra-classname="demographics"
+                title="Connectivity"
+              ></ReportCard>
+            </v-col>
+          </v-row>
+        </v-container>
+        <!--
+        <Report
+          page-name="ReportSection05fe7b2a55e727a0a41e"
+          :cid="communityDetails.id"
+          extra-classname="demographics"
+        ></Report>
+        <Report
+          page-name="ReportSectionbc899e8fac8c2b494765"
+          :cid="communityDetails.id"
+          extra-classname="connectivity"
+        ></Report>
+        <Report
+          page-name="ReportSectionc87b6c3907e9321ae830"
+          :cid="communityDetails.id"
+          extra-classname="community-assets"
+        ></Report>
+        <Report
+          page-name="ReportSectionf2b8f5bb464e6d79a9ed"
+          :cid="communityDetails.id"
+          extra-classname="economic-projects"
+        ></Report>
+        <Report
+          page-name="ReportSection8f523b520a86970e96d4"
+          :cid="communityDetails.id"
+          extra-classname="natural-resource-projects"
+        ></Report>
+        -->
+      </div>
     </div>
+
+    <v-dialog v-model="dialog" max-width="800">
+      <v-toolbar color="primary" dense elevation="3">
+        <v-toolbar-title style="color: white;">Vancouver</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-icon color="white" @click="dialog = false">mdi-close</v-icon>
+      </v-toolbar>
+      <v-card>
+        <v-col
+          v-for="(value, key) in groupedCensus"
+          :key="key"
+          class="mb-5"
+          cols="12"
+        >
+          <v-card>
+            <v-card-title class="subheading font-weight-bold">{{
+              key === 'null' ? 'Miscellaneous' : key
+            }}</v-card-title>
+            <v-divider></v-divider>
+            <v-list dense>
+              <v-list-item v-for="item in value" :key="item.key">
+                <v-list-item-content>{{
+                  item.metadata.name
+                }}</v-list-item-content>
+                <v-list-item-content class="align-end justify-center"
+                  >{{ item.value || 'No data'
+                  }}{{ item.value ? item.units : '' }}</v-list-item-content
+                >
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-col>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text color="primary" @click="dialog = false">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
+import groupBy from 'lodash/groupBy'
+import startCase from 'lodash/startCase'
 import MainHeader from '~/components/MainHeader.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
+import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
 import {
   getCommunity,
   getCensusSubDivision,
@@ -168,13 +350,19 @@ import {
 } from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
 import { getAuthToken } from '~/api/ms-auth-api/'
+import LocationCard from '~/components/Location/LocationCard.vue'
 
 @Component({
+  ReportCard,
+  LocationCard,
   MainHeader,
   CensusSubdivision,
   Report,
   filters: {
     yesno,
+  },
+  methods: {
+    startCase,
   },
   head() {
     return {
@@ -194,11 +382,39 @@ import { getAuthToken } from '~/api/ms-auth-api/'
   },
 })
 export default class CommunityDetail extends Vue {
+  layers = true
   communityDetails = {}
   censusSubdivision = {}
+  dialog = false
+  mapLoaded = false
   panels = [0, 1, 2, 3, 4]
+  breadcrumbs = [
+    {
+      text: 'Home',
+      href: '',
+    },
+    {
+      text: 'Explore',
+      href: '',
+    },
+    {
+      text: 'Vancouver',
+      href: '',
+    },
+  ]
 
   // Methods
+
+  get groupedCensus() {
+    if (this.censusSubdivision.groups) {
+      return groupBy(this.censusSubdivision.groups, 'group')
+    }
+    return {}
+  }
+
+  get groupedLocations() {
+    return groupBy(this.communityDetails.locations, 'type')
+  }
 
   get isCommunityEmpty() {
     return isEmpty(this.communityDetails)
@@ -303,15 +519,60 @@ export default class CommunityDetail extends Vue {
     }
   }
 
+  getLocationMetaData(location) {
+    const metaData = {
+      schools: {
+        icon: 'mdi-school',
+      },
+      hospitals: {
+        icon: 'mdi-hospital-box',
+      },
+    }
+
+    if (!metaData[location]) {
+      return {
+        icon: 'mdi-school',
+      }
+    }
+    return metaData[location]
+  }
+
+  handleFind(center) {
+    this.whenMapLoaded((map) => {
+      map.flyTo({
+        center,
+        zoom: 17,
+        essential: true,
+      })
+    })
+  }
+
+  whenMapLoaded(cb) {
+    if (this.mapLoaded) {
+      cb(this.map)
+    } else {
+      this.$root.$on('comm-map-loaded', cb)
+    }
+  }
+
+  created() {
+    this.map = null
+  }
+
   mounted() {
+    this.whenMapLoaded((map) => {
+      console.log('Map Loaded Event', map)
+    })
     window.mapboxgl.accessToken = this.MAPBOX_API_KEY
     const mapboxgl = window.mapboxgl
 
+    console.log(this.communityDetails)
     if (this.isCommunityEmpty) {
       return
     }
     const options = this.getMapboxOptions()
     const map = new mapboxgl.Map(options)
+    this.map = map
     this.addNavigationControl(map)
     this.setCenter(
       map,
@@ -339,13 +600,28 @@ export default class CommunityDetail extends Vue {
           .addTo(map)
       }
     })
+
+    map.on('load', () => {
+      this.mapLoaded = true
+      this.$root.$emit('comm-map-loaded', this.map)
+    })
   }
 }
 </script>
 <style lang="scss" scoped>
+.community-new-container {
+  width: 1600px;
+  margin: 0 auto;
+}
 #map {
   width: 100%;
+  height: 100%;
+}
+
+.map-container {
+  width: 100%;
   height: 70vmin;
+  display: flex;
 }
 
 .community-list {
@@ -375,5 +651,20 @@ export default class CommunityDetail extends Vue {
   right: 10px;
   z-index: 1;
   width: 180px;
+}
+
+.community-details-sidebar {
+  width: 300px;
+  background-color: white;
+  overflow-y: auto;
+}
+</style>
+<style lang="scss">
+.community-details-sidebar .v-list-group__header__prepend-icon {
+  margin-right: 16px !important;
+}
+.community-details-sidebar .v-list-group__header__append-icon {
+  min-width: auto !important;
+  margin-left: 0 !important;
 }
 </style>
