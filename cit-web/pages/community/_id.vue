@@ -33,26 +33,6 @@ V<template>
                   <v-divider></v-divider>
 
                   <v-list dense nav class="ma-0">
-                    <v-list-group :prepend-icon="'mdi-map'" no-action>
-                      <template v-slot:activator>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Legends
-                          </v-list-item-title>
-                        </v-list-item-content>
-                      </template>
-
-                      <div class="d-flex align-center mt-0">
-                        <h5 class="ml-3">Broadband Speeds</h5>
-                        <v-spacer></v-spacer>
-                        <v-switch
-                          class="mt-0"
-                          hide-details
-                          dense
-                          :v-model="true"
-                        ></v-switch>
-                      </div>
-                    </v-list-group>
                     <v-list-group
                       :v-model="true"
                       :prepend-icon="'mdi-map'"
@@ -331,8 +311,10 @@ V<template>
       </v-card>
     </v-dialog>
 
-    <div ref="centerControl">
-      Re-center
+    <div ref="centerControl" @click="handleResetCenter">
+      <v-btn x-small fab color="primary">
+        <v-icon small>mdi-bullseye</v-icon>
+      </v-btn>
     </div>
   </div>
 </template>
@@ -430,10 +412,6 @@ export default class CommunityDetail extends Vue {
     }
   }
 
-  testClick(e) {
-    console.log(e)
-  }
-
   get groupedCensus() {
     if (this.censusSubdivision.groups) {
       return groupBy(this.censusSubdivision.groups, 'group')
@@ -483,6 +461,7 @@ export default class CommunityDetail extends Vue {
       onAdd(map) {
         this.map = map
         this.container = document.createElement('div')
+        this.container.className = 'mapboxgl-ctrl center-control-ctrl'
         this.container.appendChild(this.el)
         return this.container
       }
@@ -562,6 +541,23 @@ export default class CommunityDetail extends Vue {
   addNavigationControl(map) {
     map.addControl(new window.mapboxgl.NavigationControl())
     map.addControl(new window.mapboxgl.FullscreenControl())
+  }
+
+  handleResetCenter() {
+    const zoom = 12
+    this.whenMapLoaded((map) => {
+      this.resetCenter(
+        map,
+        this.communityDetails.longitude,
+        this.communityDetails.latitude,
+        zoom
+      )
+    })
+  }
+
+  resetCenter(map, lng, lat, zoom) {
+    map.setCenter([lng, lat])
+    map.setZoom(zoom)
   }
 
   setCenter(map, lng, lat) {
