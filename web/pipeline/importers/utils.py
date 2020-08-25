@@ -133,7 +133,7 @@ def calculate_distances(location):
 
 def calculate_nearest_location_types_outside_50k():
     for community in Community.objects.all():
-        for location_type in LOCATION_TYPES:
+        for location_type in LOCATION_TYPES.keys():
             locations_within_50k = LocationDistance.objects.filter(
                 community=community, location__location_type=location_type, distance__lte=50)
             # if there are no locations of this location type within 50km,
