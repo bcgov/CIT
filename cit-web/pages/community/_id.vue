@@ -392,7 +392,7 @@ export default class CommunityDetail extends Vue {
   // Methods
 
   get breadcrumbs() {
-    const temp = [
+    return [
       {
         text: 'Home',
         href: '',
@@ -401,12 +401,11 @@ export default class CommunityDetail extends Vue {
         text: 'Explore',
         href: '',
       },
+      {
+        text: this.placeName,
+        href: '',
+      },
     ]
-    temp.push({
-      text: this.placeName,
-      href: '',
-    })
-    return temp
   }
 
   get groupedCensus() {
