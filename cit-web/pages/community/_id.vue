@@ -15,6 +15,7 @@ V<template>
                 <Sidebar
                   :place-name="placeName"
                   :grouped-locations="groupedLocations"
+                  :population="getFieldValue('population')"
                   @expand="handleExpand"
                   @findOnMap="handleFind"
                 ></Sidebar>
@@ -247,6 +248,15 @@ export default class CommunityDetail extends Vue {
       return []
     }
     return dfs.filter((df) => this.filterCommunityDetailFields(df))
+  }
+
+  getFieldValue(field) {
+    const dfs = this.communityDetails.display_fields
+    if (!dfs) {
+      return ''
+    }
+    const placeName = dfs.find((df) => df.key === field)
+    return placeName?.value
   }
 
   get placeName() {
