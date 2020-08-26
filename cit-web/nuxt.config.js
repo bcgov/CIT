@@ -133,6 +133,6 @@ export default {
   publicRuntimeConfig: {
     MAPBOX_API_KEY:
       'pk.eyJ1IjoiY291bnRhYmxlLXdlYiIsImEiOiJjamQyZG90dzAxcmxmMndtdzBuY3Ywa2ViIn0.MU-sGTVDS9aGzgdJJ3EwHA',
-    reportId: process.env.POWERBI_REPORT_ID
+    reportId: '3972090f-aa22-405d-ab75-2a26ab512010',
   },
 }

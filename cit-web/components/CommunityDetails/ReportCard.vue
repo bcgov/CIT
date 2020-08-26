@@ -25,9 +25,10 @@
         fullscreen
         hide-overlay
         transition="dialog-bottom-transition"
-        scrollable
+        :scrollable="false"
+        style="overflow: hidden;"
       >
-        <v-card tile>
+        <v-card>
           <v-toolbar flat dark color="primary">
             <v-btn icon dark @click="dialog = false">
               <v-icon>mdi-close</v-icon>
@@ -39,7 +40,7 @@
             <Report
               :page-name="pageName"
               :cid="cid"
-              :extra-classname="extraClassname"
+              extra-classname="demographics"
             ></Report>
           </v-card-text>
         </v-card>
