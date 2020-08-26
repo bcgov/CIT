@@ -13,13 +13,15 @@ class CensusSubdivision(models.Model):
     population = models.IntegerField(null=True)
     # "1.1.3", "Population percentage change, 2011 to 2016"
     population_percentage_change = models.FloatField(null=True)
+    # Transformed to counts
+    population_count_change = models.IntegerField(null=True)
+
     # "1.1.4", "Total private dwellings"
     priv_dwel = models.IntegerField(null=True)
     # "1.1.7",0,"Land area in square kilometres"
     area = models.FloatField(null=True)
 
-    # age of population
-    # broad categories
+    # Total - Distribution (%) of the population by broad age groups - 100% data
     # "1.2.2.1", "  0 to 14 years"
     pop_pct_0_14 = models.FloatField(null=True)
     # "1.2.2.2", 1, "  15 to 64 years"
@@ -27,6 +29,12 @@ class CensusSubdivision(models.Model):
     # "1.2.2.3", 1, "  65 years and over"
     pop_pct_65 = models.FloatField(null=True)
 
+    # Transformed to counts
+    pop_count_0_14 = models.IntegerField(null=True)
+    pop_count_14_65 = models.IntegerField(null=True)
+    pop_count_65 = models.IntegerField(null=True)
+
+    # Total - Age groups and average age of the population - 100% data
     # fine grained categories
     # "1.2.1.1.1", "    0 to 4 years"
     pop_0_4 = models.IntegerField(null=True)
@@ -189,7 +197,12 @@ class CensusSubdivision(models.Model):
     # "Housing", 27055, "9.1.13.1", 1, "  % of owner households with a mortgage", 142, null, 37.6
     households_owner_pct_mortgage = models.FloatField(null=True)
     # "Housing", 27056, "9.1.13.2", 1, "  % of owner households spending 30% or more of its income on shelter costs",
-    households_owner_spending_30_pct_income = models.FloatField(null=True)
+    households_owner_pct_spending_30_pct_income = models.FloatField(null=True)
+
+    # Transformed to counts
+    households_owner_count_mortgage = models.IntegerField(null=True)
+    households_owner_count_spending_30_pct_income = models.IntegerField(null=True)
+
     # "Housing", 27057, "9.1.13.3", 1, "  Median monthly shelter costs for owned dwellings ($)",
     households_owner_median_monthly_shelter_costs = models.FloatField(null=True)
     # "Housing", 27058, "9.1.13.4", 1, "  Average monthly shelter costs for owned dwellings ($)",
@@ -203,7 +216,12 @@ class CensusSubdivision(models.Model):
     # "Housing", 27062, "9.1.14.1", 1, "  % of tenant households in subsidized housing",
     households_tenant_pct_subsidized_housing = models.FloatField(null=True)
     # "Housing", 27063, "9.1.14.2", 1, "  % of tenant households spending 30% or more of its income on shelter costs",
-    households_tenant_spending_30_pct_income = models.FloatField(null=True)
+    households_tenant_pct_spending_30_pct_income = models.FloatField(null=True)
+
+    # Transformed to counts
+    households_tenant_count_subsidized_housing = models.IntegerField(null=True)
+    households_tenant_count_spending_30_pct_income = models.IntegerField(null=True)
+
     # "Housing", 27064, "9.1.14.3", 1, "  Median monthly shelter costs for rented dwellings ($)",
     households_tenant_median_shelter_cost = models.FloatField(null=True)
     # "Housing", 27065, "9.1.14.4", 1, "  Average monthly shelter costs for rented dwellings ($)",
@@ -311,33 +329,3 @@ class CensusSubdivision(models.Model):
 
     def api_field_groups(self):
         return serialize_census_subdivision_groups(self)
-
-    def get_population_percentage_change_as_decimal(self):
-        return get_pct_field_as_decimal(self.population_percentage_change)
-
-    def get_pop_pct_0_14_as_decimal(self):
-        return get_pct_field_as_decimal(self.pop_pct_0_14)
-
-    def get_pop_pct_14_65_as_decimal(self):
-        return get_pct_field_as_decimal(self.pop_pct_14_65)
-
-    def get_pop_pct_65_as_decimal(self):
-        return get_pct_field_as_decimal(self.pop_pct_65)
-
-    def get_housing_cost_less_30_pct_income_as_decimal(self):
-        return get_pct_field_as_decimal(self.housing_cost_less_30_pct_income)
-
-    def get_housing_cost_30_pct_more_income_as_decimal(self):
-        return get_pct_field_as_decimal(self.housing_cost_30_pct_more_income)
-
-    def get_households_owner_pct_mortgage_as_decimal(self):
-        return get_pct_field_as_decimal(self.households_owner_pct_mortgage)
-
-    def get_households_owner_spending_30_pct_income_as_decimal(self):
-        return get_pct_field_as_decimal(self.households_owner_spending_30_pct_income)
-
-    def get_households_tenant_pct_subsidized_housing_as_decimal(self):
-        return get_pct_field_as_decimal(self.households_tenant_pct_subsidized_housing)
-
-    def get_households_tenant_spending_30_pct_income_as_decimal(self):
-        return get_pct_field_as_decimal(self.households_tenant_spending_30_pct_income)
