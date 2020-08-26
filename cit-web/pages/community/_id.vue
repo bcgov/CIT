@@ -16,6 +16,7 @@ V<template>
                   :place-name="placeName"
                   :grouped-locations="groupedLocations"
                   :population="getFieldValue('population')"
+                  :grouped-census="groupedCensus"
                   @expand="handleExpand"
                   @findOnMap="handleFind"
                 ></Sidebar>
@@ -38,47 +39,6 @@ V<template>
           ></ReportSection>
         </v-container>
       </div>
-      <v-dialog v-model="dialog" max-width="800">
-        <v-toolbar color="primary" dense elevation="3">
-          <v-toolbar-title style="color: white;">{{
-            placeName
-          }}</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-icon color="white" @click="dialog = false">mdi-close</v-icon>
-        </v-toolbar>
-        <v-card>
-          <v-col
-            v-for="(value, key) in groupedCensus"
-            :key="key"
-            class="mb-5"
-            cols="12"
-          >
-            <v-card>
-              <v-card-title class="subheading font-weight-bold">{{
-                key === 'null' ? 'Miscellaneous' : key
-              }}</v-card-title>
-              <v-divider></v-divider>
-              <v-list dense>
-                <v-list-item v-for="item in value" :key="item.key">
-                  <v-list-item-content>{{
-                    item.metadata.name
-                  }}</v-list-item-content>
-                  <v-list-item-content class="align-end justify-center"
-                    >{{ item.value || 'No data'
-                    }}{{ item.value ? item.units : '' }}</v-list-item-content
-                  >
-                </v-list-item>
-              </v-list>
-            </v-card>
-          </v-col>
-          <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="dialog = false">
-              Close
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
 
       <div ref="centerControl" @click="handleResetCenter">
         <v-btn x-small fab color="primary">
@@ -149,7 +109,6 @@ export default class CommunityDetail extends Vue {
   layers = true
   communityDetails = {}
   censusSubdivision = {}
-  dialog = false
   mapLoaded = false
   panels = [0, 1, 2, 3, 4]
   reportCards = {

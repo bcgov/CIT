@@ -81,6 +81,46 @@
         </div>
       </v-list-group>
     </v-list>
+
+    <v-dialog v-model="dialog" max-width="800">
+      <v-toolbar color="primary" dense elevation="3">
+        <v-toolbar-title style="color: white;">{{ placeName }}</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-icon color="white" @click="dialog = false">mdi-close</v-icon>
+      </v-toolbar>
+      <v-card>
+        <v-col
+          v-for="(value, key) in groupedCensus"
+          :key="key"
+          class="mb-5"
+          cols="12"
+        >
+          <v-card>
+            <v-card-title class="subheading font-weight-bold">{{
+              key === 'null' ? 'Miscellaneous' : key
+            }}</v-card-title>
+            <v-divider></v-divider>
+            <v-list dense>
+              <v-list-item v-for="item in value" :key="item.key">
+                <v-list-item-content>{{
+                  item.metadata.name
+                }}</v-list-item-content>
+                <v-list-item-content class="align-end justify-center"
+                  >{{ item.value || 'No data'
+                  }}{{ item.value ? item.units : '' }}</v-list-item-content
+                >
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-col>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn text color="primary" @click="dialog = false">
+            Close
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -96,9 +136,12 @@ import SidebarHeader from '~/components/CommunityDetails/SidebarHeader.vue'
   },
 })
 export default class MainReport extends Vue {
+  dialog = false
+
   @Prop({ default: null, type: String }) placeName
   @Prop() population
   @Prop({ default: null, type: Array }) groupedLocations
+  @Prop({ default: null, type: Object }) groupedCensus
 
   getLocationMetaData(location) {
     const metaData = {
