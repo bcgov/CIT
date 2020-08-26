@@ -24,13 +24,13 @@ def import_census_population_data(stats, subdiv):
     # 2030, "1.2.2.3", 1, "  65 years and over"
     subdiv.pop_pct_65 = _fetch_statscan_value(stats, "1.2.2.3")
 
-    total_population_count = _fetch_statscan_value(stats, "1.2.1")
+    subdiv.pop_count_total = _fetch_statscan_value(stats, "1.2.1")
     if subdiv.pop_pct_0_14:
-        subdiv.pop_count_0_14 = (subdiv.pop_pct_0_14 / 100) * total_population_count
+        subdiv.pop_count_0_14 = (subdiv.pop_pct_0_14 / 100) * subdiv.pop_count_total
     if subdiv.pop_pct_14_65:
-        subdiv.pop_count_14_65 = (subdiv.pop_pct_14_65 / 100) * total_population_count
+        subdiv.pop_count_14_65 = (subdiv.pop_pct_14_65 / 100) * subdiv.pop_count_total
     if subdiv.pop_pct_65:
-        subdiv.pop_count_65 = (subdiv.pop_pct_65 / 100) * total_population_count
+        subdiv.pop_count_65 = (subdiv.pop_pct_65 / 100) * subdiv.pop_count_total
 
     # "1.2.1.1.1", "    0 to 4 years"
     subdiv.pop_0_4 = _fetch_statscan_value(stats, "1.2.1.1.1")
@@ -180,12 +180,13 @@ def import_census_housing_data(stats, subdiv):
     # "Housing", 27056, "9.1.13.2", 1, "  % of owner households spending 30% or more of its income on shelter costs",
     subdiv.households_owner_pct_spending_30_pct_income = _fetch_statscan_value(stats, "9.1.13.2")
 
-    households_owner_count = _fetch_statscan_value(stats, "9.1.13")
+    subdiv.households_owner_count_total = _fetch_statscan_value(stats, "9.1.13")
     if subdiv.households_owner_pct_mortgage:
-        subdiv.households_owner_count_mortgage = (subdiv.households_owner_pct_mortgage / 100) * households_owner_count
+        subdiv.households_owner_count_mortgage = (
+            subdiv.households_owner_pct_mortgage / 100) * subdiv.households_owner_count_total
     if subdiv.households_owner_pct_spending_30_pct_income:
         subdiv.households_owner_count_spending_30_pct_income = (
-            subdiv.households_owner_pct_spending_30_pct_income / 100) * households_owner_count
+            subdiv.households_owner_pct_spending_30_pct_income / 100) * subdiv.households_owner_count_total
 
     # "Housing", 27057, "9.1.13.3", 1, "  Median monthly shelter costs for owned dwellings ($)",
     subdiv.households_owner_median_monthly_shelter_costs = _fetch_statscan_value(stats, "9.1.13.3")
@@ -202,13 +203,13 @@ def import_census_housing_data(stats, subdiv):
     # "Housing", 27063, "9.1.14.2", 1, "  % of tenant households spending 30% or more of its income on shelter costs",
     subdiv.households_tenant_pct_spending_30_pct_income = _fetch_statscan_value(stats, "9.1.14.2")
 
-    households_tenants_counts = _fetch_statscan_value(stats, "9.1.14")
+    subdiv.households_tenant_count_total = _fetch_statscan_value(stats, "9.1.14")
     if subdiv.households_tenant_pct_subsidized_housing:
         subdiv.households_tenant_count_subsidized_housing = (
-            subdiv.households_tenant_pct_subsidized_housing / 100) * households_tenants_counts
+            subdiv.households_tenant_pct_subsidized_housing / 100) * subdiv.households_tenant_count_total
     if subdiv.households_tenant_pct_spending_30_pct_income:
         subdiv.households_tenant_count_spending_30_pct_income = (
-            subdiv.households_tenant_pct_spending_30_pct_income / 100) * households_tenants_counts
+            subdiv.households_tenant_pct_spending_30_pct_income / 100) * subdiv.households_tenant_count_total
 
     # "Housing", 27064, "9.1.14.3", 1, "  Median monthly shelter costs for rented dwellings ($)",
     subdiv.households_tenant_median_shelter_cost = _fetch_statscan_value(stats, "9.1.14.3")

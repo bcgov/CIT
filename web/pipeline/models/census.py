@@ -30,6 +30,7 @@ class CensusSubdivision(models.Model):
     pop_pct_65 = models.FloatField(null=True)
 
     # Transformed to counts
+    pop_count_total = models.IntegerField(null=True)
     pop_count_0_14 = models.IntegerField(null=True)
     pop_count_14_65 = models.IntegerField(null=True)
     pop_count_65 = models.IntegerField(null=True)
@@ -200,6 +201,7 @@ class CensusSubdivision(models.Model):
     households_owner_pct_spending_30_pct_income = models.FloatField(null=True)
 
     # Transformed to counts
+    households_owner_count_total = models.IntegerField(null=True)
     households_owner_count_mortgage = models.IntegerField(null=True)
     households_owner_count_spending_30_pct_income = models.IntegerField(null=True)
 
@@ -219,6 +221,7 @@ class CensusSubdivision(models.Model):
     households_tenant_pct_spending_30_pct_income = models.FloatField(null=True)
 
     # Transformed to counts
+    households_tenant_count_total = models.IntegerField(null=True)
     households_tenant_count_subsidized_housing = models.IntegerField(null=True)
     households_tenant_count_spending_30_pct_income = models.IntegerField(null=True)
 
