@@ -2,7 +2,7 @@
   <div class="community-details-sidebar">
     <div class="pt-5 pb-5">
       <SidebarHeader :place-name="placeName">
-        <h6 class="text-center">Population: {{ population }}</h6>
+        <h6 class="text-center">Population: {{ population || 'N/A' }}</h6>
         <div class="text-center">
           <v-btn color="primary" x-small @click="dialog = true"
             >View Raw Data
@@ -97,7 +97,7 @@ import SidebarHeader from '~/components/CommunityDetails/SidebarHeader.vue'
 })
 export default class MainReport extends Vue {
   @Prop({ default: null, type: String }) placeName
-  @Prop({ default: null, type: Number }) population
+  @Prop() population
   @Prop({ default: null, type: Array }) groupedLocations
 
   getLocationMetaData(location) {
