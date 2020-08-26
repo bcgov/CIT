@@ -190,6 +190,15 @@ def serialize_census_subdivision_groups(obj):
         {
             "group": "Languages",
             "metadata": {
+                "name": "French",
+            },
+            "key": "fr_known",
+            "value": commaize(obj.fr_known),
+            "units": " people",
+        },
+        {
+            "group": "Languages",
+            "metadata": {
                 "name": "Non-official languages",
             },
             "key": "other_lang",
@@ -203,15 +212,6 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "aboriginal_lang",
             "value": commaize(obj.aboriginal_lang),
-            "units": " people",
-        },
-        {
-            "group": "Languages",
-            "metadata": {
-                "name": "Neither English nor French",
-            },
-            "key": "eng_fr_not_known",
-            "value": commaize(obj.eng_fr_not_known),
             "units": " people",
         },
         {
