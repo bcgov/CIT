@@ -8,7 +8,8 @@ from django.core.exceptions import FieldDoesNotExist
 from django.contrib.gis.measure import D
 
 from pipeline.models.community import Community
-from pipeline.models.general import LocationDistance
+from pipeline.models.general import LocationDistance, SchoolDistrict
+from pipeline.models.location_assets import School
 from pipeline.constants import LOCATION_TYPES, CSV_RESOURCES, DATABC_RESOURCES
 
 
@@ -118,6 +119,22 @@ def import_variable_fields(instance, row, Model):
             except FieldDoesNotExist:
                 pass
         setattr(instance, transformed_field_name, field_value)
+
+
+def calculate_communities_for_schools():
+    for school in School.objects.all():
+        print("school", school)
+        school_district = SchoolDistrict.objects.get(geom__contains=school.point)
+        print("school district", school_district.name)
+
+        school.school_district = school_district
+        school.save()
+
+        # Note: using the Community point is better than checking for municipality area overlap because
+        # most communities are unincorporated and thus do not have a linked municipality
+        communities = Community.objects.filter(point__intersects=school_district.geom)
+        school_district.community.set(communities)
+        print("communities", communities)
 
 
 def calculate_distances(location):
@@ -268,3 +285,17 @@ def calculate_community_num_timber_facilities():
             community=community, location__location_type="timber_facilities").count()
         community.num_timber_facilities = num_timber_facilities
         community.save()
+
+
+def calculate_regional_districts_for_communities():
+    from pipeline.models.general import RegionalDistrict
+
+    for community in Community.objects.all():
+        try:
+            regional_district = RegionalDistrict.objects.get(geom__contains=community.point)
+            # print("community regional_district", community, regional_district.name)
+        except RegionalDistrict.DoesNotExist:
+            print("Error: regional district for community {} was not found".format(community))
+        else:
+            community.regional_district = regional_district
+            community.save()

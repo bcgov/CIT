@@ -424,7 +424,7 @@ def serialize_location_assets(obj):
 
     locations = []
     for location_type, model_class in LOCATION_TYPES.items():
-        location_assets = model_class.objects.filter(community=obj)
+        location_assets = get_location_assets_for_community(model_class, obj)
 
         for location_asset in location_assets:
             locations.append({
@@ -436,6 +436,16 @@ def serialize_location_assets(obj):
             })
 
     return locations
+
+
+def get_location_assets_for_community(model_class, community):
+    from pipeline.models.location_assets import School
+
+    if model_class == School:
+        school_districts = community.schooldistrict_set.all()
+        return School.objects.filter(school_district__in=school_districts)
+    else:
+        return model_class.objects.filter(community=community)
 
 
 def get_fields_for_location_type(location_type):

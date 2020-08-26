@@ -74,6 +74,7 @@ class SchoolDistrict(Area):
     sd_num = models.CharField(
         max_length=5,
     )
+    community = models.ManyToManyField('Community')
     """
     {'ADMIN_SID': 121, 'SD_NAME': 'Southeast Kootenay', 'SD_NUM': 5, 'FCODE': 'FA91800600', 'SHAPE': 0, 'AREA_SQM': 12518364167.6713, 'FEAT_LEN': 729284.9581, 'OBJECTID': 1}
     """

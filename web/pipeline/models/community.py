@@ -66,6 +66,8 @@ class Community(models.Model):
     # Filters for mapbox
     has_any_k12_school = models.NullBooleanField(null=True)
 
+    regional_district = models.ForeignKey('RegionalDistrict', null=True, on_delete=models.SET_NULL)
+
     def __str__(self):
         return self.place_name
 

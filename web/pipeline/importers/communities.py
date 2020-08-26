@@ -3,7 +3,7 @@ import csv
 from django.contrib.gis.geos import Point
 
 from pipeline.models.community import Community
-from pipeline.models.general import WildfireZone, TsunamiZone, Road
+from pipeline.models.general import WildfireZone, TsunamiZone, Road, Municipality
 from pipeline.models.census import CensusSubdivision
 from django.db.utils import IntegrityError
 from django.contrib.gis.measure import D
@@ -13,9 +13,10 @@ def import_communities_from_csv(communities_file_path):
     with open(communities_file_path) as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         for row in csv_reader:
-            print("{place_name} ({place_id})".format(
-                place_name=row["Place Name"], place_id=row["Place ID"]))
             place_id = row["Place ID"]
+
+            print("{place_name} ({place_id})".format(
+                place_name=row["Place Name"], place_id=place_id))
 
             try:
                 community = Community.objects.get(place_id=place_id)
@@ -66,18 +67,16 @@ def import_communities_from_csv(communities_file_path):
             community.fn_community_name = row['FN Alt Name']
             community.nation = row['Nation']
             community.band_number = row['Band Number'] or None
-            # community.municipality_classification = row['Municipality Classification']
-            # is_mun = row['Municipality or is within the boundaries of one (1=Yes)']
-            # if is_mun == '1':
-            #     try:
-            #         community.municipality = Municipality.objects.get(geom__contains=community.point)
-            #     except Municipality.DoesNotExist:
-            #         print("Error: Municipality not found for {}!".format(community.place_name))
-
             if row['Incorporated'] == "Yes":
                 community.incorporated = True
             elif row['Incorporated'] == "No":
                 community.incorporated = False
+
+            if community.incorporated:
+                try:
+                    community.municipality = Municipality.objects.get(geom__contains=community.point)
+                except Municipality.DoesNotExist:
+                    print("Error: Municipality not found for {}!".format(community.place_name))
 
             community.last_mile_status = row['Last-Mile Status (Sept2020)']
             community.transport_status = row['Transport Status (Sept2020)']
