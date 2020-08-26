@@ -93,15 +93,12 @@ class CensusSubdivision(models.Model):
     # 3.6.1 Total - Knowledge of languages for the population in private households - 25% sample data
     # "3.6.1.1.1", 2, "    English"
     eng_known = models.IntegerField(null=True)
+    # "3.6.1.1.2", 2, "    French"
+    fr_known = models.IntegerField(null=True)
     # "3.6.1.2", 1, "  Non-official languages"
     other_lang = models.IntegerField(null=True)
     # "3.6.1.2.1", 2, "    Aboriginal languages"
     aboriginal_lang = models.IntegerField(null=True)
-
-    # 3.1.1 Total - Knowledge of official languages for the total population excluding institutional
-    # residents - 100% data
-    # "3.1.1.4", 1, "  Neither English nor French"
-    eng_fr_not_known = models.IntegerField(null=True)
 
     # 3.4.1.1 Total - Language spoken most often at home for the total population excluding institutional
     # residents - 100% data, Single responses
