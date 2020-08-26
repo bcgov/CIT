@@ -29,6 +29,7 @@ export default class MainReport extends Vue {
   report = null
 
   mounted() {
+    console.log('Config', this.$config)
     GetReportInGroup(this.groupId, this.reportId)
       .then((response) => {
         const { status, data } = response

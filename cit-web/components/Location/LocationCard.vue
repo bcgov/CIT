@@ -64,7 +64,10 @@ export default class LocationCard extends Vue {
   }
 
   triggerFind(e) {
-    this.$emit('map-find', [this.location.longitude, this.location.latitude])
+    this.$root.$emit('map-find', [
+      this.location.longitude,
+      this.location.latitude,
+    ])
   }
 }
 </script>
