@@ -177,6 +177,7 @@ class SchoolSerializer(serializers.ModelSerializer):
             "district_number",
             "public_or_independent",
             "school_education_level",
+            "school_district",
         )
 
 

@@ -133,7 +133,7 @@ def calculate_communities_for_schools():
         # Note: using the Community point is better than checking for municipality area overlap because
         # most communities are unincorporated and thus do not have a linked municipality
         communities = Community.objects.filter(point__intersects=school_district.geom)
-        communities.update()
+        school_district.community.set(communities)
         print("communities", communities)
 
 
