@@ -5,8 +5,8 @@ from pipeline.importers.databc_resource import import_databc_resources
 from pipeline.importers.shp_resource import import_shp_resources
 from pipeline.importers.utils import (
     calculate_community_num_schools, calculate_community_num_hospitals, calculate_community_num_courts,
-    calculate_community_num_timber_facilities,
-    calculate_nearest_location_types_outside_50k)
+    calculate_community_num_timber_facilities, calculate_nearest_location_types_outside_50k,
+    calculate_communities_for_schools)
 
 
 class Command(BaseCommand):
@@ -27,3 +27,4 @@ class Command(BaseCommand):
         calculate_community_num_hospitals()
         calculate_community_num_courts()
         calculate_community_num_timber_facilities()
+        calculate_communities_for_schools()

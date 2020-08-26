@@ -302,6 +302,8 @@ class School(Location):
     public_or_independent = models.CharField(null=True, blank=True, max_length=255)
     school_education_level = models.CharField(null=True, blank=True, max_length=255)
 
+    school_district = models.ForeignKey('SchoolDistrict', null=True, on_delete=models.SET_NULL)
+
     '''
     {
         '_id': 1,
