@@ -73,12 +73,12 @@ def import_census_population_data(stats, subdiv):
 def import_census_languages_data(stats, subdiv):
     # "3.6.1.1.1", 2, "    English"
     subdiv.eng_known = _fetch_statscan_value(stats, "3.6.1.1.1")
+    # "3.6.1.1.2", 2, "    French"
+    subdiv.fr_known = _fetch_statscan_value(stats, "3.6.1.1.2")
     # "3.6.1.2", 1, "  Non-official languages"
     subdiv.other_lang = _fetch_statscan_value(stats, "3.6.1.2")
     # "3.6.1.2.1", 2, "    Aboriginal languages"
     subdiv.aboriginal_lang = _fetch_statscan_value(stats, "3.6.1.2.1")
-    # "3.1.1.4", 1, "  Neither English nor French"
-    subdiv.eng_fr_not_known = _fetch_statscan_value(stats, "3.1.1.4")
 
     _import_three_most_common_languages(stats, subdiv)
 
