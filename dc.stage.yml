@@ -5,6 +5,7 @@ services:
     command: bash -c "yarn && yarn build && yarn start"
     environment:
       - NODE_ENV=production
+      - POWERBI_REPORT_ID=3972090f-aa22-405d-ab75-2a26ab512010
   nginx:
     ports:
       - 10082:80
