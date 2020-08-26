@@ -11,7 +11,7 @@ from rest_framework import viewsets
 from pipeline.models.location_assets import Location
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
-from pipeline.models.general import LocationDistance, Service
+from pipeline.models.general import LocationDistance, Service, RegionalDistrict
 from pipeline.serializers.general import (
     LocationSerializer,
     CommunitySerializer,
@@ -20,6 +20,7 @@ from pipeline.serializers.general import (
     CensusSubdivisionDetailSerializer,
     LocationDistanceSerializer,
     ServiceListSerializer,
+    RegionalDistrictSerializer,
 )
 from pipeline.utils import generate_line_strings, filter_communities, serialize_community_search_names
 
@@ -127,3 +128,8 @@ class CensusSubdivisionGeoJSONList(APIView):
             ),
             content_type="application/json",
         )
+
+
+class RegionalDistrictList(generics.ListAPIView):
+    queryset = RegionalDistrict.objects.all()
+    serializer_class = RegionalDistrictSerializer

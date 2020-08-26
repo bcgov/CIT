@@ -285,3 +285,17 @@ def calculate_community_num_timber_facilities():
             community=community, location__location_type="timber_facilities").count()
         community.num_timber_facilities = num_timber_facilities
         community.save()
+
+
+def calculate_regional_districts_for_communities():
+    from pipeline.models.general import RegionalDistrict
+
+    for community in Community.objects.all():
+        try:
+            regional_district = RegionalDistrict.objects.get(geom__contains=community.point)
+            # print("community regional_district", community, regional_district.name)
+        except RegionalDistrict.DoesNotExist:
+            print("Error: regional district for community {} was not found".format(community))
+        else:
+            community.regional_district = regional_district
+            community.save()

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from pipeline.models.location_assets import Location
-from pipeline.models.general import LocationDistance, Service
+from pipeline.models.general import LocationDistance, Service, RegionalDistrict
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
 
@@ -53,6 +53,7 @@ class CommunitySerializer(serializers.ModelSerializer):
             "latitude",
             "longitude",
             "census_subdivision",
+            "regional_district",
             "community_type",
             "incorporated",
             "fn_community_name",
@@ -83,6 +84,7 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
             "display_fields",
             "latitude",
             "longitude",
+            "regional_district",
             "locations",
         )
 
@@ -153,4 +155,13 @@ class LocationDistanceSerializer(serializers.ModelSerializer):
             "driving_distance",
             "travel_time",
             "travel_time_display",
+        )
+
+
+class RegionalDistrictSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RegionalDistrict
+        fields = (
+            "id",
+            "name",
         )
