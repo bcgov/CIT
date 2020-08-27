@@ -147,7 +147,7 @@ export default class CommunityDetail extends Vue {
       },
       {
         name: 'Connectivity',
-        pid: 'ReportSectionbc899e8fac8c2b494765?',
+        pid: 'ReportSectionbc899e8fac8c2b494765',
       },
     ],
   }
