@@ -68,7 +68,7 @@ class CommunityViewSet(viewsets.GenericViewSet):
     def geojson(self, request):
         return HttpResponse(
             serialize('geojson', Community.objects.all(), geometry_field='point',
-                      fields=('place_name', 'place_type', 'has_any_k12_school')),
+                      fields=('place_name', 'place_type', 'regional_district', 'has_any_k12_school')),
             content_type="application/json",
         )
 
