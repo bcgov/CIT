@@ -15,3 +15,7 @@ export function getCommunity(id) {
 export function getCensusSubDivision(id) {
   return $axios.get(`api/pipeline/censussubdivisions/${id}/`)
 }
+
+export function getRegionalDistricts() {
+  return $axios.get(`api/pipeline/regionaldistricts/`)
+}
