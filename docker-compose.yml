@@ -11,6 +11,7 @@ services:
       - back-tier
   web:
     build: ./web
+    image: countable/cit
     volumes:
       - ./web:/code
       - static:/static
