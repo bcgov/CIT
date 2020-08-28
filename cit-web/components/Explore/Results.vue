@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Panels class="pa-5" :regional-districts="regionalDistricts"></Panels>
+    <Panels :regional-districts="regionalDistricts"></Panels>
   </div>
 </template>
 
