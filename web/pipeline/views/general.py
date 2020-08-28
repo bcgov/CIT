@@ -22,7 +22,9 @@ from pipeline.serializers.general import (
     ServiceListSerializer,
     RegionalDistrictSerializer,
 )
-from pipeline.utils import generate_line_strings, filter_communities, serialize_community_search_names
+from pipeline.utils import (
+    generate_line_strings, filter_communities, serialize_community_search_names,
+    serialize_communities_for_regional_districts)
 
 
 def auth(request):
@@ -130,6 +132,16 @@ class CensusSubdivisionGeoJSONList(APIView):
         )
 
 
-class RegionalDistrictList(generics.ListAPIView):
-    queryset = RegionalDistrict.objects.all()
-    serializer_class = RegionalDistrictSerializer
+class RegionalDistrictViewSet(viewsets.GenericViewSet):
+    def get_queryset(self):
+        return RegionalDistrict.objects.all()
+
+    def list(self, request):
+        queryset = self.paginate_queryset(self.get_queryset())
+        serializer = RegionalDistrictSerializer(queryset, many=True)
+        return self.get_paginated_response(serializer.data)
+
+    @action(detail=False)
+    def communities(self, request):
+        regional_districts = serialize_communities_for_regional_districts(self.get_queryset())
+        return Response(regional_districts)
