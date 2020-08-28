@@ -550,3 +550,14 @@ def serialize_community_search_names(communities):
 
 def get_pct_field_as_decimal(field):
     return field / 100 if field else 0
+
+
+def serialize_communities_for_regional_districts(regional_districts):
+    return {
+        regional_district.name: [
+            {
+                "community": community.place_name,
+                "locations": community.location_set.count()
+            } for community in regional_district.community_set.all()
+        ] for regional_district in regional_districts
+    }
