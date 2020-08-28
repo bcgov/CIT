@@ -21,18 +21,22 @@
       </div>
     </div>
     <div class="explore-map-container">
-      <ExploreMap :mapbox-api-key="$config.MAPBOX_API_KEY"></ExploreMap>
+      <ExploreMap
+        :mapbox-api-key="$config.MAPBOX_API_KEY"
+        @moveend="handleMoveEnd"
+      ></ExploreMap>
     </div>
   </div>
 </template>
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
+import groupBy from 'lodash/groupBy'
 import ExploreMap from '~/components/Explore/ExploreMap.vue'
 import Results from '~/components/Explore/Results.vue'
 import ExploreFilter from '~/components/Explore/ExploreFilter.vue'
 
-import { getRegionalDistricts } from '~/api/cit-api'
+import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
 
 @Component({
   ExploreMap,
@@ -60,11 +64,25 @@ export default class Explore extends Vue {
   }
 
   async asyncData() {
-    const results = await Promise.all([getRegionalDistricts()])
+    const results = await Promise.all([
+      getRegionalDistricts(),
+      getCommunityList(),
+    ])
     const regionalDistricts = results[0].data.results
+    // const communityList = results[1].data
+    // const groupedCommunityList = groupBy(communityList, 'regional_district')
+
     return {
       regionalDistricts,
     }
+  }
+
+  handleMoveEnd(e) {
+    const features = e.features
+    const sourceFeatures = e.sourceFeatures
+    console.log(features)
+    console.log(groupBy(sourceFeatures, 'properties.regional_district'))
+    console.log(this.regionalDistricts)
   }
 }
 </script>

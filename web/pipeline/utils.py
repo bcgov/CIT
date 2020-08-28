@@ -531,7 +531,7 @@ def to_currency(string):
 
 
 def serialize_community_search_names(communities):
-    place_names = communities.values('id', 'place_name')
+    place_names = communities.values('id', 'place_name', 'regional_district')
     indigenous_names = communities.exclude(nation='').values(
         'id', 'place_name', 'nation')
     indigenous_names_unique = communities.values_list('nation', flat=True).distinct()
