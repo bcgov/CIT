@@ -203,8 +203,8 @@ def get_route_planner_distance(origin, destination):
         "%2C{destination_lat}".format(
             origin_lng=origin.longitude(),
             origin_lat=origin.latitude(),
-            destination_lng=destination.longitude,
-            destination_lat=destination.latitude,
+            destination_lng=destination.get_longitude(),
+            destination_lat=destination.get_latitude(),
         )
 
     print(api_url)
