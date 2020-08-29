@@ -6,7 +6,7 @@
         :key="'region' + regionalDistrict"
       >
         <PanelHeader
-          :title="regionalDistrict"
+          :title="getRdName(regionalDistrict)"
           :length="communities.length"
         ></PanelHeader>
 
@@ -17,11 +17,11 @@
 </template>
 
 <script>
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
 import BaseList from '~/components/Explore/BaseList.vue'
 import PanelHeader from '~/components/Explore/PanelHeader.vue'
 import PanelContent from '~/components/Explore/PanelContent.vue'
-
+const commModule = namespace('communities')
 @Component({
   PanelHeader,
   PanelContent,
@@ -29,5 +29,19 @@ import PanelContent from '~/components/Explore/PanelContent.vue'
 })
 export default class Explore extends Vue {
   @Prop({ default: null, type: Object }) groupedCommunities
+  @commModule.Getter('getRegionalDistricts') regionalDistricts
+
+  get mappedRds() {
+    const temp = {}
+    this.regionalDistricts.map((rd) => {
+      temp[rd.id] = rd.name
+    })
+    return temp
+  }
+
+  getRdName(id) {
+    const mappedRds = this.mappedRds
+    return mappedRds[id]
+  }
 }
 </script>

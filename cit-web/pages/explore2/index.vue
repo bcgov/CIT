@@ -65,12 +65,13 @@ export default class Explore extends Vue {
     return 'fixed'
   }
 
-  async asyncData() {
+  async asyncData({ store }) {
     const results = await Promise.all([
       getRegionalDistricts(),
       getCommunityList(),
     ])
     const regionalDistricts = results[0].data.results
+    store.commit('communities/setRegionalDistricts', regionalDistricts)
     const communityList = results[1].data
     const groupedCommunities = groupBy(communityList, 'regional_district')
 
