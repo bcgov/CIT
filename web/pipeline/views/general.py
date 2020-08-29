@@ -24,7 +24,8 @@ from pipeline.serializers.general import (
 )
 from pipeline.utils import (
     generate_line_strings, filter_communities, serialize_community_search_names,
-    serialize_communities_for_regional_districts)
+    serialize_communities_for_regional_districts, communities_advanced_search
+)
 
 
 def auth(request):
@@ -65,6 +66,11 @@ class CommunityViewSet(viewsets.GenericViewSet):
     def search(self, request):
         communities = serialize_community_search_names(self.get_queryset())
         return Response(communities)
+
+    @action(detail=False)
+    def advanced_search(self, request):
+        community_ids = communities_advanced_search(request.query_params)
+        return Response(community_ids)
 
     @action(detail=False)
     def geojson(self, request):
