@@ -559,7 +559,7 @@ def get_pct_field_as_decimal(field):
 
 def communities_advanced_search(query_params):
     from pipeline.models.community import Community
-    # http://localhost/api/pipeline/communities/advanced_search/?regional_district=10&location__court__lte__km=1000
+    # http://localhost/api/pipeline/communities/advanced_search/?location__schools__lte__mins=15&population__gt=100&percent_50_10__gte=0.75
 
     print("query_params", query_params)
     filters = [
