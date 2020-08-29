@@ -1,11 +1,20 @@
 <template>
-  <div id="map"></div>
+  <div style="height: 100%; width: 100%;">
+    <div id="map"></div>
+    <div ref="searchMove">
+      <SearchAsMove></SearchAsMove>
+    </div>
+  </div>
 </template>
 
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import ControlFactory from '~/utils/map'
+import SearchAsMove from '~/components/Explore/SearchAsMove.vue'
 
-@Component()
+@Component({
+  SearchAsMove,
+})
 export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
 
@@ -25,22 +34,17 @@ export default class Explore extends Vue {
     })
 
     map.addControl(new mapboxgl.NavigationControl())
+    map.addControl(new ControlFactory(this.$refs.searchMove), 'bottom-right')
 
     map.on('load', () => {
       this.mapLoaded = true
     })
 
     map.on('moveend', (e) => {
-      const features = map.queryRenderedFeatures(null, {
-        layers: ['communities'],
-      })
-
       const sourceFeatures = map.querySourceFeatures('composite', {
         sourceLayer: 'communites-dh2ers',
       })
-      console.log('Source Feat', sourceFeatures)
       this.$emit('moveend', {
-        features,
         sourceFeatures,
       })
     })

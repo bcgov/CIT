@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Panels :regional-districts="regionalDistricts"></Panels>
+    <Panels :grouped-communities="groupedCommunities"></Panels>
   </div>
 </template>
 
@@ -12,6 +12,6 @@ import Panels from '~/components/Explore/Panels.vue'
   Panels,
 })
 export default class Explore extends Vue {
-  @Prop({ default: null, type: Array }) regionalDistricts
+  @Prop({ default: null, type: Object }) groupedCommunities
 }
 </script>

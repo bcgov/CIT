@@ -17,7 +17,7 @@
           <v-btn class="ml-2">View Reports</v-btn>
         </p>
 
-        <Results :regional-districts="regionalDistricts"></Results>
+        <Results :grouped-communities="groupedCommunities"></Results>
       </div>
     </div>
     <div class="explore-map-container">
@@ -32,10 +32,10 @@
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
 import groupBy from 'lodash/groupBy'
+import uniqBy from 'lodash/uniqBy'
 import ExploreMap from '~/components/Explore/ExploreMap.vue'
 import Results from '~/components/Explore/Results.vue'
 import ExploreFilter from '~/components/Explore/ExploreFilter.vue'
-
 import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
 
 @Component({
@@ -59,6 +59,8 @@ import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
   },
 })
 export default class Explore extends Vue {
+  groupedCommunities = null
+
   layout(context) {
     return 'fixed'
   }
@@ -69,20 +71,26 @@ export default class Explore extends Vue {
       getCommunityList(),
     ])
     const regionalDistricts = results[0].data.results
-    // const communityList = results[1].data
-    // const groupedCommunityList = groupBy(communityList, 'regional_district')
+    const communityList = results[1].data
+    const groupedCommunities = groupBy(communityList, 'regional_district')
 
     return {
       regionalDistricts,
+      groupedCommunities,
     }
   }
 
   handleMoveEnd(e) {
-    const features = e.features
-    const sourceFeatures = e.sourceFeatures
-    console.log(features)
-    console.log(groupBy(sourceFeatures, 'properties.regional_district'))
-    console.log(this.regionalDistricts)
+    const sourceFeatures = e.sourceFeatures.map((f) => {
+      return {
+        ...f.properties,
+        geometry: f.geometry,
+      }
+    })
+    this.groupedCommunities = groupBy(
+      uniqBy(sourceFeatures, 'place_name'),
+      'regional_district'
+    )
   }
 }
 </script>
@@ -92,6 +100,8 @@ export default class Explore extends Vue {
   top: 66px;
   left: 0;
   bottom: 0;
+  right: 0;
+  width: 100%;
 }
 .explore-results-container,
 .explore-map-container {
