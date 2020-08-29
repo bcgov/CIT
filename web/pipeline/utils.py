@@ -602,6 +602,11 @@ def communities_advanced_search(query_params):
             query += "census_subdivision__{}".format(query_filter["field"])
         elif query_filter["field"] in ["percent_50_10", "percent_25_5", "percent_10_2", "percent_5_1"]:
             query += query_filter["field"]
+        elif query_filter["field"] == "community_type":
+            query += query_filter["field"]
+            if "Indigenous" in query_filter["value"]:
+                query_filter["value"].remove("Indigenous")
+                query_filter["value"].extend(["Urban First Nations Reserve", "Rural First Nations Reserve"])
         elif query_filter["field"] == "wildfire_zone":
             query += "wildfire_zone__risk_class"
         elif query_filter["field"] == "tsunami_zone":
@@ -617,7 +622,7 @@ def communities_advanced_search(query_params):
 
         if len(query_filter["value"]) == 1:
             overall_query.append(Q(**{query: query_filter["value"][0]}))
-        elif len(query_filter["value"] > 1):
+        elif len(query_filter["value"]) > 1:
             query += "__in"
             overall_query.append(Q(**{query: query_filter["value"]}))
         else:
@@ -654,11 +659,13 @@ def _get_units_for_field(field):
 
 
 def _get_location_type_in_field(field):
-    location_type_regex = "location__([a-zA-Z]+)"
-    location_type_match = re.search(location_type_regex, field)
-    if location_type_match:
-        return location_type_match.groups()[0]
-    return None
+    field_split = field.split("__")
+    try:
+        location_prefix_index = field_split.index("location")
+        location_type = field_split[location_prefix_index + 1]
+        return location_type
+    except ValueError:
+        return None
 
 
 def serialize_communities_for_regional_districts(regional_districts):
