@@ -180,7 +180,7 @@ We believe this can be done in either two ways.
  7. Click `apply`
  9. Go back to the `Admin Portal` then select `Workspaces`
  10. Select a workspace, then click the `3 dots` then click `access`
- 11. Enter the Service Principal (APP ID) in the box. Select `Admin` then click `Add`
+ 11. Enter the Service Principal (App Display Name) in the box. Select `Admin` then click `Add`.
 
 
 ### Assigning Capacity
