@@ -559,7 +559,7 @@ def get_pct_field_as_decimal(field):
 
 def communities_advanced_search(query_params):
     from pipeline.models.community import Community
-    # http://localhost/api/pipeline/communities/advanced_search/?regional_district=10&location__court__lte__km=1000
+    # http://localhost/api/pipeline/communities/advanced_search/?location__schools__lte__mins=15&population__gt=100&percent_50_10__gte=0.75
 
     print("query_params", query_params)
     filters = [
@@ -589,7 +589,7 @@ def communities_advanced_search(query_params):
 
             if query_filter["units"] == "km":
                 query += "distances__driving_distance"
-            elif query_filter["units"] == "min":
+            elif query_filter["units"] == "mins":
                 query += "distances__travel_time"
             else:
                 # TODO return validation error
@@ -648,8 +648,8 @@ def _get_units_for_field(field):
     field_parts = field.split("__")
     if "km" in field_parts:
         return "km"
-    elif "minutes" in field_parts:
-        return "minutes"
+    elif "mins" in field_parts:
+        return "mins"
     return None
 
 
