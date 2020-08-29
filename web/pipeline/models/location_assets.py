@@ -27,7 +27,7 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
-    def latitude(self):
+    def get_latitude(self):
         if self.point:
             return self.point[1]
         else:
@@ -35,7 +35,7 @@ class Location(models.Model):
             print("Location {} has no location".format(self.name))
             return None
 
-    def longitude(self):
+    def get_longitude(self):
         if self.point:
             return self.point[0]
         else:
