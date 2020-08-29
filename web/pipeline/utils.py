@@ -589,7 +589,7 @@ def communities_advanced_search(query_params):
 
             if query_filter["units"] == "km":
                 query += "distances__driving_distance"
-            elif query_filter["units"] == "min":
+            elif query_filter["units"] == "mins":
                 query += "distances__travel_time"
             else:
                 # TODO return validation error
@@ -648,8 +648,8 @@ def _get_units_for_field(field):
     field_parts = field.split("__")
     if "km" in field_parts:
         return "km"
-    elif "minutes" in field_parts:
-        return "minutes"
+    elif "mins" in field_parts:
+        return "mins"
     return None
 
 
