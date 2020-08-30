@@ -2,6 +2,7 @@ from django.contrib.gis.db import models
 
 
 class Area(models.Model):
+    area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
     geom = models.MultiPolygonField(srid=4326, null=True)
     geom_simplified = models.MultiPolygonField(srid=4326, null=True)

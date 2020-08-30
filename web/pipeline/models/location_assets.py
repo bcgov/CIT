@@ -550,3 +550,9 @@ class CivicFacility(Location):
         ('X', '-124.79067845384972'),
         ('Y', '49.25579290744079')])
     '''
+
+
+class ClosedMill(Location):
+    LATITUDE_FIELD = 'Resource_Latitude'
+    LONGITUDE_FIELD = 'Resource_Longitude'
+    NAME_FIELD = 'Name'

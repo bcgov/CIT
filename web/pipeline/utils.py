@@ -434,8 +434,8 @@ def serialize_location_assets(obj):
         for location_asset in location_assets:
             locations.append({
                 "type": location_asset.location_type,
-                "latitude": location_asset.latitude(),
-                "longitude": location_asset.longitude(),
+                "latitude": location_asset.get_latitude(),
+                "longitude": location_asset.get_longitude(),
                 **{field: getattr(location_asset, field) for
                    field in get_fields_for_location_type(location_asset.location_type)},
             })

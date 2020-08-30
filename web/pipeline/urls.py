@@ -31,6 +31,7 @@ urlpatterns = [
         pipeline.views.location_types.PostSecondaryInstitutionList.as_view()),
     url(r"^locations/clinics/$", pipeline.views.location_types.ClinicList.as_view()),
     url(r"^locations/courts/$", pipeline.views.location_types.CourtList.as_view()),
+    url(r"^locations/closed_mills/$", pipeline.views.location_types.ClosedMillList.as_view()),
     url(r"^locations/$", pipeline.views.general.LocationList.as_view()),
 
     url(r"^services/$", pipeline.views.general.ServiceList.as_view()),
