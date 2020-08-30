@@ -3,10 +3,14 @@ from rest_framework import serializers
 from pipeline.models.location_assets import (
     FirstResponder, DiagnosticFacility, TimberFacility, CivicFacility, Hospital, NaturalResourceProject,
     EconomicProject, ServiceBCLocation, School, Clinic, Court, PostSecondaryInstitution,
+    ClosedMill,
 )
 
 
 class FirstResponderSerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+
     class Meta:
         model = FirstResponder
         fields = (
@@ -25,6 +29,9 @@ class FirstResponderSerializer(serializers.ModelSerializer):
 
 
 class DiagnosticFacilitySerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+
     class Meta:
         model = DiagnosticFacility
         fields = (
@@ -39,6 +46,9 @@ class DiagnosticFacilitySerializer(serializers.ModelSerializer):
 
 
 class TimberFacilitySerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+
     class Meta:
         model = TimberFacility
         fields = (
@@ -53,6 +63,9 @@ class TimberFacilitySerializer(serializers.ModelSerializer):
 
 
 class CivicFacilitySerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+
     class Meta:
         model = CivicFacility
         fields = (
@@ -71,6 +84,9 @@ class CivicFacilitySerializer(serializers.ModelSerializer):
 
 
 class HospitalSerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+
     class Meta:
         model = Hospital
         fields = (
@@ -92,6 +108,8 @@ class HospitalSerializer(serializers.ModelSerializer):
 class NaturalResourceProjectSerializer(serializers.ModelSerializer):
     standardized_start_date = serializers.DateField(source='get_standardized_start_date_as_date')
     standardized_completion_date = serializers.DateField(source='get_standardized_completion_date_as_date')
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
 
     class Meta:
         model = NaturalResourceProject
@@ -130,6 +148,9 @@ class NaturalResourceProjectSerializer(serializers.ModelSerializer):
 
 
 class EconomicProjectSerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+
     class Meta:
         model = EconomicProject
         fields = (
@@ -150,6 +171,9 @@ class EconomicProjectSerializer(serializers.ModelSerializer):
 
 
 class ServiceBCLocationSerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+
     class Meta:
         model = ServiceBCLocation
         fields = (
@@ -165,6 +189,9 @@ class ServiceBCLocationSerializer(serializers.ModelSerializer):
 
 
 class SchoolSerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+
     class Meta:
         model = School
         fields = (
@@ -182,6 +209,9 @@ class SchoolSerializer(serializers.ModelSerializer):
 
 
 class PostSecondaryInstitutionSerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+
     class Meta:
         model = PostSecondaryInstitution
         fields = (
@@ -197,6 +227,9 @@ class PostSecondaryInstitutionSerializer(serializers.ModelSerializer):
 
 
 class ClinicSerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+
     class Meta:
         model = Clinic
         fields = (
@@ -215,6 +248,9 @@ class ClinicSerializer(serializers.ModelSerializer):
 
 
 class CourtSerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+
     class Meta:
         model = Court
         fields = (
@@ -227,4 +263,20 @@ class CourtSerializer(serializers.ModelSerializer):
             "location_phone",
             "hours_of_operation",
             "court_level",
+        )
+
+
+class ClosedMillSerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+
+    class Meta:
+        model = ClosedMill
+        fields = (
+            "id",
+            "name",
+            "latitude",
+            "longitude",
+            "location_fuzzy",
+            "community",
         )

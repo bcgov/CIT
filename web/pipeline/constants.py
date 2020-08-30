@@ -12,6 +12,7 @@ from pipeline.models.location_assets import (
     TimberFacility,
     CivicFacility,
     PostSecondaryInstitution,
+    ClosedMill,
 )
 from pipeline.models.community import Community
 
@@ -33,11 +34,12 @@ LOCATION_TYPES = {
 
 CSV_RESOURCES = {
     # Provided by NetworkBC Team
-    'communities': {'csv_path': 'data/COMMUNITIES_V4.csv', 'model': Community},
+    'communities': {'csv_path': 'data/COMMUNITIES_V5.csv', 'model': Community},
     'first_responders': {'csv_path': 'data/FRST_RSPND.csv', 'model': FirstResponder},
     'diagnostic_facilities': {'csv_path': 'data/DIAG_FACLT.csv', 'model': DiagnosticFacility},
     'timber_facilities': {'csv_path': 'data/GSRTMBRPRC.csv', 'model': TimberFacility},
     'civic_facilities': {'csv_path': 'data/CIVIC_FAC.csv', 'model': CivicFacility},
+    'closed_mills': {'csv_path': 'data/closed_mills.csv', 'model': ClosedMill},
 }
 
 

@@ -27,7 +27,7 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
-    def latitude(self):
+    def get_latitude(self):
         if self.point:
             return self.point[1]
         else:
@@ -35,7 +35,7 @@ class Location(models.Model):
             print("Location {} has no location".format(self.name))
             return None
 
-    def longitude(self):
+    def get_longitude(self):
         if self.point:
             return self.point[0]
         else:
@@ -552,8 +552,7 @@ class CivicFacility(Location):
     '''
 
 
-# class Library(Location):
-#     '''
-#     {"_id":5,"LIBRARY_SYSTEM":"Burnaby Public Library","LOCATION":"Cameron Library & Recreation Centre","BRANCH_UNIQUE_ID":"BB002","SCHOOL_DISTRICT_SERVED":"41","PHONE":"(604) 421-5454","PHYSICAL_ADDRESS":"9523 Cameron Street","CITY":"Burnaby","PROVINCE":"BC","POSTAL_CODE":"V3J 1L6","LATITUDE":49.25381414,"LONGITUDE":-122.898601,"MTLS_OUTLET":59958,"MTLS_CIRC_B":454254,"CIRC_CHILD_MTLS_B":227553,"REF_TRANS_B":20436,"VISITS_B":247701,"AD_INLIB_PGMS_B":50,"AD_OUT_PGMS_B":8,"ADULT_ATTEND_B":1067,"CH_INLIB_PGMS_B":221,"CH_OUT_PGMS_B":18,"CHILD_ATTEND_B":11112,"YA_INLIB_PGMS_B":4,"YA_OUT_PGMS_B":0,"YA_ATTEND_B":38,"ESL_INLIB_PGMS_B":11,"ESL_OUT_PGMS_B":0,"ESL_ATTEND_B":78,"LIBRARIAN_HRS_B":6834,"LIB_TECH_HRS_B":null,"COMM_LIB_HRS_B":null,"OTH_HRS_B":16311,"branch_copiers":1,"LEED_CERT_B":"No","SHRD_FAC":"Yes","FLOORSPACE":465,"HRS_OPEN":2901,"DAYS_OPEN":341}
-#     '''
-
+class ClosedMill(Location):
+    LATITUDE_FIELD = 'Resource_Latitude'
+    LONGITUDE_FIELD = 'Resource_Longitude'
+    NAME_FIELD = 'Name'

@@ -10,6 +10,7 @@ import pipeline.views.location_types
 
 router = DefaultRouter()
 router.register(r'communities', pipeline.views.general.CommunityViewSet, basename='communities')
+router.register(r'regionaldistricts', pipeline.views.general.RegionalDistrictViewSet, basename='regionaldistricts')
 
 
 urlpatterns = [
@@ -30,13 +31,13 @@ urlpatterns = [
         pipeline.views.location_types.PostSecondaryInstitutionList.as_view()),
     url(r"^locations/clinics/$", pipeline.views.location_types.ClinicList.as_view()),
     url(r"^locations/courts/$", pipeline.views.location_types.CourtList.as_view()),
+    url(r"^locations/closed_mills/$", pipeline.views.location_types.ClosedMillList.as_view()),
     url(r"^locations/$", pipeline.views.general.LocationList.as_view()),
 
     url(r"^services/$", pipeline.views.general.ServiceList.as_view()),
     url(r"^censussubdivisions/geojson/$", pipeline.views.general.CensusSubdivisionGeoJSONList.as_view()),
     url(r"^censussubdivisions/(?P<pk>[0-9]+)/$", pipeline.views.general.CensusSubdivisionDetail.as_view()),
     url(r"^censussubdivisions/$", pipeline.views.general.CensusSubdivisionList.as_view()),
-    url(r"^regionaldistricts/$", pipeline.views.general.RegionalDistrictList.as_view()),
     url(r"^locationdistances/geojson/$", pipeline.views.general.LocationDistanceGeoJSONList.as_view()),
     url(r"^locationdistances/$", pipeline.views.general.LocationDistanceList.as_view()),
     path('openapi', get_schema_view(title="CIT", description="API for CIT", version="1.0.0"), name='openapi-schema'),

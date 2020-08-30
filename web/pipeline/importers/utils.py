@@ -73,12 +73,11 @@ def import_data_into_point_model(resource_type, Model, row):
 def import_data_into_area_model(resource_type, Model, row):
     print(row)
 
-    try:
-        instance = Model.objects.get(name=row[Model.NAME_FIELD], location_type=resource_type)
-    except Model.DoesNotExist:
-        instance = Model(name=row[Model.NAME_FIELD], location_type=resource_type)
-        if hasattr(Model, 'ID_FIELD'):
-            instance.id = row[Model.ID_FIELD]
+    instance, created = Model.objects.get_or_create(name=row[Model.NAME_FIELD], location_type=resource_type)
+
+    print("instance", instance)
+    if hasattr(Model, 'ID_FIELD'):
+        instance.area_id = row[Model.ID_FIELD]
 
     import_variable_fields(instance, row, Model)
 
@@ -203,8 +202,8 @@ def get_route_planner_distance(origin, destination):
         "%2C{destination_lat}".format(
             origin_lng=origin.longitude(),
             origin_lat=origin.latitude(),
-            destination_lng=destination.longitude,
-            destination_lat=destination.latitude,
+            destination_lng=destination.get_longitude(),
+            destination_lat=destination.get_latitude(),
         )
 
     print(api_url)

@@ -1,4 +1,9 @@
 import datetime
+from functools import reduce
+from operator import and_
+import re
+
+from django.db.models import Q
 
 
 def filter_communities(filters):
@@ -429,8 +434,8 @@ def serialize_location_assets(obj):
         for location_asset in location_assets:
             locations.append({
                 "type": location_asset.location_type,
-                "latitude": location_asset.latitude(),
-                "longitude": location_asset.longitude(),
+                "latitude": location_asset.get_latitude(),
+                "longitude": location_asset.get_longitude(),
                 **{field: getattr(location_asset, field) for
                    field in get_fields_for_location_type(location_asset.location_type)},
             })
@@ -550,3 +555,125 @@ def serialize_community_search_names(communities):
 
 def get_pct_field_as_decimal(field):
     return field / 100 if field else 0
+
+
+def communities_advanced_search(query_params):
+    from pipeline.models.community import Community
+    # http://localhost/api/pipeline/communities/advanced_search/?location__schools__lte__mins=15&population__gt=100&percent_50_10__gte=0.75
+
+    print("query_params", query_params)
+    filters = [
+        {
+            "field": key.split("__")[0],
+            "operator": _get_operator_for_field(key),
+            "units": _get_units_for_field(key),
+            "location_type": _get_location_type_in_field(key),
+            "value": value.split(","),
+        }
+        for key, value in query_params.items()
+    ]
+    print("filters", filters)
+
+    overall_query = []
+
+    for query_filter in filters:
+        query = ""
+
+        # TODO refactor field name handling
+        if query_filter["field"] == "location":
+            if not query_filter["location_type"]:
+                # TODO return validation error
+                pass
+
+            overall_query.append(Q(**{"distances__location__location_type": query_filter["location_type"]}))
+
+            if query_filter["units"] == "km":
+                query += "distances__driving_distance"
+            elif query_filter["units"] == "mins":
+                query += "distances__travel_time"
+            else:
+                # TODO return validation error
+                pass
+        elif query_filter["field"] == "community":
+            query += "id"
+        elif query_filter["field"] == "regional_district":
+            query += "regional_district__id"
+        elif query_filter["field"] in ["population", "population_percentage_change"]:
+            query += "census_subdivision__{}".format(query_filter["field"])
+        elif query_filter["field"] in ["percent_50_10", "percent_25_5", "percent_10_2", "percent_5_1"]:
+            query += query_filter["field"]
+        elif query_filter["field"] == "community_type":
+            query += query_filter["field"]
+            if "Indigenous" in query_filter["value"]:
+                query_filter["value"].remove("Indigenous")
+                query_filter["value"].extend(["Urban First Nations Reserve", "Rural First Nations Reserve"])
+        elif query_filter["field"] == "wildfire_zone":
+            query += "wildfire_zone__risk_class"
+        elif query_filter["field"] == "tsunami_zone":
+            query += "tsunami_zone__zone_class"
+        else:
+            # TODO return validation error
+            pass
+
+        print("query", query)
+
+        if query_filter["operator"]:
+            query += "__{}".format(query_filter["operator"])
+
+        if len(query_filter["value"]) == 1:
+            overall_query.append(Q(**{query: query_filter["value"][0]}))
+        elif len(query_filter["value"]) > 1:
+            query += "__in"
+            overall_query.append(Q(**{query: query_filter["value"]}))
+        else:
+            # TODO return validation error
+            pass
+
+    print("overall_query", overall_query)
+    communities = Community.objects.filter(Q(reduce(and_, (q for q in overall_query)))).distinct()
+    print("communities", communities, communities.count())
+
+    return communities.values_list('id', flat=True)
+
+
+def _get_operator_for_field(field):
+    field_parts = field.split("__")
+    if "gte" in field_parts:
+        return "gte"
+    elif "lte" in field_parts:
+        return "lte"
+    if "gt" in field_parts:
+        return "gt"
+    elif "lt" in field_parts:
+        return "lt"
+    return None
+
+
+def _get_units_for_field(field):
+    field_parts = field.split("__")
+    if "km" in field_parts:
+        return "km"
+    elif "mins" in field_parts:
+        return "mins"
+    return None
+
+
+def _get_location_type_in_field(field):
+    field_split = field.split("__")
+    try:
+        location_prefix_index = field_split.index("location")
+        location_type = field_split[location_prefix_index + 1]
+        return location_type
+    except ValueError:
+        return None
+
+
+def serialize_communities_for_regional_districts(regional_districts):
+    return {
+        regional_district.name: [
+            {
+                "community": community.place_name,
+                "locations": community.location_set.count()
+            } for community in regional_district.community_set.all()
+        ] for regional_district in regional_districts
+    }

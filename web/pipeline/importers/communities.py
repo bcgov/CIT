@@ -23,16 +23,6 @@ def import_communities_from_csv(communities_file_path):
             except Community.DoesNotExist:
                 community = Community(place_id=place_id)
 
-            # **Other fields to consider adding**
-            #    BASE_ACCESS_50Mbps,Community Type,FN_Community_Name,Nation,Band_Number
-            #    Municipality Classification,Municipality or is within the boundaries of one (1=Yes)
-            #    Municapility URL Code,Municipality URL Address
-            #    Distance to nearest Weather Station,Weather Station Number,Weather Station Name
-            # **census info. should come from separate normalized table**
-            #    CDUID, CENSUS SD TYPE,CENSUS 2016 SD POP,CENSUS 2016 SD Total Dwelling,
-            # **these seem inaccurate, don't use**
-            #    CSDUID Repeat Count (used to estimate Pop and Dwelling),Estimated Population,Estimated Total Dwellings,CENSUS DIVISION NAME,CENSUS METRO AREA NAME,CENSUS ECONOMIC REGION NAME,CENSUS SD NAME
-
             community.place_name = row["Place Name"]
 
             community.point = Point(float(row["Longitude"]), float(row["Latitude"]), srid=4326)
@@ -82,12 +72,17 @@ def import_communities_from_csv(communities_file_path):
             community.transport_status = row['Transport Status (Sept2020)']
             community.cbc_phase = row['CBC Phase']
 
+            if row['Coastal_5km'] == "Yes":
+                community.is_coastal = True
+            elif row['Coastal_5km'] == "No":
+                community.is_coastal = False
+
             if community.municipality:
                 roads = Road.objects.filter(geom__intersects=community.municipality.geom)
             else:
                 roads = Road.objects.filter(geom__distance_lt=(community.point, D(km=10)))
 
-            speeds_map = {'50/10': 0, '25/5':0, '10/2':0, '5/1':0, '':0}
+            speeds_map = {'50/10': 0, '25/5': 0, '10/2': 0, '5/1': 0, '': 0}
             sk = ['50/10', '25/5', '10/2', '5/1', '']
             total_length = 0
             for road in roads:
