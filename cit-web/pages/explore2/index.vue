@@ -2,19 +2,21 @@
   <div class="explore-container d-flex">
     <div class="explore-results-container">
       <div class="pa-8">
-        <ExploreFilter title="Community Type"></ExploreFilter>
-        <ExploreFilter title="Population"></ExploreFilter>
-        <ExploreFilter title="Schools"></ExploreFilter>
-        <ExploreFilter title="Clinics"></ExploreFilter>
-        <ExploreFilter title="Hospitals"></ExploreFilter>
-        <ExploreFilter title="More Filters"></ExploreFilter>
-
-        <p class="text-h5 mt-4 mb-4">
-          Showing 13 Regional Districts & 59 Communities
+        <p class="mt-10 mb-1">
+          Showing results for
         </p>
-        <p>
-          See aggregated reports for the following communities
-          <v-btn class="ml-2">View Reports</v-btn>
+        <p class="text-h5 mt-0 font-weight-bold">
+          13 Regional Districts & 59 Communities
+        </p>
+        <ExploreFilter class="mb-2 mr-2" title="Community Type"></ExploreFilter>
+        <ExploreFilter class="mb-2 mr-2" title="Population"></ExploreFilter>
+        <ExploreFilter class="mb-2 mr-2" title="Schools"></ExploreFilter>
+        <ExploreFilter class="mb-2 mr-2" title="More Filters"></ExploreFilter>
+
+        <p class="mt-5 font-weight-bold d-flex align-center">
+          <v-icon color="info" class="mr-2">mdi-file-chart</v-icon>
+          See aggregated reports for the following results
+          <v-btn class="ml-2" small color="info" depressed>View Reports</v-btn>
         </p>
 
         <Results :grouped-communities="groupedCommunities"></Results>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-expansion-panels flat multiple hover>
+    <v-expansion-panels v-model="panel" flat multiple hover>
       <v-expansion-panel
         v-for="(communities, regionalDistrict) in groupedCommunities"
         :key="'region' + regionalDistrict"
@@ -10,7 +10,10 @@
           :length="communities.length"
         ></PanelHeader>
 
-        <PanelContent :communities="communities"></PanelContent>
+        <PanelContent
+          :communities="communities"
+          class="explore-content-panel"
+        ></PanelContent>
       </v-expansion-panel>
     </v-expansion-panels>
   </div>
@@ -31,6 +34,8 @@ export default class Explore extends Vue {
   @Prop({ default: null, type: Object }) groupedCommunities
   @commModule.Getter('getRegionalDistricts') regionalDistricts
 
+  panel = []
+
   get mappedRds() {
     const temp = {}
     this.regionalDistricts.map((rd) => {
@@ -45,3 +50,8 @@ export default class Explore extends Vue {
   }
 }
 </script>
+<style lang="scss">
+.explore-content-panel .v-expansion-panel-content__wrap {
+  padding: 0 !important;
+}
+</style>

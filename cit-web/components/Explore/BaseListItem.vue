@@ -1,11 +1,18 @@
 <template>
-  <v-list-item>
+  <v-list-item class="pa-0">
     <v-list-item-content>
-      <v-list-item-title>{{ title }}</v-list-item-title>
-      <v-list-item-subtitle>{{ subtitle }}</v-list-item-subtitle>
+      <v-list-item-title v-text="title"></v-list-item-title>
+      <v-list-item-subtitle v-text="subtitle"></v-list-item-subtitle>
     </v-list-item-content>
     <v-list-item-action>
-      <v-btn text>View Details</v-btn>
+      <div>
+        <v-btn icon fab small dark color="primary" class="mr-2">
+          <v-icon>mdi-map-marker-radius</v-icon>
+        </v-btn>
+        <v-btn icon fab small dark color="primary">
+          <v-icon>mdi-arrow-right-box</v-icon>
+        </v-btn>
+      </div>
     </v-list-item-action>
   </v-list-item>
 </template>
