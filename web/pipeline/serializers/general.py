@@ -59,6 +59,7 @@ class CommunitySerializer(serializers.ModelSerializer):
             "fn_community_name",
             "wildfire_zone",
             "tsunami_zone",
+            "is_coastal",
             "last_mile_status",
             "transport_mile_status",
             "cbc_phase",

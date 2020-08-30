@@ -12,6 +12,7 @@ class Community(models.Model):
     point = PointField(null=True, blank=True)
     # TODO SY - make this into a choice field tuple
     community_type = models.CharField(null=True, blank=True, max_length=255)
+    is_coastal = models.NullBooleanField()
     census_subdivision = models.ForeignKey('CensusSubdivision', on_delete=models.CASCADE)
 
     wildfire_zone = models.ForeignKey('WildfireZone', null=True, on_delete=models.SET_NULL)
