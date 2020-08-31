@@ -19,3 +19,9 @@ export function getCensusSubDivision(id) {
 export function getRegionalDistricts() {
   return $axios.get(`api/pipeline/regionaldistricts/`)
 }
+
+export function advancedSearch(params) {
+  return $axios.get(`api/pipeline/communities/advanced_search/`, {
+    params,
+  })
+}

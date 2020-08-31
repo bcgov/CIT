@@ -3,11 +3,12 @@
     <div class="explore-results-container">
       <div class="pa-8">
         <p class="mb-1">
-          Showing results for
+          Showing
         </p>
         <p class="text-h5 mt-0 font-weight-bold">
           13 Regional Districts & 59 Communities
         </p>
+        <ExploreFilters @filtered="handleFiltered"></ExploreFilters>
         <ExploreFilter class="mb-2 mr-2" title="Community Type"></ExploreFilter>
         <ExploreFilter class="mb-2 mr-2" title="Population"></ExploreFilter>
         <ExploreFilter class="mb-2 mr-2" title="Schools"></ExploreFilter>
@@ -38,6 +39,7 @@ import uniqBy from 'lodash/uniqBy'
 import ExploreMap from '~/components/Explore/ExploreMap.vue'
 import Results from '~/components/Explore/Results.vue'
 import ExploreFilter from '~/components/Explore/ExploreFilter.vue'
+import ExploreFilters from '~/components/Explore/Filters/ExploreFilters.vue'
 import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
 const exploreStore = namespace('explore')
 
@@ -45,6 +47,7 @@ const exploreStore = namespace('explore')
   ExploreMap,
   Results,
   ExploreFilter,
+  ExploreFilters,
   head() {
     return {
       script: [
@@ -63,6 +66,8 @@ const exploreStore = namespace('explore')
 })
 export default class Explore extends Vue {
   groupedCommunities = null
+  filteredCommunities = null
+  boundedCommunites = null
   @exploreStore.Getter('getSearchAsMove') searchAsMove
 
   layout(context) {
@@ -80,9 +85,25 @@ export default class Explore extends Vue {
     const groupedCommunities = groupBy(communityList, 'regional_district')
 
     return {
+      communityList,
       regionalDistricts,
       groupedCommunities,
     }
+  }
+
+  handleFiltered(e) {
+    const temp = {}
+    e.map((cid) => {
+      temp[cid] = true
+    })
+    const filteredCommunities = this.communityList.filter(
+      (c) => temp[c.id] === true
+    )
+    console.log('Filtered', filteredCommunities)
+    this.filteredCommunities = filteredCommunities
+    this.groupedCommunities = groupBy(filteredCommunities, 'regional_district')
+
+    console.log(this.boundedCommunites)
   }
 
   handleMoveEnd(e) {
@@ -96,8 +117,9 @@ export default class Explore extends Vue {
         geometry: f.geometry,
       }
     })
+    this.boundedCommunites = uniqBy(sourceFeatures, 'place_name')
     this.groupedCommunities = groupBy(
-      uniqBy(sourceFeatures, 'place_name'),
+      this.boundedCommunites,
       'regional_district'
     )
   }
