@@ -3,15 +3,12 @@
     <div class="explore-results-container">
       <div class="pa-8">
         <p class="mb-1">
-          Showing results for
+          Showing
         </p>
         <p class="text-h5 mt-0 font-weight-bold">
           13 Regional Districts & 59 Communities
         </p>
-        <ExploreFilter class="mb-2 mr-2" title="Community Type"></ExploreFilter>
-        <ExploreFilter class="mb-2 mr-2" title="Population"></ExploreFilter>
-        <ExploreFilter class="mb-2 mr-2" title="Schools"></ExploreFilter>
-        <ExploreFilter class="mb-2 mr-2" title="More Filters"></ExploreFilter>
+        <ExploreFilters @filtered="handleFiltered"></ExploreFilters>
 
         <p class="mt-5 font-weight-bold d-flex align-center">
           <v-icon color="info" class="mr-2">mdi-file-chart</v-icon>
@@ -35,9 +32,11 @@
 import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import groupBy from 'lodash/groupBy'
 import uniqBy from 'lodash/uniqBy'
+import intersectionBy from 'lodash/intersectionBy'
 import ExploreMap from '~/components/Explore/ExploreMap.vue'
 import Results from '~/components/Explore/Results.vue'
 import ExploreFilter from '~/components/Explore/ExploreFilter.vue'
+import ExploreFilters from '~/components/Explore/Filters/ExploreFilters.vue'
 import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
 const exploreStore = namespace('explore')
 
@@ -45,6 +44,7 @@ const exploreStore = namespace('explore')
   ExploreMap,
   Results,
   ExploreFilter,
+  ExploreFilters,
   head() {
     return {
       script: [
@@ -63,6 +63,8 @@ const exploreStore = namespace('explore')
 })
 export default class Explore extends Vue {
   groupedCommunities = null
+  filteredCommunities = null
+  boundedCommunities = null
   @exploreStore.Getter('getSearchAsMove') searchAsMove
 
   layout(context) {
@@ -80,9 +82,36 @@ export default class Explore extends Vue {
     const groupedCommunities = groupBy(communityList, 'regional_district')
 
     return {
+      communityList,
       regionalDistricts,
       groupedCommunities,
     }
+  }
+
+  handleFiltered(e) {
+    const temp = {}
+    e.map((cid) => {
+      temp[cid] = true
+    })
+    const filteredCommunities = this.communityList.filter(
+      (c) => temp[c.id] === true
+    )
+    this.filteredCommunities = filteredCommunities
+    this.groupedCommunities = this.getFinalResult(
+      this.filteredCommunities,
+      this.boundedCommunities
+    )
+  }
+
+  getFinalResult(fc, bc) {
+    if (bc === null) {
+      return groupBy(fc, 'regional_district')
+    }
+    if (fc === null) {
+      return groupBy(bc, 'regional_district')
+    }
+    const intersection = intersectionBy(fc, bc, 'id')
+    return groupBy(intersection, 'regional_district')
   }
 
   handleMoveEnd(e) {
@@ -91,14 +120,16 @@ export default class Explore extends Vue {
     }
 
     const sourceFeatures = e.sourceFeatures.map((f) => {
+      f.properties.id = parseInt(f.properties.pk)
       return {
         ...f.properties,
         geometry: f.geometry,
       }
     })
-    this.groupedCommunities = groupBy(
-      uniqBy(sourceFeatures, 'place_name'),
-      'regional_district'
+    this.boundedCommunities = uniqBy(sourceFeatures, 'place_name')
+    this.groupedCommunities = this.getFinalResult(
+      this.filteredCommunities,
+      this.boundedCommunities
     )
   }
 }

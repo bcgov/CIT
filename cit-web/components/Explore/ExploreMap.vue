@@ -28,7 +28,7 @@ export default class Explore extends Vue {
     mapboxgl.accessToken = this.mapboxApiKey
     const map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/countable-web/ckedm40a4024t19oak9soly3m',
+      style: 'mapbox://styles/countable-web/ckedm40a4024t19oak9soly3m/draft',
       center: [-122.970072, 49.299062],
       zoom: 12,
     })
@@ -41,8 +41,9 @@ export default class Explore extends Vue {
     })
 
     map.on('moveend', (e) => {
+      // console.log(map.queryRenderedFeatures())
       const sourceFeatures = map.querySourceFeatures('composite', {
-        sourceLayer: 'communites-dh2ers',
+        sourceLayer: 'communities-bdyfif',
       })
       this.$emit('moveend', {
         sourceFeatures,
