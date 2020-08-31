@@ -1,12 +1,13 @@
 <template>
-  <div>
+  <div class="d-inline-block">
     <v-menu
       v-model="menu"
+      class="pa-0 ma-0"
       bottom
-      center
       transition="scale-transition"
-      origin="top"
       :close-on-content-click="false"
+      offset-y
+      nudge-bottom="5"
     >
       <template v-slot:activator="{ on }">
         <v-chip pill outlined v-on="on">

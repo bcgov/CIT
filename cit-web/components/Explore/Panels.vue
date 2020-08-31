@@ -1,28 +1,57 @@
 <template>
   <div>
-    <v-expansion-panels flat multiple>
-      <v-expansion-panel v-for="rd in regionalDistricts" :key="rd.id">
-        <v-expansion-panel-header
-          >{{ rd.name }}
-          <v-spacer></v-spacer>
-          13
-        </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </v-expansion-panel-content>
+    <v-expansion-panels v-model="panel" flat multiple hover>
+      <v-expansion-panel
+        v-for="(communities, regionalDistrict) in groupedCommunities"
+        :key="'region' + regionalDistrict"
+      >
+        <PanelHeader
+          :title="getRdName(regionalDistrict)"
+          :length="communities.length"
+        ></PanelHeader>
+
+        <PanelContent
+          :communities="communities"
+          class="explore-content-panel"
+        ></PanelContent>
       </v-expansion-panel>
     </v-expansion-panels>
   </div>
 </template>
 
 <script>
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
-
-@Component
+import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
+import BaseList from '~/components/Explore/BaseList.vue'
+import PanelHeader from '~/components/Explore/PanelHeader.vue'
+import PanelContent from '~/components/Explore/PanelContent.vue'
+const commModule = namespace('communities')
+@Component({
+  PanelHeader,
+  PanelContent,
+  BaseList,
+})
 export default class Explore extends Vue {
-  @Prop({ default: null, type: Array }) regionalDistricts
+  @Prop({ default: null, type: Object }) groupedCommunities
+  @commModule.Getter('getRegionalDistricts') regionalDistricts
+
+  panel = []
+
+  get mappedRds() {
+    const temp = {}
+    this.regionalDistricts.map((rd) => {
+      temp[rd.id] = rd.name
+    })
+    return temp
+  }
+
+  getRdName(id) {
+    const mappedRds = this.mappedRds
+    return mappedRds[id]
+  }
 }
 </script>
+<style lang="scss">
+.explore-content-panel .v-expansion-panel-content__wrap {
+  padding: 0 !important;
+}
+</style>

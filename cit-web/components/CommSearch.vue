@@ -20,19 +20,12 @@ import { Vue, Component, namespace, Prop } from 'nuxt-property-decorator'
 const commModule = namespace('communities')
 @Component
 export default class CommSearch extends Vue {
-  @Prop({ default: 'black', type: String })
-  color
-
-  @Prop({ default: false, type: Boolean })
-  dense
-
-  @Prop({ default: false, type: Boolean })
-  solo
+  @Prop({ default: 'black', type: String }) color
+  @Prop({ default: false, type: Boolean }) dense
+  @Prop({ default: false, type: Boolean }) solo
 
   communities = []
-
-  @commModule.Getter('getCommunities')
-  communities
+  @commModule.Getter('getCommunities') communities
 
   handleClick(cid) {
     window.open(`/community/${cid}`)
