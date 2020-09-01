@@ -10,8 +10,6 @@
         </v-toolbar>
         <v-divider></v-divider>
         <v-card-text style="height: 80vh;">
-          <h2 class="text-h5 mt-5">Population Growth</h2>
-          <PopGrowth></PopGrowth>
           <h2 class="text-h5 mt-5">Education</h2>
           <Education></Education>
           <h2 class="text-h5 mt-5">Health</h2>

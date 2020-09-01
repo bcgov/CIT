@@ -73,7 +73,7 @@ export default class CommunityType extends Vue {
 
   getParams() {
     const index = this.radioGroup
-    return index === null ? {} : this.queries[index]
+    return index === null ? [] : [this.queries[index]]
   }
 }
 </script>

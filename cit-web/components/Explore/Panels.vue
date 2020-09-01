@@ -46,7 +46,7 @@ export default class Explore extends Vue {
 
   getRdName(id) {
     const mappedRds = this.mappedRds
-    return mappedRds[id]
+    return mappedRds[id] || 'No Regional District'
   }
 }
 </script>
