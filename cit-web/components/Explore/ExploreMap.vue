@@ -64,7 +64,7 @@ export default class Explore extends Vue {
   top: 10px;
   left: 0;
   right: 0;
-  z-index: 50;
+  z-index: 0;
   display: flex;
   justify-content: center;
   align-items: center;

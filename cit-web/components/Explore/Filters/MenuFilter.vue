@@ -9,15 +9,15 @@
     nudge-bottom="5"
   >
     <template v-slot:activator="{ on }">
-      <v-chip pill outlined v-on="on">
-        {{ title }}
+      <v-chip pill outlined :input-value="active" filter v-on="on">
+        {{ chipTitle }}
       </v-chip>
     </template>
     <v-card width="300">
       <v-list dark>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title>{{ title }}</v-list-item-title>
+            <v-list-item-title>{{ filterTitle }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -39,7 +39,10 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 @Component()
 export default class MenuFilter extends Vue {
-  @Prop({ default: null, type: String }) title
+  @Prop({ default: null, type: String }) filterTitle
+  @Prop({ default: null, type: String }) chipTitle
+  @Prop({ default: false, type: Boolean }) active
+
   menu = false
 
   hide() {

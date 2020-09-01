@@ -6,15 +6,15 @@
           Showing
         </p>
         <p class="text-h5 mt-0 font-weight-bold">
-          13 Regional Districts & 59 Communities
+          {{ numRegions }} Regional Districts & {{ numCommunities }} Communities
         </p>
         <ExploreFilters @filtered="handleFiltered"></ExploreFilters>
 
-        <p class="mt-5 font-weight-bold d-flex align-center">
+        <div class="mt-5 font-weight-bold d-flex align-center">
           <v-icon color="info" class="mr-2">mdi-file-chart</v-icon>
           See aggregated reports for the following results
-          <v-btn class="ml-2" small color="info" depressed>View Reports</v-btn>
-        </p>
+          <ReportDialog class="ml-2 d-inline-block"></ReportDialog>
+        </div>
 
         <Results :grouped-communities="groupedCommunities"></Results>
       </div>
@@ -35,16 +35,16 @@ import uniqBy from 'lodash/uniqBy'
 import intersectionBy from 'lodash/intersectionBy'
 import ExploreMap from '~/components/Explore/ExploreMap.vue'
 import Results from '~/components/Explore/Results.vue'
-import ExploreFilter from '~/components/Explore/ExploreFilter.vue'
 import ExploreFilters from '~/components/Explore/Filters/ExploreFilters.vue'
+import ReportDialog from '~/components/Explore/ReportDialog'
 import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
 const exploreStore = namespace('explore')
 
 @Component({
   ExploreMap,
   Results,
-  ExploreFilter,
   ExploreFilters,
+  ReportDialog,
   head() {
     return {
       script: [
@@ -67,6 +67,18 @@ export default class Explore extends Vue {
   boundedCommunities = null
   @exploreStore.Getter('getSearchAsMove') searchAsMove
 
+  get numRegions() {
+    return Object.keys(this.groupedCommunities).length
+  }
+
+  get numCommunities() {
+    let counter = 0
+    for (const prop in this.groupedCommunities) {
+      counter += this.groupedCommunities[prop].length
+    }
+    return counter
+  }
+
   layout(context) {
     return 'fixed'
   }
@@ -79,6 +91,7 @@ export default class Explore extends Vue {
     const regionalDistricts = results[0].data.results
     store.commit('communities/setRegionalDistricts', regionalDistricts)
     const communityList = results[1].data
+
     const groupedCommunities = groupBy(communityList, 'regional_district')
 
     return {
@@ -89,13 +102,19 @@ export default class Explore extends Vue {
   }
 
   handleFiltered(e) {
-    const temp = {}
-    e.map((cid) => {
-      temp[cid] = true
-    })
-    const filteredCommunities = this.communityList.filter(
-      (c) => temp[c.id] === true
-    )
+    let filteredCommunities = []
+    if (e.empty === true) {
+      filteredCommunities = this.communityList
+    } else {
+      const temp = {}
+      e.data.map((cid) => {
+        temp[cid] = true
+      })
+      filteredCommunities = this.communityList.filter(
+        (c) => temp[c.id] === true
+      )
+    }
+
     this.filteredCommunities = filteredCommunities
     this.groupedCommunities = this.getFinalResult(
       this.filteredCommunities,

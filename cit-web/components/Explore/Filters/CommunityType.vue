@@ -2,7 +2,9 @@
   <div>
     <MenuFilter
       ref="menuFilter"
-      title="Community Type"
+      :chip-title="title"
+      :filter-title="'Community Type'"
+      :active="active"
       @save="handleSave"
       @clear="handleClear"
     >
@@ -25,6 +27,8 @@ import MenuFilter from '~/components/Explore/Filters/MenuFilter'
 })
 export default class CommunityType extends Vue {
   radioGroup = null
+  title = 'Community Type'
+  active = false
 
   communityTypes = [
     {
@@ -52,6 +56,14 @@ export default class CommunityType extends Vue {
 
   handleSave() {
     this.$refs.menuFilter.hide()
+    const index = this.radioGroup
+    if (index === null) {
+      this.title = 'Community Type'
+      this.active = false
+    } else {
+      this.title = this.communityTypes[index].title
+      this.active = true
+    }
     this.$emit('filter')
   }
 
