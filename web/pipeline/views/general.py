@@ -83,8 +83,7 @@ class CommunityViewSet(viewsets.GenericViewSet):
 
     @action(detail=False, renderer_classes=[csv_renderers.CSVRenderer])
     def csv(self, request):
-        queryset = self.paginate_queryset(self.get_queryset())
-        serializer = CommunitySerializer(queryset, many=True)
+        serializer = CommunitySerializer(self.get_queryset(), many=True)
         return Response(serializer.data)
 
 
