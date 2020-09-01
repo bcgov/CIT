@@ -1,86 +1,182 @@
 <template>
-  <div>
-    <div>
-      <h2>Explore communities in BC</h2>
+  <div class="explore-container d-flex">
+    <div class="explore-results-container">
+      <div class="pa-8">
+        <p class="mb-1">
+          Showing
+        </p>
+        <p class="text-h5 mt-0 font-weight-bold">
+          {{ numRegions }} Regional Districts & {{ numCommunities }} Communities
+        </p>
+        <ExploreFilters @filtered="handleFiltered"></ExploreFilters>
+
+        <div class="mt-5 font-weight-bold d-flex align-center">
+          <v-icon color="info" class="mr-2">mdi-file-chart</v-icon>
+          See aggregated reports for the following results
+          <ReportDialog class="ml-2 d-inline-block"></ReportDialog>
+        </div>
+
+        <Results :grouped-communities="groupedCommunities"></Results>
+      </div>
     </div>
-    <div class="main-report-container">
-      <CommunityQuerySidebar class="sidebar" @update-filters="updateFilters" />
-      <CommunityQueryContent class="main-report" :filters="filters" />
+    <div class="explore-map-container">
+      <ExploreMap
+        :mapbox-api-key="$config.MAPBOX_API_KEY"
+        @moveend="handleMoveEnd"
+      ></ExploreMap>
     </div>
   </div>
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
-import CommunityQuerySidebar from '~/components/CommunityQuery/CommunityQuerySidebar.vue'
-import CommunityQueryContent from '~/components/CommunityQuery/CommunityQueryContent.vue'
-import { getAuthToken } from '~/api/ms-auth-api/'
-import { getCommunityList } from '~/api/cit-api'
+import { Component, Vue, namespace } from 'nuxt-property-decorator'
+import groupBy from 'lodash/groupBy'
+import uniqBy from 'lodash/uniqBy'
+import intersectionBy from 'lodash/intersectionBy'
+import ExploreMap from '~/components/Explore/ExploreMap.vue'
+import Results from '~/components/Explore/Results.vue'
+import ExploreFilters from '~/components/Explore/Filters/ExploreFilters.vue'
+import ReportDialog from '~/components/Explore/ReportDialog'
+import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
+const exploreStore = namespace('explore')
 
 @Component({
-  CommunityQuerySidebar,
-  CommunityQueryContent,
+  ExploreMap,
+  Results,
+  ExploreFilters,
+  ReportDialog,
+  head() {
+    return {
+      script: [
+        {
+          src: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js',
+        },
+      ],
+      link: [
+        {
+          rel: 'stylesheet',
+          href: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css',
+        },
+      ],
+    }
+  },
 })
 export default class Explore extends Vue {
-  data() {
+  groupedCommunities = null
+  filteredCommunities = null
+  boundedCommunities = null
+  @exploreStore.Getter('getSearchAsMove') searchAsMove
+
+  get numRegions() {
+    return Object.keys(this.groupedCommunities).length
+  }
+
+  get numCommunities() {
+    let counter = 0
+    for (const prop in this.groupedCommunities) {
+      counter += this.groupedCommunities[prop].length
+    }
+    return counter
+  }
+
+  mounted() {
+    console.log('Mounted', this)
+  }
+
+  layout(context) {
+    return 'fixed'
+  }
+
+  async asyncData({ store }) {
+    const results = await Promise.all([
+      getRegionalDistricts(),
+      getCommunityList(),
+    ])
+    const regionalDistricts = results[0].data.results
+    store.commit('communities/setRegionalDistricts', regionalDistricts)
+    const communityList = results[1].data
+    store.commit('communities/setCommunities', communityList)
+
+    const groupedCommunities = groupBy(communityList, 'regional_district')
+
     return {
-      filters: undefined,
+      communityList,
+      regionalDistricts,
+      groupedCommunities,
     }
   }
 
-  async fetch({ store }) {
-    try {
-      const response = await getAuthToken()
-      const { status } = response
-      if (status === 200) {
-        const accessToken = response.data && response.data.access_token
-        if (accessToken) {
-          store.commit('msauth/setAccessToken', accessToken)
-        }
+  handleFiltered(e) {
+    let filteredCommunities = []
+    if (e.empty === true) {
+      filteredCommunities = this.communityList
+    } else {
+      const temp = {}
+      e.data.map((cid) => {
+        temp[cid] = true
+      })
+      filteredCommunities = this.communityList.filter(
+        (c) => temp[c.id] === true
+      )
+    }
+
+    this.filteredCommunities = filteredCommunities
+    this.groupedCommunities = this.getFinalResult(
+      this.filteredCommunities,
+      this.boundedCommunities
+    )
+  }
+
+  getFinalResult(fc, bc) {
+    if (bc === null) {
+      return groupBy(fc, 'regional_district')
+    }
+    if (fc === null) {
+      return groupBy(bc, 'regional_district')
+    }
+    const intersection = intersectionBy(fc, bc, 'id')
+    return groupBy(intersection, 'regional_district')
+  }
+
+  handleMoveEnd(e) {
+    if (!this.searchAsMove) {
+      return
+    }
+
+    const sourceFeatures = e.sourceFeatures.map((f) => {
+      f.properties.id = parseInt(f.properties.pk)
+      return {
+        ...f.properties,
+        geometry: f.geometry,
       }
-    } catch (e) {
-      store.commit('msauth/setAccessToken', null)
-    }
-
-    try {
-      const response = await getCommunityList()
-      const { status } = response
-      if (status === 200) {
-        const communities = response.data
-        if (communities) {
-          store.commit('communities/setCommunities', communities)
-        }
-      }
-    } catch (e) {
-      store.commit('communities/setCommunities', [])
-    }
-  }
-
-  asyncData({ $config: { MAPBOX_API_KEY } }) {
-    return {
-      MAPBOX_API_KEY,
-    }
-  }
-
-  updateFilters(filters) {
-    this.filters = filters
+    })
+    this.boundedCommunities = uniqBy(sourceFeatures, 'place_name')
+    this.groupedCommunities = this.getFinalResult(
+      this.filteredCommunities,
+      this.boundedCommunities
+    )
   }
 }
 </script>
-<style lang="scss">
-.main-report-container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0;
-  display: flex;
+<style lang="scss" scoped>
+.explore-container {
+  position: fixed;
+  top: 66px;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
 }
-.sidebar {
-  flex: 1;
+.explore-results-container,
+.explore-map-container {
+  height: calc(100% - 66px);
 }
-.main-report {
-  flex: 3;
+
+.explore-results-container {
+  flex: 2 1 0;
+  overflow-y: auto;
 }
-iframe {
-  border: 0 !important;
+.explore-map-container {
+  flex: 3 1 0;
 }
 </style>

@@ -13,14 +13,9 @@ import { GetReportInGroup } from '~/api/powerbi-rest-api/Report.js'
 
 @Component
 export default class MainReport extends Vue {
-  @Prop({ default: null, type: String })
-  pageName
-
-  @Prop({ default: null, type: Number })
-  cid
-
-  @Prop({ default: '', type: String })
-  extraClassname
+  @Prop({ default: null, type: String }) pageName
+  @Prop({ default: null, type: Number }) cid
+  @Prop({ default: '', type: String }) extraClassname
 
   embedToken = null
   groupId = '99dbfebe-3c0b-4b2d-affb-3af843c67549'

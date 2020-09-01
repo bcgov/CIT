@@ -9,7 +9,7 @@
         <v-btn icon fab small dark color="primary" class="mr-2">
           <v-icon>mdi-map-marker-radius</v-icon>
         </v-btn>
-        <v-btn icon fab small dark color="primary">
+        <v-btn icon fab small dark color="primary" @click="handleMoreDetails">
           <v-icon>mdi-arrow-right-box</v-icon>
         </v-btn>
       </div>
@@ -24,5 +24,10 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 export default class BaseListItem extends Vue {
   @Prop({ default: null, type: String }) title
   @Prop({ default: null, type: String }) subtitle
+  @Prop({ default: null, type: Number }) cid
+
+  handleMoreDetails() {
+    window.open(`/community/${this.cid}`)
+  }
 }
 </script>
