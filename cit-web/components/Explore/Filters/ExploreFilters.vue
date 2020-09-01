@@ -1,10 +1,15 @@
 <template>
   <div>
     <CommunityType
-      ref="communityFilter"
+      ref="communityTypeFilter"
       class="d-inline-block"
       @filter="handleFilter"
     ></CommunityType>
+    <PopGrowth
+      ref="popGrowthFilter"
+      class="d-inline-block"
+      @filter="handleFilter"
+    ></PopGrowth>
     <MoreFilters class="d-inline-block"></MoreFilters>
   </div>
 </template>
@@ -13,19 +18,26 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
 import CommunityType from '~/components/Explore/Filters/CommunityType'
+import PopGrowth from '~/components/Explore/Filters/PopGrowth'
 import MoreFilters from '~/components/Explore/Filters/MoreFilters'
-
 import { advancedSearch } from '~/api/cit-api'
 
 @Component({
   CommunityType,
   MoreFilters,
+  PopGrowth,
 })
 export default class ExploreFilters extends Vue {
   handleFilter() {
+    const refs = this.$refs
     let filterParams = {}
-    const cf = this.$refs.communityFilter.getParams()
-    filterParams = Object.assign({}, cf)
+    for (const prop in refs) {
+      const exploreFilter = refs[prop]
+      console.log(exploreFilter)
+      exploreFilter.getParams().map((fp) => {
+        filterParams = Object.assign(filterParams, fp)
+      })
+    }
 
     if (isEmpty(filterParams)) {
       this.$emit('filtered', { empty: true })
