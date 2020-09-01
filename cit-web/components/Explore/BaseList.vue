@@ -4,6 +4,7 @@
       v-for="(community, index) in communities"
       :key="'community' + community.id + getTime() + index"
       :title="community.place_name"
+      :cid="community.id"
       subtitle="50 Locations"
     >
     </BaseListItem>

@@ -8,7 +8,7 @@
       @save="handleSave"
       @clear="handleClear"
     >
-      <v-radio-group v-model="radioGroup" hide-details dense>
+      <v-radio-group v-model="radioGroup" hide-details dense class="mt-0">
         <v-radio
           v-for="(type, index) in populationTypes"
           :key="index"

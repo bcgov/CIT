@@ -24,6 +24,12 @@ export default class Explore extends Vue {
   }
 
   mounted() {
+    this.initMap()
+    this.addControls()
+    this.listenToEvents()
+  }
+
+  initMap() {
     const mapboxgl = window.mapboxgl
     mapboxgl.accessToken = this.mapboxApiKey
     const map = new mapboxgl.Map({
@@ -32,17 +38,22 @@ export default class Explore extends Vue {
       center: [-122.970072, 49.299062],
       zoom: 12,
     })
+    this.map = map
+  }
 
-    map.addControl(new mapboxgl.NavigationControl())
+  addControls() {
+    const mapboxgl = window.mapboxgl
+    this.map.addControl(new mapboxgl.NavigationControl())
     // map.addControl(new ControlFactory(this.$refs.searchMove), 'bottom-right')
+  }
 
-    map.on('load', () => {
+  listenToEvents() {
+    this.map.on('load', () => {
       this.mapLoaded = true
     })
 
-    map.on('moveend', (e) => {
-      // console.log(map.queryRenderedFeatures())
-      const sourceFeatures = map.querySourceFeatures('composite', {
+    this.map.on('moveend', (e) => {
+      const sourceFeatures = this.map.querySourceFeatures('composite', {
         sourceLayer: 'communities-bdyfif',
       })
       this.$emit('moveend', {
