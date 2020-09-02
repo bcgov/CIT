@@ -5,7 +5,11 @@
       class="d-inline-block"
       @filter="handleFilter"
     ></CommunityType>
-    <Locations class="d-inline-block"></Locations>
+    <Locations
+      ref="locationsFilter"
+      class="d-inline-block"
+      @filter="handleFilter"
+    ></Locations>
     <PopGrowth
       ref="popGrowthFilter"
       class="d-inline-block"
@@ -36,7 +40,6 @@ export default class ExploreFilters extends Vue {
     let filterParams = {}
     for (const prop in refs) {
       const exploreFilter = refs[prop]
-      console.log(exploreFilter)
       exploreFilter.getParams().map((fp) => {
         filterParams = Object.assign(filterParams, fp)
       })

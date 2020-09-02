@@ -1,9 +1,6 @@
 <template>
   <div>
     <div class="location-input-container d-flex mt-2">
-      {{ location }}
-      {{ operator }}
-      {{ distance }}
       <div>
         <v-select
           v-model="location"
@@ -42,6 +39,7 @@
           item-value="title"
           label="Distance (km)"
           placeholder="eg. 10km"
+          @update:search-input="handleComboBox"
         ></v-combobox>
       </div>
     </div>
@@ -56,44 +54,56 @@ export default class LocationInputs extends Vue {
   distance = null
   operator = null
 
+  handleComboBox(e) {
+    if (!e && e !== 0) {
+      this.distance = null
+    }
+    this.distance = e
+  }
+
   operatorTypes = [
     {
+      value: 'gte',
       title: '>',
     },
     {
+      value: 'lte',
       title: '<',
     },
   ]
 
   locationTypes = [
     {
+      value: 'schools',
       title: 'Schools',
     },
     {
+      value: 'hospitals',
       title: 'Hospitals',
     },
   ]
 
-  suggestedDistance = [
-    {
-      title: '5',
-    },
-    {
-      title: '10',
-    },
-    {
-      title: '15',
-    },
-    {
-      title: '20',
-    },
-    {
-      title: '25',
-    },
-    {
-      title: '50',
-    },
-  ]
+  suggestedDistance = [5, 10, 15, 20, 25]
+
+  getParams() {
+    if (!this.isValid()) {
+      return {}
+    }
+    const temp = {}
+    const prop = `location__${this.location.value}__${this.operator.value}__km`
+    temp[prop] = this.distance
+    return temp
+  }
+
+  getText() {
+    return `${this.location.title} ${this.operator.title} ${this.distance}km`
+  }
+
+  isValid() {
+    return (
+      this.location !== null && this.distance !== null && this.operator !== null
+    )
+  }
 }
 </script>
 <style lang="scss" scoped>

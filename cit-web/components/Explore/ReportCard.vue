@@ -52,7 +52,7 @@ import Report from '~/components/CommunityDetails/Report.vue'
 @Component({
   Report,
 })
-export default class ReportCard extends Vue {
+export default class ExploreReportCard extends Vue {
   @Prop({ default: null, type: String }) pageName
   @Prop({ default: null, type: String }) title
 
