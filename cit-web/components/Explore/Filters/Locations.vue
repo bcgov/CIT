@@ -62,21 +62,24 @@ export default class Locations extends Vue {
     if (locationParams.length === 0) {
       this.title = 'Locations'
       this.active = false
-      return
-    }
-    if (locationParams.length === 1) {
+    } else if (locationParams.length === 1) {
       const locationInputs = this.$refs.locationInputs
       const locationInput = locationInputs.find((li) => li.isValid())
       this.title = locationInput.getText()
+      this.active = true
     } else {
       this.title = '2 Location Constraints'
+      this.active = true
     }
-    this.active = true
+
     this.$emit('filter')
   }
 
   getParams() {
     const locationInputs = this.$refs.locationInputs
+    if (!locationInputs) {
+      return []
+    }
     const locationParams = []
     locationInputs.map((li) => {
       locationParams.push(li.getParams())
