@@ -45,6 +45,8 @@ export default class ExploreFilters extends Vue {
       })
     }
 
+    console.log('Filter Params', filterParams)
+
     if (isEmpty(filterParams)) {
       this.$emit('filtered', { empty: true })
       return
