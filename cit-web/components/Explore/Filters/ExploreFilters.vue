@@ -5,6 +5,11 @@
       class="d-inline-block"
       @filter="handleFilter"
     ></CommunityType>
+    <Locations
+      ref="locationsFilter"
+      class="d-inline-block"
+      @filter="handleFilter"
+    ></Locations>
     <PopGrowth
       ref="popGrowthFilter"
       class="d-inline-block"
@@ -20,12 +25,14 @@ import isEmpty from 'lodash/isEmpty'
 import CommunityType from '~/components/Explore/Filters/CommunityType'
 import PopGrowth from '~/components/Explore/Filters/PopGrowth'
 import MoreFilters from '~/components/Explore/Filters/MoreFilters'
+import Locations from '~/components/Explore/Filters/Locations'
 import { advancedSearch } from '~/api/cit-api'
 
 @Component({
   CommunityType,
   MoreFilters,
   PopGrowth,
+  Locations,
 })
 export default class ExploreFilters extends Vue {
   handleFilter() {
@@ -33,7 +40,6 @@ export default class ExploreFilters extends Vue {
     let filterParams = {}
     for (const prop in refs) {
       const exploreFilter = refs[prop]
-      console.log(exploreFilter)
       exploreFilter.getParams().map((fp) => {
         filterParams = Object.assign(filterParams, fp)
       })
