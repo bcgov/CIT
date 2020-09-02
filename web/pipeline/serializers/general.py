@@ -9,7 +9,7 @@ from pipeline.models.census import CensusSubdivision
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = ("id", "name", "community_id", "location_type", "latitude", "longitude", "location_fuzzy")
+        fields = ("id", "name", "community_id", "location_type", "get_latitude", "get_longitude", "location_fuzzy")
 
 
 class ServiceListSerializer(serializers.ModelSerializer):
