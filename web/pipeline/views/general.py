@@ -16,6 +16,7 @@ from pipeline.models.general import LocationDistance, Service, RegionalDistrict
 from pipeline.serializers.general import (
     LocationSerializer,
     CommunitySerializer,
+    CommunityCSVSerializer,
     CommunityDetailSerializer,
     CensusSubdivisionSerializer,
     CensusSubdivisionDetailSerializer,
@@ -83,7 +84,7 @@ class CommunityViewSet(viewsets.GenericViewSet):
 
     @action(detail=False, renderer_classes=[csv_renderers.CSVRenderer])
     def csv(self, request):
-        serializer = CommunitySerializer(self.get_queryset(), many=True)
+        serializer = CommunityCSVSerializer(self.get_queryset(), many=True)
         return Response(serializer.data)
 
 

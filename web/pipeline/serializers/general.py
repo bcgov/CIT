@@ -38,17 +38,48 @@ class CommunitySerializer(serializers.ModelSerializer):
     wildfire_zone = serializers.SlugRelatedField(read_only=True, slug_field='risk_class')
     tsunami_zone = serializers.SlugRelatedField(read_only=True, slug_field='zone_class')
     community_type = serializers.CharField(source='get_display_community_type', read_only=True)
-    # services = ServiceSerializer(many=True, read_only=True)
-
-    #def to_representation(self, instance):
-    #    repr = super().to_representation(instance)
-    #    repr['services'] = [ServiceSerializer(x).data for x in instance.hexuid.service_set.all()]
-    #    return repr
 
     class Meta:
         model = Community
         fields = (
             "id",
+            "place_name",
+            "latitude",
+            "longitude",
+            "census_subdivision",
+            "regional_district",
+            "community_type",
+            "incorporated",
+            "fn_community_name",
+            "wildfire_zone",
+            "tsunami_zone",
+            "is_coastal",
+            "last_mile_status",
+            "transport_mile_status",
+            "cbc_phase",
+            "num_schools",
+            "num_courts",
+            "num_hospitals",
+            "num_timber_facilities",
+            "percent_50_10",
+            "percent_25_5",
+            "percent_10_2",
+            "percent_5_1",
+        )
+
+
+class CommunityCSVSerializer(serializers.ModelSerializer):
+    queryset = Community.objects.all().select_related(
+        'hexuid', 'hexuid__service__isp').prefetch_related('hexuid__service')
+    wildfire_zone = serializers.SlugRelatedField(read_only=True, slug_field='risk_class')
+    tsunami_zone = serializers.SlugRelatedField(read_only=True, slug_field='zone_class')
+    community_type = serializers.CharField(source='get_display_community_type', read_only=True)
+
+    class Meta:
+        model = Community
+        fields = (
+            "id",
+            "place_id",
             "place_name",
             "latitude",
             "longitude",
