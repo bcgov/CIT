@@ -7,6 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets
+from rest_framework_csv import renderers as csv_renderers
 
 from pipeline.models.location_assets import Location
 from pipeline.models.community import Community
@@ -15,6 +16,7 @@ from pipeline.models.general import LocationDistance, Service, RegionalDistrict
 from pipeline.serializers.general import (
     LocationSerializer,
     CommunitySerializer,
+    CommunityCSVSerializer,
     CommunityDetailSerializer,
     CensusSubdivisionSerializer,
     CensusSubdivisionDetailSerializer,
@@ -79,6 +81,11 @@ class CommunityViewSet(viewsets.GenericViewSet):
                       fields=('pk', 'place_name', 'community_type', 'regional_district', 'has_any_k12_school')),
             content_type="application/json",
         )
+
+    @action(detail=False, renderer_classes=[csv_renderers.CSVRenderer])
+    def csv(self, request):
+        serializer = CommunityCSVSerializer(self.get_queryset(), many=True)
+        return Response(serializer.data)
 
 
 class ServiceList(generics.ListAPIView):
