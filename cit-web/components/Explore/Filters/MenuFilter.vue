@@ -13,7 +13,7 @@
         {{ chipTitle }}
       </v-chip>
     </template>
-    <v-card width="300">
+    <v-card :width="cardWidth">
       <v-list dark>
         <v-list-item>
           <v-list-item-content>
@@ -42,6 +42,7 @@ export default class MenuFilter extends Vue {
   @Prop({ default: null, type: String }) filterTitle
   @Prop({ default: null, type: String }) chipTitle
   @Prop({ default: false, type: Boolean }) active
+  @Prop({ default: 300, type: Number }) cardWidth
 
   menu = false
 
