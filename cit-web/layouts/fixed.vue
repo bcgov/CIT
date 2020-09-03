@@ -7,7 +7,7 @@
       ></v-app-bar-nav-icon>
       <v-toolbar-title class="navigation-wrapper">
         <nuxt-link class="main-title d-block" to="/"
-          >Community Information Tool 2.0</nuxt-link
+          >Community Information Tool</nuxt-link
         >
       </v-toolbar-title>
       <div style="min-width: 300px;">
