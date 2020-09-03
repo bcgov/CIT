@@ -127,6 +127,19 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
         return obj.get_location_assets()
 
 
+class CommunitySearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Community
+        fields = (
+            "id",
+            "place_name",
+            "nation",
+            "regional_district",
+            "latitude",
+            "longitude"
+        )
+
+
 class CensusSubdivisionSerializer(serializers.ModelSerializer):
     population_percentage_change = serializers.DecimalField(
         source='get_population_percentage_change_as_decimal',
