@@ -1,6 +1,6 @@
 from django.contrib.gis.db import models
 
-from pipeline.utils import serialize_census_subdivision_groups
+from pipeline.utils import serialize_census_subdivision_groups, get_pct_field_as_decimal
 
 
 class CensusSubdivision(models.Model):
@@ -207,9 +207,13 @@ class CensusSubdivision(models.Model):
     movable_dwellings = models.IntegerField(null=True)
 
     # marital status
+
+    # "2.3.3", 0, "Total number of census families in private households - 100% data",
+    total_census_families = models.IntegerField(null=True)
+
     # Total - Marital status for the population aged 15 years and over - 100% data
-    # "2.2.1.1", 1, "  Married or living common law"
-    married_or_common_law = models.IntegerField(null=True)
+    # "2.3.3.1", 1, "  Total couple families",
+    married_common_law_couples = models.IntegerField(null=True)
     # "2.3.4.2", 1, "  Couples with children"
     couples_with_children = models.IntegerField(null=True)
     # "2.3.5", 0, "Total - Lone-parent census families in private households - 100% data"
@@ -425,6 +429,9 @@ class CensusSubdivision(models.Model):
     # "Families, households and marital status", 3017, "2.1.4", 0, "Average household size",
     avg_household_size = models.FloatField(null=True)
 
+    # "2.1.2", 0, "Total - Private households by household size - 100% data",
+    household_size_total = models.IntegerField(null=True)
+
     # "Families, households and marital status", 3011, "2.1.2.1", 1, "  1 person",
     household_size_1 = models.IntegerField(null=True)
     # "Families, households and marital status", 3012, "2.1.2.2", 1, "  2 persons",
@@ -548,3 +555,33 @@ class CensusSubdivision(models.Model):
 
     def api_field_groups(self):
         return serialize_census_subdivision_groups(self)
+
+    def get_population_percentage_change_as_decimal(self):
+        return get_pct_field_as_decimal(self.population_percentage_change)
+
+    def get_pop_pct_0_14_as_decimal(self):
+        return get_pct_field_as_decimal(self.pop_pct_0_14)
+
+    def get_pop_pct_14_65_as_decimal(self):
+        return get_pct_field_as_decimal(self.pop_pct_14_65)
+
+    def get_pop_pct_65_as_decimal(self):
+        return get_pct_field_as_decimal(self.pop_pct_65)
+
+    def get_housing_cost_less_30_pct_income_as_decimal(self):
+        return get_pct_field_as_decimal(self.housing_cost_less_30_pct_income)
+
+    def get_housing_cost_30_pct_more_income_as_decimal(self):
+        return get_pct_field_as_decimal(self.housing_cost_30_pct_more_income)
+
+    def get_households_owner_pct_mortgage_as_decimal(self):
+        return get_pct_field_as_decimal(self.households_owner_pct_mortgage)
+
+    def get_households_owner_pct_spending_30_pct_income_as_decimal(self):
+        return get_pct_field_as_decimal(self.households_owner_pct_spending_30_pct_income)
+
+    def get_households_tenant_pct_subsidized_housing_as_decimal(self):
+        return get_pct_field_as_decimal(self.households_tenant_pct_subsidized_housing)
+
+    def get_households_tenant_pct_spending_30_pct_income_as_decimal(self):
+        return get_pct_field_as_decimal(self.households_tenant_pct_spending_30_pct_income)
