@@ -128,6 +128,8 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
 
 
 class CommunitySearchSerializer(serializers.ModelSerializer):
+    population = serializers.SerializerMethodField('get_population')
+
     class Meta:
         model = Community
         fields = (
@@ -136,8 +138,12 @@ class CommunitySearchSerializer(serializers.ModelSerializer):
             "nation",
             "regional_district",
             "latitude",
-            "longitude"
+            "longitude",
+            "population",
         )
+
+    def get_population(self, obj):
+        return obj.census_subdivision.population if obj.census_subdivision else None
 
 
 class CensusSubdivisionSerializer(serializers.ModelSerializer):
