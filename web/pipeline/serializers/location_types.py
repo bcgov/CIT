@@ -191,6 +191,7 @@ class ServiceBCLocationSerializer(serializers.ModelSerializer):
 class SchoolSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    school_district = serializers.SerializerMethodField()
 
     class Meta:
         model = School
@@ -206,6 +207,9 @@ class SchoolSerializer(serializers.ModelSerializer):
             "school_education_level",
             "school_district",
         )
+
+    def get_school_district(self, obj):
+        return obj.school_district.name if obj.school_district else None
 
 
 class PostSecondaryInstitutionSerializer(serializers.ModelSerializer):
