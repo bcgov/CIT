@@ -206,7 +206,7 @@ class CensusSubdivision(models.Model):
     # 3009, "2.1.1.4", 1, "  Movable dwelling", 7, null, 0.0
     movable_dwellings = models.IntegerField(null=True)
 
-    # marital status
+    # family characteristics
 
     # "2.3.3", 0, "Total number of census families in private households - 100% data",
     total_census_families = models.IntegerField(null=True)
