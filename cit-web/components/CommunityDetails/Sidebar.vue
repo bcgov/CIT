@@ -53,11 +53,16 @@
         v-for="groupedLocation in groupedLocations"
         :key="groupedLocation.group"
         v-model.lazy="groupedLocation.active"
-        :prepend-icon="getLocationMetaData(groupedLocation.group).icon"
         no-action
         @click="$emit('expand', groupedLocation)"
       >
         <template v-slot:activator>
+          <img
+            height="30"
+            :src="require(`~/assets/icons/${groupedLocation.group}_pin.svg`)"
+            alt="Civic Facilities"
+            class="mr-2"
+          />
           <v-list-item-content>
             <v-list-item-title>
               {{ startCase(groupedLocation.group) }}
@@ -142,23 +147,5 @@ export default class MainReport extends Vue {
   @Prop() population
   @Prop({ default: null, type: Array }) groupedLocations
   @Prop({ default: null, type: Object }) groupedCensus
-
-  getLocationMetaData(location) {
-    const metaData = {
-      schools: {
-        icon: 'mdi-school',
-      },
-      hospitals: {
-        icon: 'mdi-hospital-box',
-      },
-    }
-
-    if (!metaData[location]) {
-      return {
-        icon: 'mdi-school',
-      }
-    }
-    return metaData[location]
-  }
 }
 </script>

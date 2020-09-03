@@ -22,7 +22,7 @@ export default {
    */
   head: {
     titleTemplate: (titleChunk) => {
-      const appTitle = 'B.C. Community Information Tool 2.0'
+      const appTitle = 'B.C. Community Information Tool'
       return titleChunk ? `${titleChunk} | ${appTitle}` : appTitle
     },
     title: '',

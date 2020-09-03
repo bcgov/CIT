@@ -3,7 +3,7 @@
     <v-app-bar class="main-navigation" fixed height="66" color="primary">
       <v-toolbar-title>
         <nuxt-link class="main-title d-block" to="/"
-          >Community Information Tool 2.0</nuxt-link
+          >Community Information Tool</nuxt-link
         >
       </v-toolbar-title>
     </v-app-bar>
