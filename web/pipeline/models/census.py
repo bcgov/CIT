@@ -1,6 +1,6 @@
 from django.contrib.gis.db import models
 
-from pipeline.utils import serialize_census_subdivision_groups
+from pipeline.utils import serialize_census_subdivision_groups, get_pct_field_as_decimal
 
 
 class CensusSubdivision(models.Model):
@@ -555,3 +555,33 @@ class CensusSubdivision(models.Model):
 
     def api_field_groups(self):
         return serialize_census_subdivision_groups(self)
+
+    def get_population_percentage_change_as_decimal(self):
+        return get_pct_field_as_decimal(self.population_percentage_change)
+
+    def get_pop_pct_0_14_as_decimal(self):
+        return get_pct_field_as_decimal(self.pop_pct_0_14)
+
+    def get_pop_pct_14_65_as_decimal(self):
+        return get_pct_field_as_decimal(self.pop_pct_14_65)
+
+    def get_pop_pct_65_as_decimal(self):
+        return get_pct_field_as_decimal(self.pop_pct_65)
+
+    def get_housing_cost_less_30_pct_income_as_decimal(self):
+        return get_pct_field_as_decimal(self.housing_cost_less_30_pct_income)
+
+    def get_housing_cost_30_pct_more_income_as_decimal(self):
+        return get_pct_field_as_decimal(self.housing_cost_30_pct_more_income)
+
+    def get_households_owner_pct_mortgage_as_decimal(self):
+        return get_pct_field_as_decimal(self.households_owner_pct_mortgage)
+
+    def get_households_owner_pct_spending_30_pct_income_as_decimal(self):
+        return get_pct_field_as_decimal(self.households_owner_pct_spending_30_pct_income)
+
+    def get_households_tenant_pct_subsidized_housing_as_decimal(self):
+        return get_pct_field_as_decimal(self.households_tenant_pct_subsidized_housing)
+
+    def get_households_tenant_pct_spending_30_pct_income_as_decimal(self):
+        return get_pct_field_as_decimal(self.households_tenant_pct_spending_30_pct_income)

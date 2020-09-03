@@ -128,6 +128,37 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
 
 
 class CensusSubdivisionSerializer(serializers.ModelSerializer):
+    population_percentage_change = serializers.DecimalField(
+        source='get_population_percentage_change_as_decimal',
+        decimal_places=2, max_digits=6)
+    pop_pct_0_14 = serializers.DecimalField(
+        source='get_pop_pct_0_14_as_decimal',
+        decimal_places=2, max_digits=6)
+    pop_pct_14_65 = serializers.DecimalField(
+        source='get_pop_pct_14_65_as_decimal',
+        decimal_places=2, max_digits=6)
+    pop_pct_65 = serializers.DecimalField(
+        source='get_pop_pct_65_as_decimal',
+        decimal_places=2, max_digits=6)
+    housing_cost_less_30_pct_income = serializers.DecimalField(
+        source='get_housing_cost_less_30_pct_income_as_decimal',
+        decimal_places=2, max_digits=6)
+    housing_cost_30_pct_more_income = serializers.DecimalField(
+        source='get_housing_cost_30_pct_more_income_as_decimal',
+        decimal_places=2, max_digits=6)
+    households_owner_pct_mortgage = serializers.DecimalField(
+        source='get_households_owner_pct_mortgage_as_decimal',
+        decimal_places=2, max_digits=6)
+    households_owner_pct_spending_30_pct_income = serializers.DecimalField(
+        source='get_households_owner_pct_spending_30_pct_income_as_decimal',
+        decimal_places=2, max_digits=6)
+    households_tenant_pct_subsidized_housing = serializers.DecimalField(
+        source='get_households_tenant_pct_subsidized_housing_as_decimal',
+        decimal_places=2, max_digits=6)
+    households_tenant_pct_spending_30_pct_income = serializers.DecimalField(
+        source='get_households_tenant_pct_spending_30_pct_income_as_decimal',
+        decimal_places=2, max_digits=6)
+
     class Meta:
         model = CensusSubdivision
         exclude = [
