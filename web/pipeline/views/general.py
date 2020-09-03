@@ -17,6 +17,7 @@ from pipeline.serializers.general import (
     LocationSerializer,
     CommunitySerializer,
     CommunityCSVSerializer,
+    CommunitySearchSerializer,
     CommunityDetailSerializer,
     CensusSubdivisionSerializer,
     CensusSubdivisionDetailSerializer,
@@ -66,8 +67,8 @@ class CommunityViewSet(viewsets.GenericViewSet):
 
     @action(detail=False)
     def search(self, request):
-        communities = self.get_queryset().values('id', 'place_name', 'nation', 'regional_district')
-        return Response(communities)
+        serializer = CommunitySearchSerializer(self.get_queryset(), many=True)
+        return Response(serializer.data)
 
     @action(detail=False)
     def advanced_search(self, request):
@@ -158,3 +159,13 @@ class RegionalDistrictViewSet(viewsets.GenericViewSet):
     def communities(self, request):
         regional_districts = serialize_communities_for_regional_districts(self.get_queryset())
         return Response(regional_districts)
+
+    @action(detail=False)
+    def geojson(self, request):
+        test = RegionalDistrict.objects.first()
+        print(test.geom)
+        print(serialize('geojson', RegionalDistrict.objects.all(), geometry_field='geom', fields=('pk', 'geom')))
+        return HttpResponse(
+            serialize('geojson', RegionalDistrict.objects.all(), geometry_field='geom', fields=('pk', 'geom', 'oc_m_yr')),
+            content_type="application/json",
+        )
