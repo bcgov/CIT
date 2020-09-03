@@ -41,6 +41,17 @@ export default class Explore extends Vue {
     this.map = map
   }
 
+  whenMapLoaded(fn) {
+    if (this.mapLoaded) {
+      fn(this.map)
+    } else {
+      console.log('Waiting for map to load')
+      this.$on('exploreMapLoaded', (map) => {
+        fn(map)
+      })
+    }
+  }
+
   addControls() {
     const mapboxgl = window.mapboxgl
     this.map.addControl(new mapboxgl.NavigationControl())
@@ -48,8 +59,20 @@ export default class Explore extends Vue {
   }
 
   listenToEvents() {
+    this.$root.$on('recenterMap', (d) => {
+      this.whenMapLoaded((map) => {
+        map.flyTo({
+          center: d,
+          zoom: 12,
+          speed: 2.5,
+          essential: true,
+        })
+      })
+    })
+
     this.map.on('load', () => {
       this.mapLoaded = true
+      this.$emit('exploreMapLoaded', this.map)
     })
 
     this.map.on('moveend', (e) => {

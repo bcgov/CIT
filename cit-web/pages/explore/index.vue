@@ -159,7 +159,8 @@ export default class Explore extends Vue {
       f.properties.id = parseInt(f.properties.pk)
       return {
         ...f.properties,
-        geometry: f.geometry,
+        longitude: f.geometry.coordinates[0],
+        latitude: f.geometry.coordinates[1],
       }
     })
     this.boundedCommunities = uniqBy(sourceFeatures, 'place_name')
