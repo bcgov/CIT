@@ -15,7 +15,7 @@
           </v-toolbar>
           <v-card-text>
             <v-container fluid>
-              <ExploreReportSection></ExploreReportSection>
+              <ExploreReportSection :cids="cids"></ExploreReportSection>
             </v-container>
           </v-card-text>
         </v-card>
@@ -25,12 +25,13 @@
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import ExploreReportSection from '~/components/Explore/ExploreReportSection'
 @Component({
   ExploreReportSection,
 })
 export default class ReportDialog extends Vue {
+  @Prop({ default: null, type: Array }) cids
   dialog = false
 }
 </script>

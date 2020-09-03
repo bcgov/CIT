@@ -11,12 +11,12 @@
       </v-row>
       <v-row>
         <v-col v-for="report in reportCard" :key="report.name" xl="3" lg="3">
-          <ReportCard
+          <ExploreReportCard
             :page-name="report.pid"
             :title="report.name"
-            :cid="13050"
+            :cids="cids"
             extra-classname="demographics"
-          ></ReportCard>
+          ></ExploreReportCard>
         </v-col>
       </v-row>
     </div>
@@ -24,13 +24,14 @@
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
-import ReportCard from '~/components/Explore/ReportCard'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import ExploreReportCard from '~/components/Explore/ExploreReportCard'
 
 @Component({
-  ReportCard,
+  ExploreReportCard,
 })
 export default class ExploreReportSection extends Vue {
+  @Prop({ default: null, type: Array }) cids
   reportCards = {
     Housing: [
       {

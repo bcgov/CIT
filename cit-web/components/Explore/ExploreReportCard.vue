@@ -37,11 +37,11 @@
             <v-spacer></v-spacer>
           </v-toolbar>
           <v-card-text>
-            <Report
+            <ExploreReport
               :page-name="pageName"
-              :cid="cid"
+              :cids="cids"
               extra-classname="demographics"
-            ></Report>
+            ></ExploreReport>
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -51,15 +51,15 @@
 
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import Report from '~/components/CommunityDetails/Report.vue'
+import ExploreReport from '~/components/Explore/ExploreReport.vue'
 
 @Component({
-  Report,
+  ExploreReport,
 })
 export default class ExploreReportCard extends Vue {
   @Prop({ default: null, type: String }) pageName
   @Prop({ default: null, type: String }) title
-  @Prop({ default: null, type: Number }) cid
+  @Prop({ default: null, type: Array }) cids
 
   dialog = false
 }
