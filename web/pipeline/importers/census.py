@@ -527,6 +527,8 @@ def import_census_families_data(stats, subdiv):
     # "Families, households and marital status", 3017, "2.1.4", 0, "Average household size",
     subdiv.avg_household_size = _fetch_statscan_value(stats, "2.1.4")
 
+    # "2.1.2", 0, "Total - Private households by household size - 100% data",
+    subdiv.household_size_total = _fetch_statscan_value(stats, "2.1.2")
     # "Families, households and marital status", 3011, "2.1.2.1", 1, "  1 person",
     subdiv.household_size_1 = _fetch_statscan_value(stats, "2.1.2.1")
     # "Families, households and marital status", 3012, "2.1.2.2", 1, "  2 persons",
@@ -538,8 +540,11 @@ def import_census_families_data(stats, subdiv):
     # "Families, households and marital status", 3015, "2.1.2.5", 1, "  5 or more persons",
     subdiv.household_size_5_more = _fetch_statscan_value(stats, "2.1.2.5")
 
-    # "2.2.1.1", 1, "  Married or living common law"
-    subdiv.married_or_common_law = _fetch_statscan_value(stats, "2.2.1.1")
+    # "2.3.3", 0, "Total number of census families in private households - 100% data",
+    subdiv.total_census_families = _fetch_statscan_value(stats, "2.3.3")
+
+    # "2.3.3.1", 1, "  Total couple families",
+    subdiv.married_common_law_couples = _fetch_statscan_value(stats, "2.3.3.1")
     # "2.3.4.2", 1, "  Couples with children"
     subdiv.couples_with_children = _fetch_statscan_value(stats, "2.3.4.2")
     # "2.3.5", 0, "Total - Lone-parent census families in private households - 100% data"

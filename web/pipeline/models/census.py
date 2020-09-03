@@ -207,9 +207,13 @@ class CensusSubdivision(models.Model):
     movable_dwellings = models.IntegerField(null=True)
 
     # marital status
+
+    # "2.3.3", 0, "Total number of census families in private households - 100% data",
+    total_census_families = models.IntegerField(null=True)
+
     # Total - Marital status for the population aged 15 years and over - 100% data
-    # "2.2.1.1", 1, "  Married or living common law"
-    married_or_common_law = models.IntegerField(null=True)
+    # "2.3.3.1", 1, "  Total couple families",
+    married_common_law_couples = models.IntegerField(null=True)
     # "2.3.4.2", 1, "  Couples with children"
     couples_with_children = models.IntegerField(null=True)
     # "2.3.5", 0, "Total - Lone-parent census families in private households - 100% data"
@@ -424,6 +428,9 @@ class CensusSubdivision(models.Model):
 
     # "Families, households and marital status", 3017, "2.1.4", 0, "Average household size",
     avg_household_size = models.FloatField(null=True)
+
+    # "2.1.2", 0, "Total - Private households by household size - 100% data",
+    household_size_total = models.IntegerField(null=True)
 
     # "Families, households and marital status", 3011, "2.1.2.1", 1, "  1 person",
     household_size_1 = models.IntegerField(null=True)
