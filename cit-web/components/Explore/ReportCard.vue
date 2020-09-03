@@ -37,7 +37,11 @@
             <v-spacer></v-spacer>
           </v-toolbar>
           <v-card-text>
-            Reports Go here
+            <Report
+              :page-name="pageName"
+              :cid="cid"
+              extra-classname="demographics"
+            ></Report>
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -55,6 +59,7 @@ import Report from '~/components/CommunityDetails/Report.vue'
 export default class ExploreReportCard extends Vue {
   @Prop({ default: null, type: String }) pageName
   @Prop({ default: null, type: String }) title
+  @Prop({ default: null, type: Number }) cid
 
   dialog = false
 }
