@@ -25,8 +25,8 @@ from pipeline.serializers.general import (
     RegionalDistrictSerializer,
 )
 from pipeline.utils import (
-    generate_line_strings, filter_communities, serialize_community_search_names,
-    serialize_communities_for_regional_districts, communities_advanced_search
+    generate_line_strings, filter_communities,
+    serialize_communities_for_regional_districts, communities_advanced_search,
 )
 
 
@@ -66,7 +66,7 @@ class CommunityViewSet(viewsets.GenericViewSet):
 
     @action(detail=False)
     def search(self, request):
-        communities = serialize_community_search_names(self.get_queryset())
+        communities = self.get_queryset().values('id', 'place_name', 'nation', 'regional_district')
         return Response(communities)
 
     @action(detail=False)

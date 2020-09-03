@@ -9,7 +9,7 @@ from pipeline.models.census import CensusSubdivision
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Location
-        fields = ("id", "name", "community_id", "location_type", "latitude", "longitude", "location_fuzzy")
+        fields = ("id", "name", "community_id", "location_type", "get_latitude", "get_longitude", "location_fuzzy")
 
 
 class ServiceListSerializer(serializers.ModelSerializer):
@@ -132,10 +132,6 @@ class CensusSubdivisionSerializer(serializers.ModelSerializer):
         model = CensusSubdivision
         exclude = [
             'geom', 'geom_simplified',
-            # Percentage fields are excluded because there are corresponding count fields for each
-            'population_percentage_change', 'pop_pct_0_14', 'pop_pct_14_65', 'pop_pct_65',
-            'households_owner_pct_mortgage', 'households_owner_pct_spending_30_pct_income',
-            'households_tenant_pct_subsidized_housing', 'households_tenant_pct_spending_30_pct_income'
         ]
 
 
