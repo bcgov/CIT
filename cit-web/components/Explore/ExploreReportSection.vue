@@ -11,12 +11,12 @@
       </v-row>
       <v-row>
         <v-col v-for="report in reportCard" :key="report.name" xl="3" lg="3">
-          <ReportCard
+          <ExploreReportCard
             :page-name="report.pid"
             :title="report.name"
-            :cid="cid"
+            :cids="cids"
             extra-classname="demographics"
-          ></ReportCard>
+          ></ExploreReportCard>
         </v-col>
       </v-row>
     </div>
@@ -24,50 +24,51 @@
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
-import ReportCard from '~/components/Explore/ReportCard'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import ExploreReportCard from '~/components/Explore/ExploreReportCard'
 
 @Component({
-  ReportCard,
+  ExploreReportCard,
 })
 export default class ExploreReportSection extends Vue {
+  @Prop({ default: null, type: Array }) cids
   reportCards = {
     Housing: [
       {
         name: 'Domestic',
-        pid: 'ReportSectiona6891d7c6caa01ac431d',
+        pid: 'ReportSection6249eac6d911d2930de3',
       },
       {
         name: 'Education',
-        pid: 'ReportSection2e89dc5afd87ef0ae354',
+        pid: 'ReportSection39f3a30707d51e04d585',
       },
       {
         name: 'Culture',
-        pid: 'ReportSectioned265c9a280b2bf7a925',
+        pid: 'ReportSectionc275f231ed2c4af16a7d',
       },
     ],
     'Economics/Employment': [
       {
         name: 'Income/Jobs',
-        pid: 'ReportSectionf2b8f5bb464e6d79a9ed',
+        pid: 'ReportSection65f0df6512cfb580c7a2',
       },
       {
         name: 'Natural Resources',
-        pid: 'ReportSection8f523b520a86970e96d4',
+        pid: 'ReportSection88694206176b52607b4d',
       },
     ],
     'Assets & Infrastructure': [
       {
         name: 'Health & Emergency',
-        pid: 'ReportSection07d9e73c5386ee5b1645',
+        pid: 'ReportSectionde977e8425990a550597',
       },
       {
         name: 'Government Services',
-        pid: 'ReportSectionb573e08eb7a7e160fd80',
+        pid: 'ReportSection01bb2d0bee74694f5cb3',
       },
       {
         name: 'Connectivity',
-        pid: 'ReportSectionbc899e8fac8c2b494765',
+        pid: 'ReportSection498ce34a9e89c7c66ddd',
       },
     ],
   }

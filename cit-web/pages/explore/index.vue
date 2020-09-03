@@ -13,7 +13,10 @@
         <div class="mt-5 font-weight-bold d-flex align-center">
           <v-icon color="info" class="mr-2">mdi-file-chart</v-icon>
           See aggregated reports for the following results
-          <ReportDialog class="ml-2 d-inline-block"></ReportDialog>
+          <ReportDialog
+            :cids="cidArray"
+            class="ml-2 d-inline-block"
+          ></ReportDialog>
         </div>
 
         <Results :grouped-communities="groupedCommunities"></Results>
@@ -33,11 +36,13 @@ import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import groupBy from 'lodash/groupBy'
 import uniqBy from 'lodash/uniqBy'
 import intersectionBy from 'lodash/intersectionBy'
+import flatMap from 'lodash/flatMap'
 import ExploreMap from '~/components/Explore/ExploreMap.vue'
 import Results from '~/components/Explore/Results.vue'
 import ExploreFilters from '~/components/Explore/Filters/ExploreFilters.vue'
 import ReportDialog from '~/components/Explore/ReportDialog'
 import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
+import { getAuthToken } from '~/api/ms-auth-api/'
 const exploreStore = namespace('explore')
 
 @Component({
@@ -65,7 +70,16 @@ export default class Explore extends Vue {
   groupedCommunities = null
   filteredCommunities = null
   boundedCommunities = null
+
   @exploreStore.Getter('getSearchAsMove') searchAsMove
+
+  get flatCommunities() {
+    return flatMap(this.groupedCommunities)
+  }
+
+  get cidArray() {
+    return this.flatCommunities.map((c) => c.id.toString())
+  }
 
   get numRegions() {
     return Object.keys(this.groupedCommunities).length
@@ -79,10 +93,6 @@ export default class Explore extends Vue {
     return counter
   }
 
-  mounted() {
-    console.log('Mounted', this)
-  }
-
   layout(context) {
     return 'fixed'
   }
@@ -91,12 +101,14 @@ export default class Explore extends Vue {
     const results = await Promise.all([
       getRegionalDistricts(),
       getCommunityList(),
+      getAuthToken(),
     ])
     const regionalDistricts = results[0].data.results
     store.commit('communities/setRegionalDistricts', regionalDistricts)
     const communityList = results[1].data
     store.commit('communities/setCommunities', communityList)
-
+    const accessToken = results[2].data.access_token
+    store.commit('msauth/setAccessToken', accessToken)
     const groupedCommunities = groupBy(communityList, 'regional_district')
 
     return {

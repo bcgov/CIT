@@ -68,7 +68,7 @@ export default class Locations extends Vue {
       this.title = locationInput.getText()
       this.active = true
     } else {
-      this.title = '2 Location Constraints'
+      this.title = `${locationParams.length} Location Constraints`
       this.active = true
     }
 

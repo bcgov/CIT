@@ -64,11 +64,11 @@ export default class LocationInputs extends Vue {
   operatorTypes = [
     {
       value: 'gte',
-      title: '>',
+      title: '≥',
     },
     {
       value: 'lte',
-      title: '<',
+      title: '≤',
     },
   ]
 
@@ -80,6 +80,46 @@ export default class LocationInputs extends Vue {
     {
       value: 'hospitals',
       title: 'Hospitals',
+    },
+    {
+      value: 'clinics',
+      title: 'Clinics',
+    },
+    {
+      value: 'civic_facilities',
+      title: 'Civic Facilities',
+    },
+    {
+      value: 'diagnostic_facilities',
+      title: 'Diagnostic Facilities',
+    },
+    {
+      value: 'natural_resource_projects',
+      title: 'Natural Resource Projects',
+    },
+    {
+      value: 'economic_projects',
+      title: 'Economic Projects',
+    },
+    {
+      value: 'servicebc_locations',
+      title: 'ServiceBC Locations',
+    },
+    {
+      value: 'economic_projects',
+      title: 'Economic Projects',
+    },
+    {
+      value: 'post_secondary_institutions',
+      title: 'Post Secondary',
+    },
+    {
+      value: 'courts',
+      title: 'Courts',
+    },
+    {
+      value: 'closed_mills',
+      title: 'Closed Mills',
     },
   ]
 
