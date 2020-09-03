@@ -6,7 +6,15 @@
     </v-list-item-content>
     <v-list-item-action>
       <div>
-        <v-btn icon fab small dark color="primary" class="mr-2">
+        <v-btn
+          icon
+          fab
+          small
+          dark
+          color="primary"
+          class="mr-2"
+          @click="$root.$emit('recenterMap', center)"
+        >
           <v-icon>mdi-map-marker-radius</v-icon>
         </v-btn>
         <v-btn icon fab small dark color="primary" @click="handleMoreDetails">
@@ -25,6 +33,7 @@ export default class BaseListItem extends Vue {
   @Prop({ default: null, type: String }) title
   @Prop({ default: null, type: String }) subtitle
   @Prop({ default: null, type: Number }) cid
+  @Prop({ default: null, type: Array }) center
 
   handleMoreDetails() {
     window.open(`/community/${this.cid}`)

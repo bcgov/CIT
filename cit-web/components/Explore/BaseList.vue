@@ -5,7 +5,8 @@
       :key="'community' + community.id + getTime() + index"
       :title="community.place_name"
       :cid="community.id"
-      subtitle="50 Locations"
+      :center="[community.longitude, community.latitude]"
+      subtitle=""
     >
     </BaseListItem>
   </v-list>
@@ -22,6 +23,10 @@ export default class BaseList extends Vue {
 
   getTime() {
     return Date.now()
+  }
+
+  mounted() {
+    console.log(this.communities)
   }
 }
 </script>
