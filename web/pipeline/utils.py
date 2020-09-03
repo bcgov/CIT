@@ -161,8 +161,8 @@ def serialize_census_subdivision_groups(obj):
             "metadata": {
                 "name": "Married or living common law",
             },
-            "key": "married_or_common_law",
-            "value": commaize(obj.married_or_common_law),
+            "key": "married_common_law_couples",
+            "value": commaize(obj.married_common_law_couples),
             "units": " people",
         },
         {
