@@ -40,6 +40,7 @@ urlpatterns = [
     url(r"^censussubdivisions/$", pipeline.views.general.CensusSubdivisionList.as_view()),
     url(r"^locationdistances/geojson/$", pipeline.views.general.LocationDistanceGeoJSONList.as_view()),
     url(r"^locationdistances/$", pipeline.views.general.LocationDistanceList.as_view()),
+    url(r"^schooldistricts/$", pipeline.views.general.SchoolDistrictList.as_view()),
     path('openapi', get_schema_view(title="CIT", description="API for CIT", version="1.0.0"), name='openapi-schema'),
     path(
         'api/',

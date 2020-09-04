@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from pipeline.models.location_assets import Location
-from pipeline.models.general import LocationDistance, Service, RegionalDistrict
+from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
 
@@ -211,4 +211,15 @@ class RegionalDistrictSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
+        )
+
+
+class SchoolDistrictSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SchoolDistrict
+        fields = (
+            "id",
+            "name",
+            "sd_num",
+            "community"
         )
