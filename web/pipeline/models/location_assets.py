@@ -554,3 +554,22 @@ class ClosedMill(Location):
     LATITUDE_FIELD = 'Resource_Latitude'
     LONGITUDE_FIELD = 'Resource_Longitude'
     NAME_FIELD = 'Name'
+    '''
+    OrderedDict([('Place_ID', '7928'), ('Place_Name', 'Baynes Lake'), ('Name', 'Canfor Sawmill - Elko'), ('Resource_Longitude', '-115.10295'), ('Resource_Latitude', '49.27562'), ('Type', 'Closed Mill')])
+    '''
+
+class ResearchCentre(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'RESEARCH_CENTRE_NAME'
+    WEBSITE_FIELD = 'RESEARCH_CENTRE_WEBSITE_URL'
+
+    research_specialties = models.CharField(null=True, blank=True, max_length=255)
+    research_centre_affiliation = models.CharField(null=True, blank=True, max_length=255)
+    institution = models.CharField(null=True, blank=True, max_length=255)
+    inst_acrnm = models.CharField(null=True, blank=True, max_length=255)
+    research_sector = models.CharField(null=True, blank=True, max_length=255)
+    cntr_type = models.CharField(null=True, blank=True, max_length=255)
+    '''
+    {'_id': 1, 'RESEARCH_CENTRE_ID': 1, 'CENSUS_YEAR': 2011, 'CENSUS_SUBDIVISION_ID': 5915020, 'RESEARCH_CENTRE_NAME': 'The Centre for Advanced Wood Processing', 'RESEARCH_SPECIALTIES': 'Wood Products Processing, Advanced Wood Products Manufacturing', 'RESEARCH_CENTRE_AFFILIATION': 'University', 'INSTITUTION': 'University of British Columbia', 'INST_ACRNM': 'UBC', 'RESEARCH_CENTRE_ADDRESS': '2424 Main Mall', 'RESEARCH_CENTRE_MUNICIPALITY': 'Vancouver', 'RESEARCH_SECTOR': 'Forestry', 'RESEARCH_CENTRE_WEBSITE_URL': 'http://cawp.ubc.ca/', 'DATA_UPDATED_YEAR': 2014, 'POSTAL_CODE': '', 'SOURCE': '', 'NOTES': '', 'CNTR_TYPE': '', 'LONGITUDE': -123.2499699, 'LATITUDE': 49.260633}
+    '''

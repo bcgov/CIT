@@ -13,6 +13,7 @@ from pipeline.models.location_assets import (
     CivicFacility,
     PostSecondaryInstitution,
     ClosedMill,
+    ResearchCentre,
 )
 from pipeline.models.community import Community
 
@@ -30,6 +31,8 @@ LOCATION_TYPES = {
     'clinics': Clinic,
     'courts': Court,
     'post_secondary_institutions': PostSecondaryInstitution,
+    'closed_mills': ClosedMill,
+    'resesarch_centres': ResearchCentre,
 }
 
 CSV_RESOURCES = {
@@ -58,10 +61,10 @@ DATABC_RESOURCES = {
         'resource_id': '8e4e2a87-2d1d-4931-828e-6327b49f310e',
         'model': PostSecondaryInstitution
     },
-    # 'libraries': {
-    #     'resource_id': 'b6a28bfb-580b-4662-9f00-f7189d52fbe6',
-    #     'model': Library
-    # }
+    'research_centres': {
+        'resource_id': 'b930d0c7-31e5-4816-a06d-3ea23dbc7635',
+        'model': ResearchCentre
+    },
 }
 
 SHP_RESOURCES = {
