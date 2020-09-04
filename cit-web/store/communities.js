@@ -1,6 +1,7 @@
 export const state = () => ({
   communities: [],
   regionalDistricts: [],
+  communityGeoJSON: {},
 })
 
 export const getters = {
@@ -10,6 +11,9 @@ export const getters = {
   getRegionalDistricts(state) {
     return state.regionalDistricts
   },
+  getCommunityGeoJSON(state) {
+    return state.communityGeoJSON
+  },
 }
 
 export const mutations = {
@@ -18,5 +22,8 @@ export const mutations = {
   },
   setRegionalDistricts(state, rds) {
     state.regionalDistricts = rds
+  },
+  setCommunityGeoJSON(state, cgj) {
+    state.communityGeoJSON = cgj
   },
 }

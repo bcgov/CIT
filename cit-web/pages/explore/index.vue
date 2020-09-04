@@ -41,7 +41,11 @@ import ExploreMap from '~/components/Explore/ExploreMap.vue'
 import Results from '~/components/Explore/Results.vue'
 import ExploreFilters from '~/components/Explore/Filters/ExploreFilters.vue'
 import ReportDialog from '~/components/Explore/ReportDialog'
-import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
+import {
+  getRegionalDistricts,
+  getCommunityList,
+  getCommunityGeoJSON,
+} from '~/api/cit-api'
 import { getAuthToken } from '~/api/ms-auth-api/'
 const exploreStore = namespace('explore')
 
@@ -102,6 +106,7 @@ export default class Explore extends Vue {
       getRegionalDistricts(),
       getCommunityList(),
       getAuthToken(),
+      getCommunityGeoJSON(),
     ])
     const regionalDistricts = results[0].data.results
     store.commit('communities/setRegionalDistricts', regionalDistricts)
@@ -110,6 +115,8 @@ export default class Explore extends Vue {
     const accessToken = results[2].data.access_token
     store.commit('msauth/setAccessToken', accessToken)
     const groupedCommunities = groupBy(communityList, 'regional_district')
+    const communityGeoJSON = results[3].data
+    store.commit('communities/setCommunityGeoJSON', communityGeoJSON)
 
     return {
       communityList,
@@ -168,6 +175,7 @@ export default class Explore extends Vue {
       this.filteredCommunities,
       this.boundedCommunities
     )
+    console.log(this.groupedCommunities)
   }
 }
 </script>

@@ -25,3 +25,7 @@ export function advancedSearch(params) {
     params,
   })
 }
+
+export function getCommunityGeoJSON() {
+  return $axios.get(`api/pipeline/communities/geojson/`)
+}

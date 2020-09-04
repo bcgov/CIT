@@ -8,16 +8,17 @@
 </template>
 
 <script>
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
 // import ControlFactory from '~/utils/map'
 import SearchAsMove from '~/components/Explore/SearchAsMove.vue'
+const commModule = namespace('communities')
 
 @Component({
   SearchAsMove,
 })
 export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
-
+  @commModule.Getter('getCommunityGeoJSON') communityGeoJSON
   created() {
     this.map = null
     this.mapLoaded = false
@@ -27,6 +28,7 @@ export default class Explore extends Vue {
     this.initMap()
     this.addControls()
     this.listenToEvents()
+    console.log(this.communityGeoJSON)
   }
 
   initMap() {
@@ -34,18 +36,43 @@ export default class Explore extends Vue {
     mapboxgl.accessToken = this.mapboxApiKey
     const map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/countable-web/ckcspnxxz0ji81iliywxxclk0/draft',
+      style: 'mapbox://styles/countable-web/ckcspnxxz0ji81iliywxxclk0',
       center: [-122.970072, 49.299062],
       zoom: 12,
     })
     this.map = map
   }
 
+  addSources() {
+    this.map.addSource('communities', {
+      type: 'geojson',
+      data: this.communityGeoJSON,
+    })
+  }
+
+  addLayers() {
+    this.map.addLayer({
+      id: 'communities',
+      type: 'symbol',
+      source: 'communities',
+      layout: {
+        'text-field': ['to-string', ['get', 'place_name']],
+        'text-size': 13,
+        'icon-image': 'communities',
+        'icon-size': ['interpolate', ['linear'], ['zoom'], 5, 0.5, 15, 1],
+        'text-offset': [0, 1],
+        'text-optional': true,
+        'icon-allow-overlap': ['step', ['zoom'], false, 8, true],
+        'icon-padding': 0,
+      },
+      paint: { 'text-halo-width': 1, 'text-halo-blur': 1 },
+    })
+  }
+
   whenMapLoaded(fn) {
     if (this.mapLoaded) {
       fn(this.map)
     } else {
-      console.log('Waiting for map to load')
       this.$on('exploreMapLoaded', (map) => {
         fn(map)
       })
@@ -71,13 +98,16 @@ export default class Explore extends Vue {
     })
 
     this.map.on('load', () => {
+      this.addSources()
+      this.addLayers()
       this.mapLoaded = true
       this.$emit('exploreMapLoaded', this.map)
     })
 
     this.map.on('moveend', (e) => {
-      const sourceFeatures = this.map.querySourceFeatures('composite', {
-        sourceLayer: 'communities-bdyfif',
+      console.log(this.map.queryRenderedFeatures())
+      const sourceFeatures = this.map.querySourceFeatures('communities', {
+        sourceLayer: 'communities',
       })
       this.$emit('moveend', {
         sourceFeatures,
