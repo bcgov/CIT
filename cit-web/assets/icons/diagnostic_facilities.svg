@@ -1,7 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24.014" height="33.312" viewBox="0 0 24.014 33.312">
-  <g id="Group_439" data-name="Group 439" transform="translate(-4798 -5831)">
-    <path id="Path_148" data-name="Path 148" d="M17.89,4.57c-6.41.49-11.31,6.43-11,12.84.52,12.41,12,20.42,12,20.43h0s12-8.4,12-21.3a12,12,0,0,0-13-11.97Z" transform="translate(4791.124 5826.472)" fill="#fff"/>
-    <path id="Path_101" data-name="Path 101" d="M18.32,36.18c-3-2.51-10-9.34-10.34-18.69-.25-6,4.38-11.36,10.12-11.8h.86a11,11,0,0,1,11,11c0,9.76-7.25,16.9-10.36,19.52l-.65.54Z" transform="translate(4791.03 5826.31)" fill="#324978"/>
-    <path id="Path_102" data-name="Path 102" d="M21.47,18.07h-.54l-.18-.19a4.43,4.43,0,0,0-3.37-7.3h0a4.43,4.43,0,1,0,2.88,7.79l.19.18v.54l3.4,3.41,1-1Zm-1-3a3.05,3.05,0,0,1-3.07,3h0a3.05,3.05,0,0,1-3-3.07h0a3,3,0,0,1,3.06-3h0a3.06,3.06,0,0,1,3,3.06Z" transform="translate(4791.03 5826.31)" fill="#fff"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#324978;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><circle class="cls-1" cx="8" cy="8" r="7.5"/><path class="cls-2" d="M8,0a8,8,0,1,0,8,8A8,8,0,0,0,8,0Zm3.26,12L9,9.7V9.34l-.13-.12A3,3,0,1,1,6.94,4h0a3,3,0,0,1,3,3,3,3,0,0,1-.7,1.92L9.31,9h.36l2.27,2.27Z"/><path class="cls-2" d="M7,4.94h0a2,2,0,0,0-2,2V7a2,2,0,0,0,2,2h0A2,2,0,0,0,9,7V7A2,2,0,0,0,7,4.94Z"/></g></g></svg>

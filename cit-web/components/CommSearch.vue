@@ -4,12 +4,13 @@
       :items="communities"
       item-value="id"
       item-text="place_name"
-      label="Community Name"
-      append-icon="mdi-map-search"
+      :label="label"
+      append-icon="mdi-magnify"
       :solo="solo"
       hide-details
-      placeholder="Search for a community here"
+      placeholder="Search for a specific community here"
       :dense="dense"
+      :outlined="outlined"
       @input="handleClick"
     ></v-autocomplete>
   </div>
@@ -21,8 +22,10 @@ const commModule = namespace('communities')
 @Component
 export default class CommSearch extends Vue {
   @Prop({ default: 'black', type: String }) color
+  @Prop({ default: 'Community Name', type: String }) label
   @Prop({ default: false, type: Boolean }) dense
   @Prop({ default: false, type: Boolean }) solo
+  @Prop({ default: false, type: Boolean }) outlined
 
   communities = []
   @commModule.Getter('getCommunities') communities

@@ -1,18 +1,23 @@
 <template>
   <div>
+    <RegionalDistricts
+      ref="regionalDistrictsFilter"
+      class="d-inline-block mb-3"
+      @filter="handleFilter"
+    ></RegionalDistricts>
     <CommunityType
       ref="communityTypeFilter"
-      class="d-inline-block"
+      class="d-inline-block mb-3"
       @filter="handleFilter"
     ></CommunityType>
     <Locations
       ref="locationsFilter"
-      class="d-inline-block"
+      class="d-inline-block mb-3"
       @filter="handleFilter"
     ></Locations>
     <PopGrowth
       ref="popGrowthFilter"
-      class="d-inline-block"
+      class="d-inline-block mb-3"
       @filter="handleFilter"
     ></PopGrowth>
     <MoreFilters class="d-inline-block"></MoreFilters>
@@ -24,6 +29,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
 import CommunityType from '~/components/Explore/Filters/CommunityType'
 import PopGrowth from '~/components/Explore/Filters/PopGrowth'
+import RegionalDistricts from '~/components/Explore/Filters/RegionalDistricts'
 import MoreFilters from '~/components/Explore/Filters/MoreFilters'
 import Locations from '~/components/Explore/Filters/Locations'
 import { advancedSearch } from '~/api/cit-api'
@@ -33,6 +39,7 @@ import { advancedSearch } from '~/api/cit-api'
   MoreFilters,
   PopGrowth,
   Locations,
+  RegionalDistricts,
 })
 export default class ExploreFilters extends Vue {
   handleFilter() {

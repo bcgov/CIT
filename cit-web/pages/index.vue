@@ -1,27 +1,46 @@
 <template>
   <div class="landing-page-container">
-    <h1>Welcome to the Community Information Tool</h1>
-    <p>Explore B.C. communities and analyze data from a B.C. community lens.</p>
-    <div class="landing-page-content">
+    <h1 class="text-h3 font-weight-bold">
+      Welcome to the Community Information Tool
+    </h1>
+    <h6 class="text-h6 font-weight-regular mt-10 mb-10">
+      Explore B.C. communities and analyze data from a community lens.
+    </h6>
+    <div class="landing-page-content d-flex align-top">
       <div class="landing-page-info">
         <p>
           Interested in a specific community?<br />
           Search for it below to get details.
         </p>
 
-        <CommSearch></CommSearch>
+        <p class="font-weight-bold ma-0 pa-0 mb-1" style="color: #787878;">
+          Search for a community here
+        </p>
+        <CommSearch :outlined="true" label=""></CommSearch>
 
         <p class="explore-communities">
           Interested in building a community profile to generate a list of
           matching B.C. communities?
         </p>
-        <nuxt-link to="/explore" class="btn" target="_blank"
-          >Explore B.C. Communities</nuxt-link
+
+        <v-btn
+          color="primary"
+          to="/explore"
+          class="btn"
+          target="_blank"
+          depressed
+          >Explore B.C. Communities</v-btn
         >
       </div>
 
-      <div class="landing-page-illustration">
-        <img src="~/static/landing_page_illustration.png" />
+      <div class="landing-page-illustration text-right">
+        <v-img
+          :src="require(`~/assets/images/logo.svg`)"
+          aspect-ratio="1"
+          width="400"
+          class="d-inline-block"
+          contain
+        />
       </div>
     </div>
   </div>
@@ -51,53 +70,22 @@ export default class Index extends Vue {
   }
 }
 </script>
-
-<style lang="scss">
-h1 {
-  font-size: 2.5rem;
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-}
-
-.btn {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background-color: #073366;
-  color: white !important;
-  text-decoration: none !important;
-  margin: 0.5rem 0;
-  border-radius: 5px;
-}
-
+<style lang="scss" scoped>
 .landing-page-container {
-  max-width: 960px;
-  margin: 1rem auto 0;
-  padding: 0;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 5em;
 }
 
-.landing-page-content {
-  display: grid;
-  grid-template-columns: 4fr 3fr;
-  grid-gap: 1rem;
-  margin-top: 3rem;
+.landing-page-content > div {
+  flex: 1 1 0;
 }
 
 .landing-page-info {
-  margin-top: 2rem;
-}
-
-.landing-page-illustration {
-  img {
-    width: 100%;
-  }
+  margin-bottom: 3em;
 }
 
 .explore-communities {
-  margin-top: 5rem;
-  margin-bottom: 1.5rem;
-}
-
-.community-search {
-  margin-top: 0.5rem;
+  margin-top: 5em;
 }
 </style>

@@ -1,7 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24.009" height="33.308" viewBox="0 0 24.009 33.308">
-  <g id="Group_436" data-name="Group 436" transform="translate(-4656.231 -5826.532)">
-    <path id="Path_140" data-name="Path 140" d="M17.28,4.57C10.88,5.06,6,11,6.24,17.41c.52,12.41,12,20.42,12,20.43h0s12-8.4,12-21.3A12,12,0,0,0,17.28,4.57Z" transform="translate(4650 5822)" fill="#fff"/>
-    <path id="Path_139" data-name="Path 139" d="M17.5,36.18c-3-2.51-9.94-9.34-10.34-18.69-.25-6,4.39-11.36,10.12-11.8h.87a11,11,0,0,1,11,11c0,9.76-7.24,16.9-10.36,19.52l-.64.54Z" transform="translate(4650 5822)" fill="#324978"/>
-    <path id="Path_141" data-name="Path 141" d="M24.15,18.22H19.71v4.44h-3V18.22h-4.4v-3h4.44v-4.4h3v4.44h4.44Z" transform="translate(4650 5822)" fill="#fff"/>
-  </g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#324978;}</style></defs><g id="Layer_2" data-name="Layer 2"><g id="Layer_1-2" data-name="Layer 1"><circle class="cls-1" cx="8" cy="8" r="7.5"/><path class="cls-2" d="M8,0a8,8,0,1,0,8,8A8,8,0,0,0,8,0ZM12,9H9v3H7V9h-3V7H7v-3H9V7h3Z"/></g></g></svg>
