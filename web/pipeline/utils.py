@@ -479,6 +479,7 @@ def get_fields_for_location_type(location_type):
         "diagnostic_facilities": ["ser_cd_dsc"],
         "timber_facilities": ["bus_cat_ds"],
         "civic_facilities": ["keywords", "bus_cat_cl", "bus_cat_ds"],
+        "closed_mills": [],
     }
 
     return common_fields + location_specific_fields[location_type]
