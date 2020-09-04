@@ -10,10 +10,12 @@
         </v-toolbar>
         <v-divider></v-divider>
         <v-card-text style="height: 80vh;">
+          <!--
           <h2 class="text-h5 mt-5">Education</h2>
           <Education></Education>
           <h2 class="text-h5 mt-5">Health</h2>
           <Health></Health>
+          -->
           <h2 class="text-h5 mt-5">Internet</h2>
           <Internet></Internet>
           <h2 class="text-h5 mt-5">Wildfire Zone</h2>
