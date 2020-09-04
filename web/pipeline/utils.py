@@ -609,11 +609,9 @@ def communities_advanced_search(query_params):
 
     print("overall_query", overall_query)
     if len(overall_query) > 0:
-        communities = Community.objects.filter(Q(reduce(and_, (q for q in overall_query)))).distinct()
+        communities = Community.objects.filter(Q(reduce(and_, (q for q in overall_query))))
     else:
         communities = Community.objects.all()
-
-    print("location_queries", location_queries)
 
     if location_queries:
         communities = reduce(and_, (q for q in [communities, *location_queries]))
@@ -626,12 +624,13 @@ def communities_advanced_search(query_params):
 
 def _handle_location_filter(query_filter):
     from pipeline.models.community import Community
-
-    distance_query = None
-    query = ""
     if not query_filter["location_type"]:
         # TODO return validation error
         pass
+
+    location_type_query = Q(**{"distances__location__location_type": query_filter["location_type"]})
+    distance_query = None
+    query = ""
 
     if query_filter["units"] == "km":
         query += "distances__driving_distance"
@@ -641,33 +640,39 @@ def _handle_location_filter(query_filter):
         # TODO return validation error
         pass
 
-    # TODO refactor duplicate code
-    if query_filter["operator"]:
-        query += "__{}".format(query_filter["operator"])
-
-    if len(query_filter["value"]) == 1:
-        distance_query = Q(**{query: query_filter["value"][0]})
-    elif len(query_filter["value"]) > 1:
-        query += "__in"
-        distance_query = Q(**{query: query_filter["value"]})
-    else:
+    if len(query_filter["value"]) > 1:
         # TODO return validation error
         pass
 
-    return Community.objects.filter(
-        Q(**{"distances__location__location_type": query_filter["location_type"]}) & distance_query)
+    # TODO refactor duplicate code
+    if query_filter["operator"] == "xgt":
+        pass
+        query += "__lt"
+        print("query_filter here", query_filter)
+        distance_query = ~Q(**{query: query_filter["value"][0]})
+    else:
+        query += "__{}".format(query_filter["operator"])
+        distance_query = Q(**{query: query_filter["value"][0]})
+
+    print("location_query", location_type_query, distance_query)
+
+    return Community.objects.filter(location_type_query & distance_query)
 
 
 def _get_operator_for_field(field):
     field_parts = field.split("__")
     if "gte" in field_parts:
         return "gte"
+    elif "gt" in field_parts:
+        return "gt"
+    elif "xgt" in field_parts:
+        return "xgt"
     elif "lte" in field_parts:
         return "lte"
-    if "gt" in field_parts:
-        return "gt"
     elif "lt" in field_parts:
         return "lt"
+
+    # TODO return validation error
     return None
 
 
@@ -677,6 +682,8 @@ def _get_units_for_field(field):
         return "km"
     elif "mins" in field_parts:
         return "mins"
+
+    # TODO return validation error
     return None
 
 
@@ -687,6 +694,7 @@ def _get_location_type_in_field(field):
         location_type = field_split[location_prefix_index + 1]
         return location_type
     except ValueError:
+        # TODO return validation error
         return None
 
 
