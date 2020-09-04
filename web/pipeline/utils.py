@@ -588,6 +588,9 @@ def communities_advanced_search(query_params):
             query += "census_subdivision__{}".format(query_filter["field"])
         elif query_filter["field"] in ["percent_50_10", "percent_25_5", "percent_10_2", "percent_5_1"]:
             query += query_filter["field"]
+        elif query_filter["field"] == "is_coastal":
+            query += query_filter["field"]
+            query_filter["value"] = [True if value == "true" else False for value in query_filter["value"]]
         elif query_filter["field"] == "community_type":
             query += query_filter["field"]
             if "Indigenous" in query_filter["value"]:
