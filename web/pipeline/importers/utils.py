@@ -8,7 +8,7 @@ from django.core.exceptions import FieldDoesNotExist
 from django.contrib.gis.measure import D
 
 from pipeline.models.community import Community
-from pipeline.models.general import LocationDistance, SchoolDistrict
+from pipeline.models.general import LocationDistance, SchoolDistrict, Municipality
 from pipeline.models.location_assets import School
 from pipeline.constants import LOCATION_TYPES, CSV_RESOURCES, DATABC_RESOURCES
 
@@ -73,7 +73,7 @@ def import_data_into_point_model(resource_type, Model, row):
 def import_data_into_area_model(resource_type, Model, row):
     print(row)
 
-    instance, created = Model.objects.get_or_create(name=row[Model.NAME_FIELD], location_type=resource_type)
+    instance, created = Model.objects.get_or_create(name=row[Model.NAME_FIELD])
 
     print("instance", instance)
     if hasattr(Model, 'ID_FIELD'):
@@ -298,3 +298,14 @@ def calculate_regional_districts_for_communities():
         else:
             community.regional_district = regional_district
             community.save()
+
+
+def calculate_parent_child_communities():
+    for community in Community.objects.filter(incorporated=False):
+        municipalities = Municipality.objects.filter(geom__contains=community.point)
+        if municipalities.count() == 1:
+            parent_community = Community.objects.filter(
+                point__intersects=municipalities.first().geom, incorporated=True)
+            if parent_community.count() == 1:
+                community.parent_community = parent_community.first()
+                community.save()

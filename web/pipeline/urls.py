@@ -32,6 +32,7 @@ urlpatterns = [
     url(r"^locations/clinics/$", pipeline.views.location_types.ClinicList.as_view()),
     url(r"^locations/courts/$", pipeline.views.location_types.CourtList.as_view()),
     url(r"^locations/closed_mills/$", pipeline.views.location_types.ClosedMillList.as_view()),
+    url(r"^locations/research_centres/$", pipeline.views.location_types.ResearchCentreList.as_view()),
     url(r"^locations/$", pipeline.views.general.LocationList.as_view()),
 
     url(r"^services/$", pipeline.views.general.ServiceList.as_view()),
@@ -40,6 +41,7 @@ urlpatterns = [
     url(r"^censussubdivisions/$", pipeline.views.general.CensusSubdivisionList.as_view()),
     url(r"^locationdistances/geojson/$", pipeline.views.general.LocationDistanceGeoJSONList.as_view()),
     url(r"^locationdistances/$", pipeline.views.general.LocationDistanceList.as_view()),
+    url(r"^schooldistricts/$", pipeline.views.general.SchoolDistrictList.as_view()),
     path('openapi', get_schema_view(title="CIT", description="API for CIT", version="1.0.0"), name='openapi-schema'),
     path(
         'api/',

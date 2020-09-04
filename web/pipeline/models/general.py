@@ -1,14 +1,6 @@
 from django.contrib.gis.db import models
 
 
-class Area(models.Model):
-    area_id = models.IntegerField(null=True, help_text="Original ID of data point")
-    name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=4326, null=True)
-    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
-    location_type = models.CharField(null=True, blank=True, max_length=255)
-
-
 class Hex(models.Model):
     # "PHH_ID","Avail_5_1_Dispo","Avail_10_2_Dispo","Avail_25_5_Dispo","Avail_50_10_Dispo","Avail_LTE_Mobile_Dispo"
     id = models.CharField(primary_key=True, max_length=12)
@@ -37,9 +29,14 @@ class Road(models.Model):
     best_broadband = models.CharField(max_length=5)
 
 
-class Municipality(Area):
+class Municipality(models.Model):
     ID_FIELD = 'AA_ID'
     NAME_FIELD = 'ABRVN'
+
+    area_id = models.IntegerField(null=True, help_text="Original ID of data point")
+    name = models.CharField(max_length=127)
+    geom = models.MultiPolygonField(srid=4326, null=True)
+    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
     oc_m_yr = models.CharField(
         max_length=4,
         help_text="The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
@@ -69,9 +66,14 @@ class Municipality(Area):
     """
 
 
-class SchoolDistrict(Area):
+class SchoolDistrict(models.Model):
     ID_FIELD = 'ADMIN_SID'
     NAME_FIELD = 'SD_NAME'
+
+    area_id = models.IntegerField(null=True, help_text="Original ID of data point")
+    name = models.CharField(max_length=127)
+    geom = models.MultiPolygonField(srid=4326, null=True)
+    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
     sd_num = models.CharField(
         max_length=5,
     )
@@ -81,9 +83,14 @@ class SchoolDistrict(Area):
     """
 
 
-class RegionalDistrict(Area):
+class RegionalDistrict(models.Model):
     ID_FIELD = 'AA_ID'
     NAME_FIELD = 'AA_NAME'
+
+    area_id = models.IntegerField(null=True, help_text="Original ID of data point")
+    name = models.CharField(max_length=127)
+    geom = models.MultiPolygonField(srid=4326, null=True)
+    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
     oc_m_yr = models.CharField(
         null=True,
         max_length=4,
@@ -125,16 +132,26 @@ class LocationDistance(models.Model):
         return '{} to {}: {} km'.format(self.community.place_name, self.location.name, self.distance)
 
 
-class WildfireZone(Area):
+class WildfireZone(models.Model):
     NAME_FIELD = 'FIRE_ZONE'
+
+    area_id = models.IntegerField(null=True, help_text="Original ID of data point")
+    name = models.CharField(max_length=127)
+    geom = models.MultiPolygonField(srid=4326, null=True)
+    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
     risk_class = models.CharField(
         max_length=1,
         help_text="A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 " "(extreme).",
     )  # 1-5
 
 
-class TsunamiZone(Area):
+class TsunamiZone(models.Model):
     NAME_FIELD = 'TNZ_ID'
+
+    area_id = models.IntegerField(null=True, help_text="Original ID of data point")
+    name = models.CharField(max_length=127)
+    geom = models.MultiPolygonField(srid=4326, null=True)
+    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
     zone_class = models.CharField(
         max_length=1,
         help_text="See https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/"

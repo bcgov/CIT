@@ -1,7 +1,6 @@
 import datetime
 from functools import reduce
 from operator import and_
-import re
 
 from django.db.models import Q
 
@@ -479,6 +478,10 @@ def get_fields_for_location_type(location_type):
         "diagnostic_facilities": ["ser_cd_dsc"],
         "timber_facilities": ["bus_cat_ds"],
         "civic_facilities": ["keywords", "bus_cat_cl", "bus_cat_ds"],
+        "closed_mills": [],
+        "research_centres": [
+            "research_specialties", "research_centre_affiliation", "institution", "inst_acrnm",
+            "research_sector", "cntr_type"],
     }
 
     return common_fields + location_specific_fields[location_type]
@@ -557,25 +560,15 @@ def communities_advanced_search(query_params):
     print("filters", filters)
 
     overall_query = []
+    location_queries = []
 
     for query_filter in filters:
         query = ""
 
         # TODO refactor field name handling
         if query_filter["field"] == "location":
-            if not query_filter["location_type"]:
-                # TODO return validation error
-                pass
-
-            overall_query.append(Q(**{"distances__location__location_type": query_filter["location_type"]}))
-
-            if query_filter["units"] == "km":
-                query += "distances__driving_distance"
-            elif query_filter["units"] == "mins":
-                query += "distances__travel_time"
-            else:
-                # TODO return validation error
-                pass
+            location_queries.append(_handle_location_filter(query_filter))
+            continue
         elif query_filter["field"] == "community":
             query += "id"
         elif query_filter["field"] == "regional_district":
@@ -584,6 +577,9 @@ def communities_advanced_search(query_params):
             query += "census_subdivision__{}".format(query_filter["field"])
         elif query_filter["field"] in ["percent_50_10", "percent_25_5", "percent_10_2", "percent_5_1"]:
             query += query_filter["field"]
+        elif query_filter["field"] == "is_coastal":
+            query += query_filter["field"]
+            query_filter["value"] = [True if value == "true" else False for value in query_filter["value"]]
         elif query_filter["field"] == "community_type":
             query += query_filter["field"]
             if "Indigenous" in query_filter["value"]:
@@ -612,22 +608,71 @@ def communities_advanced_search(query_params):
             pass
 
     print("overall_query", overall_query)
-    communities = Community.objects.filter(Q(reduce(and_, (q for q in overall_query)))).distinct()
-    print("communities", communities, communities.count())
+    if len(overall_query) > 0:
+        communities = Community.objects.filter(Q(reduce(and_, (q for q in overall_query))))
+    else:
+        communities = Community.objects.all()
 
+    if location_queries:
+        communities = reduce(and_, (q for q in [communities, *location_queries]))
+
+    communities = communities.distinct()
+
+    print("communities", communities, communities.count())
     return communities.values_list('id', flat=True)
+
+
+def _handle_location_filter(query_filter):
+    from pipeline.models.community import Community
+    if not query_filter["location_type"]:
+        # TODO return validation error
+        pass
+
+    location_type_query = Q(**{"distances__location__location_type": query_filter["location_type"]})
+    distance_query = None
+    query = ""
+
+    if query_filter["units"] == "km":
+        query += "distances__driving_distance"
+    elif query_filter["units"] == "mins":
+        query += "distances__travel_time"
+    else:
+        # TODO return validation error
+        pass
+
+    if len(query_filter["value"]) > 1:
+        # TODO return validation error
+        pass
+
+    # TODO refactor duplicate code
+    if query_filter["operator"] == "xgt":
+        pass
+        query += "__lt"
+        print("query_filter here", query_filter)
+        distance_query = ~Q(**{query: query_filter["value"][0]})
+    else:
+        query += "__{}".format(query_filter["operator"])
+        distance_query = Q(**{query: query_filter["value"][0]})
+
+    print("location_query", location_type_query, distance_query)
+
+    return Community.objects.filter(location_type_query & distance_query)
 
 
 def _get_operator_for_field(field):
     field_parts = field.split("__")
     if "gte" in field_parts:
         return "gte"
+    elif "gt" in field_parts:
+        return "gt"
+    elif "xgt" in field_parts:
+        return "xgt"
     elif "lte" in field_parts:
         return "lte"
-    if "gt" in field_parts:
-        return "gt"
     elif "lt" in field_parts:
         return "lt"
+
+    # TODO return validation error
     return None
 
 
@@ -637,6 +682,8 @@ def _get_units_for_field(field):
         return "km"
     elif "mins" in field_parts:
         return "mins"
+
+    # TODO return validation error
     return None
 
 
@@ -647,6 +694,7 @@ def _get_location_type_in_field(field):
         location_type = field_split[location_prefix_index + 1]
         return location_type
     except ValueError:
+        # TODO return validation error
         return None
 
 

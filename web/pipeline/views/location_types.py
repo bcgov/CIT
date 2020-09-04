@@ -3,7 +3,7 @@ from rest_framework import generics
 from pipeline.models.location_assets import (
     FirstResponder, DiagnosticFacility, TimberFacility, CivicFacility, Hospital, NaturalResourceProject,
     EconomicProject, ServiceBCLocation, School, Clinic, Court,
-    PostSecondaryInstitution, ClosedMill
+    PostSecondaryInstitution, ClosedMill, ResearchCentre,
 )
 from pipeline.serializers.location_types import (
     FirstResponderSerializer,
@@ -18,7 +18,8 @@ from pipeline.serializers.location_types import (
     PostSecondaryInstitutionSerializer,
     ClinicSerializer,
     CourtSerializer,
-    ClosedMillSerializer
+    ClosedMillSerializer,
+    ResearchCentreSerializer,
 )
 
 
@@ -85,3 +86,8 @@ class CourtList(generics.ListAPIView):
 class ClosedMillList(generics.ListAPIView):
     queryset = ClosedMill.objects.all()
     serializer_class = ClosedMillSerializer
+
+
+class ResearchCentreList(generics.ListAPIView):
+    queryset = ResearchCentre.objects.all()
+    serializer_class = ResearchCentreSerializer

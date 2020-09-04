@@ -12,7 +12,7 @@ from rest_framework_csv import renderers as csv_renderers
 from pipeline.models.location_assets import Location
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
-from pipeline.models.general import LocationDistance, Service, RegionalDistrict
+from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict
 from pipeline.serializers.general import (
     LocationSerializer,
     CommunitySerializer,
@@ -24,6 +24,7 @@ from pipeline.serializers.general import (
     LocationDistanceSerializer,
     ServiceListSerializer,
     RegionalDistrictSerializer,
+    SchoolDistrictSerializer,
 )
 from pipeline.utils import (
     generate_line_strings, filter_communities,
@@ -162,10 +163,14 @@ class RegionalDistrictViewSet(viewsets.GenericViewSet):
 
     @action(detail=False)
     def geojson(self, request):
-        test = RegionalDistrict.objects.first()
-        print(test.geom)
-        print(serialize('geojson', RegionalDistrict.objects.all(), geometry_field='geom', fields=('pk', 'geom')))
         return HttpResponse(
-            serialize('geojson', RegionalDistrict.objects.all(), geometry_field='geom', fields=('pk', 'geom', 'oc_m_yr')),
+            serialize(
+                'geojson', RegionalDistrict.objects.all(),
+                geometry_field='geom_simplified', fields=('pk', 'name')),
             content_type="application/json",
         )
+
+
+class SchoolDistrictList(generics.ListAPIView):
+    queryset = SchoolDistrict.objects.all()
+    serializer_class = SchoolDistrictSerializer

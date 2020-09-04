@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from pipeline.models.location_assets import Location
-from pipeline.models.general import LocationDistance, Service, RegionalDistrict
+from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
 
@@ -44,6 +44,7 @@ class CommunitySerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "place_name",
+            "child_communities",
             "latitude",
             "longitude",
             "census_subdivision",
@@ -108,11 +109,14 @@ class CommunityCSVSerializer(serializers.ModelSerializer):
 class CommunityDetailSerializer(serializers.ModelSerializer):
     display_fields = serializers.SerializerMethodField()
     locations = serializers.SerializerMethodField()
+    child_communities = serializers.SerializerMethodField()
 
     class Meta:
         model = Community
         fields = (
             "id",
+            "parent_community",
+            "child_communities",
             "display_fields",
             "latitude",
             "longitude",
@@ -125,6 +129,12 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
 
     def get_locations(self, obj):
         return obj.get_location_assets()
+
+    def get_child_communities(self, obj):
+        return [{
+            "id": child_community.id,
+            "place_name": child_community.place_name,
+        } for child_community in obj.child_communities.all()]
 
 
 class CommunitySearchSerializer(serializers.ModelSerializer):
@@ -211,4 +221,15 @@ class RegionalDistrictSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "name",
+        )
+
+
+class SchoolDistrictSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SchoolDistrict
+        fields = (
+            "id",
+            "name",
+            "sd_num",
+            "community"
         )
