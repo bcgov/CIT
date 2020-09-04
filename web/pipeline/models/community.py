@@ -13,7 +13,10 @@ class Community(models.Model):
     # TODO SY - make this into a choice field tuple
     community_type = models.CharField(null=True, blank=True, max_length=255)
     is_coastal = models.NullBooleanField()
-    census_subdivision = models.ForeignKey('CensusSubdivision', on_delete=models.CASCADE)
+
+    census_subdivision = models.ForeignKey('CensusSubdivision', null=True, on_delete=models.SET_NULL)
+    municipality = models.ForeignKey('Municipality', null=True, on_delete=models.SET_NULL)
+    regional_district = models.ForeignKey('RegionalDistrict', null=True, on_delete=models.SET_NULL)
 
     wildfire_zone = models.ForeignKey('WildfireZone', null=True, on_delete=models.SET_NULL)
     tsunami_zone = models.ForeignKey('TsunamiZone', null=True, on_delete=models.SET_NULL)
@@ -45,10 +48,6 @@ class Community(models.Model):
 
     incorporated = models.NullBooleanField()
 
-    # Municapility URL Code
-    # municipality_id = models.IntegerField(null=True)
-    municipality = models.ForeignKey('Municipality', null=True, on_delete=models.SET_NULL)
-
     # Last-Mile Status (June2020)
     last_mile_status = models.CharField(max_length=255, null=True, blank=True)
 
@@ -66,8 +65,6 @@ class Community(models.Model):
 
     # Filters for mapbox
     has_any_k12_school = models.NullBooleanField(null=True)
-
-    regional_district = models.ForeignKey('RegionalDistrict', null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return self.place_name

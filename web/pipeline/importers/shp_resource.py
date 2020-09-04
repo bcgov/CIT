@@ -59,7 +59,8 @@ from pipeline.models.general import Road, Hex, ISP, Service
 from pipeline.constants import SHP_RESOURCES, BC_ALBERS_SRID, WGS84_SRID
 from pipeline.importers.census import (
     import_census_population_data, import_census_languages_data,
-    import_census_income_data, import_census_housing_data, import_census_education_employment_data)
+    import_census_income_data, import_census_housing_data, import_census_education_employment_data,
+    import_census_families_data)
 from pipeline.importers.utils import import_data_into_area_model, read_csv
 
 import logging
@@ -248,6 +249,7 @@ def _save_subdiv(feat):
     )
 
     import_census_population_data(stats, subdiv)
+    import_census_families_data(stats, subdiv)
     import_census_housing_data(stats, subdiv)
     import_census_languages_data(stats, subdiv)
     import_census_income_data(stats, subdiv)
