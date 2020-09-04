@@ -59,7 +59,7 @@
         <template v-slot:activator>
           <img
             height="30"
-            :src="require(`~/assets/icons/${groupedLocation.group}_pin.svg`)"
+            :src="require(`~/assets/icons/${groupedLocation.group}.svg`)"
             alt="Civic Facilities"
             class="mr-2"
           />
