@@ -553,6 +553,9 @@ class CensusSubdivision(models.Model):
     # "Labour", 35022, "11.5.1.2.20", 2, "    91 Public administration",
     naics_public_admin = models.IntegerField(null=True)
 
+    class Meta:
+        ordering = ("id",)
+
     def api_field_groups(self):
         return serialize_census_subdivision_groups(self)
 
