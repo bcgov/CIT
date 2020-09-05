@@ -87,6 +87,12 @@ def import_shp_resources(resource_type):
 
 
 def import_resource(resource_type):
+    if resource_type == "northern_rockies_census_division":
+        # Note: census divisions are only used to monkey-patch the Northern Rockies "regional district"
+        # which is missing (actually a municipality)
+        import_northern_rockies_census_division()
+        return
+
     resource_config = SHP_RESOURCES[resource_type]
     ds = _get_datasource(SHP_RESOURCES[resource_type]['path'])
     for feat in ds[0]:
@@ -97,6 +103,38 @@ def import_resource(resource_type):
             # print(f, feat.get(f))
 
         instance = import_data_into_area_model(resource_type, resource_config["model"], row)
+
+        geos_geom_out, geos_geom_simplified = _generate_geom(feat, srid=BC_ALBERS_SRID)
+        instance.geom = geos_geom_out
+        instance.geom_simplified = geos_geom_simplified
+
+        instance.save()
+
+
+def import_northern_rockies_census_division():
+    from pipeline.models import RegionalDistrict
+    """
+    {'CNSSR': 2016, 'CNSSDVSND': '5901', 'CNSSDVSNNM': 'East Kootenay', 'CNSSDVSNTP': 'RD', 'CNSSDVSNT1': 'Regional District', 'AREA_SQM': 27849712862.3922, 'FEAT_LEN': 1070461.9249, 'OBJECTID': 115}
+    """
+
+    ds = _get_datasource(SHP_RESOURCES["northern_rockies_census_division"]['path'])
+    for feat in ds[0]:
+        row = {}
+
+        for f in feat.fields:
+            row[f] = feat.get(f)
+
+        name = row["CNSSDVSNNM"]
+        if name != "Northern Rockies":
+            continue
+
+        print(row)
+
+        NORTHERN_ROCKIES_NAME = "Northern Rockies Regional Municipality"
+        instance, created = RegionalDistrict.objects.get_or_create(name=NORTHERN_ROCKIES_NAME)
+
+        print("instance", instance)
+        instance.area_id = row["OBJECTID"]
 
         geos_geom_out, geos_geom_simplified = _generate_geom(feat, srid=BC_ALBERS_SRID)
         instance.geom = geos_geom_out
