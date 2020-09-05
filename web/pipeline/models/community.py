@@ -72,6 +72,7 @@ class Community(models.Model):
 
     class Meta:
         verbose_name_plural = "Communities"
+        ordering = ("place_name",)
 
     def latitude(self):
         if self.point:

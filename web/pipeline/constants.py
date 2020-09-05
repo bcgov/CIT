@@ -73,6 +73,9 @@ SHP_RESOURCES = {
     'municipalities': {'path': 'data/municipalities.zip', 'model': Municipality},
     'school_districts': {'path': 'data/school_districts.zip', 'model': SchoolDistrict},
     'regional_districts': {'path': 'data/regional_districts.zip', 'model': RegionalDistrict},
+    # Note: census divisions are only used to monkey-patch the Northern Rockies "regional district"
+    # which is missing (actually a municipality)
+    'northern_rockies_census_division': {'path': 'data/census_divisions.zip', 'model': RegionalDistrict},
 }
 
 CENSUS_LANGUAGE_MAP = {

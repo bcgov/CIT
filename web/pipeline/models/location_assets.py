@@ -45,6 +45,7 @@ class Location(models.Model):
         # Note: `name` and `location_type` are not unique; e.g. there are two mills in different cities
         # named "West Fraser Mills Ltd."
         unique_together = [['name', 'point', 'location_type']]
+        ordering = ("id",)
 
 
 class Hospital(Location):
@@ -59,6 +60,8 @@ class Hospital(Location):
     sv_description = models.TextField(null=True, blank=True)
     hours = models.TextField(null=True, blank=True)
 
+    class Meta:
+        ordering = ("id",)
     '''
     {
         "_id": 5,
@@ -116,6 +119,8 @@ class Court(Location):
     hours_of_operation = models.CharField(max_length=255)
     court_level = models.CharField(max_length=20)
 
+    class Meta:
+        ordering = ("id",)
     '''
     {
         "_id": 4,
@@ -153,6 +158,8 @@ class EconomicProject(Location):
     eao_project_status = models.CharField(null=True, blank=True, max_length=255)
     project_comments = models.CharField(null=True, blank=True, max_length=255)
 
+    class Meta:
+        ordering = ("id",)
     '''
     {
         '_id': 1,
@@ -205,6 +212,9 @@ class NaturalResourceProject(Location):
     standardized_start_date = models.CharField(null=True, blank=True, max_length=255)
     standardized_completion_date = models.CharField(null=True, blank=True, max_length=255)
 
+    class Meta:
+        ordering = ("id",)
+
     def get_standardized_start_date_as_date(self):
         if not self.standardized_start_date:
             return None
@@ -216,7 +226,6 @@ class NaturalResourceProject(Location):
             return None
 
         return get_quarterly_date_str_as_date(self.standardized_completion_date)
-
     '''
     {
         '_id': 1,
@@ -271,6 +280,8 @@ class ServiceBCLocation(Location):
     PHONE_FIELD = 'Site_Phone_No'
     WEBSITE_FIELD = 'Website_URL'
 
+    class Meta:
+        ordering = ("id",)
     '''
     {
         '_id': 1,
@@ -302,6 +313,8 @@ class School(Location):
 
     school_district = models.ForeignKey('SchoolDistrict', null=True, on_delete=models.SET_NULL)
 
+    class Meta:
+        ordering = ("id",)
     '''
     {
         '_id': 1,
@@ -334,6 +347,8 @@ class PostSecondaryInstitution(Location):
     institution_type = models.CharField(null=True, blank=True, max_length=255)
     economic_development_region = models.CharField(null=True, blank=True, max_length=255)
 
+    class Meta:
+        ordering = ("id",)
     '''
     {
         '_id': 137,
@@ -362,6 +377,8 @@ class Clinic(Location):
     sv_description = models.CharField(null=True, blank=True, max_length=255)
     hours = models.TextField(null=True, blank=True)
 
+    class Meta:
+        ordering = ("id",)
     '''
     {
         '_id': 1,
@@ -404,12 +421,14 @@ class FirstResponder(Location):
 
     keywords = models.CharField(null=True, blank=True, max_length=255)
 
+    class Meta:
+        ordering = ("id",)
+
     def category(self):
         return self.keywords.split(';')[0].strip()
 
     def subcategory(self):
         return self.keywords.split(';')[-1].strip()
-
     '''
     OrderedDict([
         ('CUST_ORG', 'Ministry of Forest, Lands and Natural Resource Operations and Rural Development - GeoBC '),
@@ -450,6 +469,9 @@ class DiagnosticFacility(Location):
     NAME_FIELD = 'FCTY_NAME'
 
     ser_cd_dsc = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id",)
     '''
     OrderedDict([
         ('DIA_FAC_ID', '909'),
@@ -475,6 +497,9 @@ class TimberFacility(Location):
     NAME_FIELD = 'COMPANY_NM'
 
     bus_cat_ds = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id",)
     '''
     OrderedDict([
         ('COMPANY_NM','Bear Lumber Ltd.'),
@@ -519,6 +544,9 @@ class CivicFacility(Location):
     bus_cat_cl = models.CharField(null=True, blank=True, max_length=255)
     bus_cat_ds = models.CharField(null=True, blank=True, max_length=255)
 
+    class Meta:
+        ordering = ("id",)
+
     def category(self):
         return self.keywords.split(';')[0].strip()
 
@@ -554,6 +582,9 @@ class ClosedMill(Location):
     LATITUDE_FIELD = 'Resource_Latitude'
     LONGITUDE_FIELD = 'Resource_Longitude'
     NAME_FIELD = 'Name'
+
+    class Meta:
+        ordering = ("id",)
     '''
     OrderedDict([('Place_ID', '7928'), ('Place_Name', 'Baynes Lake'), ('Name', 'Canfor Sawmill - Elko'), ('Resource_Longitude', '-115.10295'), ('Resource_Latitude', '49.27562'), ('Type', 'Closed Mill')])
     '''
@@ -570,6 +601,9 @@ class ResearchCentre(Location):
     inst_acrnm = models.CharField(null=True, blank=True, max_length=255)
     research_sector = models.CharField(null=True, blank=True, max_length=255)
     cntr_type = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id",)
     '''
     {'_id': 1, 'RESEARCH_CENTRE_ID': 1, 'CENSUS_YEAR': 2011, 'CENSUS_SUBDIVISION_ID': 5915020, 'RESEARCH_CENTRE_NAME': 'The Centre for Advanced Wood Processing', 'RESEARCH_SPECIALTIES': 'Wood Products Processing, Advanced Wood Products Manufacturing', 'RESEARCH_CENTRE_AFFILIATION': 'University', 'INSTITUTION': 'University of British Columbia', 'INST_ACRNM': 'UBC', 'RESEARCH_CENTRE_ADDRESS': '2424 Main Mall', 'RESEARCH_CENTRE_MUNICIPALITY': 'Vancouver', 'RESEARCH_SECTOR': 'Forestry', 'RESEARCH_CENTRE_WEBSITE_URL': 'http://cawp.ubc.ca/', 'DATA_UPDATED_YEAR': 2014, 'POSTAL_CODE': '', 'SOURCE': '', 'NOTES': '', 'CNTR_TYPE': '', 'LONGITUDE': -123.2499699, 'LATITUDE': 49.260633}
     '''
