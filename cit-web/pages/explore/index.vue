@@ -11,14 +11,19 @@
         <ExploreFilters @filtered="handleFiltered"></ExploreFilters>
 
         <div class="mt-5 font-weight-bold d-flex align-center">
-          <v-icon color="info" class="mr-2">mdi-file-chart</v-icon>
-          See aggregated reports for the following results
+          <v-btn small icon><v-icon>mdi-gesture-double-tap</v-icon></v-btn>
+          <h6 class="text-h6 ml-2">Actions</h6>
+        </div>
+
+        <div class="mt-3 d-flex">
           <ReportDialog
             :cids="cidArray"
             class="ml-2 d-inline-block"
           ></ReportDialog>
         </div>
-
+      </div>
+      <v-divider></v-divider>
+      <div class="pa-8">
         <Results :grouped-communities="groupedCommunities"></Results>
       </div>
     </div>
@@ -194,7 +199,7 @@ export default class Explore extends Vue {
 }
 
 .explore-results-container {
-  flex: 2 1 0;
+  flex: 1.5 1 0;
   overflow-y: auto;
 }
 .explore-map-container {
