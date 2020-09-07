@@ -59,21 +59,6 @@ const exploreStore = namespace('explore')
   Results,
   ExploreFilters,
   ReportDialog,
-  head() {
-    return {
-      script: [
-        {
-          src: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js',
-        },
-      ],
-      link: [
-        {
-          rel: 'stylesheet',
-          href: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css',
-        },
-      ],
-    }
-  },
 })
 export default class Explore extends Vue {
   groupedCommunities = null

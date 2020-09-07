@@ -39,7 +39,7 @@
           <v-card-text>
             <Report
               :page-name="pageName"
-              :cid="cid"
+              :cids="[cid]"
               extra-classname="demographics"
             ></Report>
           </v-card-text>

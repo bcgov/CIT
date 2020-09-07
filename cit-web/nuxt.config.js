@@ -40,8 +40,17 @@ export default {
         src:
           'https://cdn.jsdelivr.net/npm/powerbi-client@2.13.3/dist/powerbi.min.js ',
       },
+      {
+        src: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js',
+      },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css',
+      },
+    ],
   },
   /*
    ** Global CSS
