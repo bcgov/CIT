@@ -4,6 +4,7 @@
       <v-dialog v-model="dialog" fullscreen>
         <template v-slot:activator="{ on, attrs }">
           <v-btn small depressed color="info" v-bind="attrs" v-on="on">
+            <v-icon small class="mr-2">mdi-file-chart</v-icon>
             View Reports
           </v-btn>
         </template>
