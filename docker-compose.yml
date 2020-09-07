@@ -20,6 +20,10 @@ services:
     environment:
       - AUTHORITY=https://login.microsoftonline.com/
       - SCOPE=https://analysis.windows.net/powerbi/api/.default
+      - TENANT_ID=${TENANT_ID}
+      - CLIENT_ID=${CLIENT_ID}
+      - CLIENT_SECRET=${CLIENT_SECRET}
+      - ROUTE_PLANNER_API_KEY=${ROUTE_PLANNER_API_KEY}
   db:
     image: mdillon/postgis
     volumes:
