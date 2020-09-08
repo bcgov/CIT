@@ -33,6 +33,7 @@ urlpatterns = [
     url(r"^locations/courts/$", pipeline.views.location_types.CourtList.as_view()),
     url(r"^locations/closed_mills/$", pipeline.views.location_types.ClosedMillList.as_view()),
     url(r"^locations/research_centres/$", pipeline.views.location_types.ResearchCentreList.as_view()),
+    url(r"^locations/airports/$", pipeline.views.location_types.AirportList.as_view()),
     url(r"^locations/$", pipeline.views.general.LocationList.as_view()),
 
     url(r"^services/$", pipeline.views.general.ServiceList.as_view()),
