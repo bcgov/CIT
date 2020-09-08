@@ -6,6 +6,7 @@
           :src="require(`~/assets/images/${image}`)"
           contain
           max-height="190"
+          aspect-ratio="1"
         ></v-img>
       </div>
       <v-card-text>
