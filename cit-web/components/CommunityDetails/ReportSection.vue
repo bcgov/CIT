@@ -13,8 +13,12 @@
         <v-col v-for="report in reportCard" :key="report.name" xl="3" lg="3">
           <ReportCard
             :page-name="report.pid"
+            :compare-page-name="report.cpid"
             :title="report.name"
+            :image="report.image"
+            :description="report.description"
             :cid="cid"
+            :rid="community.regional_district"
             :subtitle="placeName"
             extra-classname="demographics"
           ></ReportCard>
@@ -35,5 +39,6 @@ export default class ReportSection extends Vue {
   @Prop({ default: null, type: Object }) reportCards
   @Prop({ default: null, type: String }) placeName
   @Prop({ default: null, type: Number }) cid
+  @Prop({ defualt: null, type: Object }) community
 }
 </script>

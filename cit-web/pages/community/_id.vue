@@ -72,10 +72,12 @@ import {
   getCommunity,
   getCensusSubDivision,
   getCommunityList,
+  getRegionalDistricts,
 } from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
 import { getAuthToken } from '~/api/ms-auth-api/'
 import LocationCard from '~/components/Location/LocationCard.vue'
+import reportPages from '~/data/communityDetails/reportPages.json'
 
 @Component({
   Breadcrumbs,
@@ -97,47 +99,7 @@ export default class CommunityDetail extends Vue {
   censusSubdivision = {}
   mapLoaded = false
   panels = [0, 1, 2, 3, 4]
-  reportCards = {
-    Housing: [
-      {
-        name: 'Domestic',
-        pid: 'ReportSectiona6891d7c6caa01ac431d',
-        description: '',
-      },
-      {
-        name: 'Education',
-        pid: 'ReportSection2e89dc5afd87ef0ae354',
-      },
-      {
-        name: 'Culture',
-        pid: 'ReportSectioned265c9a280b2bf7a925',
-      },
-    ],
-    'Economics/Employment': [
-      {
-        name: 'Income/Jobs',
-        pid: 'ReportSectionf2b8f5bb464e6d79a9ed',
-      },
-      {
-        name: 'Natural Resources',
-        pid: 'ReportSection8f523b520a86970e96d4',
-      },
-    ],
-    'Assets & Infrastructure': [
-      {
-        name: 'Health & Emergency',
-        pid: 'ReportSection07d9e73c5386ee5b1645',
-      },
-      {
-        name: 'Government Services',
-        pid: 'ReportSectionb573e08eb7a7e160fd80',
-      },
-      {
-        name: 'Connectivity',
-        pid: 'ReportSectionbc899e8fac8c2b494765',
-      },
-    ],
-  }
+  reportCards = reportPages
 
   // Methods
 
@@ -248,31 +210,17 @@ export default class CommunityDetail extends Vue {
   }
 
   async fetch({ store }) {
-    try {
-      const response = await getAuthToken()
-      const { status } = response
-      if (status === 200) {
-        const accessToken = response.data && response.data.access_token
-        if (accessToken) {
-          store.commit('msauth/setAccessToken', accessToken)
-        }
-      }
-    } catch (e) {
-      store.commit('msauth/setAccessToken', null)
-    }
-
-    try {
-      const response = await getCommunityList()
-      const { status } = response
-      if (status === 200) {
-        const communities = response.data
-        if (communities) {
-          store.commit('communities/setCommunities', communities)
-        }
-      }
-    } catch (e) {
-      store.commit('communities/setCommunities', [])
-    }
+    const results = await Promise.all([
+      getRegionalDistricts(),
+      getCommunityList(),
+      getAuthToken(),
+    ])
+    const regionalDistricts = results[0].data.results
+    store.commit('communities/setRegionalDistricts', regionalDistricts)
+    const communityList = results[1].data
+    store.commit('communities/setCommunities', communityList)
+    const accessToken = results[2].data.access_token
+    store.commit('msauth/setAccessToken', accessToken)
   }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
