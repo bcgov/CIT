@@ -34,6 +34,8 @@ V<template>
             </v-col>
           </v-row>
           <ReportSection
+            :place-name="placeName"
+            :community="communityDetails"
             :report-cards="reportCards"
             :cid="communityDetails.id"
           ></ReportSection>
@@ -88,22 +90,6 @@ import LocationCard from '~/components/Location/LocationCard.vue'
   filters: {
     yesno,
   },
-  head() {
-    return {
-      title: this.placeName,
-      script: [
-        {
-          src: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js',
-        },
-      ],
-      link: [
-        {
-          rel: 'stylesheet',
-          href: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css',
-        },
-      ],
-    }
-  },
 })
 export default class CommunityDetail extends Vue {
   layers = true
@@ -116,6 +102,7 @@ export default class CommunityDetail extends Vue {
       {
         name: 'Domestic',
         pid: 'ReportSectiona6891d7c6caa01ac431d',
+        description: '',
       },
       {
         name: 'Education',

@@ -15,6 +15,7 @@
             :page-name="report.pid"
             :title="report.name"
             :cid="cid"
+            :subtitle="placeName"
             extra-classname="demographics"
           ></ReportCard>
         </v-col>
@@ -32,6 +33,7 @@ import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
 })
 export default class ReportSection extends Vue {
   @Prop({ default: null, type: Object }) reportCards
+  @Prop({ default: null, type: String }) placeName
   @Prop({ default: null, type: Number }) cid
 }
 </script>
