@@ -19,8 +19,9 @@ export default class MainReport extends Vue {
 
   @Watch('cids')
   onCidsChanged() {
-    console.log('CID Changed')
-    this.setFilter()
+    this.whenReportLoaded((report) => {
+      this.setFilter()
+    })
   }
 
   embedToken = null
@@ -50,11 +51,21 @@ export default class MainReport extends Vue {
     this.listenToEvents()
   }
 
+  whenReportLoaded(fn) {
+    if (this.loaded) {
+      fn(this.report)
+    } else {
+      this.$on('loaded', (report) => {
+        fn(report)
+      })
+    }
+  }
+
   listenToEvents() {
     this.report.on('loaded', (event) => {
       console.log('Loaded')
       this.loaded = true
-      this.$emit('loaded')
+      this.$emit('loaded', this.report)
       this.setFilter()
     })
 

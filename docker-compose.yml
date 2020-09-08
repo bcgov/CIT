@@ -18,12 +18,11 @@ services:
     networks:
       - back-tier
     environment:
+      - TENANT_ID=04bb63e9-2141-43c1-95a7-5595ef09761a
+      - CLIENT_ID=55b92cf4-c773-4b33-be8d-101cbb1d678e
       - AUTHORITY=https://login.microsoftonline.com/
       - SCOPE=https://analysis.windows.net/powerbi/api/.default
-      - TENANT_ID=${TENANT_ID}
-      - CLIENT_ID=${CLIENT_ID}
-      - CLIENT_SECRET=${CLIENT_SECRET}
-      - ROUTE_PLANNER_API_KEY=${ROUTE_PLANNER_API_KEY}
+      - CLIENT_SECRET=U3Oc_oTHI-d1CR0UR.6XNU35~q19zaHcnv
   db:
     image: mdillon/postgis
     volumes:

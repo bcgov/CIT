@@ -34,6 +34,8 @@ V<template>
             </v-col>
           </v-row>
           <ReportSection
+            :place-name="placeName"
+            :community="communityDetails"
             :report-cards="reportCards"
             :cid="communityDetails.id"
           ></ReportSection>
@@ -100,6 +102,7 @@ export default class CommunityDetail extends Vue {
       {
         name: 'Domestic',
         pid: 'ReportSectiona6891d7c6caa01ac431d',
+        description: '',
       },
       {
         name: 'Education',
