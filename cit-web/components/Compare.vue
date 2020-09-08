@@ -37,7 +37,7 @@
         :page-name="pid"
         :cids="cids"
         extra-classname="demographics"
-        @loaded="loading = false"
+        @loaded="handleLoaded"
       ></Report>
     </div>
   </div>
@@ -128,6 +128,11 @@ export default class Compare extends Vue {
     } else {
       this.cids = []
     }
+  }
+
+  handleLoaded() {
+    this.loading = false
+    this.$emit('loaded')
   }
 
   mounted() {

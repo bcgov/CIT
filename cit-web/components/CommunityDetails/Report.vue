@@ -43,7 +43,6 @@ export default class MainReport extends Vue {
       this.groupId,
       this.reportId
     )
-    console.log(tokenInGroup)
     this.embedToken = tokenInGroup.token
     const configuration = this.getEmbedConfiguration()
     const container = this.$refs.reportContainer
@@ -63,14 +62,12 @@ export default class MainReport extends Vue {
 
   listenToEvents() {
     this.report.on('loaded', (event) => {
-      console.log('Loaded')
       this.loaded = true
       this.$emit('loaded', this.report)
       this.setFilter()
     })
 
     this.report.on('rendered', () => {
-      console.log('Rendered')
       this.$emit('rendered')
     })
   }
