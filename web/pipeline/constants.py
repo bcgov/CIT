@@ -39,7 +39,7 @@ LOCATION_TYPES = {
 
 CSV_RESOURCES = {
     # Provided by NetworkBC Team
-    'communities': {'csv_path': 'data/COMMUNITIES_V5.csv', 'model': Community},
+    'communities': {'csv_path': 'data/COMMUNITIES_V6.csv', 'model': Community},
     'first_responders': {'csv_path': 'data/FRST_RSPND.csv', 'model': FirstResponder},
     'diagnostic_facilities': {'csv_path': 'data/DIAG_FACLT.csv', 'model': DiagnosticFacility},
     'timber_facilities': {'csv_path': 'data/GSRTMBRPRC.csv', 'model': TimberFacility},
