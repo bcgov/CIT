@@ -97,6 +97,41 @@ def import_communities_from_csv(communities_file_path):
                 community.percent_10_2 = speeds_map['10/2'] / total_length
                 community.percent_5_1 = speeds_map['5/1'] / total_length
 
+            community.nearest_substation_name = row['Nearest Substation Name']
+            try:
+                community.nearest_substation_distance = float(row['Distance to Nearest Substation (km)'])
+            except ValueError:
+                # nearest_substation_distance is null
+                pass
+
+            try:
+                community.nearest_transmission_distance = float(row['Distance to Nearest Transmission Line (km)'])
+            except ValueError:
+                # nearest_transmission_distance is null
+                pass
+            community.transmission_lines_owner = row['Transmission Lines Owner']
+            community.transmission_line_description = row['Transmission Line Description']
+
+            try:
+                community.transmission_line_voltage = float(row['Transmission Line Voltage (kV)'])
+            except ValueError:
+                # transmission_line_voltage is null
+                pass
+
+            try:
+                community.power_pop_2km_capacity = float(
+                    row['POP Capacity (Gbps) for communities that are within 2km of POP'])
+            except ValueError:
+                # power_pop_2km_capacity is null
+                pass
+
+            try:
+                community.power_remaining_pop_capacity = float(
+                    row['Remaining Capacity of POP (Gbps) - (-1 indicates capacity is unknown)'])
+            except ValueError:
+                # power_remaining_pop_capacity is null
+                pass
+
             try:
                 community.save()
             except IntegrityError as e:

@@ -58,6 +58,20 @@ class Community(models.Model):
     # CBC Phase
     cbc_phase = models.CharField(max_length=255, null=True, blank=True)
 
+    # Power Access
+    nearest_substation_name = models.CharField(max_length=255, null=True, blank=True)
+    nearest_substation_distance = models.FloatField(null=True, blank=True)
+    nearest_transmission_distance = models.FloatField(null=True, blank=True)
+    transmission_lines_owner = models.CharField(max_length=255, null=True, blank=True)
+    transmission_line_description = models.CharField(max_length=255, null=True, blank=True)
+    transmission_line_voltage = models.FloatField(null=True, blank=True, help_text="Transmission Line Voltage (kV)")
+    power_pop_2km_capacity = models.FloatField(
+        null=True, blank=True,
+        help_text="POP Capacity (Gbps) for communities that are within 2km of POP")
+    power_remaining_pop_capacity = models.FloatField(
+        null=True, blank=True,
+        help_text="Remaining Capacity of POP (Gbps) - (-1 indicates capacity is unknown)")
+
     # Calculated fields (cached in the model for performance reasons)
     num_courts = models.IntegerField(null=True)
     num_schools = models.IntegerField(null=True)
