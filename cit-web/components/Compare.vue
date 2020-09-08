@@ -97,17 +97,17 @@ export default class Compare extends Vue {
   }
 
   handleChange(data) {
-    console.log(data)
     let cids = []
     if (this.mode === 'Communities') {
       cids = data.map((cid) => cid.toString())
     } else if (this.mode === 'Regional Districts') {
-      const temp = []
+      let temp = []
       data.map((rid) => {
-        temp.push(this.communities.filter((c) => c.regional_district !== rid))
+        temp = temp.concat(
+          this.communities.filter((c) => c.regional_district === rid)
+        )
       })
-      console.log('Temp', temp)
-      cids = temp.map((cid) => cid.toString())
+      cids = temp.map((c) => c.id.toString())
     }
     this.cids = cids
   }

@@ -20,6 +20,6 @@ export default class CompareSelect extends Vue {
   })
   items
 
-  selected = null
+  selected = 'All Of BC'
 }
 </script>
