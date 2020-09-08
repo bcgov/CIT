@@ -7,6 +7,16 @@
             <v-icon small class="mr-2">mdi-file-chart</v-icon>
             View Reports
           </v-btn>
+          <v-btn
+            small
+            depressed
+            color="info"
+            v-bind="attrs"
+            class="ml-2"
+            :href="`mailto:${citFeedbackEmail}?subject=CIT Feedback`"
+          >
+            Give Feedback
+          </v-btn>
         </template>
         <v-card>
           <v-toolbar dark color="primary">
@@ -34,5 +44,6 @@ import ExploreReportSection from '~/components/Explore/ExploreReportSection'
 export default class ReportDialog extends Vue {
   @Prop({ default: null, type: Array }) cids
   dialog = false
+  citFeedbackEmail = this.$config.citFeedbackEmail
 }
 </script>
