@@ -482,6 +482,10 @@ def get_fields_for_location_type(location_type):
         "research_centres": [
             "research_specialties", "research_centre_affiliation", "institution", "inst_acrnm",
             "research_sector", "cntr_type"],
+        "airports": [
+            "descriptn", "keywords", "aer_status", "aircr_acs", "data_srce", "datasrc_yr", "elevation", "fuel_avail",
+            "heli_acs", "iata", "mx_rway_ln", "num_rway", "rway_surf", "oil_avail", "seapln_acc",
+        ]
     }
 
     return common_fields + location_specific_fields[location_type]
