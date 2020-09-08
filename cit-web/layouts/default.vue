@@ -14,7 +14,16 @@
       <nuxt />
     </div>
     <div class="footer">
-      <v-footer color="primary" height="66"></v-footer>
+      <v-footer color="primary" height="66">
+        <v-btn
+          color="info"
+          :href="`mailto:${citFeedbackEmail}?subject=CIT Feedback`"
+          class="btn"
+          target="_blank"
+          depressed
+          >Give feedback</v-btn
+        >
+      </v-footer>
     </div>
   </v-app>
 </template>
@@ -25,7 +34,9 @@ import CommSearch from '~/components/CommSearch.vue'
 @Component({
   CommSearch,
 })
-export default class DefaultLayout extends Vue {}
+export default class DefaultLayout extends Vue {
+  citFeedbackEmail = this.$config.citFeedbackEmail
+}
 </script>
 
 <style lang="scss" scoped>
