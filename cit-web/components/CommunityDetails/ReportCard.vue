@@ -54,39 +54,59 @@
             </div>
             <v-divider></v-divider>
 
-            <div v-if="comparePageName">
-              <v-container fluid>
-                <v-row>
-                  <v-col cols="4">
-                    <Report
-                      :page-name="pageName"
-                      :cids="[cid]"
-                      extra-classname="demographics"
-                    ></Report>
-                  </v-col>
-                  <v-col cols="4">
-                    <Report
-                      :page-name="comparePageName"
-                      :cids="[cid]"
-                      extra-classname="demographics"
-                    ></Report>
-                  </v-col>
-                  <v-col cols="4">
-                    <Compare
-                      :pid="comparePageName"
-                      :rid="rid"
-                      init-mode="Regional Districts"
-                    ></Compare>
-                  </v-col>
-                </v-row>
-              </v-container>
+            <div v-if="!isAllReportsLoaded">
+              <h6 class="text-h6 text-center mt-10 mb-10">
+                Generating your report
+              </h6>
+              <div class="progress-reportcard">
+                <v-progress-linear
+                  color="indigo accent-4"
+                  indeterminate
+                  rounded
+                  height="6"
+                ></v-progress-linear>
+              </div>
             </div>
-            <div v-else>
-              <Report
-                :page-name="pageName"
-                :cids="[cid]"
-                extra-classname="demographics"
-              ></Report>
+            <div v-show="isAllReportsLoaded">
+              <div v-if="comparePageName">
+                <v-container fluid>
+                  <v-row>
+                    <v-col cols="4">
+                      <Report
+                        :page-name="pageName"
+                        :cids="[cid]"
+                        extra-classname="demographics"
+                        @loaded="reportOneLoaded = true"
+                      ></Report>
+                    </v-col>
+                    <v-col cols="4">
+                      <Report
+                        :page-name="comparePageName"
+                        :cids="[cid]"
+                        extra-classname="demographics"
+                        @loaded="reportTwoLoaded = true"
+                      ></Report>
+                    </v-col>
+                    <v-col cols="4">
+                      <Compare
+                        :loader="false"
+                        :pid="comparePageName"
+                        :rid="rid"
+                        init-mode="Regional Districts"
+                        @loaded="reportThreeLoaded = true"
+                      ></Compare>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </div>
+              <div v-else>
+                <Report
+                  :page-name="pageName"
+                  :cids="[cid]"
+                  extra-classname="demographics"
+                  @loaded="reportOneLoaded = true"
+                ></Report>
+              </div>
             </div>
           </div>
         </v-card>
@@ -116,5 +136,25 @@ export default class CommunityReportCard extends Vue {
   @Prop({ default: '', type: String }) extraClassname
 
   dialog = false
+
+  reportOneLoaded = false
+  reportTwoLoaded = false
+  reportThreeLoaded = false
+
+  get isAllReportsLoaded() {
+    if (this.cid) {
+      return (
+        this.reportOneLoaded && this.reportTwoLoaded && this.reportThreeLoaded
+      )
+    } else {
+      return this.reportOneLoaded
+    }
+  }
 }
 </script>
+<style lang="scss" scoped>
+.progress-reportcard {
+  max-width: 400px;
+  margin: 0 auto;
+}
+</style>

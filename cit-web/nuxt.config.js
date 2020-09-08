@@ -159,4 +159,9 @@ export default {
     reportId: process.env.POWERBI_REPORT_ID,
     citFeedbackEmail: 'info@example.org',
   },
+  watchers: {
+    webpack: {
+      ignored: /node_modules/,
+    },
+  },
 }
