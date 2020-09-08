@@ -3,10 +3,14 @@
     <v-container fluid>
       <v-row>
         <v-col :cols="selectCols">
-          <CompareSelect @changed="handleSelectChange"></CompareSelect>
+          <CompareSelect
+            ref="compareSelect"
+            @changed="handleSelectChange"
+          ></CompareSelect>
         </v-col>
-        <v-col v-if="showAutoComplete" cols="9">
+        <v-col v-show="showAutoComplete" cols="9">
           <CompareAutocomplete
+            ref="compareAutoComplete"
             :items="items"
             item-value="id"
             :item-text="itemText"
@@ -17,11 +21,11 @@
       </v-row>
     </v-container>
 
-    <div v-if="loading">
+    <div v-if="loader && loading">
       <h6 class="text-h6 text-center mt-10 mb-10">Generating your report</h6>
       <div class="progress-compare">
         <v-progress-linear
-          color="deep-purple accent-4"
+          color="indigo accent-4"
           indeterminate
           rounded
           height="6"
@@ -30,7 +34,7 @@
     </div>
     <div v-show="!loading">
       <Report
-        page-name="ReportSection6249eac6d911d2930de3"
+        :page-name="pid"
         :cids="cids"
         extra-classname="demographics"
         @loaded="loading = false"
@@ -40,7 +44,7 @@
 </template>
 
 <script>
-import { Component, Vue, namespace } from 'nuxt-property-decorator'
+import { Component, Vue, namespace, Prop } from 'nuxt-property-decorator'
 import CompareAutocomplete from '~/components/CompareAutocomplete'
 import CompareSelect from '~/components/CompareSelect'
 import Report from '~/components/CommunityDetails/Report'
@@ -51,8 +55,13 @@ const commModule = namespace('communities')
   CompareSelect,
 })
 export default class Compare extends Vue {
+  @Prop({ default: 'ReportSection6249eac6d911d2930de3', type: String }) pid
+  @Prop({ default: 'All Of BC', type: String }) initMode
+  @Prop({ default: null, type: Number }) rid
+  @Prop({ default: true, type: Boolean }) loader
   @commModule.Getter('getCommunities') communities
   @commModule.Getter('getRegionalDistricts') regionalDistricts
+
   loading = true
 
   get itemText() {
@@ -118,6 +127,16 @@ export default class Compare extends Vue {
       this.cids = this.allCids
     } else {
       this.cids = []
+    }
+  }
+
+  mounted() {
+    console.log('Refs', this.$refs)
+    const compareSelect = this.$refs.compareSelect
+    const compareAutoComplete = this.$refs.compareAutoComplete
+    if (this.rid) {
+      compareSelect.setSelected('Regional Districts')
+      compareAutoComplete.setAutoComplete([this.rid])
     }
   }
 }

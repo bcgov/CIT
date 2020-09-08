@@ -20,6 +20,13 @@ export default class CompareSelect extends Vue {
   })
   items
 
-  selected = 'All Of BC'
+  @Prop({ default: 'All Of BC', type: String }) init
+
+  selected = null
+
+  setSelected(mode) {
+    this.selected = mode
+    this.$emit('changed', this.selected)
+  }
 }
 </script>
