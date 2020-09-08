@@ -14,6 +14,7 @@ from pipeline.models.location_assets import (
     PostSecondaryInstitution,
     ClosedMill,
     ResearchCentre,
+    Airport,
 )
 from pipeline.models.community import Community
 
@@ -33,6 +34,7 @@ LOCATION_TYPES = {
     'post_secondary_institutions': PostSecondaryInstitution,
     'closed_mills': ClosedMill,
     'resesarch_centres': ResearchCentre,
+    'airports': Airport,
 }
 
 CSV_RESOURCES = {
@@ -43,6 +45,7 @@ CSV_RESOURCES = {
     'timber_facilities': {'csv_path': 'data/GSRTMBRPRC.csv', 'model': TimberFacility},
     'civic_facilities': {'csv_path': 'data/CIVIC_FAC.csv', 'model': CivicFacility},
     'closed_mills': {'csv_path': 'data/closed_mills.csv', 'model': ClosedMill},
+    'airports': {'csv_path': 'data/ARPRTS.csv', 'model': Airport},
 }
 
 
