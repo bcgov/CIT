@@ -3,7 +3,7 @@ from rest_framework import serializers
 from pipeline.models.location_assets import (
     FirstResponder, DiagnosticFacility, TimberFacility, CivicFacility, Hospital, NaturalResourceProject,
     EconomicProject, ServiceBCLocation, School, Clinic, Court, PostSecondaryInstitution,
-    ClosedMill, ResearchCentre,
+    ClosedMill, ResearchCentre, Airport,
 )
 
 
@@ -306,4 +306,37 @@ class ResearchCentreSerializer(serializers.ModelSerializer):
             "inst_acrnm",
             "research_sector",
             "cntr_type",
+        )
+
+
+class AirportSerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+
+    class Meta:
+        model = Airport
+        fields = (
+            "id",
+            "name",
+            "latitude",
+            "longitude",
+            "location_fuzzy",
+            "community",
+            "location_website",
+            "location_phone",
+            "descriptn",
+            "keywords",
+            "aer_status",
+            "aircr_acs",
+            "data_srce",
+            "datasrc_yr",
+            "elevation",
+            "fuel_avail",
+            "heli_acs",
+            "iata",
+            "mx_rway_ln",
+            "num_rway",
+            "rway_surf",
+            "oil_avail",
+            "seapln_acc",
         )

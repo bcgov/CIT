@@ -26,7 +26,8 @@ def import_resource(resource_type):
 
     # TODO SY - move this into constants?
     location_csv_resources = [
-        "first_responders", "diagnostic_facilities", "timber_facilities", "civic_facilities", "closed_mills"]
+        "first_responders", "diagnostic_facilities", "timber_facilities", "civic_facilities",
+        "closed_mills", "airports"]
 
     if resource_type == "communities":
         import_communities_from_csv(file_path)
@@ -37,26 +38,3 @@ def import_resource(resource_type):
             import_data_into_point_model(resource_type, resource_config["model"], row)
     else:
         print("Error: Resource type {} not supported".format(resource_type))
-
-
-# TODO: this is unused right now
-# def get_route_planner_distance(origin, destination):
-#     """
-#     Use the BC Route Planner to get driving distances between points.
-#     """
-#     api_url = "https://router.api.gov.bc.ca/distance.json?points={origin_lng}%2C{origin_lat}%2C{destination_lng}%2C{destination_lat}".format(
-#         origin_lng=origin.longitude(),
-#         origin_lat=origin.latitude(),
-#         destination_lng=destination.longitude(),
-#         destination_lat=destination.latitude())
-
-#     response = requests.get(
-#         api_url,
-#         headers={"accept": "*/*", "apikey": settings.ROUTE_PLANNER_API_KEY})
-
-#     route = response.json()
-#     distance = route["distance"]
-#     travel_time = route["time"]
-#     travel_time_display = route["timeText"]
-
-#     return distance, travel_time, travel_time_display
