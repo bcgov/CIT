@@ -138,11 +138,25 @@ export default {
       },
       plugins: ['@babel/plugin-proposal-optional-chaining'],
     },
+    extend(config, ctx) {
+      // Run ESLint on save
+      if (ctx.isDev && ctx.isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/,
+          options: {
+            fix: true,
+          },
+        })
+      }
+    },
   },
   publicRuntimeConfig: {
     MAPBOX_API_KEY:
       'pk.eyJ1IjoiY291bnRhYmxlLXdlYiIsImEiOiJjamQyZG90dzAxcmxmMndtdzBuY3Ywa2ViIn0.MU-sGTVDS9aGzgdJJ3EwHA',
     reportId: process.env.POWERBI_REPORT_ID,
-    citFeedbackEmail: 'info@example.org'
+    citFeedbackEmail: 'info@example.org',
   },
 }
