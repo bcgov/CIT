@@ -19,10 +19,13 @@
       </li>
       <li id="distances-50km">
         <p>
-          We only calculate driving distances where the birds' eye distance is
-          within 50 km between location assets and communities, OR the distances
-          between the nearest location asset of each type for a community if
-          none are within 50 km.
+          We calculated driving distances and driving times using the
+          <a href="https://catalogue.data.gov.bc.ca/dataset/bc-route-planner"
+            >BC Route Planner API</a
+          >. We only calculate driving distances where the birds' eye distance
+          is within 50 km between location assets and communities, OR the
+          distances between the nearest location asset of each type for a
+          community if none are within 50 km.
         </p>
         <a href="#distances-50km">Permalink</a>
       </li>
@@ -33,6 +36,7 @@
           from the search results if they do not have driving distances (e.g. if
           they are not on a public road) even if they "should" be within the
           specified distance.
+          <a href="#distances-50km">Read more about driving distances.</a>
         </p>
         <a href="#search-filters-distance">Permalink</a>
       </li>
