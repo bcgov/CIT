@@ -131,12 +131,13 @@ export default class Compare extends Vue {
   }
 
   mounted() {
-    console.log('Refs', this.$refs)
     const compareSelect = this.$refs.compareSelect
     const compareAutoComplete = this.$refs.compareAutoComplete
     if (this.rid) {
       compareSelect.setSelected('Regional Districts')
       compareAutoComplete.setAutoComplete([this.rid])
+    } else {
+      console.log(this)
     }
   }
 }
