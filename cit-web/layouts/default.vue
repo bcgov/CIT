@@ -16,11 +16,13 @@
     <div class="footer">
       <v-footer color="primary" height="66">
         <v-btn
-          color="info"
-          :href="`mailto:${citFeedbackEmail}?subject=CIT Feedback`"
-          class="btn"
-          target="_blank"
+          color="primary"
           depressed
+          width="225"
+          height="40"
+          :href="`mailto:${citFeedbackEmail}?subject=CIT Feedback`"
+          class="btn feedback-button text-capitalize"
+          target="_blank"
           >Give feedback</v-btn
         >
       </v-footer>
@@ -75,5 +77,8 @@ body {
 .main-title {
   color: white !important;
   text-decoration: none;
+}
+.feedback-button {
+  border: 1px solid white !important;
 }
 </style>
