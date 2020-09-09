@@ -1,14 +1,14 @@
 <template>
   <div>
     <v-container fluid>
-      <v-row>
-        <v-col :cols="selectCols">
+      <v-row class="align-center">
+        <v-col :cols="selectCols" align-self="center">
           <CompareSelect
             ref="compareSelect"
             @changed="handleSelectChange"
           ></CompareSelect>
         </v-col>
-        <v-col v-show="showAutoComplete" cols="9">
+        <v-col v-show="showAutoComplete" cols="9" align-self="center">
           <CompareAutocomplete
             ref="compareAutoComplete"
             :items="items"

@@ -5,6 +5,7 @@
     :item-value="itemValue"
     :item-text="itemText"
     :multiple="multiple"
+    hide-details
     @change="handleUpdate"
   >
     <template v-slot:selection="data">

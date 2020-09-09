@@ -5,20 +5,20 @@
       "pid": "ReportSection40208eb2bd583e69022a",
       "cpid": "ReportSection33f0d75c8f1e581816d6",
       "description": "How and where to do people live in this area? What kind of homes do people live in, and do they own them or rent? *This page shows data on census subdivisions of communities in BC communities you've selected.",
-      "image": "domestic_illust_header.svg"
+      "image": "domestic.svg"
     },
     {
       "name": "Demographics",
       "pid": "ReportSectioned265c9a280b2bf7a925",
       "cpid": "ReportSectionce86ffd870642ae4e7b8",
-      "image": "domestic_illust_header.svg"
+      "image": "domestic.svg"
     },
     {
       "name": "Education",
       "pid": "ReportSection2e89dc5afd87ef0ae354",
       "cpid": "ReportSectione465e2e7c11425d1ec71",
       "description": "Stats on access to schools and population education level",
-      "image": "education_illus_header.svg"
+      "image": "education.svg"
     }
   ],
   "Economics/Employment": [
@@ -27,13 +27,13 @@
       "pid": "ReportSectionf2b8f5bb464e6d79a9ed",
       "cpid": "ReportSection067effabf93ddf06a487",
       "description": "What employment and opportunities are in this community?",
-      "image": "economic_illus_header.svg"
+      "image": "economic.svg"
     },
     {
       "name": "Natural Resources",
       "pid": "ReportSection8f523b520a86970e96d4",
       "cpid": "ReportSection9102d6de04d96ccc6b39",
-      "image": "naturalResources_illus_header.svg"
+      "image": "natural_resources.svg"
     }
   ],
   "Assets & Infrastructure": [
@@ -41,7 +41,7 @@
       "name": "Health & Emergency",
       "pid": "ReportSection9225d60e07de606ad6e0",
       "cpid": "ReportSection0685d299f800b594fcda",
-      "image": "domestic_illust_header.svg",
+      "image": "domestic.svg",
       "description": "Community healthcare access and first responders"
     },
     {
@@ -49,14 +49,14 @@
       "pid": "ReportSectionb573e08eb7a7e160fd80",
       "cpid": "ReportSection44b16367429b095d47ef",
       "description": "This is a list of civic facilities available in this community.",
-      "image": "domestic_illust_header.svg"
+      "image": "domestic.svg"
     },
     {
       "name": "Connectivity",
       "pid": "ReportSectionbc899e8fac8c2b494765",
       "cpid": "ReportSectione62c63148a89f566c083",
       "description": "Internet services available in this community, by provider. Click the chart on the left to see which providers offer which services.",
-      "image": "domestic_illust_header.svg"
+      "image": "domestic.svg"
     }
   ]
 }

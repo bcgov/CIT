@@ -14,14 +14,15 @@
           <p class="text-body-1">{{ description }}</p>
         </div>
       </v-expand-transition>
-      <div style="width: 100%;">
-        <v-img
-          :src="require(`~/assets/images/${image}`)"
-          contain
-          max-height="190"
-          aspect-ratio="1"
-        ></v-img>
-      </div>
+
+      <v-img
+        :src="require(`~/assets/images/reports/${image}`)"
+        cover
+        width="376"
+        height="220"
+        aspect-ratio="1"
+      ></v-img>
+
       <v-card-text>
         <p class="body-1 text--primary pa-0 ma-0">
           {{ title }}
@@ -59,9 +60,10 @@
               <v-spacer></v-spacer>
               <div>
                 <v-img
-                  :src="require(`~/assets/images/${image}`)"
-                  height="150px"
+                  :src="require(`~/assets/images/reports/headers/${image}`)"
                   contain
+                  width="376"
+                  max-height="190"
                   aspect-ratio="1"
                 ></v-img>
               </div>
@@ -94,6 +96,12 @@
                       ></Report>
                     </v-col>
                     <v-col cols="4">
+                      <h5
+                        class="text-center text-h4 font-weight-normal d-flex align-center justify-center"
+                        style="height: 104px;"
+                      >
+                        Your community: {{ subtitle }}
+                      </h5>
                       <Report
                         :page-name="comparePageName"
                         :cids="[cid]"
