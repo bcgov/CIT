@@ -49,6 +49,7 @@
                   :src="require(`~/assets/images/${image}`)"
                   height="150px"
                   contain
+                  aspect-ratio="1"
                 ></v-img>
               </div>
             </div>
