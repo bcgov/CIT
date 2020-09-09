@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { Component, Vue, namespace, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, namespace, Prop, Watch } from 'nuxt-property-decorator'
 import CompareAutocomplete from '~/components/CompareAutocomplete'
 import CompareSelect from '~/components/CompareSelect'
 import Report from '~/components/CommunityDetails/Report'
@@ -100,6 +100,12 @@ export default class Compare extends Vue {
 
   mode = 'All Of BC'
 
+  @Watch('mode')
+  handleModeChange() {
+    const compareAutoComplete = this.$refs.compareAutoComplete
+    compareAutoComplete.clear()
+  }
+
   remove(item) {
     const index = this.autocomplete.indexOf(item.id)
     if (index >= 0) this.autocomplete.splice(index, 1)
@@ -141,8 +147,6 @@ export default class Compare extends Vue {
     if (this.rid) {
       compareSelect.setSelected('Regional Districts')
       compareAutoComplete.setAutoComplete([this.rid])
-    } else {
-      console.log(this)
     }
   }
 }
