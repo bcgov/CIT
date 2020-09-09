@@ -16,7 +16,7 @@
       </v-expand-transition>
       <div style="width: 100%;">
         <v-img
-          :src="require(`~/assets/images/${image}`)"
+          :src="require(`~/assets/images/reports/${image}`)"
           contain
           max-height="190"
           aspect-ratio="1"
@@ -59,9 +59,9 @@
               <v-spacer></v-spacer>
               <div>
                 <v-img
-                  :src="require(`~/assets/images/${image}`)"
-                  height="150px"
+                  :src="require(`~/assets/images/reports/headers/${image}`)"
                   contain
+                  max-height="190"
                   aspect-ratio="1"
                 ></v-img>
               </div>

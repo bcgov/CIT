@@ -5,6 +5,7 @@
       :items="items"
       label="Solo field"
       solo
+      hide-details
       @change="$emit('changed', selected)"
     ></v-select>
   </div>
