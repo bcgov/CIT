@@ -101,9 +101,11 @@ export default class Compare extends Vue {
   mode = 'All Of BC'
 
   @Watch('mode')
-  handleModeChange() {
-    const compareAutoComplete = this.$refs.compareAutoComplete
-    compareAutoComplete.clear()
+  handleModeChange(mode) {
+    if (mode !== 'All Of BC') {
+      const compareAutoComplete = this.$refs.compareAutoComplete
+      compareAutoComplete.handleUpdate()
+    }
   }
 
   remove(item) {
