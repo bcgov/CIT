@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card :class="{ 'elevation-5': hover }" @click="dialog = true">
+    <v-card :class="{ 'elevation-5': hover }" @click="openReport">
       <div style="width: 100%;">
         <v-img
           src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
@@ -30,7 +30,7 @@
       >
         <v-card>
           <v-toolbar flat dark color="primary">
-            <v-btn icon dark @click="dialog = false">
+            <v-btn icon dark @click="closeReport">
               <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-toolbar-title>{{ title }}</v-toolbar-title>
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import ExploreReport from '~/components/Explore/ExploreReport.vue'
 
 @Component({
@@ -60,7 +60,39 @@ export default class ExploreReportCard extends Vue {
   @Prop({ default: null, type: String }) pageName
   @Prop({ default: null, type: String }) title
   @Prop({ default: null, type: Array }) cids
+  @Prop({ default: null, type: String }) selectedReportName
 
   dialog = false
+
+  mounted() {
+    this.handleDialogState()
+  }
+
+  @Watch('selectedReportName')
+  onSelectedReportNameChange() {
+    this.handleDialogState()
+  }
+
+  openReport() {
+    this.$emit('update:selectedReportName', this.getReportSlug(this.title))
+  }
+
+  closeReport() {
+    this.$emit('update:selectedReportName', null)
+  }
+
+  handleDialogState() {
+    const reportName = this.getReportSlug(this.title)
+
+    if (!this.selectedReportName) {
+      this.dialog = false
+    } else if (this.selectedReportName === reportName) {
+      this.dialog = true
+    }
+  }
+
+  getReportSlug(reportName) {
+    return encodeURIComponent(reportName.replace(' ', ''))
+  }
 }
 </script>
