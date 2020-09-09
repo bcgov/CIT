@@ -5,10 +5,10 @@
       item-value="id"
       item-text="place_name"
       :label="label"
-      append-icon="mdi-magnify"
+      append-icon="mdi-map-search"
       :solo="solo"
       hide-details
-      placeholder="Search for a specific community here"
+      placeholder="Community Name"
       :dense="dense"
       :outlined="outlined"
       @input="handleClick"
