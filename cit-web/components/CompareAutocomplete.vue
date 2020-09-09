@@ -47,5 +47,9 @@ export default class Compare extends Vue {
     this.autocomplete = data
     this.$emit('change', this.autocomplete)
   }
+
+  clear() {
+    this.autocomplete = []
+  }
 }
 </script>
