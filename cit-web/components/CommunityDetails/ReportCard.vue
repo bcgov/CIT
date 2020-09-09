@@ -118,26 +118,26 @@ export default class CommunityReportCard extends Vue {
   dialog = false
 
   openReport() {
-    this.dialog = true
-    const reportName = encodeURIComponent(this.title)
-    const newUrl = `${window.location.pathname}?report=${reportName}`
-    history.pushState('', '', newUrl)
+    const reportName = this.getReportSlug(this.title)
+    this.$router.push({ query: { report: reportName } })
   }
 
   closeReport() {
-    this.dialog = false
-    history.pushState('', '', window.location.pathname)
+    this.$router.push({ query: {} })
   }
 
-  @Watch('$route.query', { immediate: true, deep: true })
-  onUrlChange(newVal) {
-    console.log('here', newVal)
-    const reportName = encodeURIComponent(this.title)
-    if (newVal.report === reportName) {
-      this.dialog = true
-    } else {
+  @Watch('$route.query.report', { deep: true, immediate: true })
+  onUrlChange(selectedReport) {
+    const reportName = this.getReportSlug(this.title)
+    if (!selectedReport) {
       this.dialog = false
+    } else if (selectedReport === reportName) {
+      this.dialog = true
     }
+  }
+
+  getReportSlug(reportName) {
+    return encodeURIComponent(reportName.replace(' ', ''))
   }
 }
 </script>
