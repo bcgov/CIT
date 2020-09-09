@@ -8,7 +8,7 @@
       <v-expand-transition>
         <div
           v-if="hover"
-          class="pa-7 d-flex align-center transition-fade-in grey darken-4 v-card--reveal display-3 white--text hover-card"
+          class="pa-7 d-flex align-center transition-fade-in indigo darken-4 v-card--reveal display-3 white--text hover-card"
           style="height: 100%;"
         >
           <p class="text-body-1">{{ description }}</p>
