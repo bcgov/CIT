@@ -1,6 +1,19 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card :class="{ 'elevation-5': hover }" @click="dialog = true">
+    <v-card
+      :class="{ 'elevation-5': hover }"
+      style="position: relative;"
+      @click="dialog = true"
+    >
+      <v-expand-transition>
+        <div
+          v-if="hover"
+          class="pa-7 d-flex align-center transition-fade-in grey darken-4 v-card--reveal display-3 white--text hover-card"
+          style="height: 100%;"
+        >
+          <p class="text-body-1">{{ description }}</p>
+        </div>
+      </v-expand-transition>
       <div style="width: 100%;">
         <v-img
           :src="require(`~/assets/images/${image}`)"
@@ -49,6 +62,7 @@
                   :src="require(`~/assets/images/${image}`)"
                   height="150px"
                   contain
+                  aspect-ratio="1"
                 ></v-img>
               </div>
             </div>
@@ -156,5 +170,16 @@ export default class CommunityReportCard extends Vue {
 .progress-reportcard {
   max-width: 400px;
   margin: 0 auto;
+}
+.hover-card {
+  position: absolute;
+  top: 0;
+  z-index: 5;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.9;
 }
 </style>

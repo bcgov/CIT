@@ -13,41 +13,6 @@
     </div>
     <v-divider></v-divider>
 
-    <v-list dense nav class="ma-0">
-      <v-list-group :v-model="true" :prepend-icon="'mdi-map'" no-action>
-        <template v-slot:activator>
-          <v-list-item-content>
-            <v-list-item-title>
-              Layers
-            </v-list-item-title>
-          </v-list-item-content>
-        </template>
-
-        <v-list-item-content>
-          <div class="d-flex align-center mt-0">
-            <h5 class="ml-3">Schools</h5>
-            <v-spacer></v-spacer>
-            <v-switch
-              class="mt-0"
-              hide-details
-              dense
-              :v-model="true"
-            ></v-switch>
-          </div>
-          <div class="d-flex align-center mt-0">
-            <h5 class="ml-3">Hospitals</h5>
-            <v-spacer></v-spacer>
-            <v-switch
-              class="mt-0"
-              hide-details
-              dense
-              :v-model="true"
-            ></v-switch>
-          </div>
-        </v-list-item-content>
-      </v-list-group>
-    </v-list>
-    <v-divider></v-divider>
     <v-list dense nav>
       <v-list-group
         v-for="groupedLocation in groupedLocations"
