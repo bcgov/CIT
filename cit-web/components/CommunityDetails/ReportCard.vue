@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card :class="{ 'elevation-5': hover }" @click="dialog = true">
+    <v-card :class="{ 'elevation-5': hover }" @click="openReport">
       <div style="width: 100%;">
         <v-img
           :src="require(`~/assets/images/${image}`)"
@@ -31,7 +31,7 @@
       >
         <v-card>
           <v-toolbar flat dark color="primary">
-            <v-btn icon dark @click="dialog = false">
+            <v-btn icon dark @click="closeReport">
               <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-toolbar-title>{{ title }} - {{ subtitle }}</v-toolbar-title>
@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import Report from '~/components/CommunityDetails/Report.vue'
 import Compare from '~/components/Compare'
 
@@ -116,5 +116,28 @@ export default class CommunityReportCard extends Vue {
   @Prop({ default: '', type: String }) extraClassname
 
   dialog = false
+
+  openReport() {
+    this.dialog = true
+    const reportName = encodeURIComponent(this.title)
+    const newUrl = `${window.location.pathname}?report=${reportName}`
+    history.pushState('', '', newUrl)
+  }
+
+  closeReport() {
+    this.dialog = false
+    history.pushState('', '', window.location.pathname)
+  }
+
+  @Watch('$route.query', { immediate: true, deep: true })
+  onUrlChange(newVal) {
+    console.log('here', newVal)
+    const reportName = encodeURIComponent(this.title)
+    if (newVal.report === reportName) {
+      this.dialog = true
+    } else {
+      this.dialog = false
+    }
+  }
 }
 </script>
