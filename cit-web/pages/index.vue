@@ -88,4 +88,8 @@ export default class Index extends Vue {
 .explore-communities {
   margin-top: 5em;
 }
+
+.landing-page-illustration {
+  margin-top: -75px;
+}
 </style>
