@@ -5,6 +5,7 @@
     :item-value="itemValue"
     :item-text="itemText"
     :multiple="multiple"
+    hide-details
     @change="handleUpdate"
   >
     <template v-slot:selection="data">
@@ -45,6 +46,10 @@ export default class Compare extends Vue {
   setAutoComplete(data) {
     this.autocomplete = data
     this.$emit('change', this.autocomplete)
+  }
+
+  clear() {
+    this.autocomplete = []
   }
 }
 </script>

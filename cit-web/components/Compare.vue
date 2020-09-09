@@ -1,14 +1,14 @@
 <template>
   <div>
     <v-container fluid>
-      <v-row>
-        <v-col :cols="selectCols">
+      <v-row class="align-center">
+        <v-col :cols="selectCols" align-self="center">
           <CompareSelect
             ref="compareSelect"
             @changed="handleSelectChange"
           ></CompareSelect>
         </v-col>
-        <v-col v-show="showAutoComplete" cols="9">
+        <v-col v-show="showAutoComplete" cols="9" align-self="center">
           <CompareAutocomplete
             ref="compareAutoComplete"
             :items="items"
@@ -37,14 +37,14 @@
         :page-name="pid"
         :cids="cids"
         extra-classname="demographics"
-        @loaded="loading = false"
+        @loaded="handleLoaded"
       ></Report>
     </div>
   </div>
 </template>
 
 <script>
-import { Component, Vue, namespace, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, namespace, Prop, Watch } from 'nuxt-property-decorator'
 import CompareAutocomplete from '~/components/CompareAutocomplete'
 import CompareSelect from '~/components/CompareSelect'
 import Report from '~/components/CommunityDetails/Report'
@@ -100,6 +100,12 @@ export default class Compare extends Vue {
 
   mode = 'All Of BC'
 
+  @Watch('mode')
+  handleModeChange() {
+    const compareAutoComplete = this.$refs.compareAutoComplete
+    compareAutoComplete.clear()
+  }
+
   remove(item) {
     const index = this.autocomplete.indexOf(item.id)
     if (index >= 0) this.autocomplete.splice(index, 1)
@@ -130,14 +136,17 @@ export default class Compare extends Vue {
     }
   }
 
+  handleLoaded() {
+    this.loading = false
+    this.$emit('loaded')
+  }
+
   mounted() {
     const compareSelect = this.$refs.compareSelect
     const compareAutoComplete = this.$refs.compareAutoComplete
     if (this.rid) {
       compareSelect.setSelected('Regional Districts')
       compareAutoComplete.setAutoComplete([this.rid])
-    } else {
-      console.log(this)
     }
   }
 }

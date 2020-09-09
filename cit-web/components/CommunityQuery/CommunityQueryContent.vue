@@ -90,17 +90,14 @@ export default class CommunityQueryContent extends Vue {
   filters
 
   @Watch('filters') onFiltersChanged() {
-    console.log('filters changed', this.filters)
     this.updateReportFilters()
   }
 
   mounted() {
-    console.log('CommunityQueryContent mounted')
     this.getReport()
   }
 
   navigate(target) {
-    console.log('navigate', target)
     this.currentReport = target
     this.getReport()
   }
