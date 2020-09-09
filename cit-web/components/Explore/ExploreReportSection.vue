@@ -15,6 +15,7 @@
             :page-name="report.pid"
             :title="report.name"
             :cids="cids"
+            :selected-report-name.sync="selectedReportName"
             extra-classname="demographics"
           ></ExploreReportCard>
         </v-col>
@@ -24,7 +25,7 @@
 </template>
 
 <script>
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import ExploreReportCard from '~/components/Explore/ExploreReportCard'
 
 @Component({
@@ -32,6 +33,8 @@ import ExploreReportCard from '~/components/Explore/ExploreReportCard'
 })
 export default class ExploreReportSection extends Vue {
   @Prop({ default: null, type: Array }) cids
+  @Prop({ default: null, type: String }) selectedReportName
+
   reportCards = {
     Housing: [
       {
@@ -71,6 +74,11 @@ export default class ExploreReportSection extends Vue {
         pid: 'ReportSection498ce34a9e89c7c66ddd',
       },
     ],
+  }
+
+  @Watch('selectedReportName')
+  onSelectedReportNameChange() {
+    this.$emit('update:selectedReportName', this.selectedReportName)
   }
 }
 </script>

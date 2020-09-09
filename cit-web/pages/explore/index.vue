@@ -18,6 +18,8 @@
         <div class="mt-3 d-flex">
           <ReportDialog
             :cids="cidArray"
+            :selected-report-name.sync="selectedReportName"
+            :show-report-list.sync="showReportList"
             class="ml-2 d-inline-block"
           ></ReportDialog>
         </div>
@@ -37,7 +39,7 @@
 </template>
 
 <script>
-import { Component, Vue, namespace } from 'nuxt-property-decorator'
+import { Component, Vue, namespace, Watch } from 'nuxt-property-decorator'
 import groupBy from 'lodash/groupBy'
 import uniqBy from 'lodash/uniqBy'
 import intersectionBy from 'lodash/intersectionBy'
@@ -64,8 +66,44 @@ export default class Explore extends Vue {
   groupedCommunities = null
   filteredCommunities = null
   boundedCommunities = null
+  selectedReportName = null
+  showReportList = false
 
   @exploreStore.Getter('getSearchAsMove') searchAsMove
+
+  @Watch('$route.query', { immediate: true, deep: true })
+  onUrlChange(queryParams) {
+    if (queryParams.report) {
+      this.showReportList = true
+      this.selectedReportName = queryParams.report
+    } else if (queryParams.showReportList) {
+      this.showReportList = true
+      this.selectedReportName = null
+    } else {
+      this.showReportList = false
+      this.selectedReportName = null
+    }
+  }
+
+  @Watch('selectedReportName')
+  onSelectedReportNameChange() {
+    if (this.selectedReportName) {
+      this.$router.push({ query: { report: this.selectedReportName } })
+    } else if (this.showReportList) {
+      this.$router.push({ query: { showReportList: this.showReportList } })
+    } else {
+      this.$router.push({ query: {} })
+    }
+  }
+
+  @Watch('showReportList')
+  onShowReportListChange() {
+    if (this.showReportList) {
+      this.$router.push({ query: { showReportList: this.showReportList } })
+    } else {
+      this.$router.push({ query: {} })
+    }
+  }
 
   get flatCommunities() {
     return flatMap(this.groupedCommunities)

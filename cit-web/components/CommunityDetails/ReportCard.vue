@@ -155,6 +155,7 @@ export default class CommunityReportCard extends Vue {
   @Prop({ default: null, type: Number }) cid
   @Prop({ default: null, type: Number }) rid
   @Prop({ default: '', type: String }) extraClassname
+  @Prop({ default: null, type: String }) selectedReportName
 
   dialog = false
 
@@ -172,21 +173,29 @@ export default class CommunityReportCard extends Vue {
     }
   }
 
+  mounted() {
+    this.handleDialogState()
+  }
+
+  @Watch('selectedReportName')
+  onSelectedReportNameChange() {
+    this.handleDialogState()
+  }
+
   openReport() {
-    const reportName = this.getReportSlug(this.title)
-    this.$router.push({ query: { report: reportName } })
+    this.$emit('update:selectedReportName', this.getReportSlug(this.title))
   }
 
   closeReport() {
-    this.$router.push({ query: {} })
+    this.$emit('update:selectedReportName', null)
   }
 
-  @Watch('$route.query.report', { deep: true, immediate: true })
-  onUrlChange(selectedReport) {
+  handleDialogState() {
     const reportName = this.getReportSlug(this.title)
-    if (!selectedReport) {
+
+    if (!this.selectedReportName) {
       this.dialog = false
-    } else if (selectedReport === reportName) {
+    } else if (this.selectedReportName === reportName) {
       this.dialog = true
     }
   }
