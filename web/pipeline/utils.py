@@ -449,7 +449,7 @@ def get_location_assets_for_community(model_class, community):
         school_districts = community.schooldistrict_set.all()
         return School.objects.filter(school_district__in=school_districts)
     else:
-        return model_class.objects.filter(community=community)
+        return model_class.objects.filter(distances__distance__lte=50, distances__community=community)
 
 
 def get_fields_for_location_type(location_type):
