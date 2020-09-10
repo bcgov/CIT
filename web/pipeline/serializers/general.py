@@ -68,6 +68,7 @@ class CommunitySerializer(serializers.ModelSerializer):
             "percent_5_1",
             "nearest_substation_name",
             "nearest_substation_distance",
+            "nearest_transmission_distance",
             "transmission_lines_owner",
             "transmission_line_description",
             "transmission_line_voltage",
