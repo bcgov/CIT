@@ -63,7 +63,7 @@ export default class LocationInputs extends Vue {
 
   operatorTypes = [
     {
-      value: 'gte',
+      value: 'xgt',
       title: 'not within',
     },
     {
