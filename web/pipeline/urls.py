@@ -17,8 +17,7 @@ urlpatterns = [
     path("", include(router.urls)),
 
     url(r"^auth/$", pipeline.views.general.auth),
-    url(r"^locations/geojson/$", pipeline.views.general.LocationGeoJSONList.as_view()),
-    url(r"^datasources/$", pipeline.views.general.LocationSourcesList.as_view()),
+    url(r"^locations/geojson/$", pipeline.views.location_types.LocationGeoJSONList.as_view()),
     url(r"^locations/first_responders/$", pipeline.views.location_types.FirstResponderList.as_view()),
     url(r"^locations/diagnostic_facilities/$", pipeline.views.location_types.DiagnosticFacilityList.as_view()),
     url(r"^locations/timber_facilities/$", pipeline.views.location_types.TimberFacilityList.as_view()),
@@ -35,8 +34,9 @@ urlpatterns = [
     url(r"^locations/closed_mills/$", pipeline.views.location_types.ClosedMillList.as_view()),
     url(r"^locations/research_centres/$", pipeline.views.location_types.ResearchCentreList.as_view()),
     url(r"^locations/airports/$", pipeline.views.location_types.AirportList.as_view()),
-    url(r"^locations/$", pipeline.views.general.LocationList.as_view()),
+    url(r"^locations/$", pipeline.views.location_types.LocationList.as_view()),
 
+    url(r"^datasources/$", pipeline.views.general.DataSourcesList.as_view()),
     url(r"^services/$", pipeline.views.general.ServiceList.as_view()),
     url(r"^censussubdivisions/geojson/$", pipeline.views.general.CensusSubdivisionGeoJSONList.as_view()),
     url(r"^censussubdivisions/(?P<pk>[0-9]+)/$", pipeline.views.general.CensusSubdivisionDetail.as_view()),
