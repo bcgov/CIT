@@ -64,11 +64,11 @@ export default class LocationInputs extends Vue {
   operatorTypes = [
     {
       value: 'gte',
-      title: '≥',
+      title: 'not within',
     },
     {
       value: 'lte',
-      title: '≤',
+      title: 'within',
     },
   ]
 
