@@ -19,6 +19,7 @@ V<template>
                   :grouped-census="groupedCensus"
                   @expand="handleExpand"
                   @findOnMap="handleFind"
+                  @viewReports="viewReports"
                 ></Sidebar>
                 <div id="map" ref="map"></div>
               </div>
@@ -38,6 +39,7 @@ V<template>
             </v-col>
           </v-row>
           <ReportSection
+            ref="reportSection"
             :place-name="placeName"
             :community="communityDetails"
             :report-cards="reportCards"
@@ -191,6 +193,13 @@ export default class CommunityDetail extends Vue {
         href: '',
       },
     ]
+  }
+
+  viewReports() {
+    console.log('View Reports', this.$vuetify)
+    this.$vuetify.goTo(this.$refs.reportSection, {
+      offset: 200,
+    })
   }
 
   handleExpand(e) {
