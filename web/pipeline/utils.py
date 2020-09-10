@@ -579,7 +579,9 @@ def communities_advanced_search(query_params):
             query += "regional_district__id"
         elif query_filter["field"] in ["population", "population_percentage_change"]:
             query += "census_subdivision__{}".format(query_filter["field"])
-        elif query_filter["field"] in ["percent_50_10", "percent_25_5", "percent_10_2", "percent_5_1"]:
+        elif query_filter["field"] in [
+                "percent_50_10", "percent_25_5", "percent_10_2", "percent_5_1",
+                "nearest_substation_distance"]:
             query += query_filter["field"]
         elif query_filter["field"] == "is_coastal":
             query += query_filter["field"]
