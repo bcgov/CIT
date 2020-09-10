@@ -29,6 +29,7 @@ from pipeline.serializers.general import (
 from pipeline.utils import (
     generate_line_strings, filter_communities,
     serialize_communities_for_regional_districts, communities_advanced_search,
+    serialize_data_sources,
 )
 
 
@@ -42,6 +43,11 @@ def auth(request):
 class LocationList(generics.ListAPIView):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
+
+
+class LocationSourcesList(APIView):
+    def get(self, request, format=None):
+        return Response(serialize_data_sources())
 
 
 class CommunityViewSet(viewsets.GenericViewSet):
