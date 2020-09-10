@@ -60,6 +60,8 @@ class Hospital(Location):
     sv_description = models.TextField(null=True, blank=True)
     hours = models.TextField(null=True, blank=True)
 
+    num_communities_within_50km = models.IntegerField(null=True, blank=True)
+
     class Meta:
         ordering = ("id",)
     '''

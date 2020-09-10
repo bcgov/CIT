@@ -115,6 +115,7 @@ class HospitalSerializer(serializers.ModelSerializer):
             "rg_name",
             "sv_description",
             "hours",
+            "num_communities_within_50km",
         )
 
 
