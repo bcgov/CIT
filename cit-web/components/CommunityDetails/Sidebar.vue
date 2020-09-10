@@ -6,6 +6,15 @@
         <h6 class="text-center text-caption">
           Population: {{ population || 'N/A' }}
         </h6>
+        <div class="d-flex justify-center">
+          <v-btn
+            color="primary"
+            x-small
+            class="mt-5"
+            @click="$emit('viewReports')"
+            >View Reports
+          </v-btn>
+        </div>
       </SidebarHeader>
     </div>
     <v-divider></v-divider>
