@@ -32,6 +32,7 @@
     <div class="explore-map-container">
       <ExploreMap
         :mapbox-api-key="$config.MAPBOX_API_KEY"
+        :cids="cidArray"
         @moveend="handleMoveEnd"
       ></ExploreMap>
     </div>
@@ -168,10 +169,15 @@ export default class Explore extends Vue {
     }
 
     this.filteredCommunities = filteredCommunities
+    this.updateGroupedCommunities()
+  }
+
+  updateGroupedCommunities() {
     this.groupedCommunities = this.getFinalResult(
       this.filteredCommunities,
       this.boundedCommunities
     )
+    this.$root.$emit('communitiesChanged', this.flatCommunities)
   }
 
   getFinalResult(fc, bc) {
@@ -182,6 +188,7 @@ export default class Explore extends Vue {
       return groupBy(bc, 'regional_district')
     }
     const intersection = intersectionBy(fc, bc, 'id')
+    // raise an event whenever the selection changes (this is a side-effect)
     return groupBy(intersection, 'regional_district')
   }
 
@@ -199,11 +206,7 @@ export default class Explore extends Vue {
       }
     })
     this.boundedCommunities = uniqBy(sourceFeatures, 'place_name')
-    this.groupedCommunities = this.getFinalResult(
-      this.filteredCommunities,
-      this.boundedCommunities
-    )
-    console.log(this.groupedCommunities)
+    this.updateGroupedCommunities()
   }
 }
 </script>

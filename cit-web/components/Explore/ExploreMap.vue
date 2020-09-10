@@ -18,6 +18,7 @@ const commModule = namespace('communities')
 })
 export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
+  @Prop({ default: null, type: Array }) cids
   @commModule.Getter('getCommunityGeoJSON') communityGeoJSON
   created() {
     this.map = null
@@ -67,6 +68,7 @@ export default class Explore extends Vue {
       },
       paint: { 'text-halo-width': 1, 'text-halo-blur': 1 },
     })
+    console.log('adding layers')
   }
 
   whenMapLoaded(fn) {
@@ -94,6 +96,30 @@ export default class Explore extends Vue {
           speed: 2.5,
           essential: true,
         })
+      })
+    })
+
+    this.$root.$on('communitiesChanged', (communities) => {
+      if (!communities.length)
+        return alert('No results, please change your filters.')
+      const cids = communities.map((c) => {
+        return c.id.toString()
+      })
+      this.map.setFilter('communities', [
+        'match',
+        ['get', 'pk'],
+        cids,
+        true,
+        false,
+      ])
+
+      const bounds = communities.reduce(function (bounds, feature) {
+        return bounds.extend([feature.longitude, feature.latitude])
+      }, new window.mapboxgl.LngLatBounds())
+
+      this.map.fitBounds(bounds, {
+        maxZoom: 12,
+        padding: 30, // in px, to make markers on the top edge visible
       })
     })
 
@@ -165,3 +191,4 @@ export default class Explore extends Vue {
   align-items: center;
 }
 </style>
+match
