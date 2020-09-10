@@ -131,15 +131,11 @@ export default class CommunityDetail extends Vue {
     console.log(group)
     if (active === false) {
       this.whenMapLoaded((map) => {
-        map.setFilter('locations-2bvop8-label', [
-          '==',
-          ['get', 'location_type'],
-          group,
-        ])
+        map.setFilter('locations', ['==', ['get', 'location_type'], group])
       })
     } else {
       this.whenMapLoaded((map) => {
-        map.setFilter('locations-2bvop8-label', null)
+        map.setFilter('locations', null)
       })
     }
   }
