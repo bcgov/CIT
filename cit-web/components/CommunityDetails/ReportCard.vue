@@ -89,7 +89,7 @@
                     <v-col cols="4">
                       <Report
                         :page-name="pageName"
-                        :cids="[cid]"
+                        :cids="[cid.toString()]"
                         extra-classname="demographics"
                         @loaded="reportOneLoaded = true"
                       ></Report>
@@ -101,9 +101,10 @@
                       >
                         Your community: {{ subtitle }}
                       </h5>
+
                       <Report
                         :page-name="comparePageName"
-                        :cids="[cid]"
+                        :cids="[cid.toString()]"
                         extra-classname="demographics"
                         @loaded="reportTwoLoaded = true"
                       ></Report>
@@ -123,7 +124,7 @@
               <div v-else>
                 <Report
                   :page-name="pageName"
-                  :cids="[cid]"
+                  :cids="[cid.toString()]"
                   extra-classname="demographics"
                   @loaded="reportOneLoaded = true"
                 ></Report>
