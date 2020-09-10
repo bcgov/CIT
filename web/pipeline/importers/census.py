@@ -424,6 +424,8 @@ def import_census_education_employment_data(stats, subdiv):
     # "Education", 28009, "10.1.1.3.4", 2, "    University certificate, diploma or degree at bachelor level or above"
     subdiv.edu_4 = _fetch_statscan_value(stats, "10.1.1.3.4")
 
+    # "Education", 29000, "10.2.1", 0, "Total - Major field of study - Classification of Instructional Programs (CIP) 2016 for the population aged 15 years and over in private households - 25% sample data",
+    subdiv.edu_field_total = _fetch_statscan_value(stats, "10.2.1")
     # "Education", 29001, "10.2.1.1", 1, "  No postsecondary certificate, diploma or degree",
     subdiv.edu_field_no_post_secondary = _fetch_statscan_value(stats, "10.2.1.1")
     # "Education", 29002, "10.2.1.2", 1, "  Education"
