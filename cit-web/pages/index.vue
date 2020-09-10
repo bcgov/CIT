@@ -13,9 +13,6 @@
           Search for it below to get details.
         </p>
 
-        <p class="font-weight-bold ma-0 pa-0 mb-1" style="color: #787878;">
-          Search for a community here
-        </p>
         <CommSearch :outlined="true" label=""></CommSearch>
 
         <p class="explore-communities">

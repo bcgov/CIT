@@ -67,6 +67,7 @@ export default class Explore extends Vue {
       },
       paint: { 'text-halo-width': 1, 'text-halo-blur': 1 },
     })
+    console.log('adding layers')
   }
 
   whenMapLoaded(fn) {
@@ -95,6 +96,20 @@ export default class Explore extends Vue {
           essential: true,
         })
       })
+    })
+
+    this.$root.$on('communitiesChanged', (communities) => {
+      const cids = communities.map((c) => {
+        return '' + c.id
+      })
+
+      this.map.setFilter('communities', [
+        'match',
+        ['get', 'pk'],
+        cids,
+        true,
+        false,
+      ])
     })
 
     this.map.on('load', () => {
@@ -134,3 +149,4 @@ export default class Explore extends Vue {
   align-items: center;
 }
 </style>
+match
