@@ -157,7 +157,7 @@ export default {
     MAPBOX_API_KEY:
       'pk.eyJ1IjoiY291bnRhYmxlLXdlYiIsImEiOiJjamQyZG90dzAxcmxmMndtdzBuY3Ywa2ViIn0.MU-sGTVDS9aGzgdJJ3EwHA',
     reportId: process.env.POWERBI_REPORT_ID,
-    citFeedbackEmail: 'info@example.org',
+    citFeedbackEmail: 'networkbc@gov.bc.ca',
   },
   watchers: {
     webpack: {
