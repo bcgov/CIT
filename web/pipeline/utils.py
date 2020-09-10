@@ -447,7 +447,7 @@ def get_location_assets_for_community(model_class, community):
 
     if model_class == School:
         school_districts = community.schooldistrict_set.all()
-        return School.objects.filter(school_district__in=school_districts)
+        return School.objects.filter(school_district__in=school_districts, distances__distance__lte=50)
     else:
         return model_class.objects.filter(distances__distance__lte=50, distances__community=community)
 

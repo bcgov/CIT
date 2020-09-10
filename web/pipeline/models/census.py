@@ -453,6 +453,8 @@ class CensusSubdivision(models.Model):
     edu_4 = models.IntegerField(null=True)
 
     # field of study
+    # "Education", 29000, "10.2.1", 0, "Total - Major field of study - Classification of Instructional Programs (CIP) 2016 for the population aged 15 years and over in private households - 25% sample data",
+    edu_field_total = models.IntegerField(null=True)
     # "Education", 29001, "10.2.1.1", 1, "  No postsecondary certificate, diploma or degree",
     edu_field_no_post_secondary = models.IntegerField(null=True)
     # "Education", 29002, "10.2.1.2", 1, "  Education"
