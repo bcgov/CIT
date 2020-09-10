@@ -23,9 +23,11 @@
         <v-btn
           color="primary"
           to="/explore"
-          class="btn"
+          class="btn text-capitalize explore-button"
           target="_blank"
           depressed
+          width="225"
+          height="40"
           >Explore B.C. Communities</v-btn
         >
       </div>
@@ -88,5 +90,10 @@ export default class Index extends Vue {
 
 .landing-page-illustration {
   margin-top: -75px;
+}
+
+.explore-button {
+  letter-spacing: 0;
+  font-size: 16px;
 }
 </style>

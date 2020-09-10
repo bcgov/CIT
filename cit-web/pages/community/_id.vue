@@ -38,6 +38,7 @@ V<template>
             :community="communityDetails"
             :report-cards="reportCards"
             :cid="communityDetails.id"
+            :selected-report-name.sync="selectedReportName"
           ></ReportSection>
         </v-container>
       </div>
@@ -56,7 +57,7 @@ V<template>
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
 import map from 'lodash/map'
 import groupBy from 'lodash/groupBy'
@@ -100,6 +101,7 @@ export default class CommunityDetail extends Vue {
   mapLoaded = false
   panels = [0, 1, 2, 3, 4]
   reportCards = reportPages
+  selectedReportName = null
 
   // Methods
 
@@ -376,6 +378,24 @@ export default class CommunityDetail extends Vue {
       this.mapLoaded = true
       this.$root.$emit('comm-map-loaded', this.map)
     })
+  }
+
+  @Watch('$route.query', { immediate: true, deep: true })
+  onUrlChange(queryParams) {
+    if (queryParams.report) {
+      this.selectedReportName = queryParams.report
+    } else {
+      this.selectedReportName = null
+    }
+  }
+
+  @Watch('selectedReportName')
+  onSelectedReportNameChange() {
+    if (this.selectedReportName) {
+      this.$router.push({ query: { report: this.selectedReportName } })
+    } else {
+      this.$router.push({ query: {} })
+    }
   }
 }
 </script>

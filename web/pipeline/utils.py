@@ -711,3 +711,33 @@ def serialize_communities_for_regional_districts(regional_districts):
             } for community in regional_district.community_set.all()
         ] for regional_district in regional_districts
     }
+
+
+def serialize_data_sources():
+    from pipeline.constants import CSV_RESOURCES, DATABC_RESOURCES, SHP_RESOURCES
+
+    serialized = {}
+    for name, datasource_info in [*SHP_RESOURCES.items(), *CSV_RESOURCES.items(), *DATABC_RESOURCES.items()]:
+        print(name, datasource_info)
+        serialized[name] = serialize_data_source(name, datasource_info)
+
+    print("serialized", serialized)
+    return serialized
+
+
+def serialize_data_source(name, datasource_info):
+    from pipeline.constants import SOURCE_INTERNAL, SOURCE_DATABC, DATABC_PERMALINK_URL
+
+    source = ""
+    source_url = ""
+    if datasource_info["source"] == SOURCE_INTERNAL:
+        source = "Provided by Network BC team"
+    elif datasource_info["source"] == SOURCE_DATABC:
+        source = "BC Data Catalogue"
+        source_url = DATABC_PERMALINK_URL.format(permalink_id=datasource_info["permalink_id"])
+
+    return {
+        "display_name": datasource_info["display_name"],
+        "source": source,
+        "source_url": source_url,
+    }

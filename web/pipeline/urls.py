@@ -18,6 +18,7 @@ urlpatterns = [
 
     url(r"^auth/$", pipeline.views.general.auth),
     url(r"^locations/geojson/$", pipeline.views.general.LocationGeoJSONList.as_view()),
+    url(r"^datasources/$", pipeline.views.general.LocationSourcesList.as_view()),
     url(r"^locations/first_responders/$", pipeline.views.location_types.FirstResponderList.as_view()),
     url(r"^locations/diagnostic_facilities/$", pipeline.views.location_types.DiagnosticFacilityList.as_view()),
     url(r"^locations/timber_facilities/$", pipeline.views.location_types.TimberFacilityList.as_view()),
