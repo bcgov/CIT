@@ -12,6 +12,7 @@ V<template>
             <v-col :cols="12">
               <div class="map-container elevation-5">
                 <Sidebar
+                  :district="regionalDistrictName"
                   :place-name="placeName"
                   :grouped-locations="groupedLocations"
                   :population="getFieldValue('population')"
@@ -43,6 +44,22 @@ V<template>
             :cid="communityDetails.id"
             :selected-report-name.sync="selectedReportName"
           ></ReportSection>
+
+          <v-row>
+            <v-col col="12">
+              <div class="mt-10">
+                <h2>Miscellaneous</h2>
+                <h6 class="subtitle-1">
+                  Other items that may be of interest
+                </h6>
+                <v-divider class="mt-5"></v-divider>
+                <v-btn color="primary" class="mt-5" @click="dialog = true"
+                  >View Raw Data
+                  <v-icon right dark>mdi-database</v-icon>
+                </v-btn>
+              </div>
+            </v-col>
+          </v-row>
         </v-container>
       </div>
 
@@ -55,12 +72,54 @@ V<template>
       <div ref="legendControl">
         <LegendControl></LegendControl>
       </div>
+
+      <v-dialog v-model="dialog" max-width="800">
+        <v-toolbar color="primary" dense elevation="3">
+          <v-toolbar-title style="color: white;">{{
+            placeName
+          }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-icon color="white" @click="dialog = false">mdi-close</v-icon>
+        </v-toolbar>
+        <v-card>
+          <v-col
+            v-for="(value, key) in groupedCensus"
+            :key="key"
+            class="mb-5"
+            cols="12"
+          >
+            <v-card>
+              <v-card-title class="subheading font-weight-bold">{{
+                key === 'null' ? 'Miscellaneous' : key
+              }}</v-card-title>
+              <v-divider></v-divider>
+              <v-list dense>
+                <v-list-item v-for="item in value" :key="item.key">
+                  <v-list-item-content>{{
+                    item.metadata.name
+                  }}</v-list-item-content>
+                  <v-list-item-content class="align-end justify-center"
+                    >{{ item.value || 'No data'
+                    }}{{ item.value ? item.units : '' }}</v-list-item-content
+                  >
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text color="primary" @click="dialog = false">
+              Close
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import { Component, Vue, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Watch, namespace } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
 import map from 'lodash/map'
 import groupBy from 'lodash/groupBy'
@@ -83,7 +142,7 @@ import { yesno } from '~/utils/filters'
 import { getAuthToken } from '~/api/ms-auth-api/'
 import LocationCard from '~/components/Location/LocationCard.vue'
 import reportPages from '~/data/communityDetails/reportPages.json'
-
+const commModule = namespace('communities')
 @Component({
   Breadcrumbs,
   Sidebar,
@@ -106,8 +165,16 @@ export default class CommunityDetail extends Vue {
   panels = [0, 1, 2, 3, 4]
   reportCards = reportPages
   selectedReportName = null
+  dialog = false
 
-  // Methods
+  @commModule.Getter('getRegionalDistricts') regionalDistricts
+
+  get regionalDistrictName() {
+    const rd = this.regionalDistricts.find(
+      (rd) => rd.id === this.communityDetails.regional_district
+    )
+    return rd && rd.name
+  }
 
   get breadcrumbs() {
     return [
