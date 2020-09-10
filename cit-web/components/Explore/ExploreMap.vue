@@ -113,6 +113,37 @@ export default class Explore extends Vue {
         sourceFeatures,
       })
     })
+
+    this.map.on('click', 'communities', (e) => {
+      const coordinates = e.features[0].geometry.coordinates.slice()
+      const name = e.features[0].properties.place_name
+      const cid = e.features[0].properties.pk
+      console.log(e.features[0])
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
+      }
+
+      new window.mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(
+          `<a target="_blank" href="/community/${cid}">go</a> to ${name} details.`
+        )
+        .addTo(this.map)
+    })
+
+    // Change the cursor to a pointer when the mouse is over the places layer.
+    this.map.on('mouseenter', 'communities', () => {
+      this.map.getCanvas().style.cursor = 'pointer'
+    })
+
+    // Change it back to a pointer when it leaves.
+    this.map.on('mouseleave', 'communities', () => {
+      this.map.getCanvas().style.cursor = ''
+    })
   }
 }
 </script>
