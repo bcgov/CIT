@@ -1,8 +1,6 @@
 <template>
   <div>
-    <div class="desktop-view" :class="extraClassname">
-      <div ref="reportContainer" class="reportContainer"></div>
-    </div>
+    <div ref="reportContainer" class="reportContainer"></div>
   </div>
 </template>
 
@@ -95,6 +93,7 @@ export default class MainReport extends Vue {
 
   getEmbedConfiguration() {
     const models = window['powerbi-client'].models
+    console.log(models)
     return {
       type: 'report',
       pageName: this.pageName,
@@ -102,6 +101,7 @@ export default class MainReport extends Vue {
       embedUrl: `https://app.powerbi.com/reportEmbed?reportId=${this.reportId}&groupId=${this.groupId}`,
       tokenType: models.TokenType.Embed,
       accessToken: this.embedToken,
+
       settings: {
         panes: {
           pageNavigation: {
@@ -124,34 +124,7 @@ export default class MainReport extends Vue {
 iframe {
   border: none !important;
 }
-</style>
-<style lang="scss" scoped>
-.desktop-view {
-  height: 0;
-  position: relative;
-
-  &.demographics {
-    padding-bottom: 167%; /* 1600px */
-  }
-  &.connectivity {
-    padding-bottom: 100%; /* 960px */
-  }
-  &.community-assets {
-    padding-bottom: 125%; /* 1200px */
-  }
-  &.economic-projects {
-    padding-bottom: 125%; /* 1200px */
-  }
-  &.natural-resource-projects {
-    padding-bottom: 161%; /* 1550px */
-  }
-}
-
 .reportContainer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  height: calc(90vw);
 }
 </style>
