@@ -30,6 +30,7 @@
     <div class="explore-map-container">
       <ExploreMap
         :mapbox-api-key="$config.MAPBOX_API_KEY"
+        :cids="cidArray"
         @moveend="handleMoveEnd"
       ></ExploreMap>
     </div>
@@ -130,14 +131,18 @@ export default class Explore extends Vue {
     }
 
     this.filteredCommunities = filteredCommunities
+    this.updateGroupedCommunities()
+  }
+
+  updateGroupedCommunities() {
     this.groupedCommunities = this.getFinalResult(
       this.filteredCommunities,
       this.boundedCommunities
     )
+    this.$root.$emit('communitiesChanged', this.flatCommunities)
   }
 
   getFinalResult(fc, bc) {
-    this.$root.$emit('communitiesChanged', fc)
     if (bc === null) {
       return groupBy(fc, 'regional_district')
     }
@@ -163,11 +168,7 @@ export default class Explore extends Vue {
       }
     })
     this.boundedCommunities = uniqBy(sourceFeatures, 'place_name')
-    this.groupedCommunities = this.getFinalResult(
-      this.filteredCommunities,
-      this.boundedCommunities
-    )
-    console.log(this.groupedCommunities)
+    this.updateGroupedCommunities()
   }
 }
 </script>
