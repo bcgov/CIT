@@ -38,8 +38,8 @@ export default class Explore extends Vue {
     const map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/countable-web/ckcspnxxz0ji81iliywxxclk0',
-      center: [-122.970072, 49.299062],
-      zoom: 12,
+      center: [-122.755485, 53.91988],
+      zoom: 5,
     })
     this.map = map
   }
