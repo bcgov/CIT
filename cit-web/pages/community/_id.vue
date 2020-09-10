@@ -10,7 +10,6 @@ V<template>
         <v-container fluid>
           <v-row no-gutters>
             <v-col :cols="12">
-              <Breadcrumbs class="mb-7 mt-3" :items="breadcrumbs"></Breadcrumbs>
               <div class="map-container elevation-5">
                 <Sidebar
                   :place-name="placeName"
@@ -28,7 +27,11 @@ V<template>
             <v-col col="12">
               <div class="mt-10">
                 <h2>Reports</h2>
-                <h6 class="subtitle-1">Description can go here....</h6>
+                <h6 class="subtitle-1">
+                  Choose a report to view community data within that topic, and
+                  compare to the average for the regional district, or all of
+                  BC.
+                </h6>
                 <v-divider class="mt-5"></v-divider>
               </div>
             </v-col>
@@ -72,6 +75,7 @@ import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
 import {
   getCommunity,
   getCensusSubDivision,
+  getDataSourceList,
   getCommunityList,
   getRegionalDistricts,
 } from '~/api/cit-api'
@@ -216,6 +220,7 @@ export default class CommunityDetail extends Vue {
       getRegionalDistricts(),
       getCommunityList(),
       getAuthToken(),
+      getDataSourceList(),
     ])
     const regionalDistricts = results[0].data.results
     store.commit('communities/setRegionalDistricts', regionalDistricts)
@@ -223,6 +228,8 @@ export default class CommunityDetail extends Vue {
     store.commit('communities/setCommunities', communityList)
     const accessToken = results[2].data.access_token
     store.commit('msauth/setAccessToken', accessToken)
+    const dataSources = results[3].data
+    store.commit('communities/setDataSources', dataSources)
   }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
@@ -375,6 +382,34 @@ export default class CommunityDetail extends Vue {
     })
 
     map.on('load', () => {
+      /*
+      map.addLayer({
+        id: 'locations',
+        type: 'symbol',
+        source: 'composite',
+        'source-layer': 'locations-2bvop8',
+        layout: {
+          'text-optional': true,
+          'text-line-height': 0.9,
+          'text-size': 13,
+          'icon-image': ['to-string', ['get', 'location_type']],
+          'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
+          'icon-allow-overlap': ['step', ['zoom'], false, 11, true],
+          visibility: 'none',
+          'text-offset': [0, 1.5],
+          'icon-size': ['interpolate', ['linear'], ['zoom'], 5, 0.5, 15, 1],
+          'text-field': ['to-string', ['get', 'name']],
+          'icon-padding': 0,
+          'text-max-width': 15,
+        },
+        paint: {
+          'text-halo-color': 'hsl(0, 0%, 100%)',
+          'text-halo-width': 1,
+          'icon-opacity': ['interpolate', ['linear'], ['zoom'], 0, 1, 22, 1],
+        },
+      })
+      */
+      map.setLayoutProperty('locations', 'visibility', 'visible')
       this.mapLoaded = true
       this.$root.$emit('comm-map-loaded', this.map)
     })

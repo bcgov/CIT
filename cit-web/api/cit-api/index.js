@@ -29,3 +29,7 @@ export function advancedSearch(params) {
 export function getCommunityGeoJSON() {
   return $axios.get(`api/pipeline/communities/geojson/`)
 }
+
+export function getDataSourceList() {
+  return $axios.get(`/api/pipeline/datasources/`)
+}
