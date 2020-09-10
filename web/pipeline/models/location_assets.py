@@ -16,7 +16,7 @@ class Location(models.Model):
 
     location_type = models.CharField(null=True, blank=True, max_length=255)
 
-    community = models.ForeignKey('Community', on_delete=models.CASCADE)
+    closest_community = models.ForeignKey('Community', on_delete=models.CASCADE)
 
     location_phone = models.CharField(null=True, blank=True, max_length=255)
     location_email = models.EmailField(null=True, blank=True)
