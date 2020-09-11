@@ -15,7 +15,7 @@
           >
           dataset from the BC Data Catalogue.
         </p>
-        <a href="#northern-rockies">Permalink</a>
+        <a href="#northern-rockies"><v-icon>mdi-link</v-icon> Permalink</a>
       </li>
       <li id="distances-50km">
         <p>
@@ -27,7 +27,7 @@
           distances between the nearest location asset of each type for a
           community if none are within 50 km.
         </p>
-        <a href="#distances-50km">Permalink</a>
+        <a href="#distances-50km"><v-icon>mdi-link</v-icon> Permalink</a>
       </li>
       <li id="search-filters-distance">
         <p>
@@ -38,7 +38,9 @@
           specified distance.
           <a href="#distances-50km">Read more about driving distances.</a>
         </p>
-        <a href="#search-filters-distance">Permalink</a>
+        <a href="#search-filters-distance"
+          ><v-icon>mdi-link</v-icon> Permalink</a
+        >
       </li>
       <li id="census-subdivisions">
         <p>
@@ -51,6 +53,21 @@
           <v-icon>mdi-link</v-icon>
           Permalink</a
         >
+      </li>
+      <li id="explore-domestic-report">
+        Domestic Report (Explore page)
+        <ol>
+          <li id="avg-dwellings-needing-major-repairs">
+            <p>
+              The percentage of average number of dwellings needing repairs is
+              calculated using the "Total - Private households by household size
+              - 100% data" (2.1.2) field as the total.
+            </p>
+            <a href="#avg-dwellings-needing-major-repairs"
+              ><v-icon>mdi-link</v-icon> Permalink</a
+            >
+          </li>
+        </ol>
       </li>
     </ol>
   </div>
