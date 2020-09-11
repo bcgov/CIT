@@ -66,7 +66,7 @@ def import_communities_from_csv(communities_file_path):
                     print("Error: Municipality not found for {}!".format(community.place_name))
 
             community.last_mile_status = row['Last-Mile Status (Sept2020)']
-            community.transport_status = row['Transport Status (Sept2020)']
+            community.transport_mile_status = row['Transport Status (Sept2020)']
             community.cbc_phase = row['CBC Phase']
 
             if row['Coastal_5km'] == "Yes":
