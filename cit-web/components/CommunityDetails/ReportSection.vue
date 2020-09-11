@@ -20,8 +20,7 @@
             :cid="cid"
             :rid="community.regional_district"
             :subtitle="placeName"
-            :selected-report-name.sync="selectedReportName"
-            extra-classname="demographics"
+            @click.native="$emit('openReport', report.name)"
           ></ReportCard>
         </v-col>
       </v-row>
@@ -30,7 +29,7 @@
 </template>
 
 <script>
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
 
 @Component({
@@ -40,12 +39,6 @@ export default class ReportSection extends Vue {
   @Prop({ default: null, type: Object }) reportCards
   @Prop({ default: null, type: String }) placeName
   @Prop({ default: null, type: Number }) cid
-  @Prop({ defualt: null, type: Object }) community
-  @Prop({ default: null, type: String }) selectedReportName
-
-  @Watch('selectedReportName')
-  onSelectedReportNameChange() {
-    this.$emit('update:selectedReportName', this.selectedReportName)
-  }
+  @Prop({ default: null, type: Object }) community
 }
 </script>
