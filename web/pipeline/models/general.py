@@ -46,6 +46,9 @@ class Municipality(models.Model):
     class Meta:
         ordering = ("id",)
 
+    def __str__(self):
+        return self.name
+
     """
     AA_ID 3
     * AA_NAME The Corporation of the Village of Burns Lake
@@ -84,6 +87,10 @@ class SchoolDistrict(models.Model):
 
     class Meta:
         ordering = ("id",)
+
+    def __str__(self):
+        return self.name
+
     """
     {'ADMIN_SID': 121, 'SD_NAME': 'Southeast Kootenay', 'SD_NUM': 5, 'FCODE': 'FA91800600', 'SHAPE': 0, 'AREA_SQM': 12518364167.6713, 'FEAT_LEN': 729284.9581, 'OBJECTID': 1}
     """
@@ -106,6 +113,10 @@ class RegionalDistrict(models.Model):
 
     class Meta:
         ordering = ("id",)
+
+    def __str__(self):
+        return self.name
+
     """
     {'AA_ID': 2, 'AA_NAME': 'Regional District of Bulkley-Nechako', 'ABRVN': 'RDBN', 'BDY_TYPE': 'Legal', 'AA_PARENT': 'Province of British Columbia', 'CHNG_ORG': 'MCSCD', 'UPT_TYPE': 'E', 'UPT_DATE': '20130606', 'MAP_STATUS': 'Not Appended', 'OC_M_NMBR': '', 'OC_M_YR': '', 'OC_M_TYPE': '', 'WBST_RL': '', 'IMAGE_URL': '', 'AFCTD_AREA': '', 'AREA_SQM': 78266556471.7951, 'LENGTH_M': 2057088.3374, 'SHAPE': 0, 'OBEJCTID': 2901}
     """
@@ -143,7 +154,7 @@ class LocationDistance(models.Model):
 
 
 class WildfireZone(models.Model):
-    NAME_FIELD = 'FIRE_ZONE'
+    NAME_FIELD = 'FIRE_ZONE,LABEL'
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
@@ -153,6 +164,9 @@ class WildfireZone(models.Model):
         max_length=1,
         help_text="A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 " "(extreme).",
     )  # 1-5
+
+    def __str__(self):
+        return self.name
 
 
 class TsunamiZone(models.Model):
@@ -175,3 +189,6 @@ class TsunamiZone(models.Model):
     # A-C moderate
     # D,E, low
     # otherwise, none.
+
+    def __str__(self):
+        return self.name
