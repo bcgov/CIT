@@ -40,16 +40,13 @@ def import_communities_from_csv(communities_file_path):
                 if census_subdivisions:
                     community.census_subdivision_id = census_subdivisions.first().id
 
-            # TODO: Consider municipal overlap.
+            # PostGIS uses the ST_DistanceSphere function to calculate distance
+            # points inside the polygon return a distance of 0
+            # https://postgis.net/docs/ST_DistanceSphere.html
             community.wildfire_zone = WildfireZone.objects.filter(
-                geom__distance_lt=(community.point, D(m=1000))
+                geom__distance_lt=(community.point, D(m=5000))
             ).first()
-            community.tsunami_zone = TsunamiZone.objects.filter(geom__distance_lt=(community.point, D(m=1000))).first()
-
-            # if community.wildfire_zone:
-            #     wct+=1
-            # if community.tsunami_zone:
-            #     tct+=1
+            community.tsunami_zone = TsunamiZone.objects.filter(geom__distance_lt=(community.point, D(m=5000))).first()
 
             community.hexuid_id = row['HEXID']
             community.community_type = row['Place Type']
@@ -69,7 +66,7 @@ def import_communities_from_csv(communities_file_path):
                     print("Error: Municipality not found for {}!".format(community.place_name))
 
             community.last_mile_status = row['Last-Mile Status (Sept2020)']
-            community.transport_status = row['Transport Status (Sept2020)']
+            community.transport_mile_status = row['Transport Status (Sept2020)']
             community.cbc_phase = row['CBC Phase']
 
             if row['Coastal_5km'] == "Yes":

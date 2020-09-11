@@ -73,7 +73,10 @@ def import_data_into_point_model(resource_type, Model, row):
 def import_data_into_area_model(resource_type, Model, row):
     print(row)
 
-    instance, created = Model.objects.get_or_create(name=row[Model.NAME_FIELD])
+    name_fields = Model.NAME_FIELD.split(",")
+    name = ", ".join([row[name_field] for name_field in name_fields])
+
+    instance, created = Model.objects.get_or_create(name=name)
 
     print("instance", instance)
     if hasattr(Model, 'ID_FIELD'):
