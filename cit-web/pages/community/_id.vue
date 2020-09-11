@@ -28,7 +28,7 @@ V<template>
           <v-row>
             <v-col col="12">
               <div class="mt-10">
-                <h2>Reports</h2>
+                <h2>View Reports &amp; Compare</h2>
                 <h6 class="subtitle-1">
                   Choose a report to view community data within that topic, and
                   compare to the average for the regional district, or all of
@@ -168,6 +168,7 @@ export default class CommunityDetail extends Vue {
   reportCards = reportPages
   selectedReportName = null
   dialog = false
+  citFeedbackEmail = this.$config.citFeedbackEmail
 
   @commModule.Getter('getRegionalDistricts') regionalDistricts
 
@@ -344,6 +345,9 @@ export default class CommunityDetail extends Vue {
   addNavigationControl(map) {
     map.addControl(new window.mapboxgl.NavigationControl())
     map.addControl(new window.mapboxgl.FullscreenControl())
+    map.addControl(
+      new window.mapboxgl.ScaleControl({ position: 'bottom-right' })
+    )
   }
 
   handleResetCenter() {
@@ -448,7 +452,12 @@ export default class CommunityDetail extends Vue {
         console.log(location)
         new mapboxgl.Popup()
           .setLngLat(e.lngLat)
-          .setHTML(location.properties.name)
+          .setHTML(
+            `<p>${location.properties.name}</p>
+            <a href="mailto:networkbc@gov.bc.ca?subject=CIT Feedback" class="ml-2 v-btn v-btn--depressed theme--light v-size--small info"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mr-2 mdi mdi-comment theme--light" style="font-size:16px;"></i>
+              Give Feedback
+            </span></a>`
+          )
           .addTo(map)
       }
     })

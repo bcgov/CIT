@@ -2,20 +2,28 @@
   <div class="explore-container d-flex">
     <div class="explore-results-container">
       <div class="pa-8">
-        <p class="mb-1">
-          Showing
-        </p>
-        <p class="text-h5 mt-0 font-weight-bold">
-          {{ numRegions }} Regional Districts & {{ numCommunities }} Communities
-        </p>
-        <ExploreFilters @filtered="handleFiltered"></ExploreFilters>
-
-        <div class="mt-5 font-weight-bold d-flex align-center">
-          <v-btn small icon><v-icon>mdi-gesture-double-tap</v-icon></v-btn>
-          <h6 class="text-h6 ml-2">Actions</h6>
+        <h1 class="text-h4 mt-1 mb-1">Explore B.C. Communities</h1>
+        <div class="mt-4 mb-3 font-weight-bold d-flex align-center">
+          <v-btn small icon><v-icon>mdi-filter</v-icon></v-btn>
+          <p class="ml-2 text-h6 mb-0">Filters</p>
         </div>
 
-        <div class="mt-3 d-flex">
+        <ExploreFilters @filtered="handleFiltered"></ExploreFilters>
+      </div>
+      <v-divider></v-divider>
+      <div class="pa-8">
+        <div class="mt-4 d-flex align-center font-weight-bold">
+          <v-btn small icon><v-icon>mdi-home-group</v-icon></v-btn>
+          <p class="ml-2 mb-0">
+            Showing
+            <b class="text-h5 font-weight-normal">{{ numRegions }}</b> Regional
+            Districts &amp;
+            <b class="text-h5 font-weight-normal">{{ numCommunities }}</b>
+            Communities
+          </p>
+        </div>
+
+        <div class="mt-3 mb-3 d-flex">
           <ReportDialog
             :cids="cidArray"
             :selected-report-name.sync="selectedReportName"
@@ -23,9 +31,7 @@
             class="ml-2 d-inline-block"
           ></ReportDialog>
         </div>
-      </div>
-      <v-divider></v-divider>
-      <div class="pa-8">
+
         <Results :grouped-communities="groupedCommunities"></Results>
       </div>
     </div>

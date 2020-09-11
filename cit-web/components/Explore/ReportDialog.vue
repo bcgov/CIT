@@ -14,6 +14,7 @@
             class="ml-2"
             :href="`mailto:${citFeedbackEmail}?subject=CIT Feedback`"
           >
+            <v-icon small class="mr-2">mdi-comment</v-icon>
             Give Feedback
           </v-btn>
         </template>

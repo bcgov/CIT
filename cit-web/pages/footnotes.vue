@@ -40,6 +40,18 @@
         </p>
         <a href="#search-filters-distance">Permalink</a>
       </li>
+      <li id="census-subdivisions">
+        <p>
+          Demographic data is sourced from Stats Canada at the subdivision
+          level. This means that data from unincorporated communities may
+          actually apply to surrounding area containing several other small
+          communities.
+        </p>
+        <a href="#census-subdivisions">
+          <v-icon>mdi-link</v-icon>
+          Permalink</a
+        >
+      </li>
     </ol>
   </div>
 </template>
