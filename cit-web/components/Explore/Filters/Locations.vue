@@ -3,12 +3,18 @@
     <MenuFilter
       ref="menuFilter"
       :chip-title="title"
-      :filter-title="'Locations'"
+      :filter-title="'Facility Access'"
       :card-width="500"
       :active="active"
       @clear="handleClear"
       @save="handleSave"
     >
+      <p>
+        Search by access to facilities.
+        <a href="/footnotes#search-filters-distance" target="_blank"
+          >How does it work?</a
+        >
+      </p>
       <div v-for="(lf, index) in locationFilters" :key="lf">
         <div class="mt-5 mb-5 d-flex">
           <LocationInputs ref="locationInputs"></LocationInputs>
@@ -44,7 +50,7 @@ import LocationInputs from '~/components/Explore/Filters/LocationInputs.vue'
   LocationInputs,
 })
 export default class Locations extends Vue {
-  title = 'Locations'
+  title = 'Facility Access'
   active = false
 
   locationFilters = [uid()]
@@ -60,7 +66,7 @@ export default class Locations extends Vue {
     this.$refs.menuFilter.hide()
     const locationParams = this.getParams().filter((lp) => !isEmpty(lp))
     if (locationParams.length === 0) {
-      this.title = 'Locations'
+      this.title = 'Facility Access'
       this.active = false
     } else if (locationParams.length === 1) {
       const locationInputs = this.$refs.locationInputs
