@@ -71,7 +71,8 @@
 
             <div v-if="!isAllReportsLoaded">
               <h6 class="text-h6 text-center mt-10 mb-10">
-                Generating your report
+                Please wait, we are comparing your community to the surrounding
+                regional district.
               </h6>
               <div class="progress-reportcard">
                 <v-progress-linear

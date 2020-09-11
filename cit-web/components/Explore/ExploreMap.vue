@@ -84,6 +84,7 @@ export default class Explore extends Vue {
   addControls() {
     const mapboxgl = window.mapboxgl
     this.map.addControl(new mapboxgl.NavigationControl())
+    this.map.addControl(new mapboxgl.ScaleControl({ position: 'bottom-right' }))
     // map.addControl(new ControlFactory(this.$refs.searchMove), 'bottom-right')
   }
 

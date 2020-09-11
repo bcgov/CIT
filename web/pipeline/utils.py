@@ -447,9 +447,9 @@ def get_location_assets_for_community(model_class, community):
 
     if model_class == School:
         school_districts = community.schooldistrict_set.all()
-        return School.objects.filter(school_district__in=school_districts)
+        return School.objects.filter(school_district__in=school_districts, distances__distance__lte=50)
     else:
-        return model_class.objects.filter(community=community)
+        return model_class.objects.filter(distances__distance__lte=50, distances__community=community)
 
 
 def get_fields_for_location_type(location_type):
@@ -579,7 +579,9 @@ def communities_advanced_search(query_params):
             query += "regional_district__id"
         elif query_filter["field"] in ["population", "population_percentage_change"]:
             query += "census_subdivision__{}".format(query_filter["field"])
-        elif query_filter["field"] in ["percent_50_10", "percent_25_5", "percent_10_2", "percent_5_1"]:
+        elif query_filter["field"] in [
+                "percent_50_10", "percent_25_5", "percent_10_2", "percent_5_1",
+                "nearest_substation_distance"]:
             query += query_filter["field"]
         elif query_filter["field"] == "is_coastal":
             query += query_filter["field"]

@@ -197,6 +197,9 @@ def import_census_population_data(stats, subdiv):
     # "1.2.1.3.5.4", "      100 years and over" female
     subdiv.pop_100_f = _fetch_statscan_value(stats, "1.2.1.3.5.4", gender="female")
 
+    # "Immigration and citizenship", 18000, "5.2.1", 0, "Total - Immigrant status and period of immigration for the population in private households - 25% sample data",
+    subdiv.immigration_population_total = _fetch_statscan_value(stats, "5.2.1")
+
     # "Immigration and citizenship", 18010, "5.2.1.3", 1, "  Non-permanent residents"
     subdiv.non_pr = _fetch_statscan_value(stats, "5.2.1.3")
 
@@ -359,6 +362,8 @@ def import_census_housing_data(stats, subdiv):
     subdiv.housing_band_housing = _fetch_statscan_value(stats, "9.1.1.3")
 
     # dwelling condition
+    # "Housing", 27034, "9.1.9", 0, "Total - Occupied private dwellings by dwelling condition - 25% sample data",
+    subdiv.housing_cond_total_private_dwellings = _fetch_statscan_value(stats, "9.1.9")
     # "Housing", 27035, "9.1.9.1", 1, "  Only regular maintenance or minor repairs needed",
     subdiv.housing_cond_regular_maintenance = _fetch_statscan_value(stats, "9.1.9.1")
     # "Housing", 27036, "9.1.9.2", 1, "  Major repairs needed"
@@ -424,6 +429,8 @@ def import_census_education_employment_data(stats, subdiv):
     # "Education", 28009, "10.1.1.3.4", 2, "    University certificate, diploma or degree at bachelor level or above"
     subdiv.edu_4 = _fetch_statscan_value(stats, "10.1.1.3.4")
 
+    # "Education", 29000, "10.2.1", 0, "Total - Major field of study - Classification of Instructional Programs (CIP) 2016 for the population aged 15 years and over in private households - 25% sample data",
+    subdiv.edu_field_total = _fetch_statscan_value(stats, "10.2.1")
     # "Education", 29001, "10.2.1.1", 1, "  No postsecondary certificate, diploma or degree",
     subdiv.edu_field_no_post_secondary = _fetch_statscan_value(stats, "10.2.1.1")
     # "Education", 29002, "10.2.1.2", 1, "  Education"

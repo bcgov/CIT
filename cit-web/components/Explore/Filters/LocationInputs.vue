@@ -121,6 +121,10 @@ export default class LocationInputs extends Vue {
       value: 'closed_mills',
       title: 'Closed Mills',
     },
+    {
+      value: 'airports',
+      title: 'Airports',
+    },
   ]
 
   suggestedDistance = [5, 10, 15, 20, 25]

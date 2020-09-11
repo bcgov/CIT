@@ -9,7 +9,7 @@ from django.contrib.gis.measure import D
 
 from pipeline.models.community import Community
 from pipeline.models.general import LocationDistance, SchoolDistrict, Municipality
-from pipeline.models.location_assets import School
+from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES, CSV_RESOURCES, DATABC_RESOURCES
 
 
@@ -309,3 +309,13 @@ def calculate_parent_child_communities():
             if parent_community.count() == 1:
                 community.parent_community = parent_community.first()
                 community.save()
+
+
+def calculate_communities_served_for_hospitals():
+    for hospital in Hospital.objects.all():
+        num_communities_within_50km = Community.objects.filter(
+            distances__location=hospital,
+            distances__location__location_type="hospitals",
+            distances__distance__lte=50).distinct().count()
+        hospital.num_communities_within_50km = num_communities_within_50km
+        hospital.save()

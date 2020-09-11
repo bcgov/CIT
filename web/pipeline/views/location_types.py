@@ -1,6 +1,11 @@
+from django.http import HttpResponse
+from django.core.serializers import serialize
+
 from rest_framework import generics
+from rest_framework.views import APIView
 
 from pipeline.models.location_assets import (
+    Location,
     FirstResponder, DiagnosticFacility, TimberFacility, CivicFacility, Hospital, NaturalResourceProject,
     EconomicProject, ServiceBCLocation, School, Clinic, Court,
     PostSecondaryInstitution, ClosedMill, ResearchCentre, Airport,
@@ -21,7 +26,23 @@ from pipeline.serializers.location_types import (
     ClosedMillSerializer,
     ResearchCentreSerializer,
     AirportSerializer,
+    LocationSerializer
 )
+
+
+class LocationList(generics.ListAPIView):
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
+
+
+class LocationGeoJSONList(APIView):
+    schema = None
+
+    def get(self, request, format=None):
+        return HttpResponse(
+            serialize('geojson', Location.objects.all(), geometry_field='point', fields=('name', 'location_type')),
+            content_type="application/json",
+        )
 
 
 class FirstResponderList(generics.ListAPIView):

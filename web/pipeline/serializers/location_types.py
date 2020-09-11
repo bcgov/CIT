@@ -3,13 +3,22 @@ from rest_framework import serializers
 from pipeline.models.location_assets import (
     FirstResponder, DiagnosticFacility, TimberFacility, CivicFacility, Hospital, NaturalResourceProject,
     EconomicProject, ServiceBCLocation, School, Clinic, Court, PostSecondaryInstitution,
-    ClosedMill, ResearchCentre, Airport,
+    ClosedMill, ResearchCentre, Airport, Location
 )
+
+
+class LocationSerializer(serializers.ModelSerializer):
+    community_id = serializers.IntegerField(source="closest_community_id")
+
+    class Meta:
+        model = Location
+        fields = ("id", "name", "community_id", "location_type", "get_latitude", "get_longitude", "location_fuzzy")
 
 
 class FirstResponderSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = FirstResponder
@@ -31,6 +40,7 @@ class FirstResponderSerializer(serializers.ModelSerializer):
 class DiagnosticFacilitySerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = DiagnosticFacility
@@ -48,6 +58,7 @@ class DiagnosticFacilitySerializer(serializers.ModelSerializer):
 class TimberFacilitySerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = TimberFacility
@@ -65,6 +76,7 @@ class TimberFacilitySerializer(serializers.ModelSerializer):
 class CivicFacilitySerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = CivicFacility
@@ -86,6 +98,7 @@ class CivicFacilitySerializer(serializers.ModelSerializer):
 class HospitalSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = Hospital
@@ -102,6 +115,7 @@ class HospitalSerializer(serializers.ModelSerializer):
             "rg_name",
             "sv_description",
             "hours",
+            "num_communities_within_50km",
         )
 
 
@@ -110,6 +124,7 @@ class NaturalResourceProjectSerializer(serializers.ModelSerializer):
     standardized_completion_date = serializers.DateField(source='get_standardized_completion_date_as_date')
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = NaturalResourceProject
@@ -150,6 +165,7 @@ class NaturalResourceProjectSerializer(serializers.ModelSerializer):
 class EconomicProjectSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = EconomicProject
@@ -173,6 +189,7 @@ class EconomicProjectSerializer(serializers.ModelSerializer):
 class ServiceBCLocationSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = ServiceBCLocation
@@ -192,6 +209,7 @@ class SchoolSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
     school_district = serializers.SerializerMethodField()
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = School
@@ -215,6 +233,7 @@ class SchoolSerializer(serializers.ModelSerializer):
 class PostSecondaryInstitutionSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = PostSecondaryInstitution
@@ -233,6 +252,7 @@ class PostSecondaryInstitutionSerializer(serializers.ModelSerializer):
 class ClinicSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = Clinic
@@ -254,6 +274,7 @@ class ClinicSerializer(serializers.ModelSerializer):
 class CourtSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = Court
@@ -273,6 +294,7 @@ class CourtSerializer(serializers.ModelSerializer):
 class ClosedMillSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = ClosedMill
@@ -289,6 +311,7 @@ class ClosedMillSerializer(serializers.ModelSerializer):
 class ResearchCentreSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = ResearchCentre
@@ -312,6 +335,7 @@ class ResearchCentreSerializer(serializers.ModelSerializer):
 class AirportSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
 
     class Meta:
         model = Airport

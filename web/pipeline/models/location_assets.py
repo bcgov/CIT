@@ -16,7 +16,7 @@ class Location(models.Model):
 
     location_type = models.CharField(null=True, blank=True, max_length=255)
 
-    community = models.ForeignKey('Community', on_delete=models.CASCADE)
+    closest_community = models.ForeignKey('Community', on_delete=models.CASCADE)
 
     location_phone = models.CharField(null=True, blank=True, max_length=255)
     location_email = models.EmailField(null=True, blank=True)
@@ -59,6 +59,8 @@ class Hospital(Location):
     rg_name = models.CharField(null=True, blank=True, max_length=255)
     sv_description = models.TextField(null=True, blank=True)
     hours = models.TextField(null=True, blank=True)
+
+    num_communities_within_50km = models.IntegerField(null=True, blank=True)
 
     class Meta:
         ordering = ("id",)

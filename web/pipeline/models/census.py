@@ -363,6 +363,8 @@ class CensusSubdivision(models.Model):
     # "Income", 15004, "4.4.1.3", 1, "  65 years and over" female
     low_income_status_65_and_over_f = models.IntegerField(null=True)
 
+    # "Immigration and citizenship", 18000, "5.2.1", 0, "Total - Immigrant status and period of immigration for the population in private households - 25% sample data",
+    immigration_population_total = models.IntegerField(null=True)
     # "Immigration and citizenship", 18010, "5.2.1.3", 1, "  Non-permanent residents", 52, null, 30.0, null, 15.0, null, 15.0, null],
     non_pr = models.IntegerField(null=True)
 
@@ -378,6 +380,8 @@ class CensusSubdivision(models.Model):
     housing_band_housing = models.IntegerField(null=True)
 
     # dwelling condition
+    # "Housing", 27034, "9.1.9", 0, "Total - Occupied private dwellings by dwelling condition - 25% sample data",
+    housing_cond_total_private_dwellings = models.IntegerField(null=True)
     # "Housing", 27035, "9.1.9.1", 1, "  Only regular maintenance or minor repairs needed",
     housing_cond_regular_maintenance = models.IntegerField(null=True)
     # "Housing", 27036, "9.1.9.2", 1, "  Major repairs needed"
@@ -453,6 +457,8 @@ class CensusSubdivision(models.Model):
     edu_4 = models.IntegerField(null=True)
 
     # field of study
+    # "Education", 29000, "10.2.1", 0, "Total - Major field of study - Classification of Instructional Programs (CIP) 2016 for the population aged 15 years and over in private households - 25% sample data",
+    edu_field_total = models.IntegerField(null=True)
     # "Education", 29001, "10.2.1.1", 1, "  No postsecondary certificate, diploma or degree",
     edu_field_no_post_secondary = models.IntegerField(null=True)
     # "Education", 29002, "10.2.1.2", 1, "  Education"

@@ -1,11 +1,11 @@
 <template>
   <div class="community-details-sidebar">
-    <div class="pt-5 pb-5">
+    <div class="pt-4 pb-4">
       <SidebarHeader :place-name="placeName">
-        <h6 class="text-center text-caption mt-0">{{ district }}</h6>
-        <h6 class="text-center text-caption">
+        <p class="mt-0 text-center">{{ district }}</p>
+        <p v-if="population" class="text-center text-caption">
           Population: {{ population || 'N/A' }}
-        </h6>
+        </p>
         <div class="d-flex justify-center">
           <v-btn
             color="primary"
@@ -17,8 +17,11 @@
         </div>
       </SidebarHeader>
     </div>
-    <v-divider></v-divider>
-
+    <p class="text-center">
+      Facilities within
+      <a href="/footnotes#search-filters-distance" target="_blank">50km drive</a
+      >:
+    </p>
     <v-list dense nav>
       <v-list-group
         v-for="groupedLocation in groupedLocations"

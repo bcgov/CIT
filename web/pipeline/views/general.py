@@ -9,12 +9,10 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 from rest_framework_csv import renderers as csv_renderers
 
-from pipeline.models.location_assets import Location
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
 from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict
 from pipeline.serializers.general import (
-    LocationSerializer,
     CommunitySerializer,
     CommunityCSVSerializer,
     CommunitySearchSerializer,
@@ -40,18 +38,12 @@ def auth(request):
         return JsonResponse({'username': request.user.username})
 
 
-class LocationList(generics.ListAPIView):
-    queryset = Location.objects.all()
-    serializer_class = LocationSerializer
-
-
-class LocationSourcesList(APIView):
+class DataSourcesList(APIView):
     def get(self, request, format=None):
         return Response(serialize_data_sources())
 
 
 class CommunityViewSet(viewsets.GenericViewSet):
-
     def get_queryset(self):
         filters = self.request.query_params
         communities = filter_communities(filters)
@@ -113,16 +105,6 @@ class CensusSubdivisionList(generics.ListAPIView):
 class CensusSubdivisionDetail(generics.RetrieveAPIView):
     queryset = CensusSubdivision.objects.all()
     serializer_class = CensusSubdivisionDetailSerializer
-
-
-class LocationGeoJSONList(APIView):
-    schema = None
-
-    def get(self, request, format=None):
-        return HttpResponse(
-            serialize('geojson', Location.objects.all(), geometry_field='point', fields=('name', 'location_type')),
-            content_type="application/json",
-        )
 
 
 class LocationDistanceGeoJSONList(APIView):
