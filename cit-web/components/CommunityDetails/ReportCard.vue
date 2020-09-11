@@ -1,14 +1,10 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card
-      :class="{ 'elevation-5': hover }"
-      style="position: relative;"
-      @click="openReport"
-    >
+    <v-card class="elevation-3 rounded-lg">
       <v-expand-transition>
         <div
           v-if="hover"
-          class="pa-7 d-flex align-center transition-fade-in indigo darken-4 v-card--reveal display-3 white--text hover-card"
+          class="rounded-lg pa-7 d-flex align-center transition-fade-in indigo darken-4 v-card--reveal display-3 white--text hover-card"
           style="height: 100%;"
         >
           <p class="text-body-1">{{ description }}</p>
@@ -21,30 +17,31 @@
         width="376"
         height="220"
         aspect-ratio="1"
+        position="50% 15%"
       ></v-img>
-      <v-card-text>
-        <p class="body-1 text--primary pa-0 ma-0">
+      <v-card-text class="pt-5 pl-5 pr-5">
+        <p class="text-h6 text--primary pa-0 ma-0 font-weight-regular">
           {{ title }}
         </p>
       </v-card-text>
-      <v-card-actions>
+      <v-card-actions class="pl-5 pr-5 pb-5">
         <v-spacer></v-spacer>
-        <v-btn text color="indigo accent-4">
-          View Report
+        <v-btn color="primary" small height="45">
+          <v-icon color="white">mdi-arrow-right</v-icon>
         </v-btn>
       </v-card-actions>
 
       <v-dialog
-        v-model="dialog"
         fullscreen
         hide-overlay
         transition="dialog-bottom-transition"
         :scrollable="false"
         style="overflow: hidden;"
+        :value="showDialog"
       >
         <v-card>
           <v-toolbar flat dark color="primary">
-            <v-btn icon dark @click="closeReport">
+            <v-btn icon dark @click="closeDialog">
               <v-icon>mdi-close</v-icon>
             </v-btn>
             <v-toolbar-title>{{ title }} - {{ subtitle }}</v-toolbar-title>
@@ -91,7 +88,6 @@
                       <Report
                         :page-name="pageName"
                         :cids="[cid.toString()]"
-                        extra-classname="demographics"
                         @loaded="reportOneLoaded = true"
                       ></Report>
                     </v-col>
@@ -106,7 +102,6 @@
                       <Report
                         :page-name="comparePageName"
                         :cids="[cid.toString()]"
-                        extra-classname="demographics"
                         @loaded="reportTwoLoaded = true"
                       ></Report>
                     </v-col>
@@ -126,7 +121,6 @@
                 <Report
                   :page-name="pageName"
                   :cids="[cid.toString()]"
-                  extra-classname="demographics"
                   @loaded="reportOneLoaded = true"
                 ></Report>
               </div>
@@ -139,9 +133,10 @@
 </template>
 
 <script>
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
 import Report from '~/components/CommunityDetails/Report.vue'
 import Compare from '~/components/Compare'
+const reportModule = namespace('report')
 
 @Component({
   Report,
@@ -156,10 +151,22 @@ export default class CommunityReportCard extends Vue {
   @Prop({ default: null, type: String }) description
   @Prop({ default: null, type: Number }) cid
   @Prop({ default: null, type: Number }) rid
-  @Prop({ default: '', type: String }) extraClassname
-  @Prop({ default: null, type: String }) selectedReportName
 
   dialog = false
+
+  @reportModule.Getter('getSelectedReportName') selectedReportName
+  @reportModule.Mutation('setSelectedReportName') setSelectedReportName
+
+  get showDialog() {
+    return this.title === this.selectedReportName
+  }
+
+  closeDialog() {
+    this.$router.push({
+      query: {},
+    })
+    this.setSelectedReportName(null)
+  }
 
   reportOneLoaded = false
   reportTwoLoaded = false
@@ -173,37 +180,6 @@ export default class CommunityReportCard extends Vue {
     } else {
       return this.reportOneLoaded
     }
-  }
-
-  mounted() {
-    this.handleDialogState()
-  }
-
-  @Watch('selectedReportName')
-  onSelectedReportNameChange() {
-    this.handleDialogState()
-  }
-
-  openReport() {
-    this.$emit('update:selectedReportName', this.getReportSlug(this.title))
-  }
-
-  closeReport() {
-    this.$emit('update:selectedReportName', null)
-  }
-
-  handleDialogState() {
-    const reportName = this.getReportSlug(this.title)
-
-    if (!this.selectedReportName) {
-      this.dialog = false
-    } else if (this.selectedReportName === reportName) {
-      this.dialog = true
-    }
-  }
-
-  getReportSlug(reportName) {
-    return encodeURIComponent(reportName.replace(' ', ''))
   }
 }
 </script>

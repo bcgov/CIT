@@ -32,8 +32,8 @@
       >
         <template v-slot:activator>
           <img
-            height="30"
-            width="30"
+            height="23"
+            width="23"
             :src="require(`~/assets/icons/${groupedLocation.group}.svg`)"
             alt="Civic Facilities"
             class="mr-2"

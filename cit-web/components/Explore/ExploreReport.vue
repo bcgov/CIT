@@ -1,72 +1,102 @@
 <template>
   <div>
-    <div class="desktop-view" :class="extraClassname">
-      <div ref="reportContainer" class="reportContainer"></div>
-    </div>
+    <div ref="reportContainer" class="reportContainer"></div>
   </div>
 </template>
 
 <script>
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import { GenerateTokenInGroup } from '~/api/powerbi-rest-api/EmbedToken.js'
 import { GetReportInGroup } from '~/api/powerbi-rest-api/Report.js'
 
 @Component
-export default class ExploreReport extends Vue {
+export default class MainReport extends Vue {
   @Prop({ default: null, type: String }) pageName
   @Prop({ default: null, type: Array }) cids
   @Prop({ default: '', type: String }) extraClassname
 
+  @Watch('cids')
+  onCidsChanged() {
+    this.whenReportLoaded((report) => {
+      this.setFilter()
+    })
+  }
+
   embedToken = null
+
   groupId = '99dbfebe-3c0b-4b2d-affb-3af843c67549'
   reportId = this.$config.reportId
   embedUrl = null
   report = null
+  loaded = false
 
-  mounted() {
-    console.log('Config', this.$config)
-    GetReportInGroup(this.groupId, this.reportId)
-      .then((response) => {
-        const { status, data } = response
-        if (status === 200) {
-          this.embedUrl = data.embedUrl
-        } else {
-          throw new Error(response)
-        }
+  async mounted() {
+    const { data: reportInGroup } = await GetReportInGroup(
+      this.groupId,
+      this.reportId
+    )
+    this.embedUrl = reportInGroup.embedUrl
+
+    const { data: tokenInGroup } = await GenerateTokenInGroup(
+      this.groupId,
+      this.reportId
+    )
+    this.embedToken = tokenInGroup.token
+    const configuration = this.getEmbedConfiguration()
+    const container = this.$refs.reportContainer
+    this.report = this.embedReport(container, configuration)
+    this.listenToEvents()
+  }
+
+  whenReportLoaded(fn) {
+    if (this.loaded) {
+      fn(this.report)
+    } else {
+      this.$on('loaded', (report) => {
+        fn(report)
       })
-      .catch((e) => {
-        console.error(e)
-      })
-    GenerateTokenInGroup(this.groupId, this.reportId).then((response) => {
-      const { status, data } = response
-      if (status === 200) {
-        this.embedToken = data.token
-        const configuration = this.getEmbedConfiguration()
-        const container = this.$refs.reportContainer
-        this.report = this.embedReport(container, configuration)
-        this.report.on('loaded', (event) => {
-          this.report.getPages().then((pages) => {
-            const page = pages.find((p) => p.name === this.pageName)
-            const sampleFilter = {
-              $schema: 'http://powerbi.com/product/schema#basic',
-              target: {
-                table: 'communities',
-                column: 'id',
-              },
-              operator: 'In',
-              values: this.cids,
-              filterType: 1, // pbi.models.FilterType.BasicFilter
-              requireSingleSelection: false, // Limits selection of values to one.
-            }
-            page.setFilters([sampleFilter])
-          })
-        })
-      }
+    }
+  }
+
+  listenToEvents() {
+    this.report.on('loaded', (event) => {
+      this.loaded = true
+      this.$emit('loaded', this.report)
+      this.setFilter()
     })
+
+    this.report.on('rendered', () => {
+      this.$emit('rendered')
+    })
+  }
+
+  setFilter() {
+    this.report.getPages().then((pages) => {
+      const page = pages.find((p) => p.name === this.pageName)
+      console.log(page)
+      console.log(page.defaultSize.width)
+      console.log(page.defaultSize.height)
+      page.setFilters([this.getFilter(this.cids)])
+    })
+  }
+
+  getFilter(cids) {
+    return {
+      $schema: 'http://powerbi.com/product/schema#basic',
+      target: {
+        table: 'communities',
+        column: 'id',
+      },
+      operator: 'In',
+      values: cids,
+      filterType: 1, // pbi.models.FilterType.BasicFilter
+      requireSingleSelection: false, // Limits selection of values to one.
+    }
   }
 
   getEmbedConfiguration() {
     const models = window['powerbi-client'].models
+    console.log(models)
     return {
       type: 'report',
       pageName: this.pageName,
@@ -74,6 +104,7 @@ export default class ExploreReport extends Vue {
       embedUrl: `https://app.powerbi.com/reportEmbed?reportId=${this.reportId}&groupId=${this.groupId}`,
       tokenType: models.TokenType.Embed,
       accessToken: this.embedToken,
+
       settings: {
         panes: {
           pageNavigation: {
@@ -96,34 +127,7 @@ export default class ExploreReport extends Vue {
 iframe {
   border: none !important;
 }
-</style>
-<style lang="scss" scoped>
-.desktop-view {
-  height: 0;
-  position: relative;
-
-  &.demographics {
-    padding-bottom: 167%; /* 1600px */
-  }
-  &.connectivity {
-    padding-bottom: 100%; /* 960px */
-  }
-  &.community-assets {
-    padding-bottom: 125%; /* 1200px */
-  }
-  &.economic-projects {
-    padding-bottom: 125%; /* 1200px */
-  }
-  &.natural-resource-projects {
-    padding-bottom: 161%; /* 1550px */
-  }
-}
-
 .reportContainer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  height: calc(90vw);
 }
 </style>

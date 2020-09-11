@@ -73,6 +73,9 @@ export default class MainReport extends Vue {
   setFilter() {
     this.report.getPages().then((pages) => {
       const page = pages.find((p) => p.name === this.pageName)
+      console.log(page)
+      console.log(page.defaultSize.width)
+      console.log(page.defaultSize.height)
       page.setFilters([this.getFilter(this.cids)])
     })
   }

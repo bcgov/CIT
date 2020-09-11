@@ -44,7 +44,7 @@ V<template>
             :community="communityDetails"
             :report-cards="reportCards"
             :cid="communityDetails.id"
-            :selected-report-name.sync="selectedReportName"
+            @openReport="handleOpen"
           ></ReportSection>
 
           <v-row>
@@ -145,6 +145,7 @@ import { getAuthToken } from '~/api/ms-auth-api/'
 import LocationCard from '~/components/Location/LocationCard.vue'
 import reportPages from '~/data/communityDetails/reportPages.json'
 const commModule = namespace('communities')
+const reportModule = namespace('report')
 @Component({
   Breadcrumbs,
   Sidebar,
@@ -166,11 +167,30 @@ export default class CommunityDetail extends Vue {
   mapLoaded = false
   panels = [0, 1, 2, 3, 4]
   reportCards = reportPages
-  selectedReportName = null
   dialog = false
   citFeedbackEmail = this.$config.citFeedbackEmail
 
   @commModule.Getter('getRegionalDistricts') regionalDistricts
+  @reportModule.Getter('getSelectedReportName') selectedReportName
+  @reportModule.Mutation('setSelectedReportName') setSelectedReportName
+
+  handleOpen(reportName) {
+    this.$router.push({
+      query: {
+        report: reportName,
+      },
+    })
+    this.setSelectedReportName(reportName)
+  }
+
+  @Watch('$route.query')
+  handleQueryWatch(query) {
+    if (!query.report) {
+      this.setSelectedReportName(null)
+    } else {
+      this.handleOpen(query.report)
+    }
+  }
 
   get regionalDistrictName() {
     const rd = this.regionalDistricts.find(
@@ -197,7 +217,6 @@ export default class CommunityDetail extends Vue {
   }
 
   viewReports() {
-    console.log('View Reports', this.$vuetify)
     this.$vuetify.goTo(this.$refs.reportSection, {
       offset: 200,
     })
@@ -205,7 +224,6 @@ export default class CommunityDetail extends Vue {
 
   handleExpand(e) {
     const { active, group } = e
-    console.log(group)
     if (active === false) {
       this.whenMapLoaded((map) => {
         map.setFilter('locations', ['==', ['get', 'location_type'], group])
@@ -244,7 +262,6 @@ export default class CommunityDetail extends Vue {
       return ''
     }
     const temp = dfs.find((df) => df.key === field)
-    console.log(temp)
     return temp?.value
   }
 
@@ -288,7 +305,7 @@ export default class CommunityDetail extends Vue {
     }
   }
 
-  async fetch({ store }) {
+  async fetch({ store, query }) {
     const results = await Promise.all([
       getRegionalDistricts(),
       getCommunityList(),
@@ -303,6 +320,9 @@ export default class CommunityDetail extends Vue {
     store.commit('msauth/setAccessToken', accessToken)
     const dataSources = results[3].data
     store.commit('communities/setDataSources', dataSources)
+    if (query.report) {
+      store.commit('report/setSelectedReportName', query.report)
+    }
   }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
@@ -414,7 +434,6 @@ export default class CommunityDetail extends Vue {
     window.mapboxgl.accessToken = this.MAPBOX_API_KEY
     const mapboxgl = window.mapboxgl
 
-    console.log(this.communityDetails)
     if (this.isCommunityEmpty) {
       return
     }
@@ -442,14 +461,11 @@ export default class CommunityDetail extends Vue {
     map.addControl(legendControl, 'bottom-right')
 
     map.on('click', function (e) {
-      console.log(e)
       const features = map.queryRenderedFeatures(e.point)
-      console.log('Features', features)
       const location = features.find(
         (f) => f.sourceLayer === 'locations-2bvop8'
       )
       if (location) {
-        console.log(location)
         new mapboxgl.Popup()
           .setLngLat(e.lngLat)
           .setHTML(
@@ -463,55 +479,10 @@ export default class CommunityDetail extends Vue {
     })
 
     map.on('load', () => {
-      /*
-      map.addLayer({
-        id: 'locations',
-        type: 'symbol',
-        source: 'composite',
-        'source-layer': 'locations-2bvop8',
-        layout: {
-          'text-optional': true,
-          'text-line-height': 0.9,
-          'text-size': 13,
-          'icon-image': ['to-string', ['get', 'location_type']],
-          'text-font': ['Open Sans Regular', 'Arial Unicode MS Regular'],
-          'icon-allow-overlap': ['step', ['zoom'], false, 11, true],
-          visibility: 'none',
-          'text-offset': [0, 1.5],
-          'icon-size': ['interpolate', ['linear'], ['zoom'], 5, 0.5, 15, 1],
-          'text-field': ['to-string', ['get', 'name']],
-          'icon-padding': 0,
-          'text-max-width': 15,
-        },
-        paint: {
-          'text-halo-color': 'hsl(0, 0%, 100%)',
-          'text-halo-width': 1,
-          'icon-opacity': ['interpolate', ['linear'], ['zoom'], 0, 1, 22, 1],
-        },
-      })
-      */
       map.setLayoutProperty('locations', 'visibility', 'visible')
       this.mapLoaded = true
       this.$root.$emit('comm-map-loaded', this.map)
     })
-  }
-
-  @Watch('$route.query', { immediate: true, deep: true })
-  onUrlChange(queryParams) {
-    if (queryParams.report) {
-      this.selectedReportName = queryParams.report
-    } else {
-      this.selectedReportName = null
-    }
-  }
-
-  @Watch('selectedReportName')
-  onSelectedReportNameChange() {
-    if (this.selectedReportName) {
-      this.$router.push({ query: { report: this.selectedReportName } })
-    } else {
-      this.$router.push({ query: {} })
-    }
   }
 }
 </script>
