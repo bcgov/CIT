@@ -314,6 +314,8 @@ def calculate_parent_child_communities():
 def calculate_communities_served_for_hospitals():
     for hospital in Hospital.objects.all():
         num_communities_within_50km = Community.objects.filter(
-            distances__location__location_type="hospitals", distances__distance__lte=50).distinct().count()
+            distances__location=hospital,
+            distances__location__location_type="hospitals",
+            distances__distance__lte=50).distinct().count()
         hospital.num_communities_within_50km = num_communities_within_50km
         hospital.save()
