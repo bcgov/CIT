@@ -381,28 +381,6 @@ def serialize_community_detail_fields(obj):
                 "description": "A - C (moderate); D and E (low)",
             },
         },
-
-        # {
-        #     "key": "last_mile_status",
-        #     "value": obj.last_mile_status,
-        #     "metadata": {
-        #         "name": "Last Mile Status (June 2020)",
-        #     },
-        # },
-        # {
-        #     "key": "transport_mile_status",
-        #     "value": obj.transport_mile_status,
-        #     "metadata": {
-        #         "name": "Transport Status (June 2020)",
-        #     },
-        # },
-        # {
-        #     "key": "cbc_phase",
-        #     "value": obj.cbc_phase,
-        #     "metadata": {
-        #         "name": "CBC Phase",
-        #     },
-        # },
     ]
 
 
@@ -447,7 +425,10 @@ def get_location_assets_for_community(model_class, community):
 
     if model_class == School:
         school_districts = community.schooldistrict_set.all()
-        return School.objects.filter(school_district__in=school_districts, distances__distance__lte=50)
+        return School.objects.filter(
+            school_district__in=school_districts,
+            distances__distance__lte=50,
+            distances__community=community)
     else:
         return model_class.objects.filter(distances__distance__lte=50, distances__community=community)
 
@@ -720,10 +701,7 @@ def serialize_data_sources():
 
     serialized = {}
     for name, datasource_info in [*SHP_RESOURCES.items(), *CSV_RESOURCES.items(), *DATABC_RESOURCES.items()]:
-        print(name, datasource_info)
         serialized[name] = serialize_data_source(name, datasource_info)
-
-    print("serialized", serialized)
     return serialized
 
 
