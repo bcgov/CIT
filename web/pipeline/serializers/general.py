@@ -119,6 +119,7 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
     display_fields = serializers.SerializerMethodField()
     locations = serializers.SerializerMethodField()
     child_communities = serializers.SerializerMethodField()
+    parent_community = serializers.SerializerMethodField()
 
     class Meta:
         model = Community
@@ -138,6 +139,15 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
 
     def get_locations(self, obj):
         return obj.get_location_assets()
+
+    def get_parent_community(self, obj):
+        if not obj.parent_community:
+            return None
+
+        return {
+            "id": obj.parent_community.id,
+            "name": obj.parent_community.place_name,
+        }
 
     def get_child_communities(self, obj):
         return [{
