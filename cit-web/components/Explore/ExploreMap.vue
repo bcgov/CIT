@@ -12,13 +12,20 @@
         :cid="communityPopUpId"
         @close="closeCommunityPopup"
       ></CommunityPopup>
+      <div ref="layerSwitcher">
+        <LayerSwitcher
+          :layers="layerSwitcher"
+          @layerToggle="handleLayerToggle"
+        ></LayerSwitcher>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
-// import ControlFactory from '~/utils/map'
+import ControlFactory from '~/utils/map'
+import LayerSwitcher from '~/components/LayerSwitcher'
 import SearchAsMove from '~/components/Explore/SearchAsMove.vue'
 import CommunityPopup from '~/components/Map/CommunityPopup'
 
@@ -27,6 +34,7 @@ const commModule = namespace('communities')
 @Component({
   SearchAsMove,
   CommunityPopup,
+  LayerSwitcher,
 })
 export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
@@ -35,6 +43,14 @@ export default class Explore extends Vue {
   communityPopUpName = null
   communityPopUpId = null
   popUpInstance = null
+
+  layerSwitcher = [
+    {
+      layerName: 'locations',
+      layerLabel: 'Locations',
+    },
+  ]
+
   created() {
     this.map = null
     this.mapLoaded = false
@@ -42,6 +58,13 @@ export default class Explore extends Vue {
 
   closeCommunityPopup() {
     console.log('Close')
+  }
+
+  handleLayerToggle(lo) {
+    const visibility = lo.visibility === true ? 'visible' : 'none'
+    this.whenMapLoaded((map) => {
+      map.setLayoutProperty(lo.layerName, 'visibility', visibility)
+    })
   }
 
   mounted() {
@@ -103,7 +126,10 @@ export default class Explore extends Vue {
     const mapboxgl = window.mapboxgl
     this.map.addControl(new mapboxgl.NavigationControl())
     this.map.addControl(new mapboxgl.ScaleControl({ position: 'bottom-right' }))
-    // map.addControl(new ControlFactory(this.$refs.searchMove), 'bottom-right')
+    this.map.addControl(
+      new ControlFactory(this.$refs.layerSwitcher),
+      'top-left'
+    )
   }
 
   listenToEvents() {
