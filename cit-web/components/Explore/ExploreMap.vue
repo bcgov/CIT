@@ -1,8 +1,14 @@
 <template>
   <div style="position: relative; height: 100%; width: 100%;">
-    <div id="map"></div>
+    <div id="map">
+      <CommunityPopup></CommunityPopup>
+    </div>
+
     <div ref="searchMove" class="searchMove">
       <SearchAsMove></SearchAsMove>
+    </div>
+    <div v-show="false">
+      <CommunityPopup ref="communityPopUp"></CommunityPopup>
     </div>
   </div>
 </template>
@@ -11,10 +17,13 @@
 import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
 // import ControlFactory from '~/utils/map'
 import SearchAsMove from '~/components/Explore/SearchAsMove.vue'
+import CommunityPopup from '~/components/Map/CommunityPopup'
+
 const commModule = namespace('communities')
 
 @Component({
   SearchAsMove,
+  CommunityPopup,
 })
 export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
@@ -29,7 +38,6 @@ export default class Explore extends Vue {
     this.initMap()
     this.addControls()
     this.listenToEvents()
-    console.log(this.communityGeoJSON)
   }
 
   initMap() {
@@ -143,8 +151,8 @@ export default class Explore extends Vue {
 
     this.map.on('click', 'communities', (e) => {
       const coordinates = e.features[0].geometry.coordinates.slice()
-      const name = e.features[0].properties.place_name
-      const cid = e.features[0].properties.pk
+      // const name = e.features[0].properties.place_name
+      // const cid = e.features[0].properties.pk
       console.log(e.features[0])
 
       // Ensure that if the map is zoomed out such that multiple
@@ -153,13 +161,14 @@ export default class Explore extends Vue {
       while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
       }
-
-      new window.mapboxgl.Popup()
-        .setLngLat(coordinates)
-        .setHTML(
-          `<a target="_blank" href="/community/${cid}">go</a> to ${name} details.`
-        )
-        .addTo(this.map)
+      this.$nextTick(() => {
+        console.log(this.$refs)
+        const phtml = this.$refs.communityPopUp.$el.innerHTML
+        new window.mapboxgl.Popup()
+          .setLngLat(coordinates)
+          .setHTML(phtml)
+          .addTo(this.map)
+      })
     })
 
     // Change the cursor to a pointer when the mouse is over the places layer.
