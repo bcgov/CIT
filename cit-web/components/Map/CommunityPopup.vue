@@ -1,6 +1,6 @@
 <template>
-  <div class="rounded-lg">
-    <v-card width="300">
+  <div>
+    <v-card width="300" class="rounded-lg">
       <v-img
         class="white--text align-center"
         width="300px"
