@@ -1,14 +1,16 @@
 <template>
   <div style="position: relative; height: 100%; width: 100%;">
-    <div id="map">
-      <CommunityPopup></CommunityPopup>
-    </div>
+    <div id="map"></div>
 
     <div ref="searchMove" class="searchMove">
       <SearchAsMove></SearchAsMove>
     </div>
-    <div v-show="false">
-      <CommunityPopup ref="communityPopUp"></CommunityPopup>
+    <div v-show="true">
+      <CommunityPopup
+        ref="communityPopUp"
+        :name="communityPopUpName"
+        @close="closeCommunityPopup"
+      ></CommunityPopup>
     </div>
   </div>
 </template>
@@ -29,9 +31,15 @@ export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
   @Prop({ default: null, type: Array }) cids
   @commModule.Getter('getCommunityGeoJSON') communityGeoJSON
+  communityPopUpName = null
+  popUpInstance = null
   created() {
     this.map = null
     this.mapLoaded = false
+  }
+
+  closeCommunityPopup() {
+    console.log('Close')
   }
 
   mounted() {
@@ -151,7 +159,7 @@ export default class Explore extends Vue {
 
     this.map.on('click', 'communities', (e) => {
       const coordinates = e.features[0].geometry.coordinates.slice()
-      // const name = e.features[0].properties.place_name
+      const name = e.features[0].properties.place_name
       // const cid = e.features[0].properties.pk
       console.log(e.features[0])
 
@@ -161,13 +169,18 @@ export default class Explore extends Vue {
       while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
       }
+      this.communityPopUpName = name
       this.$nextTick(() => {
-        console.log(this.$refs)
         const phtml = this.$refs.communityPopUp.$el.innerHTML
-        new window.mapboxgl.Popup()
-          .setLngLat(coordinates)
-          .setHTML(phtml)
-          .addTo(this.map)
+        const communityPopUp = new window.mapboxgl.Popup({
+          className: 'community-popup-container',
+        })
+        document.addEventListener('click', (e) => {
+          if (event.target.matches('.community-popup-close-icon')) {
+            communityPopUp.remove()
+          }
+        })
+        communityPopUp.setLngLat(coordinates).setHTML(phtml).addTo(this.map)
       })
     })
 
@@ -200,5 +213,15 @@ export default class Explore extends Vue {
   justify-content: center;
   align-items: center;
 }
+
+.community-popup-container,
+.community-popup-container .mapboxgl-popup-content {
+  padding: 0 0 0 0;
+}
 </style>
-match
+<style lang="scss">
+.community-popup-container,
+.community-popup-container .mapboxgl-popup-content {
+  padding: 0 0 0 0;
+}
+</style>
