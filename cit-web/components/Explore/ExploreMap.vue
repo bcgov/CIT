@@ -9,6 +9,7 @@
       <CommunityPopup
         ref="communityPopUp"
         :name="communityPopUpName"
+        :cid="communityPopUpId"
         @close="closeCommunityPopup"
       ></CommunityPopup>
     </div>
@@ -32,6 +33,7 @@ export default class Explore extends Vue {
   @Prop({ default: null, type: Array }) cids
   @commModule.Getter('getCommunityGeoJSON') communityGeoJSON
   communityPopUpName = null
+  communityPopUpId = null
   popUpInstance = null
   created() {
     this.map = null
@@ -160,7 +162,7 @@ export default class Explore extends Vue {
     this.map.on('click', 'communities', (e) => {
       const coordinates = e.features[0].geometry.coordinates.slice()
       const name = e.features[0].properties.place_name
-      // const cid = e.features[0].properties.pk
+      const cid = e.features[0].properties.pk
       console.log(e.features[0])
 
       // Ensure that if the map is zoomed out such that multiple
@@ -170,6 +172,7 @@ export default class Explore extends Vue {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
       }
       this.communityPopUpName = name
+      this.communityPopUpId = cid
       this.$nextTick(() => {
         const phtml = this.$refs.communityPopUp.$el.innerHTML
         const communityPopUp = new window.mapboxgl.Popup({

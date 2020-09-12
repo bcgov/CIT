@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="rounded-lg">
     <v-card width="300">
       <v-img
         class="white--text align-center"
@@ -22,7 +22,7 @@
       </v-img>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn text
+        <v-btn :href="`/community/${cid}`" text target="_blank"
           >View Details
           <v-icon>mdi-right-arrow</v-icon>
         </v-btn>
@@ -37,5 +37,6 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 @Component
 export default class CommunityPopup extends Vue {
   @Prop({ default: null, type: String }) name
+  @Prop({ default: null, type: String }) cid
 }
 </script>
