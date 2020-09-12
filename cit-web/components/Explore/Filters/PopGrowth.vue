@@ -34,7 +34,7 @@ export default class PopGrowth extends Vue {
       title: 'Shrinking',
     },
     {
-      title: 'No Change',
+      title: 'Less than 5% Change',
     },
     {
       title: 'Growing (<25%)',
@@ -49,8 +49,8 @@ export default class PopGrowth extends Vue {
       population_percentage_change__lt: 0,
     },
     {
-      population_percentage_change__lte: 0,
-      population_percentage_change__gte: 0,
+      population_percentage_change__lte: 0.05,
+      population_percentage_change__gte: -0.05,
     },
     {
       population_percentage_change__lte: 0.25,

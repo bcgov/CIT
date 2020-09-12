@@ -1,8 +1,17 @@
 <template>
   <div style="position: relative; height: 100%; width: 100%;">
     <div id="map"></div>
+
     <div ref="searchMove" class="searchMove">
       <SearchAsMove></SearchAsMove>
+    </div>
+    <div v-show="true">
+      <CommunityPopup
+        ref="communityPopUp"
+        :name="communityPopUpName"
+        :cid="communityPopUpId"
+        @close="closeCommunityPopup"
+      ></CommunityPopup>
     </div>
   </div>
 </template>
@@ -11,25 +20,34 @@
 import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
 // import ControlFactory from '~/utils/map'
 import SearchAsMove from '~/components/Explore/SearchAsMove.vue'
+import CommunityPopup from '~/components/Map/CommunityPopup'
+
 const commModule = namespace('communities')
 
 @Component({
   SearchAsMove,
+  CommunityPopup,
 })
 export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
   @Prop({ default: null, type: Array }) cids
   @commModule.Getter('getCommunityGeoJSON') communityGeoJSON
+  communityPopUpName = null
+  communityPopUpId = null
+  popUpInstance = null
   created() {
     this.map = null
     this.mapLoaded = false
+  }
+
+  closeCommunityPopup() {
+    console.log('Close')
   }
 
   mounted() {
     this.initMap()
     this.addControls()
     this.listenToEvents()
-    console.log(this.communityGeoJSON)
   }
 
   initMap() {
@@ -153,13 +171,20 @@ export default class Explore extends Vue {
       while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360
       }
-
-      new window.mapboxgl.Popup()
-        .setLngLat(coordinates)
-        .setHTML(
-          `<a target="_blank" href="/community/${cid}">go</a> to ${name} details.`
-        )
-        .addTo(this.map)
+      this.communityPopUpName = name
+      this.communityPopUpId = cid
+      this.$nextTick(() => {
+        const phtml = this.$refs.communityPopUp.$el.innerHTML
+        const communityPopUp = new window.mapboxgl.Popup({
+          className: 'community-popup-container',
+        })
+        document.addEventListener('click', (e) => {
+          if (event.target.matches('.community-popup-close-icon')) {
+            communityPopUp.remove()
+          }
+        })
+        communityPopUp.setLngLat(coordinates).setHTML(phtml).addTo(this.map)
+      })
     })
 
     // Change the cursor to a pointer when the mouse is over the places layer.
@@ -191,5 +216,15 @@ export default class Explore extends Vue {
   justify-content: center;
   align-items: center;
 }
+
+.community-popup-container,
+.community-popup-container .mapboxgl-popup-content {
+  padding: 0 0 0 0;
+}
 </style>
-match
+<style lang="scss">
+.community-popup-container,
+.community-popup-container .mapboxgl-popup-content {
+  padding: 0 0 0 0;
+}
+</style>
