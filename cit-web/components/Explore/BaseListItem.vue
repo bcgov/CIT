@@ -6,20 +6,41 @@
     </v-list-item-content>
     <v-list-item-action>
       <div>
-        <v-btn
-          icon
-          fab
-          small
-          dark
-          color="primary"
-          class="mr-2"
-          @click="$root.$emit('recenterMap', center)"
-        >
-          <v-icon>mdi-map-marker-radius</v-icon>
-        </v-btn>
-        <v-btn icon fab small dark color="primary" @click="handleMoreDetails">
-          <v-icon>mdi-arrow-right-box</v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              icon
+              fab
+              small
+              dark
+              color="primary"
+              class="mr-2"
+              v-bind="attrs"
+              @click="$root.$emit('recenterMap', center)"
+              v-on="on"
+            >
+              <v-icon>mdi-map-marker-radius</v-icon>
+            </v-btn>
+          </template>
+          <span>Locate On Map</span>
+        </v-tooltip>
+        <v-tooltip top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              icon
+              fab
+              small
+              dark
+              color="primary"
+              v-bind="attrs"
+              @click="handleMoreDetails"
+              v-on="on"
+            >
+              <v-icon>mdi-arrow-right-box</v-icon>
+            </v-btn>
+          </template>
+          <span>Go To Details Page</span>
+        </v-tooltip>
       </div>
     </v-list-item-action>
   </v-list-item>

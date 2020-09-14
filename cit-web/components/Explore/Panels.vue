@@ -4,7 +4,6 @@
       <v-expansion-panel
         v-for="(communities, regionalDistrict) in groupedCommunities"
         :key="'region' + regionalDistrict"
-        @change="handlePanelChange"
       >
         <PanelHeader
           :title="getRdName(regionalDistrict)"
@@ -36,11 +35,6 @@ export default class Explore extends Vue {
   @commModule.Getter('getRegionalDistricts') regionalDistricts
 
   panel = []
-
-  handlePanelChange(e) {
-    console.log(this.panel)
-    console.log(e)
-  }
 
   get mappedRds() {
     const temp = {}
