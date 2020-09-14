@@ -3,15 +3,22 @@
     <div class="text-center">
       <v-dialog v-model="dialog" fullscreen>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn small depressed color="info" v-bind="attrs" v-on="on">
+          <v-btn
+            small
+            depressed
+            color="primary"
+            class="text-capitalize"
+            v-bind="attrs"
+            v-on="on"
+          >
             <v-icon small class="mr-2">mdi-file-chart</v-icon>
             View Reports
           </v-btn>
           <v-btn
             small
             depressed
-            color="info"
-            class="ml-2"
+            color="primary"
+            class="ml-2 text-capitalize"
             :href="`mailto:${citFeedbackEmail}?subject=CIT Feedback`"
           >
             <v-icon small class="mr-2">mdi-comment</v-icon>

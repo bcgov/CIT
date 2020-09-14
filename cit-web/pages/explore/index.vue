@@ -4,10 +4,8 @@
       <div class="pa-8">
         <h1 class="text-h4 mt-1 mb-1">Explore B.C. Communities</h1>
         <div class="mt-4 mb-3 font-weight-bold d-flex align-center">
-          <v-btn small icon><v-icon>mdi-filter</v-icon></v-btn>
           <p class="ml-2 text-h6 mb-0">Filters</p>
         </div>
-
         <ExploreFilters @filtered="handleFiltered"></ExploreFilters>
       </div>
       <v-divider></v-divider>
