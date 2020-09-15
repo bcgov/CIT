@@ -122,19 +122,14 @@ export default class Explore extends Vue {
       source: 'communities',
       filter: ['has', 'point_count'],
       paint: {
-        // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
-        // with three steps to implement three types of circles:
-        //   * Blue, 20px circles when point count is less than 100
-        //   * Yellow, 30px circles when point count is between 100 and 750
-        //   * Pink, 40px circles when point count is greater than or equal to 750
         'circle-color': [
           'step',
           ['get', 'point_count'],
-          '#51bbd6',
+          '#073366',
           100,
-          '#f1f075',
+          '#073366',
           750,
-          '#f28cb1',
+          '#073366',
         ],
         'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
       },
@@ -149,6 +144,9 @@ export default class Explore extends Vue {
         'text-field': '{point_count_abbreviated}',
         'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
         'text-size': 12,
+      },
+      paint: {
+        'text-color': '#ffffff',
       },
     })
   }
@@ -228,6 +226,24 @@ export default class Explore extends Vue {
       this.$emit('moveend', {
         sourceFeatures,
       })
+    })
+
+    this.map.on('click', 'clusters', (e) => {
+      const features = this.map.queryRenderedFeatures(e.point, {
+        layers: ['clusters'],
+      })
+      const cluster = features[0]
+      const clusterID = cluster.properties.cluster_id
+      const clusterSource = this.map.getSource('communities')
+      const clusterLeaves = clusterSource.getClusterLeaves(
+        clusterID,
+        2000,
+        0,
+        (err, features) => {
+          console.log('Leave features', features, err)
+        }
+      )
+      console.log('Cluster Leaves', clusterLeaves)
     })
 
     this.map.on('click', 'communities', (e) => {
