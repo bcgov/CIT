@@ -59,6 +59,7 @@
       <v-scroll-x-transition>
         <ExploreMap
           v-show="showMap"
+          ref="exploreMap"
           :mapbox-api-key="$config.MAPBOX_API_KEY"
           :cids="cidArray"
           @moveend="handleMoveEnd"
