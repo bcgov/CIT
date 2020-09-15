@@ -14,16 +14,6 @@
             <v-icon small class="mr-2">mdi-file-chart</v-icon>
             View Reports
           </v-btn>
-          <v-btn
-            small
-            depressed
-            color="primary"
-            class="ml-2 text-capitalize"
-            :href="`mailto:${citFeedbackEmail}?subject=CIT Feedback`"
-          >
-            <v-icon small class="mr-2">mdi-comment</v-icon>
-            Give Feedback
-          </v-btn>
         </template>
         <v-card>
           <v-toolbar dark color="primary">
@@ -33,10 +23,7 @@
           </v-toolbar>
           <v-card-text>
             <v-container fluid>
-              <ExploreReportSection
-                :cids="cids"
-                :selected-report-name.sync="selectedReportName"
-              ></ExploreReportSection>
+              <ExploreReportSection :cids="cids"></ExploreReportSection>
             </v-container>
           </v-card-text>
         </v-card>
@@ -46,7 +33,7 @@
 </template>
 
 <script>
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import ExploreReportSection from '~/components/Explore/ExploreReportSection'
 @Component({
   ExploreReportSection,
@@ -54,36 +41,7 @@ import ExploreReportSection from '~/components/Explore/ExploreReportSection'
 export default class ReportDialog extends Vue {
   @Prop({ default: null, type: Array }) cids
   @Prop({ default: null, type: String }) selectedReportName
-  @Prop({ default: null, type: Boolean }) showReportList
 
   dialog = false
-  citFeedbackEmail = this.$config.citFeedbackEmail
-
-  mounted() {
-    this.handleDialogState()
-  }
-
-  handleDialogState() {
-    if (this.showReportList || this.selectedReportName) {
-      this.dialog = true
-    } else {
-      this.dialog = false
-    }
-  }
-
-  @Watch('dialog')
-  onDialogChange(val) {
-    this.$emit('update:showReportList', val)
-  }
-
-  @Watch('showReportList')
-  onShowReportListChange() {
-    this.handleDialogState()
-  }
-
-  @Watch('selectedReportName')
-  onSelectedReportNameChange() {
-    this.$emit('update:selectedReportName', this.selectedReportName)
-  }
 }
 </script>

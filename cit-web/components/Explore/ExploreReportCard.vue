@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card class="elevation-3 rounded-lg" @click="openReport">
+    <v-card class="elevation-3 rounded-lg">
       <v-expand-transition>
         <div
           v-if="hover"
@@ -31,119 +31,23 @@
           <v-icon color="white">mdi-arrow-right</v-icon>
         </v-btn>
       </v-card-actions>
-
-      <v-dialog
-        v-model="dialog"
-        fullscreen
-        hide-overlayw
-        transition="dialog-bottom-transition"
-        :scrollable="false"
-        style="overflow: hidden;"
-      >
-        <v-card>
-          <v-toolbar flat dark color="primary">
-            <v-btn icon dark @click="closeReport">
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-            <v-toolbar-title>{{ title }}</v-toolbar-title>
-            <v-spacer></v-spacer>
-          </v-toolbar>
-
-          <div class="pa-10">
-            <div class="d-flex align-center">
-              <div>
-                <h6 class="text-h5">{{ title }}</h6>
-                <p style="max-width: 800px;">{{ description }}</p>
-              </div>
-              <v-spacer></v-spacer>
-              <div>
-                <v-img
-                  :src="require(`~/assets/images/reports/headers/${image}`)"
-                  contain
-                  width="376"
-                  max-height="190"
-                  aspect-ratio="1"
-                ></v-img>
-              </div>
-            </div>
-            <v-divider></v-divider>
-
-            <div v-if="!loaded">
-              <h6 class="text-h6 text-center mt-10 mb-10">
-                Generating your report
-              </h6>
-              <div class="progress-reportcard">
-                <v-progress-linear
-                  color="indigo accent-4"
-                  indeterminate
-                  rounded
-                  height="6"
-                ></v-progress-linear>
-              </div>
-            </div>
-
-            <v-card-text v-show="loaded">
-              <ExploreReport
-                :page-name="pageName"
-                :cids="cids"
-                @loaded="loaded = true"
-              ></ExploreReport>
-            </v-card-text>
-          </div>
-        </v-card>
-      </v-dialog>
     </v-card>
   </v-hover>
 </template>
 
 <script>
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import ExploreReport from '~/components/Explore/ExploreReport.vue'
 
 @Component({
   ExploreReport,
 })
 export default class ExploreReportCard extends Vue {
-  @Prop({ default: null, type: String }) pageName
   @Prop({ default: null, type: String }) title
   @Prop({ default: null, type: String }) image
   @Prop({ default: null, type: String }) description
-  @Prop({ default: null, type: Array }) cids
-  @Prop({ default: null, type: String }) selectedReportName
 
   dialog = false
-  loaded = false
-
-  mounted() {
-    this.handleDialogState()
-  }
-
-  @Watch('selectedReportName')
-  onSelectedReportNameChange() {
-    this.handleDialogState()
-  }
-
-  openReport() {
-    this.$emit('update:selectedReportName', this.getReportSlug(this.title))
-  }
-
-  closeReport() {
-    this.$emit('update:selectedReportName', null)
-  }
-
-  handleDialogState() {
-    const reportName = this.getReportSlug(this.title)
-
-    if (!this.selectedReportName) {
-      this.dialog = false
-    } else if (this.selectedReportName === reportName) {
-      this.dialog = true
-    }
-  }
-
-  getReportSlug(reportName) {
-    return encodeURIComponent(reportName.replace(' ', ''))
-  }
 }
 </script>
 <style lang="scss">

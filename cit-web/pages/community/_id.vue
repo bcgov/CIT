@@ -75,6 +75,13 @@ V<template>
         <LegendControl></LegendControl>
       </div>
 
+      <div ref="layerSwitcher">
+        <LayerSwitcher
+          :layers="layerSwitcher"
+          @layerToggle="handleLayerToggle"
+        ></LayerSwitcher>
+      </div>
+
       <v-dialog v-model="dialog" max-width="800">
         <v-toolbar color="primary" dense elevation="3">
           <v-toolbar-title style="color: white;">{{
@@ -131,7 +138,10 @@ import ReportSection from '~/components/CommunityDetails/ReportSection.vue'
 import LegendControl from '~/components/CommunityDetails/LegendControl.vue'
 import MainHeader from '~/components/MainHeader.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
+import LayerSwitcher from '~/components/LayerSwitcher'
+
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
+import ControlFactory from '~/utils/map'
 import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
 import {
   getCommunity,
@@ -156,6 +166,7 @@ const reportModule = namespace('report')
   MainHeader,
   CensusSubdivision,
   Report,
+  LayerSwitcher,
   filters: {
     yesno,
   },
@@ -169,6 +180,19 @@ export default class CommunityDetail extends Vue {
   reportCards = reportPages
   dialog = false
   citFeedbackEmail = this.$config.citFeedbackEmail
+  layerSwitcher = [
+    {
+      layerName: 'locations',
+      layerLabel: 'Locations',
+    },
+  ]
+
+  handleLayerToggle(lo) {
+    const visibility = lo.visibility === true ? 'visible' : 'none'
+    this.whenMapLoaded((map) => {
+      map.setLayoutProperty(lo.layerName, 'visibility', visibility)
+    })
+  }
 
   @commModule.Getter('getRegionalDistricts') regionalDistricts
   @reportModule.Getter('getSelectedReportName') selectedReportName
@@ -281,28 +305,6 @@ export default class CommunityDetail extends Vue {
       return false
     }
     return true
-  }
-
-  getControlFactory() {
-    return class getControlFactory {
-      el = null
-      constructor(el) {
-        this.el = el
-      }
-
-      onAdd(map) {
-        this.map = map
-        this.container = document.createElement('div')
-        this.container.className = 'mapboxgl-ctrl'
-        this.container.appendChild(this.el)
-        return this.container
-      }
-
-      onRemove() {
-        this.container.parentNode.removeChild(this.container)
-        this.map = undefined
-      }
-    }
   }
 
   async fetch({ store, query }) {
@@ -453,12 +455,13 @@ export default class CommunityDetail extends Vue {
       ])
       .addTo(map)
 
-    const MapBoxControl = this.getControlFactory()
-    const centerControl = new MapBoxControl(this.$refs.centerControl)
+    const centerControl = new ControlFactory(this.$refs.centerControl)
     map.addControl(centerControl, 'top-right')
 
-    const legendControl = new MapBoxControl(this.$refs.legendControl)
+    const legendControl = new ControlFactory(this.$refs.legendControl)
     map.addControl(legendControl, 'bottom-right')
+
+    map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'top-left')
 
     map.on('click', function (e) {
       const features = map.queryRenderedFeatures(e.point)
