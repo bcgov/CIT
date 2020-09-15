@@ -58,22 +58,21 @@
       ></ExploreToolbar>
       <v-scroll-x-transition>
         <ExploreMap
-          v-show="showMap"
+          v-if="showMap"
+          ref="exploreMap"
           class="explore-map"
           :mapbox-api-key="$config.MAPBOX_API_KEY"
           :cids="cidArray"
           @moveend="handleMoveEnd"
         ></ExploreMap>
-      </v-scroll-x-transition>
-      <v-scroll-x-transition>
-        <div v-show="!showMap">
-          <ExploreReportSection
-            :report-cards="reportCards"
-            :report-to-show="reportToShow"
-            :cids="cidArray"
-            @showReport="showReport"
-          ></ExploreReportSection>
-        </div>
+
+        <ExploreReportSection
+          v-else
+          :report-cards="reportCards"
+          :report-to-show="reportToShow"
+          :cids="cidArray"
+          @showReport="showReport"
+        ></ExploreReportSection>
       </v-scroll-x-transition>
     </div>
   </div>
