@@ -3,18 +3,28 @@
     <v-menu
       v-model="menu"
       class="pa-0 ma-0 rounded"
-      bottom
-      transition="scale-transition"
+      top
+      transition="fade-transition"
       :close-on-content-click="false"
+      :nudge-top="5"
       offset-y
-      nudge-bottom="5"
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" v-bind="attrs" v-on="on">Layers</v-btn>
+        <v-btn
+          color="primary"
+          fab
+          class="rounded-lg text-capitalize"
+          v-bind="attrs"
+          v-on="on"
+        >
+          <v-icon>mdi-map</v-icon>
+        </v-btn>
       </template>
-      <v-card width="300" class="rounded-lg">
-        <v-toolbar color="primary">
-          <v-toolbar-title class="white--text">Layers</v-toolbar-title>
+      <v-card width="300" class="rounded-lg pa-0 ma-0">
+        <v-toolbar color="primary" height="48">
+          <v-toolbar-title class="white--text font-weight-bold text-body-1"
+            ><v-icon color="white">mdi-map</v-icon> Layers</v-toolbar-title
+          >
         </v-toolbar>
         <v-card-text>
           <div
