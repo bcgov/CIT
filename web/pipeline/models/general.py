@@ -123,7 +123,9 @@ class RegionalDistrict(models.Model):
 
 
 class LocationDistance(models.Model):
-    community = models.ForeignKey('Community', on_delete=models.DO_NOTHING, related_name='distances')
+    community = models.ForeignKey(
+        'Community', on_delete=models.DO_NOTHING, related_name='distances',
+        help_text="Community for this distance")
     location = models.ForeignKey('Location', on_delete=models.DO_NOTHING, related_name='distances')
     distance = models.DecimalField(
         null=True, blank=True, max_digits=24, decimal_places=4,
@@ -142,6 +144,7 @@ class LocationDistance(models.Model):
         max_length=255,
         help_text="Travel time, in human-readable units (e.g. 15 minutes 22 seconds)",
     )
+    within_municipality = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('community', 'location')
