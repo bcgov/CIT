@@ -71,6 +71,9 @@ export default class Explore extends Vue {
     this.initMap()
     this.addControls()
     this.listenToEvents()
+    this.$nextTick(() => {
+      this.whenMapLoaded((map) => map.resize())
+    })
   }
 
   initMap() {
