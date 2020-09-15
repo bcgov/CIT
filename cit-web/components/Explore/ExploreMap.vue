@@ -1,7 +1,6 @@
 <template>
   <div style="position: relative;">
     <div id="map"></div>
-
     <div ref="searchMove" class="searchMove">
       <SearchAsMove></SearchAsMove>
     </div>
@@ -23,7 +22,7 @@
 </template>
 
 <script>
-import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, namespace, Watch } from 'nuxt-property-decorator'
 import ControlFactory from '~/utils/map'
 import LayerSwitcher from '~/components/LayerSwitcher'
 import SearchAsMove from '~/components/Explore/SearchAsMove.vue'
@@ -39,7 +38,36 @@ const commModule = namespace('communities')
 export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
   @Prop({ default: null, type: Array }) cids
+  @Prop({ default: null, type: Array }) clusterCommunities
   @commModule.Getter('getCommunityGeoJSON') communityGeoJSON
+
+  @Watch('clusterCommunities')
+  handleClusterChange(nc, oc) {
+    const newGeoJson = {
+      crs: { type: 'name', properties: { name: 'EPSG:4326' } },
+      type: 'FeatureCollection',
+      features: [],
+    }
+    nc.map((c) => {
+      newGeoJson.features.push({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: [c.longitude, c.latitude],
+        },
+        properties: {
+          id: c.id,
+          place_name: c.place_name,
+        },
+      })
+    })
+
+    this.whenMapLoaded((map) => {
+      const clusterSource = map.getSource('communities')
+      clusterSource.setData(newGeoJson)
+    })
+  }
+
   communityPopUpName = null
   communityPopUpId = null
   popUpInstance = null

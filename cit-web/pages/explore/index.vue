@@ -63,6 +63,7 @@
           class="explore-map"
           :mapbox-api-key="$config.MAPBOX_API_KEY"
           :cids="cidArray"
+          :cluster-communities="flatCommunities"
           @moveend="handleMoveEnd"
         ></ExploreMap>
 
