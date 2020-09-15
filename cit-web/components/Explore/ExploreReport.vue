@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- To Trigger Lifecycle method on prop update -->
-    <div v-show="false">{{ pageName }}</div>
+    <div v-show="false">{{ pageName }} {{ cids }}</div>
     <div ref="reportContainer" class="reportContainer"></div>
   </div>
 </template>
@@ -50,10 +50,10 @@ export default class MainReport extends Vue {
   }
 
   beforeUpdate(e) {
-    console.log('Prop CHange')
     this.whenReportLoaded((report) => {
       const page = report.page(this.pageName)
       page.setActive()
+      this.setFilter()
     })
   }
 
@@ -82,9 +82,6 @@ export default class MainReport extends Vue {
   setFilter() {
     this.report.getPages().then((pages) => {
       const page = pages.find((p) => p.name === this.pageName)
-      console.log(page)
-      console.log(page.defaultSize.width)
-      console.log(page.defaultSize.height)
       page.setFilters([this.getFilter(this.cids)])
     })
   }

@@ -1,6 +1,6 @@
 <template>
   <div class="explore-container d-flex">
-    <div class="explore-results-container">
+    <div class="explore-results-container elevation-5">
       <div class="pa-8">
         <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
         <div class="mt-4 mb-3 font-weight-bold d-flex align-center">
@@ -21,7 +21,13 @@
         </div>
 
         <div class="mt-3 mb-3 d-flex">
-          <v-btn small depressed color="primary" class="text-capitalize">
+          <v-btn
+            small
+            depressed
+            color="primary"
+            class="text-capitalize"
+            @click="handleTabChange('Reports')"
+          >
             <v-icon small class="mr-2">mdi-file-chart</v-icon>
             View Reports
           </v-btn>
@@ -52,16 +58,18 @@
       ></ExploreToolbar>
       <v-scroll-x-transition>
         <ExploreMap
-          v-if="showMap"
+          v-show="showMap"
           :mapbox-api-key="$config.MAPBOX_API_KEY"
           :cids="cidArray"
           @moveend="handleMoveEnd"
         ></ExploreMap>
-
-        <div v-else>
+      </v-scroll-x-transition>
+      <v-scroll-x-transition>
+        <div v-show="!showMap">
           <ExploreReportSection
             :report-cards="reportCards"
             :report-to-show="reportToShow"
+            :cids="cidArray"
             @showReport="showReport"
           ></ExploreReportSection>
         </div>
@@ -113,12 +121,17 @@ export default class Explore extends Vue {
       {
         text: 'Home',
         disabled: false,
-        href: '/',
+        to: {
+          path: `/`,
+        },
       },
       {
+        exact: true,
         text: 'Explore',
         disabled: false,
-        href: '/explore',
+        to: {
+          path: `/explore`,
+        },
       },
       {
         exact: true,
@@ -134,7 +147,7 @@ export default class Explore extends Vue {
     if (reportName) {
       breadcrumbs.push({
         text: reportName,
-        disabled: false,
+        disabled: true,
       })
     }
 
