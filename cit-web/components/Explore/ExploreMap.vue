@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative; height: 100%; width: 100%;">
+  <div style="position: relative;">
     <div id="map"></div>
 
     <div ref="searchMove" class="searchMove">

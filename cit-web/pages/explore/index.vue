@@ -59,7 +59,7 @@
       <v-scroll-x-transition>
         <ExploreMap
           v-show="showMap"
-          ref="exploreMap"
+          class="explore-map"
           :mapbox-api-key="$config.MAPBOX_API_KEY"
           :cids="cidArray"
           @moveend="handleMoveEnd"
@@ -321,11 +321,18 @@ export default class Explore extends Vue {
   height: calc(100% - 66px);
   flex: 1.5 1 0;
   overflow-y: auto;
+  position: relative;
+  z-index: 100;
 }
 
 .explore-map-container {
   flex: 3 1 0;
-  height: calc(100% - 116px);
+  height: calc(100% - 66px);
+  overflow: hidden;
+}
+
+.explore-map {
+  height: calc(100% - 50px);
 }
 
 .explore-toolbar {
