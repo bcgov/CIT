@@ -13,11 +13,13 @@
         {{ chipTitle }}
       </v-chip>
     </template>
-    <v-card :width="cardWidth">
-      <v-list dark>
+    <v-card :width="cardWidth" class="rounded-lg">
+      <v-list color="primary" class="pa-0 ma-0">
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title>{{ filterTitle }}</v-list-item-title>
+            <v-list-item-title class="white--text font-weight-bold">{{
+              filterTitle
+            }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>

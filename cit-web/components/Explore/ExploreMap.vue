@@ -115,6 +115,10 @@ export default class Explore extends Vue {
     console.log('adding layers')
   }
 
+  resize() {
+    this.whenMapLoaded((map) => map.resize())
+  }
+
   whenMapLoaded(fn) {
     if (this.mapLoaded) {
       fn(this.map)

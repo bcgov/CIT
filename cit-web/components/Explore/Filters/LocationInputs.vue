@@ -1,48 +1,55 @@
 <template>
   <div>
-    <div class="location-input-container d-flex mt-2">
-      <div>
-        <v-select
-          v-model="location"
-          class="ml-2 mr-5"
-          dense
-          hide-details
-          :items="locationTypes"
-          item-text="title"
-          item-value="title"
-          label="Location"
-          placeholder="eg. Schools"
-          return-object
-        ></v-select>
-      </div>
-      <div class="operator-container">
-        <v-select
-          v-model="operator"
-          dense
-          hide-details
-          :items="operatorTypes"
-          item-text="title"
-          item-value="title"
-          label="Operator"
-          placeholder="eg. (>)"
-          return-object
-        ></v-select>
-      </div>
-      <div>
-        <v-combobox
-          v-model="distance"
-          class="ml-5 mr-2"
-          dense
-          hide-details
-          :items="suggestedDistance"
-          item-text="title"
-          item-value="title"
-          label="Distance (km)"
-          placeholder="eg. 10km"
-          @update:search-input="handleComboBox"
-        ></v-combobox>
-      </div>
-    </div>
+    <v-container fluid class="pa-0">
+      <v-row no-gutters>
+        <v-col sm="6">
+          <div>
+            <v-select
+              v-model="location"
+              dense
+              hide-details
+              :items="locationTypes"
+              item-text="title"
+              item-value="title"
+              label="Location"
+              placeholder="eg. Schools"
+              return-object
+            ></v-select>
+          </div>
+        </v-col>
+        <v-col sm="3">
+          <div class="operator-container">
+            <v-select
+              v-model="operator"
+              class="ml-2 mr-2"
+              dense
+              hide-details
+              :items="operatorTypes"
+              item-text="title"
+              item-value="title"
+              label="Constraint"
+              placeholder="eg. (>)"
+              return-object
+            ></v-select>
+          </div>
+        </v-col>
+        <v-col sm="3">
+          <div>
+            <v-combobox
+              v-model="distance"
+              dense
+              hide-details
+              :items="suggestedDistance"
+              item-text="title"
+              item-value="title"
+              label="Distance (km)"
+              placeholder="eg. 10km"
+              @update:search-input="handleComboBox"
+            ></v-combobox>
+          </div>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -52,7 +59,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 export default class LocationInputs extends Vue {
   location = null
   distance = null
-  operator = null
+  operator = { value: 'lte', title: 'within' }
 
   handleComboBox(e) {
     if (!e && e !== 0) {
@@ -150,12 +157,3 @@ export default class LocationInputs extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-.location-input-container div {
-  flex: 1 1 0;
-}
-
-.location-input-container > .operator-container {
-  flex: 0.25 1 0;
-}
-</style>

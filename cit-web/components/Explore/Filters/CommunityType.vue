@@ -5,10 +5,11 @@
       :chip-title="title"
       :filter-title="'Community Type'"
       :active="active"
+      :card-width="200"
       @save="handleSave"
       @clear="handleClear"
     >
-      <v-radio-group v-model="radioGroup">
+      <v-radio-group v-model="radioGroup" class="ma-0 pa-0" hide-details>
         <v-radio
           v-for="(type, index) in communityTypes"
           :key="index"

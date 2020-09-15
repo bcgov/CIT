@@ -22,7 +22,7 @@
 
         <v-btn
           color="primary"
-          to="/explore"
+          to="/explore?tab=Map"
           class="btn text-capitalize explore-button"
           target="_blank"
           depressed
