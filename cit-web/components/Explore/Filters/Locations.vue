@@ -4,7 +4,7 @@
       ref="menuFilter"
       :chip-title="title"
       :filter-title="'Facility Access'"
-      :card-width="500"
+      :card-width="600"
       :active="active"
       @clear="handleClear"
       @save="handleSave"
@@ -33,8 +33,9 @@
 
       <div class="d-flex mt-5">
         <v-spacer></v-spacer>
-        <v-btn color="primary" fab small icon @click="addLocation">
-          <v-icon>mdi-plus</v-icon>
+        <v-btn color="primary" small text @click="addLocation">
+          <v-icon small class="mr-2">mdi-plus</v-icon>
+          Add More
         </v-btn>
       </div>
     </MenuFilter>

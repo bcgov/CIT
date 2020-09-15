@@ -5,6 +5,7 @@
       :chip-title="title"
       :filter-title="'Regional Districts'"
       :active="active"
+      :card-width="400"
       @save="handleSave"
       @clear="autocomplete = null"
     >
@@ -16,6 +17,7 @@
         placeholder="Metro Vancouver Regional District"
         label="Regional District"
         return-object
+        hide-details
       ></v-autocomplete>
     </MenuFilter>
   </div>
