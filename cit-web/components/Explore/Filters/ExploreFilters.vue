@@ -20,6 +20,11 @@
       class="d-inline-block mb-3"
       @filter="handleFilter"
     ></PopGrowth>
+    <Connectivity
+      ref="connectivityFilter"
+      class="d-inline-block mb-3"
+      @filter="handleFilter"
+    ></Connectivity>
     <MoreFilters class="d-inline-block"></MoreFilters>
   </div>
 </template>
@@ -30,6 +35,7 @@ import isEmpty from 'lodash/isEmpty'
 import CommunityType from '~/components/Explore/Filters/CommunityType'
 import PopGrowth from '~/components/Explore/Filters/PopGrowth'
 import RegionalDistricts from '~/components/Explore/Filters/RegionalDistricts'
+import Connectivity from '~/components/Explore/Filters/Connectivity'
 import MoreFilters from '~/components/Explore/Filters/MoreFilters'
 import Locations from '~/components/Explore/Filters/Locations'
 import { advancedSearch } from '~/api/cit-api'
@@ -40,6 +46,7 @@ import { advancedSearch } from '~/api/cit-api'
   PopGrowth,
   Locations,
   RegionalDistricts,
+  Connectivity,
 })
 export default class ExploreFilters extends Vue {
   handleFilter() {

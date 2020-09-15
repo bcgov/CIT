@@ -10,14 +10,6 @@
         </v-toolbar>
         <v-divider></v-divider>
         <v-card-text style="height: 80vh;">
-          <!--
-          <h2 class="text-h5 mt-5">Education</h2>
-          <Education></Education>
-          <h2 class="text-h5 mt-5">Health</h2>
-          <Health></Health>
-          -->
-          <h2 class="text-h5 mt-5">Internet</h2>
-          <Internet></Internet>
           <h2 class="text-h5 mt-5">Wildfire Zone</h2>
           <WildFire></WildFire>
           <h2 class="text-h5 mt-5">Tsunami Zone</h2>
@@ -41,7 +33,6 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import PopGrowth from '~/components/Explore/Filters/PopGrowth'
 import Education from '~/components/Explore/Filters/Education'
 import Health from '~/components/Explore/Filters/Health'
-import Internet from '~/components/Explore/Filters/Internet'
 import Mills from '~/components/Explore/Filters/Mills'
 import WildFire from '~/components/Explore/Filters/WildFire'
 import Tsunami from '~/components/Explore/Filters/Tsunami'
@@ -50,7 +41,6 @@ import Tsunami from '~/components/Explore/Filters/Tsunami'
   PopGrowth,
   Education,
   Health,
-  Internet,
   Mills,
   WildFire,
   Tsunami,

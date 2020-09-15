@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- To Trigger Lifecycle method on prop update -->
+    <div v-show="false">{{ pageName }} {{ cids }}</div>
     <div ref="reportContainer" class="reportContainer"></div>
   </div>
 </template>
@@ -13,7 +15,6 @@ import { GetReportInGroup } from '~/api/powerbi-rest-api/Report.js'
 export default class MainReport extends Vue {
   @Prop({ default: null, type: String }) pageName
   @Prop({ default: null, type: Array }) cids
-  @Prop({ default: '', type: String }) extraClassname
 
   @Watch('cids')
   onCidsChanged() {
@@ -48,6 +49,14 @@ export default class MainReport extends Vue {
     this.listenToEvents()
   }
 
+  beforeUpdate(e) {
+    this.whenReportLoaded((report) => {
+      const page = report.page(this.pageName)
+      page.setActive()
+      this.setFilter()
+    })
+  }
+
   whenReportLoaded(fn) {
     if (this.loaded) {
       fn(this.report)
@@ -73,9 +82,6 @@ export default class MainReport extends Vue {
   setFilter() {
     this.report.getPages().then((pages) => {
       const page = pages.find((p) => p.name === this.pageName)
-      console.log(page)
-      console.log(page.defaultSize.width)
-      console.log(page.defaultSize.height)
       page.setFilters([this.getFilter(this.cids)])
     })
   }
@@ -104,7 +110,6 @@ export default class MainReport extends Vue {
       embedUrl: `https://app.powerbi.com/reportEmbed?reportId=${this.reportId}&groupId=${this.groupId}`,
       tokenType: models.TokenType.Embed,
       accessToken: this.embedToken,
-
       settings: {
         panes: {
           pageNavigation: {

@@ -1,19 +1,16 @@
 <template>
   <div class="explore-container d-flex">
-    <div class="explore-results-container">
+    <div class="explore-results-container elevation-5">
       <div class="pa-8">
-        <h1 class="text-h4 mt-1 mb-1">Explore B.C. Communities</h1>
+        <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
         <div class="mt-4 mb-3 font-weight-bold d-flex align-center">
-          <v-btn small icon><v-icon>mdi-filter</v-icon></v-btn>
-          <p class="ml-2 text-h6 mb-0">Filters</p>
+          <p class="text-body-1 mb-0">Filters</p>
         </div>
-
         <ExploreFilters @filtered="handleFiltered"></ExploreFilters>
       </div>
       <v-divider></v-divider>
       <div class="pa-8">
         <div class="mt-4 d-flex align-center font-weight-bold">
-          <v-btn small icon><v-icon>mdi-home-group</v-icon></v-btn>
           <p class="ml-2 mb-0">
             Showing
             <b class="text-h5 font-weight-normal">{{ numRegions }}</b> Regional
@@ -24,29 +21,65 @@
         </div>
 
         <div class="mt-3 mb-3 d-flex">
-          <ReportDialog
-            :cids="cidArray"
-            :selected-report-name.sync="selectedReportName"
-            :show-report-list.sync="showReportList"
-            class="ml-2 d-inline-block"
-          ></ReportDialog>
+          <v-btn
+            small
+            depressed
+            color="primary"
+            class="text-capitalize"
+            @click="handleTabChange('Reports')"
+          >
+            <v-icon small class="mr-2">mdi-file-chart</v-icon>
+            View Reports
+          </v-btn>
+          <v-btn
+            small
+            depressed
+            color="primary"
+            class="ml-2 text-capitalize"
+            :href="`mailto:${citFeedbackEmail}?subject=CIT Feedback`"
+          >
+            <v-icon small class="mr-2">mdi-comment</v-icon>
+            Give Feedback
+          </v-btn>
         </div>
 
         <Results :grouped-communities="groupedCommunities"></Results>
       </div>
     </div>
-    <div class="explore-map-container">
-      <ExploreMap
-        :mapbox-api-key="$config.MAPBOX_API_KEY"
-        :cids="cidArray"
-        @moveend="handleMoveEnd"
-      ></ExploreMap>
+    <div
+      class="explore-map-container"
+      :class="{ 'explore-map-container-scroll': mapContainerScroll }"
+    >
+      <ExploreToolbar
+        class="elevation-5 explore-toolbar"
+        :active-tab="activeTab"
+        :breadcrumbs="breadcrumbs"
+        @tabChange="handleTabChange"
+      ></ExploreToolbar>
+      <v-scroll-x-transition>
+        <ExploreMap
+          v-show="showMap"
+          :mapbox-api-key="$config.MAPBOX_API_KEY"
+          :cids="cidArray"
+          @moveend="handleMoveEnd"
+        ></ExploreMap>
+      </v-scroll-x-transition>
+      <v-scroll-x-transition>
+        <div v-show="!showMap">
+          <ExploreReportSection
+            :report-cards="reportCards"
+            :report-to-show="reportToShow"
+            :cids="cidArray"
+            @showReport="showReport"
+          ></ExploreReportSection>
+        </div>
+      </v-scroll-x-transition>
     </div>
   </div>
 </template>
 
 <script>
-import { Component, Vue, namespace, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import groupBy from 'lodash/groupBy'
 import uniqBy from 'lodash/uniqBy'
 import intersectionBy from 'lodash/intersectionBy'
@@ -54,7 +87,10 @@ import flatMap from 'lodash/flatMap'
 import ExploreMap from '~/components/Explore/ExploreMap.vue'
 import Results from '~/components/Explore/Results.vue'
 import ExploreFilters from '~/components/Explore/Filters/ExploreFilters.vue'
-import ReportDialog from '~/components/Explore/ReportDialog'
+import ExploreToolbar from '~/components/Explore/ExploreToolbar.vue'
+import ExploreReportSection from '~/components/Explore/ExploreReportSection'
+import ExplorePages from '~/data/explore/explorePages.json'
+
 import {
   getRegionalDistricts,
   getCommunityList,
@@ -67,49 +103,84 @@ const exploreStore = namespace('explore')
   ExploreMap,
   Results,
   ExploreFilters,
-  ReportDialog,
+  ExploreToolbar,
+  ExploreReportSection,
 })
 export default class Explore extends Vue {
   groupedCommunities = null
   filteredCommunities = null
   boundedCommunities = null
   selectedReportName = null
-  showReportList = false
+
+  reportCards = ExplorePages
 
   @exploreStore.Getter('getSearchAsMove') searchAsMove
 
-  @Watch('$route.query', { immediate: true, deep: true })
-  onUrlChange(queryParams) {
-    if (queryParams.report) {
-      this.showReportList = true
-      this.selectedReportName = queryParams.report
-    } else if (queryParams.showReportList) {
-      this.showReportList = true
-      this.selectedReportName = null
+  get breadcrumbs() {
+    const breadcrumbs = [
+      {
+        text: 'Home',
+        disabled: false,
+        to: {
+          path: `/`,
+        },
+      },
+      {
+        exact: true,
+        text: 'Explore',
+        disabled: false,
+        to: {
+          path: `/explore`,
+        },
+      },
+      {
+        exact: true,
+        text: this.activeTab,
+        disabled: false,
+        to: {
+          path: `/explore?tab=${this.activeTab}`,
+        },
+      },
+    ]
+
+    const reportName = this.$route.query.report
+    if (reportName) {
+      breadcrumbs.push({
+        text: reportName,
+        disabled: true,
+      })
+    }
+
+    return breadcrumbs
+  }
+
+  get mapContainerScroll() {
+    return this.activeTab === 'Reports'
+  }
+
+  get flatReportCards() {
+    return flatMap(this.reportCards)
+  }
+
+  get activeTab() {
+    const tab = this.$route.query.tab
+    if (!tab) {
+      return null
     } else {
-      this.showReportList = false
-      this.selectedReportName = null
+      return tab
     }
   }
 
-  @Watch('selectedReportName')
-  onSelectedReportNameChange() {
-    if (this.selectedReportName) {
-      this.$router.push({ query: { report: this.selectedReportName } })
-    } else if (this.showReportList) {
-      this.$router.push({ query: { showReportList: this.showReportList } })
-    } else {
-      this.$router.push({ query: {} })
+  get reportToShow() {
+    const reportName = this.$route.query.report
+    if (!reportName) {
+      return null
     }
+    return this.flatReportCards.find((r) => r.name === reportName)
   }
 
-  @Watch('showReportList')
-  onShowReportListChange() {
-    if (this.showReportList) {
-      this.$router.push({ query: { showReportList: this.showReportList } })
-    } else {
-      this.$router.push({ query: {} })
-    }
+  get showMap() {
+    return this.activeTab === 'Map'
   }
 
   get flatCommunities() {
@@ -136,7 +207,7 @@ export default class Explore extends Vue {
     return 'fixed'
   }
 
-  async asyncData({ store }) {
+  async asyncData({ store, $config }) {
     const results = await Promise.all([
       getRegionalDistricts(),
       getCommunityList(),
@@ -157,7 +228,16 @@ export default class Explore extends Vue {
       communityList,
       regionalDistricts,
       groupedCommunities,
+      citFeedbackEmail: $config.citFeedbackEmail,
     }
+  }
+
+  handleTabChange(tab) {
+    this.$router.push({
+      query: {
+        tab,
+      },
+    })
   }
 
   handleFiltered(e) {
@@ -214,6 +294,17 @@ export default class Explore extends Vue {
     this.boundedCommunities = uniqBy(sourceFeatures, 'place_name')
     this.updateGroupedCommunities()
   }
+
+  showReport(reportName) {
+    const query = Object.assign({}, this.$route.query)
+    const report = {
+      report: reportName,
+    }
+    const temp = Object.assign(query, report)
+    this.$router.push({
+      query: temp,
+    })
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -225,16 +316,44 @@ export default class Explore extends Vue {
   right: 0;
   width: 100%;
 }
-.explore-results-container,
-.explore-map-container {
-  height: calc(100% - 66px);
-}
-
 .explore-results-container {
+  height: calc(100% - 66px);
   flex: 1.5 1 0;
   overflow-y: auto;
 }
+
 .explore-map-container {
   flex: 3 1 0;
+  height: calc(100% - 116px);
+}
+
+.explore-toolbar {
+  position: relative;
+  z-index: 10;
+}
+
+.explore-map-container-scroll {
+  overflow-y: auto;
+  height: auto;
+}
+.explore-results-container::-webkit-scrollbar-track,
+.explore-map-container-scroll::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.explore-results-container::-webkit-scrollbar,
+.explore-map-container-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 5px;
+  background-color: #fff;
+}
+
+.explore-results-container::-webkit-scrollbar-thumb,
+.explore-map-container-scroll::-webkit-scrollbar-thumb {
+  background-color: #073366;
+  border: 2px solid #555;
+  border-radius: 1em;
 }
 </style>
