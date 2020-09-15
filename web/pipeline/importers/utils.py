@@ -199,6 +199,18 @@ def create_distance(location, community, distance):
         LocationDistance.objects.create(**fields)
 
 
+def calculate_municipality_flag_for_location_assets():
+    count = LocationDistance.objects.count()
+    for i, location_distance in enumerate(LocationDistance.objects.all()):
+        print("{} of {}".format(i, count), location_distance)
+        if not location_distance.community.municipality:
+            location_distance.within_municipality = False
+        else:
+            location_distance.within_municipality = location_distance.location.point.intersects(
+                location_distance.community.municipality.geom)
+        location_distance.save()
+
+
 def get_route_planner_distance(origin, destination):
     print("calculating distance", origin, destination)
     api_url = "https://router.api.gov.bc.ca/distance.json?points={origin_lng}%2C{origin_lat}%2C{destination_lng}"\

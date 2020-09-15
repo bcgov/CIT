@@ -2,14 +2,14 @@ import datetime
 from functools import reduce
 from operator import and_
 
-from django.db.models import Q
+from django.db.models import Q, F
 
 
 def filter_communities(filters):
     from pipeline.models.community import Community
     queryset_filters = {}
 
-    if 'community_type' in filters:
+    if 'community_tyserialipe' in filters:
         community_types = Community.objects.values_list('community_type', flat=True).distinct()
         if filters['community_type'] in community_types:
             queryset_filters['community_type'] = filters['community_type']
@@ -413,6 +413,9 @@ def serialize_location_assets(obj):
                 "type": location_asset.location_type,
                 "latitude": location_asset.get_latitude(),
                 "longitude": location_asset.get_longitude(),
+                "driving_distance": location_asset.driving_distance,
+                "travel_time": location_asset.travel_time,
+                "within_municipality": location_asset.within_municipality,
                 **{field: getattr(location_asset, field) for
                    field in get_fields_for_location_type(location_asset.location_type)},
             })
@@ -427,10 +430,17 @@ def get_location_assets_for_community(model_class, community):
         school_districts = community.schooldistrict_set.all()
         return School.objects.filter(
             school_district__in=school_districts,
-            distances__distance__lte=50,
-            distances__community=community)
+            distances__driving_distance__lte=50,
+            distances__community=community).annotate(
+                driving_distance=F('distances__driving_distance'),
+                travel_time=F('distances__travel_time'),
+                within_municipality=F('distances__within_municipality'))
     else:
-        return model_class.objects.filter(distances__distance__lte=50, distances__community=community)
+        return model_class.objects.filter(
+            distances__driving_distance__lte=50, distances__community=community).annotate(
+                driving_distance=F('distances__driving_distance'),
+                travel_time=F('distances__travel_time'),
+                within_municipality=F('distances__within_municipality'))
 
 
 def get_fields_for_location_type(location_type):
