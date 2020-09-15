@@ -199,7 +199,7 @@ export default class Explore extends Vue {
     this.map.addControl(new mapboxgl.ScaleControl({ position: 'bottom-right' }))
     this.map.addControl(
       new ControlFactory(this.$refs.layerSwitcher),
-      'top-left'
+      'bottom-right'
     )
   }
 
