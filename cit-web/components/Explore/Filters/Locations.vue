@@ -3,7 +3,7 @@
     <MenuFilter
       ref="menuFilter"
       :chip-title="title"
-      :filter-title="'Facility Access'"
+      :filter-title="'Access to Assets'"
       :card-width="600"
       :active="active"
       @clear="handleClear"
@@ -51,7 +51,7 @@ import LocationInputs from '~/components/Explore/Filters/LocationInputs.vue'
   LocationInputs,
 })
 export default class Locations extends Vue {
-  title = 'Facility Access'
+  title = 'Access to Assets'
   active = false
 
   locationFilters = [uid()]
@@ -67,7 +67,7 @@ export default class Locations extends Vue {
     this.$refs.menuFilter.hide()
     const locationParams = this.getParams().filter((lp) => !isEmpty(lp))
     if (locationParams.length === 0) {
-      this.title = 'Facility Access'
+      this.title = 'Access to Assets'
       this.active = false
     } else if (locationParams.length === 1) {
       const locationInputs = this.$refs.locationInputs

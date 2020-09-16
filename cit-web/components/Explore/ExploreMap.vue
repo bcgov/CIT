@@ -257,6 +257,11 @@ export default class Explore extends Vue {
     })
 
     this.map.on('click', 'clusters', (e) => {
+      console.log(e)
+      const center = [e.lngLat.lng, e.lngLat.lat]
+      const zoom = Math.floor(this.map.getZoom()) + 2
+      this.flyToCenterAndZoom(center, zoom)
+
       const features = this.map.queryRenderedFeatures(e.point, {
         layers: ['clusters'],
       })
@@ -271,14 +276,21 @@ export default class Explore extends Vue {
           console.log('Leave features', features, err)
         }
       )
+
       console.log('Cluster Leaves', clusterLeaves)
     })
 
     this.map.on('click', 'communities', (e) => {
+      const cluster = this.map.queryRenderedFeatures(e.point, {
+        layers: ['clusters'],
+      })
+      if (cluster && cluster.length > 0) {
+        return
+      }
+
       const coordinates = e.features[0].geometry.coordinates.slice()
       const name = e.features[0].properties.place_name
       const cid = e.features[0].properties.pk
-      console.log(e.features[0])
 
       // Ensure that if the map is zoomed out such that multiple
       // copies of the feature are visible, the popup appears
@@ -310,6 +322,13 @@ export default class Explore extends Vue {
     // Change it back to a pointer when it leaves.
     this.map.on('mouseleave', 'communities', () => {
       this.map.getCanvas().style.cursor = ''
+    })
+  }
+
+  flyToCenterAndZoom(center, zoom) {
+    this.map.flyTo({
+      center,
+      zoom,
     })
   }
 }
