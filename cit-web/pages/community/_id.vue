@@ -1,5 +1,15 @@
 V<template>
   <div class="community-new-container">
+    <v-container fluid>
+      <v-alert v-if="parentCommunity" type="info">
+        This community is within {{ parentCommunity.name }}'s boundary, consider
+        <a
+          :href="`/community/${parentCommunity.id}`"
+          class="font-weight-bold white--text"
+          >viewing the {{ parentCommunity.name }} page instead.</a
+        >
+      </v-alert>
+    </v-container>
     <div v-if="isCommunityEmpty" class="d-flex mt-5 justify-center">
       <v-alert type="info">
         Sorry, we could not find a community with that ID.
@@ -185,12 +195,50 @@ export default class CommunityDetail extends Vue {
       layerName: 'locations',
       layerLabel: 'Locations',
     },
+    {
+      layerName: 'wildfire-zones',
+      layerLabel: 'Wildfire Risk Zones',
+    },
+    {
+      layerName: 'bc-roads',
+      layerLabel: 'Roads with broadband',
+    },
+    {
+      layerName: ['municipalities', 'municipalities-blur'],
+      layerLabel: 'Municipal boundaries',
+    },
+    {
+      layerName: ['census', 'census-label'],
+      layerLabel: 'Census Subdivisions',
+    },
+    {
+      layerName: 'reserves',
+      layerLabel: 'Reserves',
+    },
+    {
+      layerName: [
+        'regional-districts-blur',
+        'regional-districts',
+        'regional-districts-label',
+      ],
+      layerLabel: 'Regional Districts',
+    },
   ]
 
   handleLayerToggle(lo) {
     const visibility = lo.visibility === true ? 'visible' : 'none'
+    const layerName = lo.layerName
     this.whenMapLoaded((map) => {
-      map.setLayoutProperty(lo.layerName, 'visibility', visibility)
+      if (typeof layerName === 'string') {
+        map.setLayoutProperty(layerName, 'visibility', visibility)
+        return
+      }
+
+      if (Array.isArray(layerName)) {
+        layerName.map((ln) =>
+          map.setLayoutProperty(ln, 'visibility', visibility)
+        )
+      }
     })
   }
 
@@ -214,6 +262,10 @@ export default class CommunityDetail extends Vue {
     } else {
       this.handleOpen(query.report)
     }
+  }
+
+  get parentCommunity() {
+    return this.communityDetails.parent_community
   }
 
   get regionalDistrictName() {
@@ -458,10 +510,10 @@ export default class CommunityDetail extends Vue {
     const centerControl = new ControlFactory(this.$refs.centerControl)
     map.addControl(centerControl, 'top-right')
 
+    map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'bottom-right')
+
     const legendControl = new ControlFactory(this.$refs.legendControl)
     map.addControl(legendControl, 'bottom-right')
-
-    map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'top-left')
 
     map.on('click', function (e) {
       const features = map.queryRenderedFeatures(e.point)
@@ -491,8 +543,9 @@ export default class CommunityDetail extends Vue {
 </script>
 <style lang="scss" scoped>
 .community-new-container {
-  width: 1600px;
+  max-width: 1600px;
   margin: 0 auto;
+  padding: 3em;
 }
 #map {
   width: 100%;

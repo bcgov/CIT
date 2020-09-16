@@ -4,6 +4,7 @@
       v-model="menu"
       class="pa-0 ma-0 rounded"
       top
+      left
       transition="fade-transition"
       :close-on-content-click="false"
       :nudge-top="5"
@@ -31,12 +32,12 @@
             v-for="(layer, index) in layers"
             :key="index"
             class="d-flex align-center"
+            :class="{ 'mt-3': index !== 0 }"
           >
-            <label :for="layer.layerName">{{ layer.layerLabel }}</label>
+            <label :for="layer.layerLabel">{{ layer.layerLabel }}</label>
             <v-spacer></v-spacer>
             <v-switch
-              :id="layer.layerName"
-              v-model="layerSwitch"
+              :id="layer.layerLabel"
               class="ma-0 pa-0"
               hide-details
               @change="handleChange($event, layer.layerName)"
@@ -58,7 +59,6 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 export default class LayerSwitcher extends Vue {
   @Prop({ default: null, type: Array }) layers
   menu = false
-  layerSwitch = false
 
   handleChange(e, data) {
     this.$emit('layerToggle', {

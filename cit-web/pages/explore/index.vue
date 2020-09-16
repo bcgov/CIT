@@ -10,7 +10,7 @@
       </div>
       <v-divider></v-divider>
       <div class="pa-8">
-        <div class="mt-4 d-flex align-center font-weight-bold">
+        <div class="mt-0 d-flex align-center font-weight-bold">
           <p class="ml-2 mb-0">
             Showing
             <b class="text-h5 font-weight-normal">{{ numRegions }}</b> Regional
@@ -22,28 +22,31 @@
 
         <div class="mt-3 mb-3 d-flex">
           <v-btn
+            block
             small
             depressed
             color="primary"
             class="text-capitalize"
             @click="handleTabChange('Reports')"
           >
-            <v-icon small class="mr-2">mdi-file-chart</v-icon>
-            View Reports
-          </v-btn>
-          <v-btn
-            small
-            depressed
-            color="primary"
-            class="ml-2 text-capitalize"
-            :href="`mailto:${citFeedbackEmail}?subject=CIT Feedback`"
-          >
-            <v-icon small class="mr-2">mdi-comment</v-icon>
-            Give Feedback
+            <v-icon small block class="mr-2">mdi-file-chart</v-icon>
+            View Reports for {{ numCommunities }} communities
           </v-btn>
         </div>
 
         <Results :grouped-communities="groupedCommunities"></Results>
+        <v-spacer></v-spacer>
+        <v-btn
+          block
+          small
+          depressed
+          color="primary"
+          class="text-capitalize mt-5"
+          :href="`mailto:${citFeedbackEmail}?subject=CIT Feedback`"
+        >
+          <v-icon small class="mr-2">mdi-comment</v-icon>
+          Give Feedback
+        </v-btn>
       </div>
     </div>
     <div
@@ -319,7 +322,7 @@ export default class Explore extends Vue {
 }
 .explore-results-container {
   height: calc(100% - 66px);
-  flex: 1.5 1 0;
+  flex: 1 1 0;
   overflow-y: auto;
   position: relative;
   z-index: 100;
