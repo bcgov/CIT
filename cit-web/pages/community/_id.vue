@@ -1,5 +1,15 @@
 V<template>
   <div class="community-new-container">
+    <v-container fluid>
+      <v-alert v-if="parentCommunity" type="info">
+        This community is within {{ parentCommunity.name }}'s boundary, consider
+        <a
+          :href="`/community/${parentCommunity.id}`"
+          class="font-weight-bold white--text"
+          >viewing the {{ parentCommunity.name }} page instead.</a
+        >
+      </v-alert>
+    </v-container>
     <div v-if="isCommunityEmpty" class="d-flex mt-5 justify-center">
       <v-alert type="info">
         Sorry, we could not find a community with that ID.
@@ -214,6 +224,10 @@ export default class CommunityDetail extends Vue {
     } else {
       this.handleOpen(query.report)
     }
+  }
+
+  get parentCommunity() {
+    return this.communityDetails.parent_community
   }
 
   get regionalDistrictName() {
