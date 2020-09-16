@@ -38,6 +38,7 @@
         :scrollable="false"
         style="overflow: hidden;"
         :value="showDialog"
+        eager
       >
         <v-card>
           <v-toolbar flat dark color="primary">
