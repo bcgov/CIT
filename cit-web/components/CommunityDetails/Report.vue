@@ -29,6 +29,7 @@ export default class MainReport extends Vue {
   embedUrl = null
   report = null
   loaded = false
+  error = false
 
   async mounted() {
     const { data: reportInGroup } = await GetReportInGroup(
@@ -45,7 +46,9 @@ export default class MainReport extends Vue {
     const configuration = this.getEmbedConfiguration()
     const container = this.$refs.reportContainer
     this.report = this.embedReport(container, configuration)
-    this.listenToEvents()
+    if (this.error === false) {
+      this.listenToEvents()
+    }
   }
 
   whenReportLoaded(fn) {
@@ -119,7 +122,15 @@ export default class MainReport extends Vue {
   }
 
   embedReport(container, configuration) {
-    return window.powerbi.embed(container, configuration)
+    if (container && configuration) {
+      return (
+        window &&
+        window.powerbi &&
+        window.powerbi.embed(container, configuration)
+      )
+    } else {
+      this.error = true
+    }
   }
 }
 </script>

@@ -30,7 +30,7 @@
           <v-icon color="white">mdi-arrow-right</v-icon>
         </v-btn>
       </v-card-actions>
-
+      <!--
       <v-dialog
         fullscreen
         hide-overlay
@@ -38,7 +38,6 @@
         :scrollable="false"
         style="overflow: hidden;"
         :value="showDialog"
-        eager
       >
         <v-card>
           <v-toolbar flat dark color="primary">
@@ -129,15 +128,15 @@
           </div>
         </v-card>
       </v-dialog>
+      -->
     </v-card>
   </v-hover>
 </template>
 
 <script>
-import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import Report from '~/components/CommunityDetails/Report.vue'
 import Compare from '~/components/Compare'
-const reportModule = namespace('report')
 
 @Component({
   Report,
@@ -155,18 +154,8 @@ export default class CommunityReportCard extends Vue {
 
   dialog = false
 
-  @reportModule.Getter('getSelectedReportName') selectedReportName
-  @reportModule.Mutation('setSelectedReportName') setSelectedReportName
-
   get showDialog() {
     return this.title === this.selectedReportName
-  }
-
-  closeDialog() {
-    this.$router.push({
-      query: {},
-    })
-    this.setSelectedReportName(null)
   }
 
   reportOneLoaded = false

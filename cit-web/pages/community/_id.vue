@@ -48,13 +48,16 @@ V<template>
               </div>
             </v-col>
           </v-row>
+
           <ReportSection
             ref="reportSection"
             :place-name="placeName"
             :community="communityDetails"
             :report-cards="reportCards"
             :cid="communityDetails.id"
-            @openReport="handleOpen"
+            :report-to-open="reportToOpen"
+            @reportOpen="reportOpen"
+            @reportClose="reportClose"
           ></ReportSection>
 
           <v-row>
@@ -138,7 +141,7 @@ V<template>
 </template>
 
 <script>
-import { Component, Vue, Watch, namespace } from 'nuxt-property-decorator'
+import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
 import map from 'lodash/map'
 import groupBy from 'lodash/groupBy'
@@ -165,7 +168,6 @@ import { getAuthToken } from '~/api/ms-auth-api/'
 import LocationCard from '~/components/Location/LocationCard.vue'
 import reportPages from '~/data/communityDetails/reportPages.json'
 const commModule = namespace('communities')
-const reportModule = namespace('report')
 @Component({
   Breadcrumbs,
   Sidebar,
@@ -243,24 +245,27 @@ export default class CommunityDetail extends Vue {
   }
 
   @commModule.Getter('getRegionalDistricts') regionalDistricts
-  @reportModule.Getter('getSelectedReportName') selectedReportName
-  @reportModule.Mutation('setSelectedReportName') setSelectedReportName
 
-  handleOpen(reportName) {
+  reportOpen(reportName) {
     this.$router.push({
       query: {
         report: reportName,
       },
     })
-    this.setSelectedReportName(reportName)
   }
 
-  @Watch('$route.query')
-  handleQueryWatch(query) {
-    if (!query.report) {
-      this.setSelectedReportName(null)
+  reportClose() {
+    this.$router.push({
+      query: {},
+    })
+  }
+
+  get reportToOpen() {
+    const report = this.$route.query.report
+    if (!report) {
+      return null
     } else {
-      this.handleOpen(query.report)
+      return report
     }
   }
 
@@ -374,9 +379,6 @@ export default class CommunityDetail extends Vue {
     store.commit('msauth/setAccessToken', accessToken)
     const dataSources = results[3].data
     store.commit('communities/setDataSources', dataSources)
-    if (query.report) {
-      store.commit('report/setSelectedReportName', query.report)
-    }
   }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
