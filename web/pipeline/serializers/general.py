@@ -221,6 +221,10 @@ class CensusSubdivisionDetailSerializer(serializers.ModelSerializer):
 
 
 class LocationDistanceSerializer(serializers.ModelSerializer):
+    distance = serializers.SerializerMethodField()
+    birds_eye_distance = serializers.FloatField(source='distance', read_only=True)
+    driving_distance = serializers.FloatField(read_only=True)
+
     class Meta:
         model = LocationDistance
         fields = (
@@ -228,10 +232,14 @@ class LocationDistanceSerializer(serializers.ModelSerializer):
             "community",
             "location",
             "distance",
+            "birds_eye_distance",
             "driving_distance",
             "travel_time",
             "travel_time_display",
         )
+
+    def get_distance(self, obj):
+        return obj.driving_distance if obj.driving_distance else obj.birds_eye_distance
 
 
 class RegionalDistrictSerializer(serializers.ModelSerializer):
