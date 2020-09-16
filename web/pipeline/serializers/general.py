@@ -1,6 +1,5 @@
 from rest_framework import serializers
 
-from pipeline.models.location_assets import Location
 from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
@@ -239,7 +238,7 @@ class LocationDistanceSerializer(serializers.ModelSerializer):
         )
 
     def get_distance(self, obj):
-        return obj.driving_distance if obj.driving_distance else obj.birds_eye_distance
+        return obj.driving_distance if obj.driving_distance else obj.distance
 
 
 class RegionalDistrictSerializer(serializers.ModelSerializer):
