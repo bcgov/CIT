@@ -195,12 +195,50 @@ export default class CommunityDetail extends Vue {
       layerName: 'locations',
       layerLabel: 'Locations',
     },
+    {
+      layerName: 'wildfire-zones',
+      layerLabel: 'Wildfire Risk Zones',
+    },
+    {
+      layerName: 'bc-roads',
+      layerLabel: 'Roads with broadband',
+    },
+    {
+      layerName: ['municipalities', 'municipalities-blur'],
+      layerLabel: 'Municipal boundaries',
+    },
+    {
+      layerName: ['census', 'census-label'],
+      layerLabel: 'Census Subdivisions',
+    },
+    {
+      layerName: 'reserves',
+      layerLabel: 'Reserves',
+    },
+    {
+      layerName: [
+        'regional-districts-blur',
+        'regional-districts',
+        'regional-districts-label',
+      ],
+      layerLabel: 'Regional Districts',
+    },
   ]
 
   handleLayerToggle(lo) {
     const visibility = lo.visibility === true ? 'visible' : 'none'
+    const layerName = lo.layerName
     this.whenMapLoaded((map) => {
-      map.setLayoutProperty(lo.layerName, 'visibility', visibility)
+      if (typeof layerName === 'string') {
+        map.setLayoutProperty(layerName, 'visibility', visibility)
+        return
+      }
+
+      if (Array.isArray(layerName)) {
+        layerName.map((ln) =>
+          map.setLayoutProperty(ln, 'visibility', visibility)
+        )
+      }
     })
   }
 
