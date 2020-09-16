@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card class="elevation-3 rounded-lg">
+    <v-card class="elevation-3 rounded-lg" style="cursor: pointer;">
       <v-expand-transition>
         <div
           v-if="hover"
