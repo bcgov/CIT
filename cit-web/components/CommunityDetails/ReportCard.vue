@@ -1,0 +1,203 @@
+<template>
+  <v-hover v-slot:default="{ hover }">
+    <v-card class="elevation-3 rounded-lg" style="cursor: pointer;">
+      <v-expand-transition>
+        <div
+          v-if="hover"
+          class="rounded-lg pa-7 d-flex align-center transition-fade-in indigo darken-4 v-card--reveal display-3 white--text hover-card"
+          style="height: 100%;"
+        >
+          <p class="text-body-1">{{ description }}</p>
+        </div>
+      </v-expand-transition>
+
+      <v-img
+        :src="require(`~/assets/images/reports/${image}`)"
+        cover
+        width="376"
+        height="220"
+        aspect-ratio="1"
+        position="50% 15%"
+      ></v-img>
+      <v-card-text class="pt-5 pl-5 pr-5">
+        <p class="text-h6 text--primary pa-0 ma-0 font-weight-regular">
+          {{ title }}
+        </p>
+      </v-card-text>
+      <v-card-actions class="pl-5 pr-5 pb-5">
+        <v-spacer></v-spacer>
+        <v-btn color="primary" small height="45">
+          <v-icon color="white">mdi-arrow-right</v-icon>
+        </v-btn>
+      </v-card-actions>
+
+      <v-dialog
+        fullscreen
+        hide-overlay
+        transition="dialog-bottom-transition"
+        :scrollable="false"
+        style="overflow: hidden;"
+        :value="showDialog"
+        eager
+      >
+        <v-card>
+          <v-toolbar flat dark color="primary">
+            <v-btn icon dark @click="closeDialog">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-toolbar-title>{{ title }} - {{ subtitle }}</v-toolbar-title>
+            <v-spacer></v-spacer>
+          </v-toolbar>
+          <div class="pa-10">
+            <div class="d-flex align-center">
+              <div>
+                <h6 class="text-h5">{{ title }}</h6>
+                <p style="max-width: 800px;">{{ description }}</p>
+              </div>
+              <v-spacer></v-spacer>
+              <div>
+                <v-img
+                  :src="require(`~/assets/images/reports/headers/${image}`)"
+                  contain
+                  width="376"
+                  max-height="190"
+                  aspect-ratio="1"
+                ></v-img>
+              </div>
+            </div>
+            <v-divider></v-divider>
+
+            <div v-if="!isAllReportsLoaded">
+              <h6 class="text-h6 text-center mt-10 mb-10">
+                Please wait, we are comparing your community to the surrounding
+                regional district.
+              </h6>
+              <div class="progress-reportcard">
+                <v-progress-linear
+                  color="indigo accent-4"
+                  indeterminate
+                  rounded
+                  height="6"
+                ></v-progress-linear>
+              </div>
+            </div>
+            <div v-show="isAllReportsLoaded">
+              <div v-if="comparePageName">
+                <v-container fluid>
+                  <v-row>
+                    <v-col cols="4">
+                      <Report
+                        :page-name="pageName"
+                        :cids="[cid.toString()]"
+                        @loaded="reportOneLoaded = true"
+                      ></Report>
+                    </v-col>
+                    <v-col cols="4">
+                      <h5
+                        class="text-center text-h4 font-weight-normal d-flex align-center justify-center"
+                        style="height: 104px;"
+                      >
+                        Your community: {{ subtitle }}
+                      </h5>
+
+                      <Report
+                        :page-name="comparePageName"
+                        :cids="[cid.toString()]"
+                        @loaded="reportTwoLoaded = true"
+                      ></Report>
+                    </v-col>
+                    <v-col cols="4">
+                      <Compare
+                        :loader="false"
+                        :pid="comparePageName"
+                        :rid="rid"
+                        init-mode="Regional Districts"
+                        @loaded="reportThreeLoaded = true"
+                      ></Compare>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </div>
+              <div v-else>
+                <Report
+                  :page-name="pageName"
+                  :cids="[cid.toString()]"
+                  @loaded="reportOneLoaded = true"
+                ></Report>
+              </div>
+            </div>
+          </div>
+        </v-card>
+      </v-dialog>
+    </v-card>
+  </v-hover>
+</template>
+
+<script>
+import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
+import Report from '~/components/CommunityDetails/Report.vue'
+import Compare from '~/components/Compare'
+const reportModule = namespace('report')
+
+@Component({
+  Report,
+  Compare,
+})
+export default class CommunityReportCard extends Vue {
+  @Prop({ default: null, type: String }) pageName
+  @Prop({ default: null, type: String }) comparePageName
+  @Prop({ default: null, type: String }) title
+  @Prop({ default: null, type: String }) image
+  @Prop({ default: null, type: String }) subtitle
+  @Prop({ default: null, type: String }) description
+  @Prop({ default: null, type: Number }) cid
+  @Prop({ default: null, type: Number }) rid
+
+  dialog = false
+
+  @reportModule.Getter('getSelectedReportName') selectedReportName
+  @reportModule.Mutation('setSelectedReportName') setSelectedReportName
+
+  get showDialog() {
+    return this.title === this.selectedReportName
+  }
+
+  closeDialog() {
+    this.$router.push({
+      query: {},
+    })
+    this.setSelectedReportName(null)
+  }
+
+  reportOneLoaded = false
+  reportTwoLoaded = false
+  reportThreeLoaded = false
+
+  get isAllReportsLoaded() {
+    if (this.cid) {
+      return (
+        this.reportOneLoaded && this.reportTwoLoaded && this.reportThreeLoaded
+      )
+    } else {
+      return this.reportOneLoaded
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.progress-reportcard {
+  max-width: 400px;
+  margin: 0 auto;
+}
+.hover-card {
+  position: absolute;
+  top: 0;
+  z-index: 5;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.9;
+}
+</style>

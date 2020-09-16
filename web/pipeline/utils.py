@@ -1,4 +1,27 @@
 import datetime
+from functools import reduce
+from operator import and_
+
+from django.db.models import Q, F
+
+
+def filter_communities(filters):
+    from pipeline.models.community import Community
+    queryset_filters = {}
+
+    if 'community_tyserialipe' in filters:
+        community_types = Community.objects.values_list('community_type', flat=True).distinct()
+        if filters['community_type'] in community_types:
+            queryset_filters['community_type'] = filters['community_type']
+
+    if 'has_any_k12_school' in filters:
+        queryset_filters['has_any_k12_school'] = True if filters['has_any_k12_school'] == "true" else False
+
+    # todo: figure out what filters there need to be
+
+    communities = Community.objects.filter(**queryset_filters).order_by('place_name')
+
+    return communities
 
 
 def generate_line_strings():
@@ -137,8 +160,8 @@ def serialize_census_subdivision_groups(obj):
             "metadata": {
                 "name": "Married or living common law",
             },
-            "key": "married_or_common_law",
-            "value": commaize(obj.married_or_common_law),
+            "key": "married_common_law_couples",
+            "value": commaize(obj.married_common_law_couples),
             "units": " people",
         },
         {
@@ -171,6 +194,15 @@ def serialize_census_subdivision_groups(obj):
         {
             "group": "Languages",
             "metadata": {
+                "name": "French",
+            },
+            "key": "fr_known",
+            "value": commaize(obj.fr_known),
+            "units": " people",
+        },
+        {
+            "group": "Languages",
+            "metadata": {
                 "name": "Non-official languages",
             },
             "key": "other_lang",
@@ -184,15 +216,6 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "aboriginal_lang",
             "value": commaize(obj.aboriginal_lang),
-            "units": " people",
-        },
-        {
-            "group": "Languages",
-            "metadata": {
-                "name": "Neither English nor French",
-            },
-            "key": "eng_fr_not_known",
-            "value": commaize(obj.eng_fr_not_known),
             "units": " people",
         },
         {
@@ -358,28 +381,6 @@ def serialize_community_detail_fields(obj):
                 "description": "A - C (moderate); D and E (low)",
             },
         },
-
-        # {
-        #     "key": "last_mile_status",
-        #     "value": obj.last_mile_status,
-        #     "metadata": {
-        #         "name": "Last Mile Status (June 2020)",
-        #     },
-        # },
-        # {
-        #     "key": "transport_mile_status",
-        #     "value": obj.transport_mile_status,
-        #     "metadata": {
-        #         "name": "Transport Status (June 2020)",
-        #     },
-        # },
-        # {
-        #     "key": "cbc_phase",
-        #     "value": obj.cbc_phase,
-        #     "metadata": {
-        #         "name": "CBC Phase",
-        #     },
-        # },
     ]
 
 
@@ -398,6 +399,87 @@ def get_community_type_display_name(community_type):
         "Remote First Nations Primary Reserve": "Indigenous",
     }
     return COMMUNITY_TYPES[community_type]
+
+
+def serialize_location_assets(obj):
+    from pipeline.constants import LOCATION_TYPES
+
+    locations = []
+    for location_type, model_class in LOCATION_TYPES.items():
+        location_assets = get_location_assets_for_community(model_class, obj)
+
+        for location_asset in location_assets:
+            locations.append({
+                "type": location_asset.location_type,
+                "latitude": location_asset.get_latitude(),
+                "longitude": location_asset.get_longitude(),
+                "driving_distance": location_asset.driving_distance,
+                "travel_time": location_asset.travel_time,
+                "within_municipality": location_asset.within_municipality,
+                **{field: getattr(location_asset, field) for
+                   field in get_fields_for_location_type(location_asset.location_type)},
+            })
+
+    return locations
+
+
+def get_location_assets_for_community(model_class, community):
+    from pipeline.models.location_assets import School
+
+    if model_class == School:
+        school_districts = community.schooldistrict_set.all()
+        return School.objects.filter(
+            school_district__in=school_districts,
+            distances__driving_distance__lte=50,
+            distances__community=community).annotate(
+                driving_distance=F('distances__driving_distance'),
+                travel_time=F('distances__travel_time'),
+                within_municipality=F('distances__within_municipality'))
+    else:
+        return model_class.objects.filter(
+            distances__driving_distance__lte=50, distances__community=community).annotate(
+                driving_distance=F('distances__driving_distance'),
+                travel_time=F('distances__travel_time'),
+                within_municipality=F('distances__within_municipality'))
+
+
+def get_fields_for_location_type(location_type):
+    common_fields = [
+        "id", "name", "location_fuzzy", "location_phone", "location_email", "location_website"]
+
+    location_specific_fields = {
+        "hospitals": ["rg_name", "sv_description", "hours"],
+        "courts": [
+            "address", "city", "postal_code", "contact_phone", "fax_number",
+            "hours_of_operation", "court_level"],
+        "economic_projects": [
+            "flnro_project_status", "project_type", "project_category", "proponent", "eao_project_status",
+            "project_comments"],
+        "natural_resource_projects": [
+            "project_comments", "project_description", "estimated_cost", "update_activity", "construction_type",
+            "construction_subtype", "project_type", "developer", "architect", "project_status", "project_stage",
+            "project_category_name", "provinvial_funding", "federal_funding", "municipal_funding",
+            "green_building_ind", "green_building_desc", "clean_energy_ind", "construction_jobs", "operating_jobs",
+            "standardized_start_date", "standardized_completion_date"],
+        "servicebc_locations": [],
+        "schools": ["district_number", "public_or_independent", "school_education_level"],
+        "post_secondary_institutions": ["institution_type", "economic_development_region"],
+        "clinics": ["sv_description", "hours"],
+        "first_responders": ["keywords"],
+        "diagnostic_facilities": ["ser_cd_dsc"],
+        "timber_facilities": ["bus_cat_ds"],
+        "civic_facilities": ["keywords", "bus_cat_cl", "bus_cat_ds"],
+        "closed_mills": [],
+        "research_centres": [
+            "research_specialties", "research_centre_affiliation", "institution", "inst_acrnm",
+            "research_sector", "cntr_type"],
+        "airports": [
+            "descriptn", "keywords", "aer_status", "aircr_acs", "data_srce", "datasrc_yr", "elevation", "fuel_avail",
+            "heli_acs", "iata", "mx_rway_ln", "num_rway", "rway_surf", "oil_avail", "seapln_acc",
+        ]
+    }
+
+    return common_fields + location_specific_fields[location_type]
 
 
 def get_quarterly_date_str_as_date(quarterly_date_str):
@@ -449,3 +531,203 @@ def to_currency(string):
         return
 
     return '$' + string
+
+
+def get_pct_field_as_decimal(field):
+    return field / 100 if field else 0
+
+
+def communities_advanced_search(query_params):
+    from pipeline.models.community import Community
+    # http://localhost/api/pipeline/communities/advanced_search/?location__schools__lte__mins=15&population__gt=100&percent_50_10__gte=0.75
+
+    print("query_params", query_params)
+    filters = [
+        {
+            "field": key.split("__")[0],
+            "operator": _get_operator_for_field(key),
+            "units": _get_units_for_field(key),
+            "location_type": _get_location_type_in_field(key),
+            "value": value.split(","),
+        }
+        for key, value in query_params.items()
+    ]
+    print("filters", filters)
+
+    overall_query = []
+    location_queries = []
+
+    for query_filter in filters:
+        query = ""
+
+        # TODO refactor field name handling
+        if query_filter["field"] == "location":
+            location_queries.append(_handle_location_filter(query_filter))
+            continue
+        elif query_filter["field"] == "community":
+            query += "id"
+        elif query_filter["field"] == "regional_district":
+            query += "regional_district__id"
+        elif query_filter["field"] in ["population", "population_percentage_change"]:
+            query += "census_subdivision__{}".format(query_filter["field"])
+        elif query_filter["field"] in [
+                "percent_50_10", "percent_25_5", "percent_10_2", "percent_5_1",
+                "nearest_substation_distance"]:
+            query += query_filter["field"]
+        elif query_filter["field"] == "is_coastal":
+            query += query_filter["field"]
+            query_filter["value"] = [True if value == "true" else False for value in query_filter["value"]]
+        elif query_filter["field"] == "community_type":
+            query += query_filter["field"]
+            if "Indigenous" in query_filter["value"]:
+                query_filter["value"].remove("Indigenous")
+                query_filter["value"].extend(["Urban First Nations Reserve", "Rural First Nations Reserve"])
+        elif query_filter["field"] == "wildfire_zone":
+            query += "wildfire_zone__risk_class"
+        elif query_filter["field"] == "tsunami_zone":
+            query += "tsunami_zone__zone_class"
+        else:
+            # TODO return validation error
+            pass
+
+        print("query", query)
+
+        if query_filter["operator"]:
+            query += "__{}".format(query_filter["operator"])
+
+        if len(query_filter["value"]) == 1:
+            overall_query.append(Q(**{query: query_filter["value"][0]}))
+        elif len(query_filter["value"]) > 1:
+            query += "__in"
+            overall_query.append(Q(**{query: query_filter["value"]}))
+        else:
+            # TODO return validation error
+            pass
+
+    print("overall_query", overall_query)
+    if len(overall_query) > 0:
+        communities = Community.objects.filter(Q(reduce(and_, (q for q in overall_query))))
+    else:
+        communities = Community.objects.all()
+
+    if location_queries:
+        communities = reduce(and_, (q for q in [communities, *location_queries]))
+
+    communities = communities.distinct()
+
+    print("communities", communities, communities.count())
+    return communities.values_list('id', flat=True)
+
+
+def _handle_location_filter(query_filter):
+    from pipeline.models.community import Community
+    if not query_filter["location_type"]:
+        # TODO return validation error
+        pass
+
+    location_type_query = Q(**{"distances__location__location_type": query_filter["location_type"]})
+    distance_query = None
+    query = ""
+
+    if query_filter["units"] == "km":
+        query += "distances__driving_distance"
+    elif query_filter["units"] == "mins":
+        query += "distances__travel_time"
+    else:
+        # TODO return validation error
+        pass
+
+    if len(query_filter["value"]) > 1:
+        # TODO return validation error
+        pass
+
+    # TODO refactor duplicate code
+    if query_filter["operator"] == "xgt":
+        pass
+        query += "__lt"
+        print("query_filter here", query_filter)
+        distance_query = ~Q(**{query: query_filter["value"][0]})
+    else:
+        query += "__{}".format(query_filter["operator"])
+        distance_query = Q(**{query: query_filter["value"][0]})
+
+    print("location_query", location_type_query, distance_query)
+
+    return Community.objects.filter(location_type_query & distance_query)
+
+
+def _get_operator_for_field(field):
+    field_parts = field.split("__")
+    if "gte" in field_parts:
+        return "gte"
+    elif "gt" in field_parts:
+        return "gt"
+    elif "xgt" in field_parts:
+        return "xgt"
+    elif "lte" in field_parts:
+        return "lte"
+    elif "lt" in field_parts:
+        return "lt"
+
+    # TODO return validation error
+    return None
+
+
+def _get_units_for_field(field):
+    field_parts = field.split("__")
+    if "km" in field_parts:
+        return "km"
+    elif "mins" in field_parts:
+        return "mins"
+
+    # TODO return validation error
+    return None
+
+
+def _get_location_type_in_field(field):
+    field_split = field.split("__")
+    try:
+        location_prefix_index = field_split.index("location")
+        location_type = field_split[location_prefix_index + 1]
+        return location_type
+    except ValueError:
+        # TODO return validation error
+        return None
+
+
+def serialize_communities_for_regional_districts(regional_districts):
+    return {
+        regional_district.name: [
+            {
+                "community": community.place_name,
+                "locations": community.location_set.count()
+            } for community in regional_district.community_set.all()
+        ] for regional_district in regional_districts
+    }
+
+
+def serialize_data_sources():
+    from pipeline.constants import CSV_RESOURCES, DATABC_RESOURCES, SHP_RESOURCES
+
+    serialized = {}
+    for name, datasource_info in [*SHP_RESOURCES.items(), *CSV_RESOURCES.items(), *DATABC_RESOURCES.items()]:
+        serialized[name] = serialize_data_source(name, datasource_info)
+    return serialized
+
+
+def serialize_data_source(name, datasource_info):
+    from pipeline.constants import SOURCE_INTERNAL, SOURCE_DATABC, DATABC_PERMALINK_URL
+
+    source = ""
+    source_url = ""
+    if datasource_info["source"] == SOURCE_INTERNAL:
+        source = "Provided by Network BC team"
+    elif datasource_info["source"] == SOURCE_DATABC:
+        source = "BC Data Catalogue"
+        source_url = DATABC_PERMALINK_URL.format(permalink_id=datasource_info["permalink_id"])
+
+    return {
+        "display_name": datasource_info["display_name"],
+        "source": source,
+        "source_url": source_url,
+    }

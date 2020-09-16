@@ -1,9 +1,14 @@
+from django.http import HttpResponse
+from django.core.serializers import serialize
+
 from rest_framework import generics
+from rest_framework.views import APIView
 
 from pipeline.models.location_assets import (
+    Location,
     FirstResponder, DiagnosticFacility, TimberFacility, CivicFacility, Hospital, NaturalResourceProject,
     EconomicProject, ServiceBCLocation, School, Clinic, Court,
-    PostSecondaryInstitution,
+    PostSecondaryInstitution, ClosedMill, ResearchCentre, Airport,
 )
 from pipeline.serializers.location_types import (
     FirstResponderSerializer,
@@ -18,7 +23,26 @@ from pipeline.serializers.location_types import (
     PostSecondaryInstitutionSerializer,
     ClinicSerializer,
     CourtSerializer,
+    ClosedMillSerializer,
+    ResearchCentreSerializer,
+    AirportSerializer,
+    LocationSerializer
 )
+
+
+class LocationList(generics.ListAPIView):
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
+
+
+class LocationGeoJSONList(APIView):
+    schema = None
+
+    def get(self, request, format=None):
+        return HttpResponse(
+            serialize('geojson', Location.objects.all(), geometry_field='point', fields=('name', 'location_type')),
+            content_type="application/json",
+        )
 
 
 class FirstResponderList(generics.ListAPIView):
@@ -79,3 +103,18 @@ class ClinicList(generics.ListAPIView):
 class CourtList(generics.ListAPIView):
     queryset = Court.objects.all()
     serializer_class = CourtSerializer
+
+
+class ClosedMillList(generics.ListAPIView):
+    queryset = ClosedMill.objects.all()
+    serializer_class = ClosedMillSerializer
+
+
+class ResearchCentreList(generics.ListAPIView):
+    queryset = ResearchCentre.objects.all()
+    serializer_class = ResearchCentreSerializer
+
+
+class AirportList(generics.ListAPIView):
+    queryset = Airport.objects.all()
+    serializer_class = AirportSerializer

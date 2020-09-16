@@ -6931,6 +6931,11 @@ locate-path@^5.0.0:
   dependencies:
     p-locate "^4.1.0"
 
+lodash-es@^4.17.15:
+  version "4.17.15"
+  resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
+  integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
+
 lodash._reinterpolate@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/lodash._reinterpolate/-/lodash._reinterpolate-3.0.0.tgz#0ccf2d89166af03b3663c796538b75ac6e114d9d"
@@ -10948,6 +10953,11 @@ uglify-js@^3.5.1:
   version "3.10.0"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.10.0.tgz#397a7e6e31ce820bfd1cb55b804ee140c587a9e7"
   integrity sha512-Esj5HG5WAyrLIdYU74Z3JdG2PxdIusvj6IWHMtlyESxc7kcDz7zYlYjpnSokn1UbpV0d/QX9fan7gkCNd/9BQA==
+
+uid@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/uid/-/uid-1.0.0.tgz#40a64108ebdf765b3945c286b77c83c168687170"
+  integrity sha512-DYp36HDIRECMW0xmeyGSDSheURMbL7gy4DqINDUW5OSw7cot0pNRNvEtEji9nk1XVDZN/0lJ7myxacoTeU9oow==
 
 unfetch@^4.1.0:
   version "4.1.0"

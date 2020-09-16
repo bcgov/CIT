@@ -16,9 +16,7 @@ class Location(models.Model):
 
     location_type = models.CharField(null=True, blank=True, max_length=255)
 
-    community = models.ForeignKey('Community', on_delete=models.CASCADE)
-    # We don't need the following at this time, since we're focused on community access.
-    # census_subdivision = models.ForeignKey(CensusSubdivision, null=True, on_delete=models.CASCADE)
+    closest_community = models.ForeignKey('Community', on_delete=models.CASCADE)
 
     location_phone = models.CharField(null=True, blank=True, max_length=255)
     location_email = models.EmailField(null=True, blank=True)
@@ -27,7 +25,7 @@ class Location(models.Model):
     def __str__(self):
         return self.name
 
-    def latitude(self):
+    def get_latitude(self):
         if self.point:
             return self.point[1]
         else:
@@ -35,7 +33,7 @@ class Location(models.Model):
             print("Location {} has no location".format(self.name))
             return None
 
-    def longitude(self):
+    def get_longitude(self):
         if self.point:
             return self.point[0]
         else:
@@ -47,6 +45,7 @@ class Location(models.Model):
         # Note: `name` and `location_type` are not unique; e.g. there are two mills in different cities
         # named "West Fraser Mills Ltd."
         unique_together = [['name', 'point', 'location_type']]
+        ordering = ("id",)
 
 
 class Hospital(Location):
@@ -61,6 +60,10 @@ class Hospital(Location):
     sv_description = models.TextField(null=True, blank=True)
     hours = models.TextField(null=True, blank=True)
 
+    num_communities_within_50km = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        ordering = ("id",)
     '''
     {
         "_id": 5,
@@ -110,9 +113,16 @@ class Court(Location):
     NAME_FIELD = 'Placemark_name'
     PHONE_FIELD = 'Contact_Phone'
 
-    hours_of_operation = models.CharField(null=True, blank=True, max_length=255)
-    court_level = models.CharField(null=True, blank=True, max_length=255)
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=50)
+    postal_code = models.CharField(max_length=7)
+    contact_phone = models.CharField(max_length=30)
+    fax_number = models.CharField(max_length=30)
+    hours_of_operation = models.CharField(max_length=255)
+    court_level = models.CharField(max_length=20)
 
+    class Meta:
+        ordering = ("id",)
     '''
     {
         "_id": 4,
@@ -136,14 +146,6 @@ class Court(Location):
     }
     '''
 
-    address = models.CharField(max_length=255)
-    city = models.CharField(max_length=50)
-    postal_code = models.CharField(max_length=7)
-    contact_phone = models.CharField(max_length=30)
-    fax_number = models.CharField(max_length=30)
-    hours_of_operation = models.CharField(max_length=255)
-    court_level = models.CharField(max_length=20)
-
 
 class EconomicProject(Location):
     LATITUDE_FIELD = 'LATITUDE'
@@ -158,6 +160,8 @@ class EconomicProject(Location):
     eao_project_status = models.CharField(null=True, blank=True, max_length=255)
     project_comments = models.CharField(null=True, blank=True, max_length=255)
 
+    class Meta:
+        ordering = ("id",)
     '''
     {
         '_id': 1,
@@ -210,6 +214,9 @@ class NaturalResourceProject(Location):
     standardized_start_date = models.CharField(null=True, blank=True, max_length=255)
     standardized_completion_date = models.CharField(null=True, blank=True, max_length=255)
 
+    class Meta:
+        ordering = ("id",)
+
     def get_standardized_start_date_as_date(self):
         if not self.standardized_start_date:
             return None
@@ -221,7 +228,6 @@ class NaturalResourceProject(Location):
             return None
 
         return get_quarterly_date_str_as_date(self.standardized_completion_date)
-
     '''
     {
         '_id': 1,
@@ -276,6 +282,8 @@ class ServiceBCLocation(Location):
     PHONE_FIELD = 'Site_Phone_No'
     WEBSITE_FIELD = 'Website_URL'
 
+    class Meta:
+        ordering = ("id",)
     '''
     {
         '_id': 1,
@@ -305,6 +313,10 @@ class School(Location):
     public_or_independent = models.CharField(null=True, blank=True, max_length=255)
     school_education_level = models.CharField(null=True, blank=True, max_length=255)
 
+    school_district = models.ForeignKey('SchoolDistrict', null=True, on_delete=models.SET_NULL)
+
+    class Meta:
+        ordering = ("id",)
     '''
     {
         '_id': 1,
@@ -337,6 +349,8 @@ class PostSecondaryInstitution(Location):
     institution_type = models.CharField(null=True, blank=True, max_length=255)
     economic_development_region = models.CharField(null=True, blank=True, max_length=255)
 
+    class Meta:
+        ordering = ("id",)
     '''
     {
         '_id': 137,
@@ -365,6 +379,8 @@ class Clinic(Location):
     sv_description = models.CharField(null=True, blank=True, max_length=255)
     hours = models.TextField(null=True, blank=True)
 
+    class Meta:
+        ordering = ("id",)
     '''
     {
         '_id': 1,
@@ -407,12 +423,14 @@ class FirstResponder(Location):
 
     keywords = models.CharField(null=True, blank=True, max_length=255)
 
+    class Meta:
+        ordering = ("id",)
+
     def category(self):
         return self.keywords.split(';')[0].strip()
 
     def subcategory(self):
         return self.keywords.split(';')[-1].strip()
-
     '''
     OrderedDict([
         ('CUST_ORG', 'Ministry of Forest, Lands and Natural Resource Operations and Rural Development - GeoBC '),
@@ -453,6 +471,9 @@ class DiagnosticFacility(Location):
     NAME_FIELD = 'FCTY_NAME'
 
     ser_cd_dsc = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id",)
     '''
     OrderedDict([
         ('DIA_FAC_ID', '909'),
@@ -478,6 +499,9 @@ class TimberFacility(Location):
     NAME_FIELD = 'COMPANY_NM'
 
     bus_cat_ds = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id",)
     '''
     OrderedDict([
         ('COMPANY_NM','Bear Lumber Ltd.'),
@@ -522,6 +546,9 @@ class CivicFacility(Location):
     bus_cat_cl = models.CharField(null=True, blank=True, max_length=255)
     bus_cat_ds = models.CharField(null=True, blank=True, max_length=255)
 
+    class Meta:
+        ordering = ("id",)
+
     def category(self):
         return self.keywords.split(';')[0].strip()
 
@@ -553,8 +580,62 @@ class CivicFacility(Location):
     '''
 
 
-# class Library(Location):
-#     '''
-#     {"_id":5,"LIBRARY_SYSTEM":"Burnaby Public Library","LOCATION":"Cameron Library & Recreation Centre","BRANCH_UNIQUE_ID":"BB002","SCHOOL_DISTRICT_SERVED":"41","PHONE":"(604) 421-5454","PHYSICAL_ADDRESS":"9523 Cameron Street","CITY":"Burnaby","PROVINCE":"BC","POSTAL_CODE":"V3J 1L6","LATITUDE":49.25381414,"LONGITUDE":-122.898601,"MTLS_OUTLET":59958,"MTLS_CIRC_B":454254,"CIRC_CHILD_MTLS_B":227553,"REF_TRANS_B":20436,"VISITS_B":247701,"AD_INLIB_PGMS_B":50,"AD_OUT_PGMS_B":8,"ADULT_ATTEND_B":1067,"CH_INLIB_PGMS_B":221,"CH_OUT_PGMS_B":18,"CHILD_ATTEND_B":11112,"YA_INLIB_PGMS_B":4,"YA_OUT_PGMS_B":0,"YA_ATTEND_B":38,"ESL_INLIB_PGMS_B":11,"ESL_OUT_PGMS_B":0,"ESL_ATTEND_B":78,"LIBRARIAN_HRS_B":6834,"LIB_TECH_HRS_B":null,"COMM_LIB_HRS_B":null,"OTH_HRS_B":16311,"branch_copiers":1,"LEED_CERT_B":"No","SHRD_FAC":"Yes","FLOORSPACE":465,"HRS_OPEN":2901,"DAYS_OPEN":341}
-#     '''
+class ClosedMill(Location):
+    LATITUDE_FIELD = 'Resource_Latitude'
+    LONGITUDE_FIELD = 'Resource_Longitude'
+    NAME_FIELD = 'Name'
 
+    class Meta:
+        ordering = ("id",)
+    '''
+    OrderedDict([('Place_ID', '7928'), ('Place_Name', 'Baynes Lake'), ('Name', 'Canfor Sawmill - Elko'), ('Resource_Longitude', '-115.10295'), ('Resource_Latitude', '49.27562'), ('Type', 'Closed Mill')])
+    '''
+
+class ResearchCentre(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'RESEARCH_CENTRE_NAME'
+    WEBSITE_FIELD = 'RESEARCH_CENTRE_WEBSITE_URL'
+
+    research_specialties = models.CharField(null=True, blank=True, max_length=255)
+    research_centre_affiliation = models.CharField(null=True, blank=True, max_length=255)
+    institution = models.CharField(null=True, blank=True, max_length=255)
+    inst_acrnm = models.CharField(null=True, blank=True, max_length=255)
+    research_sector = models.CharField(null=True, blank=True, max_length=255)
+    cntr_type = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id",)
+    '''
+    {'_id': 1, 'RESEARCH_CENTRE_ID': 1, 'CENSUS_YEAR': 2011, 'CENSUS_SUBDIVISION_ID': 5915020, 'RESEARCH_CENTRE_NAME': 'The Centre for Advanced Wood Processing', 'RESEARCH_SPECIALTIES': 'Wood Products Processing, Advanced Wood Products Manufacturing', 'RESEARCH_CENTRE_AFFILIATION': 'University', 'INSTITUTION': 'University of British Columbia', 'INST_ACRNM': 'UBC', 'RESEARCH_CENTRE_ADDRESS': '2424 Main Mall', 'RESEARCH_CENTRE_MUNICIPALITY': 'Vancouver', 'RESEARCH_SECTOR': 'Forestry', 'RESEARCH_CENTRE_WEBSITE_URL': 'http://cawp.ubc.ca/', 'DATA_UPDATED_YEAR': 2014, 'POSTAL_CODE': '', 'SOURCE': '', 'NOTES': '', 'CNTR_TYPE': '', 'LONGITUDE': -123.2499699, 'LATITUDE': 49.260633}
+    '''
+
+
+class Airport(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'NAME'
+    WEBSITE_FIELD = 'WEBSITE'
+    PHONE_FIELD = 'CONT_PHONE'
+
+    descriptn = models.CharField(null=True, blank=True, max_length=255)
+    keywords = models.CharField(null=True, blank=True, max_length=255)
+    aer_status = models.CharField(null=True, blank=True, max_length=255)
+    aircr_acs = models.CharField(null=True, blank=True, max_length=255)
+    data_srce = models.CharField(null=True, blank=True, max_length=255)
+    datasrc_yr = models.CharField(null=True, blank=True, max_length=255)
+    elevation = models.CharField(null=True, blank=True, max_length=255)
+    fuel_avail = models.CharField(null=True, blank=True, max_length=255)
+    heli_acs = models.CharField(null=True, blank=True, max_length=255)
+    iata = models.CharField(null=True, blank=True, max_length=255)
+    mx_rway_ln = models.CharField(null=True, blank=True, max_length=255)
+    num_rway = models.CharField(null=True, blank=True, max_length=255)
+    rway_surf = models.CharField(null=True, blank=True, max_length=255)
+    oil_avail = models.CharField(null=True, blank=True, max_length=255)
+    seapln_acc = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id",)
+    '''
+    OrderedDict([('CUST_ORG', 'Ministry of Forest, Lands and Natural Resource Operations and Rural Development - GeoBC '), ('BUS_CAT_CL', 'airTransportation'), ('BUS_CAT_DS', 'Air Transportation'), ('OCCPNT_TYP', 'BC Airports'), ('SRCDATA_ID', '455'), ('SRC_ID_IND', 'N'), ('NAME', 'Terrace (Northwest Regional) Airport'), ('DESCRIPTN', 'airport'), ('ADDRESS', '4401 Bristol Rd, Terrace, BC'), ('ALIAS_ADDR', '4401 Bristol Rd, Terrace, BC'), ('ST_ADDRESS', '4401 Bristol Rd'), ('POSTAL_CD', ''), ('LOCALITY', 'Terrace'), ('CONT_PHONE', '250-635-2659'), ('CONT_EMAIL', ''), ('CONT_FAX', ''), ('WEBSITE', ''), ('IMAGE_URL', ''), ('LATITUDE', '54.4686111'), ('LONGITUDE', '-128.5783333'), ('KEYWORDS', 'aerodrome; airport; airstrip; runway'), ('DT_UPDATE', '20200205073805'), ('GEOCD_IND', ''), ('AER_STATUS', 'Certified'), ('AIRCR_ACS', 'Y'), ('DATA_SRCE', 'Canadian Flight Supplement'), ('DATASRC_YR', '2014'), ('ELEVATION', '217.32'), ('FUEL_AVAIL', 'Y'), ('HELI_ACS', 'N'), ('IATA', ''), ('ICAO', 'CYXT'), ('MX_RWAY_LN', '2285.39'), ('NUM_RWAY', '2'), ('OIL_AVAIL', 'Y'), ('RWAY_SURF', 'asphalt'), ('SEAPLN_ACC', 'N'), ('TC_LID', ''), ('SHAPE', ''), ('SEQ_ID', '578'), ('X', '833323.8826999993'), ('Y', '1054949.9463999951')])
+    '''

@@ -11,17 +11,17 @@ services:
       - back-tier
   web:
     build: ./web
+    image: countable/cit
     volumes:
       - ./web:/code
       - static:/static
     networks:
       - back-tier
+    env_file:
+      - .env
     environment:
-      - TENANT_ID=04bb63e9-2141-43c1-95a7-5595ef09761a
-      - CLIENT_ID=55b92cf4-c773-4b33-be8d-101cbb1d678e
       - AUTHORITY=https://login.microsoftonline.com/
       - SCOPE=https://analysis.windows.net/powerbi/api/.default
-      - CLIENT_SECRET=U3Oc_oTHI-d1CR0UR.6XNU35~q19zaHcnv
   db:
     image: mdillon/postgis
     volumes:

@@ -1,6 +1,6 @@
 from django.contrib.gis.db import models
 
-from pipeline.utils import serialize_census_subdivision_groups
+from pipeline.utils import serialize_census_subdivision_groups, get_pct_field_as_decimal
 
 
 class CensusSubdivision(models.Model):
@@ -13,13 +13,19 @@ class CensusSubdivision(models.Model):
     population = models.IntegerField(null=True)
     # "1.1.3", "Population percentage change, 2011 to 2016"
     population_percentage_change = models.FloatField(null=True)
+    # Transformed to counts
+    population_count_change = models.IntegerField(null=True)
+    # "1.2.3", "Average age of the population"
+    population_avg_age = models.FloatField(null=True)
+    # "1.1.6", 0, "Population density per square kilometre",
+    population_density_per_sq_km = models.FloatField(null=True)
+
     # "1.1.4", "Total private dwellings"
     priv_dwel = models.IntegerField(null=True)
     # "1.1.7",0,"Land area in square kilometres"
     area = models.FloatField(null=True)
 
-    # age of population
-    # broad categories
+    # Total - Distribution (%) of the population by broad age groups - 100% data
     # "1.2.2.1", "  0 to 14 years"
     pop_pct_0_14 = models.FloatField(null=True)
     # "1.2.2.2", 1, "  15 to 64 years"
@@ -27,6 +33,39 @@ class CensusSubdivision(models.Model):
     # "1.2.2.3", 1, "  65 years and over"
     pop_pct_65 = models.FloatField(null=True)
 
+    # Transformed to counts
+    pop_count_total = models.IntegerField(null=True)
+    pop_count_0_14 = models.IntegerField(null=True)
+    pop_count_14_65 = models.IntegerField(null=True)
+    pop_count_65 = models.IntegerField(null=True)
+
+    # "1.2.2.1", "  0 to 14 years" male
+    pop_pct_0_14_m = models.FloatField(null=True)
+    # "1.2.2.2", 1, "  15 to 64 years" male
+    pop_pct_14_65_m = models.FloatField(null=True)
+    # "1.2.2.3", 1, "  65 years and over" male
+    pop_pct_65_m = models.FloatField(null=True)
+
+    # Transformed to counts
+    pop_count_total_m = models.IntegerField(null=True)
+    pop_count_0_14_m = models.IntegerField(null=True)
+    pop_count_14_65_m = models.IntegerField(null=True)
+    pop_count_65_m = models.IntegerField(null=True)
+
+    # "1.2.2.1", "  0 to 14 years" female
+    pop_pct_0_14_f = models.FloatField(null=True)
+    # "1.2.2.2", 1, "  15 to 64 years" female
+    pop_pct_14_65_f = models.FloatField(null=True)
+    # "1.2.2.3", 1, "  65 years and over" female
+    pop_pct_65_f = models.FloatField(null=True)
+
+    # Transformed to counts
+    pop_count_total_f = models.IntegerField(null=True)
+    pop_count_0_14_f = models.IntegerField(null=True)
+    pop_count_14_65_f = models.IntegerField(null=True)
+    pop_count_65_f = models.IntegerField(null=True)
+
+    # Total - Age groups and average age of the population - 100% data
     # fine grained categories
     # "1.2.1.1.1", "    0 to 4 years"
     pop_0_4 = models.IntegerField(null=True)
@@ -71,6 +110,92 @@ class CensusSubdivision(models.Model):
     # "1.2.1.3.5.4", "      100 years and over"
     pop_100 = models.IntegerField(null=True)
 
+    # "1.2.1.1.1", "    0 to 4 years" male
+    pop_0_4_m = models.IntegerField(null=True)
+    # "1.2.1.1.2", "    5 to 9 years" male
+    pop_5_9_m = models.IntegerField(null=True)
+    # "1.2.1.1.3", "    10 to 14 years" male
+    pop_10_14_m = models.IntegerField(null=True)
+    # "1.2.1.2.1", "    15 to 19 years" male
+    pop_15_19_m = models.IntegerField(null=True)
+    # "1.2.1.2.2", "    20 to 24 years" male
+    pop_20_24_m = models.IntegerField(null=True)
+    # "1.2.1.2.3", "    25 to 29 years" male
+    pop_25_29_m = models.IntegerField(null=True)
+    # "1.2.1.2.4", "    30 to 34 years" male
+    pop_30_34_m = models.IntegerField(null=True)
+    # "1.2.1.2.5", "    35 to 39 years" male
+    pop_35_39_m = models.IntegerField(null=True)
+    # "1.2.1.2.6", "    40 to 44 years" male
+    pop_40_44_m = models.IntegerField(null=True)
+    # "1.2.1.2.7", "    45 to 49 years" male
+    pop_45_49_m = models.IntegerField(null=True)
+    # "1.2.1.2.8", "    50 to 54 years" male
+    pop_50_54_m = models.IntegerField(null=True)
+    # "1.2.1.2.9", "    55 to 59 years" male
+    pop_55_59_m = models.IntegerField(null=True)
+    # "1.2.1.2.10", "    60 to 64 years" male
+    pop_60_64_m = models.IntegerField(null=True)
+    # "1.2.1.3.1", "    65 to 69 years" male
+    pop_65_69_m = models.IntegerField(null=True)
+    # "1.2.1.3.2", "    70 to 74 years" male
+    pop_70_74_m = models.IntegerField(null=True)
+    # "1.2.1.3.3", "    75 to 79 years" male
+    pop_75_79_m = models.IntegerField(null=True)
+    # "1.2.1.3.4", "    80 to 84 years" male
+    pop_80_84_m = models.IntegerField(null=True)
+    # "1.2.1.3.5.1", "      85 to 89 years" male
+    pop_85_89_m = models.IntegerField(null=True)
+    # "1.2.1.3.5.2", "      90 to 94 years" male
+    pop_90_94_m = models.IntegerField(null=True)
+    # "1.2.1.3.5.3", "      95 to 99 years" male
+    pop_95_99_m = models.IntegerField(null=True)
+    # "1.2.1.3.5.4", "      100 years and over" male
+    pop_100_m = models.IntegerField(null=True)
+
+    # "1.2.1.1.1", "    0 to 4 years" female
+    pop_0_4_f = models.IntegerField(null=True)
+    # "1.2.1.1.2", "    5 to 9 years" female
+    pop_5_9_f = models.IntegerField(null=True)
+    # "1.2.1.1.3", "    10 to 14 years" female
+    pop_10_14_f = models.IntegerField(null=True)
+    # "1.2.1.2.1", "    15 to 19 years" female
+    pop_15_19_f = models.IntegerField(null=True)
+    # "1.2.1.2.2", "    20 to 24 years" female
+    pop_20_24_f = models.IntegerField(null=True)
+    # "1.2.1.2.3", "    25 to 29 years" female
+    pop_25_29_f = models.IntegerField(null=True)
+    # "1.2.1.2.4", "    30 to 34 years" female
+    pop_30_34_f = models.IntegerField(null=True)
+    # "1.2.1.2.5", "    35 to 39 years" female
+    pop_35_39_f = models.IntegerField(null=True)
+    # "1.2.1.2.6", "    40 to 44 years" female
+    pop_40_44_f = models.IntegerField(null=True)
+    # "1.2.1.2.7", "    45 to 49 years" female
+    pop_45_49_f = models.IntegerField(null=True)
+    # "1.2.1.2.8", "    50 to 54 years" female
+    pop_50_54_f = models.IntegerField(null=True)
+    # "1.2.1.2.9", "    55 to 59 years" female
+    pop_55_59_f = models.IntegerField(null=True)
+    # "1.2.1.2.10", "    60 to 64 years" female
+    pop_60_64_f = models.IntegerField(null=True)
+    # "1.2.1.3.1", "    65 to 69 years" female
+    pop_65_69_f = models.IntegerField(null=True)
+    # "1.2.1.3.2", "    70 to 74 years" female
+    pop_70_74_f = models.IntegerField(null=True)
+    # "1.2.1.3.3", "    75 to 79 years" female
+    pop_75_79_f = models.IntegerField(null=True)
+    # "1.2.1.3.4", "    80 to 84 years" female
+    pop_80_84_f = models.IntegerField(null=True)
+    # "1.2.1.3.5.1", "      85 to 89 years" female
+    pop_85_89_f = models.IntegerField(null=True)
+    # "1.2.1.3.5.2", "      90 to 94 years" female
+    pop_90_94_f = models.IntegerField(null=True)
+    # "1.2.1.3.5.3", "      95 to 99 years" female
+    pop_95_99_f = models.IntegerField(null=True)
+    # "1.2.1.3.5.4", "      100 years and over" female
+    pop_100_f = models.IntegerField(null=True)
+
     # types of occupied dwellings
     # "2.1.1.1", 1, "  Single-detached house"
     detached_houses = models.IntegerField(null=True)
@@ -81,10 +206,14 @@ class CensusSubdivision(models.Model):
     # 3009, "2.1.1.4", 1, "  Movable dwelling", 7, null, 0.0
     movable_dwellings = models.IntegerField(null=True)
 
-    # marital status
+    # family characteristics
+
+    # "2.3.3", 0, "Total number of census families in private households - 100% data",
+    total_census_families = models.IntegerField(null=True)
+
     # Total - Marital status for the population aged 15 years and over - 100% data
-    # "2.2.1.1", 1, "  Married or living common law"
-    married_or_common_law = models.IntegerField(null=True)
+    # "2.3.3.1", 1, "  Total couple families",
+    married_common_law_couples = models.IntegerField(null=True)
     # "2.3.4.2", 1, "  Couples with children"
     couples_with_children = models.IntegerField(null=True)
     # "2.3.5", 0, "Total - Lone-parent census families in private households - 100% data"
@@ -93,15 +222,22 @@ class CensusSubdivision(models.Model):
     # 3.6.1 Total - Knowledge of languages for the population in private households - 25% sample data
     # "3.6.1.1.1", 2, "    English"
     eng_known = models.IntegerField(null=True)
+    # "3.6.1.1.2", 2, "    French"
+    fr_known = models.IntegerField(null=True)
     # "3.6.1.2", 1, "  Non-official languages"
     other_lang = models.IntegerField(null=True)
     # "3.6.1.2.1", 2, "    Aboriginal languages"
     aboriginal_lang = models.IntegerField(null=True)
 
-    # 3.1.1 Total - Knowledge of official languages for the total population excluding institutional
-    # residents - 100% data
+    # "Total - Knowledge of official languages for the total population excluding institutional residents - 100% data"
+    # "3.1.1.1", 1, "  English only"
+    official_lang_eng = models.IntegerField(null=True)
+    # "3.1.1.2", 1, "  French only"
+    official_lang_fr = models.IntegerField(null=True)
+    # "3.1.1.3", 1, "  English and French"
+    official_lang_both_eng_fr = models.IntegerField(null=True)
     # "3.1.1.4", 1, "  Neither English nor French"
-    eng_fr_not_known = models.IntegerField(null=True)
+    official_lang_neither_eng_fr = models.IntegerField(null=True)
 
     # 3.4.1.1 Total - Language spoken most often at home for the total population excluding institutional
     # residents - 100% data, Single responses
@@ -117,6 +253,8 @@ class CensusSubdivision(models.Model):
     # private households - 100% dataCensus data footnote
     # "Income", 12002, "4.1.1.1.1", 2, "    Median total income in 2015 among recipients ($)"
     median_total_income = models.FloatField(null=True)
+    median_total_income_m = models.FloatField(null=True)
+    median_total_income_f = models.FloatField(null=True)
 
     # Total - Income statistics in 2015 for private households by household size - 100% data
     # "Income", 13001, "4.2.1.1", 1, "  Median total income of households in 2015 ($)",
@@ -152,6 +290,56 @@ class CensusSubdivision(models.Model):
     #  "Income", 12046, "4.1.5.3.11.2", 3, "      $150,000 and over"
     total_income_150000_and_over = models.IntegerField(null=True)
 
+    #  "Income", 12034, "4.1.5.3.1", 2, "    Under $10,000 (including loss)" male
+    total_income_under_10000_m = models.IntegerField(null=True)
+    #  "Income", 12035, "4.1.5.3.2", 2, "    $10,000 to $19,999" male
+    total_income_10000_to_19999_m = models.IntegerField(null=True)
+    #  "Income", 12036, "4.1.5.3.3", 2, "    $20,000 to $29,999" male
+    total_income_20000_to_29999_m = models.IntegerField(null=True)
+    #  "Income", 12037, "4.1.5.3.4", 2, "    $30,000 to $39,999" male
+    total_income_30000_to_39999_m = models.IntegerField(null=True)
+    #  "Income", 12038, "4.1.5.3.5", 2, "    $40,000 to $49,999" male
+    total_income_40000_to_49999_m = models.IntegerField(null=True)
+    #  "Income", 12039, "4.1.5.3.6", 2, "    $50,000 to $59,999" male
+    total_income_50000_to_59999_m = models.IntegerField(null=True)
+    #  "Income", 12040, "4.1.5.3.7", 2, "    $60,000 to $69,999" male
+    total_income_60000_to_69999_m = models.IntegerField(null=True)
+    #  "Income", 12041, "4.1.5.3.8", 2, "    $70,000 to $79,999" male
+    total_income_70000_to_79999_m = models.IntegerField(null=True)
+    #  "Income", 12042, "4.1.5.3.9", 2, "    $80,000 to $89,999" male
+    total_income_80000_to_89999_m = models.IntegerField(null=True)
+    #  "Income", 12043, "4.1.5.3.10", 2, "    $90,000 to $99,999" male
+    total_income_90000_to_99999_m = models.IntegerField(null=True)
+    #  "Income", 12045, "4.1.5.3.11.1", 3, "      $100,000 to $149,999" male
+    total_income_100000_to_149999_m = models.IntegerField(null=True)
+    #  "Income", 12046, "4.1.5.3.11.2", 3, "      $150,000 and over" male
+    total_income_150000_and_over_m = models.IntegerField(null=True)
+
+    #  "Income", 12034, "4.1.5.3.1", 2, "    Under $10,000 (including loss)" female
+    total_income_under_10000_f = models.IntegerField(null=True)
+    #  "Income", 12035, "4.1.5.3.2", 2, "    $10,000 to $19,999" female
+    total_income_10000_to_19999_f = models.IntegerField(null=True)
+    #  "Income", 12036, "4.1.5.3.3", 2, "    $20,000 to $29,999" female
+    total_income_20000_to_29999_f = models.IntegerField(null=True)
+    #  "Income", 12037, "4.1.5.3.4", 2, "    $30,000 to $39,999" female
+    total_income_30000_to_39999_f = models.IntegerField(null=True)
+    #  "Income", 12038, "4.1.5.3.5", 2, "    $40,000 to $49,999" female
+    total_income_40000_to_49999_f = models.IntegerField(null=True)
+    #  "Income", 12039, "4.1.5.3.6", 2, "    $50,000 to $59,999" female
+    total_income_50000_to_59999_f = models.IntegerField(null=True)
+    #  "Income", 12040, "4.1.5.3.7", 2, "    $60,000 to $69,999" female
+    total_income_60000_to_69999_f = models.IntegerField(null=True)
+    #  "Income", 12041, "4.1.5.3.8", 2, "    $70,000 to $79,999" female
+    total_income_70000_to_79999_f = models.IntegerField(null=True)
+    #  "Income", 12042, "4.1.5.3.9", 2, "    $80,000 to $89,999" female
+    total_income_80000_to_89999_f = models.IntegerField(null=True)
+    #  "Income", 12043, "4.1.5.3.10", 2, "    $90,000 to $99,999" female
+    total_income_90000_to_99999_f = models.IntegerField(null=True)
+    #  "Income", 12045, "4.1.5.3.11.1", 3, "      $100,000 to $149,999" female
+    total_income_100000_to_149999_f = models.IntegerField(null=True)
+    #  "Income", 12046, "4.1.5.3.11.2", 3, "      $150,000 and over" female
+    total_income_150000_and_over_f = models.IntegerField(null=True)
+
     # "Income", 15000, "4.4.1", 0, "Total - Low-income status in 2015 for the population in private
     # households to whom low-income concepts are applicable - 100% data"
     # "Income", 15001, "4.4.1.1", 1, "  0 to 17 years"
@@ -161,6 +349,22 @@ class CensusSubdivision(models.Model):
     # "Income", 15004, "4.4.1.3", 1, "  65 years and over"
     low_income_status_65_and_over = models.IntegerField(null=True)
 
+    # "Income", 15001, "4.4.1.1", 1, "  0 to 17 years" male
+    low_income_status_0_to_17_m = models.IntegerField(null=True)
+    # "Income", 15003, "4.4.1.2", 1, "  18 to 64 years" male
+    low_income_status_18_to_64_m = models.IntegerField(null=True)
+    # "Income", 15004, "4.4.1.3", 1, "  65 years and over" male
+    low_income_status_65_and_over_m = models.IntegerField(null=True)
+
+    # "Income", 15001, "4.4.1.1", 1, "  0 to 17 years" female
+    low_income_status_0_to_17_f = models.IntegerField(null=True)
+    # "Income", 15003, "4.4.1.2", 1, "  18 to 64 years" female
+    low_income_status_18_to_64_f = models.IntegerField(null=True)
+    # "Income", 15004, "4.4.1.3", 1, "  65 years and over" female
+    low_income_status_65_and_over_f = models.IntegerField(null=True)
+
+    # "Immigration and citizenship", 18000, "5.2.1", 0, "Total - Immigrant status and period of immigration for the population in private households - 25% sample data",
+    immigration_population_total = models.IntegerField(null=True)
     # "Immigration and citizenship", 18010, "5.2.1.3", 1, "  Non-permanent residents", 52, null, 30.0, null, 15.0, null, 15.0, null],
     non_pr = models.IntegerField(null=True)
 
@@ -176,6 +380,8 @@ class CensusSubdivision(models.Model):
     housing_band_housing = models.IntegerField(null=True)
 
     # dwelling condition
+    # "Housing", 27034, "9.1.9", 0, "Total - Occupied private dwellings by dwelling condition - 25% sample data",
+    housing_cond_total_private_dwellings = models.IntegerField(null=True)
     # "Housing", 27035, "9.1.9.1", 1, "  Only regular maintenance or minor repairs needed",
     housing_cond_regular_maintenance = models.IntegerField(null=True)
     # "Housing", 27036, "9.1.9.2", 1, "  Major repairs needed"
@@ -192,7 +398,13 @@ class CensusSubdivision(models.Model):
     # "Housing", 27055, "9.1.13.1", 1, "  % of owner households with a mortgage", 142, null, 37.6
     households_owner_pct_mortgage = models.FloatField(null=True)
     # "Housing", 27056, "9.1.13.2", 1, "  % of owner households spending 30% or more of its income on shelter costs",
-    households_owner_spending_30_pct_income = models.FloatField(null=True)
+    households_owner_pct_spending_30_pct_income = models.FloatField(null=True)
+
+    # Transformed to counts
+    households_owner_count_total = models.IntegerField(null=True)
+    households_owner_count_mortgage = models.IntegerField(null=True)
+    households_owner_count_spending_30_pct_income = models.IntegerField(null=True)
+
     # "Housing", 27057, "9.1.13.3", 1, "  Median monthly shelter costs for owned dwellings ($)",
     households_owner_median_monthly_shelter_costs = models.FloatField(null=True)
     # "Housing", 27058, "9.1.13.4", 1, "  Average monthly shelter costs for owned dwellings ($)",
@@ -206,7 +418,13 @@ class CensusSubdivision(models.Model):
     # "Housing", 27062, "9.1.14.1", 1, "  % of tenant households in subsidized housing",
     households_tenant_pct_subsidized_housing = models.FloatField(null=True)
     # "Housing", 27063, "9.1.14.2", 1, "  % of tenant households spending 30% or more of its income on shelter costs",
-    households_tenant_spending_30_pct_income = models.FloatField(null=True)
+    households_tenant_pct_spending_30_pct_income = models.FloatField(null=True)
+
+    # Transformed to counts
+    households_tenant_count_total = models.IntegerField(null=True)
+    households_tenant_count_subsidized_housing = models.IntegerField(null=True)
+    households_tenant_count_spending_30_pct_income = models.IntegerField(null=True)
+
     # "Housing", 27064, "9.1.14.3", 1, "  Median monthly shelter costs for rented dwellings ($)",
     households_tenant_median_shelter_cost = models.FloatField(null=True)
     # "Housing", 27065, "9.1.14.4", 1, "  Average monthly shelter costs for rented dwellings ($)",
@@ -214,6 +432,9 @@ class CensusSubdivision(models.Model):
 
     # "Families, households and marital status", 3017, "2.1.4", 0, "Average household size",
     avg_household_size = models.FloatField(null=True)
+
+    # "2.1.2", 0, "Total - Private households by household size - 100% data",
+    household_size_total = models.IntegerField(null=True)
 
     # "Families, households and marital status", 3011, "2.1.2.1", 1, "  1 person",
     household_size_1 = models.IntegerField(null=True)
@@ -236,6 +457,8 @@ class CensusSubdivision(models.Model):
     edu_4 = models.IntegerField(null=True)
 
     # field of study
+    # "Education", 29000, "10.2.1", 0, "Total - Major field of study - Classification of Instructional Programs (CIP) 2016 for the population aged 15 years and over in private households - 25% sample data",
+    edu_field_total = models.IntegerField(null=True)
     # "Education", 29001, "10.2.1.1", 1, "  No postsecondary certificate, diploma or degree",
     edu_field_no_post_secondary = models.IntegerField(null=True)
     # "Education", 29002, "10.2.1.2", 1, "  Education"
@@ -269,60 +492,105 @@ class CensusSubdivision(models.Model):
     # "Labour", 33004, "11.3.1.2.2", 2, "    Self-employed", 171, null, 375.0, null, 210.0, null, 160.0, null],
     self_employed = models.IntegerField(null=True)
 
-    # job types
+    # Occupation - National Occupational Classification (NOC) 2016
     # "Labour", 34003, "11.4.1.2.1", 2, "    0 Management occupations"
+    noc_0_management = models.IntegerField(null=True)
     # "Labour", 34004, "11.4.1.2.2", 2, "    1 Business, finance and administration occupations"
+    noc_1_business_finance_admin = models.IntegerField(null=True)
     # "Labour", 34005, "11.4.1.2.3", 2, "    2 Natural and applied sciences and related occupations"
+    noc_2_natural_applied_sciences = models.IntegerField(null=True)
     # "Labour", 34006, "11.4.1.2.4", 2, "    3 Health occupations"
+    noc_3_health = models.IntegerField(null=True)
     # "Labour", 34007, "11.4.1.2.5", 2, "    4 Occupations in education, law and social, community and government services"
+    noc_4_education_law_social = models.IntegerField(null=True)
     # "Labour", 34008, "11.4.1.2.6", 2, "    5 Occupations in art, culture, recreation and sport"
+    noc_5_art_culture_sport = models.IntegerField(null=True)
     # "Labour", 34009, "11.4.1.2.7", 2, "    6 Sales and service occupations"
+    noc_6_sales = models.IntegerField(null=True)
     # "Labour", 34010, "11.4.1.2.8", 2, "    7 Trades, transport and equipment operators and related occupations"
+    noc_7_trades_transport = models.IntegerField(null=True)
     # "Labour", 34011, "11.4.1.2.9", 2, "    8 Natural resources, agriculture and related production occupations"
+    noc_8_natural_resources_agriculture = models.IntegerField(null=True)
     # "Labour", 34012, "11.4.1.2.10", 2, "    9 Occupations in manufacturing and utilities"
+    noc_9_manufacturing = models.IntegerField(null=True)
 
-    # place of work
-    # "Labour", 36001, "11.6.1.1", 1, "  Worked at home"
-    # "Labour", 36003, "11.6.1.3", 1, "  No fixed workplace address"
-    # "Labour", 36004, "11.6.1.4", 1, "  Worked at usual place"
+    # "Total labour force population aged 15 years and over by Industry -
+    # North American Industry Classification System (NAICS) 2012 - 25% sample data",
+    # "Labour", 35001, "11.5.1.1", 1, "  Industry - NAICS2012 - not applicable",
+    naics_not_applicable = models.IntegerField(null=True)
+    # "Labour", 35003, "11.5.1.2.1", 2, "    11 Agriculture, forestry, fishing and hunting",
+    naics_agriculture = models.IntegerField(null=True)
+    # "Labour", 35004, "11.5.1.2.2", 2, "    21 Mining, quarrying, and oil and gas extraction",
+    naics_mining = models.IntegerField(null=True)
+    # "Labour", 35005, "11.5.1.2.3", 2, "    22 Utilities",
+    naics_utilities = models.IntegerField(null=True)
+    # "Labour", 35006, "11.5.1.2.4", 2, "    23 Construction",
+    naics_construction = models.IntegerField(null=True)
+    # "Labour", 35007, "11.5.1.2.5", 2, "    31-33 Manufacturing",
+    naics_manufacturing = models.IntegerField(null=True)
+    # "Labour", 35008, "11.5.1.2.6", 2, "    41 Wholesale trade",
+    naics_wholesale = models.IntegerField(null=True)
+    # "Labour", 35009, "11.5.1.2.7", 2, "    44-45 Retail trade",
+    naics_retail = models.IntegerField(null=True)
+    # "Labour", 35010, "11.5.1.2.8", 2, "    48-49 Transportation and warehousing",
+    naics_transportation = models.IntegerField(null=True)
+    # "Labour", 35011, "11.5.1.2.9", 2, "    51 Information and cultural industries",
+    naics_information = models.IntegerField(null=True)
+    # "Labour", 35012, "11.5.1.2.10", 2, "    52 Finance and insurance",
+    naics_finance = models.IntegerField(null=True)
+    # "Labour", 35013, "11.5.1.2.11", 2, "    53 Real estate and rental and leasing",
+    naics_real_estate = models.IntegerField(null=True)
+    # "Labour", 35014, "11.5.1.2.12", 2, "    54 Professional, scientific and technical services",
+    naics_tech = models.IntegerField(null=True)
+    # "Labour", 35015, "11.5.1.2.13", 2, "    55 Management of companies and enterprises",
+    naics_management = models.IntegerField(null=True)
+    # "Labour", 35016, "11.5.1.2.14", 2, "    56 Administrative and support, waste management and remediation services",
+    naics_admin = models.IntegerField(null=True)
+    # "Labour", 35017, "11.5.1.2.15", 2, "    61 Educational services",
+    naics_education = models.IntegerField(null=True)
+    # "Labour", 35018, "11.5.1.2.16", 2, "    62 Health care and social assistance",
+    naics_healthcare = models.IntegerField(null=True)
+    # "Labour", 35019, "11.5.1.2.17", 2, "    71 Arts, entertainment and recreation",
+    naics_arts = models.IntegerField(null=True)
+    # "Labour", 35020, "11.5.1.2.18", 2, "    72 Accommodation and food services",
+    naics_accomodation = models.IntegerField(null=True)
+    # "Labour", 35021, "11.5.1.2.19", 2, "    81 Other services (except public administration)",
+    naics_other = models.IntegerField(null=True)
+    # "Labour", 35022, "11.5.1.2.20", 2, "    91 Public administration",
+    naics_public_admin = models.IntegerField(null=True)
 
-    # "Journey to work", 37001, "12.1.1.1", 1, "  Commute within census subdivision (CSD) of residence"
-    # "Journey to work", 37002, "12.1.1.2", 1, "  Commute to a different census subdivision (CSD) within census division (CD) of residence"
-
-    # "Journey to work", 38001, "12.2.1.1", 1, "  Car, truck, van - as a driver"
-    # "Journey to work", 38002, "12.2.1.2", 1, "  Car, truck, van - as a passenger"
-    # "Journey to work", 38003, "12.2.1.3", 1, "  Public transit"
-    # "Journey to work", 38004, "12.2.1.4", 1, "  Walked"
-    # "Journey to work", 38005, "12.2.1.5", 1, "  Bicycle"
-    # "Journey to work", 38006, "12.2.1.6", 1, "  Other method"
-
-    # "Journey to work", 39001, "12.3.1.1", 1, "  Less than 15 minutes"
-    # "Journey to work", 39002, "12.3.1.2", 1, "  15 to 29 minutes"
-    # "Journey to work", 39003, "12.3.1.3", 1, "  30 to 44 minutes"
-    # "Journey to work", 39004, "12.3.1.4", 1, "  45 to 59 minutes"
-    # "Journey to work", 39005, "12.3.1.5", 1, "  60 minutes and over"
-
-    # 1Y mobility
-
-    # "Mobility", 43001, "14.1.1.1", 1, "  Non-movers"
-    # "Mobility", 43002, "14.1.1.2", 1, "  Movers"
-
-    # 5Y mobility
-
-    # "Mobility", 44001, "14.2.1.1", 1, "  Non-movers"
-    # "Mobility", 44002, "14.2.1.2", 1, "  Movers"
+    class Meta:
+        ordering = ("id",)
 
     def api_field_groups(self):
         return serialize_census_subdivision_groups(self)
 
     def get_population_percentage_change_as_decimal(self):
-        return self.population_percentage_change / 100 if self.population_percentage_change else 0
+        return get_pct_field_as_decimal(self.population_percentage_change)
 
     def get_pop_pct_0_14_as_decimal(self):
-        return self.pop_pct_0_14 / 100 if self.pop_pct_0_14 else 0
+        return get_pct_field_as_decimal(self.pop_pct_0_14)
 
     def get_pop_pct_14_65_as_decimal(self):
-        return self.pop_pct_14_65 / 100 if self.pop_pct_14_65 else 0
+        return get_pct_field_as_decimal(self.pop_pct_14_65)
 
     def get_pop_pct_65_as_decimal(self):
-        return self.pop_pct_65 / 100 if self.pop_pct_65 else 0
+        return get_pct_field_as_decimal(self.pop_pct_65)
+
+    def get_housing_cost_less_30_pct_income_as_decimal(self):
+        return get_pct_field_as_decimal(self.housing_cost_less_30_pct_income)
+
+    def get_housing_cost_30_pct_more_income_as_decimal(self):
+        return get_pct_field_as_decimal(self.housing_cost_30_pct_more_income)
+
+    def get_households_owner_pct_mortgage_as_decimal(self):
+        return get_pct_field_as_decimal(self.households_owner_pct_mortgage)
+
+    def get_households_owner_pct_spending_30_pct_income_as_decimal(self):
+        return get_pct_field_as_decimal(self.households_owner_pct_spending_30_pct_income)
+
+    def get_households_tenant_pct_subsidized_housing_as_decimal(self):
+        return get_pct_field_as_decimal(self.households_tenant_pct_subsidized_housing)
+
+    def get_households_tenant_pct_spending_30_pct_income_as_decimal(self):
+        return get_pct_field_as_decimal(self.households_tenant_pct_spending_30_pct_income)

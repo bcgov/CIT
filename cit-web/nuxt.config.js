@@ -22,8 +22,8 @@ export default {
    */
   head: {
     titleTemplate: (titleChunk) => {
-      const appTitle = 'B.C. Community Information Tool 2.0';
-      return titleChunk ? `${titleChunk} | ${appTitle}` : appTitle;
+      const appTitle = 'B.C. Community Information Tool'
+      return titleChunk ? `${titleChunk} | ${appTitle}` : appTitle
     },
     title: '',
     meta: [
@@ -35,7 +35,22 @@ export default {
         content: process.env.npm_package_description || '',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    script: [
+      {
+        src:
+          'https://cdn.jsdelivr.net/npm/powerbi-client@2.13.3/dist/powerbi.min.js ',
+      },
+      {
+        src: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js',
+      },
+    ],
+    link: [
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'stylesheet',
+        href: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css',
+      },
+    ],
   },
   /*
    ** Global CSS
@@ -45,13 +60,7 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: [
-    '~/plugins/nuxt-axios-port.js',
-    {
-      src: '~plugins/powerbi-client.js',
-      mode: 'client',
-    },
-  ],
+  plugins: ['~/plugins/nuxt-axios-port.js'],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components
@@ -115,6 +124,7 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
+    analyze: true,
     babel: {
       presets(env, [preset, options]) {
         return [
@@ -128,9 +138,30 @@ export default {
       },
       plugins: ['@babel/plugin-proposal-optional-chaining'],
     },
+    extend(config, ctx) {
+      // Run ESLint on save
+      if (ctx.isDev && ctx.isClient) {
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|vue)$/,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/,
+          options: {
+            fix: true,
+          },
+        })
+      }
+    },
   },
   publicRuntimeConfig: {
     MAPBOX_API_KEY:
       'pk.eyJ1IjoiY291bnRhYmxlLXdlYiIsImEiOiJjamQyZG90dzAxcmxmMndtdzBuY3Ywa2ViIn0.MU-sGTVDS9aGzgdJJ3EwHA',
+    reportId: process.env.POWERBI_REPORT_ID,
+    citFeedbackEmail: 'networkbc@gov.bc.ca',
+  },
+  watchers: {
+    webpack: {
+      ignored: /node_modules/,
+    },
   },
 }

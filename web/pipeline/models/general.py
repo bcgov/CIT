@@ -1,13 +1,6 @@
 from django.contrib.gis.db import models
 
 
-class Area(models.Model):
-    name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=4326, null=True)
-    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
-    location_type = models.CharField(null=True, blank=True, max_length=255)
-
-
 class Hex(models.Model):
     # "PHH_ID","Avail_5_1_Dispo","Avail_10_2_Dispo","Avail_25_5_Dispo","Avail_50_10_Dispo","Avail_LTE_Mobile_Dispo"
     id = models.CharField(primary_key=True, max_length=12)
@@ -36,14 +29,25 @@ class Road(models.Model):
     best_broadband = models.CharField(max_length=5)
 
 
-class Municipality(Area):
+class Municipality(models.Model):
     ID_FIELD = 'AA_ID'
     NAME_FIELD = 'ABRVN'
+
+    area_id = models.IntegerField(null=True, help_text="Original ID of data point")
+    name = models.CharField(max_length=127)
+    geom = models.MultiPolygonField(srid=4326, null=True)
+    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
     oc_m_yr = models.CharField(
         max_length=4,
         help_text="The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
         " e.g., 2014.",
     )
+
+    class Meta:
+        ordering = ("id",)
+
+    def __str__(self):
+        return self.name
 
     """
     AA_ID 3
@@ -68,10 +72,66 @@ class Municipality(Area):
     """
 
 
+class SchoolDistrict(models.Model):
+    ID_FIELD = 'ADMIN_SID'
+    NAME_FIELD = 'SD_NAME'
+
+    area_id = models.IntegerField(null=True, help_text="Original ID of data point")
+    name = models.CharField(max_length=127)
+    geom = models.MultiPolygonField(srid=4326, null=True)
+    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
+    sd_num = models.CharField(
+        max_length=5,
+    )
+    community = models.ManyToManyField('Community')
+
+    class Meta:
+        ordering = ("id",)
+
+    def __str__(self):
+        return self.name
+
+    """
+    {'ADMIN_SID': 121, 'SD_NAME': 'Southeast Kootenay', 'SD_NUM': 5, 'FCODE': 'FA91800600', 'SHAPE': 0, 'AREA_SQM': 12518364167.6713, 'FEAT_LEN': 729284.9581, 'OBJECTID': 1}
+    """
+
+
+class RegionalDistrict(models.Model):
+    ID_FIELD = 'AA_ID'
+    NAME_FIELD = 'AA_NAME'
+
+    area_id = models.IntegerField(null=True, help_text="Original ID of data point")
+    name = models.CharField(max_length=127)
+    geom = models.MultiPolygonField(srid=4326, null=True)
+    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
+    oc_m_yr = models.CharField(
+        null=True,
+        max_length=4,
+        help_text="The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
+        " e.g., 2014.",
+    )
+
+    class Meta:
+        ordering = ("id",)
+
+    def __str__(self):
+        return self.name
+
+    """
+    {'AA_ID': 2, 'AA_NAME': 'Regional District of Bulkley-Nechako', 'ABRVN': 'RDBN', 'BDY_TYPE': 'Legal', 'AA_PARENT': 'Province of British Columbia', 'CHNG_ORG': 'MCSCD', 'UPT_TYPE': 'E', 'UPT_DATE': '20130606', 'MAP_STATUS': 'Not Appended', 'OC_M_NMBR': '', 'OC_M_YR': '', 'OC_M_TYPE': '', 'WBST_RL': '', 'IMAGE_URL': '', 'AFCTD_AREA': '', 'AREA_SQM': 78266556471.7951, 'LENGTH_M': 2057088.3374, 'SHAPE': 0, 'OBEJCTID': 2901}
+    """
+
+
 class LocationDistance(models.Model):
-    community = models.ForeignKey('Community', on_delete=models.DO_NOTHING, related_name='distances')
+    community = models.ForeignKey(
+        'Community', on_delete=models.DO_NOTHING, related_name='distances',
+        help_text="Community for this distance")
     location = models.ForeignKey('Location', on_delete=models.DO_NOTHING, related_name='distances')
     distance = models.DecimalField(
+        null=True, blank=True, max_digits=24, decimal_places=4,
+        help_text="Birds' eye distance from community to Location (km)"
+    )
+    driving_distance = models.DecimalField(
         null=True, blank=True, max_digits=24, decimal_places=4,
         help_text="Driving distance from community to Location (km)"
     )
@@ -84,27 +144,41 @@ class LocationDistance(models.Model):
         max_length=255,
         help_text="Travel time, in human-readable units (e.g. 15 minutes 22 seconds)",
     )
-    driving_route_available = models.BooleanField(null=True, blank=True)
+    within_municipality = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('community', 'location')
         verbose_name = "Location Distance"
         verbose_name_plural = "Location Distances"
+        ordering = ("id",)
 
     def __str__(self):
         return '{} to {}: {} km'.format(self.community.place_name, self.location.name, self.distance)
 
 
-class WildfireZone(Area):
-    NAME_FIELD = 'FIRE_ZONE'
+class WildfireZone(models.Model):
+    NAME_FIELD = 'FIRE_ZONE,LABEL'
+
+    area_id = models.IntegerField(null=True, help_text="Original ID of data point")
+    name = models.CharField(max_length=127)
+    geom = models.MultiPolygonField(srid=4326, null=True)
+    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
     risk_class = models.CharField(
         max_length=1,
         help_text="A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 " "(extreme).",
     )  # 1-5
 
+    def __str__(self):
+        return self.name
 
-class TsunamiZone(Area):
+
+class TsunamiZone(models.Model):
     NAME_FIELD = 'TNZ_ID'
+
+    area_id = models.IntegerField(null=True, help_text="Original ID of data point")
+    name = models.CharField(max_length=127)
+    geom = models.MultiPolygonField(srid=4326, null=True)
+    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
     zone_class = models.CharField(
         max_length=1,
         help_text="See https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/"
@@ -118,3 +192,6 @@ class TsunamiZone(Area):
     # A-C moderate
     # D,E, low
     # otherwise, none.
+
+    def __str__(self):
+        return self.name

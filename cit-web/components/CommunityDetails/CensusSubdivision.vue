@@ -49,7 +49,7 @@
 
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import { groupBy } from 'lodash'
+import groupBy from 'lodash/groupBy'
 
 @Component
 export default class CensusSubdivision extends Vue {

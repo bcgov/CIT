@@ -32,14 +32,6 @@ Ports may be configured by editing the port in the `dc.*.yml` files.
 
 You can create a new terminal, and run commands to interact with the application. `docker-compose ps` to show services, and `docker-compose exec web bash` to open a shell in inside the django service.
 
-To create a superuser for data administration.
-
-```
-docker-compose exec web ./setup.sh
-```
-
-You can visit the Django admin at `http://localhost/admin`. The username is `admin`, password is `pass`.
-
 ## Prepping Data
 
 Some data are loaded from locally stored csv (that you save in ./web/data) and shapefiles since have no public API.
@@ -180,7 +172,7 @@ We believe this can be done in either two ways.
  7. Click `apply`
  9. Go back to the `Admin Portal` then select `Workspaces`
  10. Select a workspace, then click the `3 dots` then click `access`
- 11. Enter the Service Principal (APP ID) in the box. Select `Admin` then click `Add`
+ 11. Enter the Service Principal (App Display Name) in the box. Select `Admin` then click `Add`.
 
 
 ### Assigning Capacity

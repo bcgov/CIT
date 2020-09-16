@@ -1,4 +1,4 @@
-from pipeline.models.general import Municipality, WildfireZone, TsunamiZone
+from pipeline.models.general import Municipality, WildfireZone, TsunamiZone, SchoolDistrict, RegionalDistrict
 from pipeline.models.location_assets import (
     Court,
     Hospital,
@@ -12,51 +12,197 @@ from pipeline.models.location_assets import (
     TimberFacility,
     CivicFacility,
     PostSecondaryInstitution,
+    ClosedMill,
+    ResearchCentre,
+    Airport,
 )
 from pipeline.models.community import Community
 
+DATABC_PERMALINK_URL = 'https://catalogue.data.gov.bc.ca/dataset/{permalink_id}'
+SOURCE_INTERNAL = 'internal'
+SOURCE_DATABC = 'databc'
 
-LOCATION_TYPES = [
-    'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities',
-    'hospitals', 'natural_resource_projects', 'economic_projects', 'servicebc_locations',
-    'schools', 'clinics', 'courts', 'post_secondary_institutions',
-]
+LOCATION_TYPES = {
+    'first_responders': FirstResponder,
+    'diagnostic_facilities': DiagnosticFacility,
+    'timber_facilities': TimberFacility,
+    'civic_facilities': CivicFacility,
+    'hospitals': Hospital,
+    'natural_resource_projects': NaturalResourceProject,
+    'economic_projects': EconomicProject,
+    'servicebc_locations': ServiceBCLocation,
+    'schools': School,
+    'clinics': Clinic,
+    'courts': Court,
+    'post_secondary_institutions': PostSecondaryInstitution,
+    'closed_mills': ClosedMill,
+    'resesarch_centres': ResearchCentre,
+    'airports': Airport,
+}
 
 CSV_RESOURCES = {
     # Provided by NetworkBC Team
-    'communities': {'csv_path': 'data/COMMUNITIES_V4.csv', 'model': Community},
-    'first_responders': {'csv_path': 'data/FRST_RSPND.csv', 'model': FirstResponder},
-    'diagnostic_facilities': {'csv_path': 'data/DIAG_FACLT.csv', 'model': DiagnosticFacility},
-    'timber_facilities': {'csv_path': 'data/GSRTMBRPRC.csv', 'model': TimberFacility},
-    'civic_facilities': {'csv_path': 'data/CIVIC_FAC.csv', 'model': CivicFacility},
+    'communities': {
+        'source': SOURCE_INTERNAL,
+        'csv_path': 'data/COMMUNITIES_V6.csv',
+        'display_name': 'Communities',
+        'model': Community
+    },
+    'first_responders': {
+        'source': SOURCE_DATABC,
+        'permalink_id': '652c49eb-7295-4ae2-8f26-39103f23b50d',
+        'csv_path': 'data/FRST_RSPND.csv',
+        'display_name': 'First Responders',
+        'model': FirstResponder
+    },
+    'diagnostic_facilities': {
+        'source': SOURCE_DATABC,
+        'permalink_id': '4f75e9f6-1459-4ae2-990d-b53b1c389525',
+        'csv_path': 'data/DIAG_FACLT.csv',
+        'display_name': 'Diagnostic Facilities',
+        'model': DiagnosticFacility
+    },
+    'timber_facilities': {
+        'source': SOURCE_DATABC,
+        'permalink_id': '67daf53d-e3bb-45ee-9121-8aa1193b7492',
+        'csv_path': 'data/GSRTMBRPRC.csv',
+        'display_name': 'Timber Facilities',
+        'model': TimberFacility
+    },
+    'civic_facilities': {
+        'source': SOURCE_DATABC,
+        'permalink_id': 'ea7cd54f-1820-4f4a-8b2c-40c8a51f84bd',
+        'csv_path': 'data/CIVIC_FAC.csv',
+        'display_name': 'Civic Facilities',
+        'model': CivicFacility
+    },
+    'closed_mills': {
+        'source': SOURCE_INTERNAL,
+        'csv_path': 'data/closed_mills.csv',
+        'display_name': 'Closed Mills',
+        'model': ClosedMill
+    },
+    'airports': {
+        'source': SOURCE_DATABC,
+        'permalink_id': '76b1b7a3-2112-4444-857a-afccf7b20da8',
+        'csv_path': 'data/ARPRTS.csv',
+        'display_name': 'Airports',
+        'model': Airport
+    },
 }
 
 
 DATABC_RESOURCES = {
-    'hospitals': {'resource_id': '5ff82cf4-0448-4063-804a-7321f0f2b4c6', 'model': Hospital},
+    'hospitals': {
+        'source': SOURCE_DATABC,
+        'permalink_id': '383eaf98-afd7-436a-9556-67ecf14f64a7',
+        'resource_id': '5ff82cf4-0448-4063-804a-7321f0f2b4c6',
+        'display_name': 'Hospitals',
+        'model': Hospital
+    },
     'natural_resource_projects': {
+        'source': SOURCE_DATABC,
+        'permalink_id': '5ee75843-06b3-4767-b6c2-3248289f5e8d',
         'resource_id': '2b69cc4b-4076-4272-a5a0-1c731455e063',
+        'display_name': 'Natural Resource Projects',
         'model': NaturalResourceProject,
     },
-    'economic_projects': {'resource_id': 'b12cd4cc-b58b-4079-b630-a20b6df58e8d', 'model': EconomicProject},
-    'servicebc_locations': {'resource_id': 'c7cc9297-220c-4d6c-a9a7-72d0680b2f74', 'model': ServiceBCLocation},
-    'schools': {'resource_id': '5832eff2-3380-435e-911b-5ada41c1d30b', 'model': School},
-    'clinics': {'resource_id': '3ca6b086-c92b-4654-ae82-ff5723d00611', 'model': Clinic},
-    'courts': {'resource_id': '23aa0b75-2715-4ccb-9a36-9a608450dc2d', 'model': Court},
+    'economic_projects': {
+        'source': SOURCE_DATABC,
+        'permalink_id': 'ea4c0bdb-a63f-49a4-b14a-09c1560aad0b',
+        'resource_id': 'b12cd4cc-b58b-4079-b630-a20b6df58e8d',
+        'display_name': 'Economic Projects',
+        'model': EconomicProject
+    },
+    'servicebc_locations': {
+        'source': SOURCE_DATABC,
+        'permalink_id': '2b44d212-5438-47a9-ad23-20eb8ada9709',
+        'resource_id': 'c7cc9297-220c-4d6c-a9a7-72d0680b2f74',
+        'display_name': 'Service BC Office Locations',
+        'model': ServiceBCLocation
+    },
+    'schools': {
+        'source': SOURCE_DATABC,
+        'permalink_id': '95da1091-7e8c-4aa6-9c1b-5ab159ea7b42',
+        'resource_id': '5832eff2-3380-435e-911b-5ada41c1d30b',
+        'display_name': 'Schools (K-12)',
+        'model': School
+    },
+    'clinics': {
+        'source': SOURCE_DATABC,
+        'permalink_id': '5e2707c3-0aa4-4d2d-aedc-4dd0914b686a',
+        'resource_id': '3ca6b086-c92b-4654-ae82-ff5723d00611',
+        'display_name': 'Walk-in Clinics',
+        'model': Clinic
+    },
+    'courts': {
+        'source': SOURCE_DATABC,
+        'permalink_id': 'c95a2ad5-f62a-43d6-8678-80a617b6200e',
+        'resource_id': '23aa0b75-2715-4ccb-9a36-9a608450dc2d',
+        'display_name': 'Courts',
+        'model': Court
+    },
     'post_secondary_institutions': {
+        'source': SOURCE_DATABC,
+        'permalink_id': '81558d54-1f96-46c2-94fe-56d26f69c4f5',
         'resource_id': '8e4e2a87-2d1d-4931-828e-6327b49f310e',
+        'display_name': 'Post-Secondary Institutions',
         'model': PostSecondaryInstitution
     },
-    # 'libraries': {
-    #     'resource_id': 'b6a28bfb-580b-4662-9f00-f7189d52fbe6',
-    #     'model': Library
-    # }
+    'research_centres': {
+        'source': SOURCE_DATABC,
+        'permalink_id': '7859ae46-2aa1-47ee-a05b-7d0daa472678',
+        'resource_id': 'b930d0c7-31e5-4816-a06d-3ea23dbc7635',
+        'display_name': 'Research Centres',
+        'model': ResearchCentre
+    },
 }
 
 SHP_RESOURCES = {
-    'wildfires_zones': {'path': 'data/wildfire_zones.zip', 'model': WildfireZone},
-    'tsunami_zones': {'path': 'data/tsunami_zones.zip', 'model': TsunamiZone},
-    'municipalities': {'path': 'data/municipalities.zip', 'model': Municipality},
+    'wildfires_zones': {
+        'source': SOURCE_DATABC,
+        'permalink_id': '3c71551e-c1aa-4272-9c89-64fbd22a910d',
+        'path': 'data/wildfire_zones.zip',
+        'display_name': 'Wildfire Wildland Urban Interface Risk Class',
+        'model': WildfireZone
+    },
+    'tsunami_zones': {
+        'source': SOURCE_DATABC,
+        'permalink_id': 'd9bafe48-5bf7-461b-a8d6-ba6d1e2245f0',
+        'path': 'data/tsunami_zones.zip',
+        'display_name': 'Tsunami Notification Zones',
+        'model': TsunamiZone
+    },
+    'municipalities': {
+        'source': SOURCE_DATABC,
+        'permalink_id': 'e3c3c580-996a-4668-8bc5-6aa7c7dc4932',
+        'path': 'data/municipalities.zip',
+        'display_name': 'Municipalities',
+        'model': Municipality
+    },
+    'school_districts': {
+        'source': SOURCE_DATABC,
+        'permalink_id': '78ec5279-4534-49a1-97e8-9d315936f08b',
+        'path': 'data/school_districts.zip',
+        'display_name': 'School Districts',
+        'model': SchoolDistrict
+    },
+    'regional_districts': {
+        'source': SOURCE_DATABC,
+        'permalink_id': 'd1aff64e-dbfe-45a6-af97-582b7f6418b9',
+        'path': 'data/regional_districts.zip',
+        'display_name': 'Regional Districts',
+        'model': RegionalDistrict
+    },
+    # Note: census divisions are only used to monkey-patch the Northern Rockies "regional district"
+    # which is missing (actually a municipality)
+    'northern_rockies_census_division': {
+        'source': SOURCE_DATABC,
+        'permalink_id': 'ef17918a-597a-4012-8534-f8e71d8735b3',
+        'path': 'data/census_divisions.zip',
+        'display_name': 'Northern Rockies Census Division (included as Regional District)',
+        'model': RegionalDistrict
+    },
 }
 
 CENSUS_LANGUAGE_MAP = {
@@ -274,3 +420,6 @@ CENSUS_LANGUAGE_MAP = {
     "3.4.1.1.2.2.18.4": "Uralic languages, n.i.e.",
     "3.4.1.1.2.2.19": "Other languages, n.i.e.",
 }
+
+BC_ALBERS_SRID = 3005
+WGS84_SRID = 4326

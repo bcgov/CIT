@@ -1,15 +1,8 @@
 from rest_framework import serializers
 
-from pipeline.models.location_assets import Location
-from pipeline.models.general import LocationDistance, Service
+from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
-
-
-class LocationSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Location
-        fields = ("id", "name", "community_id", "location_type", "latitude", "longitude", "location_fuzzy")
 
 
 class ServiceListSerializer(serializers.ModelSerializer):
@@ -38,26 +31,23 @@ class CommunitySerializer(serializers.ModelSerializer):
     wildfire_zone = serializers.SlugRelatedField(read_only=True, slug_field='risk_class')
     tsunami_zone = serializers.SlugRelatedField(read_only=True, slug_field='zone_class')
     community_type = serializers.CharField(source='get_display_community_type', read_only=True)
-    # services = ServiceSerializer(many=True, read_only=True)
-
-    #def to_representation(self, instance):
-    #    repr = super().to_representation(instance)
-    #    repr['services'] = [ServiceSerializer(x).data for x in instance.hexuid.service_set.all()]
-    #    return repr
 
     class Meta:
         model = Community
         fields = (
             "id",
             "place_name",
+            "child_communities",
             "latitude",
             "longitude",
             "census_subdivision",
+            "regional_district",
             "community_type",
             "incorporated",
             "fn_community_name",
             "wildfire_zone",
             "tsunami_zone",
+            "is_coastal",
             "last_mile_status",
             "transport_mile_status",
             "cbc_phase",
@@ -69,34 +59,113 @@ class CommunitySerializer(serializers.ModelSerializer):
             "percent_25_5",
             "percent_10_2",
             "percent_5_1",
+            "nearest_substation_name",
+            "nearest_substation_distance",
+            "nearest_transmission_distance",
+            "transmission_lines_owner",
+            "transmission_line_description",
+            "transmission_line_voltage",
+            "power_pop_2km_capacity",
+            "power_remaining_pop_capacity",
         )
 
 
-class CommunitySearchSerializer(serializers.ModelSerializer):
-    queryset = Community.objects.all()
+class CommunityCSVSerializer(serializers.ModelSerializer):
+    queryset = Community.objects.all().select_related(
+        'hexuid', 'hexuid__service__isp').prefetch_related('hexuid__service')
+    wildfire_zone = serializers.SlugRelatedField(read_only=True, slug_field='risk_class')
+    tsunami_zone = serializers.SlugRelatedField(read_only=True, slug_field='zone_class')
+    community_type = serializers.CharField(source='get_display_community_type', read_only=True)
 
     class Meta:
         model = Community
         fields = (
             "id",
+            "place_id",
             "place_name",
+            "latitude",
+            "longitude",
+            "census_subdivision",
+            "regional_district",
+            "community_type",
+            "incorporated",
+            "fn_community_name",
+            "wildfire_zone",
+            "tsunami_zone",
+            "is_coastal",
+            "last_mile_status",
+            "transport_mile_status",
+            "cbc_phase",
+            "num_schools",
+            "num_courts",
+            "num_hospitals",
+            "num_timber_facilities",
+            "percent_50_10",
+            "percent_25_5",
+            "percent_10_2",
+            "percent_5_1",
+            "nearest_substation_name",
+            "nearest_substation_distance",
+            "transmission_lines_owner",
+            "transmission_line_description",
+            "transmission_line_voltage",
+            "power_pop_2km_capacity",
+            "power_remaining_pop_capacity",
         )
 
 
 class CommunityDetailSerializer(serializers.ModelSerializer):
     display_fields = serializers.SerializerMethodField()
+    locations = serializers.SerializerMethodField()
+    child_communities = serializers.SerializerMethodField()
+    parent_community = serializers.SerializerMethodField()
 
     class Meta:
         model = Community
         fields = (
             "id",
+            "parent_community",
+            "child_communities",
             "display_fields",
             "latitude",
-            "longitude"
+            "longitude",
+            "regional_district",
+            "locations",
         )
 
     def get_display_fields(self, obj):
         return obj.get_display_fields()
+
+    def get_locations(self, obj):
+        return obj.get_location_assets()
+
+    def get_parent_community(self, obj):
+        if not obj.parent_community:
+            return None
+
+        return {
+            "id": obj.parent_community.id,
+            "name": obj.parent_community.place_name,
+        }
+
+    def get_child_communities(self, obj):
+        return [{
+            "id": child_community.id,
+            "place_name": child_community.place_name,
+        } for child_community in obj.child_communities.all()]
+
+
+class CommunitySearchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Community
+        fields = (
+            "id",
+            "place_name",
+            "nation",
+            "regional_district",
+            "latitude",
+            "longitude",
+        )
 
 
 class CensusSubdivisionSerializer(serializers.ModelSerializer):
@@ -112,10 +181,30 @@ class CensusSubdivisionSerializer(serializers.ModelSerializer):
     pop_pct_65 = serializers.DecimalField(
         source='get_pop_pct_65_as_decimal',
         decimal_places=2, max_digits=6)
+    housing_cost_less_30_pct_income = serializers.DecimalField(
+        source='get_housing_cost_less_30_pct_income_as_decimal',
+        decimal_places=2, max_digits=6)
+    housing_cost_30_pct_more_income = serializers.DecimalField(
+        source='get_housing_cost_30_pct_more_income_as_decimal',
+        decimal_places=2, max_digits=6)
+    households_owner_pct_mortgage = serializers.DecimalField(
+        source='get_households_owner_pct_mortgage_as_decimal',
+        decimal_places=2, max_digits=6)
+    households_owner_pct_spending_30_pct_income = serializers.DecimalField(
+        source='get_households_owner_pct_spending_30_pct_income_as_decimal',
+        decimal_places=2, max_digits=6)
+    households_tenant_pct_subsidized_housing = serializers.DecimalField(
+        source='get_households_tenant_pct_subsidized_housing_as_decimal',
+        decimal_places=2, max_digits=6)
+    households_tenant_pct_spending_30_pct_income = serializers.DecimalField(
+        source='get_households_tenant_pct_spending_30_pct_income_as_decimal',
+        decimal_places=2, max_digits=6)
 
     class Meta:
         model = CensusSubdivision
-        exclude = ['geom', 'geom_simplified']
+        exclude = [
+            'geom', 'geom_simplified',
+        ]
 
 
 class CensusSubdivisionDetailSerializer(serializers.ModelSerializer):
@@ -131,6 +220,10 @@ class CensusSubdivisionDetailSerializer(serializers.ModelSerializer):
 
 
 class LocationDistanceSerializer(serializers.ModelSerializer):
+    distance = serializers.SerializerMethodField()
+    birds_eye_distance = serializers.FloatField(source='distance', read_only=True)
+    driving_distance = serializers.FloatField(read_only=True)
+
     class Meta:
         model = LocationDistance
         fields = (
@@ -138,6 +231,31 @@ class LocationDistanceSerializer(serializers.ModelSerializer):
             "community",
             "location",
             "distance",
-            # "travel_time",
-            # "travel_time_display", "driving_route_available"
+            "birds_eye_distance",
+            "driving_distance",
+            "travel_time",
+            "travel_time_display",
+        )
+
+    def get_distance(self, obj):
+        return obj.driving_distance if obj.driving_distance else obj.distance
+
+
+class RegionalDistrictSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RegionalDistrict
+        fields = (
+            "id",
+            "name",
+        )
+
+
+class SchoolDistrictSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SchoolDistrict
+        fields = (
+            "id",
+            "name",
+            "sd_num",
+            "community"
         )
