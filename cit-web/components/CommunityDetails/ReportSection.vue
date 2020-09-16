@@ -35,7 +35,7 @@
       eager
       persistent
     >
-      <div v-if="report">
+      <div v-if="report" class="report-dialog-container">
         <v-toolbar flat dark color="primary">
           <v-btn icon dark @click="closeReport">
             <v-icon>mdi-close</v-icon>
@@ -68,11 +68,13 @@
             </div>
             <v-divider></v-divider>
             <v-container fluid>
-              <v-row no-gutters xl="3" lg="3">
+              <v-row no-gutters xl="3" lg="3" justify="center">
                 <v-col cols="4">
                   <Report
                     :page-name="report.pid"
                     :cids="[cid.toString()]"
+                    height="1000"
+                    width="400"
                   ></Report>
                 </v-col>
                 <v-col cols="4">
@@ -85,6 +87,8 @@
                   <Report
                     :page-name="report.cpid"
                     :cids="[cid.toString()]"
+                    height="1000"
+                    width="400"
                   ></Report>
                 </v-col>
                 <v-col cols="4">
@@ -93,6 +97,8 @@
                     :pid="report.cpid"
                     :rid="community.regional_district"
                     init-mode="Regional Districts"
+                    height="1000"
+                    width="400"
                   ></Compare>
                 </v-col>
               </v-row>
@@ -148,3 +154,9 @@ export default class ReportSection extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+.report-dialog-container {
+  max-width: 1920px;
+  margin: 0 auto;
+}
+</style>

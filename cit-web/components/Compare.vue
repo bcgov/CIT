@@ -43,6 +43,8 @@
           :page-name="pid"
           :cids="cids"
           extra-classname="demographics"
+          :height="height"
+          :width="width"
           @loaded="handleLoaded"
         ></Report>
       </div>
@@ -66,6 +68,8 @@ export default class Compare extends Vue {
   @Prop({ default: 'All Of BC', type: String }) initMode
   @Prop({ default: null, type: Number }) rid
   @Prop({ default: true, type: Boolean }) loader
+  @Prop({ default: '', type: String }) height
+  @Prop({ default: '', type: String }) width
   @commModule.Getter('getCommunities') communities
   @commModule.Getter('getRegionalDistricts') regionalDistricts
 
