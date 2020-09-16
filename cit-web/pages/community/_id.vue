@@ -491,8 +491,9 @@ export default class CommunityDetail extends Vue {
 </script>
 <style lang="scss" scoped>
 .community-new-container {
-  width: 1600px;
+  max-width: 1600px;
   margin: 0 auto;
+  padding: 3em;
 }
 #map {
   width: 100%;
