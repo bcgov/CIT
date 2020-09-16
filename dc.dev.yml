@@ -8,6 +8,9 @@ services:
       - POWERBI_REPORT_ID=3972090f-aa22-405d-ab75-2a26ab512010
     ports:
       - 8080:8080
+  web:
+    environment:
+      - DEBUG=1
   nginx:
     ports:
       - 80:80
