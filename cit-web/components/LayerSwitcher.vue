@@ -4,6 +4,7 @@
       v-model="menu"
       class="pa-0 ma-0 rounded"
       top
+      left
       transition="fade-transition"
       :close-on-content-click="false"
       :nudge-top="5"

@@ -458,10 +458,10 @@ export default class CommunityDetail extends Vue {
     const centerControl = new ControlFactory(this.$refs.centerControl)
     map.addControl(centerControl, 'top-right')
 
+    map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'bottom-right')
+
     const legendControl = new ControlFactory(this.$refs.legendControl)
     map.addControl(legendControl, 'bottom-right')
-
-    map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'top-left')
 
     map.on('click', function (e) {
       const features = map.queryRenderedFeatures(e.point)
