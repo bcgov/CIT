@@ -21,24 +21,31 @@
       </v-row>
     </v-container>
 
-    <div v-if="loader && loading">
-      <h6 class="text-h6 text-center mt-10 mb-10">Generating your report</h6>
-      <div class="progress-compare">
-        <v-progress-linear
-          color="indigo accent-4"
-          indeterminate
-          rounded
-          height="6"
-        ></v-progress-linear>
-      </div>
+    <div v-if="cidsEmpty">
+      <v-alert type="info">
+        Please select a community, regional district or All of BC.
+      </v-alert>
     </div>
-    <div v-show="!loading">
-      <Report
-        :page-name="pid"
-        :cids="cids"
-        extra-classname="demographics"
-        @loaded="handleLoaded"
-      ></Report>
+    <div v-else>
+      <div v-if="loader && loading">
+        <h6 class="text-h6 text-center mt-10 mb-10">Generating your report</h6>
+        <div class="progress-compare">
+          <v-progress-linear
+            color="indigo accent-4"
+            indeterminate
+            rounded
+            height="6"
+          ></v-progress-linear>
+        </div>
+      </div>
+      <div v-show="!loading">
+        <Report
+          :page-name="pid"
+          :cids="cids"
+          extra-classname="demographics"
+          @loaded="handleLoaded"
+        ></Report>
+      </div>
     </div>
   </div>
 </template>
@@ -94,6 +101,10 @@ export default class Compare extends Vue {
 
   get showAutoComplete() {
     return this.mode !== 'All Of BC'
+  }
+
+  get cidsEmpty() {
+    return this.cids.length === 0
   }
 
   cids = []

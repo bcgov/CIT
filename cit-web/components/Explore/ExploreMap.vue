@@ -262,6 +262,7 @@ export default class Explore extends Vue {
       const zoom = Math.floor(this.map.getZoom()) + 2
       this.flyToCenterAndZoom(center, zoom)
 
+      /* Gets the cluster leaves
       const features = this.map.queryRenderedFeatures(e.point, {
         layers: ['clusters'],
       })
@@ -276,8 +277,8 @@ export default class Explore extends Vue {
           console.log('Leave features', features, err)
         }
       )
-
       console.log('Cluster Leaves', clusterLeaves)
+      */
     })
 
     this.map.on('click', 'communities', (e) => {
