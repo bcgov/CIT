@@ -5,7 +5,7 @@
     <div
       ref="reportContainer"
       class="reportContainer"
-      :style="`height: ${height}px; width: ${width}px;`"
+      :style="`height: ${height}px; max-width: ${width}px;`"
       style="margin: 0 auto;"
     ></div>
   </div>

@@ -3,7 +3,7 @@
     class="explore-report-container"
     :class="{ 'pa-10': !reportToShow, 'mb-10': !reportToShow }"
   >
-    <div v-if="reportToShow" class="pa-10">
+    <div v-if="reportToShow" class="pl-10 pr-10 pt-10">
       <div class="d-flex align-center">
         <div>
           <h6 class="text-h5">{{ reportToShow.name }}</h6>
@@ -38,7 +38,7 @@
         </div>
       </div>
 
-      <v-card-text v-show="loaded">
+      <v-card-text v-show="loaded" class="pa-0 ma-0">
         <ExploreReport
           :page-name="reportToShow.pid"
           :cids="cids"
@@ -97,6 +97,5 @@ export default class ExploreReportSection extends Vue {
   max-width: 1600px;
   margin: 0 auto;
   overflow-y: auto;
-  padding-bottom: 6em;
 }
 </style>
