@@ -43,12 +43,20 @@ export default class Explore extends Vue {
 
   @Watch('clusterCommunities')
   handleClusterChange(nc, oc) {
+    const newGeoJson = this.convertToGeoJson(nc)
+    this.whenMapLoaded((map) => {
+      const clusterSource = map.getSource('communities')
+      clusterSource.setData(newGeoJson)
+    })
+  }
+
+  convertToGeoJson(data) {
     const newGeoJson = {
       crs: { type: 'name', properties: { name: 'EPSG:4326' } },
       type: 'FeatureCollection',
       features: [],
     }
-    nc.map((c) => {
+    data.map((c) => {
       newGeoJson.features.push({
         type: 'Feature',
         geometry: {
@@ -62,10 +70,7 @@ export default class Explore extends Vue {
       })
     })
 
-    this.whenMapLoaded((map) => {
-      const clusterSource = map.getSource('communities')
-      clusterSource.setData(newGeoJson)
-    })
+    return newGeoJson
   }
 
   communityPopUpName = null
@@ -140,6 +145,7 @@ export default class Explore extends Vue {
     this.$nextTick(() => {
       this.whenMapLoaded((map) => map.resize())
     })
+    this.handleClusterChange(this.clusterCommunities)
   }
 
   initMap() {
