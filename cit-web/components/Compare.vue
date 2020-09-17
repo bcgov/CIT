@@ -165,7 +165,6 @@ export default class Compare extends Vue {
   }
 
   mounted() {
-    console.log('Mounted')
     const compareSelect = this.$refs.compareSelect
     const compareAutoComplete = this.$refs.compareAutoComplete
     if (this.rid) {
