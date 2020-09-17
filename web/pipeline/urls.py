@@ -44,10 +44,4 @@ urlpatterns = [
     url(r"^locationdistances/geojson/$", pipeline.views.general.LocationDistanceGeoJSONList.as_view()),
     url(r"^locationdistances/$", pipeline.views.general.LocationDistanceList.as_view()),
     url(r"^schooldistricts/$", pipeline.views.general.SchoolDistrictList.as_view()),
-    path('openapi', get_schema_view(title="CIT", description="API for CIT", version="1.0.0"), name='openapi-schema'),
-    path(
-        'api/',
-        TemplateView.as_view(template_name='swagger-ui.html', extra_context={'schema_url': 'openapi-schema'}),
-        name='swagger-ui',
-    ),
 ]
