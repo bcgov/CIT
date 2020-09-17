@@ -95,6 +95,40 @@ V<template>
         ></LayerSwitcher>
       </div>
 
+      <v-dialog
+        fullscreen
+        transition="dialog-bottom-transition"
+        :value="showReportDialog"
+      >
+        <v-card>
+          <div v-if="report" class="report-dialog-container">
+            <v-toolbar flat dark color="primary">
+              <v-btn icon dark @click="reportClose">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-toolbar>
+
+            <v-container fluid>
+              <v-row>
+                <v-col cols="8">
+                  <DetailReportSection
+                    :report="report"
+                    :place-name="placeName"
+                    :cid="communityDetails.id"
+                  ></DetailReportSection>
+                </v-col>
+                <v-col cols="4">
+                  <DetailCompareSection
+                    :report="report"
+                    :rid="communityDetails.regional_district.id"
+                  ></DetailCompareSection>
+                </v-col>
+              </v-row>
+            </v-container>
+          </div>
+        </v-card>
+      </v-dialog>
+
       <v-dialog v-model="dialog" max-width="800">
         <v-toolbar color="primary" dense elevation="3">
           <v-toolbar-title style="color: white;">{{
@@ -145,6 +179,7 @@ import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
 import map from 'lodash/map'
 import groupBy from 'lodash/groupBy'
+import flatMap from 'lodash/flatMap'
 import Breadcrumbs from '~/components/CommunityDetails/Breadcrumbs.vue'
 import Sidebar from '~/components/CommunityDetails/Sidebar.vue'
 import ReportSection from '~/components/CommunityDetails/ReportSection.vue'
@@ -152,7 +187,8 @@ import LegendControl from '~/components/CommunityDetails/LegendControl.vue'
 import MainHeader from '~/components/MainHeader.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
 import LayerSwitcher from '~/components/LayerSwitcher'
-
+import DetailReportSection from '~/components/CommunityDetails/DetailReportSection.vue'
+import DetailCompareSection from '~/components/CommunityDetails/DetailCompareSection.vue'
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
 import ControlFactory from '~/utils/map'
 import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
@@ -164,6 +200,7 @@ import {
   getRegionalDistricts,
 } from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
+
 import { getAuthToken } from '~/api/ms-auth-api/'
 import LocationCard from '~/components/Location/LocationCard.vue'
 import reportPages from '~/data/communityDetails/reportPages.json'
@@ -178,6 +215,8 @@ const commModule = namespace('communities')
   MainHeader,
   CensusSubdivision,
   Report,
+  DetailReportSection,
+  DetailCompareSection,
   LayerSwitcher,
   filters: {
     yesno,
@@ -226,6 +265,22 @@ export default class CommunityDetail extends Vue {
       layerLabel: 'Regional Districts',
     },
   ]
+
+  get showReportDialog() {
+    if (!this.reportToOpen) {
+      return false
+    } else {
+      return true
+    }
+  }
+
+  get flatReportCards() {
+    return flatMap(this.reportCards)
+  }
+
+  get report() {
+    return this.flatReportCards.find((r) => r.name === this.reportToOpen)
+  }
 
   handleLayerToggle(lo) {
     const visibility = lo.visibility === true ? 'visible' : 'none'

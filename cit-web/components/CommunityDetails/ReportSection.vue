@@ -25,44 +25,6 @@
         </v-col>
       </v-row>
     </div>
-    <v-dialog
-      fullscreen
-      hide-overlay
-      transition="dialog-bottom-transition"
-      :scrollable="false"
-      style="overflow: hidden;"
-      :value="showDialog"
-      eager
-      persistent
-    >
-      <div v-if="report" class="report-dialog-container">
-        <v-toolbar flat dark color="primary">
-          <v-btn icon dark @click="closeReport">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-toolbar>
-
-        <v-card>
-          <v-container fluid>
-            <v-row>
-              <v-col cols="8">
-                <DetailReportSection
-                  :report="report"
-                  :place-name="placeName"
-                  :cid="cid"
-                ></DetailReportSection>
-              </v-col>
-              <v-col cols="4">
-                <DetailCompareSection
-                  :report="report"
-                  :rid="community.regional_district"
-                ></DetailCompareSection>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card>
-      </div>
-    </v-dialog>
   </div>
 </template>
 
@@ -97,14 +59,6 @@ export default class ReportSection extends Vue {
     return this.flatReportCards.find((r) => r.name === this.reportToOpen)
   }
 
-  get showDialog() {
-    if (!this.reportToOpen) {
-      return false
-    } else {
-      return true
-    }
-  }
-
   openReport(data) {
     this.$emit('reportOpen', data)
   }
@@ -114,9 +68,3 @@ export default class ReportSection extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-.report-dialog-container {
-  max-width: 1920px;
-  margin: 0 auto;
-}
-</style>
