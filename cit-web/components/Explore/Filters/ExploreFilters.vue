@@ -25,7 +25,9 @@
       class="d-inline-block mb-3"
       @filter="handleFilter"
     ></Connectivity>
+    <!--
     <MoreFilters class="d-inline-block"></MoreFilters>
+    -->
   </div>
 </template>
 

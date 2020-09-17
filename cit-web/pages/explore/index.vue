@@ -267,7 +267,7 @@ export default class Explore extends Vue {
       this.filteredCommunities,
       this.boundedCommunities
     )
-    this.$root.$emit('communitiesChanged', this.flatCommunities)
+    // this.$root.$emit('communitiesChanged', this.flatCommunities)
   }
 
   getFinalResult(fc, bc) {
@@ -296,7 +296,7 @@ export default class Explore extends Vue {
       }
     })
     this.boundedCommunities = uniqBy(sourceFeatures, 'place_name')
-    this.updateGroupedCommunities()
+    // this.updateGroupedCommunities()
   }
 
   showReport(reportName) {
