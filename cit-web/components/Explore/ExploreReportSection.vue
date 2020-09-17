@@ -3,8 +3,8 @@
     class="explore-report-container"
     :class="{ 'pa-10': !reportToShow, 'mb-10': !reportToShow }"
   >
-    <div v-if="reportToShow" class="pl-10 pr-10 pt-10">
-      <div class="d-flex align-center">
+    <div v-if="reportToShow" class="pl-0 pr-0 pt-10">
+      <div class="d-flex align-center pl-5 pr-5">
         <div>
           <h6 class="text-h5">{{ reportToShow.name }}</h6>
           <p style="max-width: 800px;">{{ reportToShow.description }}</p>
