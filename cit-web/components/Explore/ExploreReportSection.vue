@@ -1,5 +1,8 @@
 <template>
-  <div class="explore-report-container" :class="{ 'pa-10': !reportToShow }">
+  <div
+    class="explore-report-container"
+    :class="{ 'pa-10': !reportToShow, 'mb-10': !reportToShow }"
+  >
     <div v-if="reportToShow" class="pa-10">
       <div class="d-flex align-center">
         <div>
