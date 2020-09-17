@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div ref="reportContainer" class="reportContainer"></div>
+    <div
+      ref="reportContainer"
+      class="reportContainer"
+      :style="`height: ${height}px; width: ${width}px;`"
+      style="margin: 0 auto;"
+    ></div>
   </div>
 </template>
 
@@ -14,6 +19,8 @@ export default class MainReport extends Vue {
   @Prop({ default: null, type: String }) pageName
   @Prop({ default: null, type: Array }) cids
   @Prop({ default: '', type: String }) extraClassname
+  @Prop({ default: '', type: String }) height
+  @Prop({ default: '', type: String }) width
 
   @Watch('cids')
   onCidsChanged() {

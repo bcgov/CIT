@@ -6,6 +6,7 @@
     :item-text="itemText"
     :multiple="multiple"
     hide-details
+    solo
     @change="handleUpdate"
   >
     <template v-slot:selection="data">
