@@ -40,10 +40,6 @@
           <v-btn icon dark @click="closeReport">
             <v-icon>mdi-close</v-icon>
           </v-btn>
-          <v-toolbar-title
-            >{{ report.name }} - {{ placeName }}
-          </v-toolbar-title>
-          <v-spacer></v-spacer>
         </v-toolbar>
 
         <v-card>

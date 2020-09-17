@@ -1,5 +1,5 @@
 <template>
-  <div class="explore-report-container">
+  <div class="explore-report-container" :class="{ 'pa-10': !reportToShow }">
     <div v-if="reportToShow" class="pa-10">
       <div class="d-flex align-center">
         <div>
@@ -39,6 +39,8 @@
         <ExploreReport
           :page-name="reportToShow.pid"
           :cids="cids"
+          height="1200"
+          width="1200"
           @loaded="loaded = true"
         ></ExploreReport>
       </v-card-text>
@@ -91,7 +93,6 @@ export default class ExploreReportSection extends Vue {
 .explore-report-container {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 3em;
   overflow-y: auto;
   padding-bottom: 6em;
 }

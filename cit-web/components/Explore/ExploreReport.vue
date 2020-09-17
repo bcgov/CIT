@@ -2,7 +2,12 @@
   <div>
     <!-- To Trigger Lifecycle method on prop update -->
     <div v-show="false">{{ pageName }} {{ cids }}</div>
-    <div ref="reportContainer" class="reportContainer"></div>
+    <div
+      ref="reportContainer"
+      class="reportContainer"
+      :style="`height: ${height}px; width: ${width}px;`"
+      style="margin: 0 auto;"
+    ></div>
   </div>
 </template>
 
@@ -15,6 +20,8 @@ import { GetReportInGroup } from '~/api/powerbi-rest-api/Report.js'
 export default class MainReport extends Vue {
   @Prop({ default: null, type: String }) pageName
   @Prop({ default: null, type: Array }) cids
+  @Prop({ default: '', type: String }) height
+  @Prop({ default: '', type: String }) width
 
   @Watch('cids')
   onCidsChanged() {
@@ -131,8 +138,5 @@ export default class MainReport extends Vue {
 <style lang="scss">
 iframe {
   border: none !important;
-}
-.reportContainer {
-  height: calc(90vw);
 }
 </style>
