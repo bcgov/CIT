@@ -120,7 +120,7 @@ V<template>
                 <v-col cols="4">
                   <DetailCompareSection
                     :report="report"
-                    :rid="communityDetails.regional_district.id"
+                    :rid="communityDetails.regional_district"
                   ></DetailCompareSection>
                 </v-col>
               </v-row>
