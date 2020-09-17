@@ -323,6 +323,8 @@ export default class Explore extends Vue {
 .explore-results-container {
   height: calc(100% - 66px);
   flex: 1 1 0;
+  flex-shrink: 0;
+  min-width: 420px;
   overflow-y: auto;
   position: relative;
   z-index: 100;

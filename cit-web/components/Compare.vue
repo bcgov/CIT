@@ -24,6 +24,7 @@
           <CompareAutocomplete
             v-show="showAutoComplete"
             ref="compareAutoComplete"
+            :mode="mode"
             :items="items"
             item-value="id"
             :item-text="itemText"
@@ -106,10 +107,6 @@ export default class Compare extends Vue {
     return this.communities.map((c) => c.id.toString())
   }
 
-  get selectCols() {
-    return this.mode === 'All Of BC' ? 12 : 3
-  }
-
   get showAutoComplete() {
     return this.mode !== 'All Of BC'
   }
@@ -153,6 +150,8 @@ export default class Compare extends Vue {
 
   handleSelectChange(data) {
     this.mode = data
+    const compareAutoComplete = this.$refs.compareAutoComplete
+    compareAutoComplete.clear()
     if (data === 'All Of BC') {
       this.cids = this.allCids
     } else {
@@ -166,6 +165,7 @@ export default class Compare extends Vue {
   }
 
   mounted() {
+    console.log('Mounted')
     const compareSelect = this.$refs.compareSelect
     const compareAutoComplete = this.$refs.compareAutoComplete
     if (this.rid) {
