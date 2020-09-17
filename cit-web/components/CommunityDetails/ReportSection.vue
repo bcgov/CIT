@@ -47,63 +47,23 @@
         </v-toolbar>
 
         <v-card>
-          <div class="pa-10">
-            <div class="d-flex align-center">
-              <div>
-                <h6 class="text-h5">{{ report.name }}</h6>
-                <p style="max-width: 800px;">{{ report.description }}</p>
-              </div>
-              <v-spacer></v-spacer>
-              <div>
-                <v-img
-                  :src="
-                    require(`~/assets/images/reports/headers/${report.image}`)
-                  "
-                  contain
-                  width="376"
-                  max-height="190"
-                  aspect-ratio="1"
-                ></v-img>
-              </div>
-            </div>
-            <v-divider></v-divider>
-            <v-container fluid>
-              <v-row no-gutters xl="3" lg="3" justify="center">
-                <v-col cols="4">
-                  <Report
-                    :page-name="report.pid"
-                    :cids="[cid.toString()]"
-                    height="1000"
-                    width="400"
-                  ></Report>
-                </v-col>
-                <v-col cols="4">
-                  <h5
-                    class="text-center text-h4 font-weight-normal d-flex align-center justify-center"
-                    style="height: 104px;"
-                  >
-                    Your community:
-                  </h5>
-                  <Report
-                    :page-name="report.cpid"
-                    :cids="[cid.toString()]"
-                    height="1000"
-                    width="400"
-                  ></Report>
-                </v-col>
-                <v-col cols="4">
-                  <Compare
-                    :loader="false"
-                    :pid="report.cpid"
-                    :rid="community.regional_district"
-                    init-mode="Regional Districts"
-                    height="1000"
-                    width="400"
-                  ></Compare>
-                </v-col>
-              </v-row>
-            </v-container>
-          </div>
+          <v-container fluid>
+            <v-row>
+              <v-col cols="8">
+                <DetailReportSection
+                  :report="report"
+                  :place-name="placeName"
+                  :cid="cid"
+                ></DetailReportSection>
+              </v-col>
+              <v-col cols="4">
+                <DetailCompareSection
+                  :report="report"
+                  :rid="community.regional_district"
+                ></DetailCompareSection>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-card>
       </div>
     </v-dialog>
@@ -115,12 +75,16 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import flatMap from 'lodash/flatMap'
 import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
+import DetailReportSection from '~/components/CommunityDetails/DetailReportSection.vue'
+import DetailCompareSection from '~/components/CommunityDetails/DetailCompareSection.vue'
 import Compare from '~/components/Compare'
 
 @Component({
   ReportCard,
   Report,
   Compare,
+  DetailReportSection,
+  DetailCompareSection,
 })
 export default class ReportSection extends Vue {
   @Prop({ default: null, type: Object }) reportCards
