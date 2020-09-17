@@ -3,8 +3,8 @@
     class="explore-report-container"
     :class="{ 'pa-10': !reportToShow, 'mb-10': !reportToShow }"
   >
-    <div v-if="reportToShow" class="pl-10 pr-10 pt-10">
-      <div class="d-flex align-center">
+    <div v-if="reportToShow" class="pl-0 pr-0 pt-10">
+      <div class="d-flex align-center pl-10 pr-5">
         <div>
           <h6 class="text-h5">{{ reportToShow.name }}</h6>
           <p style="max-width: 800px;">{{ reportToShow.description }}</p>
@@ -38,12 +38,12 @@
         </div>
       </div>
 
-      <v-card-text v-show="loaded" class="pa-0 ma-0">
+      <v-card-text v-show="loaded" class="px-5 ma-0">
         <ExploreReport
           :page-name="reportToShow.pid"
           :cids="cids"
-          height="1200"
-          width="1200"
+          height="1400"
+          width="1600"
           @loaded="loaded = true"
         ></ExploreReport>
       </v-card-text>
