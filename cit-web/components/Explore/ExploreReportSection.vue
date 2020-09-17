@@ -38,12 +38,12 @@
         </div>
       </div>
 
-      <v-card-text v-show="loaded" class="pa-0 ma-0">
+      <v-card-text v-show="loaded" class="px-5 ma-0">
         <ExploreReport
           :page-name="reportToShow.pid"
           :cids="cids"
-          height="1200"
-          width="1200"
+          height="1400"
+          width="1600"
           @loaded="loaded = true"
         ></ExploreReport>
       </v-card-text>
