@@ -6,18 +6,26 @@
     :item-text="itemText"
     :multiple="multiple"
     hide-details
+    solo
     @change="handleUpdate"
   >
     <template v-slot:selection="data">
-      <v-chip
-        v-bind="data.attrs"
-        :input-value="data.selected"
-        close
-        @click="data.select"
-        @click:close="remove(data.item)"
-      >
-        {{ data.item[itemText] }}
-      </v-chip>
+      <div v-if="autocomplete.length > 1">
+        <v-chip @click="data.select">
+          {{ autocomplete.length }} {{ mode }} selected
+        </v-chip>
+      </div>
+      <div v-else>
+        <v-chip
+          v-bind="data.attrs"
+          :input-value="data.selected"
+          close
+          @click="data.select"
+          @click:close="remove(data.item)"
+        >
+          {{ data.item[itemText] }}
+        </v-chip>
+      </div>
     </template>
   </v-autocomplete>
 </template>
@@ -30,8 +38,15 @@ export default class Compare extends Vue {
   @Prop({ default: 'id', type: String }) itemValue
   @Prop({ default: 'value', type: String }) itemText
   @Prop({ default: true, type: Boolean }) multiple
+  @Prop({ default: true, type: String }) mode
 
   autocomplete = []
+
+  groupChips = false
+
+  setGroupChips(state) {
+    this.groupChips = state
+  }
 
   remove(item) {
     const index = this.autocomplete.indexOf(item.id)
@@ -53,3 +68,11 @@ export default class Compare extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+.v-select__selections div {
+  display: none !important;
+}
+.v-select__selections div:first-child {
+  display: inline-block !important;
+}
+</style>

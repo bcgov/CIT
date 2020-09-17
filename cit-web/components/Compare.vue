@@ -1,20 +1,35 @@
 <template>
   <div>
-    <v-container fluid>
-      <v-row class="align-center">
-        <v-col :cols="selectCols" align-self="center">
+    <v-container
+      fluid
+      style="
+        height: 210px;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      "
+      class="compare-input-container"
+    >
+      <v-row>
+        <v-col sm="12" class="white--text">
+          Compare To
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col sm="12">
           <CompareSelect
             ref="compareSelect"
             @changed="handleSelectChange"
           ></CompareSelect>
-        </v-col>
-        <v-col v-show="showAutoComplete" cols="9" align-self="center">
+
           <CompareAutocomplete
+            v-show="showAutoComplete"
             ref="compareAutoComplete"
+            :mode="mode"
             :items="items"
             item-value="id"
             :item-text="itemText"
             :multiple="true"
+            class="mt-4"
             @change="handleChange"
           ></CompareAutocomplete>
         </v-col>
@@ -27,25 +42,20 @@
       </v-alert>
     </div>
     <div v-else>
-      <div v-if="loader && loading">
-        <h6 class="text-h6 text-center mt-10 mb-10">Generating your report</h6>
-        <div class="progress-compare">
-          <v-progress-linear
-            color="indigo accent-4"
-            indeterminate
-            rounded
-            height="6"
-          ></v-progress-linear>
-        </div>
-      </div>
-      <div v-show="!loading">
-        <Report
-          :page-name="pid"
-          :cids="cids"
-          extra-classname="demographics"
-          @loaded="handleLoaded"
-        ></Report>
-      </div>
+      <v-container fluid>
+        <v-row no-gutters>
+          <v-col sm="12">
+            <Report
+              :page-name="pid"
+              :cids="cids"
+              extra-classname="demographics"
+              :height="height"
+              :width="width"
+              @loaded="handleLoaded"
+            ></Report>
+          </v-col>
+        </v-row>
+      </v-container>
     </div>
   </div>
 </template>
@@ -66,6 +76,8 @@ export default class Compare extends Vue {
   @Prop({ default: 'All Of BC', type: String }) initMode
   @Prop({ default: null, type: Number }) rid
   @Prop({ default: true, type: Boolean }) loader
+  @Prop({ default: '', type: String }) height
+  @Prop({ default: '', type: String }) width
   @commModule.Getter('getCommunities') communities
   @commModule.Getter('getRegionalDistricts') regionalDistricts
 
@@ -93,10 +105,6 @@ export default class Compare extends Vue {
 
   get allCids() {
     return this.communities.map((c) => c.id.toString())
-  }
-
-  get selectCols() {
-    return this.mode === 'All Of BC' ? 12 : 3
   }
 
   get showAutoComplete() {
@@ -142,6 +150,8 @@ export default class Compare extends Vue {
 
   handleSelectChange(data) {
     this.mode = data
+    const compareAutoComplete = this.$refs.compareAutoComplete
+    compareAutoComplete.clear()
     if (data === 'All Of BC') {
       this.cids = this.allCids
     } else {
@@ -168,5 +178,9 @@ export default class Compare extends Vue {
 .progress-compare {
   max-width: 300px;
   margin: 0 auto;
+}
+
+.compare-input-container {
+  background-color: #073366;
 }
 </style>

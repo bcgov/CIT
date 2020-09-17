@@ -31,6 +31,12 @@ class CommunitySerializer(serializers.ModelSerializer):
     wildfire_zone = serializers.SlugRelatedField(read_only=True, slug_field='risk_class')
     tsunami_zone = serializers.SlugRelatedField(read_only=True, slug_field='zone_class')
     community_type = serializers.CharField(source='get_display_community_type', read_only=True)
+    percent_50_10 = serializers.SerializerMethodField()
+    percent_25_5 = serializers.SerializerMethodField()
+    percent_10_2 = serializers.SerializerMethodField()
+    percent_5_1 = serializers.SerializerMethodField()
+    power_pop_2km_capacity = serializers.SerializerMethodField()
+    power_remaining_pop_capacity = serializers.SerializerMethodField()
 
     class Meta:
         model = Community
@@ -68,6 +74,24 @@ class CommunitySerializer(serializers.ModelSerializer):
             "power_pop_2km_capacity",
             "power_remaining_pop_capacity",
         )
+
+    def get_percent_50_10(self, obj):
+        return obj.percent_50_10 if obj.percent_50_10 else 0
+
+    def get_percent_25_5(self, obj):
+        return obj.percent_25_5 if obj.percent_25_5 else 0
+
+    def get_percent_10_2(self, obj):
+        return obj.percent_10_2 if obj.percent_10_2 else 0
+
+    def get_percent_5_1(self, obj):
+        return obj.percent_5_1 if obj.percent_5_1 else 0
+
+    def get_power_pop_2km_capacity(self, obj):
+        return obj.power_pop_2km_capacity if obj.power_pop_2km_capacity else 0
+
+    def power_remaining_pop_capacity(self, obj):
+        return obj.power_remaining_pop_capacity if obj.power_remaining_pop_capacity else 0
 
 
 class CommunityCSVSerializer(serializers.ModelSerializer):

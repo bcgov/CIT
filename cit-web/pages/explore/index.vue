@@ -23,13 +23,12 @@
         <div class="mt-3 mb-3 d-flex">
           <v-btn
             block
-            small
             depressed
             color="primary"
             class="text-capitalize"
             @click="handleTabChange('Reports')"
           >
-            <v-icon small block class="mr-2">mdi-file-chart</v-icon>
+            <v-icon block class="mr-2">mdi-file-chart</v-icon>
             View Reports for {{ numCommunities }} communities
           </v-btn>
         </div>
@@ -267,7 +266,7 @@ export default class Explore extends Vue {
       this.filteredCommunities,
       this.boundedCommunities
     )
-    this.$root.$emit('communitiesChanged', this.flatCommunities)
+    // this.$root.$emit('communitiesChanged', this.flatCommunities)
   }
 
   getFinalResult(fc, bc) {
@@ -296,7 +295,7 @@ export default class Explore extends Vue {
       }
     })
     this.boundedCommunities = uniqBy(sourceFeatures, 'place_name')
-    this.updateGroupedCommunities()
+    // this.updateGroupedCommunities()
   }
 
   showReport(reportName) {
@@ -323,6 +322,8 @@ export default class Explore extends Vue {
 .explore-results-container {
   height: calc(100% - 66px);
   flex: 1 1 0;
+  flex-shrink: 0;
+  min-width: 420px;
   overflow-y: auto;
   position: relative;
   z-index: 100;

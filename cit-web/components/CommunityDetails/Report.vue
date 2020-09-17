@@ -1,6 +1,11 @@
 <template>
   <div>
-    <div ref="reportContainer" class="reportContainer"></div>
+    <div
+      ref="reportContainer"
+      class="reportContainer"
+      :style="`height: ${height}px; width: ${width}px;`"
+      style="margin: 0 auto;"
+    ></div>
   </div>
 </template>
 
@@ -14,6 +19,8 @@ export default class MainReport extends Vue {
   @Prop({ default: null, type: String }) pageName
   @Prop({ default: null, type: Array }) cids
   @Prop({ default: '', type: String }) extraClassname
+  @Prop({ default: '', type: String }) height
+  @Prop({ default: '', type: String }) width
 
   @Watch('cids')
   onCidsChanged() {
@@ -29,6 +36,7 @@ export default class MainReport extends Vue {
   embedUrl = null
   report = null
   loaded = false
+  error = false
 
   async mounted() {
     const { data: reportInGroup } = await GetReportInGroup(
@@ -45,7 +53,9 @@ export default class MainReport extends Vue {
     const configuration = this.getEmbedConfiguration()
     const container = this.$refs.reportContainer
     this.report = this.embedReport(container, configuration)
-    this.listenToEvents()
+    if (this.error === false) {
+      this.listenToEvents()
+    }
   }
 
   whenReportLoaded(fn) {
@@ -119,7 +129,15 @@ export default class MainReport extends Vue {
   }
 
   embedReport(container, configuration) {
-    return window.powerbi.embed(container, configuration)
+    if (container && configuration) {
+      return (
+        window &&
+        window.powerbi &&
+        window.powerbi.embed(container, configuration)
+      )
+    } else {
+      this.error = true
+    }
   }
 }
 </script>
