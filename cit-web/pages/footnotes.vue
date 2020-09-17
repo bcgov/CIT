@@ -4,6 +4,7 @@
 
     <ol>
       <li id="northern-rockies">
+        <h4>Northern Rockies</h4>
         <p>
           The Northern Rockies Regional Municipality is included in our data as
           a "Regional District," even though it is technically a regional
@@ -18,6 +19,7 @@
         <a href="#northern-rockies"><v-icon>mdi-link</v-icon> Permalink</a>
       </li>
       <li id="distances-50km">
+        <h4>Distance Calculations</h4>
         <p>
           We calculated driving distances and driving times using the
           <a href="https://catalogue.data.gov.bc.ca/dataset/bc-route-planner"
@@ -30,6 +32,7 @@
         <a href="#distances-50km"><v-icon>mdi-link</v-icon> Permalink</a>
       </li>
       <li id="search-filters-distance">
+        <h4>Search Filters Distances</h4>
         <p>
           The search filters on the Explore page use driving distance or driving
           time, not birds' eye distance. Thus, location assets will be excluded
@@ -43,6 +46,7 @@
         >
       </li>
       <li id="census-subdivisions">
+        <h4>Census Subdivisions</h4>
         <p>
           Demographic data is sourced from Stats Canada at the subdivision
           level. This means that data from unincorporated communities may
@@ -55,7 +59,7 @@
         >
       </li>
       <li id="explore-domestic-report">
-        Domestic Report (Explore page)
+        <h4>Domestic Report (Explore page)</h4>
         <ol>
           <li id="avg-dwellings-needing-major-repairs">
             <p>
@@ -69,8 +73,20 @@
           </li>
         </ol>
       </li>
+      <li id="transport-status">
+        <h4>Transport Status (High Capacity Transport Services)</h4>
+        <p>
+         Access to a Point-of-Presence (POP) with a minimum capacity of 1 Gbps which transports data traffic from one Point-of-Presence to another or
+from a Point-of-Presence to a location that contains the internet gateway. 
+        </p>
+        <a href="#transport-status">
+          <v-icon>mdi-link</v-icon>
+          Permalink</a
+        >
+      </li>
     </ol>
   </div>
+
 </template>
 
 <script>
@@ -88,4 +104,8 @@ export default class DataFootnotes extends Vue {}
   margin: 0 auto;
   padding: 0 5em;
 }
+.container>ol>li {
+  margin-bottom: 25px;
+}
 </style>
+
