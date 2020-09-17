@@ -1,13 +1,18 @@
 <template>
-  <div class="sam-container elevation-5 rounded pt-1 pb-1 pl-2 pr-3">
+  <v-btn color="primary rounded-lg white--text" small>
     <v-checkbox
       v-model="sam"
       dense
       label="Search As I Move"
       hide-details
-      class="ma-0 pa-0"
-    ></v-checkbox>
-  </div>
+      class="ma-0 pa-0 text-capitalize white--text sam-checkbox"
+      color="white"
+    >
+      <template v-slot:label>
+        <span class="white--text pr-1">Search As I Move</span>
+      </template>
+    </v-checkbox>
+  </v-btn>
 </template>
 
 <script>
@@ -28,7 +33,7 @@ export default class Explore extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.sam-container {
-  background-color: white;
+.sam-checkbox .theme--light.v-label {
+  color: white !important;
 }
 </style>

@@ -16,12 +16,16 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 @Component
 export default class CompareSelect extends Vue {
   @Prop({
-    default: () => ['All Of BC', 'Regional Districts', 'Communities'],
+    default: () => [
+      'Average Of BC',
+      'Average Of Regional Districts',
+      'Communities',
+    ],
     type: Array,
   })
   items
 
-  selected = 'All Of BC'
+  selected = 'Average Of BC'
 
   setSelected(mode) {
     this.selected = mode
