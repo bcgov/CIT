@@ -30,7 +30,9 @@
             Showing
             <span class="font-weight-bold">{{ numRegions }}</span> Regional
             Districts &amp;
-            <span class="font-weight-bold">{{ numCommunities }}</span>
+            <span class="font-weight-bold">{{
+              numCommunities && numCommunities.toLocaleString()
+            }}</span>
             Communities
           </p>
         </div>
@@ -43,7 +45,8 @@
             class="text-capitalize"
             @click="handleTabChange('Reports')"
           >
-            View Reports for {{ numCommunities }} communities
+            View Reports for
+            {{ numCommunities && numCommunities.toLocaleString() }} communities
             <v-spacer></v-spacer>
             <v-icon block class="mr-2">mdi-arrow-right</v-icon>
           </v-btn>

@@ -13,6 +13,7 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           color="primary"
+          small
           fab
           class="rounded-lg text-capitalize"
           v-bind="attrs"
