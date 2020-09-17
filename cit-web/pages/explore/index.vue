@@ -23,13 +23,12 @@
         <div class="mt-3 mb-3 d-flex">
           <v-btn
             block
-            small
             depressed
             color="primary"
             class="text-capitalize"
             @click="handleTabChange('Reports')"
           >
-            <v-icon small block class="mr-2">mdi-file-chart</v-icon>
+            <v-icon block class="mr-2">mdi-file-chart</v-icon>
             View Reports for {{ numCommunities }} communities
           </v-btn>
         </div>
