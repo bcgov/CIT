@@ -32,6 +32,21 @@ Ports may be configured by editing the port in the `dc.*.yml` files.
 
 You can create a new terminal, and run commands to interact with the application. `docker-compose ps` to show services, and `docker-compose exec web bash` to open a shell in inside the django service.
 
+### Restoring a database
+
+Copy the database into the container, and open a shell in the container.
+```
+docker cp db.sql cit_db_1:/tmp/
+docker-compose exec db bash
+```
+
+Delete the old database, recreate it, and restore from a backup.
+```
+dropdb -U postgres postgres
+createdb -U postgres postgres
+psql -f /tmp/db.sql -U postgres postgres
+```
+
 ## Prepping Data
 
 Some data are loaded from locally stored csv (that you save in ./web/data) and shapefiles since have no public API.
