@@ -4,7 +4,7 @@
       <SidebarHeader :place-name="placeName">
         <p class="mt-0 text-center">{{ district }}</p>
         <p v-if="population" class="text-center text-caption">
-          Population: {{ population || 'N/A' }}
+          Population: {{ population.toLocaleString() || 'N/A' }}
         </p>
         <div class="d-flex justify-center">
           <v-btn
