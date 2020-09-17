@@ -149,7 +149,7 @@ export default class Explore extends Vue {
         text: 'Explore',
         disabled: false,
         to: {
-          path: `/explore`,
+          path: `/explore?tab=Map`,
         },
       },
       {
