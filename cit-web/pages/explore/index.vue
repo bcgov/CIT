@@ -314,7 +314,7 @@ export default class Explore extends Vue {
       }
     })
     this.boundedCommunities = uniqBy(sourceFeatures, 'place_name')
-    // this.updateGroupedCommunities()
+    this.updateGroupedCommunities()
   }
 
   showReport(reportName) {
