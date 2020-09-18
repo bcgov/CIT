@@ -1,5 +1,5 @@
 {
-  "Housing": [
+  "Demographics": [
     {
       "name": "Domestic",
       "pid": "ReportSection6249eac6d911d2930de3",
@@ -25,8 +25,14 @@
       "image": "economic.svg"
     },
     {
-      "name": "Natural Resources",
+      "name": "Economic Projects",
       "pid": "ReportSection88694206176b52607b4d",
+      "description": "",
+      "image": "government_services.svg"
+    },
+    {
+      "name": "Natural Resources",
+      "pid": "ReportSectiond15790722d8872fdd447",
       "image": "natural_resources.svg"
     }
   ],
@@ -36,12 +42,6 @@
       "pid": "ReportSectionde977e8425990a550597",
       "image": "health_care.svg",
       "description": "Community healthcare access and first responders"
-    },
-    {
-      "name": "Environment",
-      "pid": "ReportSectiond15790722d8872fdd4473",
-      "description": "",
-      "image": "government_services.svg"
     },
     {
       "name": "Connectivity",

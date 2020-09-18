@@ -49,7 +49,7 @@ psql -f /tmp/db.sql -U postgres postgres
 
 ## Updating Production
 
-To update the code, simply `git pull origin master` and `docker-compose up -d --build` and lastly `docker-compose restart`.
+To update the code, simply `git pull origin master` and `docker-compose up -d --build` and lastly `docker-compose restart`. or use `./update.sh`
 
 To update PowerBI, publish to `cit-master` for production (`cit-develop` for the test environment)
 

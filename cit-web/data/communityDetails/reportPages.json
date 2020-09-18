@@ -1,5 +1,5 @@
 {
-  "Housing": [
+  "Demographics": [
     {
       "name": "Housing",
       "pid": "ReportSection40208eb2bd583e69022a",
@@ -8,7 +8,7 @@
       "image": "domestic.svg"
     },
     {
-      "name": "Demographics",
+      "name": "People & Culture",
       "pid": "ReportSectioned265c9a280b2bf7a925",
       "cpid": "ReportSectionce86ffd870642ae4e7b8",
       "image": "culture.svg"
