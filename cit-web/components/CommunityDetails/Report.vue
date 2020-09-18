@@ -18,7 +18,6 @@ import { GetReportInGroup } from '~/api/powerbi-rest-api/Report.js'
 export default class MainReport extends Vue {
   @Prop({ default: null, type: String }) pageName
   @Prop({ default: null, type: Array }) cids
-  @Prop({ default: '', type: String }) extraClassname
   @Prop({ default: '', type: String }) height
   @Prop({ default: '', type: String }) width
 
