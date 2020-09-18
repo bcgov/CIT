@@ -68,6 +68,7 @@
       </div>
     </div>
     <div
+      ref="exploreMapContainer"
       class="explore-map-container"
       :class="{ 'explore-map-container-scroll': mapContainerScroll }"
     >
@@ -314,7 +315,7 @@ export default class Explore extends Vue {
       }
     })
     this.boundedCommunities = uniqBy(sourceFeatures, 'place_name')
-    // this.updateGroupedCommunities()
+    this.updateGroupedCommunities()
   }
 
   showReport(reportName) {
@@ -326,6 +327,7 @@ export default class Explore extends Vue {
     this.$router.push({
       query: temp,
     })
+    this.$refs.exploreMapContainer.scrollTop = 0
   }
 }
 </script>

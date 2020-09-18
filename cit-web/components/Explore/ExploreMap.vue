@@ -1,9 +1,11 @@
 <template>
   <div style="position: relative;">
     <div id="map"></div>
+    <!--
     <div ref="searchMove" class="searchMove">
       <SearchAsMove></SearchAsMove>
     </div>
+    -->
     <div v-show="true">
       <CommunityPopup
         ref="communityPopUp"
@@ -314,10 +316,10 @@ export default class Explore extends Vue {
     })
 
     this.map.on('moveend', (e) => {
-      console.log(this.map.queryRenderedFeatures())
       const sourceFeatures = this.map.querySourceFeatures('communities', {
         sourceLayer: 'communities',
       })
+      console.log(sourceFeatures)
       this.$emit('moveend', {
         sourceFeatures,
       })

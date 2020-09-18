@@ -25,6 +25,11 @@
       class="d-inline-block mb-3"
       @filter="handleFilter"
     ></Connectivity>
+    <Substation
+      ref="substationFilter"
+      class="d-inline-block mb-3"
+      @filter="handleFilter"
+    ></Substation>
     <!--
     <MoreFilters class="d-inline-block"></MoreFilters>
     -->
@@ -40,6 +45,8 @@ import RegionalDistricts from '~/components/Explore/Filters/RegionalDistricts'
 import Connectivity from '~/components/Explore/Filters/Connectivity'
 import MoreFilters from '~/components/Explore/Filters/MoreFilters'
 import Locations from '~/components/Explore/Filters/Locations'
+import Substation from '~/components/Explore/Filters/Substation'
+
 import { advancedSearch } from '~/api/cit-api'
 
 @Component({
@@ -49,6 +56,7 @@ import { advancedSearch } from '~/api/cit-api'
   Locations,
   RegionalDistricts,
   Connectivity,
+  Substation,
 })
 export default class ExploreFilters extends Vue {
   handleFilter() {
