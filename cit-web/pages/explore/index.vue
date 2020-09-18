@@ -68,6 +68,7 @@
       </div>
     </div>
     <div
+      ref="exploreMapContainer"
       class="explore-map-container"
       :class="{ 'explore-map-container-scroll': mapContainerScroll }"
     >
@@ -326,6 +327,7 @@ export default class Explore extends Vue {
     this.$router.push({
       query: temp,
     })
+    this.$refs.exploreMapContainer.scrollTop = 0
   }
 }
 </script>
