@@ -17,6 +17,9 @@
           @layerToggle="handleLayerToggle"
         ></LayerSwitcher>
       </div>
+      <div ref="zoomControl">
+        <ZoomControl @zoomIn="zoomIn" @zoomOut="zoomOut"></ZoomControl>
+      </div>
     </div>
   </div>
 </template>
@@ -27,6 +30,7 @@ import ControlFactory from '~/utils/map'
 import LayerSwitcher from '~/components/LayerSwitcher'
 import SearchAsMove from '~/components/Explore/SearchAsMove.vue'
 import CommunityPopup from '~/components/Map/CommunityPopup'
+import ZoomControl from '~/components/Map/ZoomControl'
 
 const commModule = namespace('communities')
 
@@ -34,6 +38,7 @@ const commModule = namespace('communities')
   SearchAsMove,
   CommunityPopup,
   LayerSwitcher,
+  ZoomControl,
 })
 export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
@@ -138,6 +143,24 @@ export default class Explore extends Vue {
     })
   }
 
+  getZoom() {
+    return this.map.getZoom()
+  }
+
+  zoomIn(zoomLevel) {
+    const zoom = zoomLevel || this.getZoom()
+    this.map.flyTo({
+      zoom: zoom + 1,
+    })
+  }
+
+  zoomOut(zoomLevel) {
+    const zoom = zoomLevel || this.getZoom()
+    this.map.flyTo({
+      zoom: zoom + -1,
+    })
+  }
+
   mounted() {
     this.initMap()
     this.addControls()
@@ -239,12 +262,12 @@ export default class Explore extends Vue {
 
   addControls() {
     const mapboxgl = window.mapboxgl
-    this.map.addControl(new mapboxgl.NavigationControl())
     this.map.addControl(new mapboxgl.ScaleControl({ position: 'bottom-right' }))
     this.map.addControl(
       new ControlFactory(this.$refs.layerSwitcher),
       'bottom-right'
     )
+    this.map.addControl(new ControlFactory(this.$refs.zoomControl), 'top-right')
   }
 
   listenToEvents() {

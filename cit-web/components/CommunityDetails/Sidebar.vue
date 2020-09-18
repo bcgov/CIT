@@ -2,9 +2,9 @@
   <div class="community-details-sidebar">
     <div class="pt-4 pb-4">
       <SidebarHeader :place-name="placeName">
-        <p class="mt-0 text-center">{{ district }}</p>
+        <p class="mt-0 text-center py-4">{{ district }}</p>
         <p v-if="population" class="text-center text-caption">
-          Population: {{ population || 'N/A' }}
+          Population: {{ population.toLocaleString() || 'N/A' }}
         </p>
         <div class="d-flex justify-center">
           <v-btn

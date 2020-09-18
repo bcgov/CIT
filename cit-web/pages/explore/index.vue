@@ -4,23 +4,40 @@
       <div class="pa-8">
         <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
         <div class="mt-4 mb-3 font-weight-bold d-flex align-center">
-          <p class="text-body-1 mb-0">Filters</p>
+          <p class="text-body-1 mb-0 d-flex align-center">
+            Select communities using the data menu
+            <v-tooltip bottom color="primary" class="rounded-lg">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn icon v-bind="attrs" v-on="on">
+                  <v-icon color="primary">mdi-information</v-icon></v-btn
+                >
+              </template>
+              <span class="text-body-1"
+                >The data menu below will filter based on
+                <span class="font-weight-bold"
+                  >all communities in British Columbia</span
+                ></span
+              >
+            </v-tooltip>
+          </p>
         </div>
         <ExploreFilters @filtered="handleFiltered"></ExploreFilters>
       </div>
       <v-divider></v-divider>
       <div class="pa-8">
-        <div class="mt-0 d-flex align-center font-weight-bold">
-          <p class="ml-2 mb-0">
+        <div class="mt-0 d-flex align-center">
+          <p class="mb-0 text-body-1">
             Showing
-            <b class="text-h5 font-weight-normal">{{ numRegions }}</b> Regional
+            <span class="font-weight-bold">{{ numRegions }}</span> Regional
             Districts &amp;
-            <b class="text-h5 font-weight-normal">{{ numCommunities }}</b>
+            <span class="font-weight-bold">{{
+              numCommunities && numCommunities.toLocaleString()
+            }}</span>
             Communities
           </p>
         </div>
 
-        <div class="mt-3 mb-3 d-flex">
+        <div class="mt-3 mb-6 d-flex">
           <v-btn
             block
             depressed
@@ -28,8 +45,10 @@
             class="text-capitalize"
             @click="handleTabChange('Reports')"
           >
-            <v-icon block class="mr-2">mdi-file-chart</v-icon>
-            View Reports for {{ numCommunities }} communities
+            View Reports for
+            {{ numCommunities && numCommunities.toLocaleString() }} communities
+            <v-spacer></v-spacer>
+            <v-icon block class="mr-2">mdi-arrow-right</v-icon>
           </v-btn>
         </div>
 
@@ -133,7 +152,7 @@ export default class Explore extends Vue {
         text: 'Explore',
         disabled: false,
         to: {
-          path: `/explore`,
+          path: `/explore?tab=Map`,
         },
       },
       {
