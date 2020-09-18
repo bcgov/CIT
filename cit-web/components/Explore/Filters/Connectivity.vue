@@ -44,7 +44,9 @@ export default class PopGrowth extends Vue {
   }
 
   getParams() {
-    console.log(this.$refs.connectivityInput.getParams())
+    if (!this.$refs.connectivityInput) {
+      return []
+    }
     return this.$refs.connectivityInput.getParams()
   }
 }
