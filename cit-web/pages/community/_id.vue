@@ -95,6 +95,10 @@ V<template>
         ></LayerSwitcher>
       </div>
 
+      <div ref="zoomControl">
+        <ZoomControl @zoomIn="zoomIn" @zoomOut="zoomOut"></ZoomControl>
+      </div>
+
       <v-dialog
         fullscreen
         transition="dialog-bottom-transition"
@@ -200,6 +204,7 @@ import {
   getRegionalDistricts,
 } from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
+import ZoomControl from '~/components/Map/ZoomControl'
 
 import { getAuthToken } from '~/api/ms-auth-api/'
 import LocationCard from '~/components/Location/LocationCard.vue'
@@ -218,6 +223,7 @@ const commModule = namespace('communities')
   DetailReportSection,
   DetailCompareSection,
   LayerSwitcher,
+  ZoomControl,
   filters: {
     yesno,
   },
@@ -419,6 +425,24 @@ export default class CommunityDetail extends Vue {
     return true
   }
 
+  getZoom() {
+    return this.map.getZoom()
+  }
+
+  zoomIn(zoomLevel) {
+    const zoom = zoomLevel || this.getZoom()
+    this.map.flyTo({
+      zoom: zoom + 1,
+    })
+  }
+
+  zoomOut(zoomLevel) {
+    const zoom = zoomLevel || this.getZoom()
+    this.map.flyTo({
+      zoom: zoom + -1,
+    })
+  }
+
   async fetch({ store, query }) {
     const results = await Promise.all([
       getRegionalDistricts(),
@@ -474,11 +498,11 @@ export default class CommunityDetail extends Vue {
   }
 
   addNavigationControl(map) {
-    map.addControl(new window.mapboxgl.NavigationControl())
     map.addControl(new window.mapboxgl.FullscreenControl())
     map.addControl(
       new window.mapboxgl.ScaleControl({ position: 'bottom-right' })
     )
+    map.addControl(new ControlFactory(this.$refs.zoomControl), 'top-right')
   }
 
   handleResetCenter() {
