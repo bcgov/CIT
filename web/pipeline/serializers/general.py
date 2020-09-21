@@ -35,8 +35,8 @@ class CommunitySerializer(serializers.ModelSerializer):
     percent_25_5 = serializers.SerializerMethodField()
     percent_10_2 = serializers.SerializerMethodField()
     percent_5_1 = serializers.SerializerMethodField()
-    power_pop_2km_capacity = serializers.SerializerMethodField()
-    power_remaining_pop_capacity = serializers.SerializerMethodField()
+    pop_2km_capacity = serializers.SerializerMethodField()
+    remaining_pop_capacity = serializers.SerializerMethodField()
 
     class Meta:
         model = Community
@@ -71,8 +71,8 @@ class CommunitySerializer(serializers.ModelSerializer):
             "transmission_lines_owner",
             "transmission_line_description",
             "transmission_line_voltage",
-            "power_pop_2km_capacity",
-            "power_remaining_pop_capacity",
+            "pop_2km_capacity",
+            "remaining_pop_capacity",
         )
 
     def get_percent_50_10(self, obj):
@@ -87,11 +87,11 @@ class CommunitySerializer(serializers.ModelSerializer):
     def get_percent_5_1(self, obj):
         return obj.percent_5_1 if obj.percent_5_1 else 0
 
-    def get_power_pop_2km_capacity(self, obj):
-        return obj.power_pop_2km_capacity if obj.power_pop_2km_capacity else 0
+    def get_pop_2km_capacity(self, obj):
+        return obj.pop_2km_capacity if obj.pop_2km_capacity else 0
 
-    def power_remaining_pop_capacity(self, obj):
-        return obj.power_remaining_pop_capacity if obj.power_remaining_pop_capacity else 0
+    def remaining_pop_capacity(self, obj):
+        return obj.remaining_pop_capacity if obj.remaining_pop_capacity else 0
 
 
 class CommunityCSVSerializer(serializers.ModelSerializer):
@@ -133,8 +133,8 @@ class CommunityCSVSerializer(serializers.ModelSerializer):
             "transmission_lines_owner",
             "transmission_line_description",
             "transmission_line_voltage",
-            "power_pop_2km_capacity",
-            "power_remaining_pop_capacity",
+            "pop_2km_capacity",
+            "remaining_pop_capacity",
         )
 
 
