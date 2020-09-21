@@ -11,7 +11,6 @@
         <v-divider></v-divider>
         <v-card-text style="height: 80vh;">
           <h2 class="text-h5 mt-5">Wildfire Zone</h2>
-          <WildFire></WildFire>
           <h2 class="text-h5 mt-5">Tsunami Zone</h2>
           <Tsunami></Tsunami>
           <h2 class="text-h5 mt-5">More Options</h2>
@@ -34,7 +33,6 @@ import PopGrowth from '~/components/Explore/Filters/PopGrowth'
 import Education from '~/components/Explore/Filters/Education'
 import Health from '~/components/Explore/Filters/Health'
 import Mills from '~/components/Explore/Filters/Mills'
-import WildFire from '~/components/Explore/Filters/WildFire'
 import Tsunami from '~/components/Explore/Filters/Tsunami'
 
 @Component({
@@ -42,7 +40,6 @@ import Tsunami from '~/components/Explore/Filters/Tsunami'
   Education,
   Health,
   Mills,
-  WildFire,
   Tsunami,
 })
 export default class MoreFilters extends Vue {
