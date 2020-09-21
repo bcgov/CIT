@@ -3,14 +3,14 @@
     <MenuFilter
       ref="menuFilter"
       :chip-title="title"
-      :filter-title="'Access to Assets'"
+      :filter-title="'Local Assets'"
       :card-width="600"
       :active="active"
       @clear="handleClear"
       @save="handleSave"
     >
       <p>
-        Search by access to facilities.
+        Search by what's nearby, choose an asset.
         <a href="/footnotes#search-filters-distance" target="_blank"
           >How does it work?</a
         >
@@ -20,7 +20,7 @@
           <LocationInputs ref="locationInputs"></LocationInputs>
           <v-btn
             v-if="locationFilters.length > 1"
-            color="primary"
+            color="red darken-1"
             fab
             small
             icon
@@ -51,7 +51,7 @@ import LocationInputs from '~/components/Explore/Filters/LocationInputs.vue'
   LocationInputs,
 })
 export default class Locations extends Vue {
-  title = 'Access to Assets'
+  title = 'Local Assets'
   active = false
 
   locationFilters = [uid()]
@@ -63,11 +63,28 @@ export default class Locations extends Vue {
     this.locationFilters = [uid()]
   }
 
+  validateInputs() {
+    const { locationInputs } = this.$refs
+    let counter = 0
+    locationInputs.map((li) => {
+      li.validateLocations()
+      if (li.isValid === false) {
+        counter++
+      }
+    })
+    return counter
+  }
+
   handleSave() {
+    const invalidInputs = this.validateInputs()
+    if (invalidInputs > 0) {
+      return
+    }
+
     this.$refs.menuFilter.hide()
     const locationParams = this.getParams().filter((lp) => !isEmpty(lp))
     if (locationParams.length === 0) {
-      this.title = 'Access to Assets'
+      this.title = 'Local Assets'
       this.active = false
     } else if (locationParams.length === 1) {
       const locationInputs = this.$refs.locationInputs

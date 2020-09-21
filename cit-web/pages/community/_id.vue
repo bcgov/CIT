@@ -640,7 +640,7 @@ export default class CommunityDetail extends Vue {
 }
 
 .community-details-sidebar {
-  width: 300px;
+  width: 350px;
   background-color: white;
   overflow-y: auto;
 }

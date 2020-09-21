@@ -38,7 +38,7 @@ export default class PowerAccess extends Vue {
   active = false
 
   min = 0
-  max = 50
+  max = 100
   range = [this.min, this.max]
 
   get isDefaultRange() {
