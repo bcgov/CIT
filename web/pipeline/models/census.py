@@ -562,6 +562,9 @@ class CensusSubdivision(models.Model):
     class Meta:
         ordering = ("id",)
 
+    def __str__(self):
+        return self.name
+
     def api_field_groups(self):
         return serialize_census_subdivision_groups(self)
 
