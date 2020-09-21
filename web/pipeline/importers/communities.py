@@ -116,17 +116,17 @@ def import_communities_from_csv(communities_file_path):
                 pass
 
             try:
-                community.power_pop_2km_capacity = float(
+                community.pop_2km_capacity = float(
                     row['POP Capacity (Gbps) for communities that are within 2km of POP'])
             except ValueError:
-                # power_pop_2km_capacity is null
+                # pop_2km_capacity is null
                 pass
 
             try:
-                community.power_remaining_pop_capacity = float(
+                community.remaining_pop_capacity = float(
                     row['Remaining Capacity of POP (Gbps) - (-1 indicates capacity is unknown)'])
             except ValueError:
-                # power_remaining_pop_capacity is null
+                # remaining_pop_capacity is null
                 pass
 
             try:
