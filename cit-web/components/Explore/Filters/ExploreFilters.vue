@@ -35,7 +35,11 @@
       class="d-inline-block mb-3"
       @filter="handleFilter"
     ></Wildfire>
-    <MoreFilters class="d-inline-block mb-3"></MoreFilters>
+    <Tsunami
+      ref="tsunamiFilter"
+      class="d-inline-block mb-3"
+      @filter="handleFilter"
+    ></Tsunami>
   </div>
 </template>
 
@@ -50,6 +54,7 @@ import MoreFilters from '~/components/Explore/Filters/MoreFilters'
 import Locations from '~/components/Explore/Filters/Locations'
 import Substation from '~/components/Explore/Filters/Substation'
 import Wildfire from '~/components/Explore/Filters/Wildfire'
+import Tsunami from '~/components/Explore/Filters/Tsunami'
 
 import { advancedSearch } from '~/api/cit-api'
 
@@ -62,6 +67,7 @@ import { advancedSearch } from '~/api/cit-api'
   Connectivity,
   Substation,
   Wildfire,
+  Tsunami,
 })
 export default class ExploreFilters extends Vue {
   handleFilter() {
