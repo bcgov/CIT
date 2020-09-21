@@ -1,55 +1,60 @@
 <template>
   <div>
-    <v-container fluid class="pa-0">
-      <v-row no-gutters>
-        <v-col sm="6">
-          <div>
-            <v-select
-              v-model="location"
-              dense
-              hide-details
-              :items="locationTypes"
-              item-text="title"
-              item-value="title"
-              label="Location"
-              placeholder="eg. Schools"
-              return-object
-            ></v-select>
-          </div>
-        </v-col>
-        <v-col sm="3">
-          <div class="operator-container">
-            <v-select
-              v-model="operator"
-              class="ml-2 mr-2"
-              dense
-              hide-details
-              :items="operatorTypes"
-              item-text="title"
-              item-value="title"
-              label="Constraint"
-              placeholder="eg. (>)"
-              return-object
-            ></v-select>
-          </div>
-        </v-col>
-        <v-col sm="3">
-          <div>
-            <v-combobox
-              v-model="distance"
-              dense
-              hide-details
-              :items="suggestedDistance"
-              item-text="title"
-              item-value="title"
-              label="Distance (km)"
-              placeholder="eg. 10km"
-              @update:search-input="handleComboBox"
-            ></v-combobox>
-          </div>
-        </v-col>
-      </v-row>
-    </v-container>
+    <v-form ref="locationForm">
+      <v-container fluid class="pa-0">
+        <v-row no-gutters>
+          <v-col sm="6">
+            <div>
+              <v-select
+                v-model="location"
+                dense
+                :items="locationTypes"
+                :rules="requiredRule"
+                item-text="title"
+                item-value="title"
+                label="Location"
+                placeholder="eg. Schools"
+                return-object
+                required
+              ></v-select>
+            </div>
+          </v-col>
+          <v-col sm="3">
+            <div class="operator-container">
+              <v-select
+                v-model="operator"
+                class="ml-2 mr-2"
+                dense
+                :items="operatorTypes"
+                :rules="requiredRule"
+                item-text="title"
+                item-value="title"
+                label="Constraint"
+                placeholder="eg. (>)"
+                return-object
+                required
+              ></v-select>
+            </div>
+          </v-col>
+          <v-col sm="3">
+            <div>
+              <v-combobox
+                v-model="distance"
+                dense
+                :items="suggestedDistance"
+                :rules="requiredRule"
+                item-text="title"
+                item-value="title"
+                label="Distance (km)"
+                placeholder="eg. 10km"
+                required
+                @update:search-input="handleComboBox"
+              ></v-combobox>
+            </div>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-form>
   </div>
 </template>
 
@@ -58,8 +63,9 @@ import { Component, Vue } from 'nuxt-property-decorator'
 @Component
 export default class LocationInputs extends Vue {
   location = null
-  distance = null
+  distance = 50
   operator = { value: 'lte', title: 'within' }
+  requiredRule = [(v) => !!v || 'This is required']
 
   handleComboBox(e) {
     if (!e && e !== 0) {
@@ -137,7 +143,7 @@ export default class LocationInputs extends Vue {
   suggestedDistance = [5, 10, 15, 20, 25]
 
   getParams() {
-    if (!this.isValid()) {
+    if (!this.isValid) {
       return {}
     }
     const temp = {}
@@ -150,10 +156,14 @@ export default class LocationInputs extends Vue {
     return `${this.location.title} ${this.operator.title} ${this.distance}km`
   }
 
-  isValid() {
+  get isValid() {
     return (
       this.location !== null && this.distance !== null && this.operator !== null
     )
+  }
+
+  validateLocations() {
+    this.$refs.locationForm.validate()
   }
 }
 </script>
