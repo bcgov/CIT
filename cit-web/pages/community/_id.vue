@@ -148,7 +148,6 @@ V<template>
         </v-card>
       </v-dialog>
 
-      {{ reportToOpen }} {{ showReportDialog }} dialog {{ dialog }}
       <v-dialog v-model="dialog" max-width="800">
         <v-toolbar color="primary" dense elevation="3">
           <v-toolbar-title style="color: white;">{{
