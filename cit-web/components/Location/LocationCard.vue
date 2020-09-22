@@ -13,7 +13,7 @@
           <v-icon small dark>mdi-map-marker</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
-        <v-btn small icon @click="show = !show">
+        <v-btn v-if="!isEmpty(locationFields)" small icon @click="show = !show">
           <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
         </v-btn>
       </v-card-actions>
@@ -24,10 +24,17 @@
 
           <v-card-text>
             <v-list>
-              <v-list-item v-for="(val, key) in location" :key="key" two-line>
+              <v-list-item
+                v-for="(val, key) in locationFields"
+                :key="key"
+                two-line
+              >
                 <v-list-item-content>
                   <v-list-item-title>{{ key }}</v-list-item-title>
-                  <v-list-item-subtitle>{{ val }}</v-list-item-subtitle>
+                  <v-list-item-subtitle v-if="key === 'website'">
+                    <a :href="val">{{ val }}</a></v-list-item-subtitle
+                  >
+                  <v-list-item-subtitle v-else>{{ val }}</v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
             </v-list>
@@ -40,13 +47,37 @@
 
 <script>
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import isEmpty from 'lodash/isEmpty'
 
-@Component
+@Component({
+  methods: {
+    isEmpty,
+  },
+})
 export default class LocationCard extends Vue {
   @Prop({ default: null, type: String }) type
   @Prop({ default: null, type: Object }) location
 
   show = false
+
+  get locationFields() {
+    const temp = {}
+    const phone = this.location.location_phone
+    const keywords = this.location.location_keywords
+    const website = this.location.location_website
+
+    if (phone) {
+      temp.phone = phone
+    }
+    if (keywords) {
+      temp.keywords = phone
+    }
+    if (website) {
+      temp.website = website
+    }
+
+    return temp
+  }
 
   get getIcon() {
     return this.getLocationMetaData(this.type).icon
