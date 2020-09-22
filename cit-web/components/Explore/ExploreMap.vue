@@ -11,7 +11,6 @@
         ref="communityPopUp"
         :name="communityPopUpName"
         :cid="communityPopUpId"
-        @close="closeCommunityPopup"
       ></CommunityPopup>
       <div ref="layerSwitcher">
         <LayerSwitcher
@@ -122,10 +121,6 @@ export default class Explore extends Vue {
   created() {
     this.map = null
     this.mapLoaded = false
-  }
-
-  closeCommunityPopup() {
-    console.log('Close')
   }
 
   handleLayerToggle(lo) {
@@ -319,14 +314,12 @@ export default class Explore extends Vue {
       const sourceFeatures = this.map.querySourceFeatures('communities', {
         sourceLayer: 'communities',
       })
-      console.log(sourceFeatures)
       this.$emit('moveend', {
         sourceFeatures,
       })
     })
 
     this.map.on('click', 'clusters', (e) => {
-      console.log(e)
       const center = [e.lngLat.lng, e.lngLat.lat]
       const zoom = Math.floor(this.map.getZoom()) + 2
       this.flyToCenterAndZoom(center, zoom)
@@ -359,8 +352,9 @@ export default class Explore extends Vue {
       }
 
       const coordinates = e.features[0].geometry.coordinates.slice()
+      console.log(e.features[0])
       const name = e.features[0].properties.place_name
-      const cid = e.features[0].properties.pk
+      const cid = e.features[0].properties.pk || e.features[0].properties.id
 
       // Ensure that if the map is zoomed out such that multiple
       // copies of the feature are visible, the popup appears

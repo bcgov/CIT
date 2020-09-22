@@ -5,8 +5,16 @@
         color="white"
         @click="handleClick"
       ></v-app-bar-nav-icon>
+      <nuxt-link class="main-title d-block" to="/">
+        <v-img
+          :src="require('~/assets/logo.svg')"
+          aspect-ratio="1"
+          width="177"
+          height="43"
+        ></v-img>
+      </nuxt-link>
       <v-toolbar-title class="navigation-wrapper">
-        <nuxt-link class="main-title d-block" to="/"
+        <nuxt-link class="main-title d-block font-weight-bold" to="/"
           >Community Information Tool</nuxt-link
         >
       </v-toolbar-title>
