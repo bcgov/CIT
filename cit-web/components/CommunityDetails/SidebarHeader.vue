@@ -1,5 +1,5 @@
 <template>
-  <div class="pt-5 pb-5">
+  <div>
     <div class="d-flex justify-center pl-3 pr-3"></div>
     <slot></slot>
   </div>

@@ -34,6 +34,7 @@ V<template>
                   height="120px"
                 ></v-img>
               </div>
+              <v-divider></v-divider>
               <div class="map-container">
                 <Sidebar
                   :district="regionalDistrictName"
@@ -44,7 +45,27 @@ V<template>
                   @expand="handleExpand"
                   @findOnMap="handleFind"
                   @viewReports="viewReports"
-                ></Sidebar>
+                >
+                  <v-divider class="mt-3 mb-3"></v-divider>
+                  <div class="pl-4 pr-4">
+                    <p class="text-center text-caption pa-0 ma-0">
+                      {{ assetModeText }}
+                    </p>
+                    <AssetSlider v-if="assetMode === 'driving'"></AssetSlider>
+                    <div class="text-center">
+                      <v-btn
+                        small
+                        color="primary text-caption text-capitalize d-inline-block mt-2"
+                        @click="handleAssetModeChange"
+                      >
+                        <v-icon small class="mr-2">{{
+                          assetModeButtonIcon
+                        }}</v-icon>
+                        {{ assetModeButtonText }}</v-btn
+                      >
+                    </div>
+                  </div>
+                </Sidebar>
                 <div id="map" ref="map"></div>
               </div>
             </v-col>
@@ -211,6 +232,7 @@ import DetailCompareSection from '~/components/CommunityDetails/DetailCompareSec
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
 import ControlFactory from '~/utils/map'
 import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
+import AssetSlider from '~/components/CommunityDetails/AssetSlider'
 import {
   getCommunity,
   getCensusSubDivision,
@@ -227,6 +249,7 @@ import reportPages from '~/data/communityDetails/reportPages.json'
 const commModule = namespace('communities')
 @Component({
   Breadcrumbs,
+  AssetSlider,
   Sidebar,
   ReportCard,
   LegendControl,
@@ -244,6 +267,7 @@ const commModule = namespace('communities')
   },
 })
 export default class CommunityDetail extends Vue {
+  assetMode = 'driving'
   layers = true
   communityDetails = {}
   censusSubdivision = {}
@@ -286,6 +310,30 @@ export default class CommunityDetail extends Vue {
       layerLabel: 'Regional Districts',
     },
   ]
+
+  handleAssetModeChange() {
+    if (this.assetMode === 'driving') {
+      this.assetMode = 'boundary'
+    } else {
+      this.assetMode = 'driving'
+    }
+  }
+
+  get assetModeButtonIcon() {
+    return this.assetMode === 'driving' ? 'mdi-crop-free' : 'mdi-car-side'
+  }
+
+  get assetModeText() {
+    return this.assetMode === 'driving'
+      ? 'Facilities by Driving Distance'
+      : 'Facilities in Municipal Boundary'
+  }
+
+  get assetModeButtonText() {
+    return this.assetMode === 'driving'
+      ? 'Show By Municipal Boundary'
+      : 'Show By Driving Distance'
+  }
 
   get showReportDialog() {
     if (!this.reportToOpen) {
