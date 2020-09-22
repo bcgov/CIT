@@ -1,6 +1,6 @@
 <template>
   <div class="community-details-sidebar">
-    <div class="pt-4 pb-4">
+    <div class="pt-5 pb-5">
       <SidebarHeader :place-name="placeName">
         <p class="mt-0 text-center pl-4 pr-4">{{ district }}</p>
         <p v-if="population" class="text-center text-caption">
@@ -9,20 +9,16 @@
         <div class="d-flex justify-center">
           <v-btn
             color="primary"
-            x-small
-            class="mt-5"
+            small
+            class="text-caption"
             @click="$emit('viewReports')"
             >View Reports
           </v-btn>
         </div>
       </SidebarHeader>
     </div>
-    <p class="text-center">
-      Facilities within
-      <a href="/footnotes#search-filters-distance" target="_blank">50km drive</a
-      >:
-    </p>
-    <v-list dense nav>
+    <slot></slot>
+    <v-list dense nav class="mt-3">
       <v-list-group
         v-for="groupedLocation in groupedLocations"
         :key="groupedLocation.group"

@@ -34,17 +34,41 @@ V<template>
                   height="120px"
                 ></v-img>
               </div>
+              <v-divider></v-divider>
               <div class="map-container">
                 <Sidebar
                   :district="regionalDistrictName"
                   :place-name="placeName"
-                  :grouped-locations="groupedLocations"
+                  :grouped-locations="filteredLocations"
                   :population="getFieldValue('population')"
                   :grouped-census="groupedCensus"
                   @expand="handleExpand"
                   @findOnMap="handleFind"
                   @viewReports="viewReports"
-                ></Sidebar>
+                >
+                  <v-divider class="mt-3 mb-3"></v-divider>
+                  <div class="pl-4 pr-4">
+                    <p class="text-center text-caption pa-0 ma-0">
+                      {{ assetModeText }}
+                    </p>
+                    <AssetSlider
+                      v-if="assetMode === 'driving'"
+                      @mouseup="handleEnd"
+                    ></AssetSlider>
+                    <div class="text-center">
+                      <v-btn
+                        small
+                        color="primary text-caption text-capitalize d-inline-block mt-2"
+                        @click="handleAssetModeChange"
+                      >
+                        <v-icon small class="mr-2">{{
+                          assetModeButtonIcon
+                        }}</v-icon>
+                        {{ assetModeButtonText }}</v-btn
+                      >
+                    </div>
+                  </div>
+                </Sidebar>
                 <div id="map" ref="map"></div>
               </div>
             </v-col>
@@ -148,7 +172,6 @@ V<template>
         </v-card>
       </v-dialog>
 
-      {{ reportToOpen }} {{ showReportDialog }} dialog {{ dialog }}
       <v-dialog v-model="dialog" max-width="800">
         <v-toolbar color="primary" dense elevation="3">
           <v-toolbar-title style="color: white;">{{
@@ -212,6 +235,7 @@ import DetailCompareSection from '~/components/CommunityDetails/DetailCompareSec
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
 import ControlFactory from '~/utils/map'
 import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
+import AssetSlider from '~/components/CommunityDetails/AssetSlider'
 import {
   getCommunity,
   getCensusSubDivision,
@@ -228,6 +252,7 @@ import reportPages from '~/data/communityDetails/reportPages.json'
 const commModule = namespace('communities')
 @Component({
   Breadcrumbs,
+  AssetSlider,
   Sidebar,
   ReportCard,
   LegendControl,
@@ -245,6 +270,8 @@ const commModule = namespace('communities')
   },
 })
 export default class CommunityDetail extends Vue {
+  assetMode = 'driving'
+  assetRange = [0, 50]
   layers = true
   communityDetails = {}
   censusSubdivision = {}
@@ -287,6 +314,56 @@ export default class CommunityDetail extends Vue {
       layerLabel: 'Regional Districts',
     },
   ]
+
+  handleEnd(data) {
+    this.assetRange = [data[0], data[1]]
+  }
+
+  handleAssetModeChange() {
+    if (this.assetMode === 'driving') {
+      this.assetMode = 'boundary'
+    } else {
+      this.assetMode = 'driving'
+    }
+  }
+
+  get assetModeButtonIcon() {
+    return this.assetMode === 'driving' ? 'mdi-crop-free' : 'mdi-car-side'
+  }
+
+  get filteredLocations() {
+    let filtered = []
+    if (this.assetMode === 'boundary') {
+      filtered = this.communityDetails.locations.filter(
+        (l) => l.within_municipality === true
+      )
+    } else {
+      const [min, max] = this.assetRange
+      filtered = this.communityDetails.locations.filter((l) => {
+        const drivingDistance = l.driving_distance
+        return drivingDistance >= min && drivingDistance <= max
+      })
+    }
+    return map(groupBy(filtered, 'type'), (o, k) => {
+      return {
+        group: k,
+        locations: o,
+        active: false,
+      }
+    })
+  }
+
+  get assetModeText() {
+    return this.assetMode === 'driving'
+      ? 'Facilities by Driving Distance'
+      : 'Facilities in Municipal Boundary'
+  }
+
+  get assetModeButtonText() {
+    return this.assetMode === 'driving'
+      ? 'Show By Municipal Boundary'
+      : 'Show By Driving Distance'
+  }
 
   get showReportDialog() {
     if (!this.reportToOpen) {

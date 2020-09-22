@@ -1,10 +1,12 @@
 <template>
   <v-app light class="h-100">
     <v-app-bar class="main-navigation" fixed height="66" color="primary">
+      <!--
       <v-app-bar-nav-icon
         color="white"
         @click="handleClick"
       ></v-app-bar-nav-icon>
+      -->
       <nuxt-link class="main-title d-block" to="/">
         <v-img
           :src="require('~/assets/logo.svg')"
