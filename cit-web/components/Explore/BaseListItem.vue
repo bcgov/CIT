@@ -6,7 +6,7 @@
     </v-list-item-content>
     <v-list-item-action>
       <div>
-        <v-tooltip top>
+        <v-tooltip v-if="findOnMap" top>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               icon
@@ -55,6 +55,10 @@ export default class BaseListItem extends Vue {
   @Prop({ default: null, type: String }) subtitle
   @Prop({ default: null, type: Number }) cid
   @Prop({ default: null, type: Array }) center
+
+  get findOnMap() {
+    return this.$route.query?.tab === 'Map'
+  }
 
   handleMoreDetails() {
     window.open(`/community/${this.cid}`)

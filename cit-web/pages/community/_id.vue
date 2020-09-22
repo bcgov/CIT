@@ -19,8 +19,22 @@ V<template>
       <div class="comm-details-content">
         <v-container fluid>
           <v-row no-gutters>
-            <v-col :cols="12">
-              <div class="map-container elevation-5">
+            <v-col :cols="12" class="elevation-5">
+              <div class="cd-header d-flex">
+                <h5
+                  class="text-h5 font-weight-bold pl-10 pt-10"
+                  style="max-width: 350px;"
+                >
+                  {{ placeName }}
+                </h5>
+                <v-img
+                  style="align-self: flex-end;"
+                  :src="require('~/assets/images/cdheader.svg')"
+                  aspect-ratio="1"
+                  height="120px"
+                ></v-img>
+              </div>
+              <div class="map-container">
                 <Sidebar
                   :district="regionalDistrictName"
                   :place-name="placeName"
@@ -103,6 +117,7 @@ V<template>
         fullscreen
         transition="dialog-bottom-transition"
         :value="showReportDialog"
+        @keydown.esc.prevent="reportClose"
       >
         <v-card>
           <div v-if="report" class="report-dialog-container">
@@ -133,6 +148,7 @@ V<template>
         </v-card>
       </v-dialog>
 
+      {{ reportToOpen }} {{ showReportDialog }} dialog {{ dialog }}
       <v-dialog v-model="dialog" max-width="800">
         <v-toolbar color="primary" dense elevation="3">
           <v-toolbar-title style="color: white;">{{
