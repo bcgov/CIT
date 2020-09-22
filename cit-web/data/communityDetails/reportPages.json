@@ -11,6 +11,7 @@
       "name": "Demographics",
       "pid": "ReportSectioned265c9a280b2bf7a925",
       "cpid": "ReportSectionce86ffd870642ae4e7b8",
+      "description": "Stats on population by age group and gender, languages spoken and family structure.",
       "image": "culture.svg"
     },
     {

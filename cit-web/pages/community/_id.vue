@@ -563,6 +563,16 @@ export default class CommunityDetail extends Vue {
     })
   }
 
+  addControls(map) {
+    const centerControl = new ControlFactory(this.$refs.centerControl)
+    map.addControl(centerControl, 'top-right')
+
+    map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'bottom-right')
+
+    const legendControl = new ControlFactory(this.$refs.legendControl)
+    map.addControl(legendControl, 'bottom-right')
+  }
+
   mounted() {
     this.listenToEvents()
 
@@ -581,20 +591,23 @@ export default class CommunityDetail extends Vue {
       this.communityDetails.longitude,
       this.communityDetails.latitude
     )
-    new mapboxgl.Marker()
+
+    const el = document.createElement('div')
+    el.className = 'community-marker'
+    const marker = new mapboxgl.Marker(el)
       .setLngLat([
         this.communityDetails.longitude,
         this.communityDetails.latitude,
       ])
+      .setPopup(
+        new mapboxgl.Popup({ offset: 25 }) // add popups
+          .setHTML('<h3>' + this.placeName + '</h3>')
+      )
       .addTo(map)
 
-    const centerControl = new ControlFactory(this.$refs.centerControl)
-    map.addControl(centerControl, 'top-right')
+    marker.togglePopup()
 
-    map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'bottom-right')
-
-    const legendControl = new ControlFactory(this.$refs.legendControl)
-    map.addControl(legendControl, 'bottom-right')
+    this.addControls(map)
 
     map.on('click', function (e) {
       const features = map.queryRenderedFeatures(e.point)
@@ -652,5 +665,14 @@ export default class CommunityDetail extends Vue {
 .community-details-sidebar .v-list-group__header__append-icon {
   min-width: auto !important;
   margin-left: 0 !important;
+}
+
+.community-marker {
+  background-image: url('~assets/icons/communities.svg');
+  background-size: cover;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 </style>
