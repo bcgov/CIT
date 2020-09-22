@@ -45,7 +45,18 @@ export default {
       },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'icon',
+        sizes: '32x32',
+        type: 'image/png',
+        href: '/bcid-favicon-32x32.png',
+      },
+      {
+        rel: 'icon',
+        sizes: '16x16',
+        type: 'image/png',
+        href: '/bcid-favicon-16x16.png',
+      },
       {
         rel: 'stylesheet',
         href: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css',
