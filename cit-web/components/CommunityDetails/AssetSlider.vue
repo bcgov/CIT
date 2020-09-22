@@ -12,7 +12,7 @@
       :min="min"
       hide-details
       class="align-center mt-0"
-      @end="$emit('end', range)"
+      @mouseup="$emit('mouseup', range)"
     ></v-range-slider>
   </div>
 </template>

@@ -39,7 +39,7 @@ V<template>
                 <Sidebar
                   :district="regionalDistrictName"
                   :place-name="placeName"
-                  :grouped-locations="groupedLocations"
+                  :grouped-locations="filteredLocations"
                   :population="getFieldValue('population')"
                   :grouped-census="groupedCensus"
                   @expand="handleExpand"
@@ -51,7 +51,10 @@ V<template>
                     <p class="text-center text-caption pa-0 ma-0">
                       {{ assetModeText }}
                     </p>
-                    <AssetSlider v-if="assetMode === 'driving'"></AssetSlider>
+                    <AssetSlider
+                      v-if="assetMode === 'driving'"
+                      @mouseup="handleEnd"
+                    ></AssetSlider>
                     <div class="text-center">
                       <v-btn
                         small
@@ -268,6 +271,7 @@ const commModule = namespace('communities')
 })
 export default class CommunityDetail extends Vue {
   assetMode = 'driving'
+  assetRange = [0, 50]
   layers = true
   communityDetails = {}
   censusSubdivision = {}
@@ -311,6 +315,10 @@ export default class CommunityDetail extends Vue {
     },
   ]
 
+  handleEnd(data) {
+    this.assetRange = [data[0], data[1]]
+  }
+
   handleAssetModeChange() {
     if (this.assetMode === 'driving') {
       this.assetMode = 'boundary'
@@ -321,6 +329,28 @@ export default class CommunityDetail extends Vue {
 
   get assetModeButtonIcon() {
     return this.assetMode === 'driving' ? 'mdi-crop-free' : 'mdi-car-side'
+  }
+
+  get filteredLocations() {
+    let filtered = []
+    if (this.assetMode === 'boundary') {
+      filtered = this.communityDetails.locations.filter(
+        (l) => l.within_municipality === true
+      )
+    } else {
+      const [min, max] = this.assetRange
+      filtered = this.communityDetails.locations.filter((l) => {
+        const drivingDistance = l.driving_distance
+        return drivingDistance >= min && drivingDistance <= max
+      })
+    }
+    return map(groupBy(filtered, 'type'), (o, k) => {
+      return {
+        group: k,
+        locations: o,
+        active: false,
+      }
+    })
   }
 
   get assetModeText() {
