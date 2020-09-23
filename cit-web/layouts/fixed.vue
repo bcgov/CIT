@@ -1,30 +1,6 @@
 <template>
   <v-app light class="h-100">
-    <v-app-bar class="main-navigation" fixed height="66" color="primary">
-      <!--
-      <v-app-bar-nav-icon
-        color="white"
-        @click="handleClick"
-      ></v-app-bar-nav-icon>
-      -->
-      <nuxt-link class="main-title d-block" to="/">
-        <v-img
-          :src="require('~/assets/logo.svg')"
-          aspect-ratio="1"
-          width="177"
-          height="43"
-        ></v-img>
-      </nuxt-link>
-      <v-toolbar-title class="navigation-wrapper">
-        <nuxt-link class="main-title d-block font-weight-bold" to="/"
-          >Community Information Tool</nuxt-link
-        >
-      </v-toolbar-title>
-      <div style="min-width: 300px;">
-        <CommSearch color="white" :solo="true" :dense="true"></CommSearch>
-      </div>
-      <Menu></Menu>
-    </v-app-bar>
+    <Navigation></Navigation>
     <div class="fixed-content">
       <nuxt class="h-100" />
     </div>
@@ -35,15 +11,18 @@
 </template>
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
-import CommSearch from '~/components/CommSearch.vue'
+import Navigation from '~/components/Navigation.vue'
+
 import Footer from '~/components/Footer.vue'
-import Menu from '~/components/Menu.vue'
 @Component({
-  CommSearch,
   Footer,
-  Menu,
+  Navigation,
 })
 export default class FixedLayout extends Vue {
+  get hideMenu() {
+    return !(this.$vuetify.breakpoint.width < 850)
+  }
+
   mounted() {
     const element = document.documentElement
     element.classList.add('fixed-layout')
@@ -77,23 +56,5 @@ export default class FixedLayout extends Vue {
 }
 .h-100 {
   height: 100%;
-}
-
-.v-application .primary.main-navigation {
-  border-bottom: 2px solid #fcba19;
-  border-color: #fcba19 !important;
-}
-
-.navigation-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  overflow: unset;
-  white-space: normal;
-}
-
-.main-title {
-  color: white !important;
-  text-decoration: none;
 }
 </style>

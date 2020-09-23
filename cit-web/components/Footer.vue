@@ -1,18 +1,17 @@
 <template>
-  <v-footer class="footer" color="primary" height="46">
-    <v-list class="d-flex ma-0 pa-0" color="primary">
-      <v-list-item
+  <v-footer class="footer" color="primary" :height="footerHeight">
+    <ul style="list-style: none;" class="d-flex ma-0 pa-0 footer-list">
+      <li
         v-for="(fi, index) in footerItems"
         :key="index"
-        class="pa-0 ma-0"
-        :href="fi.href"
+        class="pa-0 ma-0 mx-2"
         style="min-height: auto;"
       >
-        <v-list-item-title class="ma-0 pa-0 px-4 white--text text-body-2">{{
+        <a :href="fi.href" class="white--text text-decoration-none">{{
           fi.title
-        }}</v-list-item-title>
-      </v-list-item>
-    </v-list>
+        }}</a>
+      </li>
+    </ul>
   </v-footer>
 </template>
 
@@ -24,6 +23,10 @@ import CommSearch from '~/components/CommSearch.vue'
 })
 export default class Footer extends Vue {
   citFeedbackEmail = this.$config.citFeedbackEmail
+
+  get footerHeight() {
+    return this.$vuetify.breakpoint.width < 540 ? 'auto' : 46
+  }
 
   footerItems = [
     {
@@ -59,5 +62,9 @@ export default class Footer extends Vue {
   flex-shrink: 0;
   border-top: 2px solid #fcba19;
   border-color: #fcba19 !important;
+}
+
+.footer-list {
+  flex-wrap: wrap;
 }
 </style>
