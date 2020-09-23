@@ -597,3 +597,18 @@ class CensusSubdivision(models.Model):
 
     def get_households_tenant_pct_spending_30_pct_income_as_decimal(self):
         return get_pct_field_as_decimal(self.households_tenant_pct_spending_30_pct_income)
+
+    def get_percentage_of_null_fields(self):
+        model_fields = self._meta.get_fields()
+        meta_field_names = ["id", "name", "geom", "geom_simplified", "community"]
+        census_field_names = [field.name for field in model_fields if field.name not in meta_field_names]
+
+        number_of_null_fields = sum(map(lambda field: getattr(self, field) is None, census_field_names))
+        return number_of_null_fields / len(census_field_names)
+
+    def get_hidden_detail_report_pages(self):
+        from pipeline.constants import POWERBI_HIDDEN_DETAIL_PAGES
+
+        if self.get_percentage_of_null_fields() > 0.25:
+            return POWERBI_HIDDEN_DETAIL_PAGES
+        return []

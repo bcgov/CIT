@@ -143,6 +143,7 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
     locations = serializers.SerializerMethodField()
     child_communities = serializers.SerializerMethodField()
     parent_community = serializers.SerializerMethodField()
+    hidden_report_pages = serializers.SerializerMethodField()
 
     class Meta:
         model = Community
@@ -155,6 +156,7 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
             "longitude",
             "regional_district",
             "locations",
+            "hidden_report_pages",
         )
 
     def get_display_fields(self, obj):
@@ -177,6 +179,9 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
             "id": child_community.id,
             "place_name": child_community.place_name,
         } for child_community in obj.child_communities.all()]
+
+    def get_hidden_report_pages(self, obj):
+        return obj.census_subdivision.get_hidden_detail_report_pages()
 
 
 class CommunitySearchSerializer(serializers.ModelSerializer):
