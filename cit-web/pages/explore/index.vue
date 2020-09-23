@@ -25,6 +25,8 @@
       </div>
       <v-divider></v-divider>
       <div class="pa-8">
+        <h5 class="text-h6 mb-5">Selection Results</h5>
+
         <div class="mt-0 d-flex align-center">
           <p class="mb-0 text-body-1">
             Showing
@@ -51,7 +53,6 @@
             <v-icon block class="mr-2">mdi-arrow-right</v-icon>
           </v-btn>
         </div>
-
         <Results :grouped-communities="groupedCommunities"></Results>
       </div>
     </div>
