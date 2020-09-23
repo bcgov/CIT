@@ -22,18 +22,7 @@
       <nuxt />
     </div>
     <div class="footer">
-      <v-footer color="primary" height="66">
-        <v-btn
-          color="primary"
-          depressed
-          width="225"
-          height="40"
-          :href="`mailto:${citFeedbackEmail}?subject=CIT Feedback`"
-          class="btn feedback-button text-capitalize"
-          target="_blank"
-          >Give feedback</v-btn
-        >
-      </v-footer>
+      <Footer></Footer>
     </div>
   </v-app>
 </template>
@@ -41,11 +30,40 @@
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
 import CommSearch from '~/components/CommSearch.vue'
+import Footer from '~/components/Footer.vue'
 @Component({
   CommSearch,
+  Footer,
 })
 export default class DefaultLayout extends Vue {
   citFeedbackEmail = this.$config.citFeedbackEmail
+
+  footerItems = [
+    {
+      title: 'Home',
+      href: '/',
+    },
+    {
+      title: 'Disclaimer',
+      href: 'https://www2.gov.bc.ca/gov/content/home/disclaimer',
+    },
+    {
+      title: 'Privacy',
+      href: 'https://www2.gov.bc.ca/gov/content/home/privacy',
+    },
+    {
+      title: 'Accessibility',
+      href: 'https://www2.gov.bc.ca/gov/content/home/accessibility',
+    },
+    {
+      title: 'Copyright',
+      href: 'https://www2.gov.bc.ca/gov/content/home/copyright',
+    },
+    {
+      title: 'Contact Us',
+      href: `mailto:${this.$config.citFeedbackEmail}?subject=CIT Feedback`,
+    },
+  ]
 }
 </script>
 
@@ -64,9 +82,6 @@ body {
   margin-top: 66px;
   flex: 1 0 auto;
   position: relative;
-}
-.footer {
-  flex-shrink: 0;
 }
 
 .v-application .primary.main-navigation {

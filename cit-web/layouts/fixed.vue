@@ -27,13 +27,18 @@
     <div class="fixed-content">
       <nuxt class="h-100" />
     </div>
+    <div class="fixed-footer">
+      <Footer></Footer>
+    </div>
   </v-app>
 </template>
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
 import CommSearch from '~/components/CommSearch.vue'
+import Footer from '~/components/Footer.vue'
 @Component({
   CommSearch,
+  Footer,
 })
 export default class FixedLayout extends Vue {
   mounted() {
