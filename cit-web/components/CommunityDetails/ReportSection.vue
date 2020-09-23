@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(reportCard, key) in reportCards" :key="key">
+    <div v-for="(reportCard, key) in groupedReportCards" :key="key">
       <v-row>
         <v-col col="12">
           <h3 class="d-flex align-center">
@@ -30,7 +30,7 @@
 
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import flatMap from 'lodash/flatMap'
+import groupBy from 'lodash/groupBy'
 import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
 import DetailReportSection from '~/components/CommunityDetails/DetailReportSection.vue'
@@ -45,18 +45,27 @@ import Compare from '~/components/Compare'
   DetailCompareSection,
 })
 export default class ReportSection extends Vue {
-  @Prop({ default: null, type: Object }) reportCards
+  @Prop({ default: null, type: Array }) reportCards
   @Prop({ default: null, type: String }) reportToOpen
+  @Prop({ default: null, type: Array }) reportsToHide
   @Prop({ default: null, type: String }) placeName
   @Prop({ default: null, type: Number }) cid
   @Prop({ default: null, type: Object }) community
 
-  get flatReportCards() {
-    return flatMap(this.reportCards)
+  get groupedReportCards() {
+    if (!this.reportsToHide) {
+      return groupBy(this.reportCards, 'group')
+    } else {
+      const filtered = this.reportCards.filter((rc) => {
+        const report = this.reportsToHide.find((rth) => rth === rc.pid)
+        return !report
+      })
+      return groupBy(filtered, 'group')
+    }
   }
 
   get report() {
-    return this.flatReportCards.find((r) => r.name === this.reportToOpen)
+    return this.reportCards.find((r) => r.name === this.reportToOpen)
   }
 
   openReport(data) {
