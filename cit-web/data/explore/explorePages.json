@@ -1,56 +1,58 @@
-{
-  "Housing": [
-    {
-      "name": "Domestic",
-      "pid": "ReportSection6249eac6d911d2930de3",
-      "description": "How and where to do people live in this area? What kind of homes do people live in, and do they own them or rent? *This page shows data on census subdivisions of communities in BC communities you've selected.",
-      "image": "domestic.svg"
-    },
-    {
-      "name": "Education",
-      "pid": "ReportSection39f3a30707d51e04d585",
-      "description": "Stats on access to schools and population education level",
-      "image": "education.svg"
-    },
-    {
-      "name": "Culture",
-      "pid": "ReportSectionc275f231ed2c4af16a7d",
-      "description": "Stats on the age group, most common languages spoken and community type classification.",
-      "image": "culture.svg"
-    }
-  ],
-  "Economics/Employment": [
-    {
-      "name": "Income/Jobs",
-      "pid": "ReportSection65f0df6512cfb580c7a2",
-      "description": "Stats on the jobs by NOC code, household income, income by gender and low income status.",
-      "image": "economic.svg"
-    },
-    {
-      "name": "Economics",
-      "pid": "ReportSection88694206176b52607b4d",
-      "description": "Stats on natural resource projects, funding and status.",
-      "image": "natural_resources.svg"
-    }
-  ],
-  "Assets & Infrastructure": [
-    {
-      "name": "Health & Emergency",
-      "pid": "ReportSectionde977e8425990a550597",
-      "image": "health_care.svg",
-      "description": "Community healthcare access and first responders"
-    },
-    {
-      "name": "Natural Resources",
-      "pid": "ReportSectiond15790722d8872fdd447",
-      "description": "Stats on green building projects, environmental assessments and investments.",
-      "image": "natural_resources.svg"
-    },
-    {
-      "name": "Connectivity",
-      "pid": "ReportSection498ce34a9e89c7c66ddd",
-      "description": "Internet services available in this community, by provider. Click the chart on the left to see which providers offer which services.",
-      "image": "connectivity.svg"
-    }
-  ]
-}
+[
+  {
+    "name": "Domestic",
+    "pid": "ReportSection6249eac6d911d2930de3",
+    "description": "How and where to do people live in this area? What kind of homes do people live in, and do they own them or rent? *This page shows data on census subdivisions of communities in BC communities you've selected.",
+    "image": "domestic.svg",
+    "group": "Housing"
+  },
+  {
+    "name": "Education",
+    "pid": "ReportSection39f3a30707d51e04d585",
+    "description": "Stats on access to schools and population education level",
+    "image": "education.svg",
+    "group": "Housing"
+  },
+  {
+    "name": "Culture",
+    "pid": "ReportSectionc275f231ed2c4af16a7d",
+    "description": "Stats on the age group, most common languages spoken and community type classification.",
+    "image": "culture.svg",
+    "group": "Housing"
+  },
+  {
+    "name": "Income/Jobs",
+    "pid": "ReportSection65f0df6512cfb580c7a2",
+    "description": "Stats on the jobs by NOC code, household income, income by gender and low income status.",
+    "image": "economic.svg",
+    "group": "Economics/Employment"
+  },
+  {
+    "name": "Economics",
+    "pid": "ReportSection88694206176b52607b4d",
+    "description": "Stats on natural resource projects, funding and status.",
+    "image": "natural_resources.svg",
+    "group": "Economics/Employment"
+  },
+  {
+    "name": "Health & Emergency",
+    "pid": "ReportSectionde977e8425990a550597",
+    "image": "health_care.svg",
+    "description": "Community healthcare access and first responders",
+    "group": "Assets & Infrastructure"
+  },
+  {
+    "name": "Natural Resources",
+    "pid": "ReportSectiond15790722d8872fdd447",
+    "description": "Stats on green building projects, environmental assessments and investments.",
+    "image": "natural_resources.svg",
+    "group": "Assets & Infrastructure"
+  },
+  {
+    "name": "Connectivity",
+    "pid": "ReportSection498ce34a9e89c7c66ddd",
+    "description": "Internet services available in this community, by provider. Click the chart on the left to see which providers offer which services.",
+    "image": "connectivity.svg",
+    "group": "Assets & Infrastructure"
+  }
+]

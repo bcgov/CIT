@@ -53,18 +53,6 @@
         </div>
 
         <Results :grouped-communities="groupedCommunities"></Results>
-        <v-spacer></v-spacer>
-        <v-btn
-          block
-          small
-          depressed
-          color="primary"
-          class="text-capitalize mt-5"
-          :href="`mailto:${citFeedbackEmail}?subject=CIT Feedback`"
-        >
-          <v-icon small class="mr-2">mdi-comment</v-icon>
-          Give Feedback
-        </v-btn>
       </div>
     </div>
     <div
@@ -92,6 +80,7 @@
         <ExploreReportSection
           v-else
           :report-cards="reportCards"
+          :reports-to-hide="reportsToHide"
           :report-to-show="reportToShow"
           :cids="cidArray"
           @showReport="showReport"
@@ -136,6 +125,7 @@ export default class Explore extends Vue {
   selectedReportName = null
 
   reportCards = ExplorePages
+  reportsToHide = null
 
   @exploreStore.Getter('getSearchAsMove') searchAsMove
 
@@ -181,10 +171,6 @@ export default class Explore extends Vue {
     return this.activeTab === 'Reports'
   }
 
-  get flatReportCards() {
-    return flatMap(this.reportCards)
-  }
-
   get activeTab() {
     const tab = this.$route.query.tab
     if (!tab) {
@@ -199,7 +185,7 @@ export default class Explore extends Vue {
     if (!reportName) {
       return null
     }
-    return this.flatReportCards.find((r) => r.name === reportName)
+    return this.reportCards.find((r) => r.name === reportName)
   }
 
   get showMap() {
@@ -279,6 +265,8 @@ export default class Explore extends Vue {
 
     this.filteredCommunities = filteredCommunities
     this.updateGroupedCommunities()
+
+    this.reportsToHide = e.reports
   }
 
   updateGroupedCommunities() {
