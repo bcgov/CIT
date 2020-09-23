@@ -23,6 +23,7 @@
       <div style="min-width: 300px;">
         <CommSearch color="white" :solo="true" :dense="true"></CommSearch>
       </div>
+      <Menu></Menu>
     </v-app-bar>
     <div class="fixed-content">
       <nuxt class="h-100" />
@@ -36,9 +37,11 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import CommSearch from '~/components/CommSearch.vue'
 import Footer from '~/components/Footer.vue'
+import Menu from '~/components/Menu.vue'
 @Component({
   CommSearch,
   Footer,
+  Menu,
 })
 export default class FixedLayout extends Vue {
   mounted() {
