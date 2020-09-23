@@ -94,6 +94,7 @@ V<template>
             :report-cards="reportCards"
             :cid="communityDetails.id"
             :report-to-open="reportToOpen"
+            :reports-to-hide="communityDetails.hidden_report_pages"
             @reportOpen="reportOpen"
             @reportClose="reportClose"
           ></ReportSection>
@@ -222,7 +223,6 @@ import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
 import map from 'lodash/map'
 import groupBy from 'lodash/groupBy'
-import flatMap from 'lodash/flatMap'
 import Breadcrumbs from '~/components/CommunityDetails/Breadcrumbs.vue'
 import Sidebar from '~/components/CommunityDetails/Sidebar.vue'
 import ReportSection from '~/components/CommunityDetails/ReportSection.vue'
@@ -373,12 +373,8 @@ export default class CommunityDetail extends Vue {
     }
   }
 
-  get flatReportCards() {
-    return flatMap(this.reportCards)
-  }
-
   get report() {
-    return this.flatReportCards.find((r) => r.name === this.reportToOpen)
+    return this.reportCards.find((r) => r.name === this.reportToOpen)
   }
 
   handleLayerToggle(lo) {

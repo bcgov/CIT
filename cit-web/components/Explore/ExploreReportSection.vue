@@ -49,7 +49,7 @@
       </v-card-text>
     </div>
     <div v-else>
-      <div v-for="(reportCard, key) in reportCards" :key="key">
+      <div v-for="(reportCard, key) in groupedReportCards" :key="key">
         <v-row>
           <v-col col="12">
             <h3 class="d-flex align-center">
@@ -76,6 +76,7 @@
 
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import groupBy from 'lodash/groupBy'
 import ExploreReportCard from '~/components/Explore/ExploreReportCard'
 
 @Component({
@@ -83,9 +84,22 @@ import ExploreReportCard from '~/components/Explore/ExploreReportCard'
 })
 export default class ExploreReportSection extends Vue {
   @Prop({ default: null, type: Array }) cids
-  @Prop({ default: () => {}, type: Object }) reportCards
+  @Prop({ default: () => {}, type: Array }) reportCards
   @Prop({ default: null, type: Object }) reportToShow
+  @Prop({ default: null, type: Array }) reportsToHide
   loaded = false
+
+  get groupedReportCards() {
+    if (!this.reportsToHide) {
+      return groupBy(this.reportCards, 'group')
+    } else {
+      const filtered = this.reportCards.filter((rc) => {
+        const report = this.reportsToHide.find((rth) => rth === rc.pid)
+        return !report
+      })
+      return groupBy(filtered, 'group')
+    }
+  }
 
   handleCardClick(data) {
     this.$emit('showReport', data)
