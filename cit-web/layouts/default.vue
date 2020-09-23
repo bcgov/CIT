@@ -17,6 +17,7 @@
       <div style="min-width: 300px;">
         <CommSearch color="white" :solo="true" :dense="true"></CommSearch>
       </div>
+      <Menu></Menu>
     </v-app-bar>
     <div class="content">
       <nuxt />
@@ -30,40 +31,15 @@
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
 import CommSearch from '~/components/CommSearch.vue'
+import Menu from '~/components/Menu.vue'
 import Footer from '~/components/Footer.vue'
 @Component({
+  Menu,
   CommSearch,
   Footer,
 })
 export default class DefaultLayout extends Vue {
   citFeedbackEmail = this.$config.citFeedbackEmail
-
-  footerItems = [
-    {
-      title: 'Home',
-      href: '/',
-    },
-    {
-      title: 'Disclaimer',
-      href: 'https://www2.gov.bc.ca/gov/content/home/disclaimer',
-    },
-    {
-      title: 'Privacy',
-      href: 'https://www2.gov.bc.ca/gov/content/home/privacy',
-    },
-    {
-      title: 'Accessibility',
-      href: 'https://www2.gov.bc.ca/gov/content/home/accessibility',
-    },
-    {
-      title: 'Copyright',
-      href: 'https://www2.gov.bc.ca/gov/content/home/copyright',
-    },
-    {
-      title: 'Contact Us',
-      href: `mailto:${this.$config.citFeedbackEmail}?subject=CIT Feedback`,
-    },
-  ]
 }
 </script>
 
