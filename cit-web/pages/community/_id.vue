@@ -270,6 +270,12 @@ const commModule = namespace('communities')
   },
 })
 export default class CommunityDetail extends Vue {
+  head() {
+    return {
+      title: `${this.placeName} | B.C. Community Information Tool`,
+    }
+  }
+
   assetMode = 'driving'
   assetRange = [0, 50]
   layers = true

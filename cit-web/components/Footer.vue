@@ -1,6 +1,6 @@
 <template>
   <v-footer class="footer" color="primary" height="46">
-    <v-list class="d-flex ma-0 pa-0" height="38" color="primary">
+    <v-list class="d-flex ma-0 pa-0" color="primary">
       <v-list-item
         v-for="(fi, index) in footerItems"
         :key="index"
