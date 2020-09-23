@@ -616,7 +616,7 @@ def communities_advanced_search(query_params):
     communities = communities.distinct()
 
     print("communities", communities, communities.count())
-    return communities.values_list('id', flat=True)
+    return communities
 
 
 def _handle_location_filter(query_filter):
@@ -731,3 +731,11 @@ def serialize_data_source(name, datasource_info):
         "source": source,
         "source_url": source_url,
     }
+
+
+def get_hidden_explore_report_pages(communities):
+    from pipeline.constants import POWERBI_HIDDEN_EXPLORE_PAGES
+
+    # TODO SY - should this be a threshold and not all()?
+    if all(community.census_subdivision.get_percentage_of_null_fields() > 0.25 for community in communities):
+        return POWERBI_HIDDEN_EXPLORE_PAGES

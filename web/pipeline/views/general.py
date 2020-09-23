@@ -27,7 +27,7 @@ from pipeline.serializers.general import (
 from pipeline.utils import (
     generate_line_strings, filter_communities,
     serialize_communities_for_regional_districts, communities_advanced_search,
-    serialize_data_sources,
+    serialize_data_sources, get_hidden_explore_report_pages
 )
 
 
@@ -71,8 +71,14 @@ class CommunityViewSet(viewsets.GenericViewSet):
 
     @action(detail=False)
     def advanced_search(self, request):
-        community_ids = communities_advanced_search(request.query_params)
-        return Response(community_ids)
+        communities = communities_advanced_search(request.query_params)
+        hidden_report_pages = get_hidden_explore_report_pages(communities)
+
+        community_ids = communities.values_list('id', flat=True)
+        return Response({
+            "communities": community_ids,
+            "hidden_report_pages": hidden_report_pages,
+        })
 
     @action(detail=False)
     def geojson(self, request):
