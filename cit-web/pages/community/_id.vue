@@ -724,6 +724,7 @@ export default class CommunityDetail extends Vue {
       map.setLayoutProperty('locations', 'visibility', 'visible')
       this.mapLoaded = true
       this.$root.$emit('comm-map-loaded', this.map)
+      console.log('Styles', this.map.getSource('composite'))
     })
   }
 }

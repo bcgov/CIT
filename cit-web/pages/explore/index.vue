@@ -339,6 +339,7 @@ export default class Explore extends Vue {
   bottom: 0;
   right: 0;
   width: 100%;
+  height: calc(100% - 46px);
 }
 .explore-results-container {
   height: calc(100% - 66px);
