@@ -84,7 +84,7 @@ class CommunityViewSet(viewsets.GenericViewSet):
     def geojson(self, request):
         return HttpResponse(
             serialize('geojson', Community.objects.all(), geometry_field='point',
-                      fields=('pk', 'place_name', 'community_type', 'regional_district', 'has_any_k12_school')),
+                      fields=('pk', 'place_name', 'community_type', 'regional_district')),
             content_type="application/json",
         )
 
@@ -92,6 +92,14 @@ class CommunityViewSet(viewsets.GenericViewSet):
     def csv(self, request):
         serializer = CommunityCSVSerializer(self.get_queryset(), many=True)
         return Response(serializer.data)
+
+    @action(detail=True)
+    def population(self, request, pk=None):
+        community = self.get_object()
+        return Response({
+            "community": community.id,
+            "population": community.census_subdivision.population
+        })
 
 
 class ServiceList(generics.ListAPIView):
