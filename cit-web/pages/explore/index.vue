@@ -26,7 +26,7 @@
       </v-bottom-navigation>
     </div>
     <div
-      v-if="!isMobile || (isMobile && activeTab === 'Data')"
+      v-show="!isMobile || (isMobile && activeTab === 'Data')"
       class="explore-results-container elevation-5"
     >
       <div class="pa-8">
@@ -85,7 +85,7 @@
       </div>
     </div>
     <div
-      v-if="!isMobile || (isMobile && activeTab !== 'Data')"
+      v-show="!isMobile || (isMobile && activeTab !== 'Data')"
       ref="exploreMapContainer"
       class="explore-map-container"
       :class="{
