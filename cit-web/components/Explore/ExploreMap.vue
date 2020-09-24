@@ -6,7 +6,7 @@
       <SearchAsMove></SearchAsMove>
     </div>
     -->
-    <div v-show="true">
+    <div>
       <CommunityPopup
         ref="communityPopUp"
         :name="communityPopUpName"

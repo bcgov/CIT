@@ -25,7 +25,7 @@ export default class Footer extends Vue {
   citFeedbackEmail = this.$config.citFeedbackEmail
 
   get footerHeight() {
-    return this.$vuetify.breakpoint.width < 540 ? 'auto' : 46
+    return this.$vuetify.breakpoint.width < 540 ? 62 : 46
   }
 
   footerItems = [

@@ -1,6 +1,34 @@
 <template>
-  <div class="explore-container d-flex">
-    <div class="explore-results-container elevation-5">
+  <div
+    class="explore-container d-flex"
+    :class="{ 'explore-container-mobile': isMobile }"
+  >
+    <div v-if="isMobile">
+      <v-bottom-navigation
+        v-model="mobileNav"
+        absolute
+        class="explore-mobile-toolbar"
+      >
+        <v-btn value="Data" @click="handleTabChange('Data')">
+          <span>Data View</span>
+          <v-icon>mdi-text-box-outline</v-icon>
+        </v-btn>
+
+        <v-btn value="Map" @click="handleTabChange('Map')">
+          <span>Map View</span>
+          <v-icon>mdi-map</v-icon>
+        </v-btn>
+
+        <v-btn value="Reports" @click="handleTabChange('Reports')">
+          <span>Reports</span>
+          <v-icon>mdi-file-chart</v-icon>
+        </v-btn>
+      </v-bottom-navigation>
+    </div>
+    <div
+      v-if="!isMobile || (isMobile && activeTab === 'Data')"
+      class="explore-results-container elevation-5"
+    >
       <div class="pa-8">
         <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
         <div class="mt-4 mb-3 font-weight-bold d-flex align-center">
@@ -57,11 +85,16 @@
       </div>
     </div>
     <div
+      v-if="!isMobile || (isMobile && activeTab !== 'Data')"
       ref="exploreMapContainer"
       class="explore-map-container"
-      :class="{ 'explore-map-container-scroll': mapContainerScroll }"
+      :class="{
+        'explore-map-container-scroll': mapContainerScroll,
+        'explore-map-container-mobile': isMobile,
+      }"
     >
       <ExploreToolbar
+        v-if="!isMobile"
         class="elevation-5 explore-toolbar"
         :active-tab="activeTab"
         :breadcrumbs="breadcrumbs"
@@ -124,11 +157,16 @@ export default class Explore extends Vue {
   filteredCommunities = null
   boundedCommunities = null
   selectedReportName = null
+  mobileNav = null
 
   reportCards = ExplorePages
   reportsToHide = null
 
   @exploreStore.Getter('getSearchAsMove') searchAsMove
+
+  get isMobile() {
+    return this.$vuetify.breakpoint.width < 1050
+  }
 
   get breadcrumbs() {
     const breadcrumbs = [
@@ -330,6 +368,9 @@ export default class Explore extends Vue {
   width: 100%;
   height: calc(100% - 46px);
 }
+.explore-container-mobile {
+  padding-top: 56px;
+}
 .explore-results-container {
   height: calc(100% - 66px);
   flex: 1 1 0;
@@ -344,6 +385,10 @@ export default class Explore extends Vue {
   flex: 3 1 0;
   height: calc(100% - 66px);
   overflow: hidden;
+}
+
+.explore-map-container-mobile {
+  height: calc(100% - 10px);
 }
 
 .explore-map {
@@ -378,5 +423,12 @@ export default class Explore extends Vue {
   background-color: #073366;
   border: 2px solid #555;
   border-radius: 1em;
+}
+
+.explore-mobile-toolbar {
+  z-index: 5000;
+  width: 100%;
+  top: 0;
+  bottom: initial;
 }
 </style>
