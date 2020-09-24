@@ -1,11 +1,18 @@
 <template>
-  <v-toolbar :height="height">
-    <v-breadcrumbs :items="breadcrumbs" class="pa-0 ma-0"></v-breadcrumbs>
-    <v-spacer></v-spacer>
-    <v-tabs :value="tab" style="max-width: 200px;" right @change="handleChange">
-      <v-tab v-for="tab in tabs" :key="tab">{{ tab }}</v-tab>
-    </v-tabs>
-  </v-toolbar>
+  <div>
+    <v-toolbar :height="height">
+      <v-breadcrumbs :items="breadcrumbs" class="pa-0 ma-0"></v-breadcrumbs>
+      <v-spacer></v-spacer>
+      <v-tabs
+        :value="tab"
+        style="max-width: 200px;"
+        right
+        @change="handleChange"
+      >
+        <v-tab v-for="tab in tabs" :key="tab">{{ tab }}</v-tab>
+      </v-tabs>
+    </v-toolbar>
+  </div>
 </template>
 
 <script>

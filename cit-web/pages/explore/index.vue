@@ -3,28 +3,30 @@
     class="explore-container d-flex"
     :class="{ 'explore-container-mobile': isMobile }"
   >
-    <div v-if="isMobile">
-      <v-bottom-navigation
-        v-model="mobileNav"
-        absolute
-        class="explore-mobile-toolbar"
-      >
-        <v-btn value="Data" @click="handleTabChange('Data')">
-          <span>Data View</span>
-          <v-icon>mdi-text-box-outline</v-icon>
-        </v-btn>
+    <client-only>
+      <div v-if="isMobile">
+        <v-bottom-navigation
+          v-model="mobileNav"
+          absolute
+          class="explore-mobile-toolbar"
+        >
+          <v-btn value="Data" @click="handleTabChange('Data')">
+            <span>Data View</span>
+            <v-icon>mdi-text-box-outline</v-icon>
+          </v-btn>
 
-        <v-btn value="Map" @click="handleTabChange('Map')">
-          <span>Map View</span>
-          <v-icon>mdi-map</v-icon>
-        </v-btn>
+          <v-btn value="Map" @click="handleTabChange('Map')">
+            <span>Map View</span>
+            <v-icon>mdi-map</v-icon>
+          </v-btn>
 
-        <v-btn value="Reports" @click="handleTabChange('Reports')">
-          <span>Reports</span>
-          <v-icon>mdi-file-chart</v-icon>
-        </v-btn>
-      </v-bottom-navigation>
-    </div>
+          <v-btn value="Reports" @click="handleTabChange('Reports')">
+            <span>Reports</span>
+            <v-icon>mdi-file-chart</v-icon>
+          </v-btn>
+        </v-bottom-navigation>
+      </div>
+    </client-only>
     <div
       v-show="!isMobile || (isMobile && activeTab === 'Data')"
       class="explore-results-container elevation-5"
@@ -93,33 +95,35 @@
         'explore-map-container-mobile': isMobile,
       }"
     >
-      <ExploreToolbar
-        v-if="!isMobile"
-        class="elevation-5 explore-toolbar"
-        :active-tab="activeTab"
-        :breadcrumbs="breadcrumbs"
-        @tabChange="handleTabChange"
-      ></ExploreToolbar>
-      <v-scroll-x-transition>
-        <ExploreMap
-          v-if="showMap"
-          ref="exploreMap"
-          class="explore-map"
-          :mapbox-api-key="$config.MAPBOX_API_KEY"
-          :cids="cidArray"
-          :cluster-communities="flatCommunities"
-          @moveend="handleMoveEnd"
-        ></ExploreMap>
+      <client-only>
+        <ExploreToolbar
+          v-if="!isMobile"
+          class="elevation-5 explore-toolbar"
+          :active-tab="activeTab"
+          :breadcrumbs="breadcrumbs"
+          @tabChange="handleTabChange"
+        ></ExploreToolbar>
+        <v-scroll-x-transition>
+          <ExploreMap
+            v-if="showMap"
+            ref="exploreMap"
+            class="explore-map"
+            :mapbox-api-key="$config.MAPBOX_API_KEY"
+            :cids="cidArray"
+            :cluster-communities="flatCommunities"
+            @moveend="handleMoveEnd"
+          ></ExploreMap>
 
-        <ExploreReportSection
-          v-else
-          :report-cards="reportCards"
-          :reports-to-hide="reportsToHide"
-          :report-to-show="reportToShow"
-          :cids="cidArray"
-          @showReport="showReport"
-        ></ExploreReportSection>
-      </v-scroll-x-transition>
+          <ExploreReportSection
+            v-else
+            :report-cards="reportCards"
+            :reports-to-hide="reportsToHide"
+            :report-to-show="reportToShow"
+            :cids="cidArray"
+            @showReport="showReport"
+          ></ExploreReportSection>
+        </v-scroll-x-transition>
+      </client-only>
     </div>
   </div>
 </template>

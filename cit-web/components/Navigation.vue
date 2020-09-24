@@ -9,14 +9,16 @@
         height="43"
         @click="$router.push({ path: '/' })"
       ></v-img>
-      <v-toolbar-title class="navigation-wrapper">
-        <nuxt-link class="main-title d-block font-weight-bold" to="/">{{
-          getTitle
-        }}</nuxt-link>
-      </v-toolbar-title>
-      <div v-if="hideSearch" style="min-width: 300px;">
-        <CommSearch color="white" :solo="true" :dense="true"></CommSearch>
-      </div>
+      <client-only>
+        <v-toolbar-title class="navigation-wrapper">
+          <nuxt-link class="main-title d-block font-weight-bold" to="/">{{
+            getTitle
+          }}</nuxt-link>
+        </v-toolbar-title>
+        <div v-if="hideSearch" style="min-width: 300px;">
+          <CommSearch color="white" :solo="true" :dense="true"></CommSearch>
+        </div>
+      </client-only>
       <Menu></Menu>
     </v-app-bar>
   </div>
