@@ -29,7 +29,6 @@ export default class MainReport extends Vue {
   }
 
   embedToken = null
-
   groupId = '0399d295-4354-4955-8ed9-68709eb5e7b5'
   reportId = this.$config.reportId
   embedUrl = null

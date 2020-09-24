@@ -6,9 +6,8 @@
       <SearchAsMove></SearchAsMove>
     </div>
     -->
-    <div>
+    <div ref="communityPopUp">
       <CommunityPopup
-        ref="communityPopUp"
         :name="communityPopUpName"
         :cid="communityPopUpId"
       ></CommunityPopup>
