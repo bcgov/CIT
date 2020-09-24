@@ -31,17 +31,18 @@
           >Explore B.C. Communities</v-btn
         >
       </div>
-
-      <div v-if="showImage" class="landing-page-illustration text-right">
-        <v-img
-          :src="require(`~/assets/images/logo.svg`)"
-          aspect-ratio="1"
-          :width="imageWidth"
-          :max-width="imageMaxWidth"
-          class="d-inline-block"
-          contain
-        />
-      </div>
+      <client-only>
+        <div v-if="showImage" class="landing-page-illustration text-right">
+          <v-img
+            :src="require(`~/assets/images/logo.svg`)"
+            aspect-ratio="1"
+            :width="imageWidth"
+            :max-width="imageMaxWidth"
+            class="d-inline-block"
+            contain
+          />
+        </div>
+      </client-only>
     </div>
   </div>
 </template>
