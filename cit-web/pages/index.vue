@@ -1,6 +1,6 @@
 <template>
   <div class="landing-page-container">
-    <h1 class="text-h3 font-weight-bold">
+    <h1 class="text-h3 font-weight-bold index-title">
       Welcome to the Community Information Tool
     </h1>
     <h6 class="text-h6 font-weight-regular mt-10 mb-10">
@@ -32,11 +32,12 @@
         >
       </div>
 
-      <div class="landing-page-illustration text-right">
+      <div v-if="showImage" class="landing-page-illustration text-right">
         <v-img
           :src="require(`~/assets/images/logo.svg`)"
           aspect-ratio="1"
-          width="400"
+          :width="imageWidth"
+          :max-width="imageMaxWidth"
           class="d-inline-block"
           contain
         />
@@ -53,6 +54,18 @@ import { getCommunityList } from '~/api/cit-api'
   CommSearch,
 })
 export default class Index extends Vue {
+  get showImage() {
+    return !(this.$vuetify.breakpoint.width < 760)
+  }
+
+  get imageWidth() {
+    return this.$vuetify.breakpoint.width < 1050 ? '100%' : '400px'
+  }
+
+  get imageMaxWidth() {
+    return this.$vuetify.breakpoint.width < 1050 ? '300px' : '400px'
+  }
+
   async fetch({ store }) {
     try {
       const response = await getCommunityList()
@@ -95,5 +108,30 @@ export default class Index extends Vue {
 .explore-button {
   letter-spacing: 0;
   font-size: 16px;
+}
+
+@media screen and (max-width: 1050px) {
+  .landing-page-container {
+    padding: 3em 2em;
+  }
+
+  .v-application .text-h3.index-title {
+    font-size: 2.5rem !important;
+  }
+
+  .landing-page-illustration {
+    margin-top: -25px;
+    text-align: center !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .v-application .text-h3.index-title {
+    font-size: 1.5rem !important;
+  }
+
+  .landing-page-container {
+    padding: 1.5em 1em;
+  }
 }
 </style>
