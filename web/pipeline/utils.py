@@ -1,4 +1,6 @@
 import datetime
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import make_aware
 from functools import reduce
 from operator import and_
 
@@ -747,17 +749,21 @@ def get_databc_last_modified_date(dataset_resource_id):
     from pipeline.constants import API_URL
 
     response = requests.get(API_URL.format(dataset_resource_id=dataset_resource_id))
-    print(response.json())
-    records = response.json()["result"]["records"]
+    result = response.json()["result"]
 
-    if not records:
-        print("data source metadata not found")
-        print("response", records)
+    if not result:
+        print("data source metadata not found", dataset_resource_id)
+        print(result)
         return
 
-    data = records[0]
-    resource_name = data["Title"]
-    resource_url = data["Resource URL"]
-    last_modified_date = datetime.datetime.strptime(data["Record Last Modified"], "%Y-%m-%dT%H:%M:%S")
-    print("Dataset: {}\nLast Modified: {}\nURL: {}".format(resource_name, last_modified_date, resource_url))
+    if result["last_modified"]:
+        date = result["last_modified"]
+    elif result["created"]:
+        date = result["created"]
+    else:
+        print("no date found for resource", dataset_resource_id)
+        print(result)
+        return
+
+    last_modified_date = make_aware(parse_datetime(date))
     return last_modified_date

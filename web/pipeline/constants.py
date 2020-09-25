@@ -17,9 +17,7 @@ from pipeline.models.location_assets import (
 )
 
 DATABC_PERMALINK_URL = 'https://catalogue.data.gov.bc.ca/dataset/{permalink_id}'
-API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?"\
-    "resource_id=4b721abc-46e0-4010-b366-5830c000eb56"\
-    "&q={{%22Resource%20ID%22:%22{dataset_resource_id}%22}}"
+API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/resource_show?id={dataset_resource_id}"
 SOURCE_INTERNAL = 'internal'
 SOURCE_DATABC = 'databc'
 

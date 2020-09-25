@@ -13,7 +13,7 @@ def import_data_sources():
     for data_source in data_sources:
         dataset, created = DataSource.objects.update_or_create(name=data_source.pop("name"), defaults={**data_source})
 
+        print("dataset", dataset)
         if dataset.resource_id:
             dataset.last_updated = get_databc_last_modified_date(dataset.resource_id)
             dataset.save()
-        print("dataset", dataset)
