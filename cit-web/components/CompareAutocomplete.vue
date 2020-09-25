@@ -7,7 +7,9 @@
     :multiple="multiple"
     hide-details
     solo
+    :search-input.sync="searchInput"
     @change="handleUpdate"
+    @keyup.enter="handleEnter"
   >
     <template v-slot:selection="data">
       <div v-if="autocomplete.length > 1">
@@ -41,7 +43,7 @@ export default class Compare extends Vue {
   @Prop({ default: true, type: String }) mode
 
   autocomplete = []
-
+  searchInput = ''
   groupChips = false
 
   setGroupChips(state) {
@@ -56,6 +58,10 @@ export default class Compare extends Vue {
 
   handleUpdate() {
     this.$emit('change', this.autocomplete)
+  }
+
+  handleEnter(e) {
+    this.searchInput = ''
   }
 
   setAutoComplete(data) {

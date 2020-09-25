@@ -14,7 +14,7 @@
         :items="regionalDistricts"
         item-text="name"
         item-value="id"
-        placeholder="Metro Vancouver Regional District"
+        placeholder="Select a Regional District"
         label="Regional District"
         return-object
         hide-details

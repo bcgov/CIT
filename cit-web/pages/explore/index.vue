@@ -309,8 +309,8 @@ export default class Explore extends Vue {
 
     this.filteredCommunities = filteredCommunities
     this.updateGroupedCommunities()
-
     this.reportsToHide = e.reports
+    this.$root.$emit('communitiesChanged', this.flatCommunities)
   }
 
   updateGroupedCommunities() {
@@ -318,7 +318,6 @@ export default class Explore extends Vue {
       this.filteredCommunities,
       this.boundedCommunities
     )
-    // this.$root.$emit('communitiesChanged', this.flatCommunities)
   }
 
   getFinalResult(fc, bc) {
