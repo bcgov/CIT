@@ -16,8 +16,7 @@
         <CommSearch :outlined="true" label=""></CommSearch>
 
         <p class="explore-communities">
-          Interested in building a community profile to generate a list of
-          matching B.C. communities?
+          Find communities that meet a customized set of criteria.
         </p>
 
         <v-btn

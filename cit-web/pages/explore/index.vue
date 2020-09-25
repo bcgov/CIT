@@ -35,7 +35,8 @@
         <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
         <div class="mt-4 mb-3 font-weight-bold d-flex align-center">
           <p class="text-body-1 mb-0 d-flex align-center">
-            Select communities using the data menu
+            First, choose selection criteria from this data menu to generate a
+            list of matching regional districts and communities:
             <v-tooltip bottom color="primary" class="rounded-lg">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn icon v-bind="attrs" v-on="on">
