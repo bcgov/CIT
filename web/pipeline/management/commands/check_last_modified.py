@@ -1,11 +1,5 @@
-import requests
-
 from django.core.management.base import BaseCommand
-
-
-API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?"\
-    "resource_id=4b721abc-46e0-4010-b366-5830c000eb56"\
-    "&q={{%22Resource%20ID%22:%22{dataset_resource_id}%22}}"
+from pipeline.utils import get_databc_last_modified_date
 
 
 class Command(BaseCommand):
@@ -18,10 +12,4 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         dataset_resource_id = options['resource_id']
 
-        response = requests.get(API_URL.format(dataset_resource_id=dataset_resource_id))
-        data = response.json()["result"]["records"][0]
-
-        resource_name = data["Title"]
-        resource_url = data["Resource URL"]
-        last_modified_date = data["Record Last Modified"]
-        print("Dataset: {}\nLast Modified: {}\nURL: {}".format(resource_name, last_modified_date, resource_url))
+        get_databc_last_modified_date(dataset_resource_id)

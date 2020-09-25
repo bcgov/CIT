@@ -2,6 +2,8 @@ import datetime
 from functools import reduce
 from operator import and_
 
+import requests
+
 from django.db.models import Q, F
 
 
@@ -739,3 +741,23 @@ def get_hidden_explore_report_pages(communities):
     # TODO SY - should this be a threshold and not all()?
     if all(community.census_subdivision.get_percentage_of_null_fields() > 0.25 for community in communities):
         return POWERBI_HIDDEN_EXPLORE_PAGES
+
+
+def get_databc_last_modified_date(dataset_resource_id):
+    from pipeline.constants import API_URL
+
+    response = requests.get(API_URL.format(dataset_resource_id=dataset_resource_id))
+    print(response.json())
+    records = response.json()["result"]["records"]
+
+    if not records:
+        print("data source metadata not found")
+        print("response", records)
+        return
+
+    data = records[0]
+    resource_name = data["Title"]
+    resource_url = data["Resource URL"]
+    last_modified_date = datetime.datetime.strptime(data["Record Last Modified"], "%Y-%m-%dT%H:%M:%S")
+    print("Dataset: {}\nLast Modified: {}\nURL: {}".format(resource_name, last_modified_date, resource_url))
+    return last_modified_date
