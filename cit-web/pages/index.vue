@@ -24,36 +24,42 @@
         </client-only>
       </div>
     </div>
-
-    <div class="main-card-container">
-      <v-card width="500" height="300" class="elevation-5 pa-10 rounded-lg">
-        <v-card-title>Go to a specific community</v-card-title>
-        <v-card-subtitle
-          >Interested in a specific community? Search for it below to get
-          details</v-card-subtitle
-        >
-        <v-card-text>
-          <CommSearch :outlined="true" label=""></CommSearch>
-        </v-card-text>
-      </v-card>
-
-      <v-card width="500" height="300" class="elevation-5 pa-10 rounded-lg">
-        <v-card-title>Find communities by criteria</v-card-title>
-        <v-card-subtitle
-          >Find communities that meet a customized set of
-          criteria</v-card-subtitle
-        >
-        <v-card-text>
-          <v-btn
-            to="/explore?tab=Map"
-            target="_blank"
-            color="yellow darken-3"
-            class="elevation-5 text-capitalize"
-            >Explore B.C. Communities</v-btn
+    <client-only>
+      <div class="main-card-container">
+        <v-card height="300" class="elevation-5 rounded-lg main-index-card">
+          <v-card-title class="text-h6 mb-5 font-weight-bold"
+            >Go to a specific community</v-card-title
           >
-        </v-card-text>
-      </v-card>
-    </div>
+          <v-card-subtitle class="text-body-1"
+            >Interested in a specific community? Search for it below to get
+            details</v-card-subtitle
+          >
+          <v-card-text>
+            <CommSearch :outlined="true" label=""></CommSearch>
+          </v-card-text>
+        </v-card>
+
+        <v-card height="300" class="elevation-5 rounded-lg main-index-card">
+          <v-card-title class="text-h6 mb-5 font-weight-bold"
+            >Find communities by criteria</v-card-title
+          >
+          <v-card-subtitle class="text-body-1"
+            >Find communities that meet a customized set of
+            criteria</v-card-subtitle
+          >
+          <v-card-text>
+            <v-btn
+              height="44"
+              to="/explore?tab=Map"
+              target="_blank"
+              color="yellow darken-3"
+              class="elevation-5 text-capitalize font-weight-bold text-body-1"
+              >Explore B.C. Communities</v-btn
+            >
+          </v-card-text>
+        </v-card>
+      </div>
+    </client-only>
   </div>
 </template>
 
@@ -126,6 +132,22 @@ export default class Index extends Vue {
   justify-content: space-between;
 }
 
+.main-index-card {
+  width: 500px;
+  padding: 40px;
+}
+@media screen and (max-width: 1200px) {
+  .main-index-card {
+    width: 450px;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .main-index-card {
+    width: 400px;
+  }
+}
+
 @media screen and (max-width: 1050px) {
   .landing-page-container {
     padding: 3em 2em;
@@ -139,6 +161,28 @@ export default class Index extends Vue {
     margin-top: -25px;
     text-align: center !important;
   }
+
+  .main-index-card {
+    width: 450px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .main-index-card {
+    width: 400px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .main-card-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .main-index-card {
+    width: 500px;
+    margin: 2em 0;
+  }
 }
 
 @media screen and (max-width: 600px) {
@@ -148,6 +192,12 @@ export default class Index extends Vue {
 
   .landing-page-container {
     padding: 1.5em 1em;
+  }
+
+  .main-index-card {
+    width: auto;
+    max-width: 500px;
+    padding: 20px;
   }
 }
 </style>
