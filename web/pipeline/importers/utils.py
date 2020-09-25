@@ -16,8 +16,6 @@ from pipeline.constants import LOCATION_TYPES, CSV_RESOURCES, DATABC_RESOURCES
 def import_data_into_point_model(resource_type, Model, row):
     print(row)
 
-    # containing_subdiv = CensusSubdivision.objects.get(geom__contains=point)
-
     point = None
     location_fuzzy = False
 
