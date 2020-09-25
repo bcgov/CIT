@@ -40,6 +40,7 @@ export default class RegionalDistricts extends Vue {
     } else {
       this.active = true
       this.title = this.autocomplete.name
+      this.$root.$emit('regionSelected')
     }
     this.$emit('filter')
   }
