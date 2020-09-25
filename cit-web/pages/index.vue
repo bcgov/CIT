@@ -1,47 +1,58 @@
 <template>
   <div class="landing-page-container">
-    <h1 class="text-h3 font-weight-bold index-title">
-      Welcome to the Community Information Tool
-    </h1>
-    <h6 class="text-h6 font-weight-regular mt-10 mb-10">
-      Explore B.C. communities and analyze data from a community lens.
-    </h6>
-    <div class="landing-page-content d-flex align-top">
-      <div class="landing-page-info">
-        <p>
-          Interested in a specific community?<br />
-          Search for it below to get details.
-        </p>
-
-        <CommSearch :outlined="true" label=""></CommSearch>
-
-        <p class="explore-communities">
-          Find communities that meet a customized set of criteria.
-        </p>
-
-        <v-btn
-          color="primary"
-          to="/explore?tab=Map"
-          class="btn text-capitalize explore-button"
-          target="_blank"
-          depressed
-          width="225"
-          height="40"
-          >Explore B.C. Communities</v-btn
-        >
+    <div class="d-flex justify-space-between">
+      <div>
+        <h1 class="text-h3 font-weight-bold index-title">
+          Welcome to the Community Information Tool
+        </h1>
+        <h6 class="text-h6 font-weight-regular mt-10 mb-10">
+          Explore B.C. communities and analyze data from a community lens.
+        </h6>
       </div>
-      <client-only>
-        <div v-if="showImage" class="landing-page-illustration text-right">
-          <v-img
-            :src="require(`~/assets/images/logo.svg`)"
-            aspect-ratio="1"
-            :width="imageWidth"
-            :max-width="imageMaxWidth"
-            class="d-inline-block"
-            contain
-          />
-        </div>
-      </client-only>
+      <div>
+        <client-only>
+          <div v-if="showImage" class="landing-page-illustration text-right">
+            <v-img
+              :src="require(`~/assets/images/logo.svg`)"
+              aspect-ratio="1"
+              :width="imageWidth"
+              :max-width="imageMaxWidth"
+              class="d-inline-block"
+              contain
+            />
+          </div>
+        </client-only>
+      </div>
+    </div>
+
+    <div class="main-card-container">
+      <v-card width="500" height="300" class="elevation-5 pa-10 rounded-lg">
+        <v-card-title>Go to a specific community</v-card-title>
+        <v-card-subtitle
+          >Interested in a specific community? Search for it below to get
+          details</v-card-subtitle
+        >
+        <v-card-text>
+          <CommSearch :outlined="true" label=""></CommSearch>
+        </v-card-text>
+      </v-card>
+
+      <v-card width="500" height="300" class="elevation-5 pa-10 rounded-lg">
+        <v-card-title>Find communities by criteria</v-card-title>
+        <v-card-subtitle
+          >Find communities that meet a customized set of
+          criteria</v-card-subtitle
+        >
+        <v-card-text>
+          <v-btn
+            to="/explore?tab=Map"
+            target="_blank"
+            color="yellow darken-3"
+            class="elevation-5 text-capitalize"
+            >Explore B.C. Communities</v-btn
+          >
+        </v-card-text>
+      </v-card>
     </div>
   </div>
 </template>
@@ -108,6 +119,11 @@ export default class Index extends Vue {
 .explore-button {
   letter-spacing: 0;
   font-size: 16px;
+}
+
+.main-card-container {
+  display: flex;
+  justify-content: space-between;
 }
 
 @media screen and (max-width: 1050px) {
