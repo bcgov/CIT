@@ -19,7 +19,6 @@
         return-object
         hide-details
       ></v-autocomplete>
-      {{ autocomplete }}
     </MenuFilter>
   </div>
 </template>
