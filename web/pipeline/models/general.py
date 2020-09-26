@@ -13,10 +13,6 @@ class DataSource(models.Model):
     source_file_path = models.CharField(max_length=255, unique=True, null=True)
     resource_id = models.CharField(max_length=255, unique=True, null=True)
     permalink_id = models.CharField(max_length=255, unique=True, null=True)
-    # last_modified_resource_id = models.CharField(
-    #     max_length=255, unique=True, null=True,
-    #     help_text="Some datasets have multiple resource IDs associated with them. This field is used to "
-    #     "store the resource ID used to check the last modified date.")
     last_updated = models.DateTimeField(null=True)
 
     def __str__(self):

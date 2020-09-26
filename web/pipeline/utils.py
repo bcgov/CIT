@@ -6,26 +6,10 @@ from operator import and_
 
 import requests
 
+from django.apps import apps
 from django.db.models import Q, F
 
-
-def filter_communities(filters):
-    from pipeline.models.community import Community
-    queryset_filters = {}
-
-    if 'community_tyserialipe' in filters:
-        community_types = Community.objects.values_list('community_type', flat=True).distinct()
-        if filters['community_type'] in community_types:
-            queryset_filters['community_type'] = filters['community_type']
-
-    if 'has_any_k12_school' in filters:
-        queryset_filters['has_any_k12_school'] = True if filters['has_any_k12_school'] == "true" else False
-
-    # todo: figure out what filters there need to be
-
-    communities = Community.objects.filter(**queryset_filters).order_by('place_name')
-
-    return communities
+from pipeline.constants import LOCATION_TYPES
 
 
 def generate_line_strings():
@@ -406,10 +390,12 @@ def get_community_type_display_name(community_type):
 
 
 def serialize_location_assets(obj):
-    from pipeline.constants import LOCATION_TYPES
+    from pipeline.models.general import DataSource
 
     locations = []
-    for location_type, model_class in LOCATION_TYPES.items():
+    for location_type in LOCATION_TYPES:
+        data_source = DataSource.objects.get(name="location_type")
+        model_class = apps.get_model("pipeline", data_source.model_name)
         location_assets = get_location_assets_for_community(model_class, obj)
 
         for location_asset in location_assets:
@@ -708,15 +694,6 @@ def serialize_communities_for_regional_districts(regional_districts):
             } for community in regional_district.community_set.all()
         ] for regional_district in regional_districts
     }
-
-
-def serialize_data_sources():
-    from pipeline.constants import CSV_RESOURCES, DATABC_RESOURCES, SHP_RESOURCES
-
-    serialized = {}
-    for name, datasource_info in [*SHP_RESOURCES.items(), *CSV_RESOURCES.items(), *DATABC_RESOURCES.items()]:
-        serialized[name] = serialize_data_source(name, datasource_info)
-    return serialized
 
 
 def serialize_data_source(name, datasource_info):

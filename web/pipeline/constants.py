@@ -1,21 +1,3 @@
-from pipeline.models.location_assets import (
-    Court,
-    Hospital,
-    EconomicProject,
-    NaturalResourceProject,
-    ServiceBCLocation,
-    School,
-    Clinic,
-    FirstResponder,
-    DiagnosticFacility,
-    TimberFacility,
-    CivicFacility,
-    PostSecondaryInstitution,
-    ClosedMill,
-    ResearchCentre,
-    Airport,
-)
-
 DATABC_PERMALINK_URL = 'https://catalogue.data.gov.bc.ca/dataset/{permalink_id}'
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/resource_show?id={dataset_resource_id}"
 SOURCE_INTERNAL = 'internal'
@@ -32,23 +14,10 @@ DATA_SOURCE_CHOICES = (
     (SOURCE_DATABC, "BC Data Catalogue"),
 )
 
-LOCATION_TYPES = {
-    'first_responders': FirstResponder,
-    'diagnostic_facilities': DiagnosticFacility,
-    'timber_facilities': TimberFacility,
-    'civic_facilities': CivicFacility,
-    'hospitals': Hospital,
-    'natural_resource_projects': NaturalResourceProject,
-    'economic_projects': EconomicProject,
-    'servicebc_locations': ServiceBCLocation,
-    'schools': School,
-    'clinics': Clinic,
-    'courts': Court,
-    'post_secondary_institutions': PostSecondaryInstitution,
-    'closed_mills': ClosedMill,
-    'resesarch_centres': ResearchCentre,
-    'airports': Airport,
-}
+LOCATION_TYPES = [
+    'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities', 'hospitals',
+    'natural_resource_projects', 'economic_projects', 'servicebc_locations', 'schools', 'clinics', 'courts',
+    'post_secondary_institutions', 'closed_mills', 'resesarch_centres', 'airports']
 
 POWERBI_AGG_DOMESTIC = "ReportSection6249eac6d911d2930de3"
 POWERBI_AGG_EDUCATION = "ReportSection39f3a30707d51e04d585"
