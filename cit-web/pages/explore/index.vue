@@ -52,39 +52,53 @@
             </v-tooltip>
           </p>
         </div>
-        <ExploreFilters @filtered="handleFiltered"></ExploreFilters>
+        <ExploreFilters
+          @filtered="handleFiltered"
+          @loading="handleLoading"
+        ></ExploreFilters>
       </div>
       <v-divider></v-divider>
       <div class="pa-8">
         <h5 class="text-h6 mb-5">Selection Results</h5>
 
-        <div class="mt-0 d-flex align-center">
-          <p class="mb-0 text-body-1">
-            Showing
-            <span class="font-weight-bold">{{ numRegions }}</span> Regional
-            Districts &amp;
-            <span class="font-weight-bold">{{
-              numCommunities && numCommunities.toLocaleString()
-            }}</span>
-            Communities
-          </p>
-        </div>
-
-        <div class="mt-3 mb-6 d-flex">
-          <v-btn
-            block
-            depressed
+        <div v-if="loadingResults" class="d-flex justify-center">
+          <v-progress-circular
+            :size="50"
             color="primary"
-            class="text-capitalize"
-            @click="handleTabChange('Reports')"
-          >
-            View Reports for
-            {{ numCommunities && numCommunities.toLocaleString() }} communities
-            <v-spacer></v-spacer>
-            <v-icon block class="mr-2">mdi-arrow-right</v-icon>
-          </v-btn>
+            indeterminate
+            class="my-5"
+          ></v-progress-circular>
         </div>
-        <Results :grouped-communities="groupedCommunities"></Results>
+        <div v-else>
+          <div class="mt-0 d-flex align-center">
+            <p class="mb-0 text-body-1">
+              Showing
+              <span class="font-weight-bold">{{ numRegions }}</span> Regional
+              Districts &amp;
+              <span class="font-weight-bold">{{
+                numCommunities && numCommunities.toLocaleString()
+              }}</span>
+              Communities
+            </p>
+          </div>
+
+          <div class="mt-3 mb-6 d-flex">
+            <v-btn
+              block
+              depressed
+              color="primary"
+              class="text-capitalize"
+              @click="handleTabChange('Reports')"
+            >
+              View Reports for
+              {{ numCommunities && numCommunities.toLocaleString() }}
+              communities
+              <v-spacer></v-spacer>
+              <v-icon block class="mr-2">mdi-arrow-right</v-icon>
+            </v-btn>
+          </div>
+          <Results :grouped-communities="groupedCommunities"></Results>
+        </div>
       </div>
     </div>
     <div
@@ -163,6 +177,7 @@ export default class Explore extends Vue {
   boundedCommunities = null
   selectedReportName = null
   mobileNav = null
+  loadingResults = false
 
   reportCards = ExplorePages
   reportsToHide = null
@@ -209,6 +224,10 @@ export default class Explore extends Vue {
     }
 
     return breadcrumbs
+  }
+
+  handleLoading(state) {
+    this.loadingResults = state
   }
 
   get mapContainerScroll() {
@@ -260,6 +279,11 @@ export default class Explore extends Vue {
     return 'fixed'
   }
 
+  mounted() {
+    const rid = this.$route.query.rid
+    rid && this.$root.$emit('setRegion', rid)
+  }
+
   async asyncData({ store, $config }) {
     const results = await Promise.all([
       getRegionalDistricts(),
@@ -286,10 +310,10 @@ export default class Explore extends Vue {
   }
 
   handleTabChange(tab) {
+    const query = Object.assign({}, this.$route.query)
+    query.tab = tab
     this.$router.push({
-      query: {
-        tab,
-      },
+      query,
     })
   }
 

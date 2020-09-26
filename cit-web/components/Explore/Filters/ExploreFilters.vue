@@ -84,14 +84,14 @@ export default class ExploreFilters extends Vue {
       this.$emit('filtered', { empty: true })
       return
     }
-
+    this.$emit('loading', true)
     advancedSearch(filterParams).then((result) => {
-      console.log(result)
       this.$emit('filtered', {
         empty: false,
         data: result.data.communities,
         reports: result.data.hidden_report_pages,
       })
+      this.$emit('loading', false)
     })
   }
 }

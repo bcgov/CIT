@@ -50,6 +50,14 @@ export default class RegionalDistricts extends Vue {
     this.title = 'Regional Districts'
   }
 
+  mounted() {
+    this.$root.$on('setRegion', (rid) => {
+      const region = this.regionalDistricts.find((r) => r.id === parseInt(rid))
+      this.autocomplete = region || null
+      this.handleSave()
+    })
+  }
+
   getParams() {
     return this.autocomplete === null
       ? []

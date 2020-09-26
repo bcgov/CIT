@@ -42,6 +42,7 @@ V<template>
                   :grouped-locations="filteredLocations"
                   :population="getFieldValue('population')"
                   :grouped-census="groupedCensus"
+                  :rid="communityDetails.regional_district"
                   @expand="handleExpand"
                   @findOnMap="handleFind"
                   @viewReports="viewReports"
