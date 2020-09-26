@@ -11,7 +11,7 @@ from rest_framework_csv import renderers as csv_renderers
 
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
-from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict
+from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource
 from pipeline.serializers.general import (
     CommunitySerializer,
     CommunityCSVSerializer,
@@ -23,11 +23,11 @@ from pipeline.serializers.general import (
     ServiceListSerializer,
     RegionalDistrictSerializer,
     SchoolDistrictSerializer,
+    DataSourceSerializer
 )
 from pipeline.utils import (
-    generate_line_strings, filter_communities,
-    serialize_communities_for_regional_districts, communities_advanced_search,
-    serialize_data_sources, get_hidden_explore_report_pages
+    generate_line_strings, serialize_communities_for_regional_districts, communities_advanced_search,
+    get_hidden_explore_report_pages
 )
 
 
@@ -38,16 +38,14 @@ def auth(request):
         return JsonResponse({'username': request.user.username})
 
 
-class DataSourcesList(APIView):
-    def get(self, request, format=None):
-        return Response(serialize_data_sources())
+class DataSourcesList(generics.ListAPIView):
+    queryset = DataSource.objects.all()
+    serializer_class = DataSourceSerializer
 
 
 class CommunityViewSet(viewsets.GenericViewSet):
     def get_queryset(self):
-        filters = self.request.query_params
-        communities = filter_communities(filters)
-        return communities
+        return Community.objects.all()
 
     def list(self, request):
         queryset = self.paginate_queryset(self.get_queryset())

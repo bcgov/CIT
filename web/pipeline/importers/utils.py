@@ -1,6 +1,7 @@
 import csv
 import requests
 
+from django.apps import apps
 from django.conf import settings
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
@@ -8,9 +9,9 @@ from django.core.exceptions import FieldDoesNotExist
 from django.contrib.gis.measure import D
 
 from pipeline.models.community import Community
-from pipeline.models.general import LocationDistance, SchoolDistrict, Municipality
+from pipeline.models.general import DataSource, LocationDistance, SchoolDistrict, Municipality
 from pipeline.models.location_assets import School, Hospital
-from pipeline.constants import LOCATION_TYPES, CSV_RESOURCES, DATABC_RESOURCES
+from pipeline.constants import LOCATION_TYPES
 
 
 def import_data_into_point_model(resource_type, Model, row):
@@ -150,7 +151,7 @@ def calculate_distances(location):
 
 def calculate_nearest_location_types_outside_50k():
     for community in Community.objects.all():
-        for location_type in LOCATION_TYPES.keys():
+        for location_type in LOCATION_TYPES:
             locations_within_50k = LocationDistance.objects.filter(
                 community=community, location__location_type=location_type, distance__lte=50)
             # if there are no locations of this location type within 50km,
@@ -159,7 +160,8 @@ def calculate_nearest_location_types_outside_50k():
                 print("community {community_name} has no {location_type} within 50km".format(
                     community_name=community.place_name,
                     location_type=location_type))
-                location_type_model = {**CSV_RESOURCES, **DATABC_RESOURCES}[location_type]["model"]
+                location_type_model_name = DataSource.objects.get(name=location_type).model_name
+                location_type_model = apps.get_model("pipeline", location_type_model_name)
                 closest_location_type = location_type_model.objects.all()\
                     .annotate(distance=Distance("point", community.point))\
                     .order_by("distance").first()
