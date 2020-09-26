@@ -279,6 +279,11 @@ export default class Explore extends Vue {
     return 'fixed'
   }
 
+  mounted() {
+    const rid = this.$route.query.rid
+    rid && this.$root.$emit('setRegion', rid)
+  }
+
   async asyncData({ store, $config }) {
     const results = await Promise.all([
       getRegionalDistricts(),
@@ -305,10 +310,10 @@ export default class Explore extends Vue {
   }
 
   handleTabChange(tab) {
+    const query = Object.assign({}, this.$route.query)
+    query.tab = tab
     this.$router.push({
-      query: {
-        tab,
-      },
+      query,
     })
   }
 

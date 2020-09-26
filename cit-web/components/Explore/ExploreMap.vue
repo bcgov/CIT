@@ -282,24 +282,16 @@ export default class Explore extends Vue {
     this.$root.$on('communitiesChanged', (communities) => {
       if (!communities.length)
         return alert('No results, please change your filters.')
-      const cids = communities.map((c) => {
-        return c.id.toString()
-      })
-      this.map.setFilter('communities', [
-        'match',
-        ['get', 'pk'],
-        cids,
-        true,
-        false,
-      ])
 
       const bounds = communities.reduce(function (bounds, feature) {
         return bounds.extend([feature.longitude, feature.latitude])
       }, new window.mapboxgl.LngLatBounds())
 
-      this.map.fitBounds(bounds, {
-        maxZoom: 12,
-        padding: 30, // in px, to make markers on the top edge visible
+      this.whenMapLoaded((map) => {
+        map.fitBounds(bounds, {
+          maxZoom: 12,
+          padding: 30, // in px, to make markers on the top edge visible
+        })
       })
     })
 

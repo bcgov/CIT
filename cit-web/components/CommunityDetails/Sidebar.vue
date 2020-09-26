@@ -2,7 +2,9 @@
   <div class="community-details-sidebar">
     <div class="pt-5 pb-5">
       <SidebarHeader :place-name="placeName">
-        <p class="mt-0 text-center pl-4 pr-4">{{ district }}</p>
+        <p class="mt-0 text-center pl-4 pr-4">
+          <a :href="`/explore?tab=Map&rid=${rid}`">{{ district }}</a>
+        </p>
         <p v-if="population" class="text-center text-caption">
           Population: {{ population.toLocaleString() || 'N/A' }}
         </p>
@@ -75,6 +77,7 @@ export default class MainReport extends Vue {
   dialog = false
 
   @Prop({ default: null, type: String }) placeName
+  @Prop({ default: null, type: Number }) rid
   @Prop({ default: null, type: String }) district
   @Prop() population
   @Prop({ default: null, type: Array }) groupedLocations
