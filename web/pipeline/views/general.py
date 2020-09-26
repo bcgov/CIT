@@ -26,8 +26,7 @@ from pipeline.serializers.general import (
     DataSourceSerializer
 )
 from pipeline.utils import (
-    generate_line_strings, filter_communities,
-    serialize_communities_for_regional_districts, communities_advanced_search,
+    generate_line_strings, serialize_communities_for_regional_districts, communities_advanced_search,
     get_hidden_explore_report_pages
 )
 
@@ -46,9 +45,7 @@ class DataSourcesList(generics.ListAPIView):
 
 class CommunityViewSet(viewsets.GenericViewSet):
     def get_queryset(self):
-        filters = self.request.query_params
-        communities = filter_communities(filters)
-        return communities
+        return Community.objects.all()
 
     def list(self, request):
         queryset = self.paginate_queryset(self.get_queryset())

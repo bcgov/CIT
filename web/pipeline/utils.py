@@ -394,7 +394,7 @@ def serialize_location_assets(obj):
 
     locations = []
     for location_type in LOCATION_TYPES:
-        data_source = DataSource.objects.get(name="location_type")
+        data_source = DataSource.objects.get(name=location_type)
         model_class = apps.get_model("pipeline", data_source.model_name)
         location_assets = get_location_assets_for_community(model_class, obj)
 
