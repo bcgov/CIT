@@ -29,7 +29,7 @@ export default class PopGrowth extends Vue {
 
   handleSave() {
     this.$refs.menuFilter.hide()
-    if (!this.$refs.connectivityInput.isValid()) {
+    if (!this.$refs.connectivityInput.isValid) {
       this.title = 'Internet'
       this.active = false
     } else {
