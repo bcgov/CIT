@@ -1,6 +1,7 @@
 <template>
   <div>
     <v-autocomplete
+      v-model="commSearch"
       :items="communities"
       item-value="id"
       item-text="place_name"
@@ -26,7 +27,7 @@ export default class CommSearch extends Vue {
   @Prop({ default: false, type: Boolean }) dense
   @Prop({ default: false, type: Boolean }) solo
   @Prop({ default: false, type: Boolean }) outlined
-
+  commSearch = null
   communities = []
   @commModule.Getter('getCommunities') communities
 

@@ -154,7 +154,7 @@ export default class ConnectivityInputs extends Vue {
     }
 
     if (this.isBasic) {
-      const prop = `${this.speed.value}${this.operator[this.yesno.value]}`
+      const prop = `${this.speed.value}${this.operator[this.yesno.value]}%`
       const percentage = (this.yesno.value === 'yes' ? 75 : 10) / 100
       const temp = {}
       temp[prop] = percentage
@@ -162,7 +162,7 @@ export default class ConnectivityInputs extends Vue {
     }
 
     if (this.isAdvanced) {
-      const prop = `${this.speed.value}${this.operator[this.yesno.value]}`
+      const prop = `${this.speed.value}${this.operator[this.yesno.value]}%`
       const percentage = this.percentage / 100
       const temp = {}
       temp[prop] = percentage

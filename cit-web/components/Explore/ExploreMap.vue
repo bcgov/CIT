@@ -11,6 +11,7 @@
         ref="communityPopUp"
         :name="communityPopUpName"
         :cid="communityPopUpId"
+        :population="communityPopUpPopulation"
       ></CommunityPopup>
       <div ref="layerSwitcher">
         <LayerSwitcher
@@ -32,6 +33,7 @@ import LayerSwitcher from '~/components/LayerSwitcher'
 import SearchAsMove from '~/components/Explore/SearchAsMove.vue'
 import CommunityPopup from '~/components/Map/CommunityPopup'
 import ZoomControl from '~/components/Map/ZoomControl'
+import { getPopulation } from '~/api/cit-api/'
 
 const commModule = namespace('communities')
 
@@ -81,6 +83,7 @@ export default class Explore extends Vue {
 
   communityPopUpName = null
   communityPopUpId = null
+  communityPopUpPopulation = null
   popUpInstance = null
 
   layerSwitcher = [
@@ -257,6 +260,24 @@ export default class Explore extends Vue {
     }
   }
 
+  setPopUp(coordinates, cid) {
+    getPopulation(cid).then((result) => {
+      this.communityPopUpPopulation = result.data.population
+    })
+    this.$nextTick(() => {
+      const phtml = this.$refs.communityPopUp.$el.innerHTML
+      const communityPopUp = new window.mapboxgl.Popup({
+        className: 'community-popup-container',
+      })
+      document.addEventListener('click', (e) => {
+        if (event.target.matches('.community-popup-close-icon')) {
+          communityPopUp.remove()
+        }
+      })
+      communityPopUp.setLngLat(coordinates).setHTML(phtml).addTo(this.map)
+    })
+  }
+
   addControls() {
     const mapboxgl = window.mapboxgl
     this.map.addControl(new mapboxgl.ScaleControl({ position: 'bottom-right' }))
@@ -344,7 +365,6 @@ export default class Explore extends Vue {
       }
 
       const coordinates = e.features[0].geometry.coordinates.slice()
-      console.log(e.features[0])
       const name = e.features[0].properties.place_name
       const cid = e.features[0].properties.pk || e.features[0].properties.id
 
@@ -356,18 +376,7 @@ export default class Explore extends Vue {
       }
       this.communityPopUpName = name
       this.communityPopUpId = cid
-      this.$nextTick(() => {
-        const phtml = this.$refs.communityPopUp.$el.innerHTML
-        const communityPopUp = new window.mapboxgl.Popup({
-          className: 'community-popup-container',
-        })
-        document.addEventListener('click', (e) => {
-          if (event.target.matches('.community-popup-close-icon')) {
-            communityPopUp.remove()
-          }
-        })
-        communityPopUp.setLngLat(coordinates).setHTML(phtml).addTo(this.map)
-      })
+      this.setPopUp(coordinates, cid)
     })
 
     // Change the cursor to a pointer when the mouse is over the places layer.

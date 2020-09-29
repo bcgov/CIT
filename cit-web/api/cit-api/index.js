@@ -12,6 +12,10 @@ export function getCommunity(id) {
   return $axios.get(`api/pipeline/communities/${id}/`)
 }
 
+export function getPopulation(id) {
+  return $axios.get(`api/pipeline/communities/${id}/population`)
+}
+
 export function getCensusSubDivision(id) {
   return $axios.get(`api/pipeline/censussubdivisions/${id}/`)
 }
