@@ -48,6 +48,12 @@ export default class Explore extends Vue {
     const mappedRds = this.mappedRds
     return mappedRds[id] || 'No Regional District'
   }
+
+  mounted() {
+    this.$root.$on('regionSelected', () => {
+      this.panel = [0]
+    })
+  }
 }
 </script>
 <style lang="scss">

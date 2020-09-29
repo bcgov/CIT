@@ -88,7 +88,7 @@ export default class Locations extends Vue {
       this.active = false
     } else if (locationParams.length === 1) {
       const locationInputs = this.$refs.locationInputs
-      const locationInput = locationInputs.find((li) => li.isValid())
+      const locationInput = locationInputs.find((li) => li.isValid)
       this.title = locationInput.getText()
       this.active = true
     } else {

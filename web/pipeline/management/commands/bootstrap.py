@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 
 from pipeline.importers.csv_resource import import_csv_resources
+from pipeline.importers.data_sources import import_data_sources
 from pipeline.importers.databc_resource import import_databc_resources
 from pipeline.importers.shp_resource import import_shp_resources
 from pipeline.importers.utils import (
@@ -11,6 +12,9 @@ from pipeline.importers.utils import (
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
+        # import metadata about datasets
+        import_data_sources()
+
         # import census subdivisions first because a lot of other tables have foreign keys to
         # CensusSubdivision
         import_shp_resources("census")

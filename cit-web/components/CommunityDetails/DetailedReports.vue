@@ -10,7 +10,7 @@
             width="400"
           ></Report>
         </v-col>
-        <v-col sm="6">
+        <v-col sm="6" class="border-column">
           <Report
             :page-name="cpid"
             :cids="[cid.toString()]"
@@ -32,3 +32,8 @@ export default class DetailedReports extends Vue {
   @Prop({ default: null, type: Number }) cid
 }
 </script>
+<style lang="scss" scoped>
+.border-column {
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+</style>

@@ -3,28 +3,30 @@
     class="explore-container d-flex"
     :class="{ 'explore-container-mobile': isMobile }"
   >
-    <div v-if="isMobile">
-      <v-bottom-navigation
-        v-model="mobileNav"
-        absolute
-        class="explore-mobile-toolbar"
-      >
-        <v-btn value="Data" @click="handleTabChange('Data')">
-          <span>Data View</span>
-          <v-icon>mdi-text-box-outline</v-icon>
-        </v-btn>
+    <client-only>
+      <div v-if="isMobile">
+        <v-bottom-navigation
+          v-model="mobileNav"
+          absolute
+          class="explore-mobile-toolbar"
+        >
+          <v-btn value="Data" @click="handleTabChange('Data')">
+            <span>Data View</span>
+            <v-icon>mdi-text-box-outline</v-icon>
+          </v-btn>
 
-        <v-btn value="Map" @click="handleTabChange('Map')">
-          <span>Map View</span>
-          <v-icon>mdi-map</v-icon>
-        </v-btn>
+          <v-btn value="Map" @click="handleTabChange('Map')">
+            <span>Map View</span>
+            <v-icon>mdi-map</v-icon>
+          </v-btn>
 
-        <v-btn value="Reports" @click="handleTabChange('Reports')">
-          <span>Reports</span>
-          <v-icon>mdi-file-chart</v-icon>
-        </v-btn>
-      </v-bottom-navigation>
-    </div>
+          <v-btn value="Reports" @click="handleTabChange('Reports')">
+            <span>Reports</span>
+            <v-icon>mdi-file-chart</v-icon>
+          </v-btn>
+        </v-bottom-navigation>
+      </div>
+    </client-only>
     <div
       v-show="!isMobile || (isMobile && activeTab === 'Data')"
       class="explore-results-container elevation-5"
@@ -33,7 +35,8 @@
         <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
         <div class="mt-4 mb-3 font-weight-bold d-flex align-center">
           <p class="text-body-1 mb-0 d-flex align-center">
-            Select communities using the data menu
+            First, choose selection criteria from this data menu to generate a
+            list of matching regional districts and communities:
             <v-tooltip bottom color="primary" class="rounded-lg">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn icon v-bind="attrs" v-on="on">
@@ -49,39 +52,53 @@
             </v-tooltip>
           </p>
         </div>
-        <ExploreFilters @filtered="handleFiltered"></ExploreFilters>
+        <ExploreFilters
+          @filtered="handleFiltered"
+          @loading="handleLoading"
+        ></ExploreFilters>
       </div>
       <v-divider></v-divider>
       <div class="pa-8">
         <h5 class="text-h6 mb-5">Selection Results</h5>
 
-        <div class="mt-0 d-flex align-center">
-          <p class="mb-0 text-body-1">
-            Showing
-            <span class="font-weight-bold">{{ numRegions }}</span> Regional
-            Districts &amp;
-            <span class="font-weight-bold">{{
-              numCommunities && numCommunities.toLocaleString()
-            }}</span>
-            Communities
-          </p>
-        </div>
-
-        <div class="mt-3 mb-6 d-flex">
-          <v-btn
-            block
-            depressed
+        <div v-if="loadingResults" class="d-flex justify-center">
+          <v-progress-circular
+            :size="50"
             color="primary"
-            class="text-capitalize"
-            @click="handleTabChange('Reports')"
-          >
-            View Reports for
-            {{ numCommunities && numCommunities.toLocaleString() }} communities
-            <v-spacer></v-spacer>
-            <v-icon block class="mr-2">mdi-arrow-right</v-icon>
-          </v-btn>
+            indeterminate
+            class="my-5"
+          ></v-progress-circular>
         </div>
-        <Results :grouped-communities="groupedCommunities"></Results>
+        <div v-else>
+          <div class="mt-0 d-flex align-center">
+            <p class="mb-0 text-body-1">
+              Showing
+              <span class="font-weight-bold">{{ numRegions }}</span> Regional
+              Districts &amp;
+              <span class="font-weight-bold">{{
+                numCommunities && numCommunities.toLocaleString()
+              }}</span>
+              Communities
+            </p>
+          </div>
+
+          <div class="mt-3 mb-6 d-flex">
+            <v-btn
+              block
+              depressed
+              color="primary"
+              class="text-capitalize"
+              @click="handleTabChange('Reports')"
+            >
+              View Reports for
+              {{ numCommunities && numCommunities.toLocaleString() }}
+              communities
+              <v-spacer></v-spacer>
+              <v-icon block class="mr-2">mdi-arrow-right</v-icon>
+            </v-btn>
+          </div>
+          <Results :grouped-communities="groupedCommunities"></Results>
+        </div>
       </div>
     </div>
     <div
@@ -93,33 +110,35 @@
         'explore-map-container-mobile': isMobile,
       }"
     >
-      <ExploreToolbar
-        v-if="!isMobile"
-        class="elevation-5 explore-toolbar"
-        :active-tab="activeTab"
-        :breadcrumbs="breadcrumbs"
-        @tabChange="handleTabChange"
-      ></ExploreToolbar>
-      <v-scroll-x-transition>
-        <ExploreMap
-          v-if="showMap"
-          ref="exploreMap"
-          class="explore-map"
-          :mapbox-api-key="$config.MAPBOX_API_KEY"
-          :cids="cidArray"
-          :cluster-communities="flatCommunities"
-          @moveend="handleMoveEnd"
-        ></ExploreMap>
+      <client-only>
+        <ExploreToolbar
+          v-if="!isMobile"
+          class="elevation-5 explore-toolbar"
+          :active-tab="activeTab"
+          :breadcrumbs="breadcrumbs"
+          @tabChange="handleTabChange"
+        ></ExploreToolbar>
+        <v-scroll-x-transition>
+          <ExploreMap
+            v-if="showMap"
+            ref="exploreMap"
+            class="explore-map"
+            :mapbox-api-key="$config.MAPBOX_API_KEY"
+            :cids="cidArray"
+            :cluster-communities="flatCommunities"
+            @moveend="handleMoveEnd"
+          ></ExploreMap>
 
-        <ExploreReportSection
-          v-else
-          :report-cards="reportCards"
-          :reports-to-hide="reportsToHide"
-          :report-to-show="reportToShow"
-          :cids="cidArray"
-          @showReport="showReport"
-        ></ExploreReportSection>
-      </v-scroll-x-transition>
+          <ExploreReportSection
+            v-else
+            :report-cards="reportCards"
+            :reports-to-hide="reportsToHide"
+            :report-to-show="reportToShow"
+            :cids="cidArray"
+            @showReport="showReport"
+          ></ExploreReportSection>
+        </v-scroll-x-transition>
+      </client-only>
     </div>
   </div>
 </template>
@@ -158,6 +177,7 @@ export default class Explore extends Vue {
   boundedCommunities = null
   selectedReportName = null
   mobileNav = null
+  loadingResults = false
 
   reportCards = ExplorePages
   reportsToHide = null
@@ -204,6 +224,10 @@ export default class Explore extends Vue {
     }
 
     return breadcrumbs
+  }
+
+  handleLoading(state) {
+    this.loadingResults = state
   }
 
   get mapContainerScroll() {
@@ -255,36 +279,57 @@ export default class Explore extends Vue {
     return 'fixed'
   }
 
-  async asyncData({ store, $config }) {
-    const results = await Promise.all([
-      getRegionalDistricts(),
-      getCommunityList(),
-      getAuthToken(),
-      getCommunityGeoJSON(),
-    ])
-    const regionalDistricts = results[0].data.results
-    store.commit('communities/setRegionalDistricts', regionalDistricts)
-    const communityList = results[1].data
-    store.commit('communities/setCommunities', communityList)
-    const accessToken = results[2].data.access_token
-    store.commit('msauth/setAccessToken', accessToken)
-    const groupedCommunities = groupBy(communityList, 'regional_district')
-    const communityGeoJSON = results[3].data
-    store.commit('communities/setCommunityGeoJSON', communityGeoJSON)
+  mounted() {
+    const rid = this.$route.query.rid
+    rid && this.$root.$emit('setRegion', rid)
+  }
 
-    return {
-      communityList,
-      regionalDistricts,
-      groupedCommunities,
-      citFeedbackEmail: $config.citFeedbackEmail,
+  async fetch({ store }) {
+    try {
+      const results = await Promise.all([getAuthToken()])
+      const accessToken = results[0].data.access_token
+      store.commit('msauth/setAccessToken', accessToken)
+    } catch (e) {
+      console.error(e)
+      store.commit('msauth/setIsError', true)
+    }
+  }
+
+  async asyncData({ store, $config }) {
+    try {
+      const results = await Promise.all([
+        getRegionalDistricts(),
+        getCommunityList(),
+        getCommunityGeoJSON(),
+      ])
+      const regionalDistricts = results[0].data.results
+      store.commit('communities/setRegionalDistricts', regionalDistricts)
+      const communityList = results[1].data
+      store.commit('communities/setCommunities', communityList)
+      const groupedCommunities = groupBy(communityList, 'regional_district')
+      const communityGeoJSON = results[2].data
+      store.commit('communities/setCommunityGeoJSON', communityGeoJSON)
+
+      return {
+        communityList,
+        regionalDistricts,
+        groupedCommunities,
+      }
+    } catch (e) {
+      console.error(e)
+      return {
+        communityList: [],
+        regionalDistricts: [],
+        groupedCommunities: [],
+      }
     }
   }
 
   handleTabChange(tab) {
+    const query = Object.assign({}, this.$route.query)
+    query.tab = tab
     this.$router.push({
-      query: {
-        tab,
-      },
+      query,
     })
   }
 
@@ -304,8 +349,8 @@ export default class Explore extends Vue {
 
     this.filteredCommunities = filteredCommunities
     this.updateGroupedCommunities()
-
     this.reportsToHide = e.reports
+    this.$root.$emit('communitiesChanged', this.flatCommunities)
   }
 
   updateGroupedCommunities() {
@@ -313,7 +358,6 @@ export default class Explore extends Vue {
       this.filteredCommunities,
       this.boundedCommunities
     )
-    // this.$root.$emit('communitiesChanged', this.flatCommunities)
   }
 
   getFinalResult(fc, bc) {

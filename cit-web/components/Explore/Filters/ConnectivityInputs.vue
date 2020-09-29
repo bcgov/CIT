@@ -2,7 +2,7 @@
   <div>
     <v-container fluid class="pa-0">
       <v-row no-gutters>
-        <v-col sm="6">
+        <v-col sm="4">
           <div>
             <v-select
               v-model="speed"
@@ -17,23 +17,23 @@
             ></v-select>
           </div>
         </v-col>
-        <v-col sm="3">
+        <v-col :sm="yesnoCols">
           <div>
             <v-select
-              v-model="operator"
+              v-model="yesno"
               class="ml-2 mr-2"
               dense
               hide-details
-              :items="operatorTypes"
+              :items="chooseTypes"
               item-text="title"
               item-value="value"
-              label="Constraint"
-              placeholder="eg. (>)"
+              label="Type"
+              placeholder="Yes"
               return-object
             ></v-select>
           </div>
         </v-col>
-        <v-col sm="3">
+        <v-col v-if="isAdvanced" sm="3">
           <div>
             <v-combobox
               v-model="percentage"
@@ -45,6 +45,7 @@
               label="Percentange (%)"
               placeholder="eg. 75%"
               :rules="rules"
+              @update:search-input="handleComboBox"
             ></v-combobox>
           </div>
         </v-col>
@@ -58,6 +59,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 @Component
 export default class ConnectivityInputs extends Vue {
   speed = null
+  yesno = null
   speedTypes = [
     {
       value: 'percent_50_10',
@@ -77,43 +79,110 @@ export default class ConnectivityInputs extends Vue {
     },
   ]
 
-  operator = { value: '__lte', title: 'within' }
-  operatorTypes = [
+  chooseTypes = [
     {
-      value: '__gt',
-      title: 'not within',
+      value: 'no',
+      title: 'No',
     },
     {
-      value: '__lte',
-      title: 'within',
+      value: 'yes',
+      title: 'Yes',
+    },
+    {
+      value: 'noadvanced',
+      title: 'Less Than % (Advanced)',
+    },
+    {
+      value: 'yesadvanced',
+      title: 'More Than % (Advanced)',
     },
   ]
+
+  operator = {
+    no: '__lt',
+    yes: '__gte',
+    noadvanced: '__lt',
+    yesadvanced: '__gte',
+  }
 
   percentage = null
   suggestedPercentage = [10, 20, 25, 50, 75]
 
   rules = [(input) => Number.isInteger(Number(input))]
 
-  isValid() {
-    return this.speed && this.operator && this.percentage
+  handleComboBox(data) {
+    if (!data) {
+      this.percentage = null
+    } else {
+      this.percentage = data
+    }
+  }
+
+  get isValid() {
+    if (this.isBasic) {
+      return this.speed && this.yesno
+    }
+
+    if (this.isAdvanced) {
+      return this.speed && this.yesno && this.percentage
+    }
+  }
+
+  get yesnoCols() {
+    return this.isAdvanced === true ? 5 : 8
+  }
+
+  get isAdvanced() {
+    if (!this.yesno) {
+      return false
+    }
+    return (
+      this.yesno.value === 'noadvanced' || this.yesno.value === 'yesadvanced'
+    )
+  }
+
+  get isBasic() {
+    if (!this.yesno) {
+      return true
+    }
+    return this.yesno.value === 'yes' || this.yesno.value === 'no'
   }
 
   getParams() {
-    if (!this.isValid()) {
+    if (!this.isValid) {
       return []
     }
-    const prop = `${this.speed.value}${this.operator.value}`
-    const percentage = this.percentage / 100
-    const temp = {}
-    temp[prop] = percentage
-    return [temp]
+
+    if (this.isBasic) {
+      const prop = `${this.speed.value}${this.operator[this.yesno.value]}%`
+      const percentage = (this.yesno.value === 'yes' ? 75 : 10) / 100
+      const temp = {}
+      temp[prop] = percentage
+      return [temp]
+    }
+
+    if (this.isAdvanced) {
+      const prop = `${this.speed.value}${this.operator[this.yesno.value]}%`
+      const percentage = this.percentage / 100
+      const temp = {}
+      temp[prop] = percentage
+      return [temp]
+    }
   }
 
   get text() {
-    const speed = this.speed?.title
-    const operator = this.operator.value === '__gt' ? '>' : '≤'
-    const percentage = `${this.percentage}%`
-    return `${speed} ${operator} ${percentage}`
+    // e.g. 50mbps < 10%
+    if (this.isBasic) {
+      return `${this.speed.title} ${this.yesno.value === 'yes' ? '>' : '<'} ${
+        this.yesno.value === 'yes' ? '75%' : '10%'
+      }`
+    }
+
+    if (this.isAdvanced) {
+      return `${this.speed.title} ${
+        this.yesno.value === 'yesadvanced' ? '>' : '<'
+      } ${this.percentage}`
+    }
   }
 
   getText() {
@@ -122,8 +191,8 @@ export default class ConnectivityInputs extends Vue {
 
   handleClear() {
     this.speed = null
-    this.operator = { value: '__lte', title: 'within' }
     this.percentage = null
+    this.yesno = null
   }
 }
 </script>

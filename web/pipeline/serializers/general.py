@@ -1,8 +1,22 @@
 from rest_framework import serializers
 
-from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict
+from pipeline.constants import DATABC_PERMALINK_URL
+from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
+
+
+class DataSourceSerializer(serializers.ModelSerializer):
+    source = serializers.CharField(source='get_source_display')
+    source_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = DataSource
+        fields = ("name", "display_name", "source", "source_url", "last_updated")
+
+    def get_source_url(self, obj):
+        if obj.permalink_id:
+            return DATABC_PERMALINK_URL.format(permalink_id=obj.permalink_id)
 
 
 class ServiceListSerializer(serializers.ModelSerializer):

@@ -20,6 +20,7 @@
           </v-btn>
         </v-app-bar>
       </v-img>
+      <v-card-text> Population: {{ population || 'N/A' }} </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn :href="`/community/${cid}`" text target="_blank"
@@ -37,6 +38,7 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 @Component
 export default class CommunityPopup extends Vue {
   @Prop({ default: null, type: String }) name
-  @Prop({ default: null, type: String }) cid
+  @Prop({ default: null, type: Number }) cid
+  @Prop({ default: null, type: Number }) population
 }
 </script>

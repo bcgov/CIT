@@ -42,6 +42,7 @@ V<template>
                   :grouped-locations="filteredLocations"
                   :population="getFieldValue('population')"
                   :grouped-census="groupedCensus"
+                  :rid="communityDetails.regional_district"
                   @expand="handleExpand"
                   @findOnMap="handleFind"
                   @viewReports="viewReports"
@@ -50,6 +51,12 @@ V<template>
                   <div class="pl-4 pr-4">
                     <p class="text-center text-caption pa-0 ma-0">
                       {{ assetModeText }}
+                      <a
+                        v-if="assetMode === 'driving'"
+                        href="/footnotes#community-detail-asset-driving-distance"
+                        target="_blank"
+                        >*</a
+                      >
                     </p>
                     <AssetSlider
                       v-if="assetMode === 'driving'"
@@ -539,20 +546,33 @@ export default class CommunityDetail extends Vue {
   }
 
   async fetch({ store, query }) {
-    const results = await Promise.all([
-      getRegionalDistricts(),
-      getCommunityList(),
-      getAuthToken(),
-      getDataSourceList(),
-    ])
-    const regionalDistricts = results[0].data.results
-    store.commit('communities/setRegionalDistricts', regionalDistricts)
-    const communityList = results[1].data
-    store.commit('communities/setCommunities', communityList)
-    const accessToken = results[2].data.access_token
-    store.commit('msauth/setAccessToken', accessToken)
-    const dataSources = results[3].data
-    store.commit('communities/setDataSources', dataSources)
+    try {
+      const results = await Promise.all([
+        getRegionalDistricts(),
+        getCommunityList(),
+        getDataSourceList(),
+      ])
+      const regionalDistricts = results[0].data.results
+      store.commit('communities/setRegionalDistricts', regionalDistricts)
+      const communityList = results[1].data
+      store.commit('communities/setCommunities', communityList)
+      const dataSources = results[2].data
+      store.commit('communities/setDataSources', dataSources)
+    } catch (e) {
+      console.error(e)
+      store.commit('communities/setRegionalDistricts', [])
+      store.commit('communities/setCommunities', [])
+      store.commit('communities/setDataSources', [])
+    }
+
+    try {
+      const results = await Promise.all([getAuthToken()])
+      const accessToken = results[0].data.access_token
+      store.commit('msauth/setAccessToken', accessToken)
+    } catch (e) {
+      console.error(e)
+      store.commit('msauth/setIsError', true)
+    }
   }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {

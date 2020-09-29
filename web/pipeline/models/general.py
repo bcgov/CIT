@@ -1,6 +1,24 @@
 from django.contrib.gis.db import models
 
 
+class DataSource(models.Model):
+    from pipeline.constants import DATA_SOURCE_TYPE_CHOICES, DATA_SOURCE_CHOICES
+
+    name = models.CharField(max_length=127, unique=True)
+    display_name = models.CharField(max_length=127, null=True)
+    model_name = models.CharField(max_length=127, null=True)
+    source = models.CharField(max_length=127, choices=DATA_SOURCE_CHOICES, null=True)
+    source_type = models.CharField(max_length=127, choices=DATA_SOURCE_TYPE_CHOICES, null=True)
+
+    source_file_path = models.CharField(max_length=255, unique=True, null=True)
+    resource_id = models.CharField(max_length=255, unique=True, null=True)
+    permalink_id = models.CharField(max_length=255, unique=True, null=True)
+    last_updated = models.DateTimeField(null=True)
+
+    def __str__(self):
+        return self.name
+
+
 class Hex(models.Model):
     # "PHH_ID","Avail_5_1_Dispo","Avail_10_2_Dispo","Avail_25_5_Dispo","Avail_50_10_Dispo","Avail_LTE_Mobile_Dispo"
     id = models.CharField(primary_key=True, max_length=12)

@@ -14,7 +14,7 @@
         :items="regionalDistricts"
         item-text="name"
         item-value="id"
-        placeholder="Metro Vancouver Regional District"
+        placeholder="Select a Regional District"
         label="Regional District"
         return-object
         hide-details
@@ -40,6 +40,7 @@ export default class RegionalDistricts extends Vue {
     } else {
       this.active = true
       this.title = this.autocomplete.name
+      this.$root.$emit('regionSelected')
     }
     this.$emit('filter')
   }
@@ -47,6 +48,14 @@ export default class RegionalDistricts extends Vue {
   reset() {
     this.active = false
     this.title = 'Regional Districts'
+  }
+
+  mounted() {
+    this.$root.$on('setRegion', (rid) => {
+      const region = this.regionalDistricts.find((r) => r.id === parseInt(rid))
+      this.autocomplete = region || null
+      this.handleSave()
+    })
   }
 
   getParams() {
