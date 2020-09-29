@@ -5,14 +5,14 @@ from django.conf import settings
 
 from pipeline.models.general import DataSource
 from pipeline.importers.communities import import_communities_from_csv
-from pipeline.importers.utils import import_data_into_point_model, read_csv
+from pipeline.importers.utils import import_data_into_point_model, read_csv, import_mayors_from_csv
 
 FILES_DIR = settings.BASE_DIR
 
 
 def import_csv_resources(resource_type):
     csv_resource_names = DataSource.objects.filter(source_type="csv").values_list("name", flat=True)
-    if resource_type not in ['all', csv_resource_names]:
+    if resource_type not in ['all', *csv_resource_names]:
         print("Error: Resource type {} not supported".format(resource_type))
         return
 
@@ -34,6 +34,8 @@ def import_resource(resource_type):
 
     if resource_type == "communities":
         import_communities_from_csv(file_path)
+    elif resource_type == "mayors":
+        import_mayors_from_csv(file_path)
     elif resource_type in location_csv_resources:
         data = read_csv(data_source.source_file_path)
         for row in data:

@@ -10,7 +10,7 @@ API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resour
 
 def import_databc_resources(resource_type):
     databc_resource_names = DataSource.objects.filter(source_type="api").values_list("name", flat=True)
-    if resource_type not in ['all', databc_resource_names]:
+    if resource_type not in ['all', *databc_resource_names]:
         print("Error: Resource type {} not supported".format(resource_type))
         return
 
