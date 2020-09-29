@@ -404,6 +404,9 @@ def serialize_location_assets(obj):
                 "latitude": location_asset.get_latitude(),
                 "longitude": location_asset.get_longitude(),
                 "driving_distance": location_asset.driving_distance,
+                "distance":
+                    location_asset.driving_distance if location_asset.driving_distance is not None
+                    else location_asset.distance,
                 "travel_time": location_asset.travel_time,
                 "within_municipality": location_asset.within_municipality,
                 **{field: getattr(location_asset, field) for
@@ -419,16 +422,22 @@ def get_location_assets_for_community(model_class, community):
     if model_class == School:
         school_districts = community.schooldistrict_set.all()
         return School.objects.filter(
-            school_district__in=school_districts,
-            distances__driving_distance__lte=50,
-            distances__community=community).annotate(
+            Q(distances__community=community) & Q(school_district__in=school_districts) & (
+                Q(distances__driving_distance__lte=50) |
+                (Q(distances__driving_distance__isnull=True) & Q(distances__distance__lte=50))
+            )).annotate(
                 driving_distance=F('distances__driving_distance'),
+                distance=F('distances__distance'),
                 travel_time=F('distances__travel_time'),
                 within_municipality=F('distances__within_municipality'))
     else:
         return model_class.objects.filter(
-            distances__driving_distance__lte=50, distances__community=community).annotate(
+            Q(distances__community=community) & (
+                Q(distances__driving_distance__lte=50) |
+                (Q(distances__driving_distance__isnull=True) & Q(distances__distance__lte=50))
+            )).annotate(
                 driving_distance=F('distances__driving_distance'),
+                distance=F('distances__distance'),
                 travel_time=F('distances__travel_time'),
                 within_municipality=F('distances__within_municipality'))
 
