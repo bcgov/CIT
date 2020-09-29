@@ -42,4 +42,5 @@ urlpatterns = [
     url(r"^locationdistances/geojson/$", pipeline.views.general.LocationDistanceGeoJSONList.as_view()),
     url(r"^locationdistances/$", pipeline.views.general.LocationDistanceList.as_view()),
     url(r"^schooldistricts/$", pipeline.views.general.SchoolDistrictList.as_view()),
+    url(r"^mayors/$", pipeline.views.general.MayorList.as_view()),
 ]

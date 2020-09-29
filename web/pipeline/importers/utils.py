@@ -9,7 +9,7 @@ from django.core.exceptions import FieldDoesNotExist
 from django.contrib.gis.measure import D
 
 from pipeline.models.community import Community
-from pipeline.models.general import DataSource, LocationDistance, SchoolDistrict, Municipality
+from pipeline.models.general import DataSource, LocationDistance, SchoolDistrict, Municipality, Mayor
 from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES
 
@@ -334,3 +334,30 @@ def calculate_communities_served_for_hospitals():
             distances__distance__lte=50).distinct().count()
         hospital.num_communities_within_50km = num_communities_within_50km
         hospital.save()
+
+
+def import_mayors_from_csv(file_path):
+    with open(file_path) as csv_file:
+        csv_reader = csv.DictReader(csv_file, delimiter=',')
+        for row in csv_reader:
+            # Only import elected mayors
+            if not(row['Elected (YES/NO)'] == 'YES' and row['Type'] == 'MAYOR'):
+                continue
+
+            try:
+                community = Community.objects.get(place_name=row['Local Government'])
+
+            except Community.DoesNotExist:
+                print("Could not find community called {}".format(row['Local Government']))
+                continue
+
+            mayor, created = Mayor.objects.get_or_create(
+                first_name=row['First Name'].title(),
+                last_name=row['Last Name'].title(),
+                middle_name=row['Middle Name'].title(),
+                community=community)
+            print("mayor", mayor)
+
+            mayor.gender = row['Gender'].title()
+            mayor.experience = row['Experience'].title()
+            mayor.save()

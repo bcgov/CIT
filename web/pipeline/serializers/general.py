@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from pipeline.constants import DATABC_PERMALINK_URL
-from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource
+from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource, Mayor
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
 
@@ -301,4 +301,18 @@ class SchoolDistrictSerializer(serializers.ModelSerializer):
             "name",
             "sd_num",
             "community"
+        )
+
+
+class MayorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mayor
+        fields = (
+            "id",
+            "last_name",
+            "first_name",
+            "middle_name",
+            "community",
+            "gender",
+            "experience",
         )

@@ -213,3 +213,22 @@ class TsunamiZone(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Mayor(models.Model):
+    community = models.ForeignKey("Community", on_delete=models.DO_NOTHING)
+    first_name = models.CharField(max_length=255)
+    middle_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    gender = models.CharField(max_length=255)
+    experience = models.CharField(max_length=255)
+
+    """
+[('Local Government', '100 Mile House'), ('Jurisdiction Type', 'District'), ('First Name', 'Mitch'), ('Last Name', 'Campsall'), ('Middle Name', ''), ('Gender', 'M'), ('Age', ''), ('Experience', 'Incumbent'), ('Type', 'MAYOR'), ('Elected (YES/NO)', 'YES'), ('Number of Votes', '410'), ('Acclamation(YES/NO)', ''), ('Electoral/SD Area', ''), ('Electoral/SD Area Est. Eligible Voters', ''), ('Elector Organization', ''), ('Regional District', 'Cariboo'), ('Geographic Region', 'North Central / Cariboo'), ('Last Updated', '2018-10-21 06:38:07')]
+    """
+
+    class Meta:
+        ordering = ("id",)
+
+    def __str__(self):
+        return "{}: {} {}".format(self.community, self.first_name, self.last_name)
