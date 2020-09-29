@@ -3,13 +3,11 @@
     <h2>Data Footnotes and Assumptions</h2>
 
     <ol>
-
       <li
         id="northern-rockies"
         :class="{ selected: anchor === 'northern-rockies' }"
       >
         <p>
-
           The Northern Rockies Regional Municipality is included in our data as
           a "Regional District," even though it is technically a regional
           municipality, and not a regional district. The shape of this "regional
@@ -19,7 +17,7 @@
             >Census Divisions</a
           >
           dataset from the BC Data Catalogue.
-        </div>
+        </p>
         <a href="#northern-rockies"><v-icon>mdi-link</v-icon> Permalink</a>
       </li>
 
@@ -28,7 +26,6 @@
         :class="{ selected: anchor === 'distances-50km' }"
       >
         <p>
-
           We calculated driving distances and driving times using the
           <a href="https://catalogue.data.gov.bc.ca/dataset/bc-route-planner"
             >BC Route Planner API</a
@@ -36,23 +33,21 @@
           is within 50 km between location assets and communities, OR the
           distances between the nearest location asset of each type for a
           community if none are within 50 km.
-        </div>
+        </p>
         <a href="#distances-50km"><v-icon>mdi-link</v-icon> Permalink</a>
       </li>
       <li
         id="search-filters-distance"
-
         :class="{ selected: anchor === 'search-filters-distance' }"
       >
         <p>
-
           The search filters on the Explore page use driving distance or driving
           time, not birds' eye distance. Thus, location assets will be excluded
           from the search results if they do not have driving distances (e.g. if
           they are not on a public road) even if they "should" be within the
           specified distance.
           <a href="#distances-50km">Read more about driving distances.</a>
-        </div>
+        </p>
         <a href="#search-filters-distance"
           ><v-icon>mdi-link</v-icon> Permalink</a
         >
@@ -63,12 +58,11 @@
         :class="{ selected: anchor === 'census-subdivisions' }"
       >
         <p>
-
           Demographic data is sourced from Stats Canada at the subdivision
           level. This means that data from unincorporated communities may
           actually apply to surrounding area containing several other small
           communities.
-        </div>
+        </p>
         <a href="#census-subdivisions">
           <v-icon>mdi-link</v-icon>
           Permalink</a
@@ -76,7 +70,6 @@
       </li>
       <li
         id="explore-domestic-report"
-
         :class="{ selected: anchor === 'explore-domestic-report' }"
       >
         Domestic Report (Explore page)
@@ -88,11 +81,10 @@
             }"
           >
             <p>
-
               The percentage of average number of dwellings needing repairs is
               calculated using the "Total - Private households by household size
               - 100% data" (2.1.2) field as the total.
-            </div>
+            </p>
             <a href="#avg-dwellings-needing-major-repairs"
               ><v-icon>mdi-link</v-icon> Permalink</a
             >
@@ -127,7 +119,6 @@ import MainHeader from '~/components/MainHeader.vue'
   MainHeader,
 })
 export default class DataFootnotes extends Vue {
-
   anchor = null
 
   @Watch('$route.hash', { immediate: true, deep: true })
@@ -146,8 +137,7 @@ export default class DataFootnotes extends Vue {
   background: yellow;
 }
 .footnotes li {
-  padding-top
-  : 25px;
+  padding-top: 25px;
 }
 .selected {
   background-color: #e5e8ec;
