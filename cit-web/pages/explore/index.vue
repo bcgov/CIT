@@ -284,28 +284,44 @@ export default class Explore extends Vue {
     rid && this.$root.$emit('setRegion', rid)
   }
 
-  async asyncData({ store, $config }) {
-    const results = await Promise.all([
-      getRegionalDistricts(),
-      getCommunityList(),
-      getAuthToken(),
-      getCommunityGeoJSON(),
-    ])
-    const regionalDistricts = results[0].data.results
-    store.commit('communities/setRegionalDistricts', regionalDistricts)
-    const communityList = results[1].data
-    store.commit('communities/setCommunities', communityList)
-    const accessToken = results[2].data.access_token
-    store.commit('msauth/setAccessToken', accessToken)
-    const groupedCommunities = groupBy(communityList, 'regional_district')
-    const communityGeoJSON = results[3].data
-    store.commit('communities/setCommunityGeoJSON', communityGeoJSON)
+  async fetch({ store }) {
+    try {
+      const results = await Promise.all([getAuthToken()])
+      const accessToken = results[0].data.access_token
+      store.commit('msauth/setAccessToken', accessToken)
+    } catch (e) {
+      console.error(e)
+      store.commit('msauth/setIsError', true)
+    }
+  }
 
-    return {
-      communityList,
-      regionalDistricts,
-      groupedCommunities,
-      citFeedbackEmail: $config.citFeedbackEmail,
+  async asyncData({ store, $config }) {
+    try {
+      const results = await Promise.all([
+        getRegionalDistricts(),
+        getCommunityList(),
+        getCommunityGeoJSON(),
+      ])
+      const regionalDistricts = results[0].data.results
+      store.commit('communities/setRegionalDistricts', regionalDistricts)
+      const communityList = results[1].data
+      store.commit('communities/setCommunities', communityList)
+      const groupedCommunities = groupBy(communityList, 'regional_district')
+      const communityGeoJSON = results[2].data
+      store.commit('communities/setCommunityGeoJSON', communityGeoJSON)
+
+      return {
+        communityList,
+        regionalDistricts,
+        groupedCommunities,
+      }
+    } catch (e) {
+      console.error(e)
+      return {
+        communityList: [],
+        regionalDistricts: [],
+        groupedCommunities: [],
+      }
     }
   }
 

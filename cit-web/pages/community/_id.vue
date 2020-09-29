@@ -540,20 +540,33 @@ export default class CommunityDetail extends Vue {
   }
 
   async fetch({ store, query }) {
-    const results = await Promise.all([
-      getRegionalDistricts(),
-      getCommunityList(),
-      getAuthToken(),
-      getDataSourceList(),
-    ])
-    const regionalDistricts = results[0].data.results
-    store.commit('communities/setRegionalDistricts', regionalDistricts)
-    const communityList = results[1].data
-    store.commit('communities/setCommunities', communityList)
-    const accessToken = results[2].data.access_token
-    store.commit('msauth/setAccessToken', accessToken)
-    const dataSources = results[3].data
-    store.commit('communities/setDataSources', dataSources)
+    try {
+      const results = await Promise.all([
+        getRegionalDistricts(),
+        getCommunityList(),
+        getDataSourceList(),
+      ])
+      const regionalDistricts = results[0].data.results
+      store.commit('communities/setRegionalDistricts', regionalDistricts)
+      const communityList = results[1].data
+      store.commit('communities/setCommunities', communityList)
+      const dataSources = results[2].data
+      store.commit('communities/setDataSources', dataSources)
+    } catch (e) {
+      console.error(e)
+      store.commit('communities/setRegionalDistricts', [])
+      store.commit('communities/setCommunities', [])
+      store.commit('communities/setDataSources', [])
+    }
+
+    try {
+      const results = await Promise.all([getAuthToken()])
+      const accessToken = results[0].data.access_token
+      store.commit('msauth/setAccessToken', accessToken)
+    } catch (e) {
+      console.error(e)
+      store.commit('msauth/setIsError', true)
+    }
   }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
