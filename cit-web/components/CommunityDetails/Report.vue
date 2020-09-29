@@ -1,6 +1,12 @@
 <template>
   <div>
+    <div v-if="error || accessTokenError">
+      <v-alert type="warning">
+        {{ errorMessage }}
+      </v-alert>
+    </div>
     <div
+      v-else
       ref="reportContainer"
       class="reportContainer"
       :style="`height: ${height}px; width: ${width}px;`"
@@ -10,9 +16,10 @@
 </template>
 
 <script>
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, Watch, namespace } from 'nuxt-property-decorator'
 import { GenerateTokenInGroup } from '~/api/powerbi-rest-api/EmbedToken.js'
 import { GetReportInGroup } from '~/api/powerbi-rest-api/Report.js'
+const msauthModule = namespace('msauth')
 
 @Component
 export default class MainReport extends Vue {
@@ -21,6 +28,8 @@ export default class MainReport extends Vue {
   @Prop({ default: '', type: String }) height
   @Prop({ default: '', type: String }) width
 
+  @msauthModule.Getter('getIsError') accessTokenError
+
   @Watch('cids')
   onCidsChanged() {
     this.whenReportLoaded((report) => {
@@ -28,6 +37,8 @@ export default class MainReport extends Vue {
     })
   }
 
+  errorMessage = null
+  error = false
   embedToken = null
   groupId = '0399d295-4354-4955-8ed9-68709eb5e7b5'
   reportId = this.$config.reportId
@@ -37,22 +48,33 @@ export default class MainReport extends Vue {
   error = false
 
   async mounted() {
-    const { data: reportInGroup } = await GetReportInGroup(
-      this.groupId,
-      this.reportId
-    )
-    this.embedUrl = reportInGroup.embedUrl
+    if (this.accessTokenError === true) {
+      this.errorMessage = 'There was an error retrieving an access token.'
+      return
+    }
 
-    const { data: tokenInGroup } = await GenerateTokenInGroup(
-      this.groupId,
-      this.reportId
-    )
-    this.embedToken = tokenInGroup.token
-    const configuration = this.getEmbedConfiguration()
-    const container = this.$refs.reportContainer
-    this.report = this.embedReport(container, configuration)
-    if (this.error === false) {
-      this.listenToEvents()
+    try {
+      const { data: reportInGroup } = await GetReportInGroup(
+        this.groupId,
+        this.reportId
+      )
+      this.embedUrl = reportInGroup.embedUrl
+
+      const { data: tokenInGroup } = await GenerateTokenInGroup(
+        this.groupId,
+        this.reportId
+      )
+      this.embedToken = tokenInGroup.token
+      const configuration = this.getEmbedConfiguration()
+      const container = this.$refs.reportContainer
+      this.report = this.embedReport(container, configuration)
+      if (this.error === false) {
+        this.listenToEvents()
+      }
+    } catch (e) {
+      console.error(e)
+      this.error = true
+      this.errorMessage = 'There was an error loading the reports.'
     }
   }
 
