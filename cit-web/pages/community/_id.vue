@@ -51,6 +51,12 @@ V<template>
                   <div class="pl-4 pr-4">
                     <p class="text-center text-caption pa-0 ma-0">
                       {{ assetModeText }}
+                      <a
+                        v-if="assetMode === 'driving'"
+                        href="/footnotes#community-detail-asset-driving-distance"
+                        target="_blank"
+                        >*</a
+                      >
                     </p>
                     <AssetSlider
                       v-if="assetMode === 'driving'"
