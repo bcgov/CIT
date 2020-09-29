@@ -199,7 +199,7 @@ export default class Explore extends Vue {
         'text-field': ['to-string', ['get', 'place_name']],
         'text-size': 13,
         'icon-image': 'communities',
-        'icon-size': ['interpolate', ['linear'], ['zoom'], 5, 0.5, 15, 1],
+        'icon-size': ['interpolate', ['linear'], ['zoom'], 5, 0.5, 12, 1],
         'text-offset': [0, 1],
         'text-optional': true,
         'icon-allow-overlap': ['step', ['zoom'], false, 8, true],
@@ -223,7 +223,7 @@ export default class Explore extends Vue {
           750,
           '#073366',
         ],
-        'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
+        'circle-radius': ['step', ['get', 'point_count'], 16, 100, 25, 750, 36],
       },
     })
 
