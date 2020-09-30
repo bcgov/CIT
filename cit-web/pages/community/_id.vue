@@ -175,6 +175,13 @@ V<template>
                   ></DetailCompareSection>
                 </v-col>
               </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <v-card class="rounded-xl">
+                    <ReportTraverse @traverse="reportOpen"></ReportTraverse>
+                  </v-card>
+                </v-col>
+              </v-row>
             </v-container>
           </div>
         </v-card>
@@ -233,6 +240,7 @@ import groupBy from 'lodash/groupBy'
 import Breadcrumbs from '~/components/CommunityDetails/Breadcrumbs.vue'
 import Sidebar from '~/components/CommunityDetails/Sidebar.vue'
 import ReportSection from '~/components/CommunityDetails/ReportSection.vue'
+import ReportTraverse from '~/components/ReportTraverse.vue'
 import MainHeader from '~/components/MainHeader.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
 import LayerSwitcher from '~/components/LayerSwitcher'
@@ -274,7 +282,7 @@ const commModule = namespace('communities')
   LayerSwitcher,
   ZoomControl,
   Legend,
-
+  ReportTraverse,
   filters: {
     yesno,
   },

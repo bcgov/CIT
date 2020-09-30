@@ -37,6 +37,11 @@ export default class MainReport extends Vue {
     })
   }
 
+  @Watch('pageName')
+  async pageNameChanged() {
+    await this.init()
+  }
+
   errorMessage = null
   error = false
   embedToken = null
@@ -48,33 +53,36 @@ export default class MainReport extends Vue {
   error = false
 
   async mounted() {
-    if (this.accessTokenError === true) {
-      this.errorMessage = 'There was an error retrieving an access token.'
-      return
-    }
-
     try {
-      const { data: reportInGroup } = await GetReportInGroup(
-        this.groupId,
-        this.reportId
-      )
-      this.embedUrl = reportInGroup.embedUrl
-
-      const { data: tokenInGroup } = await GenerateTokenInGroup(
-        this.groupId,
-        this.reportId
-      )
-      this.embedToken = tokenInGroup.token
-      const configuration = this.getEmbedConfiguration()
-      const container = this.$refs.reportContainer
-      this.report = this.embedReport(container, configuration)
-      if (this.error === false) {
-        this.listenToEvents()
-      }
+      await this.init()
     } catch (e) {
       console.error(e)
       this.error = true
       this.errorMessage = 'There was an error loading the reports.'
+    }
+  }
+
+  async init() {
+    if (this.accessTokenError === true) {
+      this.errorMessage = 'There was an error retrieving an access token.'
+      return
+    }
+    const { data: reportInGroup } = await GetReportInGroup(
+      this.groupId,
+      this.reportId
+    )
+    this.embedUrl = reportInGroup.embedUrl
+
+    const { data: tokenInGroup } = await GenerateTokenInGroup(
+      this.groupId,
+      this.reportId
+    )
+    this.embedToken = tokenInGroup.token
+    const configuration = this.getEmbedConfiguration()
+    const container = this.$refs.reportContainer
+    this.report = this.embedReport(container, configuration)
+    if (this.error === false) {
+      this.listenToEvents()
     }
   }
 
