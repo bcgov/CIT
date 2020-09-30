@@ -6,6 +6,7 @@
       :filter-title="'Wildfire Zone'"
       :active="active"
       :card-width="200"
+      :disabled="disabled"
       @save="handleSave"
       @clear="handleClear"
     >
@@ -23,14 +24,21 @@
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import MenuFilter from '~/components/Explore/Filters/MenuFilter'
 @Component({
   MenuFilter,
 })
 export default class Wildfire extends Vue {
+  @Prop({ default: false, type: Boolean }) disabled
   title = 'Wildfire Zone'
   active = false
+
+  reset() {
+    this.title = 'Wildfire Zone'
+    this.active = false
+    this.wildfireZones.map((wfz) => (wfz.state = null))
+  }
 
   wildfireZones = [
     {

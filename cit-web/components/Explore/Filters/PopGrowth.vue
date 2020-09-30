@@ -5,6 +5,7 @@
       :chip-title="title"
       :filter-title="'Population Growth'"
       :active="active"
+      :disabled="disabled"
       @save="handleSave"
       @clear="handleClear"
     >
@@ -20,15 +21,24 @@
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import MenuFilter from '~/components/Explore/Filters/MenuFilter'
 @Component({
   MenuFilter,
 })
 export default class PopGrowth extends Vue {
+  @Prop({ default: false, type: Boolean }) disabled
+
   radioGroup = null
   title = 'Population Growth'
   active = false
+
+  reset() {
+    this.radioGroup = null
+    this.title = 'Population Growth'
+    this.active = false
+  }
+
   populationTypes = [
     {
       title: 'Shrinking',

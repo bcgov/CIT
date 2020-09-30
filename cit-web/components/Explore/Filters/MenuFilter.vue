@@ -9,7 +9,14 @@
     nudge-bottom="5"
   >
     <template v-slot:activator="{ on }">
-      <v-chip pill outlined :input-value="active" filter v-on="on">
+      <v-chip
+        pill
+        outlined
+        :input-value="active"
+        filter
+        :disabled="disabled"
+        v-on="on"
+      >
         {{ chipTitle }}
       </v-chip>
     </template>
@@ -45,6 +52,7 @@ export default class MenuFilter extends Vue {
   @Prop({ default: null, type: String }) chipTitle
   @Prop({ default: false, type: Boolean }) active
   @Prop({ default: 300, type: Number }) cardWidth
+  @Prop({ default: false, type: Boolean }) disabled
 
   menu = false
 
