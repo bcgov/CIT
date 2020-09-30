@@ -83,8 +83,9 @@
             </p>
           </div>
 
-          <div class="mt-3 mb-6 d-flex">
+          <div class="mt-3 mb-6 d-flex justify-center">
             <v-btn
+              v-if="!noCommunities"
               block
               depressed
               color="primary"
@@ -97,6 +98,16 @@
               <v-spacer></v-spacer>
               <v-icon block class="mr-2">mdi-arrow-right</v-icon>
             </v-btn>
+            <div v-else class="mt-6">
+              <p
+                class="text-h4 light-blue--text text--darken-1 text-center font-weight-bold"
+              >
+                No Communities
+              </p>
+              <p class="text-body-1">
+                Try broadening your filters/search criteria
+              </p>
+            </div>
           </div>
           <Results :grouped-communities="groupedCommunities"></Results>
         </div>
@@ -148,6 +159,7 @@
 import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import groupBy from 'lodash/groupBy'
 import uniqBy from 'lodash/uniqBy'
+import isEmpty from 'lodash/isEmpty'
 import intersectionBy from 'lodash/intersectionBy'
 import flatMap from 'lodash/flatMap'
 import ExploreMap from '~/components/Explore/ExploreMap.vue'
@@ -187,6 +199,10 @@ export default class Explore extends Vue {
 
   get isMobile() {
     return this.$vuetify.breakpoint.width < 1050
+  }
+
+  get noCommunities() {
+    return isEmpty(this.groupedCommunities)
   }
 
   get breadcrumbs() {
