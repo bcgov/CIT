@@ -1,18 +1,20 @@
 <template>
   <div>
     <v-menu
+      :key="counter"
       v-model="menu"
       class="pa-0 ma-0 rounded"
       top
-      left
+      right
       transition="fade-transition"
       :close-on-content-click="false"
       :close-on-click="false"
-      :nudge-top="5"
+      :nudge-top="10"
       offset-y
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
+          ref="menuButton"
           color="primary"
           small
           fab
@@ -50,12 +52,23 @@
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 
 @Component({})
 export default class LayerSwitcher extends Vue {
   menu = false
   select = 'InternetSpeed'
+
+  counter = 0
+  @Watch('select')
+  handleSelectChange() {
+    this.$refs.menuButton.$el.click()
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.$refs.menuButton.$el.click()
+      }, 100)
+    })
+  }
 
   get legend() {
     const componentName = this.select
