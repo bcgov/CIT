@@ -13,6 +13,7 @@ class DataSource(models.Model):
     source_file_path = models.CharField(max_length=255, unique=True, null=True)
     resource_id = models.CharField(max_length=255, unique=True, null=True)
     permalink_id = models.CharField(max_length=255, unique=True, null=True)
+    external_url = models.URLField(null=True)
     last_updated = models.DateTimeField(null=True)
 
     def __str__(self):

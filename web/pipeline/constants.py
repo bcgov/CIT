@@ -2,6 +2,7 @@ DATABC_PERMALINK_URL = 'https://catalogue.data.gov.bc.ca/dataset/{permalink_id}'
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/resource_show?id={dataset_resource_id}"
 SOURCE_INTERNAL = 'internal'
 SOURCE_DATABC = 'databc'
+SOURCE_STATSCAN = 'statscan'
 
 DATA_SOURCE_TYPE_CHOICES = (
     ("csv", "CSV"),
@@ -12,6 +13,7 @@ DATA_SOURCE_TYPE_CHOICES = (
 DATA_SOURCE_CHOICES = (
     (SOURCE_INTERNAL, "Provided by Network BC team"),
     (SOURCE_DATABC, "BC Data Catalogue"),
+    (SOURCE_STATSCAN, "Statistics Canada"),
 )
 
 LOCATION_TYPES = [
