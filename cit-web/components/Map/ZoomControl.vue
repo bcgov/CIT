@@ -3,7 +3,7 @@
     <v-btn
       color="primary rounded-lg"
       fab
-      x-small
+      small
       style="
         border-bottom-left-radius: 0 !important;
         border-bottom-right-radius: 0 !important;
@@ -14,7 +14,7 @@
     <v-btn
       color="primary rounded-lg"
       fab
-      x-small
+      small
       style="
         border-top-left-radius: 0 !important;
         border-top-right-radius: 0 !important;
