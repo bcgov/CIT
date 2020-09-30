@@ -6,6 +6,7 @@
       :filter-title="'Community Type'"
       :active="active"
       :card-width="200"
+      :disabled="disabled"
       @save="handleSave"
       @clear="handleClear"
     >
@@ -35,19 +36,27 @@
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import MenuFilter from '~/components/Explore/Filters/MenuFilter'
 @Component({
   MenuFilter,
 })
 export default class CommunityType extends Vue {
-  radioGroup = null
+  @Prop({ default: false, type: Boolean }) disabled
+
   title = 'Community Type'
   active = false
-
   urban = null
   rural = null
   indigenous = null
+
+  reset() {
+    this.title = 'Community Type'
+    this.active = false
+    this.urban = null
+    this.rural = null
+    this.indigenous = null
+  }
 
   handleSave() {
     this.$refs.menuFilter.hide()

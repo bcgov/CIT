@@ -53,6 +53,7 @@
           </p>
         </div>
         <ExploreFilters
+          :disabled="loadingResults"
           @filtered="handleFiltered"
           @loading="handleLoading"
         ></ExploreFilters>
@@ -178,7 +179,7 @@ export default class Explore extends Vue {
   selectedReportName = null
   mobileNav = null
   loadingResults = false
-
+  numFiltersActive = 0
   reportCards = ExplorePages
   reportsToHide = null
 

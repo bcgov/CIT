@@ -6,6 +6,7 @@
       :filter-title="'Power Access'"
       :active="active"
       :card-width="350"
+      :disabled="disabled"
       @save="handleSave"
       @clear="handleClear"
     >
@@ -28,18 +29,26 @@
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import MenuFilter from '~/components/Explore/Filters/MenuFilter'
 @Component({
   MenuFilter,
 })
 export default class PowerAccess extends Vue {
+  @Prop({ default: false, type: Boolean }) disabled
+
   title = 'Power Access'
   active = false
 
   min = 0
   max = 100
   range = [this.min, this.max]
+
+  reset() {
+    this.title = 'Power Access'
+    this.active = false
+    this.range = [this.min, this.max]
+  }
 
   get isDefaultRange() {
     return this.range[0] === this.min && this.range[1] === this.max

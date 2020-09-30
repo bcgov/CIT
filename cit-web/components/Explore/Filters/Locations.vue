@@ -6,6 +6,7 @@
       :filter-title="'Local Assets'"
       :card-width="600"
       :active="active"
+      :disabled="disabled"
       @clear="handleClear"
       @save="handleSave"
     >
@@ -43,7 +44,7 @@
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import uid from 'uid'
 import isEmpty from 'lodash/isEmpty'
 import LocationInputs from '~/components/Explore/Filters/LocationInputs.vue'
@@ -51,10 +52,18 @@ import LocationInputs from '~/components/Explore/Filters/LocationInputs.vue'
   LocationInputs,
 })
 export default class Locations extends Vue {
+  @Prop({ default: false, type: Boolean }) disabled
+
   title = 'Local Assets'
   active = false
-
   locationFilters = [uid()]
+
+  reset() {
+    this.title = 'Local Assets'
+    this.active = false
+    this.locationFilters = [uid()]
+  }
+
   addLocation() {
     this.locationFilters.push(uid())
   }

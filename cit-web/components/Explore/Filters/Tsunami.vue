@@ -6,6 +6,7 @@
       :filter-title="'Wildfire Zone'"
       :active="active"
       :card-width="250"
+      :disabled="disabled"
       @save="handleSave"
       @clear="handleClear"
     >
@@ -23,11 +24,20 @@
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 @Component
 export default class Tsunami extends Vue {
+  @Prop({ default: false, type: Boolean }) disabled
+
   title = 'Tsunami Zone'
   active = false
+
+  reset() {
+    this.title = 'Tsunami Zone'
+    this.active = false
+    this.tsunamiZones.map((tsz) => (tsz.state = null))
+  }
+
   tsunamiZones = [
     {
       value: 'A',
