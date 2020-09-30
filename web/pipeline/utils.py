@@ -649,6 +649,9 @@ def _handle_location_filter(query_filter):
         distance_query = Q(**{query: query_filter["value"][0]})
 
     if query_filter["units"] == "km":
+        # if filtering by distance, add a fallback for birds' eye distance if driving distance
+        # is unavailable
+        # (i.e. driving distance < 50km OR (driving distance is null AND birds' eye distance < 50km))
         birds_eye_distance_query = "distances__distance__" + query_filter["operator"]
         distance_query = (
             distance_query |
