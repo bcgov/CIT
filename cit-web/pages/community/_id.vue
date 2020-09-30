@@ -130,15 +130,15 @@ V<template>
         </v-btn>
       </div>
 
-      <div ref="legendControl">
-        <LegendControl></LegendControl>
-      </div>
-
       <div ref="layerSwitcher">
         <LayerSwitcher
           :layers="layerSwitcher"
           @layerToggle="handleLayerToggle"
         ></LayerSwitcher>
+      </div>
+
+      <div ref="legend">
+        <Legend></Legend>
       </div>
 
       <div ref="zoomControl">
@@ -233,7 +233,6 @@ import groupBy from 'lodash/groupBy'
 import Breadcrumbs from '~/components/CommunityDetails/Breadcrumbs.vue'
 import Sidebar from '~/components/CommunityDetails/Sidebar.vue'
 import ReportSection from '~/components/CommunityDetails/ReportSection.vue'
-import LegendControl from '~/components/CommunityDetails/LegendControl.vue'
 import MainHeader from '~/components/MainHeader.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
 import LayerSwitcher from '~/components/LayerSwitcher'
@@ -243,6 +242,9 @@ import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.v
 import ControlFactory from '~/utils/map'
 import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
 import AssetSlider from '~/components/CommunityDetails/AssetSlider'
+
+import Legend from '~/components/Map/Legend'
+
 import {
   getCommunity,
   getCensusSubDivision,
@@ -262,7 +264,6 @@ const commModule = namespace('communities')
   AssetSlider,
   Sidebar,
   ReportCard,
-  LegendControl,
   ReportSection,
   LocationCard,
   MainHeader,
@@ -272,6 +273,8 @@ const commModule = namespace('communities')
   DetailCompareSection,
   LayerSwitcher,
   ZoomControl,
+  Legend,
+
   filters: {
     yesno,
   },
@@ -681,11 +684,8 @@ export default class CommunityDetail extends Vue {
   addControls(map) {
     const centerControl = new ControlFactory(this.$refs.centerControl)
     map.addControl(centerControl, 'top-right')
-
     map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'bottom-right')
-
-    const legendControl = new ControlFactory(this.$refs.legendControl)
-    map.addControl(legendControl, 'bottom-right')
+    map.addControl(new ControlFactory(this.$refs.legend), 'bottom-right')
   }
 
   mounted() {
