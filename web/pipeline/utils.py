@@ -642,13 +642,17 @@ def _handle_location_filter(query_filter):
 
     # TODO refactor duplicate code
     if query_filter["operator"] == "xgt":
-        pass
         query += "__lt"
-        print("query_filter here", query_filter)
         distance_query = ~Q(**{query: query_filter["value"][0]})
     else:
         query += "__{}".format(query_filter["operator"])
         distance_query = Q(**{query: query_filter["value"][0]})
+
+    if query_filter["units"] == "km":
+        birds_eye_distance_query = "distances__distance__" + query_filter["operator"]
+        distance_query = (
+            distance_query |
+            (Q(distances__driving_distance__isnull=True) & Q(**{birds_eye_distance_query: query_filter["value"][0]})))
 
     print("location_query", location_type_query, distance_query)
 
