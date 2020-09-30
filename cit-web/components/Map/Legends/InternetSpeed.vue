@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-card max-width="190">
-      <v-list>
-        <v-list-item two-line>
+    <v-card max-width="190" style="border: 0;" class="elevation-0 pa-0 ma-0">
+      <v-list class="ma-0 pa-0">
+        <v-list-item two-line class="ma-0 pa-0">
           <v-list-item-content>
             <v-list-item-title>Internet Speeds</v-list-item-title>
             <v-list-item-subtitle
@@ -31,8 +31,10 @@
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
 
-@Component
-export default class MainReport extends Vue {}
+@Component({
+  name: 'InternetSpeed',
+})
+export default class w extends Vue {}
 </script>
 <style lang="scss" scoped>
 .legend-icon {
