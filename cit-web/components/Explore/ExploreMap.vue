@@ -307,8 +307,7 @@ export default class Explore extends Vue {
     })
 
     this.$root.$on('communitiesChanged', (communities) => {
-      if (!communities.length)
-        return alert('No results, please change your filters.')
+      if (!communities.length) return
 
       const bounds = communities.reduce(function (bounds, feature) {
         return bounds.extend([feature.longitude, feature.latitude])
