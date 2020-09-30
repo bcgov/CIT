@@ -41,11 +41,16 @@
         :class="{ selected: anchor === 'search-filters-distance' }"
       >
         <p>
-          The search filters on the Explore page use driving distance or driving
-          time, not birds' eye distance. Thus, location assets will be excluded
-          from the search results if they do not have driving distances (e.g. if
-          they are not on a public road) even if they "should" be within the
-          specified distance.
+          The search filters for local assets on the Explore page use driving
+          distance or driving time (based on road information) when available.
+          This means that some local assets might be excluded from the search
+          results when searching by driving time, even if they "should" be
+          within the selected range. This could happen if a local asset and a
+          community are separated by a body of water (i.e. there are no
+          connecting roads between them). However, when filtering by driving
+          distance, the search will fall back to birds' eye (straight line)
+          distances whenever driving distances are unavailable.
+
           <a href="#distances-50km">Read more about driving distances.</a>
         </p>
         <a href="#search-filters-distance"
@@ -98,10 +103,11 @@
         }"
       >
         <p>
-          The distance filter for facilities uses driving distance whenever
-          available, and falls back to birds' eye distance otherwise. (For
-          example, if a facility and a community are separated by a body of
-          water, driving distance will not be available.)
+          The distance filter for facilities uses driving distance based on road
+          information when available, and falls back to birds' eye (straight
+          line) distance otherwise. (For example, if a facility and a community
+          are separated by a body of water, driving distance will not be
+          available.)
         </p>
         <a href="#community-detail-asset-driving-distance"
           ><v-icon>mdi-link</v-icon> Permalink</a
