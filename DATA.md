@@ -26,6 +26,19 @@ ogr2ogr -f kml -t_srs EPSG:4326 hexes.kml CHX_EXO_geo.kmz
 ogr2ogr -f kml -clipsrc -144 48 -110 60 hexbc.kml hexes.kml
 ```
 
+
+```
+ogrinfo -so web/data/lcsd000b16a_e.zip
+unzip lcsd000b16a_e.zip
+ogr2ogr -t_srs EPSG:4326 census.shp lcsd000b16a_e.shp
+mkdir census
+mv census* census
+zip census.zip census/*
+```
+
+TODO: consider clipping subdivs. `ogr2ogr -clipsrc -144 48 -110 60 census_bc.zip census.zip`
+
+
 ## Importing Data
 
 Some data must be downloaded locally (data bc warehouse resources). Download all local datasets to the `data` folder. ie, the census subdiv geometry:

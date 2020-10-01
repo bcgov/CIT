@@ -5,7 +5,7 @@
       v-model="menu"
       class="pa-0 ma-0 rounded"
       top
-      right
+      left
       transition="fade-transition"
       :close-on-content-click="false"
       :close-on-click="false"

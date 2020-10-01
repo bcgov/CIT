@@ -52,7 +52,7 @@ V<template>
                     <p class="text-center text-caption pa-0 ma-0">
                       {{ assetModeText }}
                       <a
-                        v-if="assetMode === 'driving'"
+                        v-i="assetMode === 'driving'"
                         href="/footnotes#community-detail-asset-driving-distance"
                         target="_blank"
                         >*</a
@@ -125,8 +125,14 @@ V<template>
       </div>
 
       <div ref="centerControl" @click="handleResetCenter">
-        <v-btn x-small fab color="primary">
-          <v-icon small>mdi-bullseye</v-icon>
+        <v-btn color="primary" small fab class="rounded-lg text-capitalize">
+          <v-icon>mdi-bullseye</v-icon>
+        </v-btn>
+      </div>
+
+      <div ref="fullscreenControl" @click="handleFullScreen">
+        <v-btn color="primary" small fab class="rounded-lg text-capitalize">
+          <v-icon>mdi-arrow-expand-all</v-icon>
         </v-btn>
       </div>
 
@@ -428,6 +434,23 @@ export default class CommunityDetail extends Vue {
     })
   }
 
+  fullScreen = false
+  handleFullScreen() {
+    if (!this.fullScreen) {
+      this.$refs.map.requestFullscreen() ||
+        this.$refs.map.mozRequestFullScreen() ||
+        this.$refs.map.msRequestFullscreen() ||
+        this.$refs.map.webkitRequestFullscreen()
+      this.fullScreen = true
+    } else {
+      window.document.exitFullscreen() ||
+        window.document.mozCancelFullScreen() ||
+        window.document.msExitFullscreen() ||
+        window.document.webkitCancelFullScreen()
+      this.fullScreen = false
+    }
+  }
+
   reportClose() {
     this.$router.push({
       query: {},
@@ -624,11 +647,13 @@ export default class CommunityDetail extends Vue {
   }
 
   addNavigationControl(map) {
-    map.addControl(new window.mapboxgl.FullscreenControl())
-    map.addControl(
-      new window.mapboxgl.ScaleControl({ position: 'bottom-right' })
-    )
+    map.addControl(new window.mapboxgl.ScaleControl(), 'bottom-left')
     map.addControl(new ControlFactory(this.$refs.zoomControl), 'top-right')
+    map.addControl(new ControlFactory(this.$refs.centerControl), 'top-right')
+    map.addControl(
+      new ControlFactory(this.$refs.fullscreenControl),
+      'top-right'
+    )
   }
 
   handleResetCenter() {
@@ -690,8 +715,6 @@ export default class CommunityDetail extends Vue {
   }
 
   addControls(map) {
-    const centerControl = new ControlFactory(this.$refs.centerControl)
-    map.addControl(centerControl, 'top-right')
     map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'bottom-right')
     map.addControl(new ControlFactory(this.$refs.legend), 'bottom-right')
   }
