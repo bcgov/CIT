@@ -730,10 +730,15 @@ def serialize_data_source(name, datasource_info):
     }
 
 
+def get_communities_with_insufficient_data(communities):
+    return [
+        community.id for community in communities if
+        community.census_subdivision.get_percentage_of_null_fields() > 0.25]
+
+
 def get_hidden_explore_report_pages(communities):
     from pipeline.constants import POWERBI_HIDDEN_EXPLORE_PAGES
 
-    # TODO SY - should this be a threshold and not all()?
     if all(community.census_subdivision.get_percentage_of_null_fields() > 0.25 for community in communities):
         return POWERBI_HIDDEN_EXPLORE_PAGES
 
