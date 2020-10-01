@@ -6,7 +6,7 @@
       <SearchAsMove></SearchAsMove>
     </div>
     -->
-    <div>
+    <div class="explore-controls-container">
       <CommunityPopup
         ref="communityPopUp"
         :name="communityPopUpName"
@@ -424,6 +424,11 @@ export default class Explore extends Vue {
 .community-popup-container,
 .community-popup-container .mapboxgl-popup-content {
   padding: 0 0 0 0;
+}
+.explore-controls-container {
+  position: fixed;
+  z-index: -1;
+  visibility: hidden;
 }
 </style>
 <style lang="scss">
