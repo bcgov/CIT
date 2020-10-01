@@ -28,7 +28,7 @@ from pipeline.serializers.general import (
 )
 from pipeline.utils import (
     generate_line_strings, serialize_communities_for_regional_districts, communities_advanced_search,
-    get_hidden_explore_report_pages
+    get_hidden_explore_report_pages, get_communities_with_insufficient_data
 )
 
 
@@ -72,11 +72,13 @@ class CommunityViewSet(viewsets.GenericViewSet):
     def advanced_search(self, request):
         communities = communities_advanced_search(request.query_params)
         hidden_report_pages = get_hidden_explore_report_pages(communities)
+        communities_with_insufficient_data = get_communities_with_insufficient_data(communities)
 
         community_ids = communities.values_list('id', flat=True)
         return Response({
             "communities": community_ids,
             "hidden_report_pages": hidden_report_pages,
+            "communities_with_insufficient_data": communities_with_insufficient_data
         })
 
     @action(detail=False)
