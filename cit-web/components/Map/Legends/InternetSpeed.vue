@@ -6,19 +6,19 @@
           <v-list-item-content>
             <v-list-item-title>Internet Speeds</v-list-item-title>
             <v-list-item-subtitle
-              >50/10
+              >50/10 Mbps
               <div class="legend-icon" style="background-color: #8572d3;"></div
             ></v-list-item-subtitle>
             <v-list-item-subtitle
-              >25/5
+              >25/5 Mbps
               <div class="legend-icon" style="background-color: #ec67ad;"></div
             ></v-list-item-subtitle>
             <v-list-item-subtitle
-              >10/2
+              >10/2 Mbps
               <div class="legend-icon" style="background-color: #ff826f;"></div
             ></v-list-item-subtitle>
             <v-list-item-subtitle
-              >5/1
+              >5/1 Mbps
               <div class="legend-icon" style="background-color: #f7ba44;"></div
             ></v-list-item-subtitle>
           </v-list-item-content>
