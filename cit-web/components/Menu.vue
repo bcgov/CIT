@@ -6,12 +6,33 @@
           <v-icon>mdi-menu</v-icon>
         </v-btn>
       </template>
+
       <v-list style="background-color: #073366;" class="pa-5">
+        <v-list-item
+          class="pa-0 ma-0 font-weight-normal my-3"
+          style="min-height: auto;"
+          :to="'/'"
+        >
+          <v-list-item-title class="white--text">Home</v-list-item-title>
+        </v-list-item>
+        <v-list-item
+          class="pa-0 ma-0 font-weight-normal my-3"
+          style="min-height: auto;"
+          :to="'/explore?tab=Map'"
+        >
+          <v-list-item-title class="white--text">Explore</v-list-item-title>
+        </v-list-item>
+        <v-list-item-title class="mt-5">
+          <h6 class="text-h6 font-weight-bold white--text">
+            Aggregate Reports
+          </h6>
+        </v-list-item-title>
         <v-list-item
           v-for="(mi, index) in menuItems"
           :key="index"
-          class="pa-0 ma-0 font-weight-bold my-3"
+          class="pa-0 ma-0 font-weight-normal my-3"
           style="min-height: auto;"
+          :to="mi.href"
         >
           <v-list-item-title class="white--text">{{
             mi.title
@@ -36,35 +57,35 @@ export default class Menu extends Vue {
   menuItems = [
     {
       title: 'Domestic',
-      href: '/explore',
+      href: '/explore?tab=Reports&report=Domestic',
     },
     {
       title: 'Culture',
-      href: '/explore',
+      href: '/explore?tab=Reports&report=Culture',
     },
     {
       title: 'Education',
-      href: '/explore',
+      href: '/explore?tab=Reports&report=Education',
     },
     {
       title: 'Income/Jobs',
-      href: '/explore',
+      href: '/explore?tab=Reports&report=Income/Jobs',
     },
     {
       title: 'Natural Resources',
-      href: '/explore',
+      href: '/explore?tab=Reports&report=Natural Resources',
     },
     {
-      title: 'Environment',
-      href: '/explore',
+      title: 'Economic Projects',
+      href: '/explore?tab=Reports&report=Economic Projects',
     },
     {
       title: 'Connectivity',
-      href: '/explore',
+      href: '/explore?tab=Reports&report=Connectivity',
     },
     {
       title: 'Health & Emergency',
-      href: '/explore',
+      href: '/explore?tab=Reports&report=Health & Emergency',
     },
   ]
 
