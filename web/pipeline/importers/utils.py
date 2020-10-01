@@ -150,28 +150,32 @@ def calculate_distances(location):
 
 
 def calculate_nearest_location_types_outside_50k():
-    for community in Community.objects.all():
-        for location_type in LOCATION_TYPES:
-            locations_within_50k = LocationDistance.objects.filter(
-                community=community, location__location_type=location_type, distance__lte=50)
-            # if there are no locations of this location type within 50km,
-            # just get the closest location and create a LocationDistance object for that
-            if not locations_within_50k:
-                print("community {community_name} has no {location_type} within 50km".format(
-                    community_name=community.place_name,
-                    location_type=location_type))
-                location_type_model_name = DataSource.objects.get(name=location_type).model_name
-                location_type_model = apps.get_model("pipeline", location_type_model_name)
-                closest_location_type = location_type_model.objects.all()\
-                    .annotate(distance=Distance("point", community.point))\
-                    .order_by("distance").first()
-                print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
-                    location_type=location_type,
-                    community_name=community.place_name,
-                    closest_location_type=closest_location_type.name,
-                    distance=closest_location_type.distance.km))
+    for location_type in LOCATION_TYPES:
+        calculate_nearest_location_type_outside_50k(location_type)
 
-                create_distance(closest_location_type, community, closest_location_type.distance)
+
+def calculate_nearest_location_type_outside_50k(location_type):
+    for community in Community.objects.all():
+        locations_within_50k = LocationDistance.objects.filter(
+            community=community, location__location_type=location_type, distance__lte=50)
+        # if there are no locations of this location type within 50km,
+        # just get the closest location and create a LocationDistance object for that
+        if not locations_within_50k:
+            print("community {community_name} has no {location_type} within 50km".format(
+                community_name=community.place_name,
+                location_type=location_type))
+            location_type_model_name = DataSource.objects.get(name=location_type).model_name
+            location_type_model = apps.get_model("pipeline", location_type_model_name)
+            closest_location_type = location_type_model.objects.all()\
+                .annotate(distance=Distance("point", community.point))\
+                .order_by("distance").first()
+            print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
+                location_type=location_type,
+                community_name=community.place_name,
+                closest_location_type=closest_location_type.name,
+                distance=closest_location_type.distance.km))
+
+            create_distance(closest_location_type, community, closest_location_type.distance)
 
 
 def create_distance(location, community, distance):
