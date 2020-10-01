@@ -3,7 +3,7 @@ import requests
 from django.apps import apps
 
 from pipeline.models.general import DataSource
-from pipeline.importers.utils import import_data_into_point_model
+from pipeline.importers.utils import import_data_into_point_model, calculate_nearest_location_type_outside_50k
 
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}&limit=10000"
 
@@ -36,3 +36,5 @@ def import_resource(resource_type):
     for row in data:
         model_class = apps.get_model("pipeline", data_source.model_name)
         import_data_into_point_model(resource_type, model_class, row)
+
+    calculate_nearest_location_type_outside_50k(resource_type)
