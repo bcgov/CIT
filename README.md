@@ -21,7 +21,7 @@ cp dc.dev.yml docker-compose.override.yml
 Spin up the project.
 
 ```
-docker-compose up
+docker-compose up -d --build
 ```
 
 Your Vue app is served at `http://localhost:8080`
@@ -31,6 +31,31 @@ The Django app is served at `http://localhost/api`
 Ports may be configured by editing the port in the `dc.*.yml` files.
 
 You can create a new terminal, and run commands to interact with the application. `docker-compose ps` to show services, and `docker-compose exec web bash` to open a shell in inside the django service.
+
+### Restoring a database
+
+Copy the database into the container, and open a shell in the container.
+```
+docker cp db.sql cit_db_1:/tmp/
+docker-compose exec db bash
+```
+
+Delete the old database, recreate it, and restore from a backup.
+```
+dropdb -U postgres postgres
+createdb -U postgres postgres
+psql -f /tmp/db.sql -U postgres postgres
+```
+
+## Updating Production
+
+To update the code, simply `git pull origin master` and `docker-compose up -d --build` and lastly `docker-compose restart`. or use `./update.sh`
+
+To update PowerBI, publish to `cit-master` for production (`cit-develop` for the test environment)
+
+To update data, there are different steps depending on the database.
+
+`docker-compose exec web python manage.py update` will produce an interactive process (TBD).
 
 ## Prepping Data
 

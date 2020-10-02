@@ -7,6 +7,7 @@
         id="northern-rockies"
         :class="{ selected: anchor === 'northern-rockies' }"
       >
+        <h4>Northern Rockies</h4>
         <p>
           The Northern Rockies Regional Municipality is included in our data as
           a "Regional District," even though it is technically a regional
@@ -25,6 +26,7 @@
         id="distances-50km"
         :class="{ selected: anchor === 'distances-50km' }"
       >
+        <h4>Distance Calculations</h4>
         <p>
           We calculated driving distances and driving times using the
           <a href="https://catalogue.data.gov.bc.ca/dataset/bc-route-planner"
@@ -40,6 +42,7 @@
         id="search-filters-distance"
         :class="{ selected: anchor === 'search-filters-distance' }"
       >
+        <h4>Search Filters Distances</h4>
         <p>
           The search filters for local assets on the Explore page use driving
           distance or driving time (based on road information) when available.
@@ -62,6 +65,7 @@
         id="census-subdivisions"
         :class="{ selected: anchor === 'census-subdivisions' }"
       >
+        <h4>Census Subdivisions</h4>
         <p>
           Demographic data is sourced from Stats Canada at the subdivision
           level. This means that data from unincorporated communities may
@@ -77,7 +81,7 @@
         id="explore-domestic-report"
         :class="{ selected: anchor === 'explore-domestic-report' }"
       >
-        Domestic Report (Explore page)
+        <h4>Domestic Report (Explore page)</h4>
         <ol>
           <li
             id="avg-dwellings-needing-major-repairs"
@@ -102,6 +106,7 @@
           selected: anchor === 'community-detail-asset-driving-distance',
         }"
       >
+        <h4>Transport Status (High Capacity Transport Services)</h4>
         <p>
           The distance filter for facilities uses driving distance based on road
           information when available, and falls back to birds' eye (straight
@@ -119,6 +124,7 @@
           selected: anchor === 'incomplete-census-data',
         }"
       >
+        <h4>Incomplete Census Data</h4>
         <p>
           We import census data from the
           <a
@@ -139,6 +145,7 @@
       </li>
     </ol>
   </div>
+
 </template>
 
 <script>
@@ -173,4 +180,8 @@ export default class DataFootnotes extends Vue {
   background-color: #e5e8ec;
   padding: 0.5em;
 }
+.container>ol>li {
+  margin-bottom: 25px;
+}
 </style>
+
