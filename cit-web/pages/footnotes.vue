@@ -145,7 +145,6 @@
       </li>
     </ol>
   </div>
-
 </template>
 
 <script>
@@ -180,8 +179,7 @@ export default class DataFootnotes extends Vue {
   background-color: #e5e8ec;
   padding: 0.5em;
 }
-.container>ol>li {
+.container > ol > li {
   margin-bottom: 25px;
 }
 </style>
-
