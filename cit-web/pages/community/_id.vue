@@ -1,17 +1,15 @@
-V<template>
+<template>
   <div class="community-new-container">
     <v-container fluid>
-      <v-alert v-if="parentCommunity" type="info">
-        This community is within {{ parentCommunity.name }}'s boundary, consider
-        <a
-          :href="`/community/${parentCommunity.id}`"
-          class="font-weight-bold white--text"
+      <v-alert v-if="parentCommunity" type="info" class="primary--text">
+        This community is within {{ parentCommunity.name }}'s boundary. Consider
+        <a :href="`/community/${parentCommunity.id}`" class="font-weight-bold"
           >viewing the {{ parentCommunity.name }} page instead.</a
         >
       </v-alert>
     </v-container>
     <div v-if="isCommunityEmpty" class="d-flex mt-5 justify-center">
-      <v-alert type="info">
+      <v-alert type="info" class="primary--text">
         Sorry, we could not find a community with that ID.
       </v-alert>
     </div>
@@ -90,6 +88,19 @@ V<template>
                   compare to the average for the regional district, or all of
                   BC.
                 </h6>
+                <v-alert
+                  v-if="hasHiddenReports"
+                  type="info"
+                  dismissible
+                  class="primary--text"
+                >
+                  This community has incomplete census data. The charts in the
+                  reports reflect available census data and some reports have
+                  been hidden.
+                  <a href="/footnotes#incomplete-census-data" target="_blank"
+                    >Learn more.</a
+                  >
+                </v-alert>
                 <v-divider class="mt-5"></v-divider>
               </div>
             </v-col>
@@ -356,6 +367,10 @@ export default class CommunityDetail extends Vue {
     } else {
       this.assetMode = 'driving'
     }
+  }
+
+  get hasHiddenReports() {
+    return this.communityDetails.hidden_report_pages?.length > 0
   }
 
   get assetModeButtonIcon() {
@@ -807,6 +822,9 @@ export default class CommunityDetail extends Vue {
 }
 </style>
 <style lang="scss">
+.v-alert.info .v-icon {
+  color: #193262;
+}
 .community-details-sidebar .v-list-group__header__prepend-icon {
   margin-right: 16px !important;
 }

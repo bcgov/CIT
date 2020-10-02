@@ -10,8 +10,10 @@
       @clear="handleClear"
       @save="handleSave"
     >
-      <p class="text-body-1">
-        Search by what's nearby, choose an asset.
+
+      <p>
+        Search for communities with nearby local assets. Choose an asset to
+        filter.
         <a href="/footnotes#search-filters-distance" target="_blank"
           >How does it work?</a
         >

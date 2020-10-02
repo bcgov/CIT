@@ -14,7 +14,6 @@ router.register(r'regionaldistricts', pipeline.views.general.RegionalDistrictVie
 urlpatterns = [
     path("", include(router.urls)),
 
-    url(r"^auth/$", pipeline.views.general.auth),
     url(r"^locations/geojson/$", pipeline.views.location_types.LocationGeoJSONList.as_view()),
     url(r"^locations/first_responders/$", pipeline.views.location_types.FirstResponderList.as_view()),
     url(r"^locations/diagnostic_facilities/$", pipeline.views.location_types.DiagnosticFacilityList.as_view()),
