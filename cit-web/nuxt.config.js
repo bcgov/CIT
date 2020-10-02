@@ -123,6 +123,8 @@ export default {
         },
         light: {
           primary: '#073366',
+          info: '#dee8fd',
+          infoText: '#193262',
         },
       },
     },
