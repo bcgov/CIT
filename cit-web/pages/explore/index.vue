@@ -139,6 +139,9 @@
             :report-cards="reportCards"
             :reports-to-hide="reportsToHide"
             :report-to-show="reportToShow"
+            :communities-with-insufficient-data="
+              communitiesWithInsufficientData
+            "
             :cids="cidArray"
             @showReport="showReport"
           ></ExploreReportSection>
@@ -187,6 +190,7 @@ export default class Explore extends Vue {
   numFiltersActive = 0
   reportCards = ExplorePages
   reportsToHide = null
+  communitiesWithInsufficientData = null
 
   @exploreStore.Getter('getSearchAsMove') searchAsMove
 
@@ -359,7 +363,8 @@ export default class Explore extends Vue {
 
     this.filteredCommunities = filteredCommunities
     this.updateGroupedCommunities()
-    this.reportsToHide = e.reports
+    this.reportsToHide = e.reportsToHide
+    this.communitiesWithInsufficientData = e.communitiesWithInsufficientData
     this.$root.$emit('communitiesChanged', this.flatCommunities)
   }
 

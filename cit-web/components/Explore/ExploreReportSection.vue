@@ -49,6 +49,28 @@
       </v-card-text>
     </div>
     <div v-else>
+      <v-alert
+        v-if="showInsufficientDataWarning"
+        type="info"
+        dismissible
+        class="primary--text"
+      >
+        <template v-if="communitiesWithInsufficientData.length > 1">
+          {{ communitiesWithInsufficientData.length }} communities in your
+          selection have incomplete census data.
+        </template>
+        <template v-if="communitiesWithInsufficientData.length === 1">
+          1 community in your selection has incomplete census data.
+        </template>
+        <template v-if="reportsToHide"
+          >Some reports have been hidden due to insufficient data.</template
+        >
+        The charts in the reports reflect available census data and may not
+        accurately represent all communities.
+        <a href="/footnotes#incomplete-census-data" target="_blank"
+          >Learn more.</a
+        >
+      </v-alert>
       <div v-for="(reportCard, key) in groupedReportCards" :key="key">
         <v-row>
           <v-col col="12">
@@ -87,7 +109,12 @@ export default class ExploreReportSection extends Vue {
   @Prop({ default: () => {}, type: Array }) reportCards
   @Prop({ default: null, type: Object }) reportToShow
   @Prop({ default: null, type: Array }) reportsToHide
+  @Prop({ default: null, type: Array }) communitiesWithInsufficientData
   loaded = false
+
+  get showInsufficientDataWarning() {
+    return this.communitiesWithInsufficientData?.length > 0
+  }
 
   get groupedReportCards() {
     if (!this.reportsToHide) {
@@ -111,5 +138,10 @@ export default class ExploreReportSection extends Vue {
   max-width: 1600px;
   margin: 0 auto;
   overflow-y: auto;
+}
+</style>
+<style lang="scss">
+.v-alert.info .v-icon {
+  color: #193262;
 }
 </style>

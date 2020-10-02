@@ -116,7 +116,9 @@ export default class ExploreFilters extends Vue {
       this.$emit('filtered', {
         empty: false,
         data: result.data.communities,
-        reports: result.data.hidden_report_pages,
+        reportsToHide: result.data.hidden_report_pages,
+        communitiesWithInsufficientData:
+          result.data.communities_with_insufficient_data,
       })
       this.$emit('loading', false)
     })
