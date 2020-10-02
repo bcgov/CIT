@@ -2,13 +2,12 @@
   <v-expansion-panel-header class="pa-5 ma-0 panel-header">
     <span class="mr-4 text-subtitle-1">{{ title }}</span>
     <v-spacer></v-spacer>
-    <v-btn
+    <v-sheet
       color="#2176d2"
-      fab
-      class="white--text mr-2 length-button elevation-0 font-weight-bold"
+      class="white--text mr-2 length-button elevation-0 font-weight-bold d-flex justify-center align-center rounded-circle"
       width="40"
       height="40"
-      >{{ length }}</v-btn
+      >{{ length }}</v-sheet
     >
   </v-expansion-panel-header>
 </template>
