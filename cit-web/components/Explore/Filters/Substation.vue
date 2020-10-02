@@ -10,11 +10,11 @@
       @save="handleSave"
       @clear="handleClear"
     >
-      <p>
+      <p class="text-body-1">
         Search by the nearest distance of power substation access. Choose
         between a minimum and a maximum inclusive.
       </p>
-      <p class="text-center ma-0 pa-0">
+      <p class="text-center ma-0 pa-0 text-body-1">
         {{ range[0] }} km to {{ range[1] }} km
       </p>
       <v-range-slider

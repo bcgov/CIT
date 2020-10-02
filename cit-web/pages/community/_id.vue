@@ -49,7 +49,7 @@ V<template>
                 >
                   <v-divider class="mt-3 mb-3"></v-divider>
                   <div class="pl-4 pr-4">
-                    <p class="text-center text-caption pa-0 ma-0">
+                    <p class="text-center pa-0 ma-0 text-body-1">
                       {{ assetModeText }}
                       <a
                         v-i="assetMode === 'driving'"
@@ -65,7 +65,8 @@ V<template>
                     <div class="text-center">
                       <v-btn
                         small
-                        color="primary text-caption text-capitalize d-inline-block mt-2"
+                        color="primary"
+                        class="text-body-1 text-capitalize mt-2"
                         @click="handleAssetModeChange"
                       >
                         <v-icon small class="mr-2">{{
@@ -800,7 +801,7 @@ export default class CommunityDetail extends Vue {
 }
 
 .community-details-sidebar {
-  width: 350px;
+  width: 420px;
   background-color: white;
   overflow-y: auto;
 }
