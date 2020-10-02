@@ -124,14 +124,14 @@
           <a
             href="https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/prof/index.cfm?Lang=E"
             >Statistics Canada 2016 Census Profile</a
-          >. Communities whose corresponding Census Subdivisions that are
-          missing more than 25% of the census fields that we use are flagged as
-          having incomplete census data. The charts in the reports are
-          calculated based on available data and some charts may be blank or may
-          not represent all communities (if viewing aggregate reports in the
-          Explore page). If all communities in the selection are missing over
-          25% of their census fields (or on the community detail page), some
-          reports are hidden due to insufficient data.
+          >. Communities whose corresponding Census Subdivisions are missing
+          more than 25% of the census fields that we use are flagged as having
+          incomplete census data. The charts in the reports are calculated based
+          on available data and some charts may be blank or may not represent
+          all communities (if viewing aggregate reports in the Explore page). If
+          all communities in the selection are missing over 25% of their census
+          fields (or on the community detail page), some reports are hidden due
+          to insufficient data.
         </p>
         <a href="#incomplete-census-data"
           ><v-icon>mdi-link</v-icon> Permalink</a
