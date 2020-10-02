@@ -79,3 +79,7 @@ docker-compose exec web python manage.py import_databc all
 ```
 
 Use the `all` parameter in the three above commands to import all resources from each source, or see `web/pipeline/constants.py` for a list of valid resources to import individually.
+
+## Adding new datasets
+
+See [ADDING_NEW_DATA.md](ADDING_NEW_DATA.md).
