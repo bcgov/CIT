@@ -1,9 +1,12 @@
 <template>
-  <div class="container">
+  <div class="container footnotes">
     <h2>Data Footnotes and Assumptions</h2>
 
     <ol>
-      <li id="northern-rockies">
+      <li
+        id="northern-rockies"
+        :class="{ selected: anchor === 'northern-rockies' }"
+      >
         <h4>Northern Rockies</h4>
         <p>
           The Northern Rockies Regional Municipality is included in our data as
@@ -18,7 +21,11 @@
         </p>
         <a href="#northern-rockies"><v-icon>mdi-link</v-icon> Permalink</a>
       </li>
-      <li id="distances-50km">
+
+      <li
+        id="distances-50km"
+        :class="{ selected: anchor === 'distances-50km' }"
+      >
         <h4>Distance Calculations</h4>
         <p>
           We calculated driving distances and driving times using the
@@ -31,21 +38,33 @@
         </p>
         <a href="#distances-50km"><v-icon>mdi-link</v-icon> Permalink</a>
       </li>
-      <li id="search-filters-distance">
+      <li
+        id="search-filters-distance"
+        :class="{ selected: anchor === 'search-filters-distance' }"
+      >
         <h4>Search Filters Distances</h4>
         <p>
-          The search filters on the Explore page use driving distance or driving
-          time, not birds' eye distance. Thus, location assets will be excluded
-          from the search results if they do not have driving distances (e.g. if
-          they are not on a public road) even if they "should" be within the
-          specified distance.
+          The search filters for local assets on the Explore page use driving
+          distance or driving time (based on road information) when available.
+          This means that some local assets might be excluded from the search
+          results when searching by driving time, even if they "should" be
+          within the selected range. This could happen if a local asset and a
+          community are separated by a body of water (i.e. there are no
+          connecting roads between them). However, when filtering by driving
+          distance, the search will fall back to birds' eye (straight line)
+          distances whenever driving distances are unavailable.
+
           <a href="#distances-50km">Read more about driving distances.</a>
         </p>
         <a href="#search-filters-distance"
           ><v-icon>mdi-link</v-icon> Permalink</a
         >
       </li>
-      <li id="census-subdivisions">
+
+      <li
+        id="census-subdivisions"
+        :class="{ selected: anchor === 'census-subdivisions' }"
+      >
         <h4>Census Subdivisions</h4>
         <p>
           Demographic data is sourced from Stats Canada at the subdivision
@@ -58,10 +77,18 @@
           Permalink</a
         >
       </li>
-      <li id="explore-domestic-report">
+      <li
+        id="explore-domestic-report"
+        :class="{ selected: anchor === 'explore-domestic-report' }"
+      >
         <h4>Domestic Report (Explore page)</h4>
         <ol>
-          <li id="avg-dwellings-needing-major-repairs">
+          <li
+            id="avg-dwellings-needing-major-repairs"
+            :class="{
+              selected: anchor === 'avg-dwellings-needing-major-repairs',
+            }"
+          >
             <p>
               The percentage of average number of dwellings needing repairs is
               calculated using the "Total - Private households by household size
@@ -73,15 +100,47 @@
           </li>
         </ol>
       </li>
-      <li id="transport-status">
+      <li
+        id="community-detail-asset-driving-distance"
+        :class="{
+          selected: anchor === 'community-detail-asset-driving-distance',
+        }"
+      >
         <h4>Transport Status (High Capacity Transport Services)</h4>
         <p>
-         Access to a Point-of-Presence (POP) with a minimum capacity of 1 Gbps which transports data traffic from one Point-of-Presence to another or
-from a Point-of-Presence to a location that contains the internet gateway. 
+          The distance filter for facilities uses driving distance based on road
+          information when available, and falls back to birds' eye (straight
+          line) distance otherwise. (For example, if a facility and a community
+          are separated by a body of water, driving distance will not be
+          available.)
         </p>
-        <a href="#transport-status">
-          <v-icon>mdi-link</v-icon>
-          Permalink</a
+        <a href="#community-detail-asset-driving-distance"
+          ><v-icon>mdi-link</v-icon> Permalink</a
+        >
+      </li>
+      <li
+        id="incomplete-census-data"
+        :class="{
+          selected: anchor === 'incomplete-census-data',
+        }"
+      >
+        <h4>Incomplete Census Data</h4>
+        <p>
+          We import census data from the
+          <a
+            href="https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/prof/index.cfm?Lang=E"
+            >Statistics Canada 2016 Census Profile</a
+          >. Communities whose corresponding Census Subdivisions are missing
+          more than 25% of the census fields that we use are flagged as having
+          incomplete census data. The charts in the reports are calculated based
+          on available data and some charts may be blank or may not represent
+          all communities (if viewing aggregate reports in the Explore page). If
+          all communities in the selection are missing over 25% of their census
+          fields (or on the community detail page), some reports are hidden due
+          to insufficient data.
+        </p>
+        <a href="#incomplete-census-data"
+          ><v-icon>mdi-link</v-icon> Permalink</a
         >
       </li>
     </ol>
@@ -90,19 +149,39 @@ from a Point-of-Presence to a location that contains the internet gateway.
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Watch } from 'nuxt-property-decorator'
 import MainHeader from '~/components/MainHeader.vue'
 
 @Component({
   MainHeader,
 })
-export default class DataFootnotes extends Vue {}
+export default class DataFootnotes extends Vue {
+  anchor = null
+
+  @Watch('$route.hash', { immediate: true, deep: true })
+  onUrlChange(newVal) {
+    this.$nextTick(() => (this.anchor = newVal.replace('#', '')))
+  }
+}
 </script>
 <style lang="scss" scoped>
-.container {
+.container.footnotes {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 5em;
+  padding: 0 5em 35em 5em;
+}
+.bright {
+  background: yellow;
+}
+.footnotes li {
+  padding-top: 25px;
+}
+.selected {
+  background-color: #e5e8ec;
+  padding: 0.5em;
+}
+.container>ol>li {
+  margin-bottom: 25px;
 }
 .container>ol>li {
   margin-bottom: 25px;

@@ -1,6 +1,7 @@
 import csv
 import requests
 
+from django.apps import apps
 from django.conf import settings
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
@@ -8,15 +9,13 @@ from django.core.exceptions import FieldDoesNotExist
 from django.contrib.gis.measure import D
 
 from pipeline.models.community import Community
-from pipeline.models.general import LocationDistance, SchoolDistrict, Municipality
+from pipeline.models.general import DataSource, LocationDistance, SchoolDistrict, Municipality, Mayor
 from pipeline.models.location_assets import School, Hospital
-from pipeline.constants import LOCATION_TYPES, CSV_RESOURCES, DATABC_RESOURCES
+from pipeline.constants import LOCATION_TYPES
 
 
 def import_data_into_point_model(resource_type, Model, row):
     print(row)
-
-    # containing_subdiv = CensusSubdivision.objects.get(geom__contains=point)
 
     point = None
     location_fuzzy = False
@@ -151,27 +150,32 @@ def calculate_distances(location):
 
 
 def calculate_nearest_location_types_outside_50k():
-    for community in Community.objects.all():
-        for location_type in LOCATION_TYPES.keys():
-            locations_within_50k = LocationDistance.objects.filter(
-                community=community, location__location_type=location_type, distance__lte=50)
-            # if there are no locations of this location type within 50km,
-            # just get the closest location and create a LocationDistance object for that
-            if not locations_within_50k:
-                print("community {community_name} has no {location_type} within 50km".format(
-                    community_name=community.place_name,
-                    location_type=location_type))
-                location_type_model = {**CSV_RESOURCES, **DATABC_RESOURCES}[location_type]["model"]
-                closest_location_type = location_type_model.objects.all()\
-                    .annotate(distance=Distance("point", community.point))\
-                    .order_by("distance").first()
-                print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
-                    location_type=location_type,
-                    community_name=community.place_name,
-                    closest_location_type=closest_location_type.name,
-                    distance=closest_location_type.distance.km))
+    for location_type in LOCATION_TYPES:
+        calculate_nearest_location_type_outside_50k(location_type)
 
-                create_distance(closest_location_type, community, closest_location_type.distance)
+
+def calculate_nearest_location_type_outside_50k(location_type):
+    for community in Community.objects.all():
+        locations_within_50k = LocationDistance.objects.filter(
+            community=community, location__location_type=location_type, distance__lte=50)
+        # if there are no locations of this location type within 50km,
+        # just get the closest location and create a LocationDistance object for that
+        if not locations_within_50k:
+            print("community {community_name} has no {location_type} within 50km".format(
+                community_name=community.place_name,
+                location_type=location_type))
+            location_type_model_name = DataSource.objects.get(name=location_type).model_name
+            location_type_model = apps.get_model("pipeline", location_type_model_name)
+            closest_location_type = location_type_model.objects.all()\
+                .annotate(distance=Distance("point", community.point))\
+                .order_by("distance").first()
+            print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
+                location_type=location_type,
+                community_name=community.place_name,
+                closest_location_type=closest_location_type.name,
+                distance=closest_location_type.distance.km))
+
+            create_distance(closest_location_type, community, closest_location_type.distance)
 
 
 def create_distance(location, community, distance):
@@ -334,3 +338,30 @@ def calculate_communities_served_for_hospitals():
             distances__distance__lte=50).distinct().count()
         hospital.num_communities_within_50km = num_communities_within_50km
         hospital.save()
+
+
+def import_mayors_from_csv(file_path):
+    with open(file_path) as csv_file:
+        csv_reader = csv.DictReader(csv_file, delimiter=',')
+        for row in csv_reader:
+            # Only import elected mayors
+            if not(row['Elected (YES/NO)'] == 'YES' and row['Type'] == 'MAYOR'):
+                continue
+
+            try:
+                community = Community.objects.get(place_name=row['Local Government'])
+
+            except Community.DoesNotExist:
+                print("Could not find community called {}".format(row['Local Government']))
+                continue
+
+            mayor, created = Mayor.objects.get_or_create(
+                first_name=row['First Name'].title(),
+                last_name=row['Last Name'].title(),
+                middle_name=row['Middle Name'].title(),
+                community=community)
+            print("mayor", mayor)
+
+            mayor.gender = row['Gender'].title()
+            mayor.experience = row['Experience'].title()
+            mayor.save()

@@ -1,9 +1,10 @@
 <template>
   <div>
-    <v-expansion-panels v-model="panel" flat multiple hover>
+    <v-expansion-panels v-model="panel" multiple hover>
       <v-expansion-panel
         v-for="(communities, regionalDistrict) in groupedCommunities"
         :key="'region' + regionalDistrict"
+        class="mt-1 mb-1 result-panel rounded-lg"
       >
         <PanelHeader
           :title="getRdName(regionalDistrict)"
@@ -48,10 +49,20 @@ export default class Explore extends Vue {
     const mappedRds = this.mappedRds
     return mappedRds[id] || 'No Regional District'
   }
+
+  mounted() {
+    this.$root.$on('regionSelected', () => {
+      this.panel = [0]
+    })
+  }
 }
 </script>
 <style lang="scss">
 .explore-content-panel .v-expansion-panel-content__wrap {
   padding: 0 !important;
+}
+
+.result-panel {
+  border-left: 5px solid #f8ba44 !important;
 }
 </style>

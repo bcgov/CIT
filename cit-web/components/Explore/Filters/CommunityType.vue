@@ -6,75 +6,129 @@
       :filter-title="'Community Type'"
       :active="active"
       :card-width="200"
+      :disabled="disabled"
       @save="handleSave"
       @clear="handleClear"
     >
-      <v-radio-group v-model="radioGroup" class="ma-0 pa-0" hide-details>
-        <v-radio
-          v-for="(type, index) in communityTypes"
-          :key="index"
-          :label="type.title"
-        ></v-radio>
-      </v-radio-group>
+      <v-checkbox
+        v-model="urban"
+        hide-details
+        value="Urban"
+        label="Urban"
+        class="ma-0 pa-0"
+      ></v-checkbox>
+      <v-checkbox
+        v-model="indigenous"
+        hide-details
+        value="Indigenous"
+        label="Indigenous"
+        class="pa-0 mb-3 mt-3"
+      ></v-checkbox>
+      <v-checkbox
+        v-model="rural"
+        hide-details
+        value="Rural"
+        label="Rural"
+        class="ma-0 pa-0"
+      ></v-checkbox>
     </MenuFilter>
   </div>
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import MenuFilter from '~/components/Explore/Filters/MenuFilter'
 @Component({
   MenuFilter,
 })
 export default class CommunityType extends Vue {
-  radioGroup = null
+  @Prop({ default: false, type: Boolean }) disabled
+
   title = 'Community Type'
   active = false
+  urban = null
+  rural = null
+  indigenous = null
 
-  communityTypes = [
-    {
-      title: 'Indigenous',
-    },
-    {
-      title: 'Rural',
-    },
-    {
-      title: 'Urban',
-    },
-  ]
-
-  queries = [
-    {
-      community_type: 'Indigenous',
-    },
-    {
-      community_type: 'Rural',
-    },
-    {
-      community_type: 'Urban',
-    },
-  ]
+  reset() {
+    this.title = 'Community Type'
+    this.active = false
+    this.urban = null
+    this.rural = null
+    this.indigenous = null
+  }
 
   handleSave() {
     this.$refs.menuFilter.hide()
-    const index = this.radioGroup
-    if (index === null) {
+    if (!this.isValid) {
       this.title = 'Community Type'
       this.active = false
+    } else if (this.numValid > 1) {
+      this.title = `${this.numValid} Community Types`
+      this.active = true
     } else {
-      this.title = this.communityTypes[index].title
+      let title = ''
+      if (this.urban) {
+        title = 'Urban'
+      } else if (this.rural) {
+        title = 'Rural'
+      } else if (this.indigenous) {
+        title = 'Indigenous'
+      }
+      this.title = `${title}`
       this.active = true
     }
     this.$emit('filter')
   }
 
   handleClear() {
-    this.radioGroup = null
+    this.urban = null
+    this.indigenous = null
+    this.rural = null
+  }
+
+  get isValid() {
+    return this.urban || this.indigenous || this.rural
+  }
+
+  get numValid() {
+    let counter = 0
+    if (this.urban) {
+      counter++
+    }
+    if (this.indigenous) {
+      counter++
+    }
+    if (this.rural) {
+      counter++
+    }
+    return counter
   }
 
   getParams() {
-    const index = this.radioGroup
-    return index === null ? [] : [this.queries[index]]
+    const temp = []
+    if (!this.isValid) {
+      return temp
+    }
+
+    if (this.urban) {
+      temp.push('Urban')
+    }
+
+    if (this.indigenous) {
+      temp.push('Indigenous')
+    }
+
+    if (this.rural) {
+      temp.push('Rural')
+    }
+
+    const to = {
+      community_type: temp.join(','),
+    }
+    console.log('TO', to)
+
+    return [to]
   }
 }
 </script>

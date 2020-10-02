@@ -1,7 +1,6 @@
 export const state = () => ({
   searchAsMove: false,
   filteredCommunities: false,
-  filters: [],
 })
 
 export const getters = {

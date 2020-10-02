@@ -3,14 +3,16 @@
     <MenuFilter
       ref="menuFilter"
       :chip-title="title"
-      :filter-title="'Access to Assets'"
+      :filter-title="'Local Assets'"
       :card-width="600"
       :active="active"
+      :disabled="disabled"
       @clear="handleClear"
       @save="handleSave"
     >
       <p>
-        Search by access to facilities.
+        Search for communities with nearby local assets. Choose an asset to
+        filter.
         <a href="/footnotes#search-filters-distance" target="_blank"
           >How does it work?</a
         >
@@ -20,7 +22,7 @@
           <LocationInputs ref="locationInputs"></LocationInputs>
           <v-btn
             v-if="locationFilters.length > 1"
-            color="primary"
+            color="red darken-1"
             fab
             small
             icon
@@ -43,7 +45,7 @@
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import uid from 'uid'
 import isEmpty from 'lodash/isEmpty'
 import LocationInputs from '~/components/Explore/Filters/LocationInputs.vue'
@@ -51,10 +53,18 @@ import LocationInputs from '~/components/Explore/Filters/LocationInputs.vue'
   LocationInputs,
 })
 export default class Locations extends Vue {
-  title = 'Access to Assets'
-  active = false
+  @Prop({ default: false, type: Boolean }) disabled
 
+  title = 'Local Assets'
+  active = false
   locationFilters = [uid()]
+
+  reset() {
+    this.title = 'Local Assets'
+    this.active = false
+    this.locationFilters = [uid()]
+  }
+
   addLocation() {
     this.locationFilters.push(uid())
   }
@@ -63,15 +73,35 @@ export default class Locations extends Vue {
     this.locationFilters = [uid()]
   }
 
+  validateInputs() {
+    const { locationInputs } = this.$refs
+    let counter = 0
+    locationInputs.map((li) => {
+      li.validateLocations()
+      if (li.isValid === false) {
+        counter++
+      }
+    })
+    return counter
+  }
+
   handleSave() {
+    console.log(this.locationFilters.length)
+    if (this.locationFilters.length > 1) {
+      const invalidInputs = this.validateInputs()
+      if (invalidInputs > 0) {
+        return
+      }
+    }
+
     this.$refs.menuFilter.hide()
     const locationParams = this.getParams().filter((lp) => !isEmpty(lp))
     if (locationParams.length === 0) {
-      this.title = 'Access to Assets'
+      this.title = 'Local Assets'
       this.active = false
     } else if (locationParams.length === 1) {
       const locationInputs = this.$refs.locationInputs
-      const locationInput = locationInputs.find((li) => li.isValid())
+      const locationInput = locationInputs.find((li) => li.isValid)
       this.title = locationInput.getText()
       this.active = true
     } else {

@@ -1,8 +1,22 @@
 from rest_framework import serializers
 
-from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict
+from pipeline.constants import DATABC_PERMALINK_URL
+from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource, Mayor
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
+
+
+class DataSourceSerializer(serializers.ModelSerializer):
+    source = serializers.CharField(source='get_source_display')
+    source_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = DataSource
+        fields = ("name", "display_name", "source", "source_url", "last_updated")
+
+    def get_source_url(self, obj):
+        if obj.permalink_id:
+            return DATABC_PERMALINK_URL.format(permalink_id=obj.permalink_id)
 
 
 class ServiceListSerializer(serializers.ModelSerializer):
@@ -35,8 +49,8 @@ class CommunitySerializer(serializers.ModelSerializer):
     percent_25_5 = serializers.SerializerMethodField()
     percent_10_2 = serializers.SerializerMethodField()
     percent_5_1 = serializers.SerializerMethodField()
-    power_pop_2km_capacity = serializers.SerializerMethodField()
-    power_remaining_pop_capacity = serializers.SerializerMethodField()
+    pop_2km_capacity = serializers.SerializerMethodField()
+    remaining_pop_capacity = serializers.SerializerMethodField()
 
     class Meta:
         model = Community
@@ -71,8 +85,8 @@ class CommunitySerializer(serializers.ModelSerializer):
             "transmission_lines_owner",
             "transmission_line_description",
             "transmission_line_voltage",
-            "power_pop_2km_capacity",
-            "power_remaining_pop_capacity",
+            "pop_2km_capacity",
+            "remaining_pop_capacity",
         )
 
     def get_percent_50_10(self, obj):
@@ -87,11 +101,11 @@ class CommunitySerializer(serializers.ModelSerializer):
     def get_percent_5_1(self, obj):
         return obj.percent_5_1 if obj.percent_5_1 else 0
 
-    def get_power_pop_2km_capacity(self, obj):
-        return obj.power_pop_2km_capacity if obj.power_pop_2km_capacity else 0
+    def get_pop_2km_capacity(self, obj):
+        return obj.pop_2km_capacity if obj.pop_2km_capacity else -1
 
-    def power_remaining_pop_capacity(self, obj):
-        return obj.power_remaining_pop_capacity if obj.power_remaining_pop_capacity else 0
+    def get_remaining_pop_capacity(self, obj):
+        return obj.remaining_pop_capacity if obj.remaining_pop_capacity else -1
 
 
 class CommunityCSVSerializer(serializers.ModelSerializer):
@@ -133,8 +147,8 @@ class CommunityCSVSerializer(serializers.ModelSerializer):
             "transmission_lines_owner",
             "transmission_line_description",
             "transmission_line_voltage",
-            "power_pop_2km_capacity",
-            "power_remaining_pop_capacity",
+            "pop_2km_capacity",
+            "remaining_pop_capacity",
         )
 
 
@@ -143,6 +157,7 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
     locations = serializers.SerializerMethodField()
     child_communities = serializers.SerializerMethodField()
     parent_community = serializers.SerializerMethodField()
+    hidden_report_pages = serializers.SerializerMethodField()
 
     class Meta:
         model = Community
@@ -155,6 +170,7 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
             "longitude",
             "regional_district",
             "locations",
+            "hidden_report_pages",
         )
 
     def get_display_fields(self, obj):
@@ -177,6 +193,9 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
             "id": child_community.id,
             "place_name": child_community.place_name,
         } for child_community in obj.child_communities.all()]
+
+    def get_hidden_report_pages(self, obj):
+        return obj.census_subdivision.get_hidden_detail_report_pages()
 
 
 class CommunitySearchSerializer(serializers.ModelSerializer):
@@ -282,4 +301,18 @@ class SchoolDistrictSerializer(serializers.ModelSerializer):
             "name",
             "sd_num",
             "community"
+        )
+
+
+class MayorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mayor
+        fields = (
+            "id",
+            "last_name",
+            "first_name",
+            "middle_name",
+            "community",
+            "gender",
+            "experience",
         )

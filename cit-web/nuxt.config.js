@@ -45,7 +45,18 @@ export default {
       },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {
+        rel: 'icon',
+        sizes: '32x32',
+        type: 'image/png',
+        href: '/bcid-favicon-32x32.png',
+      },
+      {
+        rel: 'icon',
+        sizes: '16x16',
+        type: 'image/png',
+        href: '/bcid-favicon-16x16.png',
+      },
       {
         rel: 'stylesheet',
         href: 'https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css',
@@ -90,7 +101,7 @@ export default {
    */
   axios: {
     baseURL:
-      process.env.NODE_ENV === 'development' ? 'http://nginx/' : 'http://nginx',
+      process.env.NODE_ENV === 'development' ? 'http://nginx/' : process.env.API_HOST || 'http://nginx',
     browserBaseURL: process.env.NODE_ENV === 'development' ? '/' : '/',
   },
   /*
@@ -112,6 +123,8 @@ export default {
         },
         light: {
           primary: '#073366',
+          info: '#dee8fd',
+          infoText: '#193262',
         },
       },
     },

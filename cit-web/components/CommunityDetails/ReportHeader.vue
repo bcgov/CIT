@@ -6,7 +6,7 @@
         <p style="max-width: 400px;" class="mt-5">{{ description }}</p>
       </div>
       <v-spacer></v-spacer>
-      <div>
+      <div style="align-self: flex-end;">
         <v-img
           :src="require(`~/assets/images/reports/headers/${image}`)"
           contain

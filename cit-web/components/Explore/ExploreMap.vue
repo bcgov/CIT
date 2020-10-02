@@ -1,21 +1,29 @@
 <template>
   <div style="position: relative;">
     <div id="map"></div>
+    <!--
     <div ref="searchMove" class="searchMove">
       <SearchAsMove></SearchAsMove>
     </div>
-    <div v-show="true">
+    -->
+    <div class="explore-controls-container">
       <CommunityPopup
         ref="communityPopUp"
         :name="communityPopUpName"
         :cid="communityPopUpId"
-        @close="closeCommunityPopup"
+        :population="communityPopUpPopulation"
       ></CommunityPopup>
       <div ref="layerSwitcher">
         <LayerSwitcher
           :layers="layerSwitcher"
           @layerToggle="handleLayerToggle"
         ></LayerSwitcher>
+      </div>
+      <div ref="legend">
+        <Legend></Legend>
+      </div>
+      <div ref="zoomControl">
+        <ZoomControl @zoomIn="zoomIn" @zoomOut="zoomOut"></ZoomControl>
       </div>
     </div>
   </div>
@@ -27,6 +35,9 @@ import ControlFactory from '~/utils/map'
 import LayerSwitcher from '~/components/LayerSwitcher'
 import SearchAsMove from '~/components/Explore/SearchAsMove.vue'
 import CommunityPopup from '~/components/Map/CommunityPopup'
+import ZoomControl from '~/components/Map/ZoomControl'
+import Legend from '~/components/Map/Legend'
+import { getPopulation } from '~/api/cit-api/'
 
 const commModule = namespace('communities')
 
@@ -34,6 +45,8 @@ const commModule = namespace('communities')
   SearchAsMove,
   CommunityPopup,
   LayerSwitcher,
+  ZoomControl,
+  Legend,
 })
 export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
@@ -75,6 +88,7 @@ export default class Explore extends Vue {
 
   communityPopUpName = null
   communityPopUpId = null
+  communityPopUpPopulation = null
   popUpInstance = null
 
   layerSwitcher = [
@@ -117,10 +131,6 @@ export default class Explore extends Vue {
     this.mapLoaded = false
   }
 
-  closeCommunityPopup() {
-    console.log('Close')
-  }
-
   handleLayerToggle(lo) {
     const visibility = lo.visibility === true ? 'visible' : 'none'
     const layerName = lo.layerName
@@ -135,6 +145,24 @@ export default class Explore extends Vue {
           map.setLayoutProperty(ln, 'visibility', visibility)
         )
       }
+    })
+  }
+
+  getZoom() {
+    return this.map.getZoom()
+  }
+
+  zoomIn(zoomLevel) {
+    const zoom = zoomLevel || this.getZoom()
+    this.map.flyTo({
+      zoom: zoom + 1,
+    })
+  }
+
+  zoomOut(zoomLevel) {
+    const zoom = zoomLevel || this.getZoom()
+    this.map.flyTo({
+      zoom: zoom + -1,
     })
   }
 
@@ -179,7 +207,7 @@ export default class Explore extends Vue {
         'text-field': ['to-string', ['get', 'place_name']],
         'text-size': 13,
         'icon-image': 'communities',
-        'icon-size': ['interpolate', ['linear'], ['zoom'], 5, 0.5, 15, 1],
+        'icon-size': ['interpolate', ['linear'], ['zoom'], 5, 0.5, 12, 1],
         'text-offset': [0, 1],
         'text-optional': true,
         'icon-allow-overlap': ['step', ['zoom'], false, 8, true],
@@ -197,13 +225,13 @@ export default class Explore extends Vue {
         'circle-color': [
           'step',
           ['get', 'point_count'],
-          '#073366',
+          '#2176d2',
           100,
-          '#073366',
+          '#2176d2',
           750,
-          '#073366',
+          '#2176d2',
         ],
-        'circle-radius': ['step', ['get', 'point_count'], 20, 100, 30, 750, 40],
+        'circle-radius': ['step', ['get', 'point_count'], 16, 100, 25, 750, 36],
       },
     })
 
@@ -237,14 +265,33 @@ export default class Explore extends Vue {
     }
   }
 
+  setPopUp(coordinates, cid) {
+    getPopulation(cid).then((result) => {
+      this.communityPopUpPopulation = result.data.population
+    })
+    this.$nextTick(() => {
+      const phtml = this.$refs.communityPopUp.$el.innerHTML
+      const communityPopUp = new window.mapboxgl.Popup({
+        className: 'community-popup-container',
+      })
+      document.addEventListener('click', (e) => {
+        if (event.target.matches('.community-popup-close-icon')) {
+          communityPopUp.remove()
+        }
+      })
+      communityPopUp.setLngLat(coordinates).setHTML(phtml).addTo(this.map)
+    })
+  }
+
   addControls() {
     const mapboxgl = window.mapboxgl
-    this.map.addControl(new mapboxgl.NavigationControl())
     this.map.addControl(new mapboxgl.ScaleControl({ position: 'bottom-right' }))
     this.map.addControl(
       new ControlFactory(this.$refs.layerSwitcher),
       'bottom-right'
     )
+    this.map.addControl(new ControlFactory(this.$refs.legend), 'bottom-right')
+    this.map.addControl(new ControlFactory(this.$refs.zoomControl), 'top-right')
   }
 
   listenToEvents() {
@@ -260,26 +307,17 @@ export default class Explore extends Vue {
     })
 
     this.$root.$on('communitiesChanged', (communities) => {
-      if (!communities.length)
-        return alert('No results, please change your filters.')
-      const cids = communities.map((c) => {
-        return c.id.toString()
-      })
-      this.map.setFilter('communities', [
-        'match',
-        ['get', 'pk'],
-        cids,
-        true,
-        false,
-      ])
+      if (!communities.length) return
 
       const bounds = communities.reduce(function (bounds, feature) {
         return bounds.extend([feature.longitude, feature.latitude])
       }, new window.mapboxgl.LngLatBounds())
 
-      this.map.fitBounds(bounds, {
-        maxZoom: 12,
-        padding: 30, // in px, to make markers on the top edge visible
+      this.whenMapLoaded((map) => {
+        map.fitBounds(bounds, {
+          maxZoom: 12,
+          padding: 30, // in px, to make markers on the top edge visible
+        })
       })
     })
 
@@ -291,7 +329,6 @@ export default class Explore extends Vue {
     })
 
     this.map.on('moveend', (e) => {
-      console.log(this.map.queryRenderedFeatures())
       const sourceFeatures = this.map.querySourceFeatures('communities', {
         sourceLayer: 'communities',
       })
@@ -301,7 +338,6 @@ export default class Explore extends Vue {
     })
 
     this.map.on('click', 'clusters', (e) => {
-      console.log(e)
       const center = [e.lngLat.lng, e.lngLat.lat]
       const zoom = Math.floor(this.map.getZoom()) + 2
       this.flyToCenterAndZoom(center, zoom)
@@ -335,7 +371,7 @@ export default class Explore extends Vue {
 
       const coordinates = e.features[0].geometry.coordinates.slice()
       const name = e.features[0].properties.place_name
-      const cid = e.features[0].properties.pk
+      const cid = e.features[0].properties.pk || e.features[0].properties.id
 
       // Ensure that if the map is zoomed out such that multiple
       // copies of the feature are visible, the popup appears
@@ -345,18 +381,7 @@ export default class Explore extends Vue {
       }
       this.communityPopUpName = name
       this.communityPopUpId = cid
-      this.$nextTick(() => {
-        const phtml = this.$refs.communityPopUp.$el.innerHTML
-        const communityPopUp = new window.mapboxgl.Popup({
-          className: 'community-popup-container',
-        })
-        document.addEventListener('click', (e) => {
-          if (event.target.matches('.community-popup-close-icon')) {
-            communityPopUp.remove()
-          }
-        })
-        communityPopUp.setLngLat(coordinates).setHTML(phtml).addTo(this.map)
-      })
+      this.setPopUp(coordinates, cid)
     })
 
     // Change the cursor to a pointer when the mouse is over the places layer.
@@ -399,6 +424,11 @@ export default class Explore extends Vue {
 .community-popup-container,
 .community-popup-container .mapboxgl-popup-content {
   padding: 0 0 0 0;
+}
+.explore-controls-container {
+  position: fixed;
+  z-index: -1;
+  visibility: hidden;
 }
 </style>
 <style lang="scss">

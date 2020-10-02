@@ -1,6 +1,12 @@
 <template>
   <div>
+    <div v-if="error || accessTokenError">
+      <v-alert type="warning">
+        {{ errorMessage }}
+      </v-alert>
+    </div>
     <div
+      v-else
       ref="reportContainer"
       class="reportContainer"
       :style="`height: ${height}px; width: ${width}px;`"
@@ -10,17 +16,19 @@
 </template>
 
 <script>
-import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, Watch, namespace } from 'nuxt-property-decorator'
 import { GenerateTokenInGroup } from '~/api/powerbi-rest-api/EmbedToken.js'
 import { GetReportInGroup } from '~/api/powerbi-rest-api/Report.js'
+const msauthModule = namespace('msauth')
 
 @Component
 export default class MainReport extends Vue {
   @Prop({ default: null, type: String }) pageName
   @Prop({ default: null, type: Array }) cids
-  @Prop({ default: '', type: String }) extraClassname
   @Prop({ default: '', type: String }) height
   @Prop({ default: '', type: String }) width
+
+  @msauthModule.Getter('getIsError') accessTokenError
 
   @Watch('cids')
   onCidsChanged() {
@@ -29,9 +37,15 @@ export default class MainReport extends Vue {
     })
   }
 
-  embedToken = null
+  @Watch('pageName')
+  async pageNameChanged() {
+    await this.init()
+  }
 
-  groupId = '99dbfebe-3c0b-4b2d-affb-3af843c67549'
+  errorMessage = null
+  error = false
+  embedToken = null
+  groupId = '0399d295-4354-4955-8ed9-68709eb5e7b5'
   reportId = this.$config.reportId
   embedUrl = null
   report = null
@@ -39,6 +53,20 @@ export default class MainReport extends Vue {
   error = false
 
   async mounted() {
+    try {
+      await this.init()
+    } catch (e) {
+      console.error(e)
+      this.error = true
+      this.errorMessage = 'There was an error loading the reports.'
+    }
+  }
+
+  async init() {
+    if (this.accessTokenError === true) {
+      this.errorMessage = 'There was an error retrieving an access token.'
+      return
+    }
     const { data: reportInGroup } = await GetReportInGroup(
       this.groupId,
       this.reportId

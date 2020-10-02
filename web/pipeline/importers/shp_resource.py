@@ -44,32 +44,35 @@ PROJCS["PCS_Lambert_Conformal_Conic",
 '''
 
 import zipfile
-import os
 import copy
-import tempfile
 import json
+import logging
+import os
 import requests
-from django.contrib.gis.geos.prototypes.io import wkt_w
+import tempfile
 
-from django.contrib.gis.gdal import DataSource
+from django.apps import apps
+from django.contrib.gis.geos.prototypes.io import wkt_w
+from django.contrib.gis.gdal import DataSource as gdalDataSource
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 from django.conf import settings
+
 from pipeline.models.census import CensusSubdivision
-from pipeline.models.general import Road, Hex, ISP, Service
-from pipeline.constants import SHP_RESOURCES, BC_ALBERS_SRID, WGS84_SRID
+from pipeline.models.general import DataSource, Road, Hex, ISP, Service
+from pipeline.constants import BC_ALBERS_SRID, WGS84_SRID
 from pipeline.importers.census import (
     import_census_population_data, import_census_languages_data,
     import_census_income_data, import_census_housing_data, import_census_education_employment_data,
     import_census_families_data)
 from pipeline.importers.utils import import_data_into_area_model, read_csv
 
-import logging
 
 logger = logging.getLogger(__name__)
 csduid_to_geo_uid = {}
 
 
 def import_shp_resources(resource_type):
+    shp_resource_names = DataSource.objects.filter(source_type="shp").values_list("name", flat=True)
 
     if resource_type == "census":
         import_census()
@@ -78,31 +81,32 @@ def import_shp_resources(resource_type):
     elif resource_type == "hexes":
         import_hexes()
     elif resource_type == "all":
-        for available_resource_type in SHP_RESOURCES.keys():
+        for available_resource_type in shp_resource_names:
             import_resource(available_resource_type)
-    elif resource_type in SHP_RESOURCES.keys():
+    elif resource_type in shp_resource_names:
         import_resource(resource_type)
     else:
         print("Error: Resource type {} not supported".format(resource_type))
 
 
 def import_resource(resource_type):
+    data_source = DataSource.objects.get(name=resource_type)
+
     if resource_type == "northern_rockies_census_division":
         # Note: census divisions are only used to monkey-patch the Northern Rockies "regional district"
         # which is missing (actually a municipality)
-        import_northern_rockies_census_division()
+        import_northern_rockies_census_division(data_source)
         return
 
-    resource_config = SHP_RESOURCES[resource_type]
-    ds = _get_datasource(SHP_RESOURCES[resource_type]['path'])
+    ds = _get_datasource(data_source.source_file_path)
     for feat in ds[0]:
         row = {}
 
         for f in feat.fields:
             row[f] = feat.get(f)
-            # print(f, feat.get(f))
 
-        instance = import_data_into_area_model(resource_type, resource_config["model"], row)
+        model_class = apps.get_model("pipeline", data_source.model_name)
+        instance = import_data_into_area_model(resource_type, model_class, row)
 
         geos_geom_out, geos_geom_simplified = _generate_geom(feat, srid=BC_ALBERS_SRID)
         instance.geom = geos_geom_out
@@ -111,13 +115,13 @@ def import_resource(resource_type):
         instance.save()
 
 
-def import_northern_rockies_census_division():
+def import_northern_rockies_census_division(data_source):
     from pipeline.models import RegionalDistrict
     """
     {'CNSSR': 2016, 'CNSSDVSND': '5901', 'CNSSDVSNNM': 'East Kootenay', 'CNSSDVSNTP': 'RD', 'CNSSDVSNT1': 'Regional District', 'AREA_SQM': 27849712862.3922, 'FEAT_LEN': 1070461.9249, 'OBJECTID': 115}
     """
 
-    ds = _get_datasource(SHP_RESOURCES["northern_rockies_census_division"]['path'])
+    ds = _get_datasource(data_source.source_file_path)
     for feat in ds[0]:
         row = {}
 
@@ -144,7 +148,7 @@ def import_northern_rockies_census_division():
 
 
 def import_hexes():
-    ds = DataSource("data/hex/hexbc.kml")
+    ds = gdalDataSource("data/hex/hexbc.kml")
 
     # Just clear all old data and rewrite it.
     Service.objects.all().delete()
@@ -263,7 +267,7 @@ def _get_datasource(filename):
             # break        print(feat.geom)
     zip_ref.close()
 
-    ds = DataSource(the_shapefile)
+    ds = gdalDataSource(the_shapefile)
     return ds
 
 

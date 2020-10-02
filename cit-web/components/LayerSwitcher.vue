@@ -13,18 +13,19 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           color="primary"
+          small
           fab
           class="rounded-lg text-capitalize"
           v-bind="attrs"
           v-on="on"
         >
-          <v-icon>mdi-map</v-icon>
+          <v-icon>mdi-layers</v-icon>
         </v-btn>
       </template>
       <v-card width="300" class="rounded-lg pa-0 ma-0">
         <v-toolbar color="primary" height="48">
           <v-toolbar-title class="white--text font-weight-bold text-body-1"
-            ><v-icon color="white">mdi-map</v-icon> Layers</v-toolbar-title
+            ><v-icon color="white">mdi-layers</v-icon> Layers</v-toolbar-title
           >
         </v-toolbar>
         <v-card-text>

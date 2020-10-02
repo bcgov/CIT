@@ -49,7 +49,7 @@ psql -f /tmp/db.sql -U postgres postgres
 
 ## Updating Production
 
-To update the code, simply `git pull origin master` and `docker-compose up -d --build` and lastly `docker-compose restart`.
+To update the code, simply `git pull origin master` and `docker-compose up -d --build` and lastly `docker-compose restart`. or use `./update.sh`
 
 To update PowerBI, publish to `cit-master` for production (`cit-develop` for the test environment)
 
@@ -82,6 +82,17 @@ wget <nbd site>/CHX_EXO_geo.kmz
 ogr2ogr -f kml -t_srs EPSG:4326 hexes.kml CHX_EXO_geo.kmz
 ogr2ogr -f kml -clipsrc -144 48 -110 60 hexbc.kml hexes.kml
 ```
+
+```
+ogrinfo -so web/data/lcsd000b16a_e.zip
+unzip lcsd000b16a_e.zip
+ogr2ogr -t_srs EPSG:4326 census.shp lcsd000b16a_e.shp
+mkdir census
+mv census* census
+zip census.zip census/*
+```
+
+TODO: consider clipping subdivs. `ogr2ogr -clipsrc -144 48 -110 60 census_bc.zip census.zip`
 
 ## Importing Data
 

@@ -1,17 +1,15 @@
-V<template>
+<template>
   <div class="community-new-container">
     <v-container fluid>
-      <v-alert v-if="parentCommunity" type="info">
-        This community is within {{ parentCommunity.name }}'s boundary, consider
-        <a
-          :href="`/community/${parentCommunity.id}`"
-          class="font-weight-bold white--text"
+      <v-alert v-if="parentCommunity" type="info" class="primary--text">
+        This community is within {{ parentCommunity.name }}'s boundary. Consider
+        <a :href="`/community/${parentCommunity.id}`" class="font-weight-bold"
           >viewing the {{ parentCommunity.name }} page instead.</a
         >
       </v-alert>
     </v-container>
     <div v-if="isCommunityEmpty" class="d-flex mt-5 justify-center">
-      <v-alert type="info">
+      <v-alert type="info" class="primary--text">
         Sorry, we could not find a community with that ID.
       </v-alert>
     </div>
@@ -19,18 +17,63 @@ V<template>
       <div class="comm-details-content">
         <v-container fluid>
           <v-row no-gutters>
-            <v-col :cols="12">
-              <div class="map-container elevation-5">
+            <v-col :cols="12" class="elevation-5">
+              <div class="cd-header d-flex">
+                <h5
+                  class="text-h5 font-weight-bold pl-10 pt-10"
+                  style="max-width: 350px;"
+                >
+                  {{ placeName }}
+                </h5>
+                <v-img
+                  style="align-self: flex-end;"
+                  :src="require('~/assets/images/cdheader.svg')"
+                  aspect-ratio="1"
+                  height="120px"
+                ></v-img>
+              </div>
+              <v-divider></v-divider>
+              <div class="map-container">
                 <Sidebar
                   :district="regionalDistrictName"
                   :place-name="placeName"
-                  :grouped-locations="groupedLocations"
+                  :grouped-locations="filteredLocations"
                   :population="getFieldValue('population')"
                   :grouped-census="groupedCensus"
+                  :rid="communityDetails.regional_district"
                   @expand="handleExpand"
                   @findOnMap="handleFind"
                   @viewReports="viewReports"
-                ></Sidebar>
+                >
+                  <v-divider class="mt-3 mb-3"></v-divider>
+                  <div class="pl-4 pr-4">
+                    <p class="text-center text-caption pa-0 ma-0">
+                      {{ assetModeText }}
+                      <a
+                        v-i="assetMode === 'driving'"
+                        href="/footnotes#community-detail-asset-driving-distance"
+                        target="_blank"
+                        >*</a
+                      >
+                    </p>
+                    <AssetSlider
+                      v-if="assetMode === 'driving'"
+                      @mouseup="handleEnd"
+                    ></AssetSlider>
+                    <div class="text-center">
+                      <v-btn
+                        small
+                        color="primary text-caption text-capitalize d-inline-block mt-2"
+                        @click="handleAssetModeChange"
+                      >
+                        <v-icon small class="mr-2">{{
+                          assetModeButtonIcon
+                        }}</v-icon>
+                        {{ assetModeButtonText }}</v-btn
+                      >
+                    </div>
+                  </div>
+                </Sidebar>
                 <div id="map" ref="map"></div>
               </div>
             </v-col>
@@ -44,6 +87,19 @@ V<template>
                   compare to the average for the regional district, or all of
                   BC.
                 </h6>
+                <v-alert
+                  v-if="hasHiddenReports"
+                  type="info"
+                  dismissible
+                  class="primary--text"
+                >
+                  This community has incomplete census data. The charts in the
+                  reports reflect available census data and some reports have
+                  been hidden.
+                  <a href="/footnotes#incomplete-census-data" target="_blank"
+                    >Learn more.</a
+                  >
+                </v-alert>
                 <v-divider class="mt-5"></v-divider>
               </div>
             </v-col>
@@ -56,6 +112,7 @@ V<template>
             :report-cards="reportCards"
             :cid="communityDetails.id"
             :report-to-open="reportToOpen"
+            :reports-to-hide="communityDetails.hidden_report_pages"
             @reportOpen="reportOpen"
             @reportClose="reportClose"
           ></ReportSection>
@@ -79,13 +136,15 @@ V<template>
       </div>
 
       <div ref="centerControl" @click="handleResetCenter">
-        <v-btn x-small fab color="primary">
-          <v-icon small>mdi-bullseye</v-icon>
+        <v-btn color="primary" small fab class="rounded-lg text-capitalize">
+          <v-icon>mdi-bullseye</v-icon>
         </v-btn>
       </div>
 
-      <div ref="legendControl">
-        <LegendControl></LegendControl>
+      <div ref="fullscreenControl" @click="handleFullScreen">
+        <v-btn color="primary" small fab class="rounded-lg text-capitalize">
+          <v-icon>mdi-arrow-expand-all</v-icon>
+        </v-btn>
       </div>
 
       <div ref="layerSwitcher">
@@ -95,10 +154,19 @@ V<template>
         ></LayerSwitcher>
       </div>
 
+      <div ref="legend">
+        <Legend></Legend>
+      </div>
+
+      <div ref="zoomControl">
+        <ZoomControl @zoomIn="zoomIn" @zoomOut="zoomOut"></ZoomControl>
+      </div>
+
       <v-dialog
         fullscreen
         transition="dialog-bottom-transition"
         :value="showReportDialog"
+        @keydown.esc.prevent="reportClose"
       >
         <v-card>
           <div v-if="report" class="report-dialog-container">
@@ -122,6 +190,13 @@ V<template>
                     :report="report"
                     :rid="communityDetails.regional_district"
                   ></DetailCompareSection>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12">
+                  <v-card class="rounded-xl">
+                    <ReportTraverse @traverse="reportOpen"></ReportTraverse>
+                  </v-card>
                 </v-col>
               </v-row>
             </v-container>
@@ -179,11 +254,10 @@ import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
 import map from 'lodash/map'
 import groupBy from 'lodash/groupBy'
-import flatMap from 'lodash/flatMap'
 import Breadcrumbs from '~/components/CommunityDetails/Breadcrumbs.vue'
 import Sidebar from '~/components/CommunityDetails/Sidebar.vue'
 import ReportSection from '~/components/CommunityDetails/ReportSection.vue'
-import LegendControl from '~/components/CommunityDetails/LegendControl.vue'
+import ReportTraverse from '~/components/ReportTraverse.vue'
 import MainHeader from '~/components/MainHeader.vue'
 import Report from '~/components/CommunityDetails/Report.vue'
 import LayerSwitcher from '~/components/LayerSwitcher'
@@ -192,6 +266,10 @@ import DetailCompareSection from '~/components/CommunityDetails/DetailCompareSec
 import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
 import ControlFactory from '~/utils/map'
 import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
+import AssetSlider from '~/components/CommunityDetails/AssetSlider'
+
+import Legend from '~/components/Map/Legend'
+
 import {
   getCommunity,
   getCensusSubDivision,
@@ -200,6 +278,7 @@ import {
   getRegionalDistricts,
 } from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
+import ZoomControl from '~/components/Map/ZoomControl'
 
 import { getAuthToken } from '~/api/ms-auth-api/'
 import LocationCard from '~/components/Location/LocationCard.vue'
@@ -207,9 +286,9 @@ import reportPages from '~/data/communityDetails/reportPages.json'
 const commModule = namespace('communities')
 @Component({
   Breadcrumbs,
+  AssetSlider,
   Sidebar,
   ReportCard,
-  LegendControl,
   ReportSection,
   LocationCard,
   MainHeader,
@@ -218,11 +297,22 @@ const commModule = namespace('communities')
   DetailReportSection,
   DetailCompareSection,
   LayerSwitcher,
+  ZoomControl,
+  Legend,
+  ReportTraverse,
   filters: {
     yesno,
   },
 })
 export default class CommunityDetail extends Vue {
+  head() {
+    return {
+      title: `${this.placeName} | B.C. Community Information Tool`,
+    }
+  }
+
+  assetMode = 'driving'
+  assetRange = [0, 50]
   layers = true
   communityDetails = {}
   censusSubdivision = {}
@@ -266,6 +356,60 @@ export default class CommunityDetail extends Vue {
     },
   ]
 
+  handleEnd(data) {
+    this.assetRange = [data[0], data[1]]
+  }
+
+  handleAssetModeChange() {
+    if (this.assetMode === 'driving') {
+      this.assetMode = 'boundary'
+    } else {
+      this.assetMode = 'driving'
+    }
+  }
+
+  get hasHiddenReports() {
+    return this.communityDetails.hidden_report_pages?.length > 0
+  }
+
+  get assetModeButtonIcon() {
+    return this.assetMode === 'driving' ? 'mdi-crop-free' : 'mdi-car-side'
+  }
+
+  get filteredLocations() {
+    let filtered = []
+    if (this.assetMode === 'boundary') {
+      filtered = this.communityDetails.locations.filter(
+        (l) => l.within_municipality === true
+      )
+    } else {
+      const [min, max] = this.assetRange
+      filtered = this.communityDetails.locations.filter((l) => {
+        const drivingDistance = l.driving_distance
+        return drivingDistance >= min && drivingDistance <= max
+      })
+    }
+    return map(groupBy(filtered, 'type'), (o, k) => {
+      return {
+        group: k,
+        locations: o,
+        active: false,
+      }
+    })
+  }
+
+  get assetModeText() {
+    return this.assetMode === 'driving'
+      ? 'Facilities by Driving Distance'
+      : 'Facilities in Municipal Boundary'
+  }
+
+  get assetModeButtonText() {
+    return this.assetMode === 'driving'
+      ? 'Show By Municipal Boundary'
+      : 'Show By Driving Distance'
+  }
+
   get showReportDialog() {
     if (!this.reportToOpen) {
       return false
@@ -274,12 +418,8 @@ export default class CommunityDetail extends Vue {
     }
   }
 
-  get flatReportCards() {
-    return flatMap(this.reportCards)
-  }
-
   get report() {
-    return this.flatReportCards.find((r) => r.name === this.reportToOpen)
+    return this.reportCards.find((r) => r.name === this.reportToOpen)
   }
 
   handleLayerToggle(lo) {
@@ -307,6 +447,23 @@ export default class CommunityDetail extends Vue {
         report: reportName,
       },
     })
+  }
+
+  fullScreen = false
+  handleFullScreen() {
+    if (!this.fullScreen) {
+      this.$refs.map.requestFullscreen() ||
+        this.$refs.map.mozRequestFullScreen() ||
+        this.$refs.map.msRequestFullscreen() ||
+        this.$refs.map.webkitRequestFullscreen()
+      this.fullScreen = true
+    } else {
+      window.document.exitFullscreen() ||
+        window.document.mozCancelFullScreen() ||
+        window.document.msExitFullscreen() ||
+        window.document.webkitCancelFullScreen()
+      this.fullScreen = false
+    }
   }
 
   reportClose() {
@@ -419,21 +576,52 @@ export default class CommunityDetail extends Vue {
     return true
   }
 
+  getZoom() {
+    return this.map.getZoom()
+  }
+
+  zoomIn(zoomLevel) {
+    const zoom = zoomLevel || this.getZoom()
+    this.map.flyTo({
+      zoom: zoom + 1,
+    })
+  }
+
+  zoomOut(zoomLevel) {
+    const zoom = zoomLevel || this.getZoom()
+    this.map.flyTo({
+      zoom: zoom + -1,
+    })
+  }
+
   async fetch({ store, query }) {
-    const results = await Promise.all([
-      getRegionalDistricts(),
-      getCommunityList(),
-      getAuthToken(),
-      getDataSourceList(),
-    ])
-    const regionalDistricts = results[0].data.results
-    store.commit('communities/setRegionalDistricts', regionalDistricts)
-    const communityList = results[1].data
-    store.commit('communities/setCommunities', communityList)
-    const accessToken = results[2].data.access_token
-    store.commit('msauth/setAccessToken', accessToken)
-    const dataSources = results[3].data
-    store.commit('communities/setDataSources', dataSources)
+    try {
+      const results = await Promise.all([
+        getRegionalDistricts(),
+        getCommunityList(),
+        getDataSourceList(),
+      ])
+      const regionalDistricts = results[0].data.results
+      store.commit('communities/setRegionalDistricts', regionalDistricts)
+      const communityList = results[1].data
+      store.commit('communities/setCommunities', communityList)
+      const dataSources = results[2].data
+      store.commit('communities/setDataSources', dataSources)
+    } catch (e) {
+      console.error(e)
+      store.commit('communities/setRegionalDistricts', [])
+      store.commit('communities/setCommunities', [])
+      store.commit('communities/setDataSources', [])
+    }
+
+    try {
+      const results = await Promise.all([getAuthToken()])
+      const accessToken = results[0].data.access_token
+      store.commit('msauth/setAccessToken', accessToken)
+    } catch (e) {
+      console.error(e)
+      store.commit('msauth/setIsError', true)
+    }
   }
 
   async asyncData({ $config: { MAPBOX_API_KEY }, params }) {
@@ -474,10 +662,12 @@ export default class CommunityDetail extends Vue {
   }
 
   addNavigationControl(map) {
-    map.addControl(new window.mapboxgl.NavigationControl())
-    map.addControl(new window.mapboxgl.FullscreenControl())
+    map.addControl(new window.mapboxgl.ScaleControl(), 'bottom-left')
+    map.addControl(new ControlFactory(this.$refs.zoomControl), 'top-right')
+    map.addControl(new ControlFactory(this.$refs.centerControl), 'top-right')
     map.addControl(
-      new window.mapboxgl.ScaleControl({ position: 'bottom-right' })
+      new ControlFactory(this.$refs.fullscreenControl),
+      'top-right'
     )
   }
 
@@ -539,6 +729,11 @@ export default class CommunityDetail extends Vue {
     })
   }
 
+  addControls(map) {
+    map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'bottom-right')
+    map.addControl(new ControlFactory(this.$refs.legend), 'bottom-right')
+  }
+
   mounted() {
     this.listenToEvents()
 
@@ -557,20 +752,23 @@ export default class CommunityDetail extends Vue {
       this.communityDetails.longitude,
       this.communityDetails.latitude
     )
-    new mapboxgl.Marker()
+
+    const el = document.createElement('div')
+    el.className = 'community-marker'
+    const marker = new mapboxgl.Marker(el)
       .setLngLat([
         this.communityDetails.longitude,
         this.communityDetails.latitude,
       ])
+      .setPopup(
+        new mapboxgl.Popup({ offset: 25 }) // add popups
+          .setHTML('<h3>' + this.placeName + '</h3>')
+      )
       .addTo(map)
 
-    const centerControl = new ControlFactory(this.$refs.centerControl)
-    map.addControl(centerControl, 'top-right')
+    marker.togglePopup()
 
-    map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'bottom-right')
-
-    const legendControl = new ControlFactory(this.$refs.legendControl)
-    map.addControl(legendControl, 'bottom-right')
+    this.addControls(map)
 
     map.on('click', function (e) {
       const features = map.queryRenderedFeatures(e.point)
@@ -594,6 +792,7 @@ export default class CommunityDetail extends Vue {
       map.setLayoutProperty('locations', 'visibility', 'visible')
       this.mapLoaded = true
       this.$root.$emit('comm-map-loaded', this.map)
+      console.log('Styles', this.map.getSource('composite'))
     })
   }
 }
@@ -616,17 +815,29 @@ export default class CommunityDetail extends Vue {
 }
 
 .community-details-sidebar {
-  width: 300px;
+  width: 350px;
   background-color: white;
   overflow-y: auto;
 }
 </style>
 <style lang="scss">
+.v-alert.info .v-icon {
+  color: #193262;
+}
 .community-details-sidebar .v-list-group__header__prepend-icon {
   margin-right: 16px !important;
 }
 .community-details-sidebar .v-list-group__header__append-icon {
   min-width: auto !important;
   margin-left: 0 !important;
+}
+
+.community-marker {
+  background-image: url('~assets/icons/communities.svg');
+  background-size: cover;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 </style>

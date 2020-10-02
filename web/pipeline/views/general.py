@@ -11,7 +11,7 @@ from rest_framework_csv import renderers as csv_renderers
 
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
-from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict
+from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource, Mayor
 from pipeline.serializers.general import (
     CommunitySerializer,
     CommunityCSVSerializer,
@@ -23,11 +23,12 @@ from pipeline.serializers.general import (
     ServiceListSerializer,
     RegionalDistrictSerializer,
     SchoolDistrictSerializer,
+    DataSourceSerializer,
+    MayorSerializer,
 )
 from pipeline.utils import (
-    generate_line_strings, filter_communities,
-    serialize_communities_for_regional_districts, communities_advanced_search,
-    serialize_data_sources,
+    generate_line_strings, serialize_communities_for_regional_districts, communities_advanced_search,
+    get_hidden_explore_report_pages, get_communities_with_insufficient_data
 )
 
 
@@ -38,16 +39,14 @@ def auth(request):
         return JsonResponse({'username': request.user.username})
 
 
-class DataSourcesList(APIView):
-    def get(self, request, format=None):
-        return Response(serialize_data_sources())
+class DataSourcesList(generics.ListAPIView):
+    queryset = DataSource.objects.all()
+    serializer_class = DataSourceSerializer
 
 
 class CommunityViewSet(viewsets.GenericViewSet):
     def get_queryset(self):
-        filters = self.request.query_params
-        communities = filter_communities(filters)
-        return communities
+        return Community.objects.all()
 
     def list(self, request):
         queryset = self.paginate_queryset(self.get_queryset())
@@ -71,14 +70,22 @@ class CommunityViewSet(viewsets.GenericViewSet):
 
     @action(detail=False)
     def advanced_search(self, request):
-        community_ids = communities_advanced_search(request.query_params)
-        return Response(community_ids)
+        communities = communities_advanced_search(request.query_params)
+        hidden_report_pages = get_hidden_explore_report_pages(communities)
+        communities_with_insufficient_data = get_communities_with_insufficient_data(communities)
+
+        community_ids = communities.values_list('id', flat=True)
+        return Response({
+            "communities": community_ids,
+            "hidden_report_pages": hidden_report_pages,
+            "communities_with_insufficient_data": communities_with_insufficient_data
+        })
 
     @action(detail=False)
     def geojson(self, request):
         return HttpResponse(
             serialize('geojson', Community.objects.all(), geometry_field='point',
-                      fields=('pk', 'place_name', 'community_type', 'regional_district', 'has_any_k12_school')),
+                      fields=('pk', 'place_name', 'community_type', 'regional_district')),
             content_type="application/json",
         )
 
@@ -86,6 +93,14 @@ class CommunityViewSet(viewsets.GenericViewSet):
     def csv(self, request):
         serializer = CommunityCSVSerializer(self.get_queryset(), many=True)
         return Response(serializer.data)
+
+    @action(detail=True)
+    def population(self, request, pk=None):
+        community = self.get_object()
+        return Response({
+            "community": community.id,
+            "population": community.census_subdivision.population
+        })
 
 
 class ServiceList(generics.ListAPIView):
@@ -162,3 +177,8 @@ class RegionalDistrictViewSet(viewsets.GenericViewSet):
 class SchoolDistrictList(generics.ListAPIView):
     queryset = SchoolDistrict.objects.all()
     serializer_class = SchoolDistrictSerializer
+
+
+class MayorList(generics.ListAPIView):
+    queryset = Mayor.objects.all()
+    serializer_class = MayorSerializer

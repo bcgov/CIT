@@ -1,9 +1,7 @@
 from django.conf.urls import url
 from django.urls import path, include
-from django.views.generic import TemplateView
 
 from rest_framework.routers import DefaultRouter
-from rest_framework.schemas import get_schema_view
 
 import pipeline.views.general
 import pipeline.views.location_types
@@ -44,4 +42,5 @@ urlpatterns = [
     url(r"^locationdistances/geojson/$", pipeline.views.general.LocationDistanceGeoJSONList.as_view()),
     url(r"^locationdistances/$", pipeline.views.general.LocationDistanceList.as_view()),
     url(r"^schooldistricts/$", pipeline.views.general.SchoolDistrictList.as_view()),
+    url(r"^mayors/$", pipeline.views.general.MayorList.as_view()),
 ]

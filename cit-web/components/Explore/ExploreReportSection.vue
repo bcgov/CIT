@@ -49,7 +49,29 @@
       </v-card-text>
     </div>
     <div v-else>
-      <div v-for="(reportCard, key) in reportCards" :key="key">
+      <v-alert
+        v-if="showInsufficientDataWarning"
+        type="info"
+        dismissible
+        class="primary--text"
+      >
+        <template v-if="communitiesWithInsufficientData.length > 1">
+          {{ communitiesWithInsufficientData.length }} communities in your
+          selection have incomplete census data.
+        </template>
+        <template v-if="communitiesWithInsufficientData.length === 1">
+          1 community in your selection has incomplete census data.
+        </template>
+        <template v-if="reportsToHide"
+          >Some reports have been hidden due to insufficient data.</template
+        >
+        The charts in the reports reflect available census data and may not
+        accurately represent all communities.
+        <a href="/footnotes#incomplete-census-data" target="_blank"
+          >Learn more.</a
+        >
+      </v-alert>
+      <div v-for="(reportCard, key) in groupedReportCards" :key="key">
         <v-row>
           <v-col col="12">
             <h3 class="d-flex align-center">
@@ -76,6 +98,7 @@
 
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import groupBy from 'lodash/groupBy'
 import ExploreReportCard from '~/components/Explore/ExploreReportCard'
 
 @Component({
@@ -83,9 +106,27 @@ import ExploreReportCard from '~/components/Explore/ExploreReportCard'
 })
 export default class ExploreReportSection extends Vue {
   @Prop({ default: null, type: Array }) cids
-  @Prop({ default: () => {}, type: Object }) reportCards
+  @Prop({ default: () => {}, type: Array }) reportCards
   @Prop({ default: null, type: Object }) reportToShow
+  @Prop({ default: null, type: Array }) reportsToHide
+  @Prop({ default: null, type: Array }) communitiesWithInsufficientData
   loaded = false
+
+  get showInsufficientDataWarning() {
+    return this.communitiesWithInsufficientData?.length > 0
+  }
+
+  get groupedReportCards() {
+    if (!this.reportsToHide) {
+      return groupBy(this.reportCards, 'group')
+    } else {
+      const filtered = this.reportCards.filter((rc) => {
+        const report = this.reportsToHide.find((rth) => rth === rc.pid)
+        return !report
+      })
+      return groupBy(filtered, 'group')
+    }
+  }
 
   handleCardClick(data) {
     this.$emit('showReport', data)
@@ -97,5 +138,10 @@ export default class ExploreReportSection extends Vue {
   max-width: 1600px;
   margin: 0 auto;
   overflow-y: auto;
+}
+</style>
+<style lang="scss">
+.v-alert.info .v-icon {
+  color: #193262;
 }
 </style>

@@ -1,27 +1,15 @@
 import datetime
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import make_aware
 from functools import reduce
 from operator import and_
 
+import requests
+
+from django.apps import apps
 from django.db.models import Q, F
 
-
-def filter_communities(filters):
-    from pipeline.models.community import Community
-    queryset_filters = {}
-
-    if 'community_tyserialipe' in filters:
-        community_types = Community.objects.values_list('community_type', flat=True).distinct()
-        if filters['community_type'] in community_types:
-            queryset_filters['community_type'] = filters['community_type']
-
-    if 'has_any_k12_school' in filters:
-        queryset_filters['has_any_k12_school'] = True if filters['has_any_k12_school'] == "true" else False
-
-    # todo: figure out what filters there need to be
-
-    communities = Community.objects.filter(**queryset_filters).order_by('place_name')
-
-    return communities
+from pipeline.constants import LOCATION_TYPES
 
 
 def generate_line_strings():
@@ -402,10 +390,12 @@ def get_community_type_display_name(community_type):
 
 
 def serialize_location_assets(obj):
-    from pipeline.constants import LOCATION_TYPES
+    from pipeline.models.general import DataSource
 
     locations = []
-    for location_type, model_class in LOCATION_TYPES.items():
+    for location_type in LOCATION_TYPES:
+        data_source = DataSource.objects.get(name=location_type)
+        model_class = apps.get_model("pipeline", data_source.model_name)
         location_assets = get_location_assets_for_community(model_class, obj)
 
         for location_asset in location_assets:
@@ -414,6 +404,9 @@ def serialize_location_assets(obj):
                 "latitude": location_asset.get_latitude(),
                 "longitude": location_asset.get_longitude(),
                 "driving_distance": location_asset.driving_distance,
+                "distance":
+                    location_asset.driving_distance if location_asset.driving_distance is not None
+                    else location_asset.distance,
                 "travel_time": location_asset.travel_time,
                 "within_municipality": location_asset.within_municipality,
                 **{field: getattr(location_asset, field) for
@@ -429,16 +422,22 @@ def get_location_assets_for_community(model_class, community):
     if model_class == School:
         school_districts = community.schooldistrict_set.all()
         return School.objects.filter(
-            school_district__in=school_districts,
-            distances__driving_distance__lte=50,
-            distances__community=community).annotate(
+            Q(distances__community=community) & Q(school_district__in=school_districts) & (
+                Q(distances__driving_distance__lte=50) |
+                (Q(distances__driving_distance__isnull=True) & Q(distances__distance__lte=50))
+            )).annotate(
                 driving_distance=F('distances__driving_distance'),
+                distance=F('distances__distance'),
                 travel_time=F('distances__travel_time'),
                 within_municipality=F('distances__within_municipality'))
     else:
         return model_class.objects.filter(
-            distances__driving_distance__lte=50, distances__community=community).annotate(
+            Q(distances__community=community) & (
+                Q(distances__driving_distance__lte=50) |
+                (Q(distances__driving_distance__isnull=True) & Q(distances__distance__lte=50))
+            )).annotate(
                 driving_distance=F('distances__driving_distance'),
+                distance=F('distances__distance'),
                 travel_time=F('distances__travel_time'),
                 within_municipality=F('distances__within_municipality'))
 
@@ -616,7 +615,7 @@ def communities_advanced_search(query_params):
     communities = communities.distinct()
 
     print("communities", communities, communities.count())
-    return communities.values_list('id', flat=True)
+    return communities
 
 
 def _handle_location_filter(query_filter):
@@ -643,13 +642,20 @@ def _handle_location_filter(query_filter):
 
     # TODO refactor duplicate code
     if query_filter["operator"] == "xgt":
-        pass
         query += "__lt"
-        print("query_filter here", query_filter)
         distance_query = ~Q(**{query: query_filter["value"][0]})
     else:
         query += "__{}".format(query_filter["operator"])
         distance_query = Q(**{query: query_filter["value"][0]})
+
+    if query_filter["units"] == "km":
+        # if filtering by distance, add a fallback for birds' eye distance if driving distance
+        # is unavailable
+        # (i.e. driving distance < 50km OR (driving distance is null AND birds' eye distance < 50km))
+        birds_eye_distance_query = "distances__distance__" + query_filter["operator"]
+        distance_query = (
+            distance_query |
+            (Q(distances__driving_distance__isnull=True) & Q(**{birds_eye_distance_query: query_filter["value"][0]})))
 
     print("location_query", location_type_query, distance_query)
 
@@ -706,15 +712,6 @@ def serialize_communities_for_regional_districts(regional_districts):
     }
 
 
-def serialize_data_sources():
-    from pipeline.constants import CSV_RESOURCES, DATABC_RESOURCES, SHP_RESOURCES
-
-    serialized = {}
-    for name, datasource_info in [*SHP_RESOURCES.items(), *CSV_RESOURCES.items(), *DATABC_RESOURCES.items()]:
-        serialized[name] = serialize_data_source(name, datasource_info)
-    return serialized
-
-
 def serialize_data_source(name, datasource_info):
     from pipeline.constants import SOURCE_INTERNAL, SOURCE_DATABC, DATABC_PERMALINK_URL
 
@@ -731,3 +728,40 @@ def serialize_data_source(name, datasource_info):
         "source": source,
         "source_url": source_url,
     }
+
+
+def get_communities_with_insufficient_data(communities):
+    return [
+        community.id for community in communities if
+        community.census_subdivision.get_percentage_of_null_fields() > 0.25]
+
+
+def get_hidden_explore_report_pages(communities):
+    from pipeline.constants import POWERBI_HIDDEN_EXPLORE_PAGES
+
+    if all(community.census_subdivision.get_percentage_of_null_fields() > 0.25 for community in communities):
+        return POWERBI_HIDDEN_EXPLORE_PAGES
+
+
+def get_databc_last_modified_date(dataset_resource_id):
+    from pipeline.constants import API_URL
+
+    response = requests.get(API_URL.format(dataset_resource_id=dataset_resource_id))
+    result = response.json()["result"]
+
+    if not result:
+        print("data source metadata not found", dataset_resource_id)
+        print(result)
+        return
+
+    if result["last_modified"]:
+        date = result["last_modified"]
+    elif result["created"]:
+        date = result["created"]
+    else:
+        print("no date found for resource", dataset_resource_id)
+        print(result)
+        return
+
+    last_modified_date = make_aware(parse_datetime(date))
+    return last_modified_date
