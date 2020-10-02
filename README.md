@@ -19,7 +19,7 @@ cp dc.dev.yml docker-compose.override.yml
 Spin up the project.
 
 ```
-docker-compose up
+docker-compose up -d --build
 ```
 
 Your Vue app is served at `http://localhost`.
