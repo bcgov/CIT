@@ -15,6 +15,7 @@
         :input-value="active"
         filter
         :disabled="disabled"
+        class="text-body-1"
         v-on="on"
       >
         {{ chipTitle }}
@@ -35,9 +36,21 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <v-btn dense text @click="$emit('clear')">Clear</v-btn>
+        <v-btn
+          dense
+          text
+          class="text-body-1 font-weight-medium text-capitalize"
+          @click="$emit('clear')"
+          >Clear</v-btn
+        >
         <v-spacer></v-spacer>
-        <v-btn dense color="primary" @click="$emit('save')">Save</v-btn>
+        <v-btn
+          dense
+          color="primary"
+          class="text-body-1 font-weight-medium text-capitalize"
+          @click="$emit('save')"
+          >Save</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-menu>
