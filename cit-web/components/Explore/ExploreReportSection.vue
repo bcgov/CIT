@@ -53,7 +53,7 @@
         v-if="showInsufficientDataWarning"
         type="info"
         dismissible
-        class="primary--text"
+        class="primary--text elevation-5"
       >
         <template v-if="communitiesWithInsufficientData.length > 1">
           {{ communitiesWithInsufficientData.length }} communities in your
