@@ -7,6 +7,8 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.gis.measure import D
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import make_aware
 
 from pipeline.models.community import Community
 from pipeline.models.general import DataSource, LocationDistance, SchoolDistrict, Municipality, Mayor
@@ -365,3 +367,27 @@ def import_mayors_from_csv(file_path):
             mayor.gender = row['Gender'].title()
             mayor.experience = row['Experience'].title()
             mayor.save()
+
+
+def get_databc_last_modified_date(dataset_resource_id):
+    from pipeline.constants import API_URL
+
+    response = requests.get(API_URL.format(dataset_resource_id=dataset_resource_id))
+    result = response.json()["result"]
+
+    if not result:
+        print("data source metadata not found", dataset_resource_id)
+        print(result)
+        return
+
+    if result["last_modified"]:
+        date = result["last_modified"]
+    elif result["created"]:
+        date = result["created"]
+    else:
+        print("no date found for resource", dataset_resource_id)
+        print(result)
+        return
+
+    last_modified_date = make_aware(parse_datetime(date))
+    return last_modified_date

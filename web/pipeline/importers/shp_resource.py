@@ -57,6 +57,7 @@ from django.contrib.gis.gdal import DataSource as gdalDataSource
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 from django.conf import settings
 
+from pipeline.constants import SOURCE_DATABC
 from pipeline.models.census import CensusSubdivision
 from pipeline.models.general import DataSource, Road, Hex, ISP, Service
 from pipeline.constants import BC_ALBERS_SRID, WGS84_SRID
@@ -64,7 +65,8 @@ from pipeline.importers.census import (
     import_census_population_data, import_census_languages_data,
     import_census_income_data, import_census_housing_data, import_census_education_employment_data,
     import_census_families_data)
-from pipeline.importers.utils import import_data_into_area_model, read_csv
+from pipeline.importers.utils import (
+    import_data_into_area_model, read_csv, get_databc_last_modified_date)
 
 
 logger = logging.getLogger(__name__)
@@ -113,6 +115,10 @@ def import_resource(resource_type):
         instance.geom_simplified = geos_geom_simplified
 
         instance.save()
+
+    if data_source.source == SOURCE_DATABC:
+        data_source.last_updated = get_databc_last_modified_date(data_source.resource_id)
+        data_source.save()
 
 
 def import_northern_rockies_census_division(data_source):

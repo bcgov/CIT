@@ -3,10 +3,11 @@ API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/resource_show?id={datas
 SOURCE_INTERNAL = 'internal'
 SOURCE_DATABC = 'databc'
 SOURCE_STATSCAN = 'statscan'
+SOURCE_OPENCA = 'openca'
 
 DATA_SOURCE_TYPE_CHOICES = (
     ("csv", "CSV"),
-    ("api", "DATABC"),
+    ("api", "DATABC API"),
     ("shp", "SHP"),
 )
 
@@ -14,6 +15,7 @@ DATA_SOURCE_CHOICES = (
     (SOURCE_INTERNAL, "Provided by Network BC team"),
     (SOURCE_DATABC, "BC Data Catalogue"),
     (SOURCE_STATSCAN, "Statistics Canada"),
+    (SOURCE_OPENCA, "Open Government (Canada)"),
 )
 
 LOCATION_TYPES = [
