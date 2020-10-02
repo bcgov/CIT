@@ -32,13 +32,6 @@ from pipeline.utils import (
 )
 
 
-def auth(request):
-    if request.user.is_anonymous:
-        return JsonResponse({})
-    else:
-        return JsonResponse({'username': request.user.username})
-
-
 class DataSourcesList(generics.ListAPIView):
     queryset = DataSource.objects.all()
     serializer_class = DataSourceSerializer
