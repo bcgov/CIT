@@ -28,6 +28,8 @@ DEBUG = os.environ.get("DEBUG", False)
 # By default, it is ok for others to use our APIs and crawl our site.
 ALLOWED_HOSTS = ['*']
 
+SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # Application definition
 
