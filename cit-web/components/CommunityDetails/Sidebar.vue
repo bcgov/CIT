@@ -37,7 +37,7 @@
             class="mr-2"
           />
           <v-list-item-content>
-            <v-list-item-title class="text-body-1">
+            <v-list-item-title class="text-body-1 py-1">
               {{ startCase(groupedLocation.group) }}
             </v-list-item-title>
           </v-list-item-content>
