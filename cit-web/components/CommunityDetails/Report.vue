@@ -28,6 +28,15 @@ export default class MainReport extends Vue {
   @Prop({ default: '', type: String }) height
   @Prop({ default: '', type: String }) width
 
+  isHydrated = false
+  get isMobile() {
+    if (this.isHydrated === true) {
+      return this.$vuetify.breakpoint.width < 420
+    } else {
+      return false
+    }
+  }
+
   @msauthModule.Getter('getIsError') accessTokenError
 
   @Watch('cids')
@@ -54,6 +63,7 @@ export default class MainReport extends Vue {
 
   async mounted() {
     try {
+      this.isHydrated = true
       await this.init()
     } catch (e) {
       console.error(e)
@@ -175,5 +185,12 @@ iframe {
 }
 .reportContainer {
   height: calc(90vw);
+}
+
+@media screen and (max-width: 420px) {
+  .reportContainer {
+    width: 100% !important;
+    height: 800px !important;
+  }
 }
 </style>
