@@ -25,7 +25,8 @@
       <v-card width="300" class="rounded-lg pa-0 ma-0">
         <v-toolbar color="primary" height="48">
           <v-toolbar-title class="white--text font-weight-bold text-body-1"
-            ><v-icon color="white">mdi-layers</v-icon> Layers</v-toolbar-title
+            ><v-icon color="white">mdi-layers</v-icon> Layers &
+            Legends</v-toolbar-title
           >
         </v-toolbar>
         <v-card-text>
@@ -46,9 +47,10 @@
               <template v-slot:prepend></template>
             </v-switch>
           </div>
+
+          <Legend></Legend>
         </v-card-text>
         <v-divider></v-divider>
-        <Legend></Legend>
       </v-card>
     </v-menu>
   </div>
