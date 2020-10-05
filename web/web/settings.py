@@ -116,5 +116,12 @@ REST_FRAMEWORK = {
     'UNAUTHENTICATED_USER': None,
 }
 
+# Caching
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
+
 # API Keys
 ROUTE_PLANNER_API_KEY = os.environ.get("ROUTE_PLANNER_API_KEY")
