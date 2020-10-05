@@ -1,6 +1,10 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card class="elevation-3 rounded-lg" style="cursor: pointer;">
+    <v-card
+      class="elevation-3 rounded-lg report-card"
+      style="cursor: pointer;"
+      min-width="360"
+    >
       <v-expand-transition>
         <div
           v-if="hover"
@@ -12,6 +16,7 @@
       </v-expand-transition>
 
       <v-img
+        class="report-card-image"
         :src="require(`~/assets/images/reports/${image}`)"
         cover
         width="376"
@@ -38,7 +43,6 @@
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import Report from '~/components/CommunityDetails/Report.vue'
 import Compare from '~/components/Compare'
-
 @Component({
   Report,
   Compare,
@@ -52,9 +56,7 @@ export default class CommunityReportCard extends Vue {
   @Prop({ default: null, type: String }) description
   @Prop({ default: null, type: Number }) cid
   @Prop({ default: null, type: Number }) rid
-
   dialog = false
-
   get showDialog() {
     return this.title === this.selectedReportName
   }
@@ -62,7 +64,6 @@ export default class CommunityReportCard extends Vue {
   reportOneLoaded = false
   reportTwoLoaded = false
   reportThreeLoaded = false
-
   get isAllReportsLoaded() {
     if (this.cid) {
       return (
@@ -89,5 +90,15 @@ export default class CommunityReportCard extends Vue {
   width: 100%;
   height: 100%;
   opacity: 0.9;
+}
+@media screen and (max-width: 477px) {
+  .report-card {
+    min-width: auto !important;
+  }
+}
+@media screen and (max-width: 450px) {
+  .report-card-image {
+    width: 100% !important;
+  }
 }
 </style>
