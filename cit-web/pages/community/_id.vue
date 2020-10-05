@@ -155,10 +155,6 @@
         ></LayerSwitcher>
       </div>
 
-      <div ref="legend">
-        <Legend></Legend>
-      </div>
-
       <div ref="zoomControl">
         <ZoomControl @zoomIn="zoomIn" @zoomOut="zoomOut"></ZoomControl>
       </div>
@@ -269,8 +265,6 @@ import ControlFactory from '~/utils/map'
 import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
 import AssetSlider from '~/components/CommunityDetails/AssetSlider'
 
-import Legend from '~/components/Map/Legend'
-
 import {
   getCommunity,
   getCensusSubDivision,
@@ -299,7 +293,6 @@ const commModule = namespace('communities')
   DetailCompareSection,
   LayerSwitcher,
   ZoomControl,
-  Legend,
   ReportTraverse,
   filters: {
     yesno,
@@ -732,7 +725,6 @@ export default class CommunityDetail extends Vue {
 
   addControls(map) {
     map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'bottom-right')
-    map.addControl(new ControlFactory(this.$refs.legend), 'bottom-right')
   }
 
   mounted() {

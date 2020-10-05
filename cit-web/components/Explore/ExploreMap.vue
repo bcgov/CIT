@@ -19,9 +19,6 @@
           @layerToggle="handleLayerToggle"
         ></LayerSwitcher>
       </div>
-      <div ref="legend">
-        <Legend></Legend>
-      </div>
       <div ref="zoomControl">
         <ZoomControl @zoomIn="zoomIn" @zoomOut="zoomOut"></ZoomControl>
       </div>
@@ -36,7 +33,6 @@ import LayerSwitcher from '~/components/LayerSwitcher'
 import SearchAsMove from '~/components/Explore/SearchAsMove.vue'
 import CommunityPopup from '~/components/Map/CommunityPopup'
 import ZoomControl from '~/components/Map/ZoomControl'
-import Legend from '~/components/Map/Legend'
 import { getPopulation } from '~/api/cit-api/'
 
 const commModule = namespace('communities')
@@ -46,7 +42,6 @@ const commModule = namespace('communities')
   CommunityPopup,
   LayerSwitcher,
   ZoomControl,
-  Legend,
 })
 export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
@@ -290,7 +285,6 @@ export default class Explore extends Vue {
       new ControlFactory(this.$refs.layerSwitcher),
       'bottom-right'
     )
-    this.map.addControl(new ControlFactory(this.$refs.legend), 'bottom-right')
     this.map.addControl(new ControlFactory(this.$refs.zoomControl), 'top-right')
   }
 
