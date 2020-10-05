@@ -175,14 +175,14 @@
 
             <v-container fluid>
               <v-row>
-                <v-col cols="8">
+                <v-col xl="8" lg="8" md="12" sm="12" cols="12">
                   <DetailReportSection
                     :report="report"
                     :place-name="placeName"
                     :cid="communityDetails.id"
                   ></DetailReportSection>
                 </v-col>
-                <v-col cols="4">
+                <v-col xl="4" lg="4" md="12" sm="12" cols="12">
                   <DetailCompareSection
                     :report="report"
                     :rid="communityDetails.regional_district"

@@ -13,12 +13,13 @@
   >
     <template v-slot:selection="data">
       <div v-if="autocomplete.length > 1">
-        <v-chip @click="data.select">
+        <v-chip :x-small="smallChip" @click="data.select">
           {{ autocomplete.length }} {{ mode }} selected
         </v-chip>
       </div>
       <div v-else>
         <v-chip
+          :x-small="smallChip"
           v-bind="data.attrs"
           :input-value="data.selected"
           close
@@ -45,6 +46,19 @@ export default class Compare extends Vue {
   autocomplete = []
   searchInput = ''
   groupChips = false
+  isHydrated = false
+
+  mounted() {
+    this.isHydrated = true
+  }
+
+  get smallChip() {
+    if (this.isHydrated === true) {
+      return this.$vuetify.breakpoint.width < 440
+    } else {
+      return false
+    }
+  }
 
   setGroupChips(state) {
     this.groupChips = state
