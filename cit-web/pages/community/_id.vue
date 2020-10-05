@@ -1,7 +1,7 @@
 <template>
   <div class="community-new-container">
-    <v-container fluid>
-      <v-alert v-if="parentCommunity" type="info" class="primary--text">
+    <v-container v-if="parentCommunity" fluid>
+      <v-alert type="info" class="primary--text">
         This community is within {{ parentCommunity.name }}'s boundary. Consider
         <a :href="`/community/${parentCommunity.id}`" class="font-weight-bold"
           >viewing the {{ parentCommunity.name }} page instead.</a
@@ -50,7 +50,7 @@
                     <p class="text-center pa-0 ma-0 text-body-1">
                       {{ assetModeText }}
                       <a
-                        v-i="assetMode === 'driving'"
+                        v-if="assetMode === 'driving'"
                         href="/footnotes#community-detail-asset-driving-distance"
                         target="_blank"
                         >*</a
@@ -137,13 +137,13 @@
       </div>
 
       <div ref="centerControl" @click="handleResetCenter">
-        <v-btn color="primary" small fab class="rounded-lg text-capitalize">
+        <v-btn color="primary" x-small fab class="rounded-lg text-capitalize">
           <v-icon>mdi-bullseye</v-icon>
         </v-btn>
       </div>
 
       <div ref="fullscreenControl" @click="handleFullScreen">
-        <v-btn color="primary" small fab class="rounded-lg text-capitalize">
+        <v-btn color="primary" x-small fab class="rounded-lg text-capitalize">
           <v-icon>mdi-arrow-expand-all</v-icon>
         </v-btn>
       </div>
@@ -819,6 +819,21 @@ export default class CommunityDetail extends Vue {
   width: 420px;
   background-color: white;
   overflow-y: auto;
+}
+@media screen and (max-width: 1400px) {
+  .community-new-container {
+    padding: 1em;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .community-new-container {
+    padding: 0;
+  }
+}
+@media screen and (max-width: 477px) {
+  .community-new-container {
+    padding: 0;
+  }
 }
 </style>
 <style lang="scss">
