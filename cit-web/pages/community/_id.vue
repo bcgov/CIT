@@ -299,7 +299,7 @@ const commModule = namespace('communities')
 export default class CommunityDetail extends Vue {
   head() {
     return {
-      title: `${this.placeName} | B.C. Community Information Tool`,
+      title: `${this.placeName}`,
     }
   }
 
