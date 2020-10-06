@@ -1,5 +1,6 @@
 DATABC_PERMALINK_URL = 'https://catalogue.data.gov.bc.ca/dataset/{permalink_id}'
-API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/resource_show?id={dataset_resource_id}"
+DATABC_METADATA_API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/resource_show?id={dataset_resource_id}"
+OPENCA_METADATA_API_URL = 'https://open.canada.ca/data/api/action/package_show?id={dataset_resource_id}'
 SOURCE_INTERNAL = 'internal'
 SOURCE_DATABC = 'databc'
 SOURCE_STATSCAN = 'statscan'

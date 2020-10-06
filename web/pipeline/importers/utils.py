@@ -1,4 +1,5 @@
 import csv
+import os
 import requests
 
 from django.apps import apps
@@ -11,7 +12,7 @@ from django.utils.dateparse import parse_datetime
 from django.utils.timezone import make_aware
 
 from pipeline.models.community import Community
-from pipeline.models.general import DataSource, LocationDistance, SchoolDistrict, Municipality, Mayor
+from pipeline.models.general import DataSource, LocationDistance, SchoolDistrict, Municipality, Mayor, Hex, Service, ISP
 from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES
 
@@ -369,14 +370,41 @@ def import_mayors_from_csv(file_path):
             mayor.save()
 
 
-def get_databc_last_modified_date(dataset_resource_id):
-    from pipeline.constants import API_URL
+def import_services(file_path):
+    isps = read_csv(file_path)
 
-    response = requests.get(API_URL.format(dataset_resource_id=dataset_resource_id))
+    # avoid re-querying for each row with ISP reference.
+    isp_cache = {}
+    services = []
+    print(len(isps))
+    for i, isp in enumerate(isps):
+        if not i % 1000:
+            print(i)
+        try:
+            hex = Hex.objects.get(pk=isp['HEXuid_HEXidu'])
+        except Hex.DoesNotExist:
+            continue
+        if isp["ISPname_NomFSI"] in isp_cache:
+            isp_obj = isp_cache[isp["ISPname_NomFSI"]]
+        else:
+            isp_obj = ISP(name=isp["ISPname_NomFSI"])
+            print(isp_obj)
+            isp_cache[isp["ISPname_NomFSI"]] = isp_obj
+            isp_obj.save()
+        service = Service(isp=isp_obj, hex=hex, technology=isp['Technology'])
+        services.append(service)
+
+    Service.objects.bulk_create(services)
+
+
+def get_databc_last_modified_date(data_source):
+    from pipeline.constants import DATABC_METADATA_API_URL
+
+    response = requests.get(DATABC_METADATA_API_URL.format(dataset_resource_id=data_source.resource_id))
     result = response.json()["result"]
 
     if not result:
-        print("data source metadata not found", dataset_resource_id)
+        print("data source metadata not found", data_source.resource_id)
         print(result)
         return
 
@@ -385,8 +413,36 @@ def get_databc_last_modified_date(dataset_resource_id):
     elif result["created"]:
         date = result["created"]
     else:
-        print("no date found for resource", dataset_resource_id)
+        print("no date found for resource", data_source.resource_id)
         print(result)
+        return
+
+    last_modified_date = make_aware(parse_datetime(date))
+    return last_modified_date
+
+
+def get_openca_last_modified_date(data_source):
+    from pipeline.constants import OPENCA_METADATA_API_URL
+
+    response = requests.get(OPENCA_METADATA_API_URL.format(dataset_resource_id=data_source.resource_id))
+    if response.status_code == 404:
+        print("data source metadata not found", data_source.resource_id)
+        return
+
+    result = response.json()["result"]
+
+    sub_resources = result["resources"]
+    sub_resource = next(
+        (sub_resource for sub_resource in sub_resources if sub_resource["id"] == data_source.sub_resource_id), None)
+    print(sub_resource)
+
+    if sub_resource["last_modified"]:
+        date = sub_resource["last_modified"]
+    elif sub_resource["created"]:
+        date = sub_resource["created"]
+    else:
+        print("no date found for resource", data_source.resource_id, data_source.sub_resource_id)
+        print(sub_resource)
         return
 
     last_modified_date = make_aware(parse_datetime(date))

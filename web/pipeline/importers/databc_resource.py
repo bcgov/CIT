@@ -2,10 +2,11 @@ import requests
 
 from django.apps import apps
 
-from pipeline.constants import SOURCE_DATABC
+from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA
 from pipeline.models.general import DataSource
 from pipeline.importers.utils import (
-    import_data_into_point_model, calculate_nearest_location_type_outside_50k, get_databc_last_modified_date)
+    import_data_into_point_model, calculate_nearest_location_type_outside_50k, get_databc_last_modified_date,
+    get_openca_last_modified_date)
 
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}&limit=10000"
 
@@ -42,5 +43,8 @@ def import_resource(resource_type):
     calculate_nearest_location_type_outside_50k(resource_type)
 
     if data_source.source == SOURCE_DATABC:
-        data_source.last_updated = get_databc_last_modified_date(data_source.resource_id)
+        data_source.last_updated = get_databc_last_modified_date(data_source)
+        data_source.save()
+    elif data_source.source == SOURCE_OPENCA:
+        data_source.last_updated = get_openca_last_modified_date(data_source)
         data_source.save()

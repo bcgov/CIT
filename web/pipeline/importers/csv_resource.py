@@ -3,12 +3,12 @@ import os
 from django.apps import apps
 from django.conf import settings
 
-from pipeline.constants import SOURCE_DATABC
+from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA
 from pipeline.models.general import DataSource
 from pipeline.importers.communities import import_communities_from_csv
 from pipeline.importers.utils import (
     import_data_into_point_model, read_csv, import_mayors_from_csv, calculate_nearest_location_type_outside_50k,
-    get_databc_last_modified_date)
+    get_databc_last_modified_date, import_services, get_openca_last_modified_date)
 
 FILES_DIR = settings.BASE_DIR
 
@@ -39,6 +39,8 @@ def import_resource(resource_type):
         import_communities_from_csv(file_path)
     elif resource_type == "mayors":
         import_mayors_from_csv(file_path)
+    elif resource_type == "services":
+        import_services(file_path)
     elif resource_type in location_csv_resources:
         data = read_csv(data_source.source_file_path)
         for row in data:
@@ -49,5 +51,8 @@ def import_resource(resource_type):
         print("Error: Resource type {} not supported".format(resource_type))
 
     if data_source.source == SOURCE_DATABC:
-        data_source.last_updated = get_databc_last_modified_date(data_source.resource_id)
+        data_source.last_updated = get_databc_last_modified_date(data_source)
+        data_source.save()
+    elif data_source.source == SOURCE_OPENCA:
+        data_source.last_updated = get_openca_last_modified_date(data_source)
         data_source.save()
