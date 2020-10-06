@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('last_name', models.CharField(max_length=255)),
                 ('gender', models.CharField(max_length=255)),
                 ('experience', models.CharField(max_length=255)),
-                ('position', models.CharField(choices=[('mayor', 'Mayor'), ('councillor', 'Councillor')], max_length=255)),
+                ('position', models.CharField(choices=[('mayor', 'Mayor'), ('councillor', 'Councillor')], max_length=255, default="mayor")),
                 ('community', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='pipeline.Community')),
             ],
             options={
