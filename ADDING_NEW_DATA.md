@@ -1,6 +1,8 @@
 # Adding new datasets
 
-there are three main types of data: BC Data Catalogue API, CSV files, and SHP files.
+[WIP SY]
+
+There are three main sources of data: BC Data Catalogue API, CSV files, and SHP files.
 
 - add an entry to `/web/data/data_sources.json`.
 - update data sources (`DataSource` model) in database:

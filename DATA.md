@@ -1,5 +1,7 @@
 # Data Sources and Importing Data
 
+[WIP SY]
+
 ## Prepping Data
 
 Some data are loaded from locally stored csv (that you save in ./web/data) and shapefiles since have no public API.
@@ -79,6 +81,10 @@ docker-compose exec web python manage.py import_databc all
 ```
 
 Use the `all` parameter in the three above commands to import all resources from each source, or see `web/pipeline/constants.py` for a list of valid resources to import individually.
+
+## Updating data
+
+
 
 ## Adding new datasets
 
