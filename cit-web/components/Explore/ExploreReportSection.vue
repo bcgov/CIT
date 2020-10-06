@@ -81,15 +81,21 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col v-for="report in reportCard" :key="report.name" xl="4" lg="4">
-            <ExploreReportCard
-              style="cursor: pointer;"
-              :title="report.name"
-              :description="report.description"
-              :image="report.image"
-              @click.native="handleCardClick(report.name)"
-            ></ExploreReportCard>
-          </v-col>
+          <div class="d-flex flex-wrap explore-report-card-wrapper">
+            <div
+              v-for="report in reportCard"
+              :key="report.name"
+              class="ma-3 explore-report-card-container"
+            >
+              <ExploreReportCard
+                style="cursor: pointer;"
+                :title="report.name"
+                :description="report.description"
+                :image="report.image"
+                @click.native="handleCardClick(report.name)"
+              ></ExploreReportCard>
+            </div>
+          </div>
         </v-row>
       </div>
     </div>
@@ -143,5 +149,29 @@ export default class ExploreReportSection extends Vue {
 <style lang="scss">
 .v-alert.info .v-icon {
   color: #193262;
+}
+
+@media screen and (max-width: 1252px) {
+  .explore-report-card-wrapper {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .explore-report-card-wrapper {
+    justify-content: normal;
+  }
+}
+
+@media screen and (max-width: 831px) {
+  .explore-report-card-wrapper {
+    justify-content: center;
+  }
+}
+
+@media screen and (max-width: 477px) {
+  .explore-report-card-container {
+    width: 100% !important;
+  }
 }
 </style>
