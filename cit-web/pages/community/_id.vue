@@ -162,6 +162,7 @@
       <v-dialog
         fullscreen
         transition="dialog-bottom-transition"
+        hide-overlay
         :value="showReportDialog"
         @keydown.esc.prevent="reportClose"
       >
