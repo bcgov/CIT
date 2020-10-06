@@ -11,7 +11,8 @@
       @save="handleSave"
     >
       <p>
-        Search by what's nearby, choose an asset.
+        Search for communities with nearby local assets. Choose an asset to
+        filter.
         <a href="/footnotes#search-filters-distance" target="_blank"
           >How does it work?</a
         >
@@ -34,7 +35,13 @@
 
       <div class="d-flex mt-5">
         <v-spacer></v-spacer>
-        <v-btn color="primary" small text @click="addLocation">
+        <v-btn
+          color="primary"
+          small
+          text
+          class="text-body-1 font-weight-medium"
+          @click="addLocation"
+        >
           <v-icon small class="mr-2">mdi-plus</v-icon>
           Add More
         </v-btn>

@@ -1,14 +1,22 @@
 <template>
   <div>
     <v-card>
-      <v-card-title class="body-2 pb-0" dense>{{ location.name }}</v-card-title>
+      <v-card-title class="body-2 pb-0 text-body-1" dense>{{
+        location.name
+      }}</v-card-title>
       <v-card-text class="pb-0">
-        <div class="caption">
+        <div class="text-body-1">
           {{ location.public_or_independent }}
         </div>
       </v-card-text>
       <v-card-actions class="pt-0">
-        <v-btn x-small text color="primary accent-4" @click="triggerFind">
+        <v-btn
+          x-small
+          text
+          color="primary accent-4"
+          class="text-body-1 text-capitalize font-weight-medium"
+          @click="triggerFind"
+        >
           Find On Map
           <v-icon small dark>mdi-map-marker</v-icon>
         </v-btn>

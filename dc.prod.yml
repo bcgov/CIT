@@ -6,6 +6,7 @@ services:
     environment:
       - NODE_ENV=production
       - POWERBI_REPORT_ID=ef9fbbd5-63c7-45e8-b9cf-97fc12319be1
+      - API_HOST=https://cit-develop.countable.ca
   nginx:
     ports:
       - 10081:80

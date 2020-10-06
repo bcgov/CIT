@@ -10,19 +10,26 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col v-for="report in reportCard" :key="report.name" xl="3" lg="3">
-          <ReportCard
-            :page-name="report.pid"
-            :compare-page-name="report.cpid"
-            :title="report.name"
-            :image="report.image"
-            :description="report.description"
-            :cid="cid"
-            :rid="community.regional_district"
-            :subtitle="placeName"
-            @click.native="openReport(report.name)"
-          ></ReportCard>
-        </v-col>
+        <div class="d-flex flex-wrap report-card-column">
+          <div
+            v-for="report in reportCard"
+            :key="report.name"
+            class="report-card-container"
+          >
+            <ReportCard
+              class="ma-2"
+              :page-name="report.pid"
+              :compare-page-name="report.cpid"
+              :title="report.name"
+              :image="report.image"
+              :description="report.description"
+              :cid="cid"
+              :rid="community.regional_district"
+              :subtitle="placeName"
+              @click.native="openReport(report.name)"
+            ></ReportCard>
+          </div>
+        </div>
       </v-row>
     </div>
   </div>
@@ -36,7 +43,6 @@ import Report from '~/components/CommunityDetails/Report.vue'
 import DetailReportSection from '~/components/CommunityDetails/DetailReportSection.vue'
 import DetailCompareSection from '~/components/CommunityDetails/DetailCompareSection.vue'
 import Compare from '~/components/Compare'
-
 @Component({
   ReportCard,
   Report,
@@ -51,7 +57,6 @@ export default class ReportSection extends Vue {
   @Prop({ default: null, type: String }) placeName
   @Prop({ default: null, type: Number }) cid
   @Prop({ default: null, type: Object }) community
-
   get groupedReportCards() {
     if (!this.reportsToHide) {
       return groupBy(this.reportCards, 'group')
@@ -77,3 +82,16 @@ export default class ReportSection extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+@media screen and (max-width: 783px) {
+  .report-card-column {
+    justify-content: center;
+  }
+}
+@media screen and (max-width: 450px) {
+  .report-card-column,
+  .report-card-container {
+    width: 100% !important;
+  }
+}
+</style>

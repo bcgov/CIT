@@ -15,6 +15,8 @@ class DataSourceSerializer(serializers.ModelSerializer):
         fields = ("name", "display_name", "source", "source_url", "last_updated")
 
     def get_source_url(self, obj):
+        if obj.external_url:
+            return obj.external_url
         if obj.permalink_id:
             return DATABC_PERMALINK_URL.format(permalink_id=obj.permalink_id)
 
@@ -102,10 +104,10 @@ class CommunitySerializer(serializers.ModelSerializer):
         return obj.percent_5_1 if obj.percent_5_1 else 0
 
     def get_pop_2km_capacity(self, obj):
-        return obj.pop_2km_capacity if obj.pop_2km_capacity else 0
+        return obj.pop_2km_capacity if obj.pop_2km_capacity else -1
 
-    def remaining_pop_capacity(self, obj):
-        return obj.remaining_pop_capacity if obj.remaining_pop_capacity else 0
+    def get_remaining_pop_capacity(self, obj):
+        return obj.remaining_pop_capacity if obj.remaining_pop_capacity else -1
 
 
 class CommunityCSVSerializer(serializers.ModelSerializer):

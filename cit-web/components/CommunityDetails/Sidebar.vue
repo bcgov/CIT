@@ -12,7 +12,7 @@
           <v-btn
             color="primary"
             small
-            class="text-caption"
+            class="text-body-1 text-capitalize"
             @click="$emit('viewReports')"
             >View Reports
           </v-btn>
@@ -37,12 +37,12 @@
             class="mr-2"
           />
           <v-list-item-content>
-            <v-list-item-title>
+            <v-list-item-title class="text-body-1 py-1">
               {{ startCase(groupedLocation.group) }}
             </v-list-item-title>
           </v-list-item-content>
 
-          <v-chip x-small class="font-weight-bold ma-0 ml-0">
+          <v-chip small class="font-weight-medium ma-0 ml-0 text-body-1">
             {{ groupedLocation.locations.length }}
           </v-chip>
         </template>

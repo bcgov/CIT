@@ -1,4 +1,5 @@
 import csv
+import os
 import requests
 
 from django.apps import apps
@@ -7,9 +8,11 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.gis.measure import D
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import make_aware
 
 from pipeline.models.community import Community
-from pipeline.models.general import DataSource, LocationDistance, SchoolDistrict, Municipality, Mayor
+from pipeline.models.general import DataSource, LocationDistance, SchoolDistrict, Municipality, Mayor, Hex, Service, ISP
 from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES
 
@@ -150,28 +153,32 @@ def calculate_distances(location):
 
 
 def calculate_nearest_location_types_outside_50k():
-    for community in Community.objects.all():
-        for location_type in LOCATION_TYPES:
-            locations_within_50k = LocationDistance.objects.filter(
-                community=community, location__location_type=location_type, distance__lte=50)
-            # if there are no locations of this location type within 50km,
-            # just get the closest location and create a LocationDistance object for that
-            if not locations_within_50k:
-                print("community {community_name} has no {location_type} within 50km".format(
-                    community_name=community.place_name,
-                    location_type=location_type))
-                location_type_model_name = DataSource.objects.get(name=location_type).model_name
-                location_type_model = apps.get_model("pipeline", location_type_model_name)
-                closest_location_type = location_type_model.objects.all()\
-                    .annotate(distance=Distance("point", community.point))\
-                    .order_by("distance").first()
-                print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
-                    location_type=location_type,
-                    community_name=community.place_name,
-                    closest_location_type=closest_location_type.name,
-                    distance=closest_location_type.distance.km))
+    for location_type in LOCATION_TYPES:
+        calculate_nearest_location_type_outside_50k(location_type)
 
-                create_distance(closest_location_type, community, closest_location_type.distance)
+
+def calculate_nearest_location_type_outside_50k(location_type):
+    for community in Community.objects.all():
+        locations_within_50k = LocationDistance.objects.filter(
+            community=community, location__location_type=location_type, distance__lte=50)
+        # if there are no locations of this location type within 50km,
+        # just get the closest location and create a LocationDistance object for that
+        if not locations_within_50k:
+            print("community {community_name} has no {location_type} within 50km".format(
+                community_name=community.place_name,
+                location_type=location_type))
+            location_type_model_name = DataSource.objects.get(name=location_type).model_name
+            location_type_model = apps.get_model("pipeline", location_type_model_name)
+            closest_location_type = location_type_model.objects.all()\
+                .annotate(distance=Distance("point", community.point))\
+                .order_by("distance").first()
+            print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
+                location_type=location_type,
+                community_name=community.place_name,
+                closest_location_type=closest_location_type.name,
+                distance=closest_location_type.distance.km))
+
+            create_distance(closest_location_type, community, closest_location_type.distance)
 
 
 def create_distance(location, community, distance):
@@ -361,3 +368,82 @@ def import_mayors_from_csv(file_path):
             mayor.gender = row['Gender'].title()
             mayor.experience = row['Experience'].title()
             mayor.save()
+
+
+def import_services(file_path):
+    isps = read_csv(file_path)
+
+    # avoid re-querying for each row with ISP reference.
+    isp_cache = {}
+    services = []
+    print(len(isps))
+    for i, isp in enumerate(isps):
+        if not i % 1000:
+            print(i)
+        try:
+            hex = Hex.objects.get(pk=isp['HEXuid_HEXidu'])
+        except Hex.DoesNotExist:
+            continue
+        if isp["ISPname_NomFSI"] in isp_cache:
+            isp_obj = isp_cache[isp["ISPname_NomFSI"]]
+        else:
+            isp_obj = ISP(name=isp["ISPname_NomFSI"])
+            print(isp_obj)
+            isp_cache[isp["ISPname_NomFSI"]] = isp_obj
+            isp_obj.save()
+        service = Service(isp=isp_obj, hex=hex, technology=isp['Technology'])
+        services.append(service)
+
+    Service.objects.bulk_create(services)
+
+
+def get_databc_last_modified_date(data_source):
+    from pipeline.constants import DATABC_METADATA_API_URL
+
+    response = requests.get(DATABC_METADATA_API_URL.format(dataset_resource_id=data_source.resource_id))
+    result = response.json()["result"]
+
+    if not result:
+        print("data source metadata not found", data_source.resource_id)
+        print(result)
+        return
+
+    if result["last_modified"]:
+        date = result["last_modified"]
+    elif result["created"]:
+        date = result["created"]
+    else:
+        print("no date found for resource", data_source.resource_id)
+        print(result)
+        return
+
+    last_modified_date = make_aware(parse_datetime(date))
+    return last_modified_date
+
+
+def get_openca_last_modified_date(data_source):
+    from pipeline.constants import OPENCA_METADATA_API_URL
+
+    response = requests.get(OPENCA_METADATA_API_URL.format(dataset_resource_id=data_source.resource_id))
+    if response.status_code == 404:
+        print("data source metadata not found", data_source.resource_id)
+        return
+
+    result = response.json()["result"]
+
+    sub_resources = result["resources"]
+    sub_resource = next(
+        (sub_resource for sub_resource in sub_resources if sub_resource["id"] == data_source.sub_resource_id), None)
+    print(sub_resource)
+
+    if sub_resource["last_modified"]:
+        date = sub_resource["last_modified"]
+    elif sub_resource["created"]:
+        date = sub_resource["created"]
+    else:
+        print("no date found for resource", data_source.resource_id, data_source.sub_resource_id)
+        print(sub_resource)
+        return
+
+    last_modified_date = make_aware(parse_datetime(date))
+    return last_modified_date

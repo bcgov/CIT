@@ -3,7 +3,7 @@
     <v-btn
       color="primary rounded-lg"
       fab
-      small
+      x-small
       style="
         border-bottom-left-radius: 0 !important;
         border-bottom-right-radius: 0 !important;
@@ -14,7 +14,7 @@
     <v-btn
       color="primary rounded-lg"
       fab
-      small
+      x-small
       style="
         border-top-left-radius: 0 !important;
         border-top-right-radius: 0 !important;
@@ -29,7 +29,6 @@
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
-
 @Component
 export default class ZoomControl extends Vue {}
 </script>

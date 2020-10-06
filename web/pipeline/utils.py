@@ -1,10 +1,6 @@
 import datetime
-from django.utils.dateparse import parse_datetime
-from django.utils.timezone import make_aware
 from functools import reduce
 from operator import and_
-
-import requests
 
 from django.apps import apps
 from django.db.models import Q, F
@@ -730,33 +726,14 @@ def serialize_data_source(name, datasource_info):
     }
 
 
+def get_communities_with_insufficient_data(communities):
+    return [
+        community.id for community in communities if
+        community.census_subdivision.get_percentage_of_null_fields() > 0.25]
+
+
 def get_hidden_explore_report_pages(communities):
     from pipeline.constants import POWERBI_HIDDEN_EXPLORE_PAGES
 
-    # TODO SY - should this be a threshold and not all()?
     if all(community.census_subdivision.get_percentage_of_null_fields() > 0.25 for community in communities):
         return POWERBI_HIDDEN_EXPLORE_PAGES
-
-
-def get_databc_last_modified_date(dataset_resource_id):
-    from pipeline.constants import API_URL
-
-    response = requests.get(API_URL.format(dataset_resource_id=dataset_resource_id))
-    result = response.json()["result"]
-
-    if not result:
-        print("data source metadata not found", dataset_resource_id)
-        print(result)
-        return
-
-    if result["last_modified"]:
-        date = result["last_modified"]
-    elif result["created"]:
-        date = result["created"]
-    else:
-        print("no date found for resource", dataset_resource_id)
-        print(result)
-        return
-
-    last_modified_date = make_aware(parse_datetime(date))
-    return last_modified_date

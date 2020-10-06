@@ -60,7 +60,11 @@
       </div>
       <v-divider></v-divider>
       <div class="pa-8">
-        <h5 class="text-h6 mb-5">Selection Results</h5>
+        <h5 class="text-h6 mb-2">Selection Results:</h5>
+        <p>
+          This list of communities and regional districts match the criteria
+          selected above.
+        </p>
 
         <div v-if="loadingResults" class="d-flex justify-center">
           <v-progress-circular
@@ -71,34 +75,23 @@
           ></v-progress-circular>
         </div>
         <div v-else>
-          <div class="mt-0 d-flex align-center">
-            <p class="mb-0 text-body-1">
-              Showing
-              <span class="font-weight-bold">{{ numRegions }}</span> Regional
-              Districts &amp;
-              <span class="font-weight-bold">{{
-                numCommunities && numCommunities.toLocaleString()
-              }}</span>
-              Communities
-            </p>
+          <div class="d-flex justify-space-between pl-5 pr-5">
+            <div class="d-flex flex-column">
+              <div class="text-h4 font-weight-bold" style="color: #f8ba44;">
+                {{ numRegions }}
+              </div>
+              <div>Regional Districts</div>
+            </div>
+            <div class="d-flex flex-column">
+              <div class="text-h4 font-weight-bold" style="color: #2176d2;">
+                {{ numCommunities && numCommunities.toLocaleString() }}
+              </div>
+              <div>Communities</div>
+            </div>
           </div>
 
-          <div class="mt-3 mb-6 d-flex justify-center">
-            <v-btn
-              v-if="!noCommunities"
-              block
-              depressed
-              color="primary"
-              class="text-capitalize"
-              @click="handleTabChange('Reports')"
-            >
-              View Reports for
-              {{ numCommunities && numCommunities.toLocaleString() }}
-              communities
-              <v-spacer></v-spacer>
-              <v-icon block class="mr-2">mdi-arrow-right</v-icon>
-            </v-btn>
-            <div v-else class="mt-6">
+          <div class="mb-6 d-flex justify-center">
+            <div v-if="noCommunities" class="mt-6">
               <p
                 class="text-h4 light-blue--text text--darken-1 text-center font-weight-bold"
               >
@@ -146,6 +139,9 @@
             :report-cards="reportCards"
             :reports-to-hide="reportsToHide"
             :report-to-show="reportToShow"
+            :communities-with-insufficient-data="
+              communitiesWithInsufficientData
+            "
             :cids="cidArray"
             @showReport="showReport"
           ></ExploreReportSection>
@@ -194,6 +190,7 @@ export default class Explore extends Vue {
   numFiltersActive = 0
   reportCards = ExplorePages
   reportsToHide = null
+  communitiesWithInsufficientData = null
 
   @exploreStore.Getter('getSearchAsMove') searchAsMove
 
@@ -366,7 +363,8 @@ export default class Explore extends Vue {
 
     this.filteredCommunities = filteredCommunities
     this.updateGroupedCommunities()
-    this.reportsToHide = e.reports
+    this.reportsToHide = e.reportsToHide
+    this.communitiesWithInsufficientData = e.communitiesWithInsufficientData
     this.$root.$emit('communitiesChanged', this.flatCommunities)
   }
 
