@@ -1,11 +1,7 @@
 <template>
   <div class="community-new-container">
-    <v-container fluid>
-      <v-alert
-        v-if="parentCommunity"
-        type="info"
-        class="primary--text elevation-5"
-      >
+    <v-container v-if="parentCommunity" fluid>
+      <v-alert type="info" class="primary--text">
         This community is within {{ parentCommunity.name }}'s boundary. Consider
         <a :href="`/community/${parentCommunity.id}`" class="font-weight-bold"
           >viewing the {{ parentCommunity.name }} page instead.</a
@@ -54,7 +50,7 @@
                     <p class="text-center pa-0 ma-0 text-body-1">
                       {{ assetModeText }}
                       <a
-                        v-i="assetMode === 'driving'"
+                        v-if="assetMode === 'driving'"
                         href="/footnotes#community-detail-asset-driving-distance"
                         target="_blank"
                         >*</a
@@ -141,13 +137,13 @@
       </div>
 
       <div ref="centerControl" @click="handleResetCenter">
-        <v-btn color="primary" small fab class="rounded-lg text-capitalize">
+        <v-btn color="primary" x-small fab class="rounded-lg text-capitalize">
           <v-icon>mdi-bullseye</v-icon>
         </v-btn>
       </div>
 
       <div ref="fullscreenControl" @click="handleFullScreen">
-        <v-btn color="primary" small fab class="rounded-lg text-capitalize">
+        <v-btn color="primary" x-small fab class="rounded-lg text-capitalize">
           <v-icon>mdi-arrow-expand-all</v-icon>
         </v-btn>
       </div>
@@ -159,10 +155,6 @@
         ></LayerSwitcher>
       </div>
 
-      <div ref="legend">
-        <Legend></Legend>
-      </div>
-
       <div ref="zoomControl">
         <ZoomControl @zoomIn="zoomIn" @zoomOut="zoomOut"></ZoomControl>
       </div>
@@ -170,6 +162,7 @@
       <v-dialog
         fullscreen
         transition="dialog-bottom-transition"
+        hide-overlay
         :value="showReportDialog"
         @keydown.esc.prevent="reportClose"
       >
@@ -183,14 +176,14 @@
 
             <v-container fluid>
               <v-row>
-                <v-col cols="8">
+                <v-col xl="8" lg="8" md="12" sm="12" cols="12">
                   <DetailReportSection
                     :report="report"
                     :place-name="placeName"
                     :cid="communityDetails.id"
                   ></DetailReportSection>
                 </v-col>
-                <v-col cols="4">
+                <v-col xl="4" lg="4" md="12" sm="12" cols="12">
                   <DetailCompareSection
                     :report="report"
                     :rid="communityDetails.regional_district"
@@ -272,9 +265,6 @@ import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.v
 import ControlFactory from '~/utils/map'
 import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
 import AssetSlider from '~/components/CommunityDetails/AssetSlider'
-
-import Legend from '~/components/Map/Legend'
-
 import {
   getCommunity,
   getCensusSubDivision,
@@ -284,7 +274,6 @@ import {
 } from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
 import ZoomControl from '~/components/Map/ZoomControl'
-
 import { getAuthToken } from '~/api/ms-auth-api/'
 import LocationCard from '~/components/Location/LocationCard.vue'
 import reportPages from '~/data/communityDetails/reportPages.json'
@@ -303,7 +292,6 @@ const commModule = namespace('communities')
   DetailCompareSection,
   LayerSwitcher,
   ZoomControl,
-  Legend,
   ReportTraverse,
   filters: {
     yesno,
@@ -312,7 +300,7 @@ const commModule = namespace('communities')
 export default class CommunityDetail extends Vue {
   head() {
     return {
-      title: `${this.placeName} | B.C. Community Information Tool`,
+      title: `${this.placeName}`,
     }
   }
 
@@ -435,7 +423,6 @@ export default class CommunityDetail extends Vue {
         map.setLayoutProperty(layerName, 'visibility', visibility)
         return
       }
-
       if (Array.isArray(layerName)) {
         layerName.map((ln) =>
           map.setLayoutProperty(ln, 'visibility', visibility)
@@ -445,7 +432,6 @@ export default class CommunityDetail extends Vue {
   }
 
   @commModule.Getter('getRegionalDistricts') regionalDistricts
-
   reportOpen(reportName) {
     this.$router.push({
       query: {
@@ -618,7 +604,6 @@ export default class CommunityDetail extends Vue {
       store.commit('communities/setCommunities', [])
       store.commit('communities/setDataSources', [])
     }
-
     try {
       const results = await Promise.all([getAuthToken()])
       const accessToken = results[0].data.access_token
@@ -634,13 +619,11 @@ export default class CommunityDetail extends Vue {
       const cid = params?.id
       let response = await getCommunity(cid)
       const { data: communityDetails } = response
-
       const csid = communityDetails.display_fields.find(
         (df) => df.key === 'census_subdivision_id'
       )
       response = await getCensusSubDivision(csid?.value)
       const { data: censusSubdivision } = response
-
       const groupedLocations = map(
         groupBy(communityDetails.locations, 'type'),
         (o, k) => {
@@ -651,7 +634,6 @@ export default class CommunityDetail extends Vue {
           }
         }
       )
-
       return {
         MAPBOX_API_KEY,
         communityDetails,
@@ -736,15 +718,12 @@ export default class CommunityDetail extends Vue {
 
   addControls(map) {
     map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'bottom-right')
-    map.addControl(new ControlFactory(this.$refs.legend), 'bottom-right')
   }
 
   mounted() {
     this.listenToEvents()
-
     window.mapboxgl.accessToken = this.MAPBOX_API_KEY
     const mapboxgl = window.mapboxgl
-
     if (this.isCommunityEmpty) {
       return
     }
@@ -757,7 +736,6 @@ export default class CommunityDetail extends Vue {
       this.communityDetails.longitude,
       this.communityDetails.latitude
     )
-
     const el = document.createElement('div')
     el.className = 'community-marker'
     const marker = new mapboxgl.Marker(el)
@@ -770,11 +748,8 @@ export default class CommunityDetail extends Vue {
           .setHTML('<h3>' + this.placeName + '</h3>')
       )
       .addTo(map)
-
     marker.togglePopup()
-
     this.addControls(map)
-
     map.on('click', function (e) {
       const features = map.queryRenderedFeatures(e.point)
       const location = features.find(
@@ -792,7 +767,6 @@ export default class CommunityDetail extends Vue {
           .addTo(map)
       }
     })
-
     map.on('load', () => {
       map.setLayoutProperty('locations', 'visibility', 'visible')
       this.mapLoaded = true
@@ -812,17 +786,30 @@ export default class CommunityDetail extends Vue {
   width: 100%;
   height: 100%;
 }
-
 .map-container {
   width: 100%;
   height: 70vmin;
   display: flex;
 }
-
 .community-details-sidebar {
   width: 420px;
   background-color: white;
   overflow-y: auto;
+}
+@media screen and (max-width: 1400px) {
+  .community-new-container {
+    padding: 1em;
+  }
+}
+@media screen and (max-width: 1000px) {
+  .community-new-container {
+    padding: 0;
+  }
+}
+@media screen and (max-width: 477px) {
+  .community-new-container {
+    padding: 0;
+  }
 }
 </style>
 <style lang="scss">
@@ -836,7 +823,6 @@ export default class CommunityDetail extends Vue {
   min-width: auto !important;
   margin-left: 0 !important;
 }
-
 .community-marker {
   background-image: url('~assets/icons/communities.svg');
   background-size: cover;

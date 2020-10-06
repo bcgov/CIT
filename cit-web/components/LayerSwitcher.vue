@@ -13,7 +13,7 @@
       <template v-slot:activator="{ on, attrs }">
         <v-btn
           color="primary"
-          small
+          x-small
           fab
           class="rounded-lg text-capitalize"
           v-bind="attrs"
@@ -25,7 +25,8 @@
       <v-card width="300" class="rounded-lg pa-0 ma-0">
         <v-toolbar color="primary" height="48">
           <v-toolbar-title class="white--text font-weight-bold text-body-1"
-            ><v-icon color="white">mdi-layers</v-icon> Layers</v-toolbar-title
+            ><v-icon color="white">mdi-layers</v-icon> Layers &
+            Legends</v-toolbar-title
           >
         </v-toolbar>
         <v-card-text>
@@ -46,6 +47,8 @@
               <template v-slot:prepend></template>
             </v-switch>
           </div>
+
+          <Legend></Legend>
         </v-card-text>
         <v-divider></v-divider>
       </v-card>
@@ -55,12 +58,13 @@
 
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-
-@Component
+import Legend from '~/components/Map/Legend'
+@Component({
+  Legend,
+})
 export default class LayerSwitcher extends Vue {
   @Prop({ default: null, type: Array }) layers
   menu = false
-
   handleChange(e, data) {
     this.$emit('layerToggle', {
       visibility: e,

@@ -10,7 +10,6 @@
       @clear="handleClear"
       @save="handleSave"
     >
-
       <p>
         Search for communities with nearby local assets. Choose an asset to
         filter.
