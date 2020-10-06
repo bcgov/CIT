@@ -61,7 +61,9 @@ def import_data_into_point_model(resource_type, Model, row):
     except Model.DoesNotExist:
         instance = Model(name=name, location_type=resource_type, point=point)
 
-    instance.community = closest_community
+    print("closest_community", closest_community)
+
+    instance.closest_community = closest_community
     instance.location_fuzzy = location_fuzzy
     import_contact_fields(instance, row, Model)
     import_variable_fields(instance, row, Model)
