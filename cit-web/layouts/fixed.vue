@@ -18,30 +18,8 @@ import Footer from '~/components/Footer.vue'
   Footer,
   Navigation,
 })
-export default class FixedLayout extends Vue {
-  get hideMenu() {
-    return !(this.$vuetify.breakpoint.width < 850)
-  }
-
-  mounted() {
-    const element = document.documentElement
-    element.classList.add('fixed-layout')
-  }
-
-  handleClick(e) {
-    this.$root.$emit('sidebar-toggle')
-  }
-}
+export default class FixedLayout extends Vue {}
 </script>
-
-<style lang="scss">
-.fixed-layout {
-  width: 100%;
-  height: 100%;
-  overflow-y: hidden;
-  overflow-x: hidden;
-}
-</style>
 <style lang="scss" scoped>
 .fixed-content {
   padding-top: 66px;

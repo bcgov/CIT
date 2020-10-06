@@ -296,6 +296,12 @@ export default class Explore extends Vue {
   mounted() {
     const rid = this.$route.query.rid
     rid && this.$root.$emit('setRegion', rid)
+    document.documentElement.classList.add('fixed-layout')
+  }
+
+  beforeRouteLeave(to, from, next) {
+    document.documentElement.classList.remove('fixed-layout')
+    next()
   }
 
   async fetch({ store }) {
@@ -417,6 +423,14 @@ export default class Explore extends Vue {
   }
 }
 </script>
+<style>
+.fixed-layout {
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+</style>
 <style lang="scss" scoped>
 .explore-container {
   position: fixed;
