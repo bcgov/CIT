@@ -1,5 +1,4 @@
 import csv
-import os
 import requests
 
 from django.apps import apps
@@ -12,7 +11,8 @@ from django.utils.dateparse import parse_datetime
 from django.utils.timezone import make_aware
 
 from pipeline.models.community import Community
-from pipeline.models.general import DataSource, LocationDistance, SchoolDistrict, Municipality, Mayor, Hex, Service, ISP
+from pipeline.models.general import (
+    DataSource, LocationDistance, SchoolDistrict, Municipality, CivicLeader, Hex, Service, ISP)
 from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES
 
@@ -24,7 +24,7 @@ def import_data_into_point_model(resource_type, Model, row):
     location_fuzzy = False
 
     name_fields = Model.NAME_FIELD.split(",")
-    name = ", ".join([row[name_field] for name_field in name_fields])
+    name = ", ".join([str(row[name_field]) for name_field in name_fields])
 
     try:
         point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=4326)
@@ -76,7 +76,7 @@ def import_data_into_area_model(resource_type, Model, row):
     print(row)
 
     name_fields = Model.NAME_FIELD.split(",")
-    name = ", ".join([row[name_field] for name_field in name_fields])
+    name = ", ".join([str(row[name_field]) for name_field in name_fields])
 
     instance, created = Model.objects.get_or_create(name=name)
 
@@ -343,11 +343,11 @@ def calculate_communities_served_for_hospitals():
         hospital.save()
 
 
-def import_mayors_from_csv(file_path):
+def import_civic_leaders_from_csv(file_path):
     with open(file_path) as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         for row in csv_reader:
-            # Only import elected mayors
+            # Only import elected mayors and [todo] councillors
             if not(row['Elected (YES/NO)'] == 'YES' and row['Type'] == 'MAYOR'):
                 continue
 
@@ -358,16 +358,18 @@ def import_mayors_from_csv(file_path):
                 print("Could not find community called {}".format(row['Local Government']))
                 continue
 
-            mayor, created = Mayor.objects.get_or_create(
+            civic_leader, created = CivicLeader.objects.get_or_create(
                 first_name=row['First Name'].title(),
                 last_name=row['Last Name'].title(),
                 middle_name=row['Middle Name'].title(),
-                community=community)
-            print("mayor", mayor)
+                community=community,
+                # TODO - import councillors as well
+                position="mayor")
+            print("civic_leader", civic_leader)
 
-            mayor.gender = row['Gender'].title()
-            mayor.experience = row['Experience'].title()
-            mayor.save()
+            civic_leader.gender = row['Gender'].title()
+            civic_leader.experience = row['Experience'].title()
+            civic_leader.save()
 
 
 def import_services(file_path):

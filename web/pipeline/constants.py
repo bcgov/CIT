@@ -19,6 +19,11 @@ DATA_SOURCE_CHOICES = (
     (SOURCE_OPENCA, "Open Government (Canada)"),
 )
 
+CIVIC_LEADER_CHOICES = (
+    ("mayor", "Mayor"),
+    ("councillor", "Councillor"),
+)
+
 LOCATION_TYPES = [
     'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities', 'hospitals',
     'natural_resource_projects', 'economic_projects', 'servicebc_locations', 'schools', 'clinics', 'courts',
