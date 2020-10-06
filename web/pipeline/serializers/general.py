@@ -15,6 +15,8 @@ class DataSourceSerializer(serializers.ModelSerializer):
         fields = ("name", "display_name", "source", "source_url", "last_updated")
 
     def get_source_url(self, obj):
+        if obj.external_url:
+            return obj.external_url
         if obj.permalink_id:
             return DATABC_PERMALINK_URL.format(permalink_id=obj.permalink_id)
 

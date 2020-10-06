@@ -130,7 +130,11 @@
           <a
             href="https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/prof/index.cfm?Lang=E"
             >Statistics Canada 2016 Census Profile</a
-          >. Communities whose corresponding Census Subdivisions are missing
+          >. Census data is captured every 5 years and may be outdated, and may
+          not be able to capture recent trends or seasonal variations.
+        </p>
+        <p>
+          Communities whose corresponding Census Subdivisions that are missing
           more than 25% of the census fields that we use are flagged as having
           incomplete census data. The charts in the reports are calculated based
           on available data and some charts may be blank or may not represent

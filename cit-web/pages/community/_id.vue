@@ -9,7 +9,7 @@
       </v-alert>
     </v-container>
     <div v-if="isCommunityEmpty" class="d-flex mt-5 justify-center">
-      <v-alert type="info" class="primary--text">
+      <v-alert type="info" class="primary--text elevation-5">
         Sorry, we could not find a community with that ID.
       </v-alert>
     </div>
@@ -92,7 +92,7 @@
                   v-if="hasHiddenReports"
                   type="info"
                   dismissible
-                  class="primary--text"
+                  class="primary--text elevation-5"
                 >
                   This community has incomplete census data. The charts in the
                   reports reflect available census data and some reports have
