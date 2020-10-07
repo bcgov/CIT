@@ -504,4 +504,14 @@ export default class Explore extends Vue {
   top: 0;
   bottom: initial;
 }
+
+@media screen and (max-width: 550px) {
+  .explore-results-container {
+    min-width: auto;
+  }
+
+  .v-application .explore-report-container {
+    padding: 20px !important;
+  }
+}
 </style>
