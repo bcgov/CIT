@@ -25,9 +25,13 @@
       <v-list color="primary" class="pa-0 ma-0">
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="white--text font-weight-bold">{{
-              filterTitle
-            }}</v-list-item-title>
+            <v-list-item-title
+              class="white--text font-weight-bold d-flex justify-space-between align-center"
+              >{{ filterTitle }}
+              <v-btn x-small icon fab color="white" @click="menu = false">
+                <v-icon>mdi-close-circle</v-icon>
+              </v-btn>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
