@@ -26,6 +26,7 @@
                   {{ placeName }}
                 </h5>
                 <v-img
+                  class="comm-detail-header-image"
                   style="align-self: flex-end;"
                   :src="require('~/assets/images/cdheader.svg')"
                   aspect-ratio="1"
@@ -304,6 +305,8 @@ export default class CommunityDetail extends Vue {
     }
   }
 
+  isHydrated = false
+  sideBarHidden = false
   assetMode = 'driving'
   assetRange = [0, 50]
   layers = true
@@ -358,6 +361,14 @@ export default class CommunityDetail extends Vue {
       this.assetMode = 'boundary'
     } else {
       this.assetMode = 'driving'
+    }
+  }
+
+  get isMobile() {
+    if (this.isHydrated === true) {
+      return this.$vuetify.breakpoint.width < 900
+    } else {
+      return false
     }
   }
 
@@ -721,6 +732,7 @@ export default class CommunityDetail extends Vue {
   }
 
   mounted() {
+    this.isHydrated = true
     this.listenToEvents()
     window.mapboxgl.accessToken = this.MAPBOX_API_KEY
     const mapboxgl = window.mapboxgl
@@ -792,7 +804,7 @@ export default class CommunityDetail extends Vue {
   display: flex;
 }
 .community-details-sidebar {
-  width: 420px;
+  min-width: 340px;
   background-color: white;
   overflow-y: auto;
 }
@@ -805,10 +817,36 @@ export default class CommunityDetail extends Vue {
   .community-new-container {
     padding: 0;
   }
+
+  .map-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  #map {
+    height: 50vh;
+  }
+
+  .community-details-sidebar {
+    order: 1;
+  }
+
+  .comm-detail-header-image {
+    display: none;
+  }
+
+  .v-application .cd-header > h5 {
+    padding: 20px !important;
+  }
 }
+
 @media screen and (max-width: 477px) {
   .community-new-container {
     padding: 0;
+  }
+
+  .community-details-sidebar {
+    min-width: auto;
   }
 }
 </style>
