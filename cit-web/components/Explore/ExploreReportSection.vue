@@ -4,14 +4,17 @@
     :class="{ 'pa-10': !reportToShow, 'mb-10': !reportToShow }"
   >
     <div v-if="reportToShow" class="pl-0 pr-0 pt-10">
-      <div class="d-flex align-center pl-10 pr-5">
+      <div class="report-header-container d-flex align-center pl-10 pr-5">
         <div>
           <h6 class="text-h5">{{ reportToShow.name }}</h6>
-          <p style="max-width: 800px;">{{ reportToShow.description }}</p>
+          <p class="report-description">
+            {{ reportToShow.description }}
+          </p>
         </div>
         <v-spacer></v-spacer>
         <div>
           <v-img
+            class="report-picture"
             :src="
               require(`~/assets/images/reports/headers/${reportToShow.image}`)
             "
@@ -151,9 +154,19 @@ export default class ExploreReportSection extends Vue {
   color: #193262;
 }
 
+.report-description {
+  max-width: 800px;
+}
+
 @media screen and (max-width: 1252px) {
   .explore-report-card-wrapper {
     justify-content: center;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .report-picture {
+    display: none;
   }
 }
 
@@ -161,11 +174,25 @@ export default class ExploreReportSection extends Vue {
   .explore-report-card-wrapper {
     justify-content: normal;
   }
+
+  .report-picture {
+    display: block;
+  }
 }
 
 @media screen and (max-width: 831px) {
   .explore-report-card-wrapper {
     justify-content: center;
+  }
+}
+
+@media screen and (max-width: 771px) {
+  .report-picture {
+    display: none;
+  }
+  .v-application .report-header-container {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
   }
 }
 
