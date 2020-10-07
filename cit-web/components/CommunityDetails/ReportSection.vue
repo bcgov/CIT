@@ -83,7 +83,7 @@ export default class ReportSection extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@media screen and (max-width: 783px) {
+@media screen and (max-width: 798px) {
   .report-card-column {
     justify-content: center;
   }
