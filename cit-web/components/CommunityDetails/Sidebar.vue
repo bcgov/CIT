@@ -1,24 +1,5 @@
 <template>
   <div class="community-details-sidebar">
-    <div class="pt-5 pb-5">
-      <SidebarHeader :place-name="placeName">
-        <p class="mt-0 text-center pl-4 pr-4">
-          <a :href="`/explore?tab=Map&rid=${rid}`">{{ district }}</a>
-        </p>
-        <p v-if="population" class="text-center text-caption">
-          Population: {{ population.toLocaleString() || 'N/A' }}
-        </p>
-        <div class="d-flex justify-center">
-          <v-btn
-            color="primary"
-            small
-            class="text-body-1 text-capitalize"
-            @click="$emit('viewReports')"
-            >View Reports
-          </v-btn>
-        </div>
-      </SidebarHeader>
-    </div>
     <slot></slot>
     <v-list dense nav class="mt-3">
       <v-list-group

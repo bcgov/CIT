@@ -19,12 +19,27 @@
           <v-row no-gutters>
             <v-col :cols="12" class="elevation-5">
               <div class="cd-header d-flex">
-                <h5
-                  class="text-h5 font-weight-bold pl-10 pt-10"
+                <div
+                  class="d-flex flex-column text-h5 font-weight-bold pl-10 pt-10 pb-10"
                   style="max-width: 350px;"
                 >
-                  {{ placeName }}
-                </h5>
+                  <span>{{ placeName }}</span>
+                  <p
+                    v-if="getFieldValue('population')"
+                    class="text-caption pa-0 ma-0"
+                  >
+                    Population:
+                    {{ getFieldValue('population').toLocaleString() || 'N/A' }}
+                  </p>
+
+                  <a
+                    :href="`/explore?tab=Map&rid=${communityDetails.regional_district}`"
+                    class="text-body-1"
+                  >
+                    {{ regionalDistrictName }}
+                  </a>
+                </div>
+
                 <v-img
                   class="comm-detail-header-image"
                   style="align-self: flex-end;"
@@ -46,9 +61,8 @@
                   @findOnMap="handleFind"
                   @viewReports="viewReports"
                 >
-                  <v-divider class="mt-3 mb-3"></v-divider>
                   <div class="pl-4 pr-4">
-                    <p class="text-center pa-0 ma-0 text-body-1">
+                    <p class="text-center pa-0 ma-0 text-body-1 mt-3">
                       {{ assetModeText }}
                       <a
                         v-if="assetMode === 'driving'"
