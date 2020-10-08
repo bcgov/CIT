@@ -147,6 +147,23 @@
           ><v-icon>mdi-link</v-icon> Permalink</a
         >
       </li>
+      <li
+        id="connectivity-percentages"
+        :class="{
+          selected: anchor === 'incomplete-census-data',
+        }"
+      >
+        <p>
+          Connectivity estimates for regions are based on the percentage of roads with each bandwidth level, from 
+          <a
+            href="https://open.canada.ca/data/en/dataset/00a331db-121b-445d-b119-35dbbe3eedd9"
+            >National Broadband Data</a
+          >. For communities that have no defined municipal boundary, a 25km circle is assumed as the area to consider served.
+        </p>
+        <a href="#connectivity-percentages"
+          ><v-icon>mdi-link</v-icon> Permalink</a
+        >
+      </li> 
     </ol>
   </div>
 </template>
