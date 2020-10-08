@@ -1,7 +1,6 @@
 # Data Sources and Importing Data
 
-[WIP SY]
-There are three main sources of data: BC Data Catalogue API, CSV files, and SHP files.
+There are three main types of data: BC Data Catalogue API, CSV files, and SHP files. These are enumerated in `./web/pipeline/constants.py`. The list of datasets used in this project is detailed in `./web/pipeline/data_sources.json` and this is imported into the `DataSource` model.
 
 ## Prepping Data
 
