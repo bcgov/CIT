@@ -4,8 +4,8 @@ from pipeline.constants import CENSUS_LANGUAGE_MAP
 
 
 def import_census_population_data(stats, subdiv):
-    # "1.1.2", "Population, 2016"
-    subdiv.population = _fetch_statscan_value(stats, "1.1.2")
+    # "1.1.1", "Population, 2016"
+    subdiv.population = _fetch_statscan_value(stats, "1.1.1")
     # "1.1.3", "Population percentage change, 2011 to 2016"
     subdiv.popluation_percentage_change = _fetch_statscan_value(stats, "1.1.3")
 
