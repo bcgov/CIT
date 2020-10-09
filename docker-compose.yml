@@ -24,8 +24,11 @@ services:
       - SCOPE=https://analysis.windows.net/powerbi/api/.default
   db:
     image: mdillon/postgis
+    env_file:
+      - .env
     volumes:
       - pg-data:/var/lib/postgresql/data
+      - ./db:/code
     networks:
       - back-tier
 

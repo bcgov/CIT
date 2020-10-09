@@ -76,9 +76,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 DATABASES = {
     'default': {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': os.environ.get("POSTGRES_PASSWORD", 'postgres'),  # default password for dev environments
+        'NAME': os.environ.get("POSTGRES_DB", 'postgres'),
+        'USER': os.environ.get("POSTGRES_DJANGO_USER", 'postgres'),  # default user for dev environments
+        'PASSWORD': os.environ.get("POSTGRES_DJANGO_PASSWORD", 'postgres'),  # default password for dev environments
         'HOST': 'db',
         'PORT': 5432,
     }
