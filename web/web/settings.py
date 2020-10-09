@@ -23,11 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", 'devsecret')  # default secret key for dev environments
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", False)
+DEBUG = bool(os.environ.get("DEBUG", False))
 
 # By default, it is ok for others to use our APIs and crawl our site.
 ALLOWED_HOSTS = ['*']
 
+ADMINS = (
+  ('Clark', 'clark@countable.ca'),
+  ('Merwyn', 'merwyn.Pereira@gov.bc.ca'),
+)
 
 # Application definition
 
@@ -141,3 +145,6 @@ REST_FRAMEWORK = {
 
 # API Keys
 ROUTE_PLANNER_API_KEY = os.environ.get("ROUTE_PLANNER_API_KEY")
+
+EMAIL_HOST = 'smtp'
+

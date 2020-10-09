@@ -1,6 +1,9 @@
 version: '3.3'
 
 services:
+  smtp:
+    image: namshi/smtp
+    networks: back-tier
   cit-web:
     command: bash -c "yarn && yarn build && yarn start"
     environment:
