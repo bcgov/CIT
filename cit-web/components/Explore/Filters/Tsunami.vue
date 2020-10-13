@@ -3,7 +3,7 @@
     <MenuFilter
       ref="menuFilter"
       :chip-title="title"
-      :filter-title="'Wildfire Zone'"
+      :filter-title="'Tsunami Zone'"
       :active="active"
       :card-width="250"
       :disabled="disabled"
