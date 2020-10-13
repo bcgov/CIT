@@ -7,8 +7,8 @@
       left
       transition="fade-transition"
       :close-on-content-click="false"
-      :nudge-top="5"
-      offset-y
+      max-height="300"
+      allow-overflow
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
@@ -28,6 +28,10 @@
             ><v-icon color="white">mdi-layers</v-icon> Layers &
             Legends</v-toolbar-title
           >
+          <v-spacer></v-spacer>
+          <v-btn fab icon small color="white" @click="menu = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
         </v-toolbar>
         <v-card-text>
           <div
@@ -64,7 +68,7 @@ import Legend from '~/components/Map/Legend'
 })
 export default class LayerSwitcher extends Vue {
   @Prop({ default: null, type: Array }) layers
-  menu = false
+  menu = true
   handleChange(e, data) {
     this.$emit('layerToggle', {
       visibility: e,
