@@ -30,12 +30,11 @@ services:
       - back-tier
 
   nginx:
-    networks:
-      - back-tier
     image: nginx:1.18
     volumes:
       - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
-      - static:/static
+    networks:
+      - back-tier
 
 volumes:
   pg-data:
