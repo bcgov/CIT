@@ -8,6 +8,12 @@
         >
       </v-alert>
     </v-container>
+    <v-container v-if="!incorporated" fluid class="mt-2">
+      <v-alert type="info" class="primary--text">
+        This is an unincorporated community, so demographic information is only
+        available for the containing census subdivision.
+      </v-alert>
+    </v-container>
     <div v-if="isCommunityEmpty" class="d-flex mt-5 justify-center">
       <v-alert type="info" class="primary--text elevation-5">
         Sorry, we could not find a community with that ID.
@@ -499,6 +505,13 @@ export default class CommunityDetail extends Vue {
 
   get parentCommunity() {
     return this.communityDetails.parent_community
+  }
+
+  get incorporated() {
+    const incorporated = this.communityDetails.display_fields.find(
+      (df) => df.key === 'incorporated'
+    )
+    return incorporated.value
   }
 
   get regionalDistrictName() {
