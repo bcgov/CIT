@@ -34,7 +34,8 @@
 </template>
 
 <script>
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
+const compareStore = namespace('compare')
 @Component({})
 export default class Compare extends Vue {
   @Prop({ default: null, type: Array }) items
@@ -43,6 +44,8 @@ export default class Compare extends Vue {
   @Prop({ default: true, type: Boolean }) multiple
   @Prop({ default: true, type: String }) mode
 
+  @compareStore.Mutation('setCompare') setCompare
+
   autocomplete = []
   searchInput = ''
   groupChips = false
@@ -50,6 +53,10 @@ export default class Compare extends Vue {
 
   mounted() {
     this.isHydrated = true
+  }
+
+  updated() {
+    this.setCompare(this.getSelectedNames())
   }
 
   get smallChip() {
@@ -72,6 +79,16 @@ export default class Compare extends Vue {
 
   handleUpdate() {
     this.$emit('change', this.autocomplete)
+    this.setCompare(this.getSelectedNames())
+  }
+
+  getSelectedNames() {
+    const temp = []
+    this.autocomplete.map((ac) => {
+      const tempItem = this.items.find((i) => i[this.itemValue] === ac)
+      temp.push(tempItem?.[this.itemText])
+    })
+    return temp
   }
 
   handleEnter(e) {

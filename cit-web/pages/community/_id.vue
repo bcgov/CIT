@@ -188,12 +188,39 @@
         @keydown.esc.prevent="reportClose"
       >
         <v-card>
-          <div v-if="report" class="report-dialog-container">
-            <v-toolbar flat dark color="primary">
+          <div
+            v-if="report"
+            class="report-dialog-container"
+            style="padding-top: 60px;"
+          >
+            <v-app-bar flat dark color="primary" fixed>
               <v-btn icon dark @click="reportClose">
                 <v-icon>mdi-close</v-icon>
               </v-btn>
-            </v-toolbar>
+              <p v-if="compareMode === 'Average Of BC'" class="pa-0 ma-0 ml-2">
+                <span>Comparing</span>
+                <span class="font-weight-bold text-body-1">{{
+                  compareMode
+                }}</span>
+              </p>
+              <p v-else class="pa-0 ma-0 ml-2">
+                <span>Comparing</span>
+                <span>{{ compareMode }}:</span>
+                <span
+                  v-if="compare.length < 3"
+                  class="text-body-1 font-weight-bold"
+                  >{{ compare.join(', ') }}</span
+                >
+                <span v-else class="text-body-1 font-weight-bold">
+                  <span v-if="compareMode === 'Average Of Regional Districts'">
+                    {{ compare.length }} Selected Regional Districts
+                  </span>
+                  <span v-else-if="compareMode === 'Average Of Communities'">
+                    {{ compare.length }} Selected Communities
+                  </span>
+                </span>
+              </p>
+            </v-app-bar>
 
             <v-container fluid>
               <v-row>
@@ -299,6 +326,7 @@ import { getAuthToken } from '~/api/ms-auth-api/'
 import LocationCard from '~/components/Location/LocationCard.vue'
 import reportPages from '~/data/communityDetails/reportPages.json'
 const commModule = namespace('communities')
+const compareStore = namespace('compare')
 @Component({
   Breadcrumbs,
   AssetSlider,
@@ -324,6 +352,9 @@ export default class CommunityDetail extends Vue {
       title: `${this.placeName}`,
     }
   }
+
+  @compareStore.Getter('getCompare') compare
+  @compareStore.Getter('getCompareMode') compareMode
 
   isHydrated = false
   sideBarHidden = false
