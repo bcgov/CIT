@@ -80,6 +80,7 @@ export default class Compare extends Vue {
   handleUpdate() {
     this.$emit('change', this.autocomplete)
     this.setCompare(this.getSelectedNames())
+    this.searchInput = ''
   }
 
   getSelectedNames() {
