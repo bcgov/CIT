@@ -14,12 +14,16 @@
             height="18"
             width="18"
             :src="require(`~/assets/icons/${groupedLocation.group}.svg`)"
-            alt="Civic Facilities"
+            :alt="groupedLocation.group"
             class="mr-2"
           />
           <v-list-item-content>
             <v-list-item-title class="text-body-1 py-1">
-              {{ startCase(groupedLocation.group) }}
+              {{
+                startCase(
+                  groupedLocation.group.replace('servicebc', 'Service BC')
+                )
+              }}
             </v-list-item-title>
           </v-list-item-content>
 
