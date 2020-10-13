@@ -32,7 +32,9 @@ export default class CommSearch extends Vue {
   @commModule.Getter('getCommunities') communities
 
   handleClick(cid) {
-    window.open(`/community/${cid}`)
+    this.$router.push({
+      path: `/community/${cid}`,
+    })
   }
 }
 </script>
