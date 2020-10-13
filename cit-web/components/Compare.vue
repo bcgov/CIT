@@ -84,7 +84,7 @@ export default class Compare extends Vue {
   loading = true
 
   get itemText() {
-    if (this.mode === 'Communities') {
+    if (this.mode === 'Average Of Communities') {
       return 'place_name'
     } else if (this.mode === 'Average Of Regional Districts') {
       return 'name'
@@ -94,7 +94,7 @@ export default class Compare extends Vue {
   }
 
   get items() {
-    if (this.mode === 'Communities') {
+    if (this.mode === 'Average Of Communities') {
       return this.communities
     } else if (this.mode === 'Average Of Regional Districts') {
       return this.regionalDistricts
@@ -134,7 +134,7 @@ export default class Compare extends Vue {
 
   handleChange(data) {
     let cids = []
-    if (this.mode === 'Communities') {
+    if (this.mode === 'Average Of Communities') {
       cids = data.map((cid) => cid.toString())
     } else if (this.mode === 'Average Of Regional Districts') {
       let temp = []
