@@ -3,7 +3,7 @@
     <MenuFilter
       ref="menuFilter"
       :chip-title="title"
-      :filter-title="'Power Access'"
+      :filter-title="'Power'"
       :active="active"
       :card-width="350"
       :disabled="disabled"
@@ -37,7 +37,7 @@ import MenuFilter from '~/components/Explore/Filters/MenuFilter'
 export default class PowerAccess extends Vue {
   @Prop({ default: false, type: Boolean }) disabled
 
-  title = 'Power Access'
+  title = 'Power'
   active = false
 
   min = 0
@@ -45,7 +45,7 @@ export default class PowerAccess extends Vue {
   range = [this.min, this.max]
 
   reset() {
-    this.title = 'Power Access'
+    this.title = 'Power'
     this.active = false
     this.range = [this.min, this.max]
   }
@@ -58,9 +58,9 @@ export default class PowerAccess extends Vue {
     this.$refs.menuFilter.hide()
     if (this.isDefaultRange) {
       this.active = false
-      this.title = 'Power Access'
+      this.title = 'Power'
     } else {
-      this.title = `Power Access ${this.range[0]}-${this.range[1]} km`
+      this.title = `Power ${this.range[0]}-${this.range[1]} km`
       this.active = true
     }
     this.$emit('filter')
