@@ -103,7 +103,7 @@ export default class Explore extends Vue {
       layerLabel: 'Census Subdivisions',
     },
     {
-      layerName: 'reserves',
+      layerName: ['reserves', 'reserves-label'],
       layerLabel: 'Reserves',
     },
     {
