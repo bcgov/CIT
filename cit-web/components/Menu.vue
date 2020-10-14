@@ -50,7 +50,7 @@
       <v-divider></v-divider>
       <v-sheet color="white" class="d-flex justify-center align-center">
         <v-btn
-          :href="`mailto:${this.$config.citFeedbackEmail}?subject=CIT Feedback`"
+          :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
           block
           >Give Feedback</v-btn
         >

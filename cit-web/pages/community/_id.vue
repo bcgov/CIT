@@ -147,10 +147,17 @@
                   Other items that may be of interest
                 </h6>
                 <v-divider class="mt-5"></v-divider>
-                <v-btn color="primary" class="mt-5" @click="dialog = true"
-                  >View Raw Data
-                  <v-icon right dark>mdi-database</v-icon>
-                </v-btn>
+                <div class="mt-5">
+                  <v-btn color="primary" @click="dialog = true"
+                    >View Raw Data
+                    <v-icon right dark>mdi-database</v-icon>
+                  </v-btn>
+                  <v-btn
+                    class="ml-2"
+                    :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
+                    >Give Feedback</v-btn
+                  >
+                </div>
               </div>
             </v-col>
           </v-row>

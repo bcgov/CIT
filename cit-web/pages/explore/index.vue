@@ -105,6 +105,13 @@
           <Results :grouped-communities="groupedCommunities"></Results>
         </div>
       </div>
+      <div class="px-10 py-3">
+        <v-btn
+          :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
+          block
+          >Give Feedback</v-btn
+        >
+      </div>
     </div>
     <div
       v-show="!isMobile || (isMobile && activeTab !== 'Data')"
