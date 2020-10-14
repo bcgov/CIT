@@ -4,6 +4,7 @@
     <Municipal></Municipal>
     <WildfireLegend></WildfireLegend>
     <CensusLegend></CensusLegend>
+    <ReservesLegend></ReservesLegend>
     <RegionalLegend></RegionalLegend>
   </div>
 </template>

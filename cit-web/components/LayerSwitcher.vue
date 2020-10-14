@@ -7,7 +7,7 @@
       left
       transition="fade-transition"
       :close-on-content-click="false"
-      max-height="300"
+      max-height="500"
       allow-overflow
     >
       <template v-slot:activator="{ on, attrs }">
