@@ -9,7 +9,7 @@ export function getCommunityList(params) {
 }
 
 export function getCommunity(id) {
-  return $axios.get(`api/pipeline/communities/${id}/`)
+  return $axios.get(`api/pipeline/communities/${id}/ds`)
 }
 
 export function getPopulation(id) {
