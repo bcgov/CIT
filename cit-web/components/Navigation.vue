@@ -64,3 +64,8 @@ export default class Navigation extends Vue {
   text-decoration: none;
 }
 </style>
+<style lang="scss">
+.v-list .v-list-item--active {
+  color: transparent !important;
+}
+</style>

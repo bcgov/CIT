@@ -1,6 +1,11 @@
 <template>
   <div>
-    <v-menu offset-y class="nav-menu" :close-on-content-click="false">
+    <v-menu
+      offset-y
+      class="nav-menu"
+      :close-on-content-click="false"
+      content-class="nav-menu"
+    >
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" v-bind="attrs" v-on="on">
           <v-icon>mdi-menu</v-icon>
@@ -28,7 +33,7 @@
           </h6>
         </v-list-item-title>
         <v-list-item
-          v-for="(mi, index) in menuItems"
+          v-for="(mi, index) in menuItemsSorted"
           :key="index"
           class="pa-0 ma-0 font-weight-normal my-3"
           style="min-height: auto;"
@@ -42,18 +47,31 @@
       <v-sheet v-if="showSearch" color="white" class="pa-5">
         <CommSearch></CommSearch>
       </v-sheet>
+      <v-divider></v-divider>
+      <v-sheet color="white" class="d-flex justify-center align-center">
+        <v-btn
+          :href="`mailto:${this.$config.citFeedbackEmail}?subject=CIT Feedback`"
+          block
+          >Give Feedback</v-btn
+        >
+      </v-sheet>
     </v-menu>
   </div>
 </template>
 
 <script>
 import { Component, Vue } from 'nuxt-property-decorator'
+import sortBy from 'lodash/sortBy'
 import CommSearch from '~/components/CommSearch.vue'
 
 @Component({
   CommSearch,
 })
 export default class Menu extends Vue {
+  get menuItemsSorted() {
+    return sortBy(this.menuItems, 'title')
+  }
+
   menuItems = [
     {
       title: 'Domestic',
@@ -94,7 +112,7 @@ export default class Menu extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .nav-menu {
   background-color: white !important;
 }
