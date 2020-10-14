@@ -4,6 +4,7 @@
     <Municipal></Municipal>
     <WildfireLegend></WildfireLegend>
     <CensusLegend></CensusLegend>
+    <RegionalLegend></RegionalLegend>
   </div>
 </template>
 
@@ -13,12 +14,16 @@ import InternetSpeed from '~/components/Map/Legends/InternetSpeed'
 import Municipal from '~/components/Map/Legends/Municipal'
 import WildfireLegend from '~/components/Map/Legends/WildfireLegend'
 import CensusLegend from '~/components/Map/Legends/CensusLegend'
+import ReservesLegend from '~/components/Map/Legends/ReservesLegend'
+import RegionalLegend from '~/components/Map/Legends/RegionalLegend'
 
 @Component({
   InternetSpeed,
   Municipal,
   WildfireLegend,
   CensusLegend,
+  ReservesLegend,
+  RegionalLegend,
 })
 export default class Legend extends Vue {}
 </script>
