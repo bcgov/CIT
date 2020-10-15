@@ -11,22 +11,24 @@
           Sorry, we could not find a community with that ID.
         </v-alert>
       </div>
-      <v-container v-if="!isCommunityEmpty && parentCommunity" fluid>
-        <v-alert type="info" class="primary--text">
-          This community is within {{ parentCommunity.name }}'s boundary.
-          Consider
-          <a :href="`/community/${parentCommunity.id}`" class="font-weight-bold"
-            >viewing the {{ parentCommunity.name }} page instead.</a
-          >
-        </v-alert>
-      </v-container>
-      <v-container v-if="!isCommunityEmpty && !incorporated" fluid class="mt-2">
-        <v-alert type="info" class="primary--text">
-          This is an unincorporated community, so demographic information is
-          only available for the containing census subdivision.
-        </v-alert>
-      </v-container>
       <div v-else>
+        <v-container v-if="parentCommunity" fluid>
+          <v-alert type="info" class="primary--text">
+            This community is within {{ parentCommunity.name }}'s boundary.
+            Consider
+            <a
+              :href="`/community/${parentCommunity.id}`"
+              class="font-weight-bold"
+              >viewing the {{ parentCommunity.name }} page instead.</a
+            >
+          </v-alert>
+        </v-container>
+        <v-container v-if="!incorporated" fluid class="mt-2">
+          <v-alert type="info" class="primary--text">
+            This is an unincorporated community, so demographic information is
+            only available for the containing census subdivision.
+          </v-alert>
+        </v-container>
         <div class="comm-details-content">
           <v-container fluid>
             <v-row no-gutters>

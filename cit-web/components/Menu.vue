@@ -33,7 +33,7 @@
           </h6>
         </v-list-item-title>
         <v-list-item
-          v-for="(mi, index) in menuItemsSorted"
+          v-for="(mi, index) in sortBy(menuItems, 'title')"
           :key="index"
           class="pa-0 ma-0 font-weight-normal my-3"
           style="min-height: auto;"
@@ -66,12 +66,11 @@ import CommSearch from '~/components/CommSearch.vue'
 
 @Component({
   CommSearch,
+  methods: {
+    sortBy,
+  },
 })
 export default class Menu extends Vue {
-  get menuItemsSorted() {
-    return sortBy(this.menuItems, 'title')
-  }
-
   menuItems = [
     {
       title: 'Domestic',
