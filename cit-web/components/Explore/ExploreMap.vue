@@ -47,7 +47,7 @@ export default class Explore extends Vue {
   @Watch('clusterCommunities')
   handleClusterChange(nc, oc) {
     const newGeoJson = this.convertToGeoJson(nc)
-    this.whenMapLoaded((map) => {
+    this.whenCommSourceReady((map) => {
       const clusterSource = map.getSource('communities')
       clusterSource.setData(newGeoJson)
     })
@@ -89,6 +89,7 @@ export default class Explore extends Vue {
     return newGeoJson
   }
 
+  communitySourcesReady = false
   communityPopUpName = null
   communityPopUpId = null
   communityPopUpPopulation = null
@@ -256,10 +257,22 @@ export default class Explore extends Vue {
         'text-color': '#ffffff',
       },
     })
+    this.communitySourcesReady = true
+    this.$emit('communitySourcesReady', this.map)
   }
 
   resize() {
     this.whenMapLoaded((map) => map.resize())
+  }
+
+  whenCommSourceReady(fn) {
+    if (this.communitySourcesReady) {
+      fn(this.map)
+    } else {
+      this.$on('communitySourcesReady', (map) => {
+        fn(map)
+      })
+    }
   }
 
   whenMapLoaded(fn) {
