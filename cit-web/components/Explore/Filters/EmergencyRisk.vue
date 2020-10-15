@@ -3,9 +3,9 @@
     <MenuFilter
       ref="menuFilter"
       :chip-title="title"
-      :filter-title="'Emergency Risk'"
+      :filter-title="'Emergency Response'"
       :active="active"
-      :card-width="400"
+      :card-width="380"
       :disabled="disabled"
       @save="handleSave"
       @clear="handleClear"
@@ -39,11 +39,11 @@ import Tsunami from '~/components/Explore/Filters/Tsunami'
 })
 export default class EmergencyRisk extends Vue {
   @Prop({ default: false, type: Boolean }) disabled
-  title = 'Emergency Risk'
+  title = 'Emergency Response'
   active = false
 
   reset() {
-    this.title = 'Emergency Risk'
+    this.title = 'Emergency Response'
     this.active = false
     this.$nextTick(() => {
       this.$refs.wildfire.reset()
@@ -77,7 +77,6 @@ export default class EmergencyRisk extends Vue {
     const wildfireParams = this.$refs.wildfire.getParams()
     const tsunamiParams = this.$refs.tsunami.getParams()
     const temp = Object.assign(wildfireParams[0] || {}, tsunamiParams[0] || {})
-    console.log(temp)
     return [temp]
   }
 }
