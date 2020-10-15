@@ -733,6 +733,7 @@ export default class CommunityDetail extends Vue {
         communityDetails,
         censusSubdivision,
         groupedLocations,
+        error: false,
       }
     } catch (e) {
       console.error('Error Message', e)
