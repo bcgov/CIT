@@ -50,10 +50,8 @@
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import startCase from 'lodash/startCase'
-import SidebarHeader from '~/components/CommunityDetails/SidebarHeader.vue'
 
 @Component({
-  SidebarHeader,
   methods: {
     startCase,
   },
