@@ -10,6 +10,12 @@ To add new datasets:
 docker-compose exec web python manage.py import_data_sources
 ```
 
+Note: In production environments, the django application uses the unprivileged Postgres user `django` (without write permissions). In order to import any data, we need to switch to the `migrator` user (the `--settings=web.settings_migrator` flag, which uses the database settings in `settings_migrator.py`):
+
+```
+docker-compose exec web python manage.py import_data_sources --settings=web.settings_migrator
+```
+
 - Create a Django model for the new dataset.
 
 ## Importing location assets

@@ -60,6 +60,12 @@ To import all data, run:
 docker-compose exec web python manage.py bootstrap
 ```
 
+Note: In production environments, the django application uses the unprivileged Postgres user `django` (without write permissions). In order to import any data, we need to switch to the `migrator` user (the `--settings=web.settings_migrator` flag, which uses the database settings in `settings_migrator.py`):
+
+```
+docker-compose exec web python manage.py bootstrap --settings=web.settings_migrator
+```
+
 Alternatively, resources can be imported individually.
 
 import local shapefiles
