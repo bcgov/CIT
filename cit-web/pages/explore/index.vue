@@ -172,11 +172,7 @@ import ExploreToolbar from '~/components/Explore/ExploreToolbar.vue'
 import ExploreReportSection from '~/components/Explore/ExploreReportSection'
 import ExplorePages from '~/data/explore/explorePages.json'
 
-import {
-  getRegionalDistricts,
-  getCommunityList,
-  getCommunityGeoJSON,
-} from '~/api/cit-api'
+import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
 import { getAuthToken } from '~/api/ms-auth-api/'
 const exploreStore = namespace('explore')
 
@@ -327,15 +323,12 @@ export default class Explore extends Vue {
       const results = await Promise.all([
         getRegionalDistricts(),
         getCommunityList(),
-        getCommunityGeoJSON(),
       ])
       const regionalDistricts = results[0].data.results
       store.commit('communities/setRegionalDistricts', regionalDistricts)
       const communityList = results[1].data
       store.commit('communities/setCommunities', communityList)
       const groupedCommunities = groupBy(communityList, 'regional_district')
-      const communityGeoJSON = results[2].data
-      store.commit('communities/setCommunityGeoJSON', communityGeoJSON)
 
       return {
         communityList,
