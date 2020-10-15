@@ -420,26 +420,32 @@ export default class CommunityDetail extends Vue {
     {
       layerName: 'locations',
       layerLabel: 'Locations',
+      legendComponent: 'WildfireLegend',
     },
     {
       layerName: 'wildfire-zones',
       layerLabel: 'Wildfire Risk Zones',
+      legendComponent: 'WildfireLegend',
     },
     {
       layerName: 'bc-roads',
       layerLabel: 'Roads with broadband',
+      legendComponent: 'InternetSpeed',
     },
     {
       layerName: ['municipalities', 'municipalities-blur'],
       layerLabel: 'Municipal boundaries',
+      legendComponent: 'Municipal',
     },
     {
       layerName: ['census', 'census-label'],
       layerLabel: 'Census Subdivisions',
+      legendComponent: 'CensusLegend',
     },
     {
-      layerName: 'reserves',
+      layerName: ['reserves', 'reserves-label'],
       layerLabel: 'Reserves',
+      legendComponent: 'ReservesLegend',
     },
     {
       layerName: [
@@ -448,6 +454,7 @@ export default class CommunityDetail extends Vue {
         'regional-districts-label',
       ],
       layerLabel: 'Regional Districts',
+      legendComponent: 'RegionalLegend',
     },
   ]
 
