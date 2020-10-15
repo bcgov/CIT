@@ -1,25 +1,14 @@
 <template>
   <div>
-    <MenuFilter
-      ref="menuFilter"
-      :chip-title="title"
-      :filter-title="'Wildfire Zone'"
-      :active="active"
-      :card-width="200"
-      :disabled="disabled"
-      @save="handleSave"
-      @clear="handleClear"
+    <v-checkbox
+      v-for="(wf, index) in wildfireZones"
+      :key="index"
+      v-model="wf.state"
+      :label="wf.title"
+      hide-details
+      class="pa-0 ma-0 mt-3 mb-3"
     >
-      <v-checkbox
-        v-for="(wf, index) in wildfireZones"
-        :key="index"
-        v-model="wf.state"
-        :label="wf.title"
-        hide-details
-        class="pa-0 ma-0 mt-3 mb-3"
-      >
-      </v-checkbox>
-    </MenuFilter>
+    </v-checkbox>
   </div>
 </template>
 
@@ -89,25 +78,6 @@ export default class Wildfire extends Vue {
       wildfire_zone: temp.join(','),
     }
     return [params]
-  }
-
-  handleSave() {
-    this.$refs.menuFilter.hide()
-    if (this.numChecked === 0) {
-      this.title = 'Wildfire Zone'
-      this.active = false
-    } else if (this.numChecked === 1) {
-      this.title = `Wildfire Zone: ${this.checked[0].title}`
-      this.active = true
-    } else {
-      this.title = `${this.numChecked} Wildfire Zones`
-      this.active = true
-    }
-    this.$emit('filter')
-  }
-
-  handleClear() {
-    this.wildfireZones.map((wf) => (wf.state = null))
   }
 }
 </script>
