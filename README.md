@@ -80,6 +80,9 @@ docker-compose exec db code/init_db.sh
 
 When restoring the database from a sql file, load the file into the `django` database:
 ```
+docker-compose exec db dropdb -U postgres cit
+docker-compose exec db createdb -U postgres cit
+docker-compose exec db code/init_db.sh
 docker cp db.sql "$(docker-compose ps -q db)":/tmp/
 docker-compose exec db psql -U postgres -f /tmp/db.sql cit
 ```
