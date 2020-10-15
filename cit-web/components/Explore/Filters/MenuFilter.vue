@@ -7,6 +7,7 @@
     :close-on-content-click="false"
     offset-y
     nudge-bottom="5"
+    eager
   >
     <template v-slot:activator="{ on }">
       <v-chip
