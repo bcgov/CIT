@@ -86,6 +86,7 @@ export default class Explore extends Vue {
       layerName: 'locations',
       layerLabel: 'Locations',
       legendComponent: 'WildfireLegend',
+      on: true,
     },
     {
       layerName: 'wildfire-zones',
@@ -120,6 +121,7 @@ export default class Explore extends Vue {
       ],
       layerLabel: 'Regional Districts',
       legendComponent: 'RegionalLegend',
+      on: true,
     },
   ]
 

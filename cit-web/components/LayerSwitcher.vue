@@ -56,6 +56,7 @@
               :id="layer.layerLabel"
               class="ma-0 pa-0"
               hide-details
+              :input-value="layer.on"
               @change="handleChange($event, layer.layerName)"
             >
               <template v-slot:prepend></template>
