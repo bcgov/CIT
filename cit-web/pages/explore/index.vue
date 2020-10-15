@@ -227,6 +227,7 @@ export default class Explore extends Vue {
       results[0].data.results
     )
     this.communityList = results[1].data
+    this.$store.commit('communities/setCommunityList', results[1].data)
     this.groupedCommunities = groupBy(results[1].data, 'regional_district')
   }
 
