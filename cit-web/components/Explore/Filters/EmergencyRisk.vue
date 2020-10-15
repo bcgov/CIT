@@ -3,7 +3,7 @@
     <MenuFilter
       ref="menuFilter"
       :chip-title="title"
-      :filter-title="'Emergency Response'"
+      :filter-title="'Emergency Risk'"
       :active="active"
       :card-width="380"
       :disabled="disabled"
@@ -39,11 +39,11 @@ import Tsunami from '~/components/Explore/Filters/Tsunami'
 })
 export default class EmergencyRisk extends Vue {
   @Prop({ default: false, type: Boolean }) disabled
-  title = 'Emergency Response'
+  title = 'Emergency Risk'
   active = false
 
   reset() {
-    this.title = 'Emergency Response'
+    this.title = 'Emergency Risk'
     this.active = false
     this.$nextTick(() => {
       this.$refs.wildfire.reset()

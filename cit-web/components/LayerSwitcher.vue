@@ -27,7 +27,7 @@
           Layers & Legends
         </v-tooltip>
       </template>
-      <v-card width="300" class="rounded-lg pa-0 ma-0">
+      <v-card width="400" class="rounded-lg pa-0 ma-0">
         <v-toolbar color="primary" height="48">
           <v-toolbar-title class="white--text font-weight-bold text-body-1"
             ><v-icon color="white">mdi-layers</v-icon> Layers &
@@ -45,7 +45,12 @@
             class="d-flex align-center"
             :class="{ 'mt-3': index !== 0 }"
           >
+            <DynamicLegend
+              :component-name="layer.legendComponent"
+              class="mr-2"
+            ></DynamicLegend>
             <label :for="layer.layerLabel">{{ layer.layerLabel }}</label>
+
             <v-spacer></v-spacer>
             <v-switch
               :id="layer.layerLabel"
@@ -56,8 +61,6 @@
               <template v-slot:prepend></template>
             </v-switch>
           </div>
-
-          <Legend></Legend>
         </v-card-text>
         <v-divider></v-divider>
       </v-card>
@@ -67,10 +70,7 @@
 
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import Legend from '~/components/Map/Legend'
-@Component({
-  Legend,
-})
+@Component
 export default class LayerSwitcher extends Vue {
   @Prop({ default: null, type: Array }) layers
   menu = true

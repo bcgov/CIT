@@ -94,6 +94,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
+    'nuxt-vue-multiselect',
   ],
   /*
    ** Axios module configuration
@@ -101,7 +102,9 @@ export default {
    */
   axios: {
     baseURL:
-      process.env.NODE_ENV === 'development' ? 'http://nginx/' : process.env.API_HOST || 'http://nginx',
+      process.env.NODE_ENV === 'development'
+        ? 'http://nginx/'
+        : process.env.API_HOST || 'http://nginx',
     browserBaseURL: process.env.NODE_ENV === 'development' ? '/' : '/',
   },
   /*

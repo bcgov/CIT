@@ -36,6 +36,7 @@
     "mapbox-gl": "^1.11.1",
     "nuxt": "^2.13.0",
     "nuxt-property-decorator": "^2.7.2",
+    "nuxt-vue-multiselect": "^1.0.4",
     "powerbi-client": "^2.13.2",
     "prettier": "^2.0.5",
     "stylelint": "^13.6.1",
