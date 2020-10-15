@@ -13,6 +13,7 @@ Install [Docker](https://docs.docker.com/engine/install/ubuntu/) and [Docker Com
 Copy a local config template:
 
 ```
+cp example.env .env
 cp dc.dev.yml docker-compose.override.yml
 ```
 
@@ -58,6 +59,31 @@ In Files -> Settings -> Workspace -> Open Settings
 It is recommended that the Workspace is the `cit-web` folder, and not the `cit` project for this to behave correctly. Otherwise, it won't read the ESLint & Prettier config files properly (VSCode expects them in root workspace by default).
 
 ## Deployment
+
+### Environment variables
+
+Create the `.env` file using `example.env` as a template:
+```
+cp example.env .env
+```
+
+Replace all the placeholder values in `.env` with the real values.
+
+### Setting up database users and permissions
+
+In production environments, we create an application user (defaulting to `cit`) instead of using the default `postgres` superuser.
+
+When initializing the database for the first time, run the `init_db.sh` script:
+```
+docker-compose exec db code/init_db.sh
+```
+
+When restoring the database from a sql file, load the file into the `django` database:
+```
+docker cp db.sql "$(docker-compose ps -q db)":/tmp/
+docker-compose exec db psql -U postgres -f /tmp/db.sql cit
+```
+
 
 ### Setting up REST OAuth tokens for Azure and Power BI
 
