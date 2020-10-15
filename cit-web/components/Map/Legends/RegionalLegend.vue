@@ -1,13 +1,6 @@
 <template>
   <div>
-    <v-card max-width="190" style="border: 0;" class="elevation-0">
-      <v-card-title class="ma-0 pa-0 text-body-1 font-weight-normal"
-        >Regional Districts</v-card-title
-      >
-      <v-card-text class="ma-0 pa-0">
-        <div class="d-flex align-center regionalLegend"></div>
-      </v-card-text>
-    </v-card>
+    <div class="d-flex align-center regionalLegend"></div>
   </div>
 </template>
 

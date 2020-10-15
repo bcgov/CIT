@@ -1,13 +1,6 @@
 <template>
   <div>
-    <v-card max-width="190" style="border: 0;" class="elevation-0">
-      <v-card-title class="ma-0 pa-0 text-body-1 font-weight-normal"
-        >Census Subdivision</v-card-title
-      >
-      <v-card-text class="ma-0 pa-0">
-        <div class="censuslegend"></div>
-      </v-card-text>
-    </v-card>
+    <div class="censuslegend"></div>
   </div>
 </template>
 

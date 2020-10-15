@@ -7714,6 +7714,14 @@ nuxt-property-decorator@^2.7.2:
     vuex-class "^0.3.2"
     vuex-module-decorators "^0.16.1"
 
+nuxt-vue-multiselect@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/nuxt-vue-multiselect/-/nuxt-vue-multiselect-1.0.4.tgz#7a53ee3afa00040bbf8c23f0fb88ec72911079ea"
+  integrity sha512-xfm9upHmxd5ZDNSEpT0ZOAtSqJackO6LEos+deNMZ3Bxh+mg4Oz6cTX9niwKnHk0J6EqMjFsGjsq8JihxoLhWQ==
+  dependencies:
+    core-js "^2.6.5"
+    vue-multiselect "^2.1.6"
+
 nuxt@^2.13.0:
   version "2.13.3"
   resolved "https://registry.yarnpkg.com/nuxt/-/nuxt-2.13.3.tgz#494f0df34851dfcdbdf4fd092112fa1d4bed1b02"
@@ -11365,6 +11373,11 @@ vue-meta@^2.4.0:
   integrity sha512-XEeZUmlVeODclAjCNpWDnjgw+t3WA6gdzs6ENoIAgwO1J1d5p1tezDhtteLUFwcaQaTtayRrsx7GL6oXp/m2Jw==
   dependencies:
     deepmerge "^4.2.2"
+
+vue-multiselect@^2.1.6:
+  version "2.1.6"
+  resolved "https://registry.yarnpkg.com/vue-multiselect/-/vue-multiselect-2.1.6.tgz#5be5d811a224804a15c43a4edbb7485028a89c7f"
+  integrity sha512-s7jmZPlm9FeueJg1RwJtnE9KNPtME/7C8uRWSfp9/yEN4M8XcS/d+bddoyVwVnvFyRh9msFo0HWeW0vTL8Qv+w==
 
 vue-no-ssr@^1.1.1:
   version "1.1.1"
