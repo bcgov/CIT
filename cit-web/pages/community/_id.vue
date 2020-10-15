@@ -421,6 +421,7 @@ export default class CommunityDetail extends Vue {
       layerName: 'locations',
       layerLabel: 'Locations',
       legendComponent: 'WildfireLegend',
+      on: true,
     },
     {
       layerName: 'wildfire-zones',
@@ -455,6 +456,7 @@ export default class CommunityDetail extends Vue {
       ],
       layerLabel: 'Regional Districts',
       legendComponent: 'RegionalLegend',
+      on: true,
     },
   ]
 
