@@ -18,7 +18,7 @@ const compareStore = namespace('compare')
 export default class CompareSelect extends Vue {
   @Prop({
     default: () => [
-      'Average Of BC',
+      'Average Of B.C.',
       'Average Of Regional Districts',
       'Average Of Communities',
     ],
@@ -29,7 +29,7 @@ export default class CompareSelect extends Vue {
   @compareStore.Mutation('setCompareMode')
   setCompareMode
 
-  selected = 'Average Of BC'
+  selected = 'Average Of B.C.'
 
   setSelected(mode) {
     this.selected = mode

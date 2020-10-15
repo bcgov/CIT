@@ -176,15 +176,39 @@
         </div>
 
         <div ref="centerControl" @click="handleResetCenter">
-          <v-btn color="primary" x-small fab class="rounded-lg text-capitalize">
-            <v-icon>mdi-bullseye</v-icon>
-          </v-btn>
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                color="primary"
+                x-small
+                fab
+                class="rounded-lg text-capitalize"
+                v-on="on"
+              >
+                <v-icon>mdi-bullseye</v-icon>
+              </v-btn>
+            </template>
+            Center Community
+          </v-tooltip>
         </div>
 
         <div ref="fullscreenControl" @click="handleFullScreen">
-          <v-btn color="primary" x-small fab class="rounded-lg text-capitalize">
-            <v-icon>mdi-arrow-expand-all</v-icon>
-          </v-btn>
+          <v-tooltip left>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                color="primary"
+                x-small
+                fab
+                class="rounded-lg text-capitalize"
+                v-on="on"
+              >
+                <v-icon>mdi-arrow-expand-all</v-icon>
+              </v-btn>
+            </template>
+            Fullscreen Enter/Exit
+          </v-tooltip>
         </div>
 
         <div ref="layerSwitcher">
@@ -216,7 +240,7 @@
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
                 <p
-                  v-if="compareMode === 'Average Of BC'"
+                  v-if="compareMode === 'Average Of B.C.'"
                   class="pa-0 ma-0 ml-2"
                 >
                   <span>Comparing</span>

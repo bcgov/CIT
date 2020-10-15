@@ -8,8 +8,10 @@
     hide-details
     solo
     :search-input.sync="searchInput"
+    chips
     @change="handleUpdate"
     @keyup.enter="handleEnter"
+    @keyup.delete="handleDelete"
   >
     <template v-slot:selection="data">
       <div v-if="autocomplete.length > 1">
@@ -67,6 +69,11 @@ export default class Compare extends Vue {
     }
   }
 
+  handleDelete(e) {
+    console.log(e)
+    console.log('Search Input', this.searchInput)
+  }
+
   setGroupChips(state) {
     this.groupChips = state
   }
@@ -112,5 +119,8 @@ export default class Compare extends Vue {
 }
 .v-select__selections div:first-child {
   display: inline-block !important;
+}
+.v-list .v-list-item--active {
+  color: black !important;
 }
 </style>

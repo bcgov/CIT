@@ -11,16 +11,21 @@
       allow-overflow
     >
       <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          color="primary"
-          x-small
-          fab
-          class="rounded-lg text-capitalize"
-          v-bind="attrs"
-          v-on="on"
-        >
-          <v-icon>mdi-layers</v-icon>
-        </v-btn>
+        <v-tooltip left>
+          <template v-slot:activator="{ on: onTooltip, attrs: attrsTooltip }">
+            <v-btn
+              color="primary"
+              x-small
+              fab
+              class="rounded-lg text-capitalize layerSwitcherButton"
+              v-bind="{ ...attrs, ...attrsTooltip }"
+              v-on="{ ...on, ...onTooltip }"
+            >
+              <v-icon>mdi-layers</v-icon>
+            </v-btn>
+          </template>
+          Layers & Legends
+        </v-tooltip>
       </template>
       <v-card width="300" class="rounded-lg pa-0 ma-0">
         <v-toolbar color="primary" height="48">
