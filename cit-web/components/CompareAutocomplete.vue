@@ -8,17 +8,20 @@
     hide-details
     solo
     :search-input.sync="searchInput"
+    chips
     @change="handleUpdate"
     @keyup.enter="handleEnter"
+    @keyup.delete="handleDelete"
   >
     <template v-slot:selection="data">
       <div v-if="autocomplete.length > 1">
-        <v-chip @click="data.select">
+        <v-chip :x-small="smallChip" @click="data.select">
           {{ autocomplete.length }} {{ mode }} selected
         </v-chip>
       </div>
       <div v-else>
         <v-chip
+          :x-small="smallChip"
           v-bind="data.attrs"
           :input-value="data.selected"
           close
@@ -33,7 +36,8 @@
 </template>
 
 <script>
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
+const compareStore = namespace('compare')
 @Component({})
 export default class Compare extends Vue {
   @Prop({ default: null, type: Array }) items
@@ -42,9 +46,33 @@ export default class Compare extends Vue {
   @Prop({ default: true, type: Boolean }) multiple
   @Prop({ default: true, type: String }) mode
 
+  @compareStore.Mutation('setCompare') setCompare
+
   autocomplete = []
   searchInput = ''
   groupChips = false
+  isHydrated = false
+
+  mounted() {
+    this.isHydrated = true
+  }
+
+  updated() {
+    this.setCompare(this.getSelectedNames())
+  }
+
+  get smallChip() {
+    if (this.isHydrated === true) {
+      return this.$vuetify.breakpoint.width < 440
+    } else {
+      return false
+    }
+  }
+
+  handleDelete(e) {
+    console.log(e)
+    console.log('Search Input', this.searchInput)
+  }
 
   setGroupChips(state) {
     this.groupChips = state
@@ -58,6 +86,17 @@ export default class Compare extends Vue {
 
   handleUpdate() {
     this.$emit('change', this.autocomplete)
+    this.setCompare(this.getSelectedNames())
+    this.searchInput = ''
+  }
+
+  getSelectedNames() {
+    const temp = []
+    this.autocomplete.map((ac) => {
+      const tempItem = this.items.find((i) => i[this.itemValue] === ac)
+      temp.push(tempItem?.[this.itemText])
+    })
+    return temp
   }
 
   handleEnter(e) {
@@ -80,5 +119,8 @@ export default class Compare extends Vue {
 }
 .v-select__selections div:first-child {
   display: inline-block !important;
+}
+.v-list .v-list-item--active {
+  color: black !important;
 }
 </style>

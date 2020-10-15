@@ -1,5 +1,6 @@
 <template>
   <div>
+    {{ commSearch }}
     <v-autocomplete
       v-model="commSearch"
       :items="communities"
@@ -12,7 +13,7 @@
       placeholder="Community Name"
       :dense="dense"
       :outlined="outlined"
-      @input="handleClick"
+      @input="handleChange"
     ></v-autocomplete>
   </div>
 </template>
@@ -31,8 +32,16 @@ export default class CommSearch extends Vue {
   communities = []
   @commModule.Getter('getCommunities') communities
 
-  handleClick(cid) {
-    window.open(`/community/${cid}`)
+  handleChange(cid) {
+    if (!cid) {
+      return
+    }
+    this.$router.push({
+      path: `/community/${cid}`,
+    })
+    this.$nextTick(() => {
+      this.commSearch = null
+    })
   }
 }
 </script>

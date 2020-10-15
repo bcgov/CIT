@@ -1,24 +1,5 @@
 <template>
   <div class="community-details-sidebar">
-    <div class="pt-5 pb-5">
-      <SidebarHeader :place-name="placeName">
-        <p class="mt-0 text-center pl-4 pr-4">
-          <a :href="`/explore?tab=Map&rid=${rid}`">{{ district }}</a>
-        </p>
-        <p v-if="population" class="text-center text-caption">
-          Population: {{ population.toLocaleString() || 'N/A' }}
-        </p>
-        <div class="d-flex justify-center">
-          <v-btn
-            color="primary"
-            small
-            class="text-caption"
-            @click="$emit('viewReports')"
-            >View Reports
-          </v-btn>
-        </div>
-      </SidebarHeader>
-    </div>
     <slot></slot>
     <v-list dense nav class="mt-3">
       <v-list-group
@@ -33,16 +14,20 @@
             height="18"
             width="18"
             :src="require(`~/assets/icons/${groupedLocation.group}.svg`)"
-            alt="Civic Facilities"
+            :alt="groupedLocation.group"
             class="mr-2"
           />
           <v-list-item-content>
-            <v-list-item-title>
-              {{ startCase(groupedLocation.group) }}
+            <v-list-item-title class="text-body-1 py-1">
+              {{
+                startCase(
+                  groupedLocation.group.replace('servicebc', 'Service BC')
+                )
+              }}
             </v-list-item-title>
           </v-list-item-content>
 
-          <v-chip x-small class="font-weight-bold ma-0 ml-0">
+          <v-chip small class="font-weight-medium ma-0 ml-0 text-body-1">
             {{ groupedLocation.locations.length }}
           </v-chip>
         </template>
@@ -65,10 +50,8 @@
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import startCase from 'lodash/startCase'
-import SidebarHeader from '~/components/CommunityDetails/SidebarHeader.vue'
 
 @Component({
-  SidebarHeader,
   methods: {
     startCase,
   },

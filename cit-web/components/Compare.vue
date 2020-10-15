@@ -37,7 +37,7 @@
     </v-container>
 
     <div v-if="cidsEmpty">
-      <v-alert type="info">
+      <v-alert type="info" class="primary--text elevation-5">
         Please select a community, regional district or All of BC.
       </v-alert>
     </div>
@@ -73,7 +73,7 @@ const commModule = namespace('communities')
 })
 export default class Compare extends Vue {
   @Prop({ default: 'ReportSection6249eac6d911d2930de3', type: String }) pid
-  @Prop({ default: 'Average Of BC', type: String }) initMode
+  @Prop({ default: 'Average Of B.C.', type: String }) initMode
   @Prop({ default: null, type: Number }) rid
   @Prop({ default: true, type: Boolean }) loader
   @Prop({ default: '', type: String }) height
@@ -84,7 +84,7 @@ export default class Compare extends Vue {
   loading = true
 
   get itemText() {
-    if (this.mode === 'Communities') {
+    if (this.mode === 'Average Of Communities') {
       return 'place_name'
     } else if (this.mode === 'Average Of Regional Districts') {
       return 'name'
@@ -94,7 +94,7 @@ export default class Compare extends Vue {
   }
 
   get items() {
-    if (this.mode === 'Communities') {
+    if (this.mode === 'Average Of Communities') {
       return this.communities
     } else if (this.mode === 'Average Of Regional Districts') {
       return this.regionalDistricts
@@ -108,7 +108,7 @@ export default class Compare extends Vue {
   }
 
   get showAutoComplete() {
-    return this.mode !== 'Average Of BC'
+    return this.mode !== 'Average Of B.C.'
   }
 
   get cidsEmpty() {
@@ -117,11 +117,11 @@ export default class Compare extends Vue {
 
   cids = []
 
-  mode = 'Average Of BC'
+  mode = 'Average Of B.C.'
 
   @Watch('mode')
   handleModeChange(mode) {
-    if (mode !== 'Average Of BC') {
+    if (mode !== 'Average Of B.C.') {
       const compareAutoComplete = this.$refs.compareAutoComplete
       compareAutoComplete.handleUpdate()
     }
@@ -134,7 +134,7 @@ export default class Compare extends Vue {
 
   handleChange(data) {
     let cids = []
-    if (this.mode === 'Communities') {
+    if (this.mode === 'Average Of Communities') {
       cids = data.map((cid) => cid.toString())
     } else if (this.mode === 'Average Of Regional Districts') {
       let temp = []
@@ -152,7 +152,7 @@ export default class Compare extends Vue {
     this.mode = data
     const compareAutoComplete = this.$refs.compareAutoComplete
     compareAutoComplete.clear()
-    if (data === 'Average Of BC') {
+    if (data === 'Average Of B.C.') {
       this.cids = this.allCids
     } else {
       this.cids = []

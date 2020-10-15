@@ -14,7 +14,6 @@ router.register(r'regionaldistricts', pipeline.views.general.RegionalDistrictVie
 urlpatterns = [
     path("", include(router.urls)),
 
-    url(r"^auth/$", pipeline.views.general.auth),
     url(r"^locations/geojson/$", pipeline.views.location_types.LocationGeoJSONList.as_view()),
     url(r"^locations/first_responders/$", pipeline.views.location_types.FirstResponderList.as_view()),
     url(r"^locations/diagnostic_facilities/$", pipeline.views.location_types.DiagnosticFacilityList.as_view()),
@@ -42,5 +41,5 @@ urlpatterns = [
     url(r"^locationdistances/geojson/$", pipeline.views.general.LocationDistanceGeoJSONList.as_view()),
     url(r"^locationdistances/$", pipeline.views.general.LocationDistanceList.as_view()),
     url(r"^schooldistricts/$", pipeline.views.general.SchoolDistrictList.as_view()),
-    url(r"^mayors/$", pipeline.views.general.MayorList.as_view()),
+    url(r"^civicleaders/$", pipeline.views.general.CivicLeaderList.as_view()),
 ]

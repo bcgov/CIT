@@ -57,6 +57,7 @@ from django.contrib.gis.gdal import DataSource as gdalDataSource
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 from django.conf import settings
 
+from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA
 from pipeline.models.census import CensusSubdivision
 from pipeline.models.general import DataSource, Road, Hex, ISP, Service
 from pipeline.constants import BC_ALBERS_SRID, WGS84_SRID
@@ -64,7 +65,8 @@ from pipeline.importers.census import (
     import_census_population_data, import_census_languages_data,
     import_census_income_data, import_census_housing_data, import_census_education_employment_data,
     import_census_families_data)
-from pipeline.importers.utils import import_data_into_area_model, read_csv
+from pipeline.importers.utils import (
+    import_data_into_area_model, get_databc_last_modified_date, get_openca_last_modified_date)
 
 
 logger = logging.getLogger(__name__)
@@ -114,6 +116,13 @@ def import_resource(resource_type):
 
         instance.save()
 
+    if data_source.source == SOURCE_DATABC:
+        data_source.last_updated = get_databc_last_modified_date(data_source)
+        data_source.save()
+    elif data_source.source == SOURCE_OPENCA:
+        data_source.last_updated = get_openca_last_modified_date(data_source)
+        data_source.save()
+
 
 def import_northern_rockies_census_division(data_source):
     from pipeline.models import RegionalDistrict
@@ -148,7 +157,8 @@ def import_northern_rockies_census_division(data_source):
 
 
 def import_hexes():
-    ds = gdalDataSource("data/hex/hexbc.kml")
+    data_source = DataSource.objects.get(name="hexes")
+    ds = gdalDataSource(data_source.source_file_path)
 
     # Just clear all old data and rewrite it.
     Service.objects.all().delete()
@@ -178,30 +188,12 @@ def import_hexes():
 
     Hex.objects.bulk_create(hexes.values())
 
-    isps = read_csv('./data/hex/ISP_Hex_FSI.csv')
-
-    # avoid re-querying for each row with ISP reference.
-    isp_cache = {}
-    services = []
-    print(len(isps))
-    for i, isp in enumerate(isps):
-        if not i % 1000:
-            print(i)
-        try:
-            hex = Hex.objects.get(pk=isp['HEXuid_HEXidu'])
-        except Hex.DoesNotExist:
-            continue
-        if isp["ISPname_NomFSI"] in isp_cache:
-            isp_obj = isp_cache[isp["ISPname_NomFSI"]]
-        else:
-            isp_obj = ISP(name=isp["ISPname_NomFSI"])
-            print(isp_obj)
-            isp_cache[isp["ISPname_NomFSI"]] = isp_obj
-            isp_obj.save()
-        service = Service(isp=isp_obj, hex=hex, technology=isp['Technology'])
-        services.append(service)
-
-    Service.objects.bulk_create(services)
+    if data_source.source == SOURCE_DATABC:
+        data_source.last_updated = get_databc_last_modified_date(data_source)
+        data_source.save()
+    elif data_source.source == SOURCE_OPENCA:
+        data_source.last_updated = get_openca_last_modified_date(data_source)
+        data_source.save()
 
 
 def import_census():
@@ -215,14 +207,16 @@ def import_census():
         geo_uid = sd[0]
         csduid_to_geo_uid[int(csduid)] = geo_uid
 
-    ds = _get_datasource('data/census.zip')
+    file_path = DataSource.objects.get(name="census").source_file_path
+    ds = _get_datasource(file_path)
 
     for feat in ds[0]:
         _save_subdiv(feat)
 
 
 def import_roads():
-    ds = _get_datasource('data/BC_Roads.zip')
+    data_source = DataSource.objects.get(name="roads")
+    ds = _get_datasource(data_source.source_file_path)
     print(len(ds[0]), 'features')
 
     i = 0
@@ -249,13 +243,20 @@ def import_roads():
 
     Road.objects.bulk_create(roads, 1000)
 
+    if data_source.source == SOURCE_DATABC:
+        data_source.last_updated = get_databc_last_modified_date(data_source)
+        data_source.save()
+    elif data_source.source == SOURCE_OPENCA:
+        data_source.last_updated = get_openca_last_modified_date(data_source)
+        data_source.save()
+
 
 def _get_datasource(filename):
     f = open(os.path.join(settings.BASE_DIR, filename), 'rb')
 
     zip_ref = zipfile.ZipFile(f)
 
-    ret = zip_ref.testzip()
+    ret = zip_ref.testzip()  # noqa
 
     output_dir = tempfile.mkdtemp()
     for item in zip_ref.namelist():

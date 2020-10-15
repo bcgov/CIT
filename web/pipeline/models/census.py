@@ -9,7 +9,7 @@ class CensusSubdivision(models.Model):
     geom = models.MultiPolygonField(srid=4326, null=True)
     geom_simplified = models.MultiPolygonField(srid=4326, null=True)
 
-    # "1.1.2", "Population, 2016"
+    # "1.1.1", "Population, 2016"
     population = models.IntegerField(null=True)
     # "1.1.3", "Population percentage change, 2011 to 2016"
     population_percentage_change = models.FloatField(null=True)

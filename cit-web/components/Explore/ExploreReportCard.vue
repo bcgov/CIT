@@ -1,6 +1,6 @@
 <template>
   <v-hover v-slot:default="{ hover }">
-    <v-card class="elevation-3 rounded-lg">
+    <v-card class="elevation-3 rounded-lg report-card" min-width="360">
       <v-expand-transition>
         <div
           v-if="hover"
@@ -18,6 +18,7 @@
         height="220"
         aspect-ratio="1"
         position="50% 15%"
+        class="report-card-image"
       ></v-img>
 
       <v-card-text>
@@ -66,5 +67,16 @@ export default class ExploreReportCard extends Vue {
   width: 100%;
   height: 100%;
   opacity: 0.9;
+}
+
+@media screen and (max-width: 477px) {
+  .report-card {
+    min-width: auto !important;
+  }
+}
+@media screen and (max-width: 450px) {
+  .report-card-image {
+    width: 100% !important;
+  }
 }
 </style>

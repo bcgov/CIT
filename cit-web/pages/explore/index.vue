@@ -35,8 +35,8 @@
         <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
         <div class="mt-4 mb-3 font-weight-bold d-flex align-center">
           <p class="text-body-1 mb-0 d-flex align-center">
-            First, choose selection criteria from this data menu to generate a
-            list of matching regional districts and communities:
+            Locate communities and regional districts by selecting options
+            below.
             <v-tooltip bottom color="primary" class="rounded-lg">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn icon v-bind="attrs" v-on="on">
@@ -105,6 +105,13 @@
           <Results :grouped-communities="groupedCommunities"></Results>
         </div>
       </div>
+      <div class="px-10 py-3">
+        <v-btn
+          :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
+          block
+          >Give Feedback</v-btn
+        >
+      </div>
     </div>
     <div
       v-show="!isMobile || (isMobile && activeTab !== 'Data')"
@@ -165,11 +172,7 @@ import ExploreToolbar from '~/components/Explore/ExploreToolbar.vue'
 import ExploreReportSection from '~/components/Explore/ExploreReportSection'
 import ExplorePages from '~/data/explore/explorePages.json'
 
-import {
-  getRegionalDistricts,
-  getCommunityList,
-  getCommunityGeoJSON,
-} from '~/api/cit-api'
+import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
 import { getAuthToken } from '~/api/ms-auth-api/'
 const exploreStore = namespace('explore')
 
@@ -296,6 +299,12 @@ export default class Explore extends Vue {
   mounted() {
     const rid = this.$route.query.rid
     rid && this.$root.$emit('setRegion', rid)
+    document.documentElement.classList.add('fixed-layout')
+  }
+
+  beforeRouteLeave(to, from, next) {
+    document.documentElement.classList.remove('fixed-layout')
+    next()
   }
 
   async fetch({ store }) {
@@ -314,15 +323,12 @@ export default class Explore extends Vue {
       const results = await Promise.all([
         getRegionalDistricts(),
         getCommunityList(),
-        getCommunityGeoJSON(),
       ])
       const regionalDistricts = results[0].data.results
       store.commit('communities/setRegionalDistricts', regionalDistricts)
       const communityList = results[1].data
       store.commit('communities/setCommunities', communityList)
       const groupedCommunities = groupBy(communityList, 'regional_district')
-      const communityGeoJSON = results[2].data
-      store.commit('communities/setCommunityGeoJSON', communityGeoJSON)
 
       return {
         communityList,
@@ -417,6 +423,14 @@ export default class Explore extends Vue {
   }
 }
 </script>
+<style>
+.fixed-layout {
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+</style>
 <style lang="scss" scoped>
 .explore-container {
   position: fixed;
@@ -489,5 +503,15 @@ export default class Explore extends Vue {
   width: 100%;
   top: 0;
   bottom: initial;
+}
+
+@media screen and (max-width: 550px) {
+  .explore-results-container {
+    min-width: auto;
+  }
+
+  .v-application .explore-report-container {
+    padding: 20px !important;
+  }
 }
 </style>

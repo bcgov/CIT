@@ -12,28 +12,38 @@
 </template>
 
 <script>
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
+const compareStore = namespace('compare')
 @Component
 export default class CompareSelect extends Vue {
   @Prop({
     default: () => [
-      'Average Of BC',
+      'Average Of B.C.',
       'Average Of Regional Districts',
-      'Communities',
+      'Average Of Communities',
     ],
     type: Array,
   })
   items
 
-  selected = 'Average Of BC'
+  @compareStore.Mutation('setCompareMode')
+  setCompareMode
+
+  selected = 'Average Of B.C.'
 
   setSelected(mode) {
     this.selected = mode
     this.$emit('changed', this.selected)
+    this.setCompareMode(this.selected)
+  }
+
+  updated() {
+    this.setCompareMode(this.selected)
   }
 
   mounted() {
     this.$emit('changed', this.selected)
+    this.setCompareMode(this.selected)
   }
 }
 </script>

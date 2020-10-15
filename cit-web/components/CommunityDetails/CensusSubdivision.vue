@@ -5,18 +5,7 @@
         <v-expansion-panel-header
           >Raw Census Data (in above charts)
         </v-expansion-panel-header>
-        <v-expansion-panel-content eager>
-          <v-alert
-            v-if="classification === 'Not Incorporated'"
-            border="right"
-            colored-border
-            type="error"
-            elevation="2"
-            class="mt-2"
-          >
-            Unincorporated municipalities include census data from the entire
-            enclosing census subdivision, which may include other communities.
-          </v-alert>
+        <v-expansion-panel-content>
           <v-col
             v-for="(value, key) in groupedCensus"
             :key="key"

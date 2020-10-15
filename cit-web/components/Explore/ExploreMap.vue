@@ -19,9 +19,6 @@
           @layerToggle="handleLayerToggle"
         ></LayerSwitcher>
       </div>
-      <div ref="legend">
-        <Legend></Legend>
-      </div>
       <div ref="zoomControl">
         <ZoomControl @zoomIn="zoomIn" @zoomOut="zoomOut"></ZoomControl>
       </div>
@@ -30,30 +27,23 @@
 </template>
 
 <script>
-import { Component, Vue, Prop, namespace, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import ControlFactory from '~/utils/map'
 import LayerSwitcher from '~/components/LayerSwitcher'
 import SearchAsMove from '~/components/Explore/SearchAsMove.vue'
 import CommunityPopup from '~/components/Map/CommunityPopup'
 import ZoomControl from '~/components/Map/ZoomControl'
-import Legend from '~/components/Map/Legend'
-import { getPopulation } from '~/api/cit-api/'
-
-const commModule = namespace('communities')
-
+import { getPopulation, getCommunityGeoJSON } from '~/api/cit-api/'
 @Component({
   SearchAsMove,
   CommunityPopup,
   LayerSwitcher,
   ZoomControl,
-  Legend,
 })
 export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
   @Prop({ default: null, type: Array }) cids
   @Prop({ default: null, type: Array }) clusterCommunities
-  @commModule.Getter('getCommunityGeoJSON') communityGeoJSON
-
   @Watch('clusterCommunities')
   handleClusterChange(nc, oc) {
     const newGeoJson = this.convertToGeoJson(nc)
@@ -61,6 +51,20 @@ export default class Explore extends Vue {
       const clusterSource = map.getSource('communities')
       clusterSource.setData(newGeoJson)
     })
+  }
+
+  communityGeoJSON = {}
+  @Watch('communityGeoJSON')
+  watchCommunityGeoJSON() {
+    this.whenMapLoaded((map) => {
+      this.addSources()
+      this.addCommunityLayers()
+    })
+  }
+
+  async fetch() {
+    const result = await getCommunityGeoJSON()
+    this.communityGeoJSON = result.data
   }
 
   convertToGeoJson(data) {
@@ -82,7 +86,6 @@ export default class Explore extends Vue {
         },
       })
     })
-
     return newGeoJson
   }
 
@@ -90,31 +93,37 @@ export default class Explore extends Vue {
   communityPopUpId = null
   communityPopUpPopulation = null
   popUpInstance = null
-
   layerSwitcher = [
     {
       layerName: 'locations',
       layerLabel: 'Locations',
+      legendComponent: 'WildfireLegend',
+      on: true,
     },
     {
       layerName: 'wildfire-zones',
       layerLabel: 'Wildfire Risk Zones',
+      legendComponent: 'WildfireLegend',
     },
     {
       layerName: 'bc-roads',
       layerLabel: 'Roads with broadband',
+      legendComponent: 'InternetSpeed',
     },
     {
       layerName: ['municipalities', 'municipalities-blur'],
       layerLabel: 'Municipal boundaries',
+      legendComponent: 'Municipal',
     },
     {
       layerName: ['census', 'census-label'],
       layerLabel: 'Census Subdivisions',
+      legendComponent: 'CensusLegend',
     },
     {
-      layerName: 'reserves',
+      layerName: ['reserves', 'reserves-label'],
       layerLabel: 'Reserves',
+      legendComponent: 'ReservesLegend',
     },
     {
       layerName: [
@@ -123,6 +132,8 @@ export default class Explore extends Vue {
         'regional-districts-label',
       ],
       layerLabel: 'Regional Districts',
+      legendComponent: 'RegionalLegend',
+      on: true,
     },
   ]
 
@@ -139,7 +150,6 @@ export default class Explore extends Vue {
         map.setLayoutProperty(layerName, 'visibility', visibility)
         return
       }
-
       if (Array.isArray(layerName)) {
         layerName.map((ln) =>
           map.setLayoutProperty(ln, 'visibility', visibility)
@@ -173,7 +183,6 @@ export default class Explore extends Vue {
     this.$nextTick(() => {
       this.whenMapLoaded((map) => map.resize())
     })
-    this.handleClusterChange(this.clusterCommunities)
   }
 
   initMap() {
@@ -198,7 +207,7 @@ export default class Explore extends Vue {
     })
   }
 
-  addLayers() {
+  addCommunityLayers() {
     this.map.addLayer({
       id: 'communities',
       type: 'symbol',
@@ -215,7 +224,6 @@ export default class Explore extends Vue {
       },
       paint: { 'text-halo-width': 1, 'text-halo-blur': 1 },
     })
-
     this.map.addLayer({
       id: 'clusters',
       type: 'circle',
@@ -234,7 +242,6 @@ export default class Explore extends Vue {
         'circle-radius': ['step', ['get', 'point_count'], 16, 100, 25, 750, 36],
       },
     })
-
     this.map.addLayer({
       id: 'cluster-count',
       type: 'symbol',
@@ -290,7 +297,6 @@ export default class Explore extends Vue {
       new ControlFactory(this.$refs.layerSwitcher),
       'bottom-right'
     )
-    this.map.addControl(new ControlFactory(this.$refs.legend), 'bottom-right')
     this.map.addControl(new ControlFactory(this.$refs.zoomControl), 'top-right')
   }
 
@@ -305,14 +311,11 @@ export default class Explore extends Vue {
         })
       })
     })
-
     this.$root.$on('communitiesChanged', (communities) => {
       if (!communities.length) return
-
       const bounds = communities.reduce(function (bounds, feature) {
         return bounds.extend([feature.longitude, feature.latitude])
       }, new window.mapboxgl.LngLatBounds())
-
       this.whenMapLoaded((map) => {
         map.fitBounds(bounds, {
           maxZoom: 12,
@@ -320,14 +323,10 @@ export default class Explore extends Vue {
         })
       })
     })
-
     this.map.on('load', () => {
-      this.addSources()
-      this.addLayers()
       this.mapLoaded = true
       this.$emit('exploreMapLoaded', this.map)
     })
-
     this.map.on('moveend', (e) => {
       const sourceFeatures = this.map.querySourceFeatures('communities', {
         sourceLayer: 'communities',
@@ -336,12 +335,10 @@ export default class Explore extends Vue {
         sourceFeatures,
       })
     })
-
     this.map.on('click', 'clusters', (e) => {
       const center = [e.lngLat.lng, e.lngLat.lat]
       const zoom = Math.floor(this.map.getZoom()) + 2
       this.flyToCenterAndZoom(center, zoom)
-
       /* Gets the cluster leaves
       const features = this.map.queryRenderedFeatures(e.point, {
         layers: ['clusters'],
@@ -360,7 +357,6 @@ export default class Explore extends Vue {
       console.log('Cluster Leaves', clusterLeaves)
       */
     })
-
     this.map.on('click', 'communities', (e) => {
       const cluster = this.map.queryRenderedFeatures(e.point, {
         layers: ['clusters'],
@@ -368,11 +364,9 @@ export default class Explore extends Vue {
       if (cluster && cluster.length > 0) {
         return
       }
-
       const coordinates = e.features[0].geometry.coordinates.slice()
       const name = e.features[0].properties.place_name
       const cid = e.features[0].properties.pk || e.features[0].properties.id
-
       // Ensure that if the map is zoomed out such that multiple
       // copies of the feature are visible, the popup appears
       // over the copy being pointed to.
@@ -383,12 +377,10 @@ export default class Explore extends Vue {
       this.communityPopUpId = cid
       this.setPopUp(coordinates, cid)
     })
-
     // Change the cursor to a pointer when the mouse is over the places layer.
     this.map.on('mouseenter', 'communities', () => {
       this.map.getCanvas().style.cursor = 'pointer'
     })
-
     // Change it back to a pointer when it leaves.
     this.map.on('mouseleave', 'communities', () => {
       this.map.getCanvas().style.cursor = ''
@@ -408,7 +400,6 @@ export default class Explore extends Vue {
   height: 100%;
   width: 100%;
 }
-
 .searchMove {
   position: absolute;
   width: 100%;
@@ -420,7 +411,6 @@ export default class Explore extends Vue {
   justify-content: center;
   align-items: center;
 }
-
 .community-popup-container,
 .community-popup-container .mapboxgl-popup-content {
   padding: 0 0 0 0;

@@ -36,18 +36,12 @@
       :disabled="disabled"
       @filter="handleFilter"
     ></Substation>
-    <Wildfire
-      ref="wildfireFilter"
+    <EmergencyRisk
+      ref="emergencyRiskFilter"
       class="d-inline-block mb-3"
       :disabled="disabled"
       @filter="handleFilter"
-    ></Wildfire>
-    <Tsunami
-      ref="tsunamiFilter"
-      class="d-inline-block mb-3"
-      :disabled="disabled"
-      @filter="handleFilter"
-    ></Tsunami>
+    ></EmergencyRisk>
 
     <v-chip
       v-if="numActive > 0"
@@ -70,24 +64,20 @@ import CommunityType from '~/components/Explore/Filters/CommunityType'
 import PopGrowth from '~/components/Explore/Filters/PopGrowth'
 import RegionalDistricts from '~/components/Explore/Filters/RegionalDistricts'
 import Connectivity from '~/components/Explore/Filters/Connectivity'
-import MoreFilters from '~/components/Explore/Filters/MoreFilters'
 import Locations from '~/components/Explore/Filters/Locations'
 import Substation from '~/components/Explore/Filters/Substation'
-import Wildfire from '~/components/Explore/Filters/Wildfire'
-import Tsunami from '~/components/Explore/Filters/Tsunami'
+import EmergencyRisk from '~/components/Explore/Filters/EmergencyRisk'
 
 import { advancedSearch } from '~/api/cit-api'
 
 @Component({
   CommunityType,
-  MoreFilters,
   PopGrowth,
   Locations,
   RegionalDistricts,
   Connectivity,
   Substation,
-  Wildfire,
-  Tsunami,
+  EmergencyRisk,
 })
 export default class ExploreFilters extends Vue {
   @Prop({ default: false, type: Boolean }) disabled

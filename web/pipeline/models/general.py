@@ -11,12 +11,23 @@ class DataSource(models.Model):
     source_type = models.CharField(max_length=127, choices=DATA_SOURCE_TYPE_CHOICES, null=True)
 
     source_file_path = models.CharField(max_length=255, unique=True, null=True)
-    resource_id = models.CharField(max_length=255, unique=True, null=True)
-    permalink_id = models.CharField(max_length=255, unique=True, null=True)
+    resource_id = models.CharField(
+        max_length=255, null=True,
+        help_text="Resource ID for datasets from the BC Data Catalogue or Open Government")
+    permalink_id = models.CharField(
+        max_length=255, null=True,
+        help_text="Permalink ID for datasets from the BC Data Catalogue")
+    sub_resource_id = models.CharField(
+        max_length=255, null=True,
+        help_text="Sub-resource ID for datasets from Open Government")
+    external_url = models.URLField(null=True)
     last_updated = models.DateTimeField(null=True)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ("id",)
 
 
 class Hex(models.Model):
@@ -215,13 +226,16 @@ class TsunamiZone(models.Model):
         return self.name
 
 
-class Mayor(models.Model):
+class CivicLeader(models.Model):
+    from pipeline.constants import CIVIC_LEADER_CHOICES
+
     community = models.ForeignKey("Community", on_delete=models.DO_NOTHING)
     first_name = models.CharField(max_length=255)
     middle_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     gender = models.CharField(max_length=255)
     experience = models.CharField(max_length=255)
+    position = models.CharField(choices=CIVIC_LEADER_CHOICES, max_length=255)
 
     """
 [('Local Government', '100 Mile House'), ('Jurisdiction Type', 'District'), ('First Name', 'Mitch'), ('Last Name', 'Campsall'), ('Middle Name', ''), ('Gender', 'M'), ('Age', ''), ('Experience', 'Incumbent'), ('Type', 'MAYOR'), ('Elected (YES/NO)', 'YES'), ('Number of Votes', '410'), ('Acclamation(YES/NO)', ''), ('Electoral/SD Area', ''), ('Electoral/SD Area Est. Eligible Voters', ''), ('Elector Organization', ''), ('Regional District', 'Cariboo'), ('Geographic Region', 'North Central / Cariboo'), ('Last Updated', '2018-10-21 06:38:07')]

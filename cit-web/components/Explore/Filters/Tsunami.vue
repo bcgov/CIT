@@ -1,25 +1,14 @@
 <template>
   <div>
-    <MenuFilter
-      ref="menuFilter"
-      :chip-title="title"
-      :filter-title="'Wildfire Zone'"
-      :active="active"
-      :card-width="250"
-      :disabled="disabled"
-      @save="handleSave"
-      @clear="handleClear"
+    <v-checkbox
+      v-for="(tz, index) in tsunamiZones"
+      :key="index"
+      v-model="tz.state"
+      :label="tz.title"
+      hide-details
+      class="pa-0 ma-0 mt-3 mb-3"
     >
-      <v-checkbox
-        v-for="(tz, index) in tsunamiZones"
-        :key="index"
-        v-model="tz.state"
-        :label="tz.title"
-        hide-details
-        class="pa-0 ma-0 mt-3 mb-3"
-      >
-      </v-checkbox>
-    </MenuFilter>
+    </v-checkbox>
   </div>
 </template>
 
