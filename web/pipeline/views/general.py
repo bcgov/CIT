@@ -39,7 +39,7 @@ class DataSourcesList(generics.ListAPIView):
 
 class CommunityViewSet(viewsets.GenericViewSet):
     def get_queryset(self):
-        return Community.objects.all().x
+        return Community.objects.all()
 
     def list(self, request):
         queryset = self.paginate_queryset(self.get_queryset())
