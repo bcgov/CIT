@@ -171,9 +171,8 @@ import ExploreFilters from '~/components/Explore/Filters/ExploreFilters.vue'
 import ExploreToolbar from '~/components/Explore/ExploreToolbar.vue'
 import ExploreReportSection from '~/components/Explore/ExploreReportSection'
 import ExplorePages from '~/data/explore/explorePages.json'
-
 import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
-import { getAuthToken } from '~/api/ms-auth-api/'
+// import { getAuthToken } from '~/api/ms-auth-api/'
 const exploreStore = namespace('explore')
 
 @Component({
@@ -182,6 +181,7 @@ const exploreStore = namespace('explore')
   ExploreFilters,
   ExploreToolbar,
   ExploreReportSection,
+  middleware: 'authenticated',
 })
 export default class Explore extends Vue {
   groupedCommunities = null
@@ -196,6 +196,24 @@ export default class Explore extends Vue {
   communitiesWithInsufficientData = null
 
   @exploreStore.Getter('getSearchAsMove') searchAsMove
+
+  groupedCommunities = {}
+  communityList = []
+  regionalDistricts = []
+
+  async fetch() {
+    const results = await Promise.all([
+      getRegionalDistricts(),
+      getCommunityList(),
+    ])
+    this.regionalDistricts = results[0].data.results
+    this.$store.commit(
+      'communities/setRegionalDistricts',
+      results[0].data.results
+    )
+    this.communityList = results[1].data
+    this.groupedCommunities = groupBy(results[1].data, 'regional_district')
+  }
 
   get isMobile() {
     return this.$vuetify.breakpoint.width < 1050
@@ -305,44 +323,6 @@ export default class Explore extends Vue {
   beforeRouteLeave(to, from, next) {
     document.documentElement.classList.remove('fixed-layout')
     next()
-  }
-
-  async fetch({ store }) {
-    try {
-      const results = await Promise.all([getAuthToken()])
-      const accessToken = results[0].data.access_token
-      store.commit('msauth/setAccessToken', accessToken)
-    } catch (e) {
-      console.error(e)
-      store.commit('msauth/setIsError', true)
-    }
-  }
-
-  async asyncData({ store, $config }) {
-    try {
-      const results = await Promise.all([
-        getRegionalDistricts(),
-        getCommunityList(),
-      ])
-      const regionalDistricts = results[0].data.results
-      store.commit('communities/setRegionalDistricts', regionalDistricts)
-      const communityList = results[1].data
-      store.commit('communities/setCommunities', communityList)
-      const groupedCommunities = groupBy(communityList, 'regional_district')
-
-      return {
-        communityList,
-        regionalDistricts,
-        groupedCommunities,
-      }
-    } catch (e) {
-      console.error(e)
-      return {
-        communityList: [],
-        regionalDistricts: [],
-        groupedCommunities: [],
-      }
-    }
   }
 
   handleTabChange(tab) {
