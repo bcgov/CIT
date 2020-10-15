@@ -53,64 +53,79 @@
           </p>
         </div>
         <ExploreFilters
-          :disabled="loadingResults"
+          :disabled="loadingResults || $fetchState.pending"
           @filtered="handleFiltered"
           @loading="handleLoading"
         ></ExploreFilters>
       </div>
       <v-divider></v-divider>
-      <div class="pa-8">
-        <h5 class="text-h6 mb-2">Selection Results:</h5>
-        <p>
-          This list of communities and regional districts match the criteria
-          selected above.
-        </p>
-
-        <div v-if="loadingResults" class="d-flex justify-center">
-          <v-progress-circular
-            :size="50"
-            color="primary"
-            indeterminate
-            class="my-5"
-          ></v-progress-circular>
-        </div>
-        <div v-else>
-          <div class="d-flex justify-space-between pl-5 pr-5">
-            <div class="d-flex flex-column">
-              <div class="text-h4 font-weight-bold" style="color: #f8ba44;">
-                {{ numRegions }}
-              </div>
-              <div>Regional Districts</div>
-            </div>
-            <div class="d-flex flex-column">
-              <div class="text-h4 font-weight-bold" style="color: #2176d2;">
-                {{ numCommunities && numCommunities.toLocaleString() }}
-              </div>
-              <div>Communities</div>
+      <div>
+        <div v-if="$fetchState.pending">
+          <div class="d-flex align-center flex-column mt-10">
+            <v-progress-circular
+              :size="50"
+              color="primary"
+              indeterminate
+            ></v-progress-circular>
+            <div>
+              <p class="text-h6 font-weight-normal">Loading Communities</p>
             </div>
           </div>
-
-          <div class="mb-6 d-flex justify-center">
-            <div v-if="noCommunities" class="mt-6">
-              <p
-                class="text-h4 light-blue--text text--darken-1 text-center font-weight-bold"
-              >
-                No Communities
-              </p>
-              <p class="text-body-1">
-                Try broadening your filters/search criteria
-              </p>
-            </div>
-          </div>
-          <Results :grouped-communities="groupedCommunities"></Results>
         </div>
-      </div>
-      <div class="px-10 py-3">
-        <v-btn
-          :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
-          block
-          >Give Feedback</v-btn
-        >
+        <div v-else class="pa-8">
+          <h5 class="text-h6 mb-2">Selection Results:</h5>
+          <p>
+            This list of communities and regional districts match the criteria
+            selected above.
+          </p>
+
+          <div v-if="loadingResults" class="d-flex justify-center">
+            <v-progress-circular
+              :size="50"
+              color="primary"
+              indeterminate
+              class="my-5"
+            ></v-progress-circular>
+          </div>
+          <div>
+            <div class="d-flex justify-space-between pl-5 pr-5">
+              <div class="d-flex flex-column">
+                <div class="text-h4 font-weight-bold" style="color: #f8ba44;">
+                  {{ numRegions }}
+                </div>
+                <div>Regional Districts</div>
+              </div>
+              <div class="d-flex flex-column">
+                <div class="text-h4 font-weight-bold" style="color: #2176d2;">
+                  {{ numCommunities && numCommunities.toLocaleString() }}
+                </div>
+                <div>Communities</div>
+              </div>
+            </div>
+
+            <div class="mb-6 d-flex justify-center">
+              <div v-if="noCommunities" class="mt-6">
+                <p
+                  class="text-h4 light-blue--text text--darken-1 text-center font-weight-bold"
+                >
+                  No Communities
+                </p>
+                <p class="text-body-1">
+                  Try broadening your filters/search criteria
+                </p>
+              </div>
+            </div>
+            <Results :grouped-communities="groupedCommunities"></Results>
+          </div>
+
+          <div class="px-10 py-3">
+            <v-btn
+              :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
+              block
+              >Give Feedback</v-btn
+            >
+          </div>
+        </div>
       </div>
     </div>
     <div
