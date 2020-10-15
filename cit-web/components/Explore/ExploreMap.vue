@@ -27,14 +27,13 @@
 </template>
 
 <script>
-import { Component, Vue, Prop, namespace, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import ControlFactory from '~/utils/map'
 import LayerSwitcher from '~/components/LayerSwitcher'
 import SearchAsMove from '~/components/Explore/SearchAsMove.vue'
 import CommunityPopup from '~/components/Map/CommunityPopup'
 import ZoomControl from '~/components/Map/ZoomControl'
-import { getPopulation } from '~/api/cit-api/'
-const commModule = namespace('communities')
+import { getPopulation, getCommunityGeoJSON } from '~/api/cit-api/'
 @Component({
   SearchAsMove,
   CommunityPopup,
@@ -45,7 +44,6 @@ export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
   @Prop({ default: null, type: Array }) cids
   @Prop({ default: null, type: Array }) clusterCommunities
-  @commModule.Getter('getCommunityGeoJSON') communityGeoJSON
   @Watch('clusterCommunities')
   handleClusterChange(nc, oc) {
     const newGeoJson = this.convertToGeoJson(nc)
@@ -53,6 +51,20 @@ export default class Explore extends Vue {
       const clusterSource = map.getSource('communities')
       clusterSource.setData(newGeoJson)
     })
+  }
+
+  communityGeoJSON = {}
+  @Watch('communityGeoJSON')
+  watchCommunityGeoJSON() {
+    this.whenMapLoaded((map) => {
+      this.addSources()
+      this.addCommunityLayers()
+    })
+  }
+
+  async fetch() {
+    const result = await getCommunityGeoJSON()
+    this.communityGeoJSON = result.data
   }
 
   convertToGeoJson(data) {
@@ -171,7 +183,6 @@ export default class Explore extends Vue {
     this.$nextTick(() => {
       this.whenMapLoaded((map) => map.resize())
     })
-    this.handleClusterChange(this.clusterCommunities)
   }
 
   initMap() {
@@ -196,7 +207,7 @@ export default class Explore extends Vue {
     })
   }
 
-  addLayers() {
+  addCommunityLayers() {
     this.map.addLayer({
       id: 'communities',
       type: 'symbol',
@@ -313,8 +324,6 @@ export default class Explore extends Vue {
       })
     })
     this.map.on('load', () => {
-      this.addSources()
-      this.addLayers()
       this.mapLoaded = true
       this.$emit('exploreMapLoaded', this.map)
     })
