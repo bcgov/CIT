@@ -190,7 +190,7 @@ export default class DataFootnotes extends Vue {
 .container.footnotes {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 5em 35em 5em;
+  padding: 5em;
 }
 .bright {
   background: yellow;
