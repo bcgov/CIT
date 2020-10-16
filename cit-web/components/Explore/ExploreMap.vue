@@ -110,6 +110,7 @@ export default class Explore extends Vue {
       layerName: 'bc-roads',
       layerLabel: 'Roads with broadband',
       legendComponent: 'InternetSpeed',
+      on: true,
     },
     {
       layerName: ['municipalities', 'municipalities-blur'],

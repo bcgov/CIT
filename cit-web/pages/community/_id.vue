@@ -432,6 +432,7 @@ export default class CommunityDetail extends Vue {
       layerName: 'bc-roads',
       layerLabel: 'Roads with broadband',
       legendComponent: 'InternetSpeed',
+      on: true,
     },
     {
       layerName: ['municipalities', 'municipalities-blur'],
