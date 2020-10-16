@@ -178,6 +178,7 @@ import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import groupBy from 'lodash/groupBy'
 import uniqBy from 'lodash/uniqBy'
 import isEmpty from 'lodash/isEmpty'
+import without from 'lodash/without'
 import intersectionBy from 'lodash/intersectionBy'
 import flatMap from 'lodash/flatMap'
 import ExploreMap from '~/components/Explore/ExploreMap.vue'
@@ -197,7 +198,6 @@ const exploreStore = namespace('explore')
   ExploreToolbar,
   ExploreReportSection,
   middleware: 'authenticated',
-  transition: 'bounce',
 })
 export default class Explore extends Vue {
   groupedCommunities = null
@@ -316,7 +316,9 @@ export default class Explore extends Vue {
   }
 
   get numRegions() {
-    return Object.keys(this.groupedCommunities).length
+    console.log(Object.keys(this.groupedCommunities))
+    return without(Object.keys(this.groupedCommunities), '25', '29', 'null')
+      .length
   }
 
   get numCommunities() {
