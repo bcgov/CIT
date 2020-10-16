@@ -171,16 +171,32 @@ def calculate_nearest_location_type_outside_50k(location_type):
                 location_type=location_type))
             location_type_model_name = DataSource.objects.get(name=location_type).model_name
             location_type_model = apps.get_model("pipeline", location_type_model_name)
-            closest_location_type = location_type_model.objects.all()\
-                .annotate(distance=Distance("point", community.point))\
-                .order_by("distance").first()
-            print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
-                location_type=location_type,
-                community_name=community.place_name,
-                closest_location_type=closest_location_type.name,
-                distance=closest_location_type.distance.km))
 
-            create_distance(closest_location_type, community, closest_location_type.distance)
+            # TODO - refactor this later and don't hardcode the list of categories
+            if location_type == "first_responders":
+                for service_type in ["fire", "police", "ambulance"]:
+                    keyword = "{};".format(service_type)
+                    closest_location_type = location_type_model.objects.filter(keywords__startswith=keyword)\
+                        .annotate(distance=Distance("point", community.point))\
+                        .order_by("distance").first()
+                    print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
+                        location_type=location_type,
+                        community_name=community.place_name,
+                        closest_location_type=closest_location_type.name,
+                        distance=closest_location_type.distance.km))
+
+                    create_distance(closest_location_type, community, closest_location_type.distance)
+            else:
+                closest_location_type = location_type_model.objects.all()\
+                    .annotate(distance=Distance("point", community.point))\
+                    .order_by("distance").first()
+                print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
+                    location_type=location_type,
+                    community_name=community.place_name,
+                    closest_location_type=closest_location_type.name,
+                    distance=closest_location_type.distance.km))
+
+                create_distance(closest_location_type, community, closest_location_type.distance)
 
 
 def create_distance(location, community, distance):
