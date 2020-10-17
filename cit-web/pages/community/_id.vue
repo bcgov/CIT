@@ -5,6 +5,7 @@
         Oops, something went wrong! {{ error.message }}
       </v-alert>
     </div>
+
     <div v-else>
       <div v-if="isCommunityEmpty" class="d-flex pt-10 justify-center">
         <v-alert type="info" class="primary--text elevation-5">
@@ -71,7 +72,6 @@
                     :district="regionalDistrictName"
                     :place-name="placeName"
                     :grouped-locations="filteredLocations"
-                    :population="getFieldValue('population')"
                     :grouped-census="groupedCensus"
                     :rid="communityDetails.regional_district"
                     @expand="handleExpand"
@@ -116,12 +116,13 @@
             <v-row>
               <v-col col="12">
                 <div class="mt-10">
-                  <h2>View Reports &amp; Compare</h2>
-                  <h6 class="subtitle-1">
-                    Choose a report to view community data within that topic,
+                  <CommunityDetailsSectionHeader
+                    title="Compare"
+                    subtitle="Choose a report to view community data within that topic,
                     and compare to the average for the regional district, or all
-                    of BC.
-                  </h6>
+                    of BC."
+                  ></CommunityDetailsSectionHeader>
+
                   <v-alert
                     v-if="hasHiddenReports"
                     type="info"
@@ -135,7 +136,6 @@
                       >Learn more.</a
                     >
                   </v-alert>
-                  <v-divider class="mt-5"></v-divider>
                 </div>
               </v-col>
             </v-row>
@@ -154,11 +154,11 @@
             <v-row>
               <v-col col="12">
                 <div class="mt-10">
-                  <h2>Miscellaneous</h2>
-                  <h6 class="subtitle-1">
-                    Other items that may be of interest
-                  </h6>
-                  <v-divider class="mt-5"></v-divider>
+                  <CommunityDetailsSectionHeader
+                    title="Miscellaneous"
+                    subtitle="Other items that may be of interest"
+                  ></CommunityDetailsSectionHeader>
+
                   <div class="mt-5">
                     <v-btn color="primary" @click="showRawData = true"
                       >View Raw Data

@@ -62,7 +62,6 @@ export default class MainReport extends Vue {
   @Prop({ default: null, type: String }) placeName
   @Prop({ default: null, type: Number }) rid
   @Prop({ default: null, type: String }) district
-  @Prop() population
   @Prop({ default: null, type: Array }) groupedLocations
   @Prop({ default: null, type: Object }) groupedCensus
 }
