@@ -1,197 +1,212 @@
 <template>
   <div class="community-new-container">
-    <div v-if="error" class="pt-10">
-      <v-alert type="info" class="primary--text elevation-5">
-        Oops, something went wrong! {{ error.message }}
-      </v-alert>
+    <div
+      v-if="$fetchState.pending"
+      class="d-flex align-center flex-column mt-10"
+    >
+      <v-progress-circular
+        :size="50"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
+      <h6 class="mt-10 text-body-1 font-weight-bold">Loading Community</h6>
     </div>
-
     <div v-else>
-      <div v-if="isCommunityEmpty" class="d-flex pt-10 justify-center">
+      <div v-if="error" class="pt-10">
         <v-alert type="info" class="primary--text elevation-5">
-          Sorry, we could not find a community with that ID.
+          Oops, something went wrong! {{ error.message }}
         </v-alert>
       </div>
+
       <div v-else>
-        <v-container v-if="parentCommunity" fluid>
-          <v-alert type="info" class="primary--text">
-            This community is within {{ parentCommunity.name }}'s boundary.
-            Consider
-            <a
-              :href="`/community/${parentCommunity.id}`"
-              class="font-weight-bold"
-              >viewing the {{ parentCommunity.name }} page instead.</a
-            >
+        <div v-if="isCommunityEmpty" class="d-flex pt-10 justify-center">
+          <v-alert type="info" class="primary--text elevation-5">
+            Sorry, we could not find a community with that ID.
           </v-alert>
-        </v-container>
-        <v-container v-if="!incorporated" fluid class="mt-2">
-          <v-alert type="info" class="primary--text">
-            This is an unincorporated community, so demographic information is
-            only available for the containing census subdivision.
-          </v-alert>
-        </v-container>
-        <div class="comm-details-content">
-          <v-container fluid>
-            <v-row no-gutters>
-              <v-col :cols="12" class="elevation-5">
-                <div class="cd-header d-flex">
-                  <div
-                    class="d-flex flex-column text-h5 font-weight-bold pl-10 pt-10 pb-10"
-                    style="max-width: 350px;"
-                  >
-                    <span>{{ placeName }}</span>
-                    <p
-                      v-if="getFieldValue('population')"
-                      class="text-caption pa-0 ma-0"
+        </div>
+        <div v-else>
+          <v-container v-if="parentCommunity" fluid>
+            <v-alert type="info" class="primary--text">
+              This community is within {{ parentCommunity.name }}'s boundary.
+              Consider
+              <a
+                :href="`/community/${parentCommunity.id}`"
+                class="font-weight-bold"
+                >viewing the {{ parentCommunity.name }} page instead.</a
+              >
+            </v-alert>
+          </v-container>
+          <v-container v-if="!incorporated" fluid class="mt-2">
+            <v-alert type="info" class="primary--text">
+              This is an unincorporated community, so demographic information is
+              only available for the containing census subdivision.
+            </v-alert>
+          </v-container>
+          <div class="comm-details-content">
+            <v-container fluid>
+              <v-row no-gutters>
+                <v-col :cols="12" class="elevation-5">
+                  <div class="cd-header d-flex">
+                    <div
+                      class="d-flex flex-column text-h5 font-weight-bold pl-10 pt-10 pb-10"
+                      style="max-width: 350px;"
                     >
-                      Population:
-                      {{
-                        getFieldValue('population').toLocaleString() || 'N/A'
-                      }}
-                    </p>
-
-                    <a
-                      :href="`/explore?tab=Map&rid=${communityDetails.regional_district}`"
-                      class="text-body-1"
-                    >
-                      {{ regionalDistrictName }}
-                    </a>
-                  </div>
-
-                  <v-img
-                    class="comm-detail-header-image"
-                    style="align-self: flex-end;"
-                    :src="require('~/assets/images/cdheader.svg')"
-                    aspect-ratio="1"
-                    height="120px"
-                  ></v-img>
-                </div>
-                <v-divider></v-divider>
-                <div class="map-container">
-                  <Sidebar
-                    :district="regionalDistrictName"
-                    :place-name="placeName"
-                    :grouped-locations="filteredLocations"
-                    :grouped-census="groupedCensus"
-                    :rid="communityDetails.regional_district"
-                    @expand="handleExpand"
-                    @viewReports="viewReports"
-                  >
-                    <div class="pl-4 pr-4">
-                      <p class="text-center pa-0 ma-0 text-body-1 mt-3">
-                        {{ assetModeText }}
-                        <a
-                          v-if="assetMode === 'driving'"
-                          href="/footnotes#community-detail-asset-driving-distance"
-                          target="_blank"
-                          >*</a
-                        >
+                      <span>{{ placeName }}</span>
+                      <p
+                        v-if="getFieldValue('population')"
+                        class="text-caption pa-0 ma-0"
+                      >
+                        Population:
+                        {{
+                          getFieldValue('population').toLocaleString() || 'N/A'
+                        }}
                       </p>
-                      <AssetSlider
-                        v-if="assetMode === 'driving'"
-                        @mouseup="handleEnd"
-                      ></AssetSlider>
-                      <div class="text-center">
-                        <v-btn
-                          small
-                          color="primary"
-                          class="text-body-1 text-capitalize mt-2"
-                          @click="handleAssetModeChange"
-                        >
-                          <v-icon small class="mr-2">{{
-                            assetModeButtonIcon
-                          }}</v-icon>
-                          {{ assetModeButtonText }}</v-btn
-                        >
-                      </div>
+
+                      <a
+                        :href="`/explore?tab=Map&rid=${communityDetails.regional_district}`"
+                        class="text-body-1"
+                      >
+                        {{ regionalDistrictName }}
+                      </a>
                     </div>
-                  </Sidebar>
-                  <CommunityDetailsMap
-                    :place-name="placeName"
-                    :community-details="communityDetails"
-                  ></CommunityDetailsMap>
-                </div>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col col="12">
-                <div class="mt-10">
-                  <CommunityDetailsSectionHeader
-                    title="Compare"
-                    subtitle="Choose a report to view community data within that topic,
+
+                    <v-img
+                      class="comm-detail-header-image"
+                      style="align-self: flex-end;"
+                      :src="require('~/assets/images/cdheader.svg')"
+                      aspect-ratio="1"
+                      height="120px"
+                    ></v-img>
+                  </div>
+                  <v-divider></v-divider>
+                  <div class="map-container">
+                    <Sidebar
+                      :district="regionalDistrictName"
+                      :place-name="placeName"
+                      :grouped-locations="filteredLocations"
+                      :grouped-census="groupedCensus"
+                      :rid="communityDetails.regional_district"
+                      @expand="handleExpand"
+                      @viewReports="viewReports"
+                    >
+                      <div class="pl-4 pr-4">
+                        <p class="text-center pa-0 ma-0 text-body-1 mt-3">
+                          {{ assetModeText }}
+                          <a
+                            v-if="assetMode === 'driving'"
+                            href="/footnotes#community-detail-asset-driving-distance"
+                            target="_blank"
+                            >*</a
+                          >
+                        </p>
+                        <AssetSlider
+                          v-if="assetMode === 'driving'"
+                          @mouseup="handleEnd"
+                        ></AssetSlider>
+                        <div class="text-center">
+                          <v-btn
+                            small
+                            color="primary"
+                            class="text-body-1 text-capitalize mt-2"
+                            @click="handleAssetModeChange"
+                          >
+                            <v-icon small class="mr-2">{{
+                              assetModeButtonIcon
+                            }}</v-icon>
+                            {{ assetModeButtonText }}</v-btn
+                          >
+                        </div>
+                      </div>
+                    </Sidebar>
+                    <CommunityDetailsMap
+                      :place-name="placeName"
+                      :community-details="communityDetails"
+                    ></CommunityDetailsMap>
+                  </div>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col col="12">
+                  <div class="mt-10">
+                    <CommunityDetailsSectionHeader
+                      title="Compare"
+                      subtitle="Choose a report to view community data within that topic,
                     and compare to the average for the regional district, or all
                     of BC."
-                  ></CommunityDetailsSectionHeader>
+                    ></CommunityDetailsSectionHeader>
 
-                  <v-alert
-                    v-if="hasHiddenReports"
-                    type="info"
-                    dismissible
-                    class="primary--text elevation-5"
-                  >
-                    This community has incomplete census data. The charts in the
-                    reports reflect available census data and some reports have
-                    been hidden.
-                    <a href="/footnotes#incomplete-census-data" target="_blank"
-                      >Learn more.</a
+                    <v-alert
+                      v-if="hasHiddenReports"
+                      type="info"
+                      dismissible
+                      class="primary--text elevation-5"
                     >
-                  </v-alert>
-                </div>
-              </v-col>
-            </v-row>
-
-            <ReportSection
-              ref="reportSection"
-              :place-name="placeName"
-              :community="communityDetails"
-              :report-cards="reportCards"
-              :cid="communityDetails.id"
-              :reports-to-hide="communityDetails.hidden_report_pages"
-              @reportOpen="reportOpen"
-              @reportClose="reportClose"
-            ></ReportSection>
-
-            <v-row>
-              <v-col col="12">
-                <div class="mt-10">
-                  <CommunityDetailsSectionHeader
-                    title="Miscellaneous"
-                    subtitle="Other items that may be of interest"
-                  ></CommunityDetailsSectionHeader>
-
-                  <div class="mt-5">
-                    <v-btn color="primary" @click="showRawData = true"
-                      >View Raw Data
-                      <v-icon right dark>mdi-database</v-icon>
-                    </v-btn>
-                    <v-btn
-                      class="ml-2"
-                      :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
-                      >Give Feedback</v-btn
-                    >
+                      This community has incomplete census data. The charts in
+                      the reports reflect available census data and some reports
+                      have been hidden.
+                      <a
+                        href="/footnotes#incomplete-census-data"
+                        target="_blank"
+                        >Learn more.</a
+                      >
+                    </v-alert>
                   </div>
-                </div>
-              </v-col>
-            </v-row>
-          </v-container>
+                </v-col>
+              </v-row>
+
+              <ReportSection
+                ref="reportSection"
+                :place-name="placeName"
+                :community="communityDetails"
+                :report-cards="reportCards"
+                :cid="communityDetails.id"
+                :reports-to-hide="communityDetails.hidden_report_pages"
+                @reportOpen="reportOpen"
+                @reportClose="reportClose"
+              ></ReportSection>
+
+              <v-row>
+                <v-col col="12">
+                  <div class="mt-10">
+                    <CommunityDetailsSectionHeader
+                      title="Miscellaneous"
+                      subtitle="Other items that may be of interest"
+                    ></CommunityDetailsSectionHeader>
+
+                    <div class="mt-5">
+                      <v-btn color="primary" @click="showRawData = true"
+                        >View Raw Data
+                        <v-icon right dark>mdi-database</v-icon>
+                      </v-btn>
+                      <v-btn
+                        class="ml-2"
+                        :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
+                        >Give Feedback</v-btn
+                      >
+                    </div>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-container>
+          </div>
+
+          <CommunityDetailReportModal
+            :show="!!report"
+            :place-name="placeName"
+            :community-details="communityDetails"
+            :report="report"
+            @traverse="reportOpen"
+            @close="reportClose"
+          >
+          </CommunityDetailReportModal>
+
+          <CommunityDetailsRawData
+            :grouped-census="groupedCensus"
+            :place-name="placeName"
+            :show="showRawData"
+            @close="showRawData = false"
+          ></CommunityDetailsRawData>
         </div>
-
-        <CommunityDetailReportModal
-          :show="!!report"
-          :place-name="placeName"
-          :community-details="communityDetails"
-          :report="report"
-          @traverse="reportOpen"
-          @close="reportClose"
-        >
-        </CommunityDetailReportModal>
-
-        <CommunityDetailsRawData
-          :grouped-census="groupedCensus"
-          :place-name="placeName"
-          :show="showRawData"
-          @close="showRawData = false"
-        ></CommunityDetailsRawData>
       </div>
     </div>
   </div>
@@ -210,7 +225,6 @@ import {
   getRegionalDistricts,
 } from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
-import { getAuthToken } from '~/api/ms-auth-api/'
 import reportPages from '~/data/communityDetails/reportPages.json'
 const commModule = namespace('communities')
 
@@ -218,6 +232,7 @@ const commModule = namespace('communities')
   filters: {
     yesno,
   },
+  middleware: 'authenticated',
 })
 export default class CommunityDetail extends Vue {
   head() {
@@ -228,13 +243,23 @@ export default class CommunityDetail extends Vue {
 
   showRawData = false
   isHydrated = false
-  sideBarHidden = false
   assetMode = 'driving'
   assetRange = [0, 50]
   communityDetails = {}
   censusSubdivision = {}
 
+  error = false
   reportCards = reportPages
+
+  get groupedLocations() {
+    return map(groupBy(this.communityDetails.locations, 'type'), (o, k) => {
+      return {
+        group: k,
+        locations: o,
+        active: false,
+      }
+    })
+  }
 
   handleEnd(data) {
     this.assetRange = [data[0], data[1]]
@@ -407,67 +432,28 @@ export default class CommunityDetail extends Vue {
     return true
   }
 
-  async fetch({ store, query }) {
-    try {
-      const results = await Promise.all([
-        getRegionalDistricts(),
-        getCommunityList(),
-        getDataSourceList(),
-      ])
-      const regionalDistricts = results[0].data.results
-      store.commit('communities/setRegionalDistricts', regionalDistricts)
-      const communityList = results[1].data
-      store.commit('communities/setCommunities', communityList)
-      const dataSources = results[2].data
-      store.commit('communities/setDataSources', dataSources)
-    } catch (e) {
-      console.error(e)
-      store.commit('communities/setRegionalDistricts', [])
-      store.commit('communities/setCommunities', [])
-      store.commit('communities/setDataSources', [])
-    }
-    try {
-      const results = await Promise.all([getAuthToken()])
-      const accessToken = results[0].data.access_token
-      store.commit('msauth/setAccessToken', accessToken)
-    } catch (e) {
-      console.error(e)
-      store.commit('msauth/setIsError', true)
-    }
-  }
+  async fetch() {
+    const cid = this.$route.params?.id
 
-  async asyncData({ params }) {
-    try {
-      const cid = params?.id
-      let response = await getCommunity(cid)
-      const { data: communityDetails } = response
-      const csid = communityDetails.display_fields.find(
-        (df) => df.key === 'census_subdivision_id'
-      )
-      response = await getCensusSubDivision(csid?.value)
-      const { data: censusSubdivision } = response
-      const groupedLocations = map(
-        groupBy(communityDetails.locations, 'type'),
-        (o, k) => {
-          return {
-            group: k,
-            locations: o,
-            active: false,
-          }
-        }
-      )
-      return {
-        communityDetails,
-        censusSubdivision,
-        groupedLocations,
-        error: false,
-      }
-    } catch (e) {
-      console.error('Error Message', e)
-      return {
-        error: e,
-      }
-    }
+    const results = await Promise.all([
+      getRegionalDistricts(),
+      getCommunityList(),
+      getDataSourceList(),
+      getCommunity(cid),
+    ])
+    const regionalDistricts = results[0].data.results
+    const communityList = results[1].data
+    const dataSources = results[2].data
+    this.$store.commit('communities/setRegionalDistricts', regionalDistricts)
+    this.$store.commit('communities/setCommunities', communityList)
+    this.$store.commit('communities/setDataSources', dataSources)
+
+    this.communityDetails = results[3].data
+
+    const csid = this.communityDetails.display_fields.find(
+      (df) => df.key === 'census_subdivision_id'
+    )
+    this.censusSubdivision = await getCensusSubDivision(csid?.value)
   }
 
   mounted() {
