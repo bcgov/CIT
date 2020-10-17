@@ -213,7 +213,7 @@
 </template>
 
 <script>
-import { Component, Vue, namespace } from 'nuxt-property-decorator'
+import { Component, Vue, namespace, Watch } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
 import map from 'lodash/map'
 import groupBy from 'lodash/groupBy'
@@ -247,6 +247,17 @@ export default class CommunityDetail extends Vue {
   assetRange = [0, 50]
   communityDetails = {}
   censusSubdivision = {}
+
+  @Watch('communityDetails')
+  async getCensus() {
+    const csid = this.communityDetails.display_fields.find(
+      (df) => df.key === 'census_subdivision_id'
+    )
+    if (csid && csid.value) {
+      const result = await getCensusSubDivision(csid.value)
+      this.censusSubdivision = result.data
+    }
+  }
 
   error = false
   reportCards = reportPages
@@ -447,13 +458,7 @@ export default class CommunityDetail extends Vue {
     this.$store.commit('communities/setRegionalDistricts', regionalDistricts)
     this.$store.commit('communities/setCommunities', communityList)
     this.$store.commit('communities/setDataSources', dataSources)
-
     this.communityDetails = results[3].data
-
-    const csid = this.communityDetails.display_fields.find(
-      (df) => df.key === 'census_subdivision_id'
-    )
-    this.censusSubdivision = await getCensusSubDivision(csid?.value)
   }
 
   mounted() {
