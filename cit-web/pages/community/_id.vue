@@ -75,7 +75,6 @@
                     :grouped-census="groupedCensus"
                     :rid="communityDetails.regional_district"
                     @expand="handleExpand"
-                    @findOnMap="handleFind"
                     @viewReports="viewReports"
                   >
                     <div class="pl-4 pr-4">
@@ -107,7 +106,10 @@
                       </div>
                     </div>
                   </Sidebar>
-                  <div id="map" ref="map"></div>
+                  <CommunityDetailsMap
+                    :place-name="placeName"
+                    :community-details="communityDetails"
+                  ></CommunityDetailsMap>
                 </div>
               </v-col>
             </v-row>
@@ -174,53 +176,6 @@
           </v-container>
         </div>
 
-        <div ref="centerControl" @click="handleResetCenter">
-          <v-tooltip left>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                v-bind="attrs"
-                color="primary"
-                x-small
-                fab
-                class="rounded-lg text-capitalize"
-                v-on="on"
-              >
-                <v-icon>mdi-bullseye</v-icon>
-              </v-btn>
-            </template>
-            Center Community
-          </v-tooltip>
-        </div>
-
-        <div ref="fullscreenControl" @click="handleFullScreen">
-          <v-tooltip left>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                v-bind="attrs"
-                color="primary"
-                x-small
-                fab
-                class="rounded-lg text-capitalize"
-                v-on="on"
-              >
-                <v-icon>mdi-arrow-expand-all</v-icon>
-              </v-btn>
-            </template>
-            Fullscreen Enter/Exit
-          </v-tooltip>
-        </div>
-
-        <div ref="layerSwitcher">
-          <LayerSwitcher
-            :layers="layerSwitcher"
-            @layerToggle="handleLayerToggle"
-          ></LayerSwitcher>
-        </div>
-
-        <div ref="zoomControl">
-          <ZoomControl @zoomIn="zoomIn" @zoomOut="zoomOut"></ZoomControl>
-        </div>
-
         <CommunityDetailReportModal
           :show="!!report"
           :place-name="placeName"
@@ -247,7 +202,6 @@ import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
 import map from 'lodash/map'
 import groupBy from 'lodash/groupBy'
-import ControlFactory from '~/utils/map'
 import {
   getCommunity,
   getCensusSubDivision,
@@ -258,7 +212,6 @@ import {
 import { yesno } from '~/utils/filters'
 import { getAuthToken } from '~/api/ms-auth-api/'
 import reportPages from '~/data/communityDetails/reportPages.json'
-import layerData from '~/data/communityDetails/layers.json'
 const commModule = namespace('communities')
 
 @Component({
@@ -278,15 +231,10 @@ export default class CommunityDetail extends Vue {
   sideBarHidden = false
   assetMode = 'driving'
   assetRange = [0, 50]
-  layers = true
   communityDetails = {}
   censusSubdivision = {}
-  mapLoaded = false
-  panels = [0, 1, 2, 3, 4]
+
   reportCards = reportPages
-  dialog = false
-  citFeedbackEmail = this.$config.citFeedbackEmail
-  layerSwitcher = layerData
 
   handleEnd(data) {
     this.assetRange = [data[0], data[1]]
@@ -354,22 +302,6 @@ export default class CommunityDetail extends Vue {
     return this.reportCards.find((r) => r.name === this.$route?.query?.report)
   }
 
-  handleLayerToggle(lo) {
-    const visibility = lo.visibility === true ? 'visible' : 'none'
-    const layerName = lo.layerName
-    this.whenMapLoaded((map) => {
-      if (typeof layerName === 'string') {
-        map.setLayoutProperty(layerName, 'visibility', visibility)
-        return
-      }
-      if (Array.isArray(layerName)) {
-        layerName.map((ln) =>
-          map.setLayoutProperty(ln, 'visibility', visibility)
-        )
-      }
-    })
-  }
-
   @commModule.Getter('getRegionalDistricts') regionalDistricts
 
   reportOpen(reportName) {
@@ -378,23 +310,6 @@ export default class CommunityDetail extends Vue {
         report: reportName,
       },
     })
-  }
-
-  fullScreen = false
-  handleFullScreen() {
-    if (!this.fullScreen) {
-      this.$refs.map.requestFullscreen() ||
-        this.$refs.map.mozRequestFullScreen() ||
-        this.$refs.map.msRequestFullscreen() ||
-        this.$refs.map.webkitRequestFullscreen()
-      this.fullScreen = true
-    } else {
-      window.document.exitFullscreen() ||
-        window.document.mozCancelFullScreen() ||
-        window.document.msExitFullscreen() ||
-        window.document.webkitCancelFullScreen()
-      this.fullScreen = false
-    }
   }
 
   reportClose() {
@@ -433,15 +348,15 @@ export default class CommunityDetail extends Vue {
 
   handleExpand(e) {
     const { active, group } = e
+    const layerName = 'locations'
+    let filters = null
     if (active === false) {
-      this.whenMapLoaded((map) => {
-        map.setFilter('locations', ['==', ['get', 'location_type'], group])
-      })
-    } else {
-      this.whenMapLoaded((map) => {
-        map.setFilter('locations', null)
-      })
+      filters = ['==', ['get', 'location_type'], group]
     }
+    this.$root.$emit('cdMapFilter', {
+      layerName,
+      filters,
+    })
   }
 
   get groupedCensus() {
@@ -490,24 +405,6 @@ export default class CommunityDetail extends Vue {
       return false
     }
     return true
-  }
-
-  getZoom() {
-    return this.map.getZoom()
-  }
-
-  zoomIn(zoomLevel) {
-    const zoom = zoomLevel || this.getZoom()
-    this.map.flyTo({
-      zoom: zoom + 1,
-    })
-  }
-
-  zoomOut(zoomLevel) {
-    const zoom = zoomLevel || this.getZoom()
-    this.map.flyTo({
-      zoom: zoom + -1,
-    })
   }
 
   async fetch({ store, query }) {
@@ -573,132 +470,8 @@ export default class CommunityDetail extends Vue {
     }
   }
 
-  addNavigationControl(map) {
-    map.addControl(new window.mapboxgl.ScaleControl(), 'bottom-left')
-    map.addControl(new ControlFactory(this.$refs.zoomControl), 'top-right')
-    map.addControl(new ControlFactory(this.$refs.centerControl), 'top-right')
-    map.addControl(
-      new ControlFactory(this.$refs.fullscreenControl),
-      'top-right'
-    )
-  }
-
-  handleResetCenter() {
-    const zoom = 12
-    this.whenMapLoaded((map) => {
-      this.resetCenter(
-        map,
-        this.communityDetails.longitude,
-        this.communityDetails.latitude,
-        zoom
-      )
-    })
-  }
-
-  resetCenter(map, lng, lat, zoom) {
-    map.setCenter([lng, lat])
-    map.setZoom(zoom)
-  }
-
-  setCenter(map, lng, lat) {
-    map.setCenter([lng, lat])
-  }
-
-  getMapboxOptions() {
-    return {
-      container: 'map',
-      style: 'mapbox://styles/countable-web/ckcspnxxz0ji81iliywxxclk0/draft',
-      center: [-122.970072, 49.299062],
-      zoom: 12,
-    }
-  }
-
-  handleFind(center) {
-    this.whenMapLoaded((map) => {
-      map.flyTo({
-        center,
-        zoom: 17,
-        essential: true,
-      })
-    })
-  }
-
-  whenMapLoaded(cb) {
-    if (this.mapLoaded) {
-      cb(this.map)
-    } else {
-      this.$root.$on('comm-map-loaded', cb)
-    }
-  }
-
-  created() {
-    this.map = null
-  }
-
-  listenToEvents() {
-    this.$root.$on('map-find', (center) => {
-      this.handleFind(center)
-    })
-  }
-
-  addControls(map) {
-    map.addControl(new ControlFactory(this.$refs.layerSwitcher), 'bottom-right')
-  }
-
   mounted() {
     this.isHydrated = true
-    this.listenToEvents()
-    window.mapboxgl.accessToken = this.$config.MAPBOX_API_KEY
-    const mapboxgl = window.mapboxgl
-    if (this.isCommunityEmpty) {
-      return
-    }
-    const options = this.getMapboxOptions()
-    const map = new mapboxgl.Map(options)
-    this.map = map
-    this.addNavigationControl(map)
-    this.setCenter(
-      map,
-      this.communityDetails.longitude,
-      this.communityDetails.latitude
-    )
-    const el = document.createElement('div')
-    el.className = 'community-marker'
-    const marker = new mapboxgl.Marker(el)
-      .setLngLat([
-        this.communityDetails.longitude,
-        this.communityDetails.latitude,
-      ])
-      .setPopup(
-        new mapboxgl.Popup({ offset: 25 }) // add popups
-          .setHTML('<h3>' + this.placeName + '</h3>')
-      )
-      .addTo(map)
-    marker.togglePopup()
-    this.addControls(map)
-    map.on('click', function (e) {
-      const features = map.queryRenderedFeatures(e.point)
-      const location = features.find(
-        (f) => f.sourceLayer === 'locations-2bvop8'
-      )
-      if (location) {
-        new mapboxgl.Popup()
-          .setLngLat(e.lngLat)
-          .setHTML(
-            `<p>${location.properties.name}</p>
-            <a href="mailto:networkbc@gov.bc.ca?subject=CIT Feedback" class="ml-2 v-btn v-btn--depressed theme--light v-size--small info"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mr-2 mdi mdi-comment theme--light" style="font-size:16px;"></i>
-              Give Feedback
-            </span></a>`
-          )
-          .addTo(map)
-      }
-    })
-    map.on('load', () => {
-      map.setLayoutProperty('locations', 'visibility', 'visible')
-      this.mapLoaded = true
-      this.$root.$emit('comm-map-loaded', this.map)
-      console.log('Styles', this.map.getSource('composite'))
-    })
   }
 }
 </script>
