@@ -84,18 +84,12 @@ export default class Index extends Vue {
     return this.$vuetify.breakpoint.width < 1050 ? '300px' : '400px'
   }
 
-  async fetch({ store }) {
+  async fetch() {
     try {
       const response = await getCommunityList()
-      const { status } = response
-      if (status === 200) {
-        const communities = response.data
-        if (communities) {
-          store.commit('communities/setCommunities', communities)
-        }
-      }
+      this.$store.commit('communities/setCommunities', response.data)
     } catch (e) {
-      store.commit('communities/setCommunities', [])
+      console.error(e)
     }
   }
 }
