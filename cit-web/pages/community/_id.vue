@@ -29,10 +29,10 @@
             <v-alert type="info" class="primary--text">
               This community is within {{ parentCommunity.name }}'s boundary.
               Consider
-              <a
-                :href="`/community/${parentCommunity.id}`"
+              <nuxt-link
+                :to="`/community/${parentCommunity.id}`"
                 class="font-weight-bold"
-                >viewing the {{ parentCommunity.name }} page instead.</a
+                >viewing the {{ parentCommunity.name }} page instead.</nuxt-link
               >
             </v-alert>
           </v-container>
