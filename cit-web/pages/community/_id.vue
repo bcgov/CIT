@@ -144,7 +144,6 @@
               :community="communityDetails"
               :report-cards="reportCards"
               :cid="communityDetails.id"
-              :report-to-open="reportToOpen"
               :reports-to-hide="communityDetails.hidden_report_pages"
               @reportOpen="reportOpen"
               @reportClose="reportClose"
@@ -159,7 +158,7 @@
                   </h6>
                   <v-divider class="mt-5"></v-divider>
                   <div class="mt-5">
-                    <v-btn color="primary" @click="dialog = true"
+                    <v-btn color="primary" @click="showRawData = true"
                       >View Raw Data
                       <v-icon right dark>mdi-database</v-icon>
                     </v-btn>
@@ -222,122 +221,22 @@
           <ZoomControl @zoomIn="zoomIn" @zoomOut="zoomOut"></ZoomControl>
         </div>
 
-        <v-dialog
-          fullscreen
-          transition="dialog-bottom-transition"
-          hide-overlay
-          :value="showReportDialog"
-          @keydown.esc.prevent="reportClose"
+        <CommunityDetailReportModal
+          :show="!!report"
+          :place-name="placeName"
+          :community-details="communityDetails"
+          :report="report"
+          @traverse="reportOpen"
+          @close="reportClose"
         >
-          <v-card>
-            <div
-              v-if="report"
-              class="report-dialog-container"
-              style="padding-top: 60px;"
-            >
-              <v-app-bar flat dark color="primary" fixed>
-                <v-btn icon dark @click="reportClose">
-                  <v-icon>mdi-close</v-icon>
-                </v-btn>
-                <p
-                  v-if="compareMode === 'Average Of B.C.'"
-                  class="pa-0 ma-0 ml-2"
-                >
-                  <span>Comparing</span>
-                  <span class="font-weight-bold text-body-1">{{
-                    compareMode
-                  }}</span>
-                </p>
-                <p v-else class="pa-0 ma-0 ml-2">
-                  <span>Comparing</span>
-                  <span>{{ compareMode }}:</span>
-                  <span
-                    v-if="compare.length < 3"
-                    class="text-body-1 font-weight-bold"
-                    >{{ compare.join(', ') }}</span
-                  >
-                  <span v-else class="text-body-1 font-weight-bold">
-                    <span
-                      v-if="compareMode === 'Average Of Regional Districts'"
-                    >
-                      {{ compare.length }} Selected Regional Districts
-                    </span>
-                    <span v-else-if="compareMode === 'Average Of Communities'">
-                      {{ compare.length }} Selected Communities
-                    </span>
-                  </span>
-                </p>
-              </v-app-bar>
+        </CommunityDetailReportModal>
 
-              <v-container fluid>
-                <v-row>
-                  <v-col xl="8" lg="8" md="12" sm="12" cols="12">
-                    <DetailReportSection
-                      :report="report"
-                      :place-name="placeName"
-                      :cid="communityDetails.id"
-                    ></DetailReportSection>
-                  </v-col>
-                  <v-col xl="4" lg="4" md="12" sm="12" cols="12">
-                    <DetailCompareSection
-                      :report="report"
-                      :rid="communityDetails.regional_district"
-                    ></DetailCompareSection>
-                  </v-col>
-                </v-row>
-                <v-row>
-                  <v-col cols="12">
-                    <v-card class="rounded-xl">
-                      <ReportTraverse @traverse="reportOpen"></ReportTraverse>
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </div>
-          </v-card>
-        </v-dialog>
-
-        <v-dialog v-model="dialog" max-width="800">
-          <v-toolbar color="primary" dense elevation="3">
-            <v-toolbar-title style="color: white;">{{
-              placeName
-            }}</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-icon color="white" @click="dialog = false">mdi-close</v-icon>
-          </v-toolbar>
-          <v-card>
-            <v-col
-              v-for="(value, key) in groupedCensus"
-              :key="key"
-              class="mb-5"
-              cols="12"
-            >
-              <v-card>
-                <v-card-title class="subheading font-weight-bold">{{
-                  key === 'null' ? 'Miscellaneous' : key
-                }}</v-card-title>
-                <v-divider></v-divider>
-                <v-list dense>
-                  <v-list-item v-for="item in value" :key="item.key">
-                    <v-list-item-content>{{
-                      item.metadata.name
-                    }}</v-list-item-content>
-                    <v-list-item-content class="align-end justify-center"
-                      >{{ item.value || 'No data'
-                      }}{{ item.value ? item.units : '' }}</v-list-item-content
-                    >
-                  </v-list-item>
-                </v-list>
-              </v-card>
-            </v-col>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="dialog = false">
-                Close
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
+        <CommunityDetailsRawData
+          :grouped-census="groupedCensus"
+          :place-name="placeName"
+          :show="showRawData"
+          @close="showRawData = false"
+        ></CommunityDetailsRawData>
       </div>
     </div>
   </div>
@@ -348,19 +247,7 @@ import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
 import map from 'lodash/map'
 import groupBy from 'lodash/groupBy'
-import Breadcrumbs from '~/components/CommunityDetails/Breadcrumbs.vue'
-import Sidebar from '~/components/CommunityDetails/Sidebar.vue'
-import ReportSection from '~/components/CommunityDetails/ReportSection.vue'
-import ReportTraverse from '~/components/ReportTraverse.vue'
-import MainHeader from '~/components/MainHeader.vue'
-import Report from '~/components/CommunityDetails/Report.vue'
-import LayerSwitcher from '~/components/LayerSwitcher'
-import DetailReportSection from '~/components/CommunityDetails/DetailReportSection.vue'
-import DetailCompareSection from '~/components/CommunityDetails/DetailCompareSection.vue'
-import CensusSubdivision from '~/components/CommunityDetails/CensusSubdivision.vue'
 import ControlFactory from '~/utils/map'
-import ReportCard from '~/components/CommunityDetails/ReportCard.vue'
-import AssetSlider from '~/components/CommunityDetails/AssetSlider'
 import {
   getCommunity,
   getCensusSubDivision,
@@ -369,27 +256,12 @@ import {
   getRegionalDistricts,
 } from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
-import ZoomControl from '~/components/Map/ZoomControl'
 import { getAuthToken } from '~/api/ms-auth-api/'
-import LocationCard from '~/components/Location/LocationCard.vue'
 import reportPages from '~/data/communityDetails/reportPages.json'
+import layerData from '~/data/communityDetails/layers.json'
 const commModule = namespace('communities')
-const compareStore = namespace('compare')
+
 @Component({
-  Breadcrumbs,
-  AssetSlider,
-  Sidebar,
-  ReportCard,
-  ReportSection,
-  LocationCard,
-  MainHeader,
-  CensusSubdivision,
-  Report,
-  DetailReportSection,
-  DetailCompareSection,
-  LayerSwitcher,
-  ZoomControl,
-  ReportTraverse,
   filters: {
     yesno,
   },
@@ -401,9 +273,7 @@ export default class CommunityDetail extends Vue {
     }
   }
 
-  @compareStore.Getter('getCompare') compare
-  @compareStore.Getter('getCompareMode') compareMode
-
+  showRawData = false
   isHydrated = false
   sideBarHidden = false
   assetMode = 'driving'
@@ -416,50 +286,7 @@ export default class CommunityDetail extends Vue {
   reportCards = reportPages
   dialog = false
   citFeedbackEmail = this.$config.citFeedbackEmail
-  layerSwitcher = [
-    {
-      layerName: 'locations',
-      layerLabel: 'Locations',
-      legendComponent: 'WildfireLegend',
-      on: true,
-    },
-    {
-      layerName: 'wildfire-zones',
-      layerLabel: 'Wildfire Risk Zones',
-      legendComponent: 'WildfireLegend',
-    },
-    {
-      layerName: 'bc-roads',
-      layerLabel: 'Roads with broadband',
-      legendComponent: 'InternetSpeed',
-      on: true,
-    },
-    {
-      layerName: ['municipalities', 'municipalities-blur'],
-      layerLabel: 'Municipal boundaries',
-      legendComponent: 'Municipal',
-    },
-    {
-      layerName: ['census', 'census-label'],
-      layerLabel: 'Census Subdivisions',
-      legendComponent: 'CensusLegend',
-    },
-    {
-      layerName: ['reserves', 'reserves-label'],
-      layerLabel: 'Reserves',
-      legendComponent: 'ReservesLegend',
-    },
-    {
-      layerName: [
-        'regional-districts-blur',
-        'regional-districts',
-        'regional-districts-label',
-      ],
-      layerLabel: 'Regional Districts',
-      legendComponent: 'RegionalLegend',
-      on: true,
-    },
-  ]
+  layerSwitcher = layerData
 
   handleEnd(data) {
     this.assetRange = [data[0], data[1]]
@@ -523,16 +350,8 @@ export default class CommunityDetail extends Vue {
       : 'Show By Driving Distance'
   }
 
-  get showReportDialog() {
-    if (!this.reportToOpen) {
-      return false
-    } else {
-      return true
-    }
-  }
-
   get report() {
-    return this.reportCards.find((r) => r.name === this.reportToOpen)
+    return this.reportCards.find((r) => r.name === this.$route?.query?.report)
   }
 
   handleLayerToggle(lo) {
@@ -552,6 +371,7 @@ export default class CommunityDetail extends Vue {
   }
 
   @commModule.Getter('getRegionalDistricts') regionalDistricts
+
   reportOpen(reportName) {
     this.$router.push({
       query: {
@@ -583,15 +403,6 @@ export default class CommunityDetail extends Vue {
     })
   }
 
-  get reportToOpen() {
-    const report = this.$route.query.report
-    if (!report) {
-      return null
-    } else {
-      return report
-    }
-  }
-
   get parentCommunity() {
     return this.communityDetails.parent_community
   }
@@ -612,23 +423,6 @@ export default class CommunityDetail extends Vue {
       (rd) => rd.id === this.communityDetails.regional_district
     )
     return rd && rd.name
-  }
-
-  get breadcrumbs() {
-    return [
-      {
-        text: 'Home',
-        href: '',
-      },
-      {
-        text: 'Explore',
-        href: '',
-      },
-      {
-        text: this.placeName,
-        href: '',
-      },
-    ]
   }
 
   viewReports() {
@@ -924,7 +718,8 @@ export default class CommunityDetail extends Vue {
   display: flex;
 }
 .community-details-sidebar {
-  min-width: 340px;
+  min-width: 360px;
+  max-width: 360px;
   background-color: white;
   overflow-y: auto;
 }
