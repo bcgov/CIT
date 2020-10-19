@@ -5,7 +5,7 @@
         :loader="false"
         :pid="report.cpid"
         :rid="rid"
-        init-mode="Regional Districts"
+        mode="Average Of Regional Districts"
         height="1000"
         width="400"
       ></Compare>

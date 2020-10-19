@@ -3,7 +3,6 @@
     <v-select
       v-model="selected"
       :items="items"
-      label="Solo field"
       solo
       hide-details
       @change="$emit('changed', selected)"
@@ -13,29 +12,16 @@
 
 <script>
 import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
+
 const compareStore = namespace('compare')
 @Component
 export default class CompareSelect extends Vue {
-  @Prop({
-    default: () => [
-      'Average Of B.C.',
-      'Average Of Regional Districts',
-      'Average Of Communities',
-    ],
-    type: Array,
-  })
-  items
+  @Prop items
+  @Prop value
 
+  selected = null
   @compareStore.Mutation('setCompareMode')
   setCompareMode
-
-  selected = 'Average Of B.C.'
-
-  setSelected(mode) {
-    this.selected = mode
-    this.$emit('changed', this.selected)
-    this.setCompareMode(this.selected)
-  }
 
   updated() {
     this.setCompareMode(this.selected)
