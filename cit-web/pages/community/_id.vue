@@ -51,6 +51,8 @@
                     :rid="communityDetails.regional_district"
                     :regional-district="regionalDistrictName"
                     :census-data="censusSubdivision"
+                    :community-details="communityDetails"
+                    :place-name="placeName"
                     class="py-8 px-5"
                     @go="viewReports"
                   ></CommunityDetailsHeader>

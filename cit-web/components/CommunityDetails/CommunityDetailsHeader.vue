@@ -1,8 +1,10 @@
 <template>
   <div class="elevation-5">
     <div class="d-flex align-center">
-      <div class="cdh-header d-flex flex-column justify-center pl-5">
-        <h6 class="text-h4 font-weight-bold">Keromeos</h6>
+      <div class="cdh-header d-flex flex-column justify-center px-5">
+        <h6 class="text-h5 font-weight-bold">
+          {{ placeName }}
+        </h6>
         <v-btn
           color="primary"
           class="mt-2 text-uppercase"
@@ -86,8 +88,10 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 @Component
 export default class CommunityDetailsHeader extends Vue {
   @Prop({ default: null, type: Object }) censusData
+  @Prop({ default: null, type: Object }) communityDetails
   @Prop({ default: null, type: Number }) rid
   @Prop({ default: null, type: String }) regionalDistrict
+  @Prop({ default: null, type: String }) placeName
 
   pick = {
     name: true,
