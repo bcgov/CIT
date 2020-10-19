@@ -296,7 +296,10 @@ export default class Explore extends Vue {
         className: 'community-popup-container',
       })
       document.addEventListener('click', (e) => {
-        if (event.target.matches('.community-popup-close-icon')) {
+        if (
+          event.target.matches('.community-popup-close-icon') ||
+          event.target.matches('.community-popup-close')
+        ) {
           communityPopUp.remove()
         }
       })
