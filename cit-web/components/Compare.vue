@@ -19,7 +19,7 @@
           <CompareSelect
             ref="compareSelect"
             :value="mode"
-            :items="compareStates"
+            :selections="Object.values(compareStates)"
             @changed="handleSelectChange"
           ></CompareSelect>
 

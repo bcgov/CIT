@@ -1,8 +1,9 @@
 <template>
   <div>
+    Items: {{ selections }}
     <v-select
       v-model="selected"
-      :items="items"
+      :items="selections"
       solo
       hide-details
       @change="$emit('changed', selected)"
@@ -16,8 +17,11 @@ import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
 const compareStore = namespace('compare')
 @Component
 export default class CompareSelect extends Vue {
-  @Prop items
-  @Prop value
+  @Prop()
+  selections
+
+  @Prop()
+  value
 
   selected = null
   @compareStore.Mutation('setCompareMode')
