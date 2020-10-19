@@ -35,8 +35,8 @@
         <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
         <div class="mt-4 mb-3 font-weight-bold d-flex align-center">
           <p class="text-body-1 mb-0 d-flex align-center">
-            First, choose selection criteria from this data menu to generate a
-            list of matching regional districts and communities:
+            Locate communities and regional districts by selecting options
+            below.
             <v-tooltip bottom color="primary" class="rounded-lg">
               <template v-slot:activator="{ on, attrs }">
                 <v-btn icon v-bind="attrs" v-on="on">
@@ -53,56 +53,78 @@
           </p>
         </div>
         <ExploreFilters
-          :disabled="loadingResults"
+          :disabled="loadingResults || $fetchState.pending"
           @filtered="handleFiltered"
           @loading="handleLoading"
         ></ExploreFilters>
       </div>
       <v-divider></v-divider>
-      <div class="pa-8">
-        <h5 class="text-h6 mb-2">Selection Results:</h5>
-        <p>
-          This list of communities and regional districts match the criteria
-          selected above.
-        </p>
-
-        <div v-if="loadingResults" class="d-flex justify-center">
-          <v-progress-circular
-            :size="50"
-            color="primary"
-            indeterminate
-            class="my-5"
-          ></v-progress-circular>
+      <div>
+        <div v-if="$fetchState.pending">
+          <div class="d-flex align-center flex-column mt-10">
+            <v-progress-circular
+              :size="50"
+              color="primary"
+              indeterminate
+            ></v-progress-circular>
+            <div>
+              <p class="text-h6 font-weight-normal">Loading Communities</p>
+            </div>
+          </div>
         </div>
-        <div v-else>
-          <div class="d-flex justify-space-between pl-5 pr-5">
-            <div class="d-flex flex-column">
-              <div class="text-h4 font-weight-bold" style="color: #f8ba44;">
-                {{ numRegions }}
+        <div v-else class="pa-8">
+          <h5 class="text-h6 mb-2">Selection Results:</h5>
+          <p>
+            This list of communities and regional districts match the criteria
+            selected above.
+          </p>
+
+          <div v-if="loadingResults" class="d-flex justify-center">
+            <v-progress-circular
+              :size="50"
+              color="primary"
+              indeterminate
+              class="my-5"
+            ></v-progress-circular>
+          </div>
+          <div>
+            <div class="d-flex justify-space-between pl-5 pr-5">
+              <div class="d-flex flex-column">
+                <div class="text-h4 font-weight-bold" style="color: #f8ba44;">
+                  {{ numRegions }}
+                </div>
+                <div>Regional Districts</div>
               </div>
-              <div>Regional Districts</div>
-            </div>
-            <div class="d-flex flex-column">
-              <div class="text-h4 font-weight-bold" style="color: #2176d2;">
-                {{ numCommunities && numCommunities.toLocaleString() }}
+              <div class="d-flex flex-column">
+                <div class="text-h4 font-weight-bold" style="color: #2176d2;">
+                  {{ numCommunities && numCommunities.toLocaleString() }}
+                </div>
+                <div>Communities</div>
               </div>
-              <div>Communities</div>
             </div>
+
+            <div class="mb-6 d-flex justify-center">
+              <div v-if="noCommunities" class="mt-6">
+                <p
+                  class="text-h4 light-blue--text text--darken-1 text-center font-weight-bold"
+                >
+                  No Communities
+                </p>
+                <p class="text-body-1">
+                  Try broadening your filters/search criteria
+                </p>
+              </div>
+            </div>
+            <Results :grouped-communities="groupedCommunities"></Results>
           </div>
 
-          <div class="mb-6 d-flex justify-center">
-            <div v-if="noCommunities" class="mt-6">
-              <p
-                class="text-h4 light-blue--text text--darken-1 text-center font-weight-bold"
-              >
-                No Communities
-              </p>
-              <p class="text-body-1">
-                Try broadening your filters/search criteria
-              </p>
-            </div>
+          <div class="px-10 py-3">
+            <v-btn
+              :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
+              block
+              >Give Feedback</v-btn
+            >
           </div>
-          <Results :grouped-communities="groupedCommunities"></Results>
         </div>
       </div>
     </div>
@@ -156,6 +178,7 @@ import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import groupBy from 'lodash/groupBy'
 import uniqBy from 'lodash/uniqBy'
 import isEmpty from 'lodash/isEmpty'
+import without from 'lodash/without'
 import intersectionBy from 'lodash/intersectionBy'
 import flatMap from 'lodash/flatMap'
 import ExploreMap from '~/components/Explore/ExploreMap.vue'
@@ -164,13 +187,8 @@ import ExploreFilters from '~/components/Explore/Filters/ExploreFilters.vue'
 import ExploreToolbar from '~/components/Explore/ExploreToolbar.vue'
 import ExploreReportSection from '~/components/Explore/ExploreReportSection'
 import ExplorePages from '~/data/explore/explorePages.json'
-
-import {
-  getRegionalDistricts,
-  getCommunityList,
-  getCommunityGeoJSON,
-} from '~/api/cit-api'
-import { getAuthToken } from '~/api/ms-auth-api/'
+import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
+// import { getAuthToken } from '~/api/ms-auth-api/'
 const exploreStore = namespace('explore')
 
 @Component({
@@ -179,6 +197,7 @@ const exploreStore = namespace('explore')
   ExploreFilters,
   ExploreToolbar,
   ExploreReportSection,
+  middleware: 'authenticated',
 })
 export default class Explore extends Vue {
   groupedCommunities = null
@@ -193,6 +212,25 @@ export default class Explore extends Vue {
   communitiesWithInsufficientData = null
 
   @exploreStore.Getter('getSearchAsMove') searchAsMove
+
+  groupedCommunities = {}
+  communityList = []
+  regionalDistricts = []
+
+  async fetch() {
+    const results = await Promise.all([
+      getRegionalDistricts(),
+      getCommunityList(),
+    ])
+    this.regionalDistricts = results[0].data.results
+    this.$store.commit(
+      'communities/setRegionalDistricts',
+      results[0].data.results
+    )
+    this.communityList = results[1].data
+    this.$store.commit('communities/setCommunities', results[1].data)
+    this.groupedCommunities = groupBy(results[1].data, 'regional_district')
+  }
 
   get isMobile() {
     return this.$vuetify.breakpoint.width < 1050
@@ -278,7 +316,9 @@ export default class Explore extends Vue {
   }
 
   get numRegions() {
-    return Object.keys(this.groupedCommunities).length
+    console.log(Object.keys(this.groupedCommunities))
+    return without(Object.keys(this.groupedCommunities), '25', '29', 'null')
+      .length
   }
 
   get numCommunities() {
@@ -296,47 +336,12 @@ export default class Explore extends Vue {
   mounted() {
     const rid = this.$route.query.rid
     rid && this.$root.$emit('setRegion', rid)
+    document.documentElement.classList.add('fixed-layout')
   }
 
-  async fetch({ store }) {
-    try {
-      const results = await Promise.all([getAuthToken()])
-      const accessToken = results[0].data.access_token
-      store.commit('msauth/setAccessToken', accessToken)
-    } catch (e) {
-      console.error(e)
-      store.commit('msauth/setIsError', true)
-    }
-  }
-
-  async asyncData({ store, $config }) {
-    try {
-      const results = await Promise.all([
-        getRegionalDistricts(),
-        getCommunityList(),
-        getCommunityGeoJSON(),
-      ])
-      const regionalDistricts = results[0].data.results
-      store.commit('communities/setRegionalDistricts', regionalDistricts)
-      const communityList = results[1].data
-      store.commit('communities/setCommunities', communityList)
-      const groupedCommunities = groupBy(communityList, 'regional_district')
-      const communityGeoJSON = results[2].data
-      store.commit('communities/setCommunityGeoJSON', communityGeoJSON)
-
-      return {
-        communityList,
-        regionalDistricts,
-        groupedCommunities,
-      }
-    } catch (e) {
-      console.error(e)
-      return {
-        communityList: [],
-        regionalDistricts: [],
-        groupedCommunities: [],
-      }
-    }
+  beforeRouteLeave(to, from, next) {
+    document.documentElement.classList.remove('fixed-layout')
+    next()
   }
 
   handleTabChange(tab) {
@@ -417,6 +422,14 @@ export default class Explore extends Vue {
   }
 }
 </script>
+<style>
+.fixed-layout {
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+</style>
 <style lang="scss" scoped>
 .explore-container {
   position: fixed;
@@ -489,5 +502,15 @@ export default class Explore extends Vue {
   width: 100%;
   top: 0;
   bottom: initial;
+}
+
+@media screen and (max-width: 550px) {
+  .explore-results-container {
+    min-width: auto;
+  }
+
+  .v-application .explore-report-container {
+    padding: 20px !important;
+  }
 }
 </style>

@@ -15,14 +15,15 @@ Including another URLconf
 """
 
 from django.conf.urls import url, include
-from django.contrib import admin
-from django.urls import path
 
 from web import auth_tokens
 
 
+def fail(request):
+    raise Exception()
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
     url(r"^api/pipeline/", include('pipeline.urls')),
     url(r"^api/token/", auth_tokens.get_access_token),
+    url(r"^api/health/fail/", fail),
 ]

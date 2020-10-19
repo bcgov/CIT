@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from pipeline.constants import DATABC_PERMALINK_URL
-from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource, Mayor
+from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource, CivicLeader
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
 
@@ -15,6 +15,8 @@ class DataSourceSerializer(serializers.ModelSerializer):
         fields = ("name", "display_name", "source", "source_url", "last_updated")
 
     def get_source_url(self, obj):
+        if obj.external_url:
+            return obj.external_url
         if obj.permalink_id:
             return DATABC_PERMALINK_URL.format(permalink_id=obj.permalink_id)
 
@@ -304,9 +306,9 @@ class SchoolDistrictSerializer(serializers.ModelSerializer):
         )
 
 
-class MayorSerializer(serializers.ModelSerializer):
+class CivicLeaderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Mayor
+        model = CivicLeader
         fields = (
             "id",
             "last_name",
@@ -314,5 +316,6 @@ class MayorSerializer(serializers.ModelSerializer):
             "middle_name",
             "community",
             "gender",
+            "position",
             "experience",
         )

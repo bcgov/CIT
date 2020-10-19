@@ -130,7 +130,11 @@
           <a
             href="https://www12.statcan.gc.ca/census-recensement/2016/dp-pd/prof/index.cfm?Lang=E"
             >Statistics Canada 2016 Census Profile</a
-          >. Communities whose corresponding Census Subdivisions are missing
+          >. Census data is captured every 5 years and may be outdated, and may
+          not be able to capture recent trends or seasonal variations.
+        </p>
+        <p>
+          Communities whose corresponding Census Subdivisions that are missing
           more than 25% of the census fields that we use are flagged as having
           incomplete census data. The charts in the reports are calculated based
           on available data and some charts may be blank or may not represent
@@ -143,9 +147,27 @@
           ><v-icon>mdi-link</v-icon> Permalink</a
         >
       </li>
+      <li
+        id="connectivity-percentages"
+        :class="{
+          selected: anchor === 'incomplete-census-data',
+        }"
+      >
+        <p>
+          Connectivity estimates for regions are based on the percentage of
+          roads with each bandwidth level, from
+          <a
+            href="https://open.canada.ca/data/en/dataset/00a331db-121b-445d-b119-35dbbe3eedd9"
+            >National Broadband Data</a
+          >. For communities that have no defined municipal boundary, a 25km
+          circle is assumed as the area to consider served.
+        </p>
+        <a href="#connectivity-percentages"
+          ><v-icon>mdi-link</v-icon> Permalink</a
+        >
+      </li>
     </ol>
   </div>
-
 </template>
 
 <script>
@@ -168,7 +190,7 @@ export default class DataFootnotes extends Vue {
 .container.footnotes {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 5em 35em 5em;
+  padding: 5em;
 }
 .bright {
   background: yellow;
@@ -180,11 +202,10 @@ export default class DataFootnotes extends Vue {
   background-color: #e5e8ec;
   padding: 0.5em;
 }
-.container>ol>li {
+.container > ol > li {
   margin-bottom: 25px;
 }
 .container>ol>li {
   margin-bottom: 25px;
 }
 </style>
-

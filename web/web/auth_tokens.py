@@ -4,20 +4,20 @@ import os
 import dateutil.parser
 import msal
 
+from django.core.cache import cache
 from django.http import JsonResponse
 
 
 def get_access_token(request):
     '''Returns AAD token using MSAL'''
 
-    existing_access_token = request.session.get('access_token')
-    existing_access_token_expiry = request.session.get('access_token_expiry')
+    existing_access_token = cache.get('access_token')
+    existing_access_token_expiry = cache.get('access_token_expiry')
 
     if existing_access_token and existing_access_token_expiry:
         expires_in = dateutil.parser.parse(existing_access_token_expiry) - datetime.datetime.now()
-        print("expires_in", expires_in)
         if expires_in > datetime.timedelta(minutes=30):
-            print("returning existing access token {} which expires at {}".format(existing_access_token, expires_in))
+            print("returning existing access token which expires at {}".format(expires_in))
             return JsonResponse({
                 "access_token": existing_access_token
             })
@@ -39,8 +39,8 @@ def get_access_token(request):
             expires_in = response['expires_in']
             expiry_date = datetime.datetime.now() + datetime.timedelta(seconds=expires_in)
 
-            request.session['access_token'] = access_token
-            request.session['access_token_expiry'] = expiry_date.isoformat()
+            cache.set('access_token', access_token)
+            cache.set('access_token_expiry', expiry_date.isoformat())
             return JsonResponse({
                 "access_token": access_token
             })

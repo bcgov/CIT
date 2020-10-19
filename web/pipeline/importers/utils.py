@@ -7,9 +7,12 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.gis.measure import D
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import make_aware
 
 from pipeline.models.community import Community
-from pipeline.models.general import DataSource, LocationDistance, SchoolDistrict, Municipality, Mayor
+from pipeline.models.general import (
+    DataSource, LocationDistance, SchoolDistrict, Municipality, CivicLeader, Hex, Service, ISP)
 from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES
 
@@ -21,7 +24,7 @@ def import_data_into_point_model(resource_type, Model, row):
     location_fuzzy = False
 
     name_fields = Model.NAME_FIELD.split(",")
-    name = ", ".join([row[name_field] for name_field in name_fields])
+    name = ", ".join([str(row[name_field]) for name_field in name_fields])
 
     try:
         point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=4326)
@@ -58,7 +61,9 @@ def import_data_into_point_model(resource_type, Model, row):
     except Model.DoesNotExist:
         instance = Model(name=name, location_type=resource_type, point=point)
 
-    instance.community = closest_community
+    print("closest_community", closest_community)
+
+    instance.closest_community = closest_community
     instance.location_fuzzy = location_fuzzy
     import_contact_fields(instance, row, Model)
     import_variable_fields(instance, row, Model)
@@ -73,7 +78,7 @@ def import_data_into_area_model(resource_type, Model, row):
     print(row)
 
     name_fields = Model.NAME_FIELD.split(",")
-    name = ", ".join([row[name_field] for name_field in name_fields])
+    name = ", ".join([str(row[name_field]) for name_field in name_fields])
 
     instance, created = Model.objects.get_or_create(name=name)
 
@@ -340,12 +345,13 @@ def calculate_communities_served_for_hospitals():
         hospital.save()
 
 
-def import_mayors_from_csv(file_path):
+def import_civic_leaders_from_csv(file_path):
     with open(file_path) as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         for row in csv_reader:
-            # Only import elected mayors
-            if not(row['Elected (YES/NO)'] == 'YES' and row['Type'] == 'MAYOR'):
+            # Only import elected mayors and [todo] councillors
+            if not(row['Elected (YES/NO)'] == 'YES' and
+                    (row['Type'] == 'MAYOR' or row['Type'] == 'COUNCILLOR')):
                 continue
 
             try:
@@ -355,13 +361,98 @@ def import_mayors_from_csv(file_path):
                 print("Could not find community called {}".format(row['Local Government']))
                 continue
 
-            mayor, created = Mayor.objects.get_or_create(
+            if row['Type'] == 'MAYOR':
+                position = "mayor"
+            elif row['Type'] == 'COUNCILLOR':
+                position = "councillor"
+
+            civic_leader, created = CivicLeader.objects.get_or_create(
                 first_name=row['First Name'].title(),
                 last_name=row['Last Name'].title(),
                 middle_name=row['Middle Name'].title(),
-                community=community)
-            print("mayor", mayor)
+                community=community,
+                position=position)
+            print("civic_leader", civic_leader)
 
-            mayor.gender = row['Gender'].title()
-            mayor.experience = row['Experience'].title()
-            mayor.save()
+            civic_leader.gender = row['Gender'].title()
+            civic_leader.experience = row['Experience'].title()
+            civic_leader.save()
+
+
+def import_services(file_path):
+    isps = read_csv(file_path)
+
+    # avoid re-querying for each row with ISP reference.
+    isp_cache = {}
+    services = []
+    print(len(isps))
+    for i, isp in enumerate(isps):
+        if not i % 1000:
+            print(i)
+        try:
+            hex = Hex.objects.get(pk=isp['HEXuid_HEXidu'])
+        except Hex.DoesNotExist:
+            continue
+        if isp["ISPname_NomFSI"] in isp_cache:
+            isp_obj = isp_cache[isp["ISPname_NomFSI"]]
+        else:
+            isp_obj = ISP(name=isp["ISPname_NomFSI"])
+            print(isp_obj)
+            isp_cache[isp["ISPname_NomFSI"]] = isp_obj
+            isp_obj.save()
+        service = Service(isp=isp_obj, hex=hex, technology=isp['Technology'])
+        services.append(service)
+
+    Service.objects.bulk_create(services)
+
+
+def get_databc_last_modified_date(data_source):
+    from pipeline.constants import DATABC_METADATA_API_URL
+
+    response = requests.get(DATABC_METADATA_API_URL.format(dataset_resource_id=data_source.resource_id))
+    result = response.json()["result"]
+
+    if not result:
+        print("data source metadata not found", data_source.resource_id)
+        print(result)
+        return
+
+    if result["last_modified"]:
+        date = result["last_modified"]
+    elif result["created"]:
+        date = result["created"]
+    else:
+        print("no date found for resource", data_source.resource_id)
+        print(result)
+        return
+
+    last_modified_date = make_aware(parse_datetime(date))
+    return last_modified_date
+
+
+def get_openca_last_modified_date(data_source):
+    from pipeline.constants import OPENCA_METADATA_API_URL
+
+    response = requests.get(OPENCA_METADATA_API_URL.format(dataset_resource_id=data_source.resource_id))
+    if response.status_code == 404:
+        print("data source metadata not found", data_source.resource_id)
+        return
+
+    result = response.json()["result"]
+
+    sub_resources = result["resources"]
+    sub_resource = next(
+        (sub_resource for sub_resource in sub_resources if sub_resource["id"] == data_source.sub_resource_id), None)
+    print(sub_resource)
+
+    if sub_resource["last_modified"]:
+        date = sub_resource["last_modified"]
+    elif sub_resource["created"]:
+        date = sub_resource["created"]
+    else:
+        print("no date found for resource", data_source.resource_id, data_source.sub_resource_id)
+        print(sub_resource)
+        return
+
+    last_modified_date = make_aware(parse_datetime(date))
+    return last_modified_date

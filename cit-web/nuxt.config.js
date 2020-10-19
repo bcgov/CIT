@@ -94,6 +94,7 @@ export default {
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
+    'nuxt-vue-multiselect',
   ],
   /*
    ** Axios module configuration
@@ -101,7 +102,9 @@ export default {
    */
   axios: {
     baseURL:
-      process.env.NODE_ENV === 'development' ? 'http://nginx/' : process.env.API_HOST || 'http://nginx',
+      process.env.NODE_ENV === 'development'
+        ? 'http://nginx/'
+        : process.env.API_HOST || 'http://nginx',
     browserBaseURL: process.env.NODE_ENV === 'development' ? '/' : '/',
   },
   /*
@@ -170,7 +173,7 @@ export default {
     MAPBOX_API_KEY:
       'pk.eyJ1IjoiY291bnRhYmxlLXdlYiIsImEiOiJjamQyZG90dzAxcmxmMndtdzBuY3Ywa2ViIn0.MU-sGTVDS9aGzgdJJ3EwHA',
     reportId: process.env.POWERBI_REPORT_ID,
-    citFeedbackEmail: 'networkbc@gov.bc.ca',
+    citFeedbackEmail: 'citinfo@gov.bc.ca',
   },
   watchers: {
     webpack: {

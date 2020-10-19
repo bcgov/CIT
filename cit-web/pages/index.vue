@@ -5,7 +5,7 @@
         <h1 class="text-h3 font-weight-bold index-title">
           Welcome to the Community Information Tool
         </h1>
-        <h6 class="text-h6 font-weight-regular mt-10 mb-10">
+        <h6 class="text-h6 font-weight-regular mt-10 mb-10 index-subtitle">
           Explore B.C. communities and analyze data from a community lens.
         </h6>
       </div>
@@ -27,7 +27,8 @@
     <client-only>
       <div class="main-card-container">
         <v-card height="300" class="elevation-5 rounded-lg main-index-card">
-          <v-card-title class="text-h6 mb-5 font-weight-bold"
+          <v-card-title
+            class="text-h6 mb-5 font-weight-bold main-index-card-title"
             >Go to a specific community</v-card-title
           >
           <v-card-subtitle class="text-body-1"
@@ -40,7 +41,8 @@
         </v-card>
 
         <v-card height="300" class="elevation-5 rounded-lg main-index-card">
-          <v-card-title class="text-h6 mb-5 font-weight-bold"
+          <v-card-title
+            class="text-h6 mb-5 font-weight-bold main-index-card-title"
             >Find communities by criteria</v-card-title
           >
           <v-card-subtitle class="text-body-1"
@@ -51,7 +53,6 @@
             <v-btn
               height="44"
               to="/explore?tab=Map"
-              target="_blank"
               color="yellow darken-3"
               class="elevation-5 text-capitalize font-weight-bold text-body-1"
               >Explore B.C. Communities</v-btn
@@ -83,18 +84,12 @@ export default class Index extends Vue {
     return this.$vuetify.breakpoint.width < 1050 ? '300px' : '400px'
   }
 
-  async fetch({ store }) {
+  async fetch() {
     try {
       const response = await getCommunityList()
-      const { status } = response
-      if (status === 200) {
-        const communities = response.data
-        if (communities) {
-          store.commit('communities/setCommunities', communities)
-        }
-      }
+      this.$store.commit('communities/setCommunities', response.data)
     } catch (e) {
-      store.commit('communities/setCommunities', [])
+      console.error(e)
     }
   }
 }
@@ -168,12 +163,6 @@ export default class Index extends Vue {
 }
 
 @media screen and (max-width: 1000px) {
-  .main-index-card {
-    width: 400px;
-  }
-}
-
-@media screen and (max-width: 1000px) {
   .main-card-container {
     flex-direction: column;
     align-items: center;
@@ -187,7 +176,15 @@ export default class Index extends Vue {
 
 @media screen and (max-width: 600px) {
   .v-application .text-h3.index-title {
-    font-size: 1.5rem !important;
+    font-size: 1rem !important;
+    line-height: 1.5;
+  }
+
+  .v-application .index-subtitle {
+    margin-top: 0 !important;
+    font-size: 1rem !important;
+    line-height: 1.5;
+    margin-bottom: 20px !important;
   }
 
   .landing-page-container {
@@ -195,9 +192,19 @@ export default class Index extends Vue {
   }
 
   .main-index-card {
-    width: auto;
+    width: 100%;
     max-width: 500px;
-    padding: 20px;
+    padding: 10px;
+    margin: 0 0;
+    margin-bottom: 2em;
+    height: 250px !important;
+  }
+}
+
+@media screen and (max-width: 359px) {
+  .main-index-card-title {
+    font-size: 1rem !important;
+    margin-bottom: 0 !important;
   }
 }
 </style>

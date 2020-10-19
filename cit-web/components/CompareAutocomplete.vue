@@ -1,35 +1,20 @@
 <template>
-  <v-autocomplete
-    v-model="autocomplete"
-    :items="items"
-    :item-value="itemValue"
-    :item-text="itemText"
-    :multiple="multiple"
-    hide-details
-    solo
-    :search-input.sync="searchInput"
-    @change="handleUpdate"
-    @keyup.enter="handleEnter"
-  >
-    <template v-slot:selection="data">
-      <div v-if="autocomplete.length > 1">
-        <v-chip @click="data.select">
-          {{ autocomplete.length }} {{ mode }} selected
-        </v-chip>
-      </div>
-      <div v-else>
-        <v-chip
-          v-bind="data.attrs"
-          :input-value="data.selected"
-          close
-          @click="data.select"
-          @click:close="remove(data.item)"
-        >
-          {{ data.item[itemText] }}
-        </v-chip>
-      </div>
-    </template>
-  </v-autocomplete>
+  <div>
+    <multiselect
+      :value="value"
+      class="elevation-5"
+      :options="items"
+      :multiple="true"
+      :close-on-select="true"
+      :clear-on-select="true"
+      :preserve-search="true"
+      :label="itemText"
+      :track-by="itemValue"
+      :limit="1"
+      @input="handleUpdate"
+    >
+    </multiselect>
+  </div>
 </template>
 
 <script>
@@ -40,37 +25,17 @@ export default class Compare extends Vue {
   @Prop({ default: 'id', type: String }) itemValue
   @Prop({ default: 'value', type: String }) itemText
   @Prop({ default: true, type: Boolean }) multiple
-  @Prop({ default: true, type: String }) mode
+  @Prop() value
 
-  autocomplete = []
-  searchInput = ''
   groupChips = false
+  isHydrated = false
 
-  setGroupChips(state) {
-    this.groupChips = state
+  mounted() {
+    this.isHydrated = true
   }
 
-  remove(item) {
-    const index = this.autocomplete.indexOf(item.id)
-    if (index >= 0) this.autocomplete.splice(index, 1)
-    this.$emit('change', this.autocomplete)
-  }
-
-  handleUpdate() {
-    this.$emit('change', this.autocomplete)
-  }
-
-  handleEnter(e) {
-    this.searchInput = ''
-  }
-
-  setAutoComplete(data) {
-    this.autocomplete = data
-    this.$emit('change', this.autocomplete)
-  }
-
-  clear() {
-    this.autocomplete = []
+  handleUpdate(data) {
+    this.$emit('update', data)
   }
 }
 </script>
@@ -80,5 +45,8 @@ export default class Compare extends Vue {
 }
 .v-select__selections div:first-child {
   display: inline-block !important;
+}
+.v-list .v-list-item--active {
+  color: black !important;
 }
 </style>
