@@ -1,12 +1,16 @@
 <template>
   <div>
-    <v-select
-      :items="selections"
+    <multiselect
       :value="value"
-      solo
-      hide-details
-      @change="handleChange"
-    ></v-select>
+      class="elevation-5 pa-0 ma-0"
+      :options="selections"
+      :multiple="false"
+      :close-on-select="true"
+      :clear-on-select="true"
+      :preserve-search="true"
+      @input="handleChange"
+    >
+    </multiselect>
   </div>
 </template>
 
