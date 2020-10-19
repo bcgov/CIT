@@ -1,12 +1,11 @@
 <template>
   <div>
-    Items: {{ selections }}
     <v-select
-      v-model="selected"
       :items="selections"
+      :value="value"
       solo
       hide-details
-      @change="$emit('changed', selected)"
+      @change="handleChange"
     ></v-select>
   </div>
 </template>
@@ -23,17 +22,16 @@ export default class CompareSelect extends Vue {
   @Prop()
   value
 
-  selected = null
   @compareStore.Mutation('setCompareMode')
   setCompareMode
 
-  updated() {
-    this.setCompareMode(this.selected)
+  handleChange(data) {
+    this.setCompareMode(data)
+    this.$emit('changed', data)
   }
 
   mounted() {
-    this.$emit('changed', this.selected)
-    this.setCompareMode(this.selected)
+    this.setCompareMode(this.value)
   }
 }
 </script>

@@ -18,11 +18,10 @@
         <v-col sm="12">
           <CompareSelect
             ref="compareSelect"
-            :value="mode"
+            :value="selectionMode"
             :selections="Object.values(compareStates)"
             @changed="handleSelectChange"
           ></CompareSelect>
-
           <CompareAutocomplete
             v-show="showAutoComplete"
             ref="compareAutoComplete"
@@ -31,8 +30,8 @@
             :item-text="itemText"
             :multiple="true"
             class="mt-4"
-            :value="rid"
-            @change="handleChange"
+            :value="selected"
+            @update="handleUpdate"
           ></CompareAutocomplete>
         </v-col>
       </v-row>
@@ -63,11 +62,13 @@
 </template>
 
 <script>
-import { Component, Vue, namespace, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, namespace, Prop, Watch } from 'nuxt-property-decorator'
 import CompareAutocomplete from '~/components/CompareAutocomplete'
 import CompareSelect from '~/components/CompareSelect'
 import Report from '~/components/CommunityDetails/Report'
 const commModule = namespace('communities')
+const compareStore = namespace('compare')
+
 @Component({
   CompareAutocomplete,
   Report,
@@ -75,7 +76,6 @@ const commModule = namespace('communities')
 })
 export default class Compare extends Vue {
   @Prop({ default: 'ReportSection6249eac6d911d2930de3', type: String }) pid
-  @Prop({ default: 'Average Of B.C.', type: String }) mode
   @Prop({ default: null, type: Number }) rid
   @Prop({ default: true, type: Boolean }) loader
   @Prop({ default: '', type: String }) height
@@ -94,17 +94,50 @@ export default class Compare extends Vue {
 
   @commModule.Getter('getCommunities') communities
   @commModule.Getter('getRegionalDistricts') regionalDistricts
+  @compareStore.Mutation('setCompare') setCompare
 
   loading = true
+  selectionMode = 'Average Of Regional Districts'
+  selected = []
+
+  handleUpdate(data) {
+    this.selected = data
+  }
+
+  mounted() {
+    this.setInitialRegion()
+  }
+
+  get selectedNames() {
+    return this.selected.map((s) => s[this.itemText])
+  }
+
+  @Watch('selectedNames')
+  setCompare
+
+  @Watch('selectionMode')
+  handleModeChange() {
+    this.selected = []
+    this.setInitialRegion()
+  }
+
+  setInitialRegion() {
+    if (this.rid && this.selectionMode === this.compareStates.REGION) {
+      const rd = this.regionalDistricts.find((rd) => rd.id === this.rid)
+      if (rd) {
+        this.selected = [rd]
+      }
+    }
+  }
 
   get showAutoComplete() {
-    return this.mode !== this.compareStates.BC
+    return this.selectionMode !== this.compareStates.BC
   }
 
   get itemText() {
-    if (this.mode === this.compareStates.COMMUNITY) {
+    if (this.selectionMode === this.compareStates.COMMUNITY) {
       return 'place_name'
-    } else if (this.mode === this.compareStates.REGION) {
+    } else if (this.selectionMode === this.compareStates.REGION) {
       return 'name'
     } else {
       return ''
@@ -112,9 +145,9 @@ export default class Compare extends Vue {
   }
 
   get items() {
-    if (this.mode === this.compareStates.COMMUNITY) {
+    if (this.selectionMode === this.compareStates.COMMUNITY) {
       return this.communities
-    } else if (this.mode === this.compareStates.REGION) {
+    } else if (this.selectionMode === this.compareStates.REGION) {
       return this.regionalDistricts
     } else {
       return []
@@ -126,29 +159,27 @@ export default class Compare extends Vue {
   }
 
   get cidsEmpty() {
-    return this.cids.length === 0
+    return this.cids?.length === 0
   }
 
-  cids = []
-
-  handleChange(data) {
-    let cids = []
-    if (this.mode === this.compareStates.COMMUNITY) {
-      cids = data.map((cid) => cid.toString())
-    } else if (this.mode === this.compareStates.REGION) {
+  get cids() {
+    if (this.selectionMode === this.compareStates.BC) {
+      return this.allCids
+    } else if (this.selectionMode === this.compareStates.REGION) {
       let temp = []
-      data.map((rid) => {
+      this.selected.map((rd) => {
         temp = temp.concat(
-          this.communities.filter((c) => c.regional_district === rid)
+          this.communities.filter((c) => c.regional_district === rd.id)
         )
       })
-      cids = temp.map((c) => c.id.toString())
+      return temp.map((c) => c.id.toString())
+    } else {
+      return this.selected.map((cid) => cid.id.toString())
     }
-    this.cids = cids
   }
 
   handleSelectChange(data) {
-    this.$emit('changeMode', data)
+    this.selectionMode = data
   }
 
   handleLoaded() {
