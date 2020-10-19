@@ -42,42 +42,18 @@
               only available for the containing census subdivision.
             </v-alert>
           </v-container>
+
           <div class="comm-details-content">
             <v-container fluid>
               <v-row no-gutters>
                 <v-col :cols="12" class="elevation-5">
-                  <div class="cd-header d-flex">
-                    <div
-                      class="d-flex flex-column text-h5 font-weight-bold pl-10 pt-10 pb-10"
-                      style="max-width: 350px;"
-                    >
-                      <span>{{ placeName }}</span>
-                      <p
-                        v-if="getFieldValue('population')"
-                        class="text-caption pa-0 ma-0"
-                      >
-                        Population:
-                        {{
-                          getFieldValue('population').toLocaleString() || 'N/A'
-                        }}
-                      </p>
-
-                      <a
-                        :href="`/explore?tab=Map&rid=${communityDetails.regional_district}`"
-                        class="text-body-1"
-                      >
-                        {{ regionalDistrictName }}
-                      </a>
-                    </div>
-
-                    <v-img
-                      class="comm-detail-header-image"
-                      style="align-self: flex-end;"
-                      :src="require('~/assets/images/cdheader.svg')"
-                      aspect-ratio="1"
-                      height="120px"
-                    ></v-img>
-                  </div>
+                  <CommunityDetailsHeader
+                    :rid="communityDetails.regional_district"
+                    :regional-district="regionalDistrictName"
+                    :census-data="censusSubdivision"
+                    class="py-8 px-5"
+                    @go="viewReports"
+                  ></CommunityDetailsHeader>
                   <v-divider></v-divider>
                   <div class="map-container">
                     <Sidebar
