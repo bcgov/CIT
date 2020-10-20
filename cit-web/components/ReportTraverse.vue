@@ -23,7 +23,7 @@
         class="ml-3"
         :class="{ 'ml-0': isMobile }"
         color="primary"
-        @click="$emit('traverse', selected)"
+        @click="handleClick"
         >Go</v-btn
       >
     </v-sheet>
@@ -45,6 +45,11 @@ export default class ReportTraverse extends Vue {
     } else {
       return false
     }
+  }
+
+  handleClick() {
+    this.$root.$emit('reportModalToTop')
+    this.$emit('traverse', this.selected)
   }
 
   mounted() {
