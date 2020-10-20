@@ -29,17 +29,8 @@
 <script>
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import ControlFactory from '~/utils/map'
-import LayerSwitcher from '~/components/LayerSwitcher'
-import SearchAsMove from '~/components/Explore/SearchAsMove.vue'
-import CommunityPopup from '~/components/Map/CommunityPopup'
-import ZoomControl from '~/components/Map/ZoomControl'
 import { getPopulation, getCommunityGeoJSON } from '~/api/cit-api/'
-@Component({
-  SearchAsMove,
-  CommunityPopup,
-  LayerSwitcher,
-  ZoomControl,
-})
+@Component
 export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
   @Prop({ default: null, type: Array }) cids

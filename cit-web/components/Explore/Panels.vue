@@ -12,6 +12,7 @@
         ></PanelHeader>
 
         <PanelContent
+          :regional-district="regionalDistrict"
           :communities="communities"
           class="explore-content-panel"
         ></PanelContent>
