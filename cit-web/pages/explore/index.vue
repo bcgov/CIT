@@ -1,57 +1,9 @@
 <template>
-  <div
-    class="explore-container d-flex"
-    :class="{ 'explore-container-mobile': isMobile }"
-  >
-    <client-only>
-      <div v-if="isMobile">
-        <v-bottom-navigation
-          v-model="mobileNav"
-          absolute
-          class="explore-mobile-toolbar"
-        >
-          <v-btn value="Data" @click="handleTabChange('Data')">
-            <span>Data View</span>
-            <v-icon>mdi-text-box-outline</v-icon>
-          </v-btn>
-
-          <v-btn value="Map" @click="handleTabChange('Map')">
-            <span>Map View</span>
-            <v-icon>mdi-map</v-icon>
-          </v-btn>
-
-          <v-btn value="Reports" @click="handleTabChange('Reports')">
-            <span>Reports</span>
-            <v-icon>mdi-file-chart</v-icon>
-          </v-btn>
-        </v-bottom-navigation>
-      </div>
-    </client-only>
-    <div
-      v-show="!isMobile || (isMobile && activeTab === 'Data')"
-      class="explore-results-container elevation-5"
-    >
+  <div class="explore-container d-flex">
+    <div class="explore-results-container elevation-5">
       <div class="pa-8">
         <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
-        <div class="mt-4 mb-3 font-weight-bold d-flex align-center">
-          <p class="text-body-1 mb-0 d-flex align-center">
-            Locate communities and regional districts by selecting options
-            below.
-            <v-tooltip bottom color="primary" class="rounded-lg">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn icon v-bind="attrs" v-on="on">
-                  <v-icon color="primary">mdi-information</v-icon></v-btn
-                >
-              </template>
-              <span class="text-body-1"
-                >The data menu below will filter based on
-                <span class="font-weight-bold"
-                  >all communities in British Columbia</span
-                ></span
-              >
-            </v-tooltip>
-          </p>
-        </div>
+        <ExploreFilterHeader></ExploreFilterHeader>
         <ExploreFilters
           :disabled="loadingResults || $fetchState.pending"
           @filtered="handleFiltered"
@@ -61,58 +13,19 @@
       <v-divider></v-divider>
       <div>
         <div v-if="$fetchState.pending">
-          <div class="d-flex align-center flex-column mt-10">
-            <v-progress-circular
-              :size="50"
-              color="primary"
-              indeterminate
-            ></v-progress-circular>
-            <div>
-              <p class="text-h6 font-weight-normal">Loading Communities</p>
-            </div>
-          </div>
+          <ExploreLoader></ExploreLoader>
         </div>
         <div v-else class="pa-8">
-          <h5 class="text-h6 mb-2">Selection Results:</h5>
-          <p>
-            This list of communities and regional districts match the criteria
-            selected above.
-          </p>
-
-          <div v-if="loadingResults" class="d-flex justify-center">
-            <v-progress-circular
-              :size="50"
-              color="primary"
-              indeterminate
-              class="my-5"
-            ></v-progress-circular>
-          </div>
           <div>
-            <div class="d-flex justify-space-between pl-5 pr-5">
-              <div class="d-flex flex-column">
-                <div class="text-h4 font-weight-bold" style="color: #f8ba44;">
-                  {{ numRegions }}
-                </div>
-                <div>Regional Districts</div>
-              </div>
-              <div class="d-flex flex-column">
-                <div class="text-h4 font-weight-bold" style="color: #2176d2;">
-                  {{ numCommunities && numCommunities.toLocaleString() }}
-                </div>
-                <div>Communities</div>
-              </div>
-            </div>
+            <ExploreResultsHeader
+              :num-regions="numRegions"
+              :num-communities="numCommunities"
+              :loading-results="loadingResults"
+            ></ExploreResultsHeader>
 
             <div class="mb-6 d-flex justify-center">
               <div v-if="noCommunities" class="mt-6">
-                <p
-                  class="text-h4 light-blue--text text--darken-1 text-center font-weight-bold"
-                >
-                  No Communities
-                </p>
-                <p class="text-body-1">
-                  Try broadening your filters/search criteria
-                </p>
+                <ExploreNoResults></ExploreNoResults>
               </div>
             </div>
             <Results :grouped-communities="groupedCommunities"></Results>
@@ -129,46 +42,37 @@
       </div>
     </div>
     <div
-      v-show="!isMobile || (isMobile && activeTab !== 'Data')"
       ref="exploreMapContainer"
       class="explore-map-container"
       :class="{
         'explore-map-container-scroll': mapContainerScroll,
-        'explore-map-container-mobile': isMobile,
       }"
     >
-      <client-only>
-        <ExploreToolbar
-          v-if="!isMobile"
-          class="elevation-5 explore-toolbar"
-          :active-tab="activeTab"
-          :breadcrumbs="breadcrumbs"
-          @tabChange="handleTabChange"
-        ></ExploreToolbar>
-        <v-scroll-x-transition>
-          <ExploreMap
-            v-if="showMap"
-            ref="exploreMap"
-            class="explore-map"
-            :mapbox-api-key="$config.MAPBOX_API_KEY"
-            :cids="cidArray"
-            :cluster-communities="flatCommunities"
-            @moveend="handleMoveEnd"
-          ></ExploreMap>
+      <ExploreToolbar
+        class="elevation-5 explore-toolbar"
+        @change="handleViewChange"
+      ></ExploreToolbar>
+      <v-scroll-x-transition>
+        <ExploreMap
+          v-if="showMap"
+          ref="exploreMap"
+          class="explore-map"
+          :mapbox-api-key="$config.MAPBOX_API_KEY"
+          :cids="cidArray"
+          :cluster-communities="flatCommunities"
+          @moveend="handleMoveEnd"
+        ></ExploreMap>
 
-          <ExploreReportSection
-            v-else
-            :report-cards="reportCards"
-            :reports-to-hide="reportsToHide"
-            :report-to-show="reportToShow"
-            :communities-with-insufficient-data="
-              communitiesWithInsufficientData
-            "
-            :cids="cidArray"
-            @showReport="showReport"
-          ></ExploreReportSection>
-        </v-scroll-x-transition>
-      </client-only>
+        <ExploreReportSection
+          v-else
+          :report-cards="reportCards"
+          :reports-to-hide="reportsToHide"
+          :report-to-show="reportToShow"
+          :communities-with-insufficient-data="communitiesWithInsufficientData"
+          :cids="cidArray"
+          @showReport="showReport"
+        ></ExploreReportSection>
+      </v-scroll-x-transition>
     </div>
   </div>
 </template>
@@ -221,50 +125,8 @@ export default class Explore extends Vue {
     this.groupedCommunities = groupBy(results[1].data, 'regional_district')
   }
 
-  get isMobile() {
-    return this.$vuetify.breakpoint.width < 1050
-  }
-
   get noCommunities() {
     return isEmpty(this.groupedCommunities)
-  }
-
-  get breadcrumbs() {
-    const breadcrumbs = [
-      {
-        text: 'Home',
-        disabled: false,
-        to: {
-          path: `/`,
-        },
-      },
-      {
-        exact: true,
-        text: 'Explore',
-        disabled: false,
-        to: {
-          path: `/explore?tab=Map`,
-        },
-      },
-      {
-        exact: true,
-        text: this.activeTab,
-        disabled: false,
-        to: {
-          path: `/explore?tab=${this.activeTab}`,
-        },
-      },
-    ]
-
-    const reportName = this.$route.query.report
-    if (reportName) {
-      breadcrumbs.push({
-        text: reportName,
-        disabled: true,
-      })
-    }
-
-    return breadcrumbs
   }
 
   handleLoading(state) {
@@ -293,7 +155,7 @@ export default class Explore extends Vue {
   }
 
   get showMap() {
-    return this.activeTab === 'Map'
+    return this.activeTab === 'Map' || this.activeTab === null
   }
 
   get flatCommunities() {
@@ -305,7 +167,6 @@ export default class Explore extends Vue {
   }
 
   get numRegions() {
-    console.log(Object.keys(this.groupedCommunities))
     return without(Object.keys(this.groupedCommunities), '25', '29', 'null')
       .length
   }
@@ -331,14 +192,6 @@ export default class Explore extends Vue {
   beforeRouteLeave(to, from, next) {
     document.documentElement.classList.remove('fixed-layout')
     next()
-  }
-
-  handleTabChange(tab) {
-    const query = Object.assign({}, this.$route.query)
-    query.tab = tab
-    this.$router.push({
-      query,
-    })
   }
 
   handleFiltered(e) {
@@ -408,6 +261,14 @@ export default class Explore extends Vue {
       query: temp,
     })
     this.$refs.exploreMapContainer.scrollTop = 0
+  }
+
+  handleViewChange(data) {
+    const query = Object.assign({}, this.$route.query, { tab: data })
+    console.log(query)
+    this.$router.push({
+      query,
+    })
   }
 }
 </script>
@@ -491,15 +352,5 @@ export default class Explore extends Vue {
   width: 100%;
   top: 0;
   bottom: initial;
-}
-
-@media screen and (max-width: 550px) {
-  .explore-results-container {
-    min-width: auto;
-  }
-
-  .v-application .explore-report-container {
-    padding: 20px !important;
-  }
 }
 </style>

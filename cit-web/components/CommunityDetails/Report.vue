@@ -121,9 +121,6 @@ export default class MainReport extends Vue {
   setFilter() {
     this.report.getPages().then((pages) => {
       const page = pages.find((p) => p.name === this.pageName)
-      console.log(page)
-      console.log(page.defaultSize.width)
-      console.log(page.defaultSize.height)
       page.setFilters([this.getFilter(this.cids)])
     })
   }
@@ -144,7 +141,6 @@ export default class MainReport extends Vue {
 
   getEmbedConfiguration() {
     const models = window['powerbi-client'].models
-    console.log(models)
     return {
       type: 'report',
       pageName: this.pageName,

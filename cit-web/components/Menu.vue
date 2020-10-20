@@ -23,7 +23,7 @@
         <v-list-item
           class="pa-0 ma-0 font-weight-normal my-3"
           style="min-height: auto;"
-          :to="'/explore?tab=Map'"
+          :to="'/explore'"
         >
           <v-list-item-title class="white--text">Explore</v-list-item-title>
         </v-list-item>
