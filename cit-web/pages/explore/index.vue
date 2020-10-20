@@ -181,22 +181,11 @@ import isEmpty from 'lodash/isEmpty'
 import without from 'lodash/without'
 import intersectionBy from 'lodash/intersectionBy'
 import flatMap from 'lodash/flatMap'
-import ExploreMap from '~/components/Explore/ExploreMap.vue'
-import Results from '~/components/Explore/Results.vue'
-import ExploreFilters from '~/components/Explore/Filters/ExploreFilters.vue'
-import ExploreToolbar from '~/components/Explore/ExploreToolbar.vue'
-import ExploreReportSection from '~/components/Explore/ExploreReportSection'
 import ExplorePages from '~/data/explore/explorePages.json'
 import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
-// import { getAuthToken } from '~/api/ms-auth-api/'
 const exploreStore = namespace('explore')
 
 @Component({
-  ExploreMap,
-  Results,
-  ExploreFilters,
-  ExploreToolbar,
-  ExploreReportSection,
   middleware: 'authenticated',
 })
 export default class Explore extends Vue {
