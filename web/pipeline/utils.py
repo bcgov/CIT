@@ -61,6 +61,15 @@ def serialize_census_subdivision_groups(obj):
         {
             "group": None,
             "metadata": {
+                "name": "Population density per square kilometre",
+            },
+            "key": "population_density_per_sq_km",
+            "value": commaize(obj.population_density_per_sq_km),
+            "units": "people per km\u00B2",
+        },
+        {
+            "group": None,
+            "metadata": {
                 "name": "Total private dwellings",
             },
             "key": "priv_dwel",
@@ -75,6 +84,15 @@ def serialize_census_subdivision_groups(obj):
             "key": "area",
             "value": commaize(obj.area),
             "units": " km\u00B2",
+        },
+        {
+            "group": "Age of Population",
+            "metadata": {
+                "name": "Average age",
+            },
+            "key": "population_avg_age",
+            "value": obj.population_avg_age,
+            "units": None,
         },
         {
             "group": "Age of Population",
@@ -291,6 +309,15 @@ def serialize_census_subdivision_groups(obj):
             "key": "self_employed",
             "value": commaize(obj.self_employed),
             "units": " people",
+        },
+        {
+            "group": "Employment",
+            "metadata": {
+                "name": "Employment rate",
+            },
+            "key": "employment_rate",
+            "value": commaize(obj.employment_rate),
+            "units": "%",
         },
     ]
 

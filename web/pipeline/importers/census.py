@@ -455,6 +455,8 @@ def import_census_education_employment_data(stats, subdiv):
     subdiv.unemployed = _fetch_statscan_value(stats, "11.1.1.1.2")
     # "Labour", 33004, "11.3.1.2.2", 2, "    Self-employed"
     subdiv.self_employed = _fetch_statscan_value(stats, "11.3.1.2.2")
+    # "Labour", 31006, "11.1.3", 0, "Employment rate",
+    subdiv.employment_rate = _fetch_statscan_value(stats, "11.1.3")
 
     # Occupation - National Occupational Classification (NOC) 2016
     # "Labour", 34003, "11.4.1.2.1", 2, "    0 Management occupations"

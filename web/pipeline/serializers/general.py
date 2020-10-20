@@ -160,6 +160,7 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
     child_communities = serializers.SerializerMethodField()
     parent_community = serializers.SerializerMethodField()
     hidden_report_pages = serializers.SerializerMethodField()
+    mayor = serializers.SerializerMethodField()
 
     class Meta:
         model = Community
@@ -173,6 +174,7 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
             "regional_district",
             "locations",
             "hidden_report_pages",
+            "mayor",
         )
 
     def get_display_fields(self, obj):
@@ -198,6 +200,9 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
 
     def get_hidden_report_pages(self, obj):
         return obj.census_subdivision.get_hidden_detail_report_pages()
+
+    def get_mayor(self, obj):
+        return obj.get_mayor()
 
 
 class CommunitySearchSerializer(serializers.ModelSerializer):

@@ -22,6 +22,7 @@ from web import auth_tokens
 def fail(request):
     raise Exception()
 
+
 urlpatterns = [
     url(r"^api/pipeline/", include('pipeline.urls')),
     url(r"^api/token/", auth_tokens.get_access_token),
