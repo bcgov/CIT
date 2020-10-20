@@ -481,6 +481,8 @@ class CensusSubdivision(models.Model):
     unemployed = models.IntegerField(null=True)
     # "Labour", 33004, "11.3.1.2.2", 2, "    Self-employed", 171, null, 375.0, null, 210.0, null, 160.0, null],
     self_employed = models.IntegerField(null=True)
+    # "Labour", 31006, "11.1.3", 0, "Employment rate",
+    employment_rate = models.FloatField(null=True)
 
     # Occupation - National Occupational Classification (NOC) 2016
     # "Labour", 34003, "11.4.1.2.1", 2, "    0 Management occupations"
