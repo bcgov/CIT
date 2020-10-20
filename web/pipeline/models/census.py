@@ -240,7 +240,7 @@ class CensusSubdivision(models.Model):
     lang_3_count = models.IntegerField(null=True)
 
     # Total - Income statistics in 2015 for the population aged 15 years and over in
-    # private households - 100% dataCensus data footnote
+    # private households - 100% data
     # "Income", 12002, "4.1.1.1.1", 2, "    Median total income in 2015 among recipients ($)"
     median_total_income = models.FloatField(null=True)
     median_total_income_m = models.FloatField(null=True)
@@ -604,3 +604,8 @@ class CensusSubdivision(models.Model):
         if self.get_percentage_of_null_fields() > 0.25:
             return POWERBI_HIDDEN_DETAIL_PAGES
         return []
+
+    def get_pct_post_secondary(self):
+        if self.edu_2 and self.edu_field_total:
+            return (self.edu_2 / self.edu_field_total) * 100
+        return None

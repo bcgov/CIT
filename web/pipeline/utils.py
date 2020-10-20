@@ -284,6 +284,15 @@ def serialize_census_subdivision_groups(obj):
             "units": " people",
         },
         {
+            "group": "Education",
+            "metadata": {
+                "name": "% Population with Post-Secondary Education",
+            },
+            "key": "pct_post_secondary",
+            "value": commaize(obj.get_pct_post_secondary()),
+            "units": "%",
+        },
+        {
             "group": "Employment",
             "metadata": {
                 "name": "Employed",
