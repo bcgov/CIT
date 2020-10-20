@@ -24,9 +24,5 @@ export default class BaseList extends Vue {
   getTime() {
     return Date.now()
   }
-
-  mounted() {
-    console.log(this.communities)
-  }
 }
 </script>

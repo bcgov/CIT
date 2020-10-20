@@ -16,7 +16,7 @@
       <div class="cdh-content">
         <div>
           <div>
-            <a :href="`/explore?tab=Map&rid=${rid}`" class="text-body-1">
+            <a :href="`/explore?&rid=${rid}`" class="text-body-1">
               {{ regionalDistrict || 'Region N/A' }}
             </a>
           </div>

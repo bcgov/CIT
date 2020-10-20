@@ -132,7 +132,7 @@ export default class MainReport extends Vue {
 
   getEmbedConfiguration() {
     const models = window['powerbi-client'].models
-    console.log(models)
+
     return {
       type: 'report',
       pageName: this.pageName,

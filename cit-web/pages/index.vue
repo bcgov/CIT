@@ -52,7 +52,7 @@
           <v-card-text>
             <v-btn
               height="44"
-              to="/explore?tab=Map"
+              to="/explore"
               color="yellow darken-3"
               class="elevation-5 text-capitalize font-weight-bold text-body-1"
               >Explore B.C. Communities</v-btn

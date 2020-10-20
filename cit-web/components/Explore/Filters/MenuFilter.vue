@@ -16,10 +16,12 @@
         :input-value="active"
         filter
         :disabled="disabled"
-        class="text-body-1"
+        class="text-body-1 filter-menu-chips px-2"
         v-on="on"
       >
         {{ chipTitle }}
+        <v-icon v-if="menu" small>mdi-chevron-up</v-icon>
+        <v-icon v-else small>mdi-chevron-down</v-icon>
       </v-chip>
     </template>
     <v-card :width="cardWidth" class="rounded-lg">
@@ -79,3 +81,9 @@ export default class MenuFilter extends Vue {
   }
 }
 </script>
+<style lang="scss" scoped>
+.filter-menu-chips {
+  border-radius: 6px !important;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+</style>
