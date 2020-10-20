@@ -87,11 +87,10 @@ import intersectionBy from 'lodash/intersectionBy'
 import flatMap from 'lodash/flatMap'
 import ExplorePages from '~/data/explore/explorePages.json'
 import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
+import { getAuthToken } from '~/api/ms-auth-api/'
 const exploreStore = namespace('explore')
 
-@Component({
-  middleware: 'authenticated',
-})
+@Component()
 export default class Explore extends Vue {
   groupedCommunities = null
   filteredCommunities = null
@@ -114,6 +113,7 @@ export default class Explore extends Vue {
     const results = await Promise.all([
       getRegionalDistricts(),
       getCommunityList(),
+      getAuthToken(),
     ])
     this.regionalDistricts = results[0].data.results
     this.$store.commit(
@@ -123,6 +123,9 @@ export default class Explore extends Vue {
     this.communityList = results[1].data
     this.$store.commit('communities/setCommunities', results[1].data)
     this.groupedCommunities = groupBy(results[1].data, 'regional_district')
+
+    const accessToken = results[2].data.access_token
+    this.$store.commit('msauth/setAccessToken', accessToken)
   }
 
   get noCommunities() {
