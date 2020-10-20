@@ -439,7 +439,7 @@ export default class CommunityDetail extends Vue {
     this.$store.commit('communities/setDataSources', dataSources)
     this.communityDetails = results[3].data
     const accessToken = results[4].data.access_token
-    this.store.commit('msauth/setAccessToken', accessToken)
+    this.$store.commit('msauth/setAccessToken', accessToken)
   }
 
   mounted() {
