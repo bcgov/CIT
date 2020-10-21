@@ -126,7 +126,6 @@ export default class CommunityType extends Vue {
     const to = {
       community_type: temp.join(','),
     }
-    console.log('TO', to)
 
     return [to]
   }

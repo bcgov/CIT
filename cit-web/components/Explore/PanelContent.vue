@@ -1,5 +1,8 @@
 <template>
   <v-expansion-panel-content class="ma-0 pa-0">
+    <v-divider></v-divider>
+    <RegionProfileCard></RegionProfileCard>
+    <v-divider></v-divider>
     <BaseList :communities="communities"> </BaseList>
   </v-expansion-panel-content>
 </template>
@@ -12,5 +15,6 @@ import BaseList from '~/components/Explore/BaseList.vue'
 })
 export default class Explore extends Vue {
   @Prop({ default: null, type: Array }) communities
+  @Prop({ default: null }) regionalDistrict
 }
 </script>

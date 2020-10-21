@@ -1,5 +1,6 @@
 <template>
   <v-dialog
+    ref="reportDialog"
     fullscreen
     transition="dialog-bottom-transition"
     hide-overlay
@@ -82,6 +83,15 @@ export default class CommunityDetailsReportModal extends Vue {
 
   handleTraverse(data) {
     this.$emit('traverse', data)
+  }
+
+  mounted() {
+    this.$root.$on('reportModalToTop', () => {
+      this.$nextTick(() => {
+        const el = document.querySelector('.v-dialog')
+        el.scrollTop = 0
+      })
+    })
   }
 }
 </script>

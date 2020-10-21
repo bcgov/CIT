@@ -58,10 +58,6 @@ export default class EmergencyRisk extends Vue {
     })
   }
 
-  mounted() {
-    console.log(this)
-  }
-
   handleSave() {
     this.$refs.menuFilter.hide()
     const result = this.getParams()

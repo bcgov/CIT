@@ -92,7 +92,6 @@ export default class Locations extends Vue {
   }
 
   handleSave() {
-    console.log(this.locationFilters.length)
     if (this.locationFilters.length > 1) {
       const invalidInputs = this.validateInputs()
       if (invalidInputs > 0) {
