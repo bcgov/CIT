@@ -23,11 +23,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", 'devsecret')  # default secret key for dev environments
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", False)
+DEBUG = bool(os.environ.get("DEBUG", False))
 
 # By default, it is ok for others to use our APIs and crawl our site.
 ALLOWED_HOSTS = ['*']
 
+ADMINS = (
+  ('Clark', 'clark@countable.ca'),
+  ('Merwyn', 'merwyn.Pereira@gov.bc.ca'),
+)
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
@@ -125,3 +129,48 @@ CACHES = {
 
 # API Keys
 ROUTE_PLANNER_API_KEY = os.environ.get("ROUTE_PLANNER_API_KEY")
+
+EMAIL_HOST = 'smtp'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'filters': ['require_debug_false']
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        }
+    }
+}
+

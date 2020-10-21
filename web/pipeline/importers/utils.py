@@ -350,7 +350,8 @@ def import_civic_leaders_from_csv(file_path):
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         for row in csv_reader:
             # Only import elected mayors and [todo] councillors
-            if not(row['Elected (YES/NO)'] == 'YES' and row['Type'] == 'MAYOR'):
+            if not(row['Elected (YES/NO)'] == 'YES' and
+                    (row['Type'] == 'MAYOR' or row['Type'] == 'COUNCILLOR')):
                 continue
 
             try:
@@ -360,13 +361,17 @@ def import_civic_leaders_from_csv(file_path):
                 print("Could not find community called {}".format(row['Local Government']))
                 continue
 
+            if row['Type'] == 'MAYOR':
+                position = "mayor"
+            elif row['Type'] == 'COUNCILLOR':
+                position = "councillor"
+
             civic_leader, created = CivicLeader.objects.get_or_create(
                 first_name=row['First Name'].title(),
                 last_name=row['Last Name'].title(),
                 middle_name=row['Middle Name'].title(),
                 community=community,
-                # TODO - import councillors as well
-                position="mayor")
+                position=position)
             print("civic_leader", civic_leader)
 
             civic_leader.gender = row['Gender'].title()
