@@ -102,16 +102,26 @@ export default class ExploreFilters extends Vue {
     }
     this.$emit('loading', true)
 
-    advancedSearch(filterParams).then((result) => {
-      this.$emit('filtered', {
-        empty: false,
-        data: result.data.communities,
-        reportsToHide: result.data.hidden_report_pages,
-        communitiesWithInsufficientData:
-          result.data.communities_with_insufficient_data,
+    advancedSearch(filterParams)
+      .then((result) => {
+        this.$emit('filtered', {
+          empty: false,
+          data: result.data.communities,
+          reportsToHide: result.data.hidden_report_pages,
+          communitiesWithInsufficientData:
+            result.data.communities_with_insufficient_data,
+        })
+
+        this.$emit('error', false)
       })
-      this.$emit('loading', false)
-    })
+      .catch((e) => {
+        console.error(e)
+        this.reset()
+        this.$emit('error', true)
+      })
+      .finally(() => {
+        this.$emit('loading', false)
+      })
   }
 
   updateActive() {
