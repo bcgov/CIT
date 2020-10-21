@@ -10,7 +10,7 @@
           class="mt-2 text-uppercase"
           width="150"
           @click="$emit('go')"
-          >Go to Report</v-btn
+          >Reports</v-btn
         >
       </div>
       <div class="cdh-content">
