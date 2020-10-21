@@ -282,6 +282,7 @@ export default class Explore extends Vue {
 
   handleViewChange(data) {
     const query = Object.assign({}, this.$route.query, { tab: data })
+    delete query.report
     this.$router.push({
       query,
     })
