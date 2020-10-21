@@ -301,6 +301,21 @@ class RegionalDistrictSerializer(serializers.ModelSerializer):
         )
 
 
+class RegionalDistrictDetailSerializer(serializers.ModelSerializer):
+    census_data = serializers.SerializerMethodField()
+
+    class Meta:
+        model = RegionalDistrict
+        fields = (
+            "id",
+            "name",
+            "census_data",
+        )
+
+    def get_census_data(self, obj):
+        return obj.get_census_data()
+
+
 class SchoolDistrictSerializer(serializers.ModelSerializer):
     class Meta:
         model = SchoolDistrict

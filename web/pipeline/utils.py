@@ -3,7 +3,7 @@ from functools import reduce
 from operator import and_
 
 from django.apps import apps
-from django.db.models import Q, F
+from django.db.models import Q, F, Sum, Avg, FloatField
 
 from pipeline.constants import LOCATION_TYPES
 
@@ -399,6 +399,64 @@ def serialize_community_detail_fields(obj):
             "metadata": {
                 "name": "Tsunami Zone",
                 "description": "A - C (moderate); D and E (low)",
+            },
+        },
+    ]
+
+
+def serialize_regional_district_fields(regional_district):
+    from pipeline.models.census import CensusSubdivision
+
+    census_subdivisions = CensusSubdivision.objects.filter(community__regional_district=regional_district)
+
+    census_aggregate_values = census_subdivisions.aggregate(
+        Sum("area"),
+        Avg("area"),
+        Sum("population"),
+        Sum("edu_field_total"),
+        Sum("edu_2"),
+        population_density_unweighted=Sum(F("population_density_per_sq_km") * F("area"), output_field=FloatField()),
+        population_age_unweighted=Sum(F("population_avg_age") * F("population"), output_field=FloatField()),
+        employment_rate_unweighted=Sum(F("employment_rate") * F("population"), output_field=FloatField()))
+
+    population_density = census_aggregate_values["population_density_unweighted"] / census_aggregate_values["area__sum"]
+    average_age = census_aggregate_values["population_age_unweighted"] / census_aggregate_values["population__sum"]
+    employment_rate = (
+        census_aggregate_values["employment_rate_unweighted"] / census_aggregate_values["population__sum"])
+    percent_post_secondary = (
+        census_aggregate_values["edu_2__sum"] / census_aggregate_values["edu_field_total__sum"]) * 100
+
+    return [
+        {
+            "key": "population_density",
+            "value": commaize(population_density),
+            "units": " people per km\u00B2",
+            "metadata": {
+                "name": "Population Density",
+            },
+        },
+        {
+            "key": "average_age",
+            "value": commaize(average_age),
+            "units": " years old",
+            "metadata": {
+                "name": "Average Age",
+            },
+        },
+        {
+            "key": "employment_rate",
+            "value": commaize(employment_rate),
+            "units": " %",
+            "metadata": {
+                "name": "Employment Rate",
+            },
+        },
+        {
+            "key": "percent_post_secondary",
+            "value": commaize(percent_post_secondary),
+            "units": " %",
+            "metadata": {
+                "name": "% of Population with Post-Secondary Education",
             },
         },
     ]
