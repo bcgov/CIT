@@ -248,7 +248,6 @@ export default class Explore extends Vue {
       return groupBy(bc, 'regional_district')
     }
     const intersection = intersectionBy(fc, bc, 'id')
-    // raise an event whenever the selection changes (this is a side-effect)
     return groupBy(intersection, 'regional_district')
   }
 
@@ -283,6 +282,7 @@ export default class Explore extends Vue {
 
   handleViewChange(data) {
     const query = Object.assign({}, this.$route.query, { tab: data })
+    delete query.report
     this.$router.push({
       query,
     })

@@ -433,6 +433,7 @@ export default class CommunityDetail extends Vue {
     if (active === false) {
       filters = ['==', ['get', 'location_type'], group]
     }
+    console.log('Expand')
     this.$root.$emit('cdMapFilter', {
       layerName,
       filters,
