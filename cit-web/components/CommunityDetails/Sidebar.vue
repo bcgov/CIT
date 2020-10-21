@@ -80,3 +80,22 @@ export default class MainReport extends Vue {
   padding: 0 !important;
 }
 </style>
+<style lang="scss">
+.community-details-sidebar::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+.community-details-sidebar::-webkit-scrollbar {
+  width: 8px;
+  height: 5px;
+  background-color: #fff;
+}
+
+.community-details-sidebar::-webkit-scrollbar-thumb {
+  background-color: #073366;
+  border: 2px solid #555;
+  border-radius: 1em;
+}
+</style>
