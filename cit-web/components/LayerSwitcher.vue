@@ -84,12 +84,18 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 @Component
 export default class LayerSwitcher extends Vue {
   @Prop({ default: null, type: Array }) layers
-  menu = true
+  menu = false
   handleChange(e, data) {
     this.$emit('layerToggle', {
       visibility: e,
       layerName: data,
     })
+  }
+
+  mounted() {
+    setTimeout(() => {
+      this.menu = true
+    }, 1000)
   }
 }
 </script>
