@@ -150,7 +150,7 @@
       <li
         id="connectivity-percentages"
         :class="{
-          selected: anchor === 'incomplete-census-data',
+          selected: anchor === 'connectivity-percentages',
         }"
       >
         <p>
@@ -161,6 +161,29 @@
             >National Broadband Data</a
           >. For communities that have no defined municipal boundary, a 25km
           circle is assumed as the area to consider served.
+        </p>
+        <a href="#connectivity-percentages"
+          ><v-icon>mdi-link</v-icon> Permalink</a
+        >
+      </li>
+      <li
+        id="median-income"
+        :class="{
+          selected: anchor === 'median-income',
+        }"
+      >
+        <p>
+          Median income data from the Stats Canada web service are used to
+          represent the income in communities enclosed in each census
+          subdivision. When taken in aggregate on various reports, this means
+          the average income shown is not the population-weighted average for
+          all people included in the community (although that would be
+          preferable). It is the average of median community incomes, loaded
+          from
+          <a
+            href="https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=1110001201"
+            >this field</a
+          >.
         </p>
         <a href="#connectivity-percentages"
           ><v-icon>mdi-link</v-icon> Permalink</a
@@ -204,9 +227,6 @@ export default class DataFootnotes extends Vue {
   padding: 0.5em;
 }
 .container > ol > li {
-  margin-bottom: 25px;
-}
-.container>ol>li {
   margin-bottom: 25px;
 }
 </style>
