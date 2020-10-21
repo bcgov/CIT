@@ -50,6 +50,7 @@
     >
       <ExploreToolbar
         class="elevation-5 explore-toolbar"
+        :map-view="showMap"
         @change="handleViewChange"
       ></ExploreToolbar>
       <v-scroll-x-transition>
