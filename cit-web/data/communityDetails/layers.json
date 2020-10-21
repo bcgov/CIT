@@ -13,7 +13,8 @@
   {
     "layerName": ["municipalities", "municipalities-blur"],
     "layerLabel": "Municipal boundaries",
-    "legendComponent": "Municipal"
+    "legendComponent": "Municipal",
+    "on": true
   },
   {
     "layerName": ["census", "census-label"],
