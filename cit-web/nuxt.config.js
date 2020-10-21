@@ -71,7 +71,13 @@ export default {
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
    */
-  plugins: ['~/plugins/nuxt-axios-port.js'],
+  plugins: [
+    '~/plugins/nuxt-axios-port.js',
+    {
+      src: '~/plugins/vue-clipboard.js',
+      mode: 'client',
+    },
+  ],
   /*
    ** Auto import components
    ** See https://nuxtjs.org/api/configuration-components

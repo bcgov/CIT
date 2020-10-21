@@ -29,14 +29,7 @@
 <script>
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import isEmpty from 'lodash/isEmpty'
-import MenuFilter from '~/components/Explore/Filters/MenuFilter'
-import Wildfire from '~/components/Explore/Filters/Wildfire'
-import Tsunami from '~/components/Explore/Filters/Tsunami'
-@Component({
-  MenuFilter,
-  Wildfire,
-  Tsunami,
-})
+@Component()
 export default class EmergencyRisk extends Vue {
   @Prop({ default: false, type: Boolean }) disabled
   title = 'Emergency Risk'
