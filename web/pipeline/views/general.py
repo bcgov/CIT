@@ -22,6 +22,7 @@ from pipeline.serializers.general import (
     LocationDistanceSerializer,
     ServiceListSerializer,
     RegionalDistrictSerializer,
+    RegionalDistrictDetailSerializer,
     SchoolDistrictSerializer,
     DataSourceSerializer,
     CivicLeaderSerializer,
@@ -47,8 +48,8 @@ class CommunityViewSet(viewsets.GenericViewSet):
         return self.get_paginated_response(serializer.data)
 
     def retrieve(self, request, pk):
-        user = get_object_or_404(self.get_queryset(), pk=pk)
-        serializer = CommunityDetailSerializer(user)
+        community = get_object_or_404(self.get_queryset(), pk=pk)
+        serializer = CommunityDetailSerializer(community)
         return Response(serializer.data)
 
     @action(detail=False)
@@ -151,6 +152,11 @@ class RegionalDistrictViewSet(viewsets.GenericViewSet):
         queryset = self.paginate_queryset(self.get_queryset())
         serializer = RegionalDistrictSerializer(queryset, many=True)
         return self.get_paginated_response(serializer.data)
+
+    def retrieve(self, request, pk):
+        regional_district = get_object_or_404(self.get_queryset(), pk=pk)
+        serializer = RegionalDistrictDetailSerializer(regional_district)
+        return Response(serializer.data)
 
     @action(detail=False)
     def communities(self, request):
