@@ -4,10 +4,14 @@
       <div class="pa-8">
         <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
         <ExploreFilterHeader></ExploreFilterHeader>
+        <v-alert v-if="filterError" type="error" dense outlined dismissible>
+          There was an error
+        </v-alert>
         <ExploreFilters
           :disabled="loadingResults || $fetchState.pending"
           @filtered="handleFiltered"
           @loading="handleLoading"
+          @error="handleFilterError"
         ></ExploreFilters>
       </div>
       <v-divider></v-divider>
@@ -93,6 +97,7 @@ const exploreStore = namespace('explore')
 
 @Component()
 export default class Explore extends Vue {
+  filterError = false
   groupedCommunities = null
   filteredCommunities = null
   boundedCommunities = null
@@ -109,6 +114,10 @@ export default class Explore extends Vue {
   groupedCommunities = {}
   communityList = []
   regionalDistricts = []
+
+  handleFilterError(data) {
+    this.filterError = data
+  }
 
   async fetch() {
     const results = await Promise.all([
