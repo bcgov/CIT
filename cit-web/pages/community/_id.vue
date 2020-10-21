@@ -392,6 +392,12 @@ export default class CommunityDetail extends Vue {
     })
   }
 
+  created() {
+    this.$root.$on('reportClose', () => {
+      this.reportClose()
+    })
+  }
+
   get parentCommunity() {
     return this.communityDetails.parent_community
   }

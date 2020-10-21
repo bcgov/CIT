@@ -187,6 +187,20 @@ export default class Explore extends Vue {
     return 'fixed'
   }
 
+  created() {
+    this.$root.$on('reportClose', () => {
+      this.closeReport()
+    })
+  }
+
+  closeReport() {
+    const query = Object.assign({}, this.$route.query, { tab: 'Reports' })
+    delete query.report
+    this.$router.push({
+      query,
+    })
+  }
+
   mounted() {
     const rid = this.$route.query.rid
     rid && this.$root.$emit('setRegion', rid)
@@ -269,7 +283,6 @@ export default class Explore extends Vue {
 
   handleViewChange(data) {
     const query = Object.assign({}, this.$route.query, { tab: data })
-    console.log(query)
     this.$router.push({
       query,
     })

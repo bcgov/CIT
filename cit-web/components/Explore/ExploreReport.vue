@@ -14,12 +14,10 @@
         :style="`height: 70vw;`"
         style="margin: 0 auto;"
       ></div>
-      <div class="float-right mb-5">
-        <v-btn
-          color="primary"
-          :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
-          >Give Feedback</v-btn
-        >
+      <div class="d-flex justify-end ml-2">
+        <FeedbackButton></FeedbackButton>
+        <ShareButton class="ml-2"></ShareButton>
+        <CloseReportButton class="ml-2"></CloseReportButton>
       </div>
     </div>
   </div>
