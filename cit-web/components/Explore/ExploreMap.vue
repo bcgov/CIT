@@ -30,6 +30,7 @@
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
 import ControlFactory from '~/utils/map'
 import { getPopulation, getCommunityGeoJSON } from '~/api/cit-api/'
+import exploreLayers from '~/data/explore/layers.json'
 @Component
 export default class Explore extends Vue {
   @Prop({ default: null, type: String }) mapboxApiKey
@@ -85,50 +86,7 @@ export default class Explore extends Vue {
   communityPopUpId = null
   communityPopUpPopulation = null
   popUpInstance = null
-  layerSwitcher = [
-    {
-      layerName: 'locations',
-      layerLabel: 'Locations',
-      legendComponent: 'WildfireLegend',
-      on: true,
-    },
-    {
-      layerName: 'wildfire-zones',
-      layerLabel: 'Wildfire Risk Zones',
-      legendComponent: 'WildfireLegend',
-    },
-    {
-      layerName: 'bc-roads',
-      layerLabel: 'Roads with broadband',
-      legendComponent: 'InternetSpeed',
-      on: true,
-    },
-    {
-      layerName: ['municipalities', 'municipalities-blur'],
-      layerLabel: 'Municipal boundaries',
-      legendComponent: 'Municipal',
-    },
-    {
-      layerName: ['census', 'census-label'],
-      layerLabel: 'Census Subdivisions',
-      legendComponent: 'CensusLegend',
-    },
-    {
-      layerName: ['reserves', 'reserves-label'],
-      layerLabel: 'Reserves',
-      legendComponent: 'ReservesLegend',
-    },
-    {
-      layerName: [
-        'regional-districts-blur',
-        'regional-districts',
-        'regional-districts-label',
-      ],
-      layerLabel: 'Regional Districts',
-      legendComponent: 'RegionalLegend',
-      on: true,
-    },
-  ]
+  layerSwitcher = exploreLayers
 
   created() {
     this.map = null

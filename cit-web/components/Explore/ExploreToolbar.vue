@@ -1,10 +1,16 @@
 <template>
   <div>
     <v-toolbar>
-      <v-btn class="text-capitalize" @click="$emit('change', 'Map')"
+      <v-btn
+        :disabled="mapView"
+        class="text-capitalize"
+        @click="$emit('change', 'Map')"
         >View Map</v-btn
       >
-      <v-btn class="text-capitalize" @click="$emit('change', 'Reports')"
+      <v-btn
+        :disabled="!mapView"
+        class="text-capitalize"
+        @click="$emit('change', 'Reports')"
         >View Reports</v-btn
       >
     </v-toolbar>
@@ -12,8 +18,10 @@
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 @Component({})
-export default class Explore extends Vue {}
+export default class Explore extends Vue {
+  @Prop() mapView
+}
 </script>

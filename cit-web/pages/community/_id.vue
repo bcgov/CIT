@@ -12,6 +12,23 @@
       <h6 class="mt-10 text-body-1 font-weight-bold">Loading Community</h6>
     </div>
     <div v-else>
+      <CommunityDetailReportModal
+        :show="!!report"
+        :place-name="placeName"
+        :community-details="communityDetails"
+        :report="report"
+        @traverse="reportOpen"
+        @close="reportClose"
+      >
+      </CommunityDetailReportModal>
+
+      <CommunityDetailsRawData
+        :grouped-census="groupedCensus"
+        :place-name="placeName"
+        :show="showRawData"
+        @close="showRawData = false"
+      ></CommunityDetailsRawData>
+
       <div v-if="error" class="pt-10">
         <v-alert type="info" class="primary--text elevation-5">
           Oops, something went wrong! {{ error.message }}
@@ -19,171 +36,208 @@
       </div>
 
       <div v-else>
-        <div v-if="isCommunityEmpty" class="d-flex pt-10 justify-center">
-          <v-alert type="info" class="primary--text elevation-5">
-            Sorry, we could not find a community with that ID.
-          </v-alert>
-        </div>
-        <div v-else>
-          <v-container v-if="parentCommunity" fluid>
-            <v-alert type="info" class="primary--text">
-              This community is within {{ parentCommunity.name }}'s boundary.
-              Consider
-              <nuxt-link
-                :to="`/community/${parentCommunity.id}`"
-                class="font-weight-bold"
-                >viewing the {{ parentCommunity.name }} page instead.</nuxt-link
-              >
+        <div v-if="!isMobile">
+          <div v-if="isCommunityEmpty" class="d-flex pt-10 justify-center">
+            <v-alert type="info" class="primary--text elevation-5">
+              Sorry, we could not find a community with that ID.
             </v-alert>
-          </v-container>
-          <v-container v-if="!incorporated" fluid class="mt-2">
-            <v-alert type="info" class="primary--text">
-              This is an unincorporated community, so demographic information is
-              only available for the containing census subdivision.
-            </v-alert>
-          </v-container>
+          </div>
+          <div v-else>
+            <v-container v-if="parentCommunity" fluid>
+              <v-alert type="info" class="primary--text">
+                This community is within {{ parentCommunity.name }}'s boundary.
+                Consider
+                <nuxt-link
+                  :to="`/community/${parentCommunity.id}`"
+                  class="font-weight-bold"
+                  >viewing the {{ parentCommunity.name }} page
+                  instead.</nuxt-link
+                >
+              </v-alert>
+            </v-container>
+            <v-container v-if="!incorporated" fluid class="mt-2">
+              <v-alert type="info" class="primary--text">
+                This is an unincorporated community, so demographic information
+                is only available for the containing census subdivision.
+              </v-alert>
+            </v-container>
 
-          <div class="comm-details-content">
-            <v-container fluid>
-              <v-row no-gutters>
-                <v-col :cols="12" class="elevation-5">
-                  <CommunityDetailsHeader
-                    :rid="communityDetails.regional_district"
-                    :regional-district="regionalDistrictName"
-                    :census-data="censusSubdivision"
-                    :community-details="communityDetails"
-                    :place-name="placeName"
-                    class="py-8 px-5"
-                    @go="viewReports"
-                  ></CommunityDetailsHeader>
-                  <v-divider></v-divider>
-                  <div class="map-container">
-                    <Sidebar
-                      :district="regionalDistrictName"
-                      :place-name="placeName"
-                      :grouped-locations="filteredLocations"
-                      :grouped-census="groupedCensus"
+            <div class="comm-details-content">
+              <v-container fluid>
+                <v-row no-gutters>
+                  <v-col :cols="12" class="elevation-5">
+                    <CommunityDetailsHeader
                       :rid="communityDetails.regional_district"
-                      @expand="handleExpand"
-                      @viewReports="viewReports"
-                    >
-                      <div class="pl-4 pr-4">
-                        <p class="text-center pa-0 ma-0 text-body-1 mt-3">
-                          {{ assetModeText }}
-                          <a
-                            v-if="assetMode === 'driving'"
-                            href="/footnotes#community-detail-asset-driving-distance"
-                            target="_blank"
-                            >*</a
-                          >
-                        </p>
-                        <AssetSlider
-                          v-if="assetMode === 'driving'"
-                          @mouseup="handleEnd"
-                        ></AssetSlider>
-                        <div class="text-center">
-                          <v-btn
-                            small
-                            color="primary"
-                            class="text-body-1 text-capitalize mt-2"
-                            @click="handleAssetModeChange"
-                          >
-                            <v-icon small class="mr-2">{{
-                              assetModeButtonIcon
-                            }}</v-icon>
-                            {{ assetModeButtonText }}</v-btn
-                          >
-                        </div>
-                      </div>
-                    </Sidebar>
-                    <CommunityDetailsMap
-                      :place-name="placeName"
+                      :regional-district="regionalDistrictName"
+                      :census-data="censusSubdivision"
                       :community-details="communityDetails"
-                    ></CommunityDetailsMap>
-                  </div>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col col="12">
-                  <div class="mt-10">
-                    <CommunityDetailsSectionHeader
-                      title="Compare"
-                      subtitle="Choose a report to view community data within that topic,
+                      :place-name="placeName"
+                      class="py-8 px-5"
+                      @go="viewReports"
+                    ></CommunityDetailsHeader>
+                    <v-divider></v-divider>
+                    <div class="map-container">
+                      <Sidebar
+                        :district="regionalDistrictName"
+                        :place-name="placeName"
+                        :grouped-locations="filteredLocations"
+                        :grouped-census="groupedCensus"
+                        :rid="communityDetails.regional_district"
+                        @expand="handleExpand"
+                        @viewReports="viewReports"
+                      >
+                        <div class="pl-4 pr-4">
+                          <p class="text-center pa-0 ma-0 text-body-1 mt-3">
+                            {{ assetModeText }}
+                            <a
+                              v-if="assetMode === 'driving'"
+                              href="/footnotes#community-detail-asset-driving-distance"
+                              target="_blank"
+                              >*</a
+                            >
+                          </p>
+                          <AssetSlider
+                            v-if="assetMode === 'driving'"
+                            @mouseup="handleEnd"
+                          ></AssetSlider>
+                          <div class="text-center">
+                            <v-btn
+                              small
+                              color="primary"
+                              class="text-body-1 text-capitalize mt-2"
+                              @click="handleAssetModeChange"
+                            >
+                              <v-icon small class="mr-2">{{
+                                assetModeButtonIcon
+                              }}</v-icon>
+                              {{ assetModeButtonText }}</v-btn
+                            >
+                          </div>
+                        </div>
+                      </Sidebar>
+                      <CommunityDetailsMap
+                        :place-name="placeName"
+                        :community-details="communityDetails"
+                      ></CommunityDetailsMap>
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col col="12">
+                    <div class="mt-10">
+                      <CommunityDetailsSectionHeader
+                        title="Compare"
+                        subtitle="Choose a report to view community data within that topic,
                     and compare to the average for the regional district, or all
                     of BC."
-                    ></CommunityDetailsSectionHeader>
+                      ></CommunityDetailsSectionHeader>
 
-                    <v-alert
-                      v-if="hasHiddenReports"
-                      type="info"
-                      dismissible
-                      class="primary--text elevation-5"
-                    >
-                      This community has incomplete census data. The charts in
-                      the reports reflect available census data and some reports
-                      have been hidden.
-                      <a
-                        href="/footnotes#incomplete-census-data"
-                        target="_blank"
-                        >Learn more.</a
+                      <v-alert
+                        v-if="hasHiddenReports"
+                        type="info"
+                        dismissible
+                        class="primary--text elevation-5"
                       >
-                    </v-alert>
-                  </div>
-                </v-col>
-              </v-row>
-
-              <ReportSection
-                ref="reportSection"
-                :place-name="placeName"
-                :community="communityDetails"
-                :report-cards="reportCards"
-                :cid="communityDetails.id"
-                :reports-to-hide="communityDetails.hidden_report_pages"
-                @reportOpen="reportOpen"
-                @reportClose="reportClose"
-              ></ReportSection>
-
-              <v-row>
-                <v-col col="12">
-                  <div class="mt-10">
-                    <CommunityDetailsSectionHeader
-                      title="Miscellaneous"
-                      subtitle="Other items that may be of interest"
-                    ></CommunityDetailsSectionHeader>
-
-                    <div class="mt-5">
-                      <v-btn color="primary" @click="showRawData = true"
-                        >View Raw Data
-                        <v-icon right dark>mdi-database</v-icon>
-                      </v-btn>
-                      <v-btn
-                        class="ml-2"
-                        :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
-                        >Give Feedback</v-btn
-                      >
+                        This community has incomplete census data. The charts in
+                        the reports reflect available census data and some
+                        reports have been hidden.
+                        <a
+                          href="/footnotes#incomplete-census-data"
+                          target="_blank"
+                          >Learn more.</a
+                        >
+                      </v-alert>
                     </div>
-                  </div>
-                </v-col>
-              </v-row>
-            </v-container>
+                  </v-col>
+                </v-row>
+
+                <ReportSection
+                  ref="reportSection"
+                  :place-name="placeName"
+                  :community="communityDetails"
+                  :report-cards="reportCards"
+                  :cid="communityDetails.id"
+                  :reports-to-hide="communityDetails.hidden_report_pages"
+                  @reportOpen="reportOpen"
+                  @reportClose="reportClose"
+                ></ReportSection>
+
+                <v-row>
+                  <v-col col="12">
+                    <div class="mt-10">
+                      <CommunityDetailsSectionHeader
+                        title="Miscellaneous"
+                        subtitle="Other items that may be of interest"
+                      ></CommunityDetailsSectionHeader>
+
+                      <div class="mt-5">
+                        <v-btn color="primary" @click="showRawData = true"
+                          >View Raw Data
+                          <v-icon right dark>mdi-database</v-icon>
+                        </v-btn>
+                        <v-btn
+                          class="ml-2"
+                          :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
+                          >Give Feedback</v-btn
+                        >
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </div>
           </div>
-
-          <CommunityDetailReportModal
-            :show="!!report"
-            :place-name="placeName"
-            :community-details="communityDetails"
-            :report="report"
-            @traverse="reportOpen"
-            @close="reportClose"
-          >
-          </CommunityDetailReportModal>
-
-          <CommunityDetailsRawData
-            :grouped-census="groupedCensus"
-            :place-name="placeName"
-            :show="showRawData"
-            @close="showRawData = false"
-          ></CommunityDetailsRawData>
+        </div>
+        <div v-else>
+          <div class="mobile-map-container">
+            <CommunityDetailsMap
+              :place-name="placeName"
+              :community-details="communityDetails"
+            ></CommunityDetailsMap>
+          </div>
+          <CommunityDetailsFooter
+            @openSheet="sheetOpen = true"
+          ></CommunityDetailsFooter>
+          <CommunityDetailsBottomSheet :sheet-open="sheetOpen">
+            <Sidebar
+              :district="regionalDistrictName"
+              :place-name="placeName"
+              :grouped-locations="filteredLocations"
+              :grouped-census="groupedCensus"
+              :rid="communityDetails.regional_district"
+              @expand="handleExpand"
+              @viewReports="viewReports"
+            >
+              <div class="pl-4 pr-4">
+                <p class="text-center pa-0 ma-0 text-body-1 mt-3">
+                  {{ assetModeText }}
+                  <a
+                    v-if="assetMode === 'driving'"
+                    href="/footnotes#community-detail-asset-driving-distance"
+                    target="_blank"
+                    >*</a
+                  >
+                </p>
+                <AssetSlider
+                  v-if="assetMode === 'driving'"
+                  @mouseup="handleEnd"
+                ></AssetSlider>
+                <div class="text-center">
+                  <v-btn
+                    small
+                    color="primary"
+                    class="text-body-1 text-capitalize mt-2"
+                    @click="handleAssetModeChange"
+                  >
+                    <v-icon small class="mr-2">{{
+                      assetModeButtonIcon
+                    }}</v-icon>
+                    {{ assetModeButtonText }}</v-btn
+                  >
+                </div>
+              </div>
+            </Sidebar>
+          </CommunityDetailsBottomSheet>
         </div>
       </div>
     </div>
@@ -219,12 +273,18 @@ export default class CommunityDetail extends Vue {
     }
   }
 
+  layout(context) {
+    return 'default'
+  }
+
   showRawData = false
   isHydrated = false
   assetMode = 'driving'
   assetRange = [0, 50]
   communityDetails = {}
   censusSubdivision = {}
+
+  sheetOpen = false
 
   @Watch('communityDetails')
   async getCensus() {
@@ -467,6 +527,16 @@ export default class CommunityDetail extends Vue {
   max-width: 360px;
   background-color: white;
   overflow-y: auto;
+}
+
+.mobile-map-container {
+  position: fixed;
+  top: 66px;
+  bottom: 40px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 4;
 }
 @media screen and (max-width: 1400px) {
   .community-new-container {
