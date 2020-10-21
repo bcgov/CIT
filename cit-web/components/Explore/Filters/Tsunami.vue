@@ -29,6 +29,11 @@ export default class Tsunami extends Vue {
 
   tsunamiZones = [
     {
+      value: 'null',
+      title: 'N/A',
+      state: null,
+    },
+    {
       value: 'A',
       title: 'A (moderate)',
       state: null,
