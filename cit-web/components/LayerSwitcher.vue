@@ -50,6 +50,16 @@
               class="mr-2"
             ></DynamicLegend>
             <label :for="layer.layerLabel">{{ layer.layerLabel }}</label>
+            <span v-if="layer.layerName === 'bc-roads'">
+              <v-tooltip bottom color="primary" class="rounded-lg">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn small fab icon v-bind="attrs" v-on="on">
+                    <v-icon color="primary">mdi-information</v-icon>
+                  </v-btn>
+                </template>
+                Speeds indicate download/upload speed in mbps.
+              </v-tooltip>
+            </span>
 
             <v-spacer></v-spacer>
             <v-switch
