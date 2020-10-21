@@ -444,6 +444,14 @@ def serialize_regional_district_fields(regional_district):
             },
         },
         {
+            "key": "area",
+            "value": commaize(census_aggregate_values["area__avg"]),
+            "units": " km\u00B2",
+            "metadata": {
+                "name": "Area",
+            },
+        },
+        {
             "key": "employment_rate",
             "value": commaize(employment_rate),
             "units": " %",
