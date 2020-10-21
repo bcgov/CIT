@@ -1,21 +1,32 @@
 <template>
   <div>
-    <v-toolbar>
+    <v-sheet
+      class="d-flex align-center elevation-5 px-5 py-2"
+      :class="{ 'flex-column': isMobile }"
+    >
       <v-spacer></v-spacer>
-      <div class="mr-2">Choose another report</div>
-      <div style="max-width: 250px;">
+      <div class="mr-2" :class="{ 'mt-2': isMobile, 'mr-0': isMobile }">
+        Choose another report
+      </div>
+      <div class="report-traverse-select" :class="{ 'my-5': isMobile }">
         <v-select
           v-model="selected"
+          class="ma-0 mt-0 pa-0"
           hide-details
           :items="items"
           item-value="name"
           item-text="name"
         ></v-select>
       </div>
-      <v-btn class="ml-3" color="primary" @click="$emit('traverse', selected)"
+      <v-btn
+        :block="isMobile"
+        class="ml-3"
+        :class="{ 'ml-0': isMobile }"
+        color="primary"
+        @click="handleClick"
         >Go</v-btn
       >
-    </v-toolbar>
+    </v-sheet>
   </div>
 </template>
 
@@ -26,5 +37,35 @@ import reportPages from '~/data/communityDetails/reportPages.json'
 export default class ReportTraverse extends Vue {
   items = reportPages
   selected = 'Housing'
+
+  isHydrated = false
+  get isMobile() {
+    if (this.isHydrated === true) {
+      return this.$vuetify.breakpoint.width < 559
+    } else {
+      return false
+    }
+  }
+
+  handleClick() {
+    this.$root.$emit('reportModalToTop')
+    this.$emit('traverse', this.selected)
+  }
+
+  mounted() {
+    this.isHydrated = true
+  }
 }
 </script>
+<style lang="scss" scoped>
+.report-traverse-select {
+  max-width: 250px;
+}
+
+@media screen and (max-width: 559px) {
+  .report-traverse-select {
+    max-width: auto !important;
+    width: 100;
+  }
+}
+</style>

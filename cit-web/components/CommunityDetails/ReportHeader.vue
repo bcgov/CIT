@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class="d-flex align-center pl-10 pt-5">
+    <div class="d-flex align-center pl-10 pt-5 report-header-container">
       <div>
         <h3 class="text-h4 font-weight-bold">{{ placeName }} {{ name }}</h3>
         <p style="max-width: 400px;" class="mt-5">{{ description }}</p>
       </div>
       <v-spacer></v-spacer>
-      <div style="align-self: flex-end;">
+      <div style="align-self: flex-end;" class="report-header-image-container">
         <v-img
           :src="require(`~/assets/images/reports/headers/${image}`)"
           contain
@@ -31,3 +31,14 @@ export default class ReportHeader extends Vue {
   @Prop({ default: null, type: String }) image
 }
 </script>
+<style lang="scss" scoped>
+@media screen and (max-width: 700px) {
+  .report-header-image-container {
+    display: none;
+  }
+
+  .report-header-container {
+    padding: 20px !important;
+  }
+}
+</style>

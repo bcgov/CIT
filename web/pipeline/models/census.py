@@ -9,7 +9,7 @@ class CensusSubdivision(models.Model):
     geom = models.MultiPolygonField(srid=4326, null=True)
     geom_simplified = models.MultiPolygonField(srid=4326, null=True)
 
-    # "1.1.2", "Population, 2016"
+    # "1.1.1", "Population, 2016"
     population = models.IntegerField(null=True)
     # "1.1.3", "Population percentage change, 2011 to 2016"
     population_percentage_change = models.FloatField(null=True)
@@ -240,7 +240,7 @@ class CensusSubdivision(models.Model):
     lang_3_count = models.IntegerField(null=True)
 
     # Total - Income statistics in 2015 for the population aged 15 years and over in
-    # private households - 100% dataCensus data footnote
+    # private households - 100% data
     # "Income", 12002, "4.1.1.1.1", 2, "    Median total income in 2015 among recipients ($)"
     median_total_income = models.FloatField(null=True)
     median_total_income_m = models.FloatField(null=True)
@@ -481,6 +481,8 @@ class CensusSubdivision(models.Model):
     unemployed = models.IntegerField(null=True)
     # "Labour", 33004, "11.3.1.2.2", 2, "    Self-employed", 171, null, 375.0, null, 210.0, null, 160.0, null],
     self_employed = models.IntegerField(null=True)
+    # "Labour", 31006, "11.1.3", 0, "Employment rate",
+    employment_rate = models.FloatField(null=True)
 
     # Occupation - National Occupational Classification (NOC) 2016
     # "Labour", 34003, "11.4.1.2.1", 2, "    0 Management occupations"
@@ -602,3 +604,8 @@ class CensusSubdivision(models.Model):
         if self.get_percentage_of_null_fields() > 0.25:
             return POWERBI_HIDDEN_DETAIL_PAGES
         return []
+
+    def get_pct_post_secondary(self):
+        if self.edu_2 and self.edu_field_total:
+            return (self.edu_2 / self.edu_field_total) * 100
+        return None

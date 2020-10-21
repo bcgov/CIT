@@ -18,26 +18,27 @@
         <v-col sm="12">
           <CompareSelect
             ref="compareSelect"
+            :value="selectionMode"
+            :selections="Object.values(compareStates)"
             @changed="handleSelectChange"
           ></CompareSelect>
-
           <CompareAutocomplete
             v-show="showAutoComplete"
             ref="compareAutoComplete"
-            :mode="mode"
             :items="items"
             item-value="id"
             :item-text="itemText"
             :multiple="true"
             class="mt-4"
-            @change="handleChange"
+            :value="selected"
+            @update="handleUpdate"
           ></CompareAutocomplete>
         </v-col>
       </v-row>
     </v-container>
 
     <div v-if="cidsEmpty">
-      <v-alert type="info">
+      <v-alert type="info" class="primary--text elevation-5">
         Please select a community, regional district or All of BC.
       </v-alert>
     </div>
@@ -66,6 +67,8 @@ import CompareAutocomplete from '~/components/CompareAutocomplete'
 import CompareSelect from '~/components/CompareSelect'
 import Report from '~/components/CommunityDetails/Report'
 const commModule = namespace('communities')
+const compareStore = namespace('compare')
+
 @Component({
   CompareAutocomplete,
   Report,
@@ -73,20 +76,68 @@ const commModule = namespace('communities')
 })
 export default class Compare extends Vue {
   @Prop({ default: 'ReportSection6249eac6d911d2930de3', type: String }) pid
-  @Prop({ default: 'Average Of BC', type: String }) initMode
   @Prop({ default: null, type: Number }) rid
   @Prop({ default: true, type: Boolean }) loader
   @Prop({ default: '', type: String }) height
   @Prop({ default: '', type: String }) width
+  @Prop({
+    default: () => {
+      return {
+        BC: 'Average Of B.C.',
+        REGION: 'Average Of Regional Districts',
+        COMMUNITY: 'Average Of Communities',
+      }
+    },
+    type: Object,
+  })
+  compareStates
+
   @commModule.Getter('getCommunities') communities
   @commModule.Getter('getRegionalDistricts') regionalDistricts
+  @compareStore.Mutation('setCompare') setCompare
 
   loading = true
+  selectionMode = 'Average Of Regional Districts'
+  selected = []
+
+  handleUpdate(data) {
+    this.selected = data
+  }
+
+  mounted() {
+    this.setInitialRegion()
+  }
+
+  get selectedNames() {
+    return this.selected.map((s) => s[this.itemText])
+  }
+
+  @Watch('selectedNames')
+  setCompare
+
+  @Watch('selectionMode')
+  handleModeChange() {
+    this.selected = []
+    this.setInitialRegion()
+  }
+
+  setInitialRegion() {
+    if (this.rid && this.selectionMode === this.compareStates.REGION) {
+      const rd = this.regionalDistricts.find((rd) => rd.id === this.rid)
+      if (rd) {
+        this.selected = [rd]
+      }
+    }
+  }
+
+  get showAutoComplete() {
+    return this.selectionMode !== this.compareStates.BC
+  }
 
   get itemText() {
-    if (this.mode === 'Communities') {
+    if (this.selectionMode === this.compareStates.COMMUNITY) {
       return 'place_name'
-    } else if (this.mode === 'Average Of Regional Districts') {
+    } else if (this.selectionMode === this.compareStates.REGION) {
       return 'name'
     } else {
       return ''
@@ -94,9 +145,9 @@ export default class Compare extends Vue {
   }
 
   get items() {
-    if (this.mode === 'Communities') {
+    if (this.selectionMode === this.compareStates.COMMUNITY) {
       return this.communities
-    } else if (this.mode === 'Average Of Regional Districts') {
+    } else if (this.selectionMode === this.compareStates.REGION) {
       return this.regionalDistricts
     } else {
       return []
@@ -107,70 +158,33 @@ export default class Compare extends Vue {
     return this.communities.map((c) => c.id.toString())
   }
 
-  get showAutoComplete() {
-    return this.mode !== 'Average Of BC'
-  }
-
   get cidsEmpty() {
-    return this.cids.length === 0
+    return this.cids?.length === 0
   }
 
-  cids = []
-
-  mode = 'Average Of BC'
-
-  @Watch('mode')
-  handleModeChange(mode) {
-    if (mode !== 'Average Of BC') {
-      const compareAutoComplete = this.$refs.compareAutoComplete
-      compareAutoComplete.handleUpdate()
-    }
-  }
-
-  remove(item) {
-    const index = this.autocomplete.indexOf(item.id)
-    if (index >= 0) this.autocomplete.splice(index, 1)
-  }
-
-  handleChange(data) {
-    let cids = []
-    if (this.mode === 'Communities') {
-      cids = data.map((cid) => cid.toString())
-    } else if (this.mode === 'Average Of Regional Districts') {
+  get cids() {
+    if (this.selectionMode === this.compareStates.BC) {
+      return this.allCids
+    } else if (this.selectionMode === this.compareStates.REGION) {
       let temp = []
-      data.map((rid) => {
+      this.selected.map((rd) => {
         temp = temp.concat(
-          this.communities.filter((c) => c.regional_district === rid)
+          this.communities.filter((c) => c.regional_district === rd.id)
         )
       })
-      cids = temp.map((c) => c.id.toString())
+      return temp.map((c) => c.id.toString())
+    } else {
+      return this.selected.map((cid) => cid.id.toString())
     }
-    this.cids = cids
   }
 
   handleSelectChange(data) {
-    this.mode = data
-    const compareAutoComplete = this.$refs.compareAutoComplete
-    compareAutoComplete.clear()
-    if (data === 'Average Of BC') {
-      this.cids = this.allCids
-    } else {
-      this.cids = []
-    }
+    this.selectionMode = data
   }
 
   handleLoaded() {
     this.loading = false
     this.$emit('loaded')
-  }
-
-  mounted() {
-    const compareSelect = this.$refs.compareSelect
-    const compareAutoComplete = this.$refs.compareAutoComplete
-    if (this.rid) {
-      compareSelect.setSelected('Average Of Regional Districts')
-      compareAutoComplete.setAutoComplete([this.rid])
-    }
   }
 }
 </script>

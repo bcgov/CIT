@@ -1,0 +1,39 @@
+[
+  {
+    "layerName": "wildfire-zones",
+    "layerLabel": "Wildfire Risk Zones",
+    "legendComponent": "WildfireLegend"
+  },
+  {
+    "layerName": "bc-roads",
+    "layerLabel": "Roads with broadband",
+    "legendComponent": "InternetSpeed",
+    "on": true
+  },
+  {
+    "layerName": ["municipalities", "municipalities-blur"],
+    "layerLabel": "Municipal boundaries",
+    "legendComponent": "Municipal",
+    "on": true
+  },
+  {
+    "layerName": ["census", "census-label"],
+    "layerLabel": "Census Subdivisions",
+    "legendComponent": "CensusLegend"
+  },
+  {
+    "layerName": ["reserves", "reserves-label"],
+    "layerLabel": "Reserves",
+    "legendComponent": "ReservesLegend"
+  },
+  {
+    "layerName": [
+      "regional-districts-blur",
+      "regional-districts",
+      "regional-districts-label"
+    ],
+    "layerLabel": "Regional Districts",
+    "legendComponent": "RegionalLegend",
+    "on": true
+  }
+]

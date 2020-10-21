@@ -24,18 +24,21 @@ services:
       - SCOPE=https://analysis.windows.net/powerbi/api/.default
   db:
     image: mdillon/postgis
+    env_file:
+      - .env
     volumes:
       - pg-data:/var/lib/postgresql/data
+      - ./db:/code
     networks:
       - back-tier
 
   nginx:
-    networks:
-      - back-tier
     image: nginx:1.18
     volumes:
       - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
       - static:/static
+    networks:
+      - back-tier
 
 volumes:
   pg-data:

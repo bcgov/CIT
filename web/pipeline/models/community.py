@@ -112,3 +112,11 @@ class Community(models.Model):
 
     def get_location_assets(self):
         return serialize_location_assets(self)
+
+    def get_mayor(self):
+        from pipeline.models.general import CivicLeader
+
+        try:
+            return CivicLeader.objects.get(community=self, position="mayor").get_name()
+        except CivicLeader.DoesNotExist:
+            return None

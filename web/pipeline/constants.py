@@ -1,17 +1,27 @@
 DATABC_PERMALINK_URL = 'https://catalogue.data.gov.bc.ca/dataset/{permalink_id}'
-API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/resource_show?id={dataset_resource_id}"
+DATABC_METADATA_API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/resource_show?id={dataset_resource_id}"
+OPENCA_METADATA_API_URL = 'https://open.canada.ca/data/api/action/package_show?id={dataset_resource_id}'
 SOURCE_INTERNAL = 'internal'
 SOURCE_DATABC = 'databc'
+SOURCE_STATSCAN = 'statscan'
+SOURCE_OPENCA = 'openca'
 
 DATA_SOURCE_TYPE_CHOICES = (
     ("csv", "CSV"),
-    ("api", "DATABC"),
+    ("api", "DATABC API"),
     ("shp", "SHP"),
 )
 
 DATA_SOURCE_CHOICES = (
     (SOURCE_INTERNAL, "Provided by Network BC team"),
     (SOURCE_DATABC, "BC Data Catalogue"),
+    (SOURCE_STATSCAN, "Statistics Canada"),
+    (SOURCE_OPENCA, "Open Government (Canada)"),
+)
+
+CIVIC_LEADER_CHOICES = (
+    ("mayor", "Mayor"),
+    ("councillor", "Councillor"),
 )
 
 LOCATION_TYPES = [

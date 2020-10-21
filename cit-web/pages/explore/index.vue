@@ -1,152 +1,79 @@
 <template>
-  <div
-    class="explore-container d-flex"
-    :class="{ 'explore-container-mobile': isMobile }"
-  >
-    <client-only>
-      <div v-if="isMobile">
-        <v-bottom-navigation
-          v-model="mobileNav"
-          absolute
-          class="explore-mobile-toolbar"
-        >
-          <v-btn value="Data" @click="handleTabChange('Data')">
-            <span>Data View</span>
-            <v-icon>mdi-text-box-outline</v-icon>
-          </v-btn>
-
-          <v-btn value="Map" @click="handleTabChange('Map')">
-            <span>Map View</span>
-            <v-icon>mdi-map</v-icon>
-          </v-btn>
-
-          <v-btn value="Reports" @click="handleTabChange('Reports')">
-            <span>Reports</span>
-            <v-icon>mdi-file-chart</v-icon>
-          </v-btn>
-        </v-bottom-navigation>
-      </div>
-    </client-only>
-    <div
-      v-show="!isMobile || (isMobile && activeTab === 'Data')"
-      class="explore-results-container elevation-5"
-    >
+  <div class="explore-container d-flex">
+    <div class="explore-results-container elevation-5">
       <div class="pa-8">
         <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
-        <div class="mt-4 mb-3 font-weight-bold d-flex align-center">
-          <p class="text-body-1 mb-0 d-flex align-center">
-            First, choose selection criteria from this data menu to generate a
-            list of matching regional districts and communities:
-            <v-tooltip bottom color="primary" class="rounded-lg">
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn icon v-bind="attrs" v-on="on">
-                  <v-icon color="primary">mdi-information</v-icon></v-btn
-                >
-              </template>
-              <span class="text-body-1"
-                >The data menu below will filter based on
-                <span class="font-weight-bold"
-                  >all communities in British Columbia</span
-                ></span
-              >
-            </v-tooltip>
-          </p>
-        </div>
+        <ExploreFilterHeader></ExploreFilterHeader>
         <ExploreFilters
-          :disabled="loadingResults"
+          :disabled="loadingResults || $fetchState.pending"
           @filtered="handleFiltered"
           @loading="handleLoading"
         ></ExploreFilters>
       </div>
       <v-divider></v-divider>
-      <div class="pa-8">
-        <h5 class="text-h6 mb-2">Selection Results:</h5>
-        <p>
-          This list of communities and regional districts match the criteria
-          selected above.
-        </p>
-
-        <div v-if="loadingResults" class="d-flex justify-center">
-          <v-progress-circular
-            :size="50"
-            color="primary"
-            indeterminate
-            class="my-5"
-          ></v-progress-circular>
+      <div>
+        <div v-if="$fetchState.pending">
+          <ExploreLoader></ExploreLoader>
         </div>
-        <div v-else>
-          <div class="d-flex justify-space-between pl-5 pr-5">
-            <div class="d-flex flex-column">
-              <div class="text-h4 font-weight-bold" style="color: #f8ba44;">
-                {{ numRegions }}
+        <div v-else class="pa-8">
+          <div>
+            <ExploreResultsHeader
+              :num-regions="numRegions"
+              :num-communities="numCommunities"
+              :loading-results="loadingResults"
+            ></ExploreResultsHeader>
+
+            <div class="mb-6 d-flex justify-center">
+              <div v-if="noCommunities" class="mt-6">
+                <ExploreNoResults></ExploreNoResults>
               </div>
-              <div>Regional Districts</div>
             </div>
-            <div class="d-flex flex-column">
-              <div class="text-h4 font-weight-bold" style="color: #2176d2;">
-                {{ numCommunities && numCommunities.toLocaleString() }}
-              </div>
-              <div>Communities</div>
-            </div>
+            <Results :grouped-communities="groupedCommunities"></Results>
           </div>
 
-          <div class="mb-6 d-flex justify-center">
-            <div v-if="noCommunities" class="mt-6">
-              <p
-                class="text-h4 light-blue--text text--darken-1 text-center font-weight-bold"
-              >
-                No Communities
-              </p>
-              <p class="text-body-1">
-                Try broadening your filters/search criteria
-              </p>
-            </div>
+          <div class="px-10 py-3">
+            <v-btn
+              :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
+              block
+              >Give Feedback</v-btn
+            >
           </div>
-          <Results :grouped-communities="groupedCommunities"></Results>
         </div>
       </div>
     </div>
     <div
-      v-show="!isMobile || (isMobile && activeTab !== 'Data')"
       ref="exploreMapContainer"
       class="explore-map-container"
       :class="{
         'explore-map-container-scroll': mapContainerScroll,
-        'explore-map-container-mobile': isMobile,
       }"
     >
-      <client-only>
-        <ExploreToolbar
-          v-if="!isMobile"
-          class="elevation-5 explore-toolbar"
-          :active-tab="activeTab"
-          :breadcrumbs="breadcrumbs"
-          @tabChange="handleTabChange"
-        ></ExploreToolbar>
-        <v-scroll-x-transition>
-          <ExploreMap
-            v-if="showMap"
-            ref="exploreMap"
-            class="explore-map"
-            :mapbox-api-key="$config.MAPBOX_API_KEY"
-            :cids="cidArray"
-            :cluster-communities="flatCommunities"
-            @moveend="handleMoveEnd"
-          ></ExploreMap>
+      <ExploreToolbar
+        class="elevation-5 explore-toolbar"
+        :map-view="showMap"
+        @change="handleViewChange"
+      ></ExploreToolbar>
+      <v-scroll-x-transition>
+        <ExploreMap
+          v-if="showMap"
+          ref="exploreMap"
+          class="explore-map"
+          :mapbox-api-key="$config.MAPBOX_API_KEY"
+          :cids="cidArray"
+          :cluster-communities="flatCommunities"
+          @moveend="handleMoveEnd"
+        ></ExploreMap>
 
-          <ExploreReportSection
-            v-else
-            :report-cards="reportCards"
-            :reports-to-hide="reportsToHide"
-            :report-to-show="reportToShow"
-            :communities-with-insufficient-data="
-              communitiesWithInsufficientData
-            "
-            :cids="cidArray"
-            @showReport="showReport"
-          ></ExploreReportSection>
-        </v-scroll-x-transition>
-      </client-only>
+        <ExploreReportSection
+          v-else
+          :report-cards="reportCards"
+          :reports-to-hide="reportsToHide"
+          :report-to-show="reportToShow"
+          :communities-with-insufficient-data="communitiesWithInsufficientData"
+          :cids="cidArray"
+          @showReport="showReport"
+        ></ExploreReportSection>
+      </v-scroll-x-transition>
     </div>
   </div>
 </template>
@@ -156,30 +83,15 @@ import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import groupBy from 'lodash/groupBy'
 import uniqBy from 'lodash/uniqBy'
 import isEmpty from 'lodash/isEmpty'
+import without from 'lodash/without'
 import intersectionBy from 'lodash/intersectionBy'
 import flatMap from 'lodash/flatMap'
-import ExploreMap from '~/components/Explore/ExploreMap.vue'
-import Results from '~/components/Explore/Results.vue'
-import ExploreFilters from '~/components/Explore/Filters/ExploreFilters.vue'
-import ExploreToolbar from '~/components/Explore/ExploreToolbar.vue'
-import ExploreReportSection from '~/components/Explore/ExploreReportSection'
 import ExplorePages from '~/data/explore/explorePages.json'
-
-import {
-  getRegionalDistricts,
-  getCommunityList,
-  getCommunityGeoJSON,
-} from '~/api/cit-api'
+import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
 import { getAuthToken } from '~/api/ms-auth-api/'
 const exploreStore = namespace('explore')
 
-@Component({
-  ExploreMap,
-  Results,
-  ExploreFilters,
-  ExploreToolbar,
-  ExploreReportSection,
-})
+@Component()
 export default class Explore extends Vue {
   groupedCommunities = null
   filteredCommunities = null
@@ -194,50 +106,31 @@ export default class Explore extends Vue {
 
   @exploreStore.Getter('getSearchAsMove') searchAsMove
 
-  get isMobile() {
-    return this.$vuetify.breakpoint.width < 1050
+  groupedCommunities = {}
+  communityList = []
+  regionalDistricts = []
+
+  async fetch() {
+    const results = await Promise.all([
+      getRegionalDistricts(),
+      getCommunityList(),
+      getAuthToken(),
+    ])
+    this.regionalDistricts = results[0].data.results
+    this.$store.commit(
+      'communities/setRegionalDistricts',
+      results[0].data.results
+    )
+    this.communityList = results[1].data
+    this.$store.commit('communities/setCommunities', results[1].data)
+    this.groupedCommunities = groupBy(results[1].data, 'regional_district')
+
+    const accessToken = results[2].data.access_token
+    this.$store.commit('msauth/setAccessToken', accessToken)
   }
 
   get noCommunities() {
     return isEmpty(this.groupedCommunities)
-  }
-
-  get breadcrumbs() {
-    const breadcrumbs = [
-      {
-        text: 'Home',
-        disabled: false,
-        to: {
-          path: `/`,
-        },
-      },
-      {
-        exact: true,
-        text: 'Explore',
-        disabled: false,
-        to: {
-          path: `/explore?tab=Map`,
-        },
-      },
-      {
-        exact: true,
-        text: this.activeTab,
-        disabled: false,
-        to: {
-          path: `/explore?tab=${this.activeTab}`,
-        },
-      },
-    ]
-
-    const reportName = this.$route.query.report
-    if (reportName) {
-      breadcrumbs.push({
-        text: reportName,
-        disabled: true,
-      })
-    }
-
-    return breadcrumbs
   }
 
   handleLoading(state) {
@@ -266,7 +159,7 @@ export default class Explore extends Vue {
   }
 
   get showMap() {
-    return this.activeTab === 'Map'
+    return this.activeTab === 'Map' || this.activeTab === null
   }
 
   get flatCommunities() {
@@ -278,7 +171,8 @@ export default class Explore extends Vue {
   }
 
   get numRegions() {
-    return Object.keys(this.groupedCommunities).length
+    return without(Object.keys(this.groupedCommunities), '25', '29', 'null')
+      .length
   }
 
   get numCommunities() {
@@ -296,55 +190,12 @@ export default class Explore extends Vue {
   mounted() {
     const rid = this.$route.query.rid
     rid && this.$root.$emit('setRegion', rid)
+    document.documentElement.classList.add('fixed-layout')
   }
 
-  async fetch({ store }) {
-    try {
-      const results = await Promise.all([getAuthToken()])
-      const accessToken = results[0].data.access_token
-      store.commit('msauth/setAccessToken', accessToken)
-    } catch (e) {
-      console.error(e)
-      store.commit('msauth/setIsError', true)
-    }
-  }
-
-  async asyncData({ store, $config }) {
-    try {
-      const results = await Promise.all([
-        getRegionalDistricts(),
-        getCommunityList(),
-        getCommunityGeoJSON(),
-      ])
-      const regionalDistricts = results[0].data.results
-      store.commit('communities/setRegionalDistricts', regionalDistricts)
-      const communityList = results[1].data
-      store.commit('communities/setCommunities', communityList)
-      const groupedCommunities = groupBy(communityList, 'regional_district')
-      const communityGeoJSON = results[2].data
-      store.commit('communities/setCommunityGeoJSON', communityGeoJSON)
-
-      return {
-        communityList,
-        regionalDistricts,
-        groupedCommunities,
-      }
-    } catch (e) {
-      console.error(e)
-      return {
-        communityList: [],
-        regionalDistricts: [],
-        groupedCommunities: [],
-      }
-    }
-  }
-
-  handleTabChange(tab) {
-    const query = Object.assign({}, this.$route.query)
-    query.tab = tab
-    this.$router.push({
-      query,
-    })
+  beforeRouteLeave(to, from, next) {
+    document.documentElement.classList.remove('fixed-layout')
+    next()
   }
 
   handleFiltered(e) {
@@ -415,8 +266,24 @@ export default class Explore extends Vue {
     })
     this.$refs.exploreMapContainer.scrollTop = 0
   }
+
+  handleViewChange(data) {
+    const query = Object.assign({}, this.$route.query, { tab: data })
+    console.log(query)
+    this.$router.push({
+      query,
+    })
+  }
 }
 </script>
+<style>
+.fixed-layout {
+  width: 100%;
+  height: 100%;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+</style>
 <style lang="scss" scoped>
 .explore-container {
   position: fixed;

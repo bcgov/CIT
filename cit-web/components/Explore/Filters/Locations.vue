@@ -35,7 +35,13 @@
 
       <div class="d-flex mt-5">
         <v-spacer></v-spacer>
-        <v-btn color="primary" small text @click="addLocation">
+        <v-btn
+          color="primary"
+          small
+          text
+          class="text-body-1 font-weight-medium"
+          @click="addLocation"
+        >
           <v-icon small class="mr-2">mdi-plus</v-icon>
           Add More
         </v-btn>
@@ -86,7 +92,6 @@ export default class Locations extends Vue {
   }
 
   handleSave() {
-    console.log(this.locationFilters.length)
     if (this.locationFilters.length > 1) {
       const invalidInputs = this.validateInputs()
       if (invalidInputs > 0) {
