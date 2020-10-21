@@ -7,6 +7,16 @@ import msal
 from django.core.cache import cache
 from django.http import JsonResponse
 
+import requests
+s = requests.Session()
+s.proxies = {}
+
+if "DJANGO_HTTP_PROXY" in os.environ:
+  s.proxies["http"] = os.environ.get("DJANGO_HTTP_PROXY")
+
+if "DJANGO_HTTPS_PROXY" in os.environ:
+  s.proxies["https"] = os.environ.get("DJANGO_HTTPS_PROXY")
+
 
 def get_access_token(request):
     '''Returns AAD token using MSAL'''
@@ -27,7 +37,8 @@ def get_access_token(request):
         authority = os.environ.get('AUTHORITY') + os.environ.get('TENANT_ID')
 
         clientapp = msal.ConfidentialClientApplication(
-            os.environ.get('CLIENT_ID'), client_credential=os.environ.get('CLIENT_SECRET'), authority=authority)
+            os.environ.get('CLIENT_ID'), client_credential=os.environ.get('CLIENT_SECRET'), authority=authority,
+            http_client=s)
 
         # Retrieve Access token from cache if available
         response = clientapp.acquire_token_silent(scopes=[os.environ.get('SCOPE')], account=None)
