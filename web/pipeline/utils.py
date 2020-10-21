@@ -627,7 +627,12 @@ def communities_advanced_search(query_params):
             query += "__{}".format(query_filter["operator"])
 
         if len(query_filter["value"]) == 1:
-            overall_query.append(Q(**{query: query_filter["value"][0]}))
+            if query_filter["value"][0] == "null":
+                query += "__isnull"
+                print("isnull", query)
+                overall_query.append(Q(**{query: True}))
+            else:
+                overall_query.append(Q(**{query: query_filter["value"][0]}))
         elif len(query_filter["value"]) > 1:
             query += "__in"
             overall_query.append(Q(**{query: query_filter["value"]}))
