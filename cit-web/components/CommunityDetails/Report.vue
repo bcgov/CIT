@@ -5,13 +5,14 @@
         {{ errorMessage }}
       </v-alert>
     </div>
-    <div
-      v-else
-      ref="reportContainer"
-      class="reportContainer"
-      :style="`height: ${height}px; width: ${width}px;`"
-      style="margin: 0 auto;"
-    ></div>
+    <div v-else>
+      <div
+        ref="reportContainer"
+        class="reportContainer"
+        :style="`height: ${height}px; width: ${width}px;`"
+        style="margin: 0 auto;"
+      ></div>
+    </div>
   </div>
 </template>
 

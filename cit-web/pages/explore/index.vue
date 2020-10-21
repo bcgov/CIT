@@ -328,7 +328,6 @@ export default class Explore extends Vue {
 
 .explore-map-container-scroll {
   overflow-y: auto;
-  height: auto;
 }
 .explore-results-container::-webkit-scrollbar-track,
 .explore-map-container-scroll::-webkit-scrollbar-track {

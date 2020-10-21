@@ -7,13 +7,21 @@
         {{ errorMessage }}
       </v-alert>
     </div>
-    <div
-      v-else
-      ref="reportContainer"
-      class="reportContainer"
-      :style="`height: 70vw;`"
-      style="margin: 0 auto;"
-    ></div>
+    <div v-else>
+      <div
+        ref="reportContainer"
+        class="reportContainer"
+        :style="`height: 70vw;`"
+        style="margin: 0 auto;"
+      ></div>
+      <div class="float-right mb-5">
+        <v-btn
+          color="primary"
+          :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
+          >Give Feedback</v-btn
+        >
+      </div>
+    </div>
   </div>
 </template>
 

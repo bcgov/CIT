@@ -4,6 +4,11 @@
       class="d-flex align-center elevation-5 px-5 py-2"
       :class="{ 'flex-column': isMobile }"
     >
+      <v-btn
+        color="primary"
+        :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
+        >Give Feedback</v-btn
+      >
       <v-spacer></v-spacer>
       <div class="mr-2" :class="{ 'mt-2': isMobile, 'mr-0': isMobile }">
         Choose another report
