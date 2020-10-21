@@ -83,7 +83,7 @@
                         :grouped-locations="filteredLocations"
                         :grouped-census="groupedCensus"
                         :rid="communityDetails.regional_district"
-                        @expand="handleExpand"
+                        @panel="handlePanelChange"
                         @viewReports="viewReports"
                       >
                         <div class="pl-4 pr-4">
@@ -426,12 +426,11 @@ export default class CommunityDetail extends Vue {
     })
   }
 
-  handleExpand(e) {
-    const { active, group } = e
+  handlePanelChange(lt) {
     const layerName = 'locations'
     let filters = null
-    if (active === false) {
-      filters = ['==', ['get', 'location_type'], group]
+    if (lt) {
+      filters = ['==', ['get', 'location_type'], lt]
     }
     console.log('Expand')
     this.$root.$emit('cdMapFilter', {
