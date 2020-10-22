@@ -37,3 +37,7 @@ export function getCommunityGeoJSON() {
 export function getDataSourceList() {
   return $axios.get(`/api/pipeline/datasources/`)
 }
+
+export function getRegionalData(id) {
+  return $axios.get(`/api/pipeline/regionaldistricts/${id}/`)
+}
