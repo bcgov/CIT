@@ -1,7 +1,9 @@
 <template>
   <v-expansion-panel-content class="ma-0 pa-0">
     <v-divider></v-divider>
-    <RegionProfileCard></RegionProfileCard>
+    <RegionProfileCard
+      :regional-district="regionalDistrict"
+    ></RegionProfileCard>
     <v-divider></v-divider>
     <BaseList :communities="communities"> </BaseList>
   </v-expansion-panel-content>
