@@ -13,7 +13,7 @@
           >Reports</v-btn
         >
       </div>
-
+    </div>
     <div class="cdh-content">
       <div>
         <div>
@@ -34,8 +34,7 @@
           </dl>
         </div>
       </div>
-
-      <div class="cdh-content">
+      <div>
         <div>
           <div>
             <a :href="`/explore?&rid=${rid}`" class="text-body-1">
@@ -68,13 +67,13 @@
           <div>
             <dl class="cdh-dl">
               <dt>Population Density:</dt>
-              <dd>N/A</dd>
+              <dd>{{ censusData.population_density_per_sq_km }}</dd>
             </dl>
           </div>
           <div>
             <dl class="cdh-dl">
-              <dt>Median Age:</dt>
-              <dd>N/A</dd>
+              <dt>Average Age:</dt>
+              <dd>{{ censusData.population_avg_age }}</dd>
             </dl>
           </div>
         </div>
