@@ -99,3 +99,8 @@ export default class LayerSwitcher extends Vue {
   }
 }
 </script>
+<style>
+div[role='menu'].v-menu__content {
+  z-index: 8 !important;
+}
+</style>
