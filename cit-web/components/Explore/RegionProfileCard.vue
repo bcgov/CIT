@@ -16,10 +16,10 @@
           :key="rd.key"
           class="ma-0 pa-0 my-1"
         >
-          <span class="d-inline-block font-weight-bold"
-            >{{ rd.metadata.name }}:
+          <span class="d-inline-block"
+            ><span class="font-weight-bold">{{ rd.metadata.name }}:</span>
+            {{ rd.value }}{{ rd.units || '' }}
           </span>
-          <span class="d-inline-block">{{ rd.value }}{{ rd.units || '' }}</span>
         </li>
       </ul>
     </div>
