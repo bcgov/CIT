@@ -515,6 +515,7 @@ export default class CommunityDetail extends Vue {
 
   mounted() {
     this.isHydrated = true
+    console.log('Report?', this.report)
   }
 }
 </script>
