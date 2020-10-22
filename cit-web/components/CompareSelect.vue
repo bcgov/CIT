@@ -39,3 +39,8 @@ export default class CompareSelect extends Vue {
   }
 }
 </script>
+<style lang="scss">
+.multiselect__content {
+  padding-left: 0 !important;
+}
+</style>

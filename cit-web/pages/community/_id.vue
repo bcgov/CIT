@@ -16,6 +16,7 @@
         :show="!!report"
         :place-name="placeName"
         :community-details="communityDetails"
+        :region-name="regionalDistrictName"
         :report="report"
         @traverse="reportOpen"
         @close="reportClose"

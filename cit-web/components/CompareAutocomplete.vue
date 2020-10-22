@@ -50,3 +50,8 @@ export default class Compare extends Vue {
   color: black !important;
 }
 </style>
+<style lang="scss">
+.multiselect__content {
+  padding-left: 0 !important;
+}
+</style>
