@@ -204,6 +204,6 @@ export default class DataFootnotes extends Vue {
   padding: 0.5em;
 }
 .container > ol > li {
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 </style>

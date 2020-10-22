@@ -61,6 +61,20 @@
         </v-card>
       </div>
     </client-only>
+
+    <div class="mt-12">
+      <v-container fluid>
+        <IntroSectionHeader
+          title="How does the CIT work?"
+          subtitle="Option 1: View a specific community"
+        ></IntroSectionHeader>
+        <IntroSection :elements="optionOne" class="mt-10"></IntroSection>
+        <IntroSectionHeader
+          subtitle="Option 2: Find communities by criteria"
+        ></IntroSectionHeader>
+        <IntroSection :elements="optionTwo" class="mt-10"></IntroSection>
+      </v-container>
+    </div>
   </div>
 </template>
 
@@ -72,6 +86,39 @@ import { getCommunityList } from '~/api/cit-api'
   CommSearch,
 })
 export default class Index extends Vue {
+  optionOne = [
+    {
+      title: 'Search for the community by name to navigate to its detail page.',
+      image: '1-step1.svg',
+    },
+    {
+      title:
+        'Review some basic information, view a community map, and click on the reports to see more.',
+      image: '1-step2.svg',
+    },
+    {
+      title:
+        'Within the reports, compare this community to other communities or regional districts.',
+      image: '1-step3.svg',
+    },
+  ]
+
+  optionTwo = [
+    {
+      title: 'Click the yellow button to navigate to the Explore B.C. page.',
+      image: '2-step1.svg',
+    },
+    {
+      title:
+        'Select criteria to filter for a list of matching communities ad regional districts, and review the selection results in the map.',
+      image: '2-step2.svg',
+    },
+    {
+      title: 'Within thView reports and interact with the data charts.',
+      image: '2-step3.svg',
+    },
+  ]
+
   get showImage() {
     return !(this.$vuetify.breakpoint.width < 760)
   }
