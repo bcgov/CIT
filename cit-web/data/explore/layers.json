@@ -34,5 +34,13 @@
     "layerLabel": "Regional Districts",
     "legendComponent": "RegionalLegend",
     "on": true
+  },
+  {
+    "layerName": [
+      "fn-treaty-areas",
+      "fn-treaty-areas-label"
+    ],
+    "layerLabel": "First Nation Treaty Lands",
+    "legendComponent": "FirstNation"
   }
 ]
