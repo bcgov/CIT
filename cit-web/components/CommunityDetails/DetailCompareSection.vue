@@ -5,7 +5,7 @@
         <v-row class="mb-5">
           <v-col col="12">
             <h4 class="text-center text-h4 font-weight-bold primary--text">
-              Comparing Education Data:
+              Comparing {{ report.name }} Data:
             </h4>
           </v-col>
         </v-row>
