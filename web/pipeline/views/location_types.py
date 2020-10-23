@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from pipeline.models.location_assets import (
     Location,
     FirstResponder, DiagnosticFacility, TimberFacility, CivicFacility, Hospital, NaturalResourceProject,
-    EconomicProject, ServiceBCLocation, School, Clinic, Court,
+    EconomicProject, Project, ServiceBCLocation, School, Clinic, Court,
     PostSecondaryInstitution, ClosedMill, ResearchCentre, Airport,
 )
 from pipeline.serializers.location_types import (
@@ -18,6 +18,7 @@ from pipeline.serializers.location_types import (
     HospitalSerializer,
     NaturalResourceProjectSerializer,
     EconomicProjectSerializer,
+    ProjectSerializer,
     ServiceBCLocationSerializer,
     SchoolSerializer,
     PostSecondaryInstitutionSerializer,
@@ -26,7 +27,7 @@ from pipeline.serializers.location_types import (
     ClosedMillSerializer,
     ResearchCentreSerializer,
     AirportSerializer,
-    LocationSerializer
+    LocationSerializer,
 )
 
 
@@ -78,6 +79,11 @@ class NaturalResourceProjectList(generics.ListAPIView):
 class EconomicProjectList(generics.ListAPIView):
     queryset = EconomicProject.objects.all()
     serializer_class = EconomicProjectSerializer
+
+
+class ProjectList(generics.ListAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
 
 
 class ServiceBCLocationList(generics.ListAPIView):

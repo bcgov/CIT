@@ -1,4 +1,5 @@
 import csv
+import os
 import requests
 
 from django.apps import apps
@@ -15,9 +16,10 @@ from pipeline.models.general import (
     DataSource, LocationDistance, SchoolDistrict, Municipality, CivicLeader, Hex, Service, ISP)
 from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES
+from pipeline.utils import get_quarterly_date_str_as_date
 
 
-def import_data_into_point_model(resource_type, Model, row):
+def import_data_into_point_model(resource_type, Model, row, dry_run=False):
     print(row)
 
     point = None
@@ -67,9 +69,11 @@ def import_data_into_point_model(resource_type, Model, row):
     instance.location_fuzzy = location_fuzzy
     import_contact_fields(instance, row, Model)
     import_variable_fields(instance, row, Model)
-    instance.save()
 
-    calculate_distances(instance)
+    if not dry_run:
+        instance.save()
+
+        calculate_distances(instance)
 
     return instance
 
@@ -199,7 +203,7 @@ def calculate_nearest_location_type_outside_50k(location_type):
                 create_distance(closest_location_type, community, closest_location_type.distance)
 
 
-def create_distance(location, community, distance):
+def create_distance(location, community, distance, dry_run=False):
     existing_distance = LocationDistance.objects.filter(location=location, community=community)
 
     fields = {
@@ -208,7 +212,7 @@ def create_distance(location, community, distance):
         "distance": distance.km,
     }
 
-    if not (existing_distance and existing_distance.first().driving_distance):
+    if not dry_run and not (existing_distance and existing_distance.first().driving_distance):
         try:
             driving_distance, travel_time, travel_time_display = get_route_planner_distance(community, location)
             fields["driving_distance"] = driving_distance
@@ -276,7 +280,7 @@ def _try_community_name(row):
 
 def read_csv(csv_path):
     data = []
-    with open(csv_path, mode='r', encoding='utf-8-sig') as f:
+    with open(csv_path, mode='r', encoding='utf-8-sig', errors='ignore') as f:
         reader = csv.DictReader(f)
         data = list(reader)
 
@@ -472,3 +476,108 @@ def get_openca_last_modified_date(data_source):
 
     last_modified_date = make_aware(parse_datetime(date))
     return last_modified_date
+
+
+def import_projects(dir_path):
+    from pipeline.models.location_assets import Project
+
+    alternative_field_names = {
+        "projid": "project_id",
+        "projnm": "project_name",
+        "projtyp": "project_type",
+        "projecttype": "project_type",
+        "description": "project_description",
+        "desc": "project_description",
+        "muninm": "municipality",
+        "dvlprnm": "developer",
+        "industry construction classification": "construction_subtype",
+        "estcost ($million)": "estimated_cost",
+        "est cost ($million)": "estimated_cost",
+        "estcost": "estimated_cost",
+        "est cost ($million": "estimated_cost",
+        "est cost (mil)": "estimated_cost",
+        "status": "project_status",
+        "stage": "project_stage",
+        "public": "public_funding_ind",
+        "green building": "green_building_ind",
+        "clean energy": "clean_energy_ind",
+        "first_nation_ind": "indigenous_ind",
+        "first nation": "indigenous_ind",
+        "first_nation_name": "indigenous_names",
+        "first_nation_names": "indigenous_names",
+        "first_nation_agreement": "indigenous_agreement",
+        "update_activity": "updated_fields",
+        "start date": "start_date",
+        "start": "start_date",
+        "completion date": "completion_date",
+        "compl": "completion_date",
+        "complete": "completion_date",
+        "finish date": "completion_date",
+        "finish": "completion_date",
+    }
+
+    directory = os.fsencode(dir_path)
+
+    for file in os.listdir(directory):
+        filename = os.fsdecode(file)
+        if filename.endswith(".csv"):
+            print("filename", filename)
+
+            with open(os.path.join(dir_path, filename), mode='r', encoding='utf-8-sig', errors='ignore') as f:
+
+                # skip preamble rows
+                while True:
+                    last_pos = f.tell()
+                    print("before", last_pos)
+                    line = f.readline()
+                    non_null_fields = [field for field in line.strip().split(",") if field != '']
+                    print("line", line, non_null_fields)
+                    print("after", f.tell())
+                    if len(non_null_fields) > 10:
+                        break
+
+                print("last_pos", last_pos)
+                f.seek(last_pos)
+
+                reader = csv.DictReader(f)
+                data = list(reader)
+
+                for row in data:
+                    project = {}
+
+                    print("row", row.keys())
+                    field_names_to_replace = [key for key in row.keys() if key.lower() in alternative_field_names]
+                    for field_name in field_names_to_replace:
+                        field_value = row.pop(field_name)
+                        canonical_field_name = alternative_field_names[field_name.lower()]
+                        row[canonical_field_name] = field_value
+
+                    # normalize all field names
+                    for key in row.keys():
+                        normalized_key = key.upper().replace(" ", "_").replace(":", "").strip()
+                        project[normalized_key] = row[key]
+
+                        # deal with annoying edge cases
+                        if ":" in project[normalized_key]:
+                            project[normalized_key] = project[normalized_key].split(":")[-1].strip()
+
+                    if "LAST_UPDATE" not in project.keys():
+                        year, quarter = filename.split(".")[0].split("_")
+                        quarterly_date_str = "{}-{}".format(year, quarter)
+                        project["LAST_UPDATE"] = get_quarterly_date_str_as_date(quarterly_date_str).strftime("%Y-%m-%d")
+
+                    # TODO
+                    if "START_DATE" in project.keys() and "STANDARDIZED_START_DATE" not in project.keys():
+                        pass
+
+                    if "COMPLETION_DATE" in project.keys() and "STANDARDIZED_COMPLETION_DATE" not in project.keys():
+                        pass
+
+                    if not project.get("LATITUDE") or not project.get("LONGITUDE"):
+                        continue
+
+                    print("project", project)
+
+                    instance = import_data_into_point_model("projects", Project, project, dry_run=False)
+                    print("instance", instance)
+                    # break

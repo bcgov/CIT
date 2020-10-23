@@ -22,6 +22,7 @@ urlpatterns = [
     url(r"^locations/hospitals/$", pipeline.views.location_types.HospitalList.as_view()),
     url(r"^locations/natural_resource_projects/$", pipeline.views.location_types.NaturalResourceProjectList.as_view()),
     url(r"^locations/economic_projects/$", pipeline.views.location_types.EconomicProjectList.as_view()),
+    url(r"^locations/projects/$", pipeline.views.location_types.ProjectList.as_view()),
     url(r"^locations/servicebc_locations/$", pipeline.views.location_types.ServiceBCLocationList.as_view()),
     url(r"^locations/schools/$", pipeline.views.location_types.SchoolList.as_view()),
     url(r"^locations/post_secondary_institutions/$",

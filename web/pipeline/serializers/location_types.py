@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from pipeline.models.location_assets import (
     FirstResponder, DiagnosticFacility, TimberFacility, CivicFacility, Hospital, NaturalResourceProject,
-    EconomicProject, ServiceBCLocation, School, Clinic, Court, PostSecondaryInstitution,
+    EconomicProject, Project, ServiceBCLocation, School, Clinic, Court, PostSecondaryInstitution,
     ClosedMill, ResearchCentre, Airport, Location
 )
 
@@ -183,6 +183,60 @@ class EconomicProjectSerializer(serializers.ModelSerializer):
             "proponent",
             "eao_project_status",
             "project_comments",
+        )
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    latitude = serializers.FloatField(source="get_latitude")
+    longitude = serializers.FloatField(source="get_longitude")
+    community = serializers.IntegerField(source="closest_community_id")
+    provincial_funding = serializers.FloatField(source="provinvial_funding")
+
+    class Meta:
+        model = Project
+        fields = (
+            "id",
+            "name",
+            "latitude",
+            "longitude",
+            "location_fuzzy",
+            "community",
+            "location_phone",
+            "location_website",
+            "project_id",
+            "project_description",
+            "estimated_cost",
+            "update_activity",
+            "environmental_assessment_stage",
+            "construction_type",
+            "project_type",
+            "region",
+            "municipality",
+            "developer",
+            "architect",
+            "project_status",
+            "project_stage",
+            "project_category_name",
+            "public_funding_ind",
+            "provincial_funding",
+            "federal_funding",
+            "municipal_funding",
+            "other_public_funding",
+            "green_building_ind",
+            "green_building_desc",
+            "clean_energy_ind",
+            "indigenous_ind",
+            "indigenous_names",
+            "indigenous_agreement",
+            "construction_jobs",
+            "operating_jobs",
+            "start_date",
+            "completion_date",
+            "standardized_start_date",
+            "standardized_completion_date",
+            "first_entry_date",
+            "last_update",
+            "updated_fields",
         )
 
 
