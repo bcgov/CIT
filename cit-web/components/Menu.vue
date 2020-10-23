@@ -51,10 +51,10 @@
           :key="index"
           class="pa-0 ma-0 font-weight-normal my-3"
           style="min-height: auto;"
-          :to="mi.href"
+          :to="`/explore?tab=Reports&report=${encodeURIComponent(mi.name)}`"
         >
           <v-list-item-title class="white--text">{{
-            mi.title
+            mi.name
           }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -84,6 +84,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import sortBy from 'lodash/sortBy'
 import CommSearch from '~/components/CommSearch.vue'
+import aggReports from '~/data/explore/explorePages.json'
 
 @Component({
   CommSearch,
@@ -92,40 +93,7 @@ import CommSearch from '~/components/CommSearch.vue'
   },
 })
 export default class Menu extends Vue {
-  menuItems = [
-    {
-      title: 'Domestic',
-      href: '/explore?tab=Reports&report=Domestic',
-    },
-    {
-      title: 'Culture',
-      href: '/explore?tab=Reports&report=Culture',
-    },
-    {
-      title: 'Education',
-      href: '/explore?tab=Reports&report=Education',
-    },
-    {
-      title: 'Income/Jobs',
-      href: '/explore?tab=Reports&report=Income/Jobs',
-    },
-    {
-      title: 'Natural Resources',
-      href: '/explore?tab=Reports&report=Natural Resources',
-    },
-    {
-      title: 'Economic Projects',
-      href: '/explore?tab=Reports&report=Economic Projects',
-    },
-    {
-      title: 'Connectivity',
-      href: '/explore?tab=Reports&report=Connectivity',
-    },
-    {
-      title: 'Health & Emergency',
-      href: '/explore?tab=Reports&report=Health & Emergency',
-    },
-  ]
+  menuItems = aggReports
 
   get showSearch() {
     return this.$vuetify.breakpoint.width < 850
