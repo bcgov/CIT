@@ -35,7 +35,7 @@
             <v-col xl="4" lg="4" md="12" sm="12" cols="12">
               <DetailReportSection
                 :report="report"
-                :place-name="placeName"
+                :place-name="placeNawme"
                 :cid="communityDetails.id"
               ></DetailReportSection>
             </v-col>

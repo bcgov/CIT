@@ -17,6 +17,7 @@
       <div class="d-flex justify-end ml-2">
         <FeedbackButton></FeedbackButton>
         <ShareButton class="ml-2"></ShareButton>
+        <v-btn color="primary" class="ml-2" @click="print">Print</v-btn>
         <CloseReportButton class="ml-2"></CloseReportButton>
       </div>
     </div>
@@ -90,6 +91,12 @@ export default class MainReport extends Vue {
       const page = report.page(this.pageName)
       page.setActive()
       this.setFilter()
+    })
+  }
+
+  print() {
+    this.whenReportLoaded((report) => {
+      report.print()
     })
   }
 
