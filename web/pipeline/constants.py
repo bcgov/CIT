@@ -5,6 +5,7 @@ SOURCE_INTERNAL = 'internal'
 SOURCE_DATABC = 'databc'
 SOURCE_STATSCAN = 'statscan'
 SOURCE_OPENCA = 'openca'
+SOURCE_OTHER = 'other'
 
 DATA_SOURCE_TYPE_CHOICES = (
     ("csv", "CSV"),
@@ -17,6 +18,7 @@ DATA_SOURCE_CHOICES = (
     (SOURCE_DATABC, "BC Data Catalogue"),
     (SOURCE_STATSCAN, "Statistics Canada"),
     (SOURCE_OPENCA, "Open Government (Canada)"),
+    (SOURCE_OTHER, "Other"),
 )
 
 CIVIC_LEADER_CHOICES = (

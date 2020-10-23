@@ -592,19 +592,19 @@ def get_quarterly_date_str_as_date(quarterly_date_str):
     the start date of the quarter (2020-01-01).
     """
     QUARTERLY_DATE_MAPPING = {
-        "Q1": {
+        "q1": {
             "month": 1,
             "day": 1,
         },
-        "Q2": {
+        "q2": {
             "month": 4,
             "day": 1,
         },
-        "Q3": {
+        "q3": {
             "month": 7,
             "day": 1,
         },
-        "Q4": {
+        "q4": {
             "month": 10,
             "day": 1,
         }
@@ -613,8 +613,8 @@ def get_quarterly_date_str_as_date(quarterly_date_str):
     year_str, quarter = quarterly_date_str.split("-")
     year = int(year_str)
     try:
-        month = QUARTERLY_DATE_MAPPING[quarter]["month"]
-        day = QUARTERLY_DATE_MAPPING[quarter]["day"]
+        month = QUARTERLY_DATE_MAPPING[quarter.lower()]["month"]
+        day = QUARTERLY_DATE_MAPPING[quarter.lower()]["day"]
         return datetime.date(year, month, day)
     except KeyError:
         return None

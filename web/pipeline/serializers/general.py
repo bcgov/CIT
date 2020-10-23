@@ -175,7 +175,6 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
             "locations",
             "hidden_report_pages",
             "mayor",
-            "percent_50_10",
         )
 
     def get_display_fields(self, obj):

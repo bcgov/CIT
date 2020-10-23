@@ -275,6 +275,61 @@ class NaturalResourceProject(Location):
     '''
 
 
+class Project(Location):
+    NAME_FIELD = 'PROJECT_NAME,MUNICIPALITY,PROJECT_STATUS'
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    TELEPHONE_FIELD = 'TELEPHONE'
+    WEBSITE_FIELD = 'PROJECT_WEBSITE'
+
+    project_id = models.IntegerField(null=True, blank=True)
+    project_description = models.TextField(null=True, blank=True)
+    estimated_cost = models.CharField(max_length=255, null=True, blank=True)
+    update_activity = models.TextField(null=True, blank=True)
+    environmental_assessment_stage = models.CharField(max_length=255, null=True, blank=True)
+    construction_type = models.CharField(max_length=255, null=True, blank=True)
+    construction_subtype = models.CharField(max_length=255, null=True, blank=True)
+    project_type = models.CharField(max_length=255, null=True, blank=True)
+
+    region = models.CharField(max_length=255, null=True, blank=True)
+    municipality = models.CharField(max_length=255, null=True, blank=True)
+
+    developer = models.CharField(max_length=255, null=True, blank=True)
+    architect = models.CharField(max_length=255, null=True, blank=True)
+    project_status = models.CharField(max_length=255, null=True, blank=True)
+    project_stage = models.CharField(max_length=255, null=True, blank=True)
+    project_category_name = models.CharField(max_length=255, null=True, blank=True)
+
+    public_funding_ind = models.CharField(max_length=255, null=True, blank=True)
+    provinvial_funding = models.CharField(max_length=255, null=True, blank=True)
+    federal_funding = models.CharField(max_length=255, null=True, blank=True)
+    municipal_funding = models.CharField(max_length=255, null=True, blank=True)
+    other_public_funding = models.CharField(max_length=255, null=True, blank=True)
+    green_building_ind = models.CharField(max_length=255, null=True, blank=True)
+    green_building_desc = models.CharField(max_length=255, null=True, blank=True)
+    clean_energy_ind = models.CharField(max_length=255, null=True, blank=True)
+    indigenous_ind = models.CharField(max_length=255, null=True, blank=True)
+    indigenous_names = models.CharField(max_length=255, null=True, blank=True)
+    indigenous_agreement = models.TextField(null=True, blank=True)
+
+    construction_jobs = models.CharField(max_length=255, null=True, blank=True)
+    operating_jobs = models.CharField(max_length=255, null=True, blank=True)
+
+    start_date = models.CharField(max_length=255, null=True, blank=True)
+    completion_date = models.CharField(max_length=255, null=True, blank=True)
+    standardized_start_date = models.CharField(max_length=255, null=True, blank=True)
+    standardized_completion_date = models.CharField(max_length=255, null=True, blank=True)
+
+    first_entry_date = models.CharField(max_length=255, null=True, blank=True)
+    last_update = models.CharField(max_length=255, null=True, blank=True)
+
+    updated_fields = models.TextField(null=True, blank=True)
+
+    class Meta:
+        ordering = ("id",)
+        unique_together = ("project_id", "last_update",)
+
+
 class ServiceBCLocation(Location):
     NAME_FIELD = 'External Site'
     LATITUDE_FIELD = 'Latitude'
