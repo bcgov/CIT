@@ -16,7 +16,9 @@
               color="primary"
               class="d-flex justify-center align-center px-10"
             >
-              <CompareInfo type="large"></CompareInfo>
+              <h5 class="text-h6 white--text">
+                {{ placeName }} {{ report.name }}
+              </h5>
             </v-sheet>
             <v-container fluid>
               <v-row no-gutters>
@@ -50,6 +52,7 @@
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 @Component()
 export default class DetailCompareSetion extends Vue {
+  @Prop({ default: null, type: String }) placeName
   @Prop({ default: null, type: Object }) report
   @Prop({ default: null, type: Number }) rid
   @Prop({ default: null, type: Number }) cid

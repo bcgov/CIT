@@ -110,11 +110,11 @@ export default class Index extends Vue {
     },
     {
       title:
-        'Select criteria to filter for a list of matching communities ad regional districts, and review the selection results in the map.',
+        'Select criteria to filter for a list of matching communities and regional districts, and review the selection results in the map.',
       image: '2-step2.svg',
     },
     {
-      title: 'Within thView reports and interact with the data charts.',
+      title: 'View reports and interact with the data charts.',
       image: '2-step3.svg',
     },
   ]

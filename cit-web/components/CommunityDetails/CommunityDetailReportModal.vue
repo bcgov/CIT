@@ -41,6 +41,7 @@
             </v-col>
             <v-col xl="8" lg="8" md="12" sm="12" cols="12">
               <DetailCompareSection
+                :place-name="placeName"
                 :report="report"
                 :rid="communityDetails.regional_district"
                 :cid="communityDetails.id"
