@@ -401,6 +401,13 @@ def serialize_community_detail_fields(obj):
                 "description": "A - C (moderate); D and E (low)",
             },
         },
+        {
+            "key": "percent_50_10",
+            "value": (commaize(obj.percent_50_10 * 100) if obj.percent_50_10 else "0") + "%",
+            "metadata": {
+                "name": "% of Community with High-Speed Internet (> 50/10 mbps)",
+            }
+        }
     ]
 
 
