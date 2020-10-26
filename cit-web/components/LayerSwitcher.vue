@@ -84,6 +84,7 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 @Component
 export default class LayerSwitcher extends Vue {
   @Prop({ default: null, type: Array }) layers
+  @Prop({ default: false, type: Boolean }) init
   menu = false
   handleChange(e, data) {
     this.$emit('layerToggle', {
@@ -93,14 +94,11 @@ export default class LayerSwitcher extends Vue {
   }
 
   mounted() {
-    setTimeout(() => {
-      this.menu = true
-    }, 1000)
+    if (this.init) {
+      setTimeout(() => {
+        this.menu = true
+      }, 1000)
+    }
   }
 }
 </script>
-<style>
-div[role='menu'].v-menu__content {
-  z-index: 8 !important;
-}
-</style>
