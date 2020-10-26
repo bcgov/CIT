@@ -283,8 +283,9 @@ class Project(Location):
     WEBSITE_FIELD = 'PROJECT_WEBSITE'
 
     project_id = models.IntegerField(null=True, blank=True)
+    project_name = models.TextField(null=True, blank=True)
     project_description = models.TextField(null=True, blank=True)
-    estimated_cost = models.CharField(max_length=255, null=True, blank=True)
+    estimated_cost = models.IntegerField(null=True, blank=True)
     update_activity = models.TextField(null=True, blank=True)
     environmental_assessment_stage = models.CharField(max_length=255, null=True, blank=True)
     construction_type = models.CharField(max_length=255, null=True, blank=True)
@@ -300,20 +301,20 @@ class Project(Location):
     project_stage = models.CharField(max_length=255, null=True, blank=True)
     project_category_name = models.CharField(max_length=255, null=True, blank=True)
 
-    public_funding_ind = models.CharField(max_length=255, null=True, blank=True)
-    provinvial_funding = models.CharField(max_length=255, null=True, blank=True)
-    federal_funding = models.CharField(max_length=255, null=True, blank=True)
-    municipal_funding = models.CharField(max_length=255, null=True, blank=True)
-    other_public_funding = models.CharField(max_length=255, null=True, blank=True)
-    green_building_ind = models.CharField(max_length=255, null=True, blank=True)
+    public_funding_ind = models.IntegerField(null=True, blank=True)
+    provinvial_funding = models.IntegerField(null=True, blank=True)
+    federal_funding = models.IntegerField(null=True, blank=True)
+    municipal_funding = models.IntegerField(null=True, blank=True)
+    other_public_funding = models.IntegerField(null=True, blank=True)
+    green_building_ind = models.IntegerField(null=True, blank=True)
     green_building_desc = models.CharField(max_length=255, null=True, blank=True)
-    clean_energy_ind = models.CharField(max_length=255, null=True, blank=True)
-    indigenous_ind = models.CharField(max_length=255, null=True, blank=True)
+    clean_energy_ind = models.IntegerField(null=True, blank=True)
+    indigenous_ind = models.IntegerField(null=True, blank=True)
     indigenous_names = models.CharField(max_length=255, null=True, blank=True)
     indigenous_agreement = models.TextField(null=True, blank=True)
 
-    construction_jobs = models.CharField(max_length=255, null=True, blank=True)
-    operating_jobs = models.CharField(max_length=255, null=True, blank=True)
+    construction_jobs = models.IntegerField(null=True, blank=True)
+    operating_jobs = models.IntegerField(null=True, blank=True)
 
     start_date = models.CharField(max_length=255, null=True, blank=True)
     completion_date = models.CharField(max_length=255, null=True, blank=True)
@@ -327,7 +328,18 @@ class Project(Location):
 
     class Meta:
         ordering = ("id",)
-        unique_together = ("project_id", "last_update",)
+
+    def get_standardized_start_date_as_date(self):
+        if not self.standardized_start_date:
+            return None
+
+        return get_quarterly_date_str_as_date(self.standardized_start_date)
+
+    def get_standardized_completion_date_as_date(self):
+        if not self.standardized_completion_date:
+            return None
+
+        return get_quarterly_date_str_as_date(self.standardized_completion_date)
 
 
 class ServiceBCLocation(Location):

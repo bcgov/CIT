@@ -6,9 +6,10 @@ from django.conf import settings
 from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA
 from pipeline.models.general import DataSource
 from pipeline.importers.communities import import_communities_from_csv
+from pipeline.importers.projects import import_projects
 from pipeline.importers.utils import (
     import_data_into_point_model, read_csv, import_civic_leaders_from_csv, calculate_nearest_location_type_outside_50k,
-    get_databc_last_modified_date, import_services, get_openca_last_modified_date, import_projects)
+    get_databc_last_modified_date, import_services, get_openca_last_modified_date)
 
 FILES_DIR = settings.BASE_DIR
 
