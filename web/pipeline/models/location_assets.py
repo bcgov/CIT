@@ -333,13 +333,19 @@ class Project(Location):
         if not self.standardized_start_date:
             return None
 
-        return get_quarterly_date_str_as_date(self.standardized_start_date)
+        try:
+            return get_quarterly_date_str_as_date(self.standardized_start_date)
+        except ValueError:
+            return None
 
     def get_standardized_completion_date_as_date(self):
         if not self.standardized_completion_date:
             return None
 
-        return get_quarterly_date_str_as_date(self.standardized_completion_date)
+        try:
+            return get_quarterly_date_str_as_date(self.standardized_completion_date)
+        except ValueError:
+            return None
 
 
 class ServiceBCLocation(Location):
