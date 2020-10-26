@@ -38,7 +38,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-      <v-card-text>
+      <v-card-text style="max-height: 300px; overflow-y: auto;">
         <slot></slot>
       </v-card-text>
       <v-divider></v-divider>
@@ -78,6 +78,20 @@ export default class MenuFilter extends Vue {
 
   hide() {
     this.menu = false
+  }
+
+  isHydrated = false
+
+  get isMobile() {
+    if (this.isHydrated) {
+      return this.$vuetify.breakpoint.width < 600
+    } else {
+      return false
+    }
+  }
+
+  mounted() {
+    this.isHydrated = true
   }
 }
 </script>
