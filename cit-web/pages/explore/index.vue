@@ -130,7 +130,6 @@
         persistent
         scrollable
         style="position: relative;"
-        hide-overlay
       >
         <v-card>
           <div class="mobile-collapse">
@@ -138,7 +137,7 @@
               <v-icon>mdi-chevron-down</v-icon>
             </v-btn>
           </div>
-          <v-card-text class="pa-0" style="height: 75vh;">
+          <v-card-text class="pa-0" style="height: 70vh;">
             <div v-if="activeTab === 'Data'">
               <div class="pa-8">
                 <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
