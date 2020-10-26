@@ -283,6 +283,7 @@ class Project(Location):
     WEBSITE_FIELD = 'PROJECT_WEBSITE'
 
     project_id = models.IntegerField(null=True, blank=True)
+    project_name = models.TextField(null=True, blank=True)
     project_description = models.TextField(null=True, blank=True)
     estimated_cost = models.IntegerField(null=True, blank=True)
     update_activity = models.TextField(null=True, blank=True)

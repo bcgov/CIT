@@ -72,7 +72,7 @@ def import_projects(dir_path):
 
     for file in sorted(os.listdir(directory), reverse=True):
         filename = os.fsdecode(file)
-        if filename.endswith(".csv"):
+        if filename.endswith("2012_q1.csv"):
             print("filename", filename)
 
             with open(os.path.join(dir_path, filename), mode='r', encoding='utf-8-sig', errors='ignore') as f:
@@ -89,7 +89,7 @@ def import_projects(dir_path):
 
                         print("project", project)
 
-                        instance = import_data_into_point_model("projects", Project, project, dry_run=False)
+                        instance = import_data_into_point_model("projects", Project, project, dry_run=True)
                         print("instance", instance)
                     except Exception as e:
                         print("exception", e)
@@ -115,14 +115,10 @@ def normalize_projects_field_names(row):
     # normalize all field names
     for key in row.keys():
         normalized_key = key.upper().replace(":", "").strip()
+        if normalized_key.endswith(","):
+            normalized_key = normalized_key[:-1]
 
         print("key", key, normalized_key)
-        # field_names_to_replace = [key for key in row.keys() if key in ALTERNATIVE_FIELD_NAMES]
-        # print("field_names_to_replace", field_names_to_replace)
-        # for field_name in field_names_to_replace:
-        #     field_value = row.pop(field_name)
-        #     canonical_field_name = ALTERNATIVE_FIELD_NAMES[field_name.lower()]
-        #     row[canonical_field_name] = field_value
         if normalized_key in ALTERNATIVE_FIELD_NAMES:
             normalized_key = ALTERNATIVE_FIELD_NAMES[normalized_key]
 
@@ -173,7 +169,9 @@ def handle_projects_fields_edge_cases(project, filename):
     # if a project is missing the lat/lon columns, try to look for other (more recent) years
     # to see if they contain the lat/lon columns. we import project csv files in reverse
     # chronological order, and older years tend to be missing columns.
-    if "LATITUDE" not in project.keys() and "LONGITUDE" not in project.keys():
+    if (
+        ("LATITUDE" not in project.keys() and "LONGITUDE" not in project.keys()) or
+            (not project['LATITUDE'] and not project['LONGITUDE'])):
         existing_projects = Project.objects.filter(
             project_id=project['PROJECT_ID'],
             point__isnull=False)

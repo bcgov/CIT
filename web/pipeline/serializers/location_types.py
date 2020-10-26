@@ -206,6 +206,7 @@ class ProjectSerializer(serializers.ModelSerializer):
             "location_phone",
             "location_website",
             "project_id",
+            "project_name",
             "project_description",
             "estimated_cost",
             "update_activity",
