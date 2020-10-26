@@ -328,6 +328,18 @@ class Project(Location):
     class Meta:
         ordering = ("id",)
 
+    def get_standardized_start_date_as_date(self):
+        if not self.standardized_start_date:
+            return None
+
+        return get_quarterly_date_str_as_date(self.standardized_start_date)
+
+    def get_standardized_completion_date_as_date(self):
+        if not self.standardized_completion_date:
+            return None
+
+        return get_quarterly_date_str_as_date(self.standardized_completion_date)
+
 
 class ServiceBCLocation(Location):
     NAME_FIELD = 'External Site'
