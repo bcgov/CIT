@@ -126,6 +126,87 @@
           </v-btn>
         </v-bottom-navigation>
       </div>
+      <v-bottom-sheet
+        :value="sheetOpen"
+        persistent
+        scrollable
+        style="position: relative;"
+      >
+        <v-card>
+          <div class="mobile-collapse">
+            <v-btn color="primary" fab x-small @click="handleMobileCollapse">
+              <v-icon>mdi-chevron-down</v-icon>
+            </v-btn>
+          </div>
+          <v-card-text class="pa-0" style="height: 80vh;">
+            <div v-if="activeTab === 'Data'">
+              <div class="pa-8">
+                <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
+                <ExploreFilterHeader></ExploreFilterHeader>
+                <v-alert
+                  v-if="filterError"
+                  type="error"
+                  dense
+                  outlined
+                  dismissible
+                >
+                  There was an error
+                </v-alert>
+                <ExploreFilters
+                  :disabled="loadingResults || $fetchState.pending"
+                  @filtered="handleFiltered"
+                  @loading="handleLoading"
+                  @error="handleFilterError"
+                ></ExploreFilters>
+              </div>
+              <v-divider></v-divider>
+              <div>
+                <div v-if="$fetchState.pending">
+                  <ExploreLoader></ExploreLoader>
+                </div>
+                <div v-else class="pa-8">
+                  <div>
+                    <ExploreResultsHeader
+                      :num-regions="numRegions"
+                      :num-communities="numCommunities"
+                      :loading-results="loadingResults"
+                    ></ExploreResultsHeader>
+
+                    <div class="mb-6 d-flex justify-center">
+                      <div v-if="noCommunities" class="mt-6">
+                        <ExploreNoResults></ExploreNoResults>
+                      </div>
+                    </div>
+                    <Results
+                      :grouped-communities="groupedCommunities"
+                    ></Results>
+                  </div>
+
+                  <div class="px-10 py-3">
+                    <v-btn
+                      :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
+                      block
+                      >Give Feedback</v-btn
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div v-else-if="activeTab === 'Reports'">
+              <ExploreReportSection
+                :report-cards="reportCards"
+                :reports-to-hide="reportsToHide"
+                :report-to-show="reportToShow"
+                :communities-with-insufficient-data="
+                  communitiesWithInsufficientData
+                "
+                :cids="cidArray"
+                @showReport="showReport"
+              ></ExploreReportSection>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-bottom-sheet>
     </div>
   </div>
 </template>
