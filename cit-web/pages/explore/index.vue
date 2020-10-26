@@ -59,15 +59,15 @@
           @change="handleViewChange"
         ></ExploreToolbar>
         <v-scroll-x-transition>
-          <ExploreMap
-            v-if="showMap"
-            ref="exploreMap"
-            class="explore-map"
-            :mapbox-api-key="$config.MAPBOX_API_KEY"
-            :cids="cidArray"
-            :cluster-communities="flatCommunities"
-            @moveend="handleMoveEnd"
-          ></ExploreMap>
+          <div v-if="showMap" class="explore-map">
+            <ExploreMap
+              ref="exploreMap"
+              :mapbox-api-key="$config.MAPBOX_API_KEY"
+              :cids="cidArray"
+              :cluster-communities="flatCommunities"
+              @moveend="handleMoveEnd"
+            ></ExploreMap>
+          </div>
 
           <ExploreReportSection
             v-else
@@ -212,7 +212,7 @@
 </template>
 
 <script>
-import { Component, Vue, namespace } from 'nuxt-property-decorator'
+import { Component, Vue, namespace, Watch } from 'nuxt-property-decorator'
 import groupBy from 'lodash/groupBy'
 import uniqBy from 'lodash/uniqBy'
 import isEmpty from 'lodash/isEmpty'
@@ -250,6 +250,13 @@ export default class Explore extends Vue {
     this.$router.push({
       query: {},
     })
+  }
+
+  @Watch('isMobile')
+  handleHydration(nv, ov) {
+    if (ov === false && nv === true) {
+      this.$root.$emit('closeLayerSwitcher')
+    }
   }
 
   @exploreStore.Getter('getSearchAsMove') searchAsMove
@@ -363,6 +370,9 @@ export default class Explore extends Vue {
 
   mounted() {
     this.isHydrated = true
+    if (!this.isMobile) {
+      this.$root.$emit('openLayerSwitcher')
+    }
     const rid = this.$route.query.rid
     rid && this.$root.$emit('setRegion', rid)
     document.documentElement.classList.add('fixed-layout')
@@ -465,16 +475,15 @@ export default class Explore extends Vue {
   position: fixed;
   top: 66px;
   left: 0;
-  bottom: 0;
+  bottom: 46px;
   right: 0;
   width: 100%;
-  height: calc(100% - 46px);
 }
 .explore-container-mobile {
   padding-top: 56px;
 }
 .explore-results-container {
-  height: calc(100% - 66px);
+  height: 100%;
   flex: 1 1 0;
   flex-shrink: 0;
   min-width: 420px;
@@ -485,7 +494,7 @@ export default class Explore extends Vue {
 
 .explore-map-container {
   flex: 3 1 0;
-  height: calc(100% - 66px);
+  height: 100%;
   overflow: hidden;
 }
 
@@ -494,7 +503,7 @@ export default class Explore extends Vue {
 }
 
 .explore-map {
-  height: calc(100% - 50px);
+  height: calc(100% - 64px);
 }
 
 .explore-toolbar {

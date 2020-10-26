@@ -525,6 +525,9 @@ export default class CommunityDetail extends Vue {
 
   mounted() {
     this.isHydrated = true
+    if (!this.isMobile) {
+      this.$root.$emit('openLayerSwitcher')
+    }
     console.log('Report?', this.report)
   }
 }
