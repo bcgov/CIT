@@ -97,9 +97,9 @@ def import_contact_fields(instance, row, Model):
     alt_website_field = getattr(Model, "ALT_WEBSITE_FIELD", None)
     instance.location_website = None
     if website_field or alt_website_field:
-        if row[website_field]:
+        if row.get(website_field):
             instance.location_website = row[website_field]
-        elif alt_website_field and row[alt_website_field]:
+        elif alt_website_field and row.get(alt_website_field):
             instance.location_website = row[alt_website_field]
 
     instance.location_phone = None

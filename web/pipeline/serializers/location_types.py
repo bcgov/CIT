@@ -190,7 +190,7 @@ class ProjectSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
     community = serializers.IntegerField(source="closest_community_id")
-    provincial_funding = serializers.FloatField(source="provinvial_funding")
+    provincial_funding = serializers.IntegerField(source="provinvial_funding")
 
     class Meta:
         model = Project

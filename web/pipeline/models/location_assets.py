@@ -327,7 +327,6 @@ class Project(Location):
 
     class Meta:
         ordering = ("id",)
-        unique_together = ("project_id", "last_update",)
 
 
 class ServiceBCLocation(Location):
