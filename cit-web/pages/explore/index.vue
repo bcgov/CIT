@@ -93,19 +93,32 @@
         @moveend="handleMoveEnd"
       ></ExploreMap>
       <div class="bottom-menu-container elevation-5">
-        <v-bottom-navigation
-          v-model="mobileNav"
-          horizontal
-          height="50"
-          @click.native="sheetOpen = true"
-        >
-          <v-btn value="data">
+        <v-bottom-navigation horizontal height="50">
+          <v-btn
+            value="data"
+            @click="
+              $router.push({
+                query: {
+                  tab: 'Data',
+                },
+              })
+            "
+          >
             <span>Data Wizard</span>
 
             <v-icon>mdi-auto-fix</v-icon>
           </v-btn>
 
-          <v-btn value="reports">
+          <v-btn
+            value="Reports"
+            @click="
+              $router.push({
+                query: {
+                  tab: 'Reports',
+                },
+              })
+            "
+          >
             <span>Reports</span>
 
             <v-icon>mdi-file-document</v-icon>
@@ -113,18 +126,20 @@
         </v-bottom-navigation>
       </div>
       <v-bottom-sheet
-        v-model="sheetOpen"
+        :value="sheetOpen"
+        persistent
         scrollable
         style="position: relative;"
+        hide-overlay
       >
         <v-card>
-          <div v-if="sheetOpen" class="mobile-collapse">
-            <v-btn color="primary" fab x-small @click="sheetOpen = false">
+          <div class="mobile-collapse">
+            <v-btn color="primary" fab x-small @click="handleMobileCollapse">
               <v-icon>mdi-chevron-down</v-icon>
             </v-btn>
           </div>
-          <v-card-text class="pa-0" style="height: 85vh;">
-            <div v-if="mobileNav === 'data'">
+          <v-card-text class="pa-0" style="height: 75vh;">
+            <div v-if="activeTab === 'Data'">
               <div class="pa-8">
                 <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
                 <ExploreFilterHeader></ExploreFilterHeader>
@@ -177,7 +192,7 @@
                 </div>
               </div>
             </div>
-            <div v-else-if="mobileNav === 'reports'">
+            <div v-else-if="activeTab === 'Reports'">
               <ExploreReportSection
                 :report-cards="reportCards"
                 :reports-to-hide="reportsToHide"
@@ -224,7 +239,18 @@ export default class Explore extends Vue {
   isHydrated = false
 
   mobileNav = null
-  sheetOpen = false
+
+  get sheetOpen() {
+    return (
+      this.$route.query.tab === 'Reports' || this.$route.query.tab === 'Data'
+    )
+  }
+
+  handleMobileCollapse() {
+    this.$router.push({
+      query: {},
+    })
+  }
 
   @exploreStore.Getter('getSearchAsMove') searchAsMove
 
