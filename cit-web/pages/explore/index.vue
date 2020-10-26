@@ -83,15 +83,16 @@
         </v-scroll-x-transition>
       </div>
     </div>
-    <div v-else style="height: 100%;">
-      <ExploreMap
-        ref="exploreMap"
-        class="explore-map explore-map-mobile"
-        :mapbox-api-key="$config.MAPBOX_API_KEY"
-        :cids="cidArray"
-        :cluster-communities="flatCommunities"
-        @moveend="handleMoveEnd"
-      ></ExploreMap>
+    <div v-else>
+      <div class="mobile-map-container">
+        <ExploreMap
+          ref="exploreMap"
+          :mapbox-api-key="$config.MAPBOX_API_KEY"
+          :cids="cidArray"
+          :cluster-communities="flatCommunities"
+          @moveend="handleMoveEnd"
+        ></ExploreMap>
+      </div>
       <div class="bottom-menu-container elevation-5">
         <v-bottom-navigation horizontal height="50">
           <v-btn
@@ -130,7 +131,6 @@
         persistent
         scrollable
         style="position: relative;"
-        hide-overlay
       >
         <v-card>
           <div class="mobile-collapse">
@@ -138,7 +138,7 @@
               <v-icon>mdi-chevron-down</v-icon>
             </v-btn>
           </div>
-          <v-card-text class="pa-0" style="height: 75vh;">
+          <v-card-text class="pa-0" style="height: 80vh;">
             <div v-if="activeTab === 'Data'">
               <div class="pa-8">
                 <h1 class="text-h6 mt-1 mb-1">Explore B.C. Communities</h1>
@@ -533,34 +533,41 @@ export default class Explore extends Vue {
   bottom: initial;
 }
 
-@media screen and (max-width: 900px) {
-  .bottom-menu-container {
-    position: fixed;
-    bottom: 46px;
-    left: 0;
-    right: 0;
-  }
-  .explore-map-mobile {
-    height: calc(100% - 96px);
+.mobile-map-container {
+  position: fixed;
+  top: 66px;
+  bottom: 96px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 4;
+}
+
+.bottom-menu-container {
+  position: fixed;
+  bottom: 46px;
+  left: 0;
+  right: 0;
+}
+
+.mobile-collapse {
+  position: absolute;
+  top: -40px;
+  text-align: center;
+  left: 0;
+  right: 0;
+}
+
+@media screen and (max-width: 540px) {
+  .mobile-map-container {
+    bottom: 112px;
   }
 
-  .mobile-collapse {
-    position: absolute;
-    top: -40px;
-    text-align: center;
-    left: 0;
-    right: 0;
-  }
-}
-@media screen and (max-width: 540px) {
   .bottom-menu-container {
     position: fixed;
     bottom: 62px;
     left: 0;
     right: 0;
-  }
-  .explore-map-mobile {
-    height: calc(100% - 112px);
   }
 }
 </style>
