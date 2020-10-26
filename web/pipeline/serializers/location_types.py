@@ -190,7 +190,9 @@ class ProjectSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
     community = serializers.IntegerField(source="closest_community_id")
-    provincial_funding = serializers.FloatField(source="provinvial_funding")
+    provincial_funding = serializers.IntegerField(source="provinvial_funding")
+    standardized_start_date = serializers.DateField(source='get_standardized_start_date_as_date')
+    standardized_completion_date = serializers.DateField(source='get_standardized_completion_date_as_date')
 
     class Meta:
         model = Project
@@ -204,6 +206,7 @@ class ProjectSerializer(serializers.ModelSerializer):
             "location_phone",
             "location_website",
             "project_id",
+            "project_name",
             "project_description",
             "estimated_cost",
             "update_activity",
