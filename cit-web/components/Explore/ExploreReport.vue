@@ -11,14 +11,16 @@
       <div
         ref="reportContainer"
         class="reportContainer"
-        :style="`height: 70vw;`"
         style="margin: 0 auto;"
       ></div>
-      <div class="d-flex justify-end ml-2">
-        <FeedbackButton></FeedbackButton>
-        <ShareButton class="ml-2"></ShareButton>
-        <v-btn color="primary" class="ml-2" @click="print">Print</v-btn>
-        <CloseReportButton class="ml-2"></CloseReportButton>
+
+      <div class="d-flex justify-end report-options">
+        <FeedbackButton class="my-1 mx-1"></FeedbackButton>
+        <ShareButton class="my-1 mx-1"></ShareButton>
+        <div class="my-1 mx-1">
+          <v-btn color="primary" @click="print">Print</v-btn>
+        </div>
+        <CloseReportButton class="my-1 mx-1"></CloseReportButton>
       </div>
     </div>
   </div>
@@ -174,5 +176,22 @@ export default class MainReport extends Vue {
 <style lang="scss">
 iframe {
   border: none !important;
+}
+</style>
+<style lang="scss">
+.reportContainer {
+  height: 70vw;
+}
+
+@media screen and (max-width: 900px) {
+  .reportContainer {
+    height: 90vw;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .report-options {
+    flex-direction: column;
+  }
 }
 </style>
