@@ -327,6 +327,10 @@ class Project(Location):
 
     updated_fields = models.TextField(null=True, blank=True)
 
+    # calculated fields
+    is_earliest_entry = models.NullBooleanField()
+    is_latest_entry = models.NullBooleanField()
+
     class Meta:
         ordering = ("id",)
 

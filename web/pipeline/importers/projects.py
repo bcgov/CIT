@@ -97,16 +97,10 @@ def import_projects(dir_path):
 
 
 def skip_projects_csv_preamble_rows(file, filename):
+    # project CSV files from 2015 and earlier have 3 lines of preamble
     if int(filename.split("_")[0]) <= 2015:
         for i in range(3):
             file.readline()
-            # last_pos = file.tell()
-            # line = file.readline()
-            # non_null_fields = [field for field in line.strip().split(",") if field != '']
-            # if len(non_null_fields) > 10:
-            #     break
-
-        # file.seek(last_pos)
 
 
 def normalize_projects_field_names(row):
@@ -115,8 +109,6 @@ def normalize_projects_field_names(row):
     # normalize all field names
     for key in row.keys():
         normalized_key = key.upper().replace(":", "").strip()
-        if normalized_key.endswith(","):
-            normalized_key = normalized_key[:-1]
 
         if normalized_key in ALTERNATIVE_FIELD_NAMES:
             normalized_key = ALTERNATIVE_FIELD_NAMES[normalized_key]
@@ -131,6 +123,9 @@ def normalize_projects_field_names(row):
         if ":" in project[normalized_key]:
             project[normalized_key] = project[normalized_key].split(":")[-1].strip()
 
+        if project[normalized_key].endswith(","):
+            project[normalized_key] = project[normalized_key][:-1]
+
         if project[normalized_key] == '':
             project[normalized_key] = None
 
@@ -142,8 +137,6 @@ def handle_projects_fields_edge_cases(project, filename):
         project["LAST_UPDATE"] = get_last_update_field_from_filename(filename)
 
     project["SOURCE_DATE"] = get_last_update_field_from_filename(filename)
-
-    # TODO clean standardized dates (enforce YYYY-Q[1-4] format)
 
     if "START_DATE" in project.keys() and "STANDARDIZED_START_DATE" not in project.keys():
         project["STANDARDIZED_START_DATE"] = get_standardized_project_date(project["START_DATE"])
@@ -215,3 +208,15 @@ def get_last_update_field_from_filename(filename):
     year, quarter = filename.split(".")[0].split("_")
     quarterly_date_str = "{}-{}".format(year, quarter)
     return get_quarterly_date_str_as_date(quarterly_date_str).strftime("%Y-%m-%d")
+
+
+def calculate_earliest_latest_entries():
+    for project_id in Project.objects.order_by("project_id").distinct().values_list("project_id", flat=True):
+        project_entries = Project.objects.filter(project_id=project_id).order_by("project_id", "source_date")
+        earliest_project_entry = project_entries.first()
+        earliest_project_entry.is_earliest_entry = True
+        earliest_project_entry.save()
+
+        latest_project_entry = project_entries.last()
+        latest_project_entry.is_latest_entry = True
+        latest_project_entry.save()
