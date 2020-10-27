@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
 from pipeline.constants import DATABC_PERMALINK_URL
-from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource, CivicLeader
+from pipeline.models.general import (
+    LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource, CivicLeader, PageView)
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
 
@@ -338,4 +339,14 @@ class CivicLeaderSerializer(serializers.ModelSerializer):
             "gender",
             "position",
             "experience",
+        )
+
+
+class PageViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PageView
+        fields = (
+            "id",
+            "url",
+            "timestamp"
         )

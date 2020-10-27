@@ -11,7 +11,8 @@ from rest_framework_csv import renderers as csv_renderers
 
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
-from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource, CivicLeader
+from pipeline.models.general import (
+    LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource, CivicLeader, PageView)
 from pipeline.serializers.general import (
     CommunitySerializer,
     CommunityCSVSerializer,
@@ -26,6 +27,7 @@ from pipeline.serializers.general import (
     SchoolDistrictSerializer,
     DataSourceSerializer,
     CivicLeaderSerializer,
+    PageViewSerializer,
 )
 from pipeline.utils import (
     generate_line_strings, serialize_communities_for_regional_districts, communities_advanced_search,
@@ -181,3 +183,8 @@ class SchoolDistrictList(generics.ListAPIView):
 class CivicLeaderList(generics.ListAPIView):
     queryset = CivicLeader.objects.all()
     serializer_class = CivicLeaderSerializer
+
+
+class PageViewList(generics.ListCreateAPIView):
+    queryset = PageView.objects.all()
+    serializer_class = PageViewSerializer
