@@ -2,18 +2,18 @@
   <div>
     <v-expansion-panels v-model="panel" multiple hover>
       <v-expansion-panel
-        v-for="(communities, regionalDistrict) in groupedCommunities"
-        :key="'region' + regionalDistrict"
+        v-for="rd in rdNames"
+        :key="'region' + rd.title"
         class="mt-1 mb-1 result-panel rounded-lg"
       >
         <PanelHeader
-          :title="getRdName(regionalDistrict)"
-          :length="communities.length"
+          :title="rd.title"
+          :length="groupedCommunities[rd.rid].length"
         ></PanelHeader>
 
         <PanelContent
-          :regional-district="regionalDistrict"
-          :communities="communities"
+          :regional-district="rd.rid"
+          :communities="groupedCommunities[rd.rid]"
           class="explore-content-panel"
         ></PanelContent>
       </v-expansion-panel>
@@ -23,6 +23,7 @@
 
 <script>
 import { Component, Vue, Prop, namespace } from 'nuxt-property-decorator'
+import sortBy from 'lodash/sortBy'
 import BaseList from '~/components/Explore/BaseList.vue'
 import PanelHeader from '~/components/Explore/PanelHeader.vue'
 import PanelContent from '~/components/Explore/PanelContent.vue'
@@ -44,6 +45,17 @@ export default class Explore extends Vue {
       temp[rd.id] = rd.name
     })
     return temp
+  }
+
+  get rdNames() {
+    const rids = Object.keys(this.groupedCommunities)
+    const names = rids.map((rid) => {
+      return {
+        rid,
+        title: this.getRdName(rid),
+      }
+    })
+    return sortBy(names, 'title')
   }
 
   getRdName(id) {
