@@ -44,4 +44,5 @@ urlpatterns = [
     url(r"^locationdistances/$", pipeline.views.general.LocationDistanceList.as_view()),
     url(r"^schooldistricts/$", pipeline.views.general.SchoolDistrictList.as_view()),
     url(r"^civicleaders/$", pipeline.views.general.CivicLeaderList.as_view()),
+    url(r"^pageviews/$", pipeline.views.general.PageViewList.as_view()),
 ]
