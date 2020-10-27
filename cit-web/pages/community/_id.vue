@@ -209,7 +209,10 @@
           <CommunityDetailsFooter
             @openSheet="sheetOpen = true"
           ></CommunityDetailsFooter>
-          <CommunityDetailsBottomSheet :sheet-open="sheetOpen">
+          <CommunityDetailsBottomSheet
+            :sheet-open="sheetOpen"
+            @collapse="sheetOpen = false"
+          >
             <Sidebar
               :district="regionalDistrictName"
               :place-name="placeName"
@@ -557,7 +560,7 @@ export default class CommunityDetail extends Vue {
 .mobile-map-container {
   position: fixed;
   top: 66px;
-  bottom: 40px;
+  bottom: 86px;
   left: 0;
   right: 0;
   width: 100%;
@@ -592,6 +595,12 @@ export default class CommunityDetail extends Vue {
 
   .v-application .cd-header > h5 {
     padding: 20px !important;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .mobile-map-container {
+    bottom: 102px;
   }
 }
 
