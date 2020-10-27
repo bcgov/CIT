@@ -241,6 +241,8 @@ class ProjectSerializer(serializers.ModelSerializer):
             "last_update",
             "source_date",
             "updated_fields",
+            "is_earliest_entry",
+            "is_latest_entry",
         )
 
 
