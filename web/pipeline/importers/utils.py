@@ -18,7 +18,7 @@ from pipeline.constants import LOCATION_TYPES
 
 
 def import_data_into_point_model(resource_type, Model, row, dry_run=False):
-    print(row)
+    print("import_data_into_point_model", row)
 
     point = None
     location_fuzzy = False
@@ -32,7 +32,6 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
             Community.objects.annotate(distance=Distance('point', point)).order_by('distance').first()
         )
     except TypeError:
-        # print(row, Model.LATITUDE_FIELD)
         # When no point is present, try the municipality name description
         if not row.get("MUNICIPALITY"):
             print(
@@ -42,7 +41,7 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
             )
             return
 
-        closest_community = Community.objects.filter(place_name__icontains=_try_community_name).first()
+        closest_community = Community.objects.filter(place_name__icontains=_try_community_name(row)).first()
         if not closest_community:
             print(
                 "Skipping error:",

@@ -276,7 +276,7 @@ class NaturalResourceProject(Location):
 
 
 class Project(Location):
-    NAME_FIELD = 'PROJECT_NAME,MUNICIPALITY,PROJECT_STATUS'
+    NAME_FIELD = 'PROJECT_ID,SOURCE_DATE'
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     TELEPHONE_FIELD = 'TELEPHONE'
@@ -323,6 +323,7 @@ class Project(Location):
 
     first_entry_date = models.CharField(max_length=255, null=True, blank=True)
     last_update = models.CharField(max_length=255, null=True, blank=True)
+    source_date = models.CharField(max_length=255, null=True, blank=True)
 
     updated_fields = models.TextField(null=True, blank=True)
 

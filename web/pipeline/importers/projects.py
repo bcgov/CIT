@@ -72,7 +72,7 @@ def import_projects(dir_path):
 
     for file in sorted(os.listdir(directory), reverse=True):
         filename = os.fsdecode(file)
-        if filename.endswith("2012_q1.csv"):
+        if filename.endswith(".csv"):
             print("filename", filename)
 
             with open(os.path.join(dir_path, filename), mode='r', encoding='utf-8-sig', errors='ignore') as f:
@@ -118,7 +118,6 @@ def normalize_projects_field_names(row):
         if normalized_key.endswith(","):
             normalized_key = normalized_key[:-1]
 
-        print("key", key, normalized_key)
         if normalized_key in ALTERNATIVE_FIELD_NAMES:
             normalized_key = ALTERNATIVE_FIELD_NAMES[normalized_key]
 
@@ -126,8 +125,6 @@ def normalize_projects_field_names(row):
             normalized_key = ALTERNATIVE_FIELD_NAMES[normalized_key.replace(" ", "_")]
 
         normalized_key = normalized_key.replace(" ", "_")
-
-        print("normalized_key", normalized_key)
         project[normalized_key] = row[key]
 
         # deal with annoying edge cases
@@ -143,6 +140,8 @@ def normalize_projects_field_names(row):
 def handle_projects_fields_edge_cases(project, filename):
     if "LAST_UPDATE" not in project.keys():
         project["LAST_UPDATE"] = get_last_update_field_from_filename(filename)
+
+    project["SOURCE_DATE"] = get_last_update_field_from_filename(filename)
 
     # TODO clean standardized dates (enforce YYYY-Q[1-4] format)
 
