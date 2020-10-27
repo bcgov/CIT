@@ -193,6 +193,8 @@ class ProjectSerializer(serializers.ModelSerializer):
     provincial_funding = serializers.IntegerField(source="provinvial_funding")
     standardized_start_date = serializers.DateField(source='get_standardized_start_date_as_date')
     standardized_completion_date = serializers.DateField(source='get_standardized_completion_date_as_date')
+    standardized_start_date_quarter = serializers.CharField(source='get_standardized_start_date_as_quarter')
+    standardized_completion_date_quarter = serializers.CharField(source='get_standardized_completion_date_as_quarter')
 
     class Meta:
         model = Project
@@ -237,6 +239,8 @@ class ProjectSerializer(serializers.ModelSerializer):
             "completion_date",
             "standardized_start_date",
             "standardized_completion_date",
+            "standardized_start_date_quarter",
+            "standardized_completion_date_quarter",
             "first_entry_date",
             "last_update",
             "source_date",
