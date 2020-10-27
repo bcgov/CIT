@@ -86,6 +86,11 @@ class ProjectList(generics.ListAPIView):
     serializer_class = ProjectSerializer
 
 
+class LatestProjectList(generics.ListAPIView):
+    queryset = Project.objects.order_by('project_id', '-source_date').distinct('project_id')
+    serializer_class = ProjectSerializer
+
+
 class ServiceBCLocationList(generics.ListAPIView):
     queryset = ServiceBCLocation.objects.all()
     serializer_class = ServiceBCLocationSerializer

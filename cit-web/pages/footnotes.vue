@@ -23,6 +23,22 @@
       </li>
 
       <li
+        id="location-points"
+        :class="{ selected: anchor === 'location-points' }"
+      >
+        <h4>Latitude/Longitude of Location Assets</h4>
+        <p>
+          The latitudes and longitudes of location assets are set to the
+          latitudes and longitudes provided in the source data whenever
+          available. When there is no latitude/longitude in the source data but
+          a municipality field is present, if there is a community in our
+          communities list matching the municipality field we set the location
+          asset's latitude/longitude to that of the community.
+        </p>
+        <a href="#location-points"><v-icon>mdi-link</v-icon> Permalink</a>
+      </li>
+
+      <li
         id="distances-50km"
         :class="{ selected: anchor === 'distances-50km' }"
       >
@@ -55,6 +71,10 @@
           distances whenever driving distances are unavailable.
 
           <a href="#distances-50km">Read more about driving distances.</a>
+          <a href="#location-points"
+            >Read more about how the latitude/longitude of location assets is
+            determined.</a
+          >
         </p>
         <a href="#search-filters-distance"
           ><v-icon>mdi-link</v-icon> Permalink</a
@@ -187,6 +207,20 @@
         </p>
         <a href="#connectivity-percentages"
           ><v-icon>mdi-link</v-icon> Permalink</a
+        >
+      </li>
+
+      <li id="project-dates" :class="{ selected: anchor === 'project-dates' }">
+        <h4>Date fields in Projects Reports</h4>
+        <p>
+          The date fields (Start Date, Completion Date, and Last Updated Date)
+          in the Projects reports are specified as quarterly dates in the source
+          dataset (e.g. 2020-Q2). We have converted these quarterly dates to be
+          the first day of the specified quarter (e.g. 2020-Q2 is 2020-04-01).
+        </p>
+        <a href="#project-dates">
+          <v-icon>mdi-link</v-icon>
+          Permalink</a
         >
       </li>
     </ol>
