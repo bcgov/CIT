@@ -197,6 +197,9 @@ def import_census_population_data(stats, subdiv):
     # "1.2.1.3.5.4", "      100 years and over" female
     subdiv.pop_100_f = _fetch_statscan_value(stats, "1.2.1.3.5.4", gender="female")
 
+    # "6.1.1.1", 1, "  Aboriginal identity",
+    subdiv.indigenous_population = _fetch_statscan_value(stats, "6.1.1.1")
+
     # "Immigration and citizenship", 18000, "5.2.1", 0, "Total - Immigrant status and period of immigration for the population in private households - 25% sample data",
     subdiv.immigration_population_total = _fetch_statscan_value(stats, "5.2.1")
 

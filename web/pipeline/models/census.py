@@ -196,6 +196,9 @@ class CensusSubdivision(models.Model):
     # "1.2.1.3.5.4", "      100 years and over" female
     pop_100_f = models.IntegerField(null=True)
 
+    # "6.1.1.1", 1, "  Aboriginal identity",
+    indigenous_population = models.IntegerField(null=True)
+
     # types of occupied dwellings
     # "2.1.1.1", 1, "  Single-detached house"
     detached_houses = models.IntegerField(null=True)
