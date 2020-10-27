@@ -239,6 +239,7 @@ class ProjectSerializer(serializers.ModelSerializer):
             "standardized_completion_date",
             "first_entry_date",
             "last_update",
+            "source_date",
             "updated_fields",
         )
 
