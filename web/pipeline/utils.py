@@ -762,10 +762,16 @@ def _handle_location_filter(query_filter):
         # if filtering by distance, add a fallback for birds' eye distance if driving distance
         # is unavailable
         # (i.e. driving distance < 50km OR (driving distance is null AND birds' eye distance < 50km))
-        birds_eye_distance_query = "distances__distance__" + query_filter["operator"]
+
+        if query_filter["operator"] == "xgt":
+            birds_eye_field = "distances__distance__lt"
+            birds_eye_distance_query = ~Q(**{birds_eye_field: query_filter["value"][0]})
+        else:
+            birds_eye_field = "distances__distance__" + query_filter["operator"]
+            birds_eye_distance_query = Q(**{birds_eye_field: query_filter["value"][0]})
         distance_query = (
             distance_query |
-            (Q(distances__driving_distance__isnull=True) & Q(**{birds_eye_distance_query: query_filter["value"][0]})))
+            (Q(distances__driving_distance__isnull=True) & birds_eye_distance_query))
 
     print("location_query", location_type_query, distance_query)
 
