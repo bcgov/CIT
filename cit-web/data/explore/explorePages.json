@@ -4,24 +4,24 @@
     "pid": "ReportSection6249eac6d911d2930de3",
     "description": "How and where to do people live in this area? What kind of homes do people live in, and do they own them or rent? *This page shows data on census subdivisions of communities in BC communities you've selected.",
     "image": "domestic.svg",
-    "group": "Housing"
+    "group": "Residents"
   },
   {
     "name": "Education",
     "pid": "ReportSection39f3a30707d51e04d585",
     "description": "Stats on access to schools and population education level",
     "image": "education.svg",
-    "group": "Housing"
+    "group": "Residents"
   },
   {
     "name": "Culture",
     "pid": "ReportSectionc275f231ed2c4af16a7d",
     "description": "Stats on the age group, most common languages spoken and community type classification.",
     "image": "culture.svg",
-    "group": "Housing"
+    "group": "Residents"
   },
   {
-    "name": "Income/Jobs",
+    "name": "Income and Jobs",
     "pid": "ReportSection65f0df6512cfb580c7a2",
     "description": "Stats on the jobs by NOC code, household income, income by gender and low income status.",
     "image": "economic.svg",
@@ -35,7 +35,7 @@
     "group": "Economics/Employment"
   },
   {
-    "name": "Health & Emergency",
+    "name": "Health and Emergency",
     "pid": "ReportSectionde977e8425990a550597",
     "image": "health_care.svg",
     "description": "Community healthcare access and first responders",

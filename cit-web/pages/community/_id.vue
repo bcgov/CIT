@@ -44,6 +44,18 @@
             </v-alert>
           </div>
           <div v-else>
+            <v-container fluid>
+              <CommunityDetailsHeader
+                :rid="communityDetails.regional_district"
+                :regional-district="regionalDistrictName"
+                :census-data="censusSubdivision"
+                :community-details="communityDetails"
+                :place-name="placeName"
+                class="py-8 px-5"
+                @go="viewReports"
+              ></CommunityDetailsHeader>
+            </v-container>
+
             <v-container v-if="parentCommunity" fluid>
               <v-alert type="info" class="primary--text">
                 This community is within {{ parentCommunity.name }}'s boundary.
@@ -67,16 +79,6 @@
               <v-container fluid>
                 <v-row no-gutters>
                   <v-col :cols="12" class="elevation-5">
-                    <CommunityDetailsHeader
-                      :rid="communityDetails.regional_district"
-                      :regional-district="regionalDistrictName"
-                      :census-data="censusSubdivision"
-                      :community-details="communityDetails"
-                      :place-name="placeName"
-                      class="py-8 px-5"
-                      @go="viewReports"
-                    ></CommunityDetailsHeader>
-                    <v-divider></v-divider>
                     <div class="map-container">
                       <Sidebar
                         :district="regionalDistrictName"
@@ -137,7 +139,7 @@
                   <v-col col="12">
                     <div class="mt-10">
                       <CommunityDetailsSectionHeader
-                        title="Compare"
+                        :title="`${placeName} Reports`"
                         subtitle="Choose a report to view community data within that topic,
                     and compare to the average for the regional district, or all
                     of BC."

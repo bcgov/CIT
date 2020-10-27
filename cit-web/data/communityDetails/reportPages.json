@@ -5,7 +5,7 @@
     "cpid": "ReportSection33f0d75c8f1e581816d6",
     "description": "How and where to do people live in this area? What kind of homes do people live in, and do they own them or rent? *This page shows data on census subdivisions of communities in BC communities you've selected.",
     "image": "domestic.svg",
-    "group": "Housing"
+    "group": "Residents"
   },
   {
     "name": "Demographics",
@@ -13,7 +13,7 @@
     "cpid": "ReportSectionce86ffd870642ae4e7b8",
     "description": "Stats on population by age group and gender, languages spoken and family structure.",
     "image": "culture.svg",
-    "group": "Housing"
+    "group": "Residents"
   },
   {
     "name": "Education",
@@ -21,10 +21,10 @@
     "cpid": "ReportSectione465e2e7c11425d1ec71",
     "description": "Stats on access to schools and population education level",
     "image": "education.svg",
-    "group": "Housing"
+    "group": "Residents"
   },
   {
-    "name": "Income/Jobs",
+    "name": "Income and Jobs",
     "pid": "ReportSectionf2b8f5bb464e6d79a9ed",
     "cpid": "ReportSection067effabf93ddf06a487",
     "description": "What employment and opportunities are in this community?",
@@ -40,7 +40,7 @@
     "group": "Economics/Employment"
   },
   {
-    "name": "Health & Emergency",
+    "name": "Health and Emergency",
     "pid": "ReportSection9225d60e07de606ad6e0",
     "cpid": "ReportSection0685d299f800b594fcda",
     "image": "health_care.svg",
