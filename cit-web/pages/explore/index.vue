@@ -212,7 +212,7 @@
 </template>
 
 <script>
-import { Component, Vue, namespace, Watch } from 'nuxt-property-decorator'
+import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import groupBy from 'lodash/groupBy'
 import uniqBy from 'lodash/uniqBy'
 import isEmpty from 'lodash/isEmpty'
@@ -250,13 +250,6 @@ export default class Explore extends Vue {
     this.$router.push({
       query: {},
     })
-  }
-
-  @Watch('isMobile')
-  handleHydration(nv, ov) {
-    if (ov === false && nv === true) {
-      this.$root.$emit('closeLayerSwitcher')
-    }
   }
 
   @exploreStore.Getter('getSearchAsMove') searchAsMove
