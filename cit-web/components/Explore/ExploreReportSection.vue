@@ -180,6 +180,12 @@ export default class ExploreReportSection extends Vue {
   }
 }
 
+@media screen and (max-width: 900px) {
+  .v-application .explore-report-container {
+    padding: 20px !important;
+  }
+}
+
 @media screen and (max-width: 831px) {
   .explore-report-card-wrapper {
     justify-content: center;

@@ -62,7 +62,7 @@ export default class BaseListItem extends Vue {
   @Prop({ default: null, type: Array }) center
 
   get findOnMap() {
-    return this.$route.query?.tab === 'Map'
+    return this.$route.query?.tab === 'Map' || !this.$route.query.tab
   }
 
   handleMoreDetails() {

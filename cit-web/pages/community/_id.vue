@@ -88,6 +88,29 @@
                         @viewReports="viewReports"
                       >
                         <div class="pl-4 pr-4">
+                          <div class="mt-5">
+                            <h6
+                              class="pa-0 ma-0 text-subtitle-1 font-weight-bold my-5"
+                              style="line-height: 0;"
+                            >
+                              Show facilities by
+                            </h6>
+                            <div>
+                              <v-radio-group
+                                v-model="assetMode"
+                                class="pa-0 ma-0"
+                              >
+                                <v-radio
+                                  value="driving"
+                                  label="Driving Distance"
+                                ></v-radio>
+                                <v-radio
+                                  value="boundary"
+                                  label="Municial Boundary"
+                                ></v-radio>
+                              </v-radio-group>
+                            </div>
+                          </div>
                           <p class="text-center pa-0 ma-0 text-body-1 mt-3">
                             {{ assetModeText }}
                             <a
@@ -101,19 +124,6 @@
                             v-if="assetMode === 'driving'"
                             @mouseup="handleEnd"
                           ></AssetSlider>
-                          <div class="text-center">
-                            <v-btn
-                              small
-                              color="primary"
-                              class="text-body-1 text-capitalize mt-2"
-                              @click="handleAssetModeChange"
-                            >
-                              <v-icon small class="mr-2">{{
-                                assetModeButtonIcon
-                              }}</v-icon>
-                              {{ assetModeButtonText }}</v-btn
-                            >
-                          </div>
                         </div>
                       </Sidebar>
                       <CommunityDetailsMap
@@ -199,7 +209,10 @@
           <CommunityDetailsFooter
             @openSheet="sheetOpen = true"
           ></CommunityDetailsFooter>
-          <CommunityDetailsBottomSheet :sheet-open="sheetOpen">
+          <CommunityDetailsBottomSheet
+            :sheet-open="sheetOpen"
+            @collapse="sheetOpen = false"
+          >
             <Sidebar
               :district="regionalDistrictName"
               :place-name="placeName"
@@ -515,6 +528,9 @@ export default class CommunityDetail extends Vue {
 
   mounted() {
     this.isHydrated = true
+    if (!this.isMobile) {
+      this.$root.$emit('openLayerSwitcher')
+    }
     console.log('Report?', this.report)
   }
 }
@@ -544,7 +560,7 @@ export default class CommunityDetail extends Vue {
 .mobile-map-container {
   position: fixed;
   top: 66px;
-  bottom: 40px;
+  bottom: 86px;
   left: 0;
   right: 0;
   width: 100%;
@@ -579,6 +595,12 @@ export default class CommunityDetail extends Vue {
 
   .v-application .cd-header > h5 {
     padding: 20px !important;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .mobile-map-container {
+    bottom: 102px;
   }
 }
 

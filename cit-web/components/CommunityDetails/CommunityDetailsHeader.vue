@@ -13,7 +13,28 @@
           >Reports</v-btn
         >
       </div>
-      <div class="cdh-content">
+    </div>
+    <div class="cdh-content">
+      <div>
+        <div>
+          <a :href="`/explore?&rid=${rid}`" class="text-body-1">
+            {{ regionalDistrict || 'Region N/A' }}
+          </a>
+        </div>
+        <div>
+          <dl class="cdh-dl">
+            <dt>Mayor</dt>
+            <dd>{{ censusData.name || 'N/A' }}</dd>
+          </dl>
+        </div>
+        <div>
+          <dl class="cdh-dl">
+            <dt>Census Subdivision Area:</dt>
+            <dd>{{ getCensusValue('area', censusData) || 'N/A' }}</dd>
+          </dl>
+        </div>
+      </div>
+      <div>
         <div>
           <div>
             <a :href="`/explore?&rid=${rid}`" class="text-body-1">
@@ -46,13 +67,13 @@
           <div>
             <dl class="cdh-dl">
               <dt>Population Density:</dt>
-              <dd>N/A</dd>
+              <dd>{{ censusData.population_density_per_sq_km }}</dd>
             </dl>
           </div>
           <div>
             <dl class="cdh-dl">
-              <dt>Median Age:</dt>
-              <dd>N/A</dd>
+              <dt>Average Age:</dt>
+              <dd>{{ censusData.population_avg_age }}</dd>
             </dl>
           </div>
         </div>
@@ -61,19 +82,19 @@
           <div>
             <dl class="cdh-dl">
               <dt>Employment Rate:</dt>
-              <dd>N/A</dd>
+              <dd>{{ censusData.employment_rate }}</dd>
             </dl>
           </div>
           <div>
             <dl class="cdh-dl">
-              <dt>% Population Post-Secondary Education:</dt>
-              <dd>N/A</dd>
+              <dt>% Post-Secondary Education:</dt>
+              <dd>{{ censusData.edu_2 }}</dd>
             </dl>
           </div>
           <div>
             <dl class="cdh-dl">
-              <dt>% Community with Broadband Access:</dt>
-              <dd>N/A</dd>
+              <dt>% Fast Internet Access (50 Mbps):</dt>
+              <dd>{{ communityDetails.percent_50_10 }}</dd>
             </dl>
           </div>
         </div>

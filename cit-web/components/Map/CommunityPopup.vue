@@ -14,7 +14,8 @@
       </v-app-bar>
 
       <v-card-text class="ma-0 pa-2"
-        >Population: {{ population || 'N/A' }}</v-card-text
+        >Population:
+        {{ (population && population.toLocaleString()) || 'N/A' }}</v-card-text
       >
       <v-card-actions class="ma-0 pa-2">
         <v-btn
