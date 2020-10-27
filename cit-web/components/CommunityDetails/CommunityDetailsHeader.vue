@@ -1,105 +1,80 @@
 <template>
-  <div class="elevation-5">
+  <div>
     <div class="d-flex align-center">
-      <div class="cdh-header d-flex flex-column justify-center px-5">
-        <h6 class="text-h5 font-weight-bold">
+      <div class="cdh-header d-flex flex-column justify-center">
+        <h6 class="text-h3 font-weight-bold">
           {{ placeName }}
         </h6>
-        <v-btn
-          color="primary"
-          class="mt-2 text-uppercase"
-          width="150"
-          @click="$emit('go')"
-          >Reports</v-btn
-        >
+
+        <a :href="`/explore?&rid=${rid}`" class="text-h6 d-block mt-2">
+          {{ regionalDistrict || 'Region N/A' }}
+        </a>
       </div>
     </div>
-    <div class="cdh-content">
-      <div>
-        <div>
-          <a :href="`/explore?&rid=${rid}`" class="text-body-1">
-            {{ regionalDistrict || 'Region N/A' }}
-          </a>
-        </div>
-        <div>
-          <dl class="cdh-dl">
-            <dt>Mayor</dt>
-            <dd>{{ censusData.name || 'N/A' }}</dd>
-          </dl>
-        </div>
-        <div>
-          <dl class="cdh-dl">
-            <dt>Census Subdivision Area:</dt>
-            <dd>{{ getCensusValue('area', censusData) || 'N/A' }}</dd>
-          </dl>
-        </div>
-      </div>
-      <div>
-        <div>
+    <v-divider class="my-4"></v-divider>
+    <v-container fluid>
+      <v-row>
+        <v-col cols="4">
+          <div class="font-weight-bold">Mayor</div>
+          <div>{{ censusData.name || 'N/A' }}</div>
+        </v-col>
+        <v-col cols="4">
+          <div class="font-weight-bold">Census Subdivision Area:</div>
+          <div>{{ getCensusValue('area', censusData) || 'N/A' }}</div>
+        </v-col>
+        <v-col cols="4">
+          <div class="font-weight-bold">Census Subdivision:</div>
+          <div>{{ censusData.name || 'N/A' }}</div>
+        </v-col>
+        <v-col cols="4">
+          <div>Median Income:</div>
           <div>
-            <a :href="`/explore?&rid=${rid}`" class="text-body-1">
-              {{ regionalDistrict || 'Region N/A' }}
-            </a>
+            {{ getCensusValue('median_total_income', censusData) || 'N/A' }}
           </div>
+        </v-col>
+        <v-col cols="4">
+          <div class="font-weight-bold">Mayor</div>
+          <div>{{ censusData.name || 'N/A' }}</div>
+        </v-col>
+        <v-col cols="4">
+          <div class="font-weight-bold">Median Income:</div>
           <div>
-            <dl class="cdh-dl">
-              <dt>Census Subdivision:</dt>
-              <dd>{{ censusData.name || 'N/A' }}</dd>
-            </dl>
+            {{ getCensusValue('median_total_income', censusData) || 'N/A' }}
           </div>
-          <div>
-            <dl class="cdh-dl">
-              <dt>Census Subdivision Area:</dt>
-              <dd>{{ getCensusValue('area', censusData) || 'N/A' }}</dd>
-            </dl>
-          </div>
-        </div>
-
-        <div>
-          <div>
-            <dl class="cdh-dl">
-              <dt>Median Income:</dt>
-              <dd>
-                {{ getCensusValue('median_total_income', censusData) || 'N/A' }}
-              </dd>
-            </dl>
-          </div>
-          <div>
-            <dl class="cdh-dl">
-              <dt>Population Density:</dt>
-              <dd>{{ censusData.population_density_per_sq_km }}</dd>
-            </dl>
-          </div>
-          <div>
-            <dl class="cdh-dl">
-              <dt>Average Age:</dt>
-              <dd>{{ censusData.population_avg_age }}</dd>
-            </dl>
-          </div>
-        </div>
-
-        <div>
-          <div>
-            <dl class="cdh-dl">
-              <dt>Employment Rate:</dt>
-              <dd>{{ censusData.employment_rate }}</dd>
-            </dl>
-          </div>
-          <div>
-            <dl class="cdh-dl">
-              <dt>% Post-Secondary Education:</dt>
-              <dd>{{ censusData.edu_2 }}</dd>
-            </dl>
-          </div>
-          <div>
-            <dl class="cdh-dl">
-              <dt>% Fast Internet Access (50 Mbps):</dt>
-              <dd>{{ communityDetails.percent_50_10 }}</dd>
-            </dl>
-          </div>
-        </div>
-      </div>
-    </div>
+        </v-col>
+        <v-col cols="4">
+          <div class="font-weight-bold">Population Density:</div>
+          <div>{{ censusData.population_density_per_sq_km }}</div>
+        </v-col>
+        <v-col cols="4">
+          <div class="font-weight-bold">Average Age:</div>
+          <div>{{ censusData.population_avg_age }}</div>
+        </v-col>
+        <v-col cols="4">
+          <div class="font-weight-bold">Employment Rate:</div>
+          <div>{{ censusData.employment_rate }}</div>
+        </v-col>
+        <v-col cols="4">
+          <div class="font-weight-bold">% Post-Secondary Education:</div>
+          <div>{{ censusData.edu_2 }}</div>
+        </v-col>
+        <v-col cols="4">
+          <div class="font-weight-bold">% Fast Internet Access (50 Mbps):</div>
+          <div>{{ communityDetails.percent_50_10 }}</div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col cols="12" class="d-flex justify-end">
+          <v-btn
+            color="primary"
+            class="mt-2 text-uppercase"
+            width="150"
+            @click="$emit('go')"
+            >Reports</v-btn
+          >
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -136,26 +111,3 @@ export default class CommunityDetailsHeader extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-.cdh-dl dt,
-.cdh-dl dd {
-  display: inline-block;
-}
-
-.cdh-dl dt {
-  font-weight: bold;
-}
-
-.cdh-header {
-  width: 360px;
-}
-
-.cdh-content {
-  flex: 1 1 0;
-  display: flex;
-}
-
-.cdh-content > div {
-  flex: 1 1 0;
-}
-</style>
