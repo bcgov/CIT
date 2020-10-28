@@ -60,6 +60,10 @@ It is recommended that the Workspace is the `cit-web` folder, and not the `cit` 
 
 ## Deployment
 
+### Updating packages
+
+To update Python packages, update the PyPI package version numbers in `web/requirements.txt`. To update JavaScript packages, update the npm package version numbers in `cit-web/package.json`. Rebuild your containers using `docker-compose build`.
+
 ### Environment variables
 
 Create the `.env` file using `example.env` as a template:
