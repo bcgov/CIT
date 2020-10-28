@@ -65,7 +65,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "population_density_per_sq_km",
             "value": commaize(obj.population_density_per_sq_km),
-            "units": "people per km\u00B2",
+            "units": " people per km\u00B2",
         },
         {
             "group": None,
@@ -549,41 +549,9 @@ def get_location_assets_for_community(model_class, community):
 
 def get_fields_for_location_type(location_type):
     common_fields = [
-        "id", "name", "location_fuzzy", "location_phone", "location_email", "location_website"]
+        "name", "location_phone", "location_email", "location_website"]
 
-    location_specific_fields = {
-        "hospitals": ["rg_name", "sv_description", "hours"],
-        "courts": [
-            "address", "city", "postal_code", "contact_phone", "fax_number",
-            "hours_of_operation", "court_level"],
-        "economic_projects": [
-            "flnro_project_status", "project_type", "project_category", "proponent", "eao_project_status",
-            "project_comments"],
-        "natural_resource_projects": [
-            "project_comments", "project_description", "estimated_cost", "update_activity", "construction_type",
-            "construction_subtype", "project_type", "developer", "architect", "project_status", "project_stage",
-            "project_category_name", "provinvial_funding", "federal_funding", "municipal_funding",
-            "green_building_ind", "green_building_desc", "clean_energy_ind", "construction_jobs", "operating_jobs",
-            "standardized_start_date", "standardized_completion_date"],
-        "servicebc_locations": [],
-        "schools": ["district_number", "public_or_independent", "school_education_level"],
-        "post_secondary_institutions": ["institution_type", "economic_development_region"],
-        "clinics": ["sv_description", "hours"],
-        "first_responders": ["keywords"],
-        "diagnostic_facilities": ["ser_cd_dsc"],
-        "timber_facilities": ["bus_cat_ds"],
-        "civic_facilities": ["keywords", "bus_cat_cl", "bus_cat_ds"],
-        "closed_mills": [],
-        "research_centres": [
-            "research_specialties", "research_centre_affiliation", "institution", "inst_acrnm",
-            "research_sector", "cntr_type"],
-        "airports": [
-            "descriptn", "keywords", "aer_status", "aircr_acs", "data_srce", "datasrc_yr", "elevation", "fuel_avail",
-            "heli_acs", "iata", "mx_rway_ln", "num_rway", "rway_surf", "oil_avail", "seapln_acc",
-        ]
-    }
-
-    return common_fields + location_specific_fields[location_type]
+    return common_fields
 
 
 def get_quarterly_date_str_as_date(quarterly_date_str):
