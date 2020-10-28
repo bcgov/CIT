@@ -352,6 +352,28 @@ class Project(Location):
         except ValueError:
             return None
 
+    def get_standardized_start_date_as_quarter(self):
+        if not self.standardized_start_date:
+            return None
+
+        try:
+            # try converting to date to see if the format is valid
+            get_quarterly_date_str_as_date(self.standardized_start_date)
+            return self.standardized_start_date
+        except ValueError:
+            return None
+
+    def get_standardized_completion_date_as_quarter(self):
+        if not self.standardized_completion_date:
+            return None
+
+        try:
+            # try converting to date to see if the format is valid
+            get_quarterly_date_str_as_date(self.standardized_completion_date)
+            return self.standardized_completion_date
+        except ValueError:
+            return None
+
 
 class ServiceBCLocation(Location):
     NAME_FIELD = 'External Site'

@@ -254,3 +254,8 @@ class CivicLeader(models.Model):
 
     def get_name(self):
         return "{} {}".format(self.first_name, self.last_name)
+
+
+class PageView(models.Model):
+    url = models.URLField()
+    timestamp = models.DateTimeField()
