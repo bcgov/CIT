@@ -16,7 +16,7 @@
       <v-row>
         <v-col cols="4">
           <div class="font-weight-bold">Mayor</div>
-          <div>{{ censusData.name || 'N/A' }}</div>
+          <div>{{ communityDetails.mayor || 'N/A' }}</div>
         </v-col>
         <v-col cols="4">
           <div class="font-weight-bold">Census Subdivision Area:</div>
@@ -27,16 +27,6 @@
           <div>{{ censusData.name || 'N/A' }}</div>
         </v-col>
         <v-col cols="4">
-          <div>Median Income:</div>
-          <div>
-            {{ getCensusValue('median_total_income', censusData) || 'N/A' }}
-          </div>
-        </v-col>
-        <v-col cols="4">
-          <div class="font-weight-bold">Mayor</div>
-          <div>{{ censusData.name || 'N/A' }}</div>
-        </v-col>
-        <v-col cols="4">
           <div class="font-weight-bold">Median Income:</div>
           <div>
             {{ getCensusValue('median_total_income', censusData) || 'N/A' }}
@@ -44,34 +34,37 @@
         </v-col>
         <v-col cols="4">
           <div class="font-weight-bold">Population Density:</div>
-          <div>{{ censusData.population_density_per_sq_km }}</div>
+          <div>
+            {{ getCensusValue('population_density_per_sq_km', censusData) }}
+          </div>
         </v-col>
         <v-col cols="4">
           <div class="font-weight-bold">Average Age:</div>
-          <div>{{ censusData.population_avg_age }}</div>
+          <div>{{ getCensusValue('population_avg_age', censusData) }}</div>
         </v-col>
         <v-col cols="4">
           <div class="font-weight-bold">Employment Rate:</div>
-          <div>{{ censusData.employment_rate }}</div>
+          <div>{{ getCensusValue('employment_rate', censusData) }}</div>
         </v-col>
         <v-col cols="4">
           <div class="font-weight-bold">% Post-Secondary Education:</div>
-          <div>{{ censusData.edu_2 }}</div>
+          <div>{{ getCensusValue('pct_post_secondary', censusData) }}</div>
         </v-col>
         <v-col cols="4">
           <div class="font-weight-bold">% Fast Internet Access (50 Mbps):</div>
-          <div>{{ communityDetails.percent_50_10 }}</div>
+          <div>{{ getCDValue('percent_50_10', communityDetails) }}</div>
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12" class="d-flex justify-end">
           <v-btn
             color="primary"
-            class="mt-2 text-uppercase"
+            class="mt-6 text-uppercase"
             width="150"
             @click="$emit('go')"
-            >Reports</v-btn
           >
+            <v-icon class="mr-2">mdi-file-document</v-icon>Reports
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -108,6 +101,17 @@ export default class CommunityDetailsHeader extends Vue {
     const groups = data.groups
     const group = groups?.find((g) => g.key === key)
     return `${group?.value || ''}${group?.units || ''}`
+  }
+
+  getCDValue(key, data) {
+    const dfs = data.display_fields
+    const df = dfs.find((df) => df.key === key)
+    return df && `${df.value}${df.units || ''}`
+  }
+
+  updated() {
+    console.log(this.censusData)
+    console.log('Comm details', this.communityDetails)
   }
 }
 </script>
