@@ -208,6 +208,7 @@
             ></CommunityDetailsMap>
           </div>
           <CommunityDetailsFooter
+            :place-name="placeName"
             @openSheet="sheetOpen = true"
           ></CommunityDetailsFooter>
           <CommunityDetailsBottomSheet
