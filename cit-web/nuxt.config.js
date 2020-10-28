@@ -77,6 +77,10 @@ export default {
       src: '~/plugins/vue-clipboard.js',
       mode: 'client',
     },
+    {
+      src: '~/plugins/pageview.js',
+      mode: 'client',
+    },
   ],
   /*
    ** Auto import components

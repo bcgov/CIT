@@ -81,8 +81,7 @@
 <script>
 import { Vue, Component } from 'nuxt-property-decorator'
 import CommSearch from '~/components/CommSearch.vue'
-import { getCommunityList, setPageView } from '~/api/cit-api'
-import { getPageViewOptions } from '~/utils'
+import { getCommunityList } from '~/api/cit-api'
 @Component({
   CommSearch,
 })
@@ -138,17 +137,6 @@ export default class Index extends Vue {
       this.$store.commit('communities/setCommunities', response.data)
     } catch (e) {
       console.error(e)
-    }
-  }
-
-  mounted() {
-    const opts = getPageViewOptions()
-    if (opts) {
-      setPageView(opts)
-        .then((result) => {})
-        .catch((e) => {
-          console.error(e)
-        })
     }
   }
 }
