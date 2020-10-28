@@ -107,7 +107,7 @@
                                 ></v-radio>
                                 <v-radio
                                   value="boundary"
-                                  label="Municial Boundary"
+                                  label="Municipal Boundary"
                                 ></v-radio>
                               </v-radio-group>
                             </div>
