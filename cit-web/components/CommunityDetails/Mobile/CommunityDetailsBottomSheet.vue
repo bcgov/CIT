@@ -4,6 +4,7 @@
       :value="sheetOpen"
       persistent
       scrollable
+      class="black--text"
       @click.native="handleClick"
     >
       <v-card>
