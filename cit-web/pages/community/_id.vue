@@ -550,8 +550,13 @@ export default class CommunityDetail extends Vue {
 
   mounted() {
     this.isHydrated = true
-    if (!this.isMobile) {
+    if (!this.isMobile && !this.report) {
       this.$root.$emit('openLayerSwitcher')
+    }
+
+    console.log('Report?', this.report)
+    if (this.report) {
+      document.documentElement.classList.add('overflow-y-hidden')
     }
   }
 }
