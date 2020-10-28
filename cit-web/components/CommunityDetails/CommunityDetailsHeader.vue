@@ -20,7 +20,7 @@
         </v-col>
         <v-col cols="4">
           <div class="font-weight-bold">Census Subdivision Area:</div>
-          <div>{{ getCensusValue('area', censusData) || 'N/A' }}</div>
+          <div>{{ getCensusValue('area', censusData) }}</div>
         </v-col>
         <v-col cols="4">
           <div class="font-weight-bold">Census Subdivision:</div>
@@ -29,7 +29,7 @@
         <v-col cols="4">
           <div class="font-weight-bold">Median Income:</div>
           <div>
-            {{ getCensusValue('median_total_income', censusData) || 'N/A' }}
+            {{ getCensusValue('median_total_income', censusData) }}
           </div>
         </v-col>
         <v-col cols="4">
@@ -100,12 +100,18 @@ export default class CommunityDetailsHeader extends Vue {
   getCensusValue(key, data) {
     const groups = data.groups
     const group = groups?.find((g) => g.key === key)
+    if (group?.value !== 0 && !group?.value) {
+      return 'N/A'
+    }
     return `${group?.value || ''}${group?.units || ''}`
   }
 
   getCDValue(key, data) {
     const dfs = data.display_fields
     const df = dfs.find((df) => df.key === key)
+    if (!df && df.value !== 0) {
+      return 'N/A'
+    }
     return df && `${df.value}${df.units || ''}`
   }
 
