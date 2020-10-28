@@ -41,3 +41,11 @@ export function getDataSourceList() {
 export function getRegionalData(id) {
   return $axios.get(`/api/pipeline/regionaldistricts/${id}/`)
 }
+
+export function getPageViews() {
+  return $axios.get(`/api/pipeline/pageviews/`)
+}
+
+export function setPageView(opts) {
+  return $axios.post(`/api/pipeline/pageviews/`, opts)
+}

@@ -220,8 +220,13 @@ import without from 'lodash/without'
 import intersectionBy from 'lodash/intersectionBy'
 import flatMap from 'lodash/flatMap'
 import ExplorePages from '~/data/explore/explorePages.json'
-import { getRegionalDistricts, getCommunityList } from '~/api/cit-api'
+import {
+  getRegionalDistricts,
+  getCommunityList,
+  setPageView,
+} from '~/api/cit-api'
 import { getAuthToken } from '~/api/ms-auth-api/'
+import { getPageViewOptions } from '~/utils'
 const exploreStore = namespace('explore')
 
 @Component()
@@ -369,6 +374,15 @@ export default class Explore extends Vue {
     const rid = this.$route.query.rid
     rid && this.$root.$emit('setRegion', rid)
     document.documentElement.classList.add('fixed-layout')
+
+    const opts = getPageViewOptions()
+    if (opts) {
+      setPageView(opts)
+        .then((result) => {})
+        .catch((e) => {
+          console.error(e)
+        })
+    }
   }
 
   beforeRouteLeave(to, from, next) {

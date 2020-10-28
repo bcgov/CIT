@@ -290,10 +290,13 @@ import {
   getDataSourceList,
   getCommunityList,
   getRegionalDistricts,
+  setPageView,
 } from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
 import reportPages from '~/data/communityDetails/reportPages.json'
 import { getAuthToken } from '~/api/ms-auth-api/'
+import { getPageViewOptions } from '~/utils'
+
 const commModule = namespace('communities')
 
 @Component({
@@ -552,7 +555,14 @@ export default class CommunityDetail extends Vue {
     if (!this.isMobile) {
       this.$root.$emit('openLayerSwitcher')
     }
-    console.log('Report?', this.report)
+    const opts = getPageViewOptions()
+    if (opts) {
+      setPageView(opts)
+        .then((result) => {})
+        .catch((e) => {
+          console.error(e)
+        })
+    }
   }
 }
 </script>

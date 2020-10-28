@@ -18,9 +18,7 @@ import Footer from '~/components/Footer.vue'
   Footer,
   Navigation,
 })
-export default class DefaultLayout extends Vue {
-  citFeedbackEmail = this.$config.citFeedbackEmail
-}
+export default class DefaultLayout extends Vue {}
 </script>
 
 <style lang="scss" scoped>
