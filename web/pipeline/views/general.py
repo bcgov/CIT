@@ -7,17 +7,12 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets
-from rest_framework_csv import renderers as csv_renderers
 
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
 from pipeline.models.general import (
     LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource, CivicLeader, PageView)
 from pipeline.serializers.general import (
-    CommunitySerializer,
-    CommunityCSVSerializer,
-    CommunitySearchSerializer,
-    CommunityDetailSerializer,
     CensusSubdivisionSerializer,
     CensusSubdivisionDetailSerializer,
     LocationDistanceSerializer,
@@ -29,8 +24,15 @@ from pipeline.serializers.general import (
     CivicLeaderSerializer,
     PageViewSerializer,
 )
+from pipeline.serializers.community import (
+    CommunitySerializer,
+    CommunityCSVRenderer,
+    CommunityCSVSerializer,
+    CommunitySearchSerializer,
+    CommunityDetailSerializer,
+)
 from pipeline.utils import (
-    generate_line_strings, serialize_communities_for_regional_districts, communities_advanced_search,
+    serialize_communities_for_regional_districts, communities_advanced_search,
     get_hidden_explore_report_pages, get_communities_with_insufficient_data
 )
 
@@ -85,9 +87,10 @@ class CommunityViewSet(viewsets.GenericViewSet):
             content_type="application/json",
         )
 
-    @action(detail=False, renderer_classes=[csv_renderers.CSVRenderer])
+    @action(detail=False, renderer_classes=[CommunityCSVRenderer])
     def csv(self, request):
-        serializer = CommunityCSVSerializer(self.get_queryset(), many=True)
+        communities = communities_advanced_search(request.query_params)
+        serializer = CommunityCSVSerializer(communities, many=True)
         return Response(serializer.data)
 
     @action(detail=True)
