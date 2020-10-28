@@ -44,6 +44,32 @@
             </v-alert>
           </div>
           <div v-else>
+            <v-container v-if="parentCommunity || !incorporated" fluid>
+              <v-alert
+                type="info"
+                class="primary--text elevation-5 ma-0"
+                dismissible
+              >
+                <ul>
+                  <li v-if="parentCommunity">
+                    This community is within {{ parentCommunity.name }}'s
+                    boundary. Consider
+                    <nuxt-link
+                      :to="`/community/${parentCommunity.id}`"
+                      class="font-weight-bold"
+                      >viewing the {{ parentCommunity.name }} page
+                      instead.</nuxt-link
+                    >
+                  </li>
+                  <li v-if="!incorporated">
+                    This is an unincorporated community, so demographic
+                    information is only available for the containing census
+                    subdivision.
+                  </li>
+                </ul>
+              </v-alert>
+            </v-container>
+
             <v-container fluid>
               <CommunityDetailsHeader
                 :rid="communityDetails.regional_district"
@@ -54,25 +80,6 @@
                 class="py-8"
                 @go="viewReports"
               ></CommunityDetailsHeader>
-            </v-container>
-
-            <v-container v-if="parentCommunity" fluid>
-              <v-alert type="info" class="primary--text">
-                This community is within {{ parentCommunity.name }}'s boundary.
-                Consider
-                <nuxt-link
-                  :to="`/community/${parentCommunity.id}`"
-                  class="font-weight-bold"
-                  >viewing the {{ parentCommunity.name }} page
-                  instead.</nuxt-link
-                >
-              </v-alert>
-            </v-container>
-            <v-container v-if="!incorporated" fluid class="mt-2">
-              <v-alert type="info" class="primary--text">
-                This is an unincorporated community, so demographic information
-                is only available for the containing census subdivision.
-              </v-alert>
             </v-container>
 
             <div class="comm-details-content">
@@ -101,7 +108,7 @@
                         @panel="handlePanelChange"
                         @viewReports="viewReports"
                       >
-                        <div class="pl-4 pr-4">
+                        <div class="pl-4 pr-4 pt-4">
                           <div class="mt-5">
                             <h6
                               class="pa-0 ma-0 text-subtitle-1 font-weight-bold my-5"
