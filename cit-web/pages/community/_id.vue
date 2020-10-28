@@ -51,7 +51,7 @@
                 :census-data="censusSubdivision"
                 :community-details="communityDetails"
                 :place-name="placeName"
-                class="py-8 px-5"
+                class="py-8"
                 @go="viewReports"
               ></CommunityDetailsHeader>
             </v-container>
@@ -76,6 +76,18 @@
             </v-container>
 
             <div class="comm-details-content">
+              <v-container fluid>
+                <v-row no-gutters>
+                  <v-col cols="12">
+                    <CommunityDetailsSectionHeader
+                      :title="`${placeName} Map`"
+                      subtitle="Choose a report to view community data within that topic,
+                    and compare to the average for the regional district, or all
+                    of BC."
+                    ></CommunityDetailsSectionHeader>
+                  </v-col>
+                </v-row>
+              </v-container>
               <v-container fluid>
                 <v-row no-gutters>
                   <v-col :cols="12" class="elevation-5">
@@ -549,7 +561,7 @@ export default class CommunityDetail extends Vue {
 }
 .map-container {
   width: 100%;
-  height: 70vmin;
+  height: 60vmin;
   display: flex;
 }
 .community-details-sidebar {
@@ -576,19 +588,6 @@ export default class CommunityDetail extends Vue {
 @media screen and (max-width: 1000px) {
   .community-new-container {
     padding: 0;
-  }
-
-  .map-container {
-    flex-direction: column;
-    height: auto;
-  }
-
-  #map {
-    height: 50vh;
-  }
-
-  .community-details-sidebar {
-    order: 1;
   }
 
   .comm-detail-header-image {

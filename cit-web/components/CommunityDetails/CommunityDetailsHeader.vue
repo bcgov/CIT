@@ -59,11 +59,12 @@
         <v-col cols="12" class="d-flex justify-end">
           <v-btn
             color="primary"
-            class="mt-2 text-uppercase"
+            class="mt-6 text-uppercase"
             width="150"
             @click="$emit('go')"
-            >Reports</v-btn
           >
+            <v-icon class="mr-2">mdi-file-document</v-icon>Reports
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
