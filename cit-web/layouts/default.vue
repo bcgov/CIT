@@ -1,24 +1,27 @@
 <template>
   <v-app light class="h-100">
     <Navigation></Navigation>
-    <div class="content">
+    <div :class="{ content: !fixed, 'fixed-content': fixed }">
       <nuxt />
     </div>
-    <div class="footer">
+    <div :class="{ footer: !fixed, 'fixed-footer': fixed }">
       <Footer></Footer>
     </div>
   </v-app>
 </template>
 
 <script>
-import { Component, Vue } from 'nuxt-property-decorator'
+import { Component, Vue, namespace } from 'nuxt-property-decorator'
 import Navigation from '~/components/Navigation.vue'
 import Footer from '~/components/Footer.vue'
+const appStore = namespace('app')
 @Component({
   Footer,
   Navigation,
 })
-export default class DefaultLayout extends Vue {}
+export default class DefaultLayout extends Vue {
+  @appStore.Getter('getFixed') fixed
+}
 </script>
 
 <style lang="scss" scoped>
@@ -36,5 +39,20 @@ body {
   margin-top: 66px;
   flex: 1 0 auto;
   position: relative;
+}
+
+.fixed-content {
+  padding-top: 66px;
+  height: 100%;
+}
+
+.fixed-footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+.h-100 {
+  height: 100%;
 }
 </style>
