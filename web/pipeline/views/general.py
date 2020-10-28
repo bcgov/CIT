@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 from django.core.serializers import serialize
 from django.shortcuts import get_object_or_404
 
@@ -116,14 +116,6 @@ class CensusSubdivisionList(generics.ListAPIView):
 class CensusSubdivisionDetail(generics.RetrieveAPIView):
     queryset = CensusSubdivision.objects.all()
     serializer_class = CensusSubdivisionDetailSerializer
-
-
-class LocationDistanceGeoJSONList(APIView):
-    schema = None
-
-    def get(self, request, format=None):
-        line_strings = generate_line_strings()
-        return JsonResponse(line_strings, safe=False)
 
 
 class LocationDistanceList(generics.ListAPIView):

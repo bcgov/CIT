@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import HttpResponse
 from django.core.serializers import serialize
 
@@ -39,9 +40,17 @@ class LocationList(generics.ListAPIView):
 class LocationGeoJSONList(APIView):
     schema = None
 
+    def get_queryset(self):
+        unique_project_ids = list(Project.objects.order_by('project_id', '-source_date')
+            .distinct('project_id').values_list("id", flat=True))
+        other_location_ids = list(Location.objects.exclude(location_type="projects").values_list("id", flat=True))
+
+        all_location_ids = unique_project_ids + other_location_ids
+        return Location.objects.filter(id__in=all_location_ids)
+
     def get(self, request, format=None):
         return HttpResponse(
-            serialize('geojson', Location.objects.all(), geometry_field='point', fields=('name', 'location_type')),
+            serialize('geojson', self.get_queryset(), geometry_field='point', fields=('name', 'location_type')),
             content_type="application/json",
         )
 

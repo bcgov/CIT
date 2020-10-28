@@ -40,7 +40,6 @@ urlpatterns = [
     url(r"^censussubdivisions/geojson/$", pipeline.views.general.CensusSubdivisionGeoJSONList.as_view()),
     url(r"^censussubdivisions/(?P<pk>[0-9]+)/$", pipeline.views.general.CensusSubdivisionDetail.as_view()),
     url(r"^censussubdivisions/$", pipeline.views.general.CensusSubdivisionList.as_view()),
-    url(r"^locationdistances/geojson/$", pipeline.views.general.LocationDistanceGeoJSONList.as_view()),
     url(r"^locationdistances/$", pipeline.views.general.LocationDistanceList.as_view()),
     url(r"^schooldistricts/$", pipeline.views.general.SchoolDistrictList.as_view()),
     url(r"^civicleaders/$", pipeline.views.general.CivicLeaderList.as_view()),
