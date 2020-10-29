@@ -18,7 +18,9 @@
         <FeedbackButton class="my-1 mx-1"></FeedbackButton>
         <ShareButton class="my-1 mx-1"></ShareButton>
         <div class="my-1 mx-1">
-          <v-btn color="primary" @click="print">Print</v-btn>
+          <v-btn color="primary" :loading="printLoading" @click="print"
+            >Print</v-btn
+          >
         </div>
         <CloseReportButton class="my-1 mx-1"></CloseReportButton>
       </div>
@@ -56,6 +58,7 @@ export default class MainReport extends Vue {
   embedUrl = null
   report = null
   loaded = false
+  printLoading = false
 
   async mounted() {
     if (this.accessTokenError === true) {
@@ -98,7 +101,9 @@ export default class MainReport extends Vue {
 
   print() {
     this.whenReportLoaded((report) => {
-      report.print()
+      report.print().finally(() => {
+        this.printLoading = false
+      })
     })
   }
 
