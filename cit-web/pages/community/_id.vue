@@ -51,7 +51,7 @@
                 :census-data="censusSubdivision"
                 :community-details="communityDetails"
                 :place-name="placeName"
-                class="py-8"
+                class=""
                 @go="viewReports"
               >
                 <CommunityWarnings
@@ -595,7 +595,7 @@ export default class CommunityDetail extends Vue {
 .community-new-container {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 3em;
+  padding: 1em 3em;
 }
 #map {
   width: 100%;
