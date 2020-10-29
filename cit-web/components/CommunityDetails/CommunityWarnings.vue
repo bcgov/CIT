@@ -1,6 +1,10 @@
 <template>
   <div>
-    <v-alert type="info" class="primary--text ma-0">
+    <v-alert
+      v-if="parentCommunity || !incorporated"
+      type="info"
+      class="primary--text ma-0"
+    >
       <ul>
         <li v-if="parentCommunity">
           This community is within {{ parentCommunity.name }}'s boundary.
