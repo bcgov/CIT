@@ -84,9 +84,9 @@ export default class ExploreFilters extends Vue {
 
   numActive = 0
 
-  handleFilter() {
+  handleFilter(fp) {
     const refs = this.$refs
-    let filterParams = {}
+    let filterParams = fp || {}
     for (const prop in refs) {
       const exploreFilter = refs[prop]
       exploreFilter.getParams().map((fp) => {

@@ -9,6 +9,7 @@
             There was an error
           </v-alert>
           <ExploreFilters
+            ref="exploreFilter"
             :disabled="loadingResults || $fetchState.pending"
             @filtered="handleFiltered"
             @loading="handleLoading"
@@ -160,6 +161,7 @@
                   There was an error
                 </v-alert>
                 <ExploreFilters
+                  ref="explorFiltersMobile"
                   :disabled="loadingResults || $fetchState.pending"
                   @filtered="handleFiltered"
                   @loading="handleLoading"
@@ -226,7 +228,7 @@
 </template>
 
 <script>
-import { Component, Vue, namespace } from 'nuxt-property-decorator'
+import { Component, Vue, namespace, Watch } from 'nuxt-property-decorator'
 import groupBy from 'lodash/groupBy'
 import uniqBy from 'lodash/uniqBy'
 import isEmpty from 'lodash/isEmpty'
@@ -291,6 +293,11 @@ export default class Explore extends Vue {
     } else {
       return false
     }
+  }
+
+  @Watch('isMobile')
+  handleMobileChange() {
+    this.groupedCommunities = groupBy(this.communityList, 'regional_district')
   }
 
   async fetch() {
