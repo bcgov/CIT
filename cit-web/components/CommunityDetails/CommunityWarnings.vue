@@ -2,6 +2,7 @@
   <div>
     <v-alert
       v-if="parentCommunity || !incorporated"
+      dense
       type="info"
       class="primary--text ma-0"
     >
