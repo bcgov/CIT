@@ -40,6 +40,7 @@
     "nuxt-vue-multiselect": "^1.0.4",
     "powerbi-client": "^2.13.2",
     "prettier": "^2.0.5",
+    "qs": "^6.9.4",
     "stylelint": "^13.6.1",
     "stylelint-config-prettier": "^8.0.1",
     "stylelint-config-standard": "^20.0.0",

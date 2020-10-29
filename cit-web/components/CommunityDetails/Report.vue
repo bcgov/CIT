@@ -13,7 +13,11 @@
           :style="`height: ${height}px; width: ${width}px;`"
           style="margin: 0 auto;"
         ></div>
-        <v-btn color="primary" class="text-capitalize mt-5" @click="print"
+        <v-btn
+          color="primary"
+          class="text-capitalize mt-5"
+          :loading="printLoading"
+          @click="print"
           >Print</v-btn
         >
       </div>
@@ -64,12 +68,16 @@ export default class MainReport extends Vue {
   reportId = this.$config.reportId
   embedUrl = null
   report = null
+  printLoading = false
   loaded = false
   error = false
 
   print() {
+    this.printLoading = true
     this.whenReportLoaded((report) => {
-      report.print()
+      report.print().finally(() => {
+        this.printLoading = false
+      })
     })
   }
 

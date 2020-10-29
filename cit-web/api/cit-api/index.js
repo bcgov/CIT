@@ -30,6 +30,12 @@ export function advancedSearch(params) {
   })
 }
 
+export function exportSearch(params) {
+  return $axios.get(`api/pipeline/communities/csv/`, {
+    params,
+  })
+}
+
 export function getCommunityGeoJSON() {
   return $axios.get(`api/pipeline/communities/geojson/`)
 }

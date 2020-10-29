@@ -36,11 +36,18 @@
               <Results :grouped-communities="groupedCommunities"></Results>
             </div>
 
-            <div class="px-10 py-3">
+            <div class="py-3">
               <v-btn
+                color="primary"
                 :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
-                block
                 >Give Feedback</v-btn
+              >
+              <v-btn
+                v-if="!noCommunities"
+                color="primary"
+                class="mx-1"
+                @click="handleExport"
+                >Export</v-btn
               >
             </div>
           </div>
@@ -182,11 +189,18 @@
                     ></Results>
                   </div>
 
-                  <div class="px-10 py-3">
+                  <div class="py-3">
                     <v-btn
+                      color="primary"
                       :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
-                      block
                       >Give Feedback</v-btn
+                    >
+                    <v-btn
+                      v-if="!noCommunities"
+                      color="primary"
+                      class="mx-1"
+                      @click="handleExport"
+                      >Export</v-btn
                     >
                   </div>
                 </div>
@@ -228,6 +242,7 @@ const exploreStore = namespace('explore')
 @Component()
 export default class Explore extends Vue {
   filterError = false
+  filterParams = null
   groupedCommunities = null
   filteredCommunities = null
   boundedCommunities = null
@@ -251,6 +266,13 @@ export default class Explore extends Vue {
     this.$router.push({
       query: {},
     })
+  }
+
+  handleExport() {
+    const qs = require('qs')
+    window.open(
+      `/api/pipeline/communities/csv/?${qs.stringify(this.filterParams)}`
+    )
   }
 
   @exploreStore.Getter('getSearchAsMove') searchAsMove
@@ -378,6 +400,7 @@ export default class Explore extends Vue {
   }
 
   handleFiltered(e) {
+    this.filterParams = e.filterParams
     let filteredCommunities = []
     if (e.empty === true) {
       filteredCommunities = this.communityList
