@@ -19,6 +19,9 @@
               {{
                 startCase(
                   groupedLocation.group.replace('servicebc', 'Service BC')
+                ).replace(
+                  'Post Secondary Institutions',
+                  'Post-secondary Institutions'
                 )
               }}
             </div>
