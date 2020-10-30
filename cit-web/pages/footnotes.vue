@@ -85,9 +85,9 @@
         id="census-subdivisions"
         :class="{ selected: anchor === 'census-subdivisions' }"
       >
-        <h4>Census Subdivisions</h4>
+        <h4>Statistics Canada Census Subdivisions data</h4>
         <p>
-          Demographic data is sourced from Stats Canada at the subdivision
+          Demographic data is sourced from Statistics Canada at the subdivision
           level. This means that data from unincorporated communities may
           actually apply to surrounding area containing several other small
           communities.
@@ -98,27 +98,69 @@
         >
       </li>
       <li
-        id="explore-domestic-report"
-        :class="{ selected: anchor === 'explore-domestic-report' }"
+        id="family-structure"
+        :class="{ selected: anchor === 'family-structure' }"
       >
-        <h4>Domestic Report (Explore page)</h4>
-        <ol>
-          <li
-            id="avg-dwellings-needing-major-repairs"
-            :class="{
-              selected: anchor === 'avg-dwellings-needing-major-repairs',
-            }"
-          >
-            <p>
-              The percentage of average number of dwellings needing repairs is
-              calculated using the "Total - Private households by household size
-              - 100% data" (2.1.2) field as the total.
-            </p>
-            <a href="#avg-dwellings-needing-major-repairs"
-              ><v-icon>mdi-link</v-icon> Permalink</a
-            >
+        <h4>Family structure</h4>
+        <p>
+          In the family structure chart, the following fields from
+          <a href="#census-subdivisions">Statistics Canada</a> are being used:
+        </p>
+        <ul>
+          <li>
+            "All families" uses the "Total number of census families in private
+            households - 100% data" field.
           </li>
-        </ol>
+          <li>
+            "Married" uses the "Total couple families" field in the "Total
+            number of census families in private households - 100% data"
+            category.
+          </li>
+          <li>
+            "Couple + Children" uses the "Couples with children" field in the
+            "Total - Couple census families in private households - 100% data"
+            category.
+          </li>
+          <li>
+            "Single Parent" uses the "Total - Lone-parent census families in
+            private households - 100% data" field.
+          </li>
+        </ul>
+        <a href="#family-structure"><v-icon>mdi-link</v-icon> Permalink</a>
+      </li>
+      <li
+        id="housing-renter-owner"
+        :class="{ selected: anchor === 'housing-renter-owner' }"
+      >
+        <h4>Renter and Owner Households</h4>
+        <p>
+          The charts and statistics shown in the renters and owners section
+          apply to renter and owner _households_, and not individuals. In
+          addition, the pie chart showing proportions of renters and owners
+          refers to the number of households that are renter households or owner
+          households. A caveat of the average monthly shelter cost statistics is
+          that it is actually an average of averages—it is taking the average of
+          the "average monthly shelter cost" field over census subdivisions
+          corresponding to selected communities.
+        </p>
+        <p>
+          The percentage of average number of dwellings needing repairs is
+          calculated using the "Total - Private households by household size -
+          100% data" field as the total.
+        </p>
+        <a href="#housing-renter-owner"><v-icon>mdi-link</v-icon> Permalink</a>
+      </li>
+      <li
+        id="census-population"
+        :class="{ selected: anchor === 'census-population' }"
+      >
+        <h4>Population</h4>
+        <p>
+          The Average Population statistic is an average (mean) of the
+          population of census subdivisions corresponding to the selected
+          communities.
+        </p>
+        <a href="#census-population"><v-icon>mdi-link</v-icon> Permalink</a>
       </li>
       <li
         id="community-detail-asset-driving-distance"
@@ -173,6 +215,7 @@
           selected: anchor === 'connectivity-percentages',
         }"
       >
+        <h4>Connectivity Estimates</h4>
         <p>
           Connectivity estimates for regions are based on the percentage of
           roads with each bandwidth level, from
@@ -192,6 +235,7 @@
           selected: anchor === 'median-income',
         }"
       >
+        <h4>Median Income</h4>
         <p>
           Median income data from the Stats Canada web service are used to
           represent the income in communities enclosed in each census
@@ -211,12 +255,13 @@
       </li>
 
       <li id="project-dates" :class="{ selected: anchor === 'project-dates' }">
-        <h4>Date fields in Projects Reports</h4>
+        <h4>Date fields in Economic Projects and Natural Resources reports</h4>
         <p>
           The date fields (Start Date, Completion Date, and Last Updated Date)
-          in the Projects reports are specified as quarterly dates in the source
-          dataset (e.g. 2020-Q2). We have converted these quarterly dates to be
-          the first day of the specified quarter (e.g. 2020-Q2 is 2020-04-01).
+          for projects in the Economic Projects and Natural Resources reports
+          are specified as quarterly dates in the source dataset (e.g. 2020-Q2).
+          We have converted these quarterly dates to be the first day of the
+          specified quarter (e.g. 2020-Q2 is 2020-04-01).
         </p>
         <a href="#project-dates">
           <v-icon>mdi-link</v-icon>
