@@ -7,7 +7,7 @@
       <span>Comparing</span>
       <span class="font-weight-bold">{{ compareMode }}</span>
     </p>
-    <p v-else class="pa-0 ma-0 ml-2">
+    <p v-else class="pa-0 ma-0 ml-2 compare-paragraph">
       <span>Comparing</span>
       <span>{{ compareMode }}:</span>
       <span v-if="compare.length < 3" class="font-weight-bold">{{
@@ -35,3 +35,10 @@ export default class CompareInfo extends Vue {
   @Prop({ default: null, type: String }) type
 }
 </script>
+<style scoped>
+@media screen and (max-width: 700px) {
+  .compare-paragraph {
+    font-size: 12px !important;
+  }
+}
+</style>

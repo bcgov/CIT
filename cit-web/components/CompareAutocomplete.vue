@@ -2,7 +2,7 @@
   <div>
     <multiselect
       :value="value"
-      class="elevation-5"
+      class="elevation-5 cs-ms"
       :options="items"
       :multiple="true"
       :close-on-select="true"
@@ -40,6 +40,9 @@ export default class Compare extends Vue {
 }
 </script>
 <style lang="scss" scoped>
+.cs-ms {
+  width: 100%;
+}
 .v-select__selections div {
   display: none !important;
 }
@@ -48,6 +51,11 @@ export default class Compare extends Vue {
 }
 .v-list .v-list-item--active {
   color: black !important;
+}
+@media screen and (max-width: 380px) {
+  .cs-ms {
+    width: 250px;
+  }
 }
 </style>
 <style lang="scss">

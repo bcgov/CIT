@@ -13,7 +13,7 @@
         class="report-dialog-container"
         style="padding-top: 60px;"
       >
-        <v-app-bar flat dark color="primary" fixed>
+        <v-app-bar flat dark color="primary" fixed :height="appBarHeight">
           <v-btn icon dark @click="$emit('close')">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -79,7 +79,26 @@ export default class CommunityDetailsReportModal extends Vue {
     this.$emit('traverse', data)
   }
 
+  isHydrated = false
+
+  get isMobile() {
+    if (this.isHydrated) {
+      return this.$vuetify.breakpoint.width < 700
+    } else {
+      return false
+    }
+  }
+
+  get appBarHeight() {
+    if (this.isMobile) {
+      return 75
+    } else {
+      return 60
+    }
+  }
+
   mounted() {
+    this.isHydrated = true
     this.$root.$on('reportModalToTop', () => {
       this.$nextTick(() => {
         const el = document.querySelector('.v-dialog')
