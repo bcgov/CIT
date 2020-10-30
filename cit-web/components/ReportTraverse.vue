@@ -12,14 +12,17 @@
         Choose another report
       </div>
       <div class="report-traverse-select" :class="{ 'my-5': isMobile }">
-        <v-select
+        <multiselect
           v-model="selected"
-          class="ma-0 mt-0 pa-0"
-          hide-details
-          :items="items"
-          item-value="name"
-          item-text="name"
-        ></v-select>
+          :options="items"
+          :close-on-select="true"
+          :clear-on-select="true"
+          :preserve-search="true"
+          label="name"
+          track-by="name"
+          @input="handleUpdate"
+        >
+        </multiselect>
       </div>
       <v-btn
         :block="isMobile"
@@ -39,7 +42,7 @@ import reportPages from '~/data/communityDetails/reportPages.json'
 @Component
 export default class ReportTraverse extends Vue {
   items = reportPages
-  selected = 'Housing'
+  selected = reportPages.find((rp) => rp.name === 'Housing')
 
   isHydrated = false
   get isMobile() {
@@ -52,7 +55,7 @@ export default class ReportTraverse extends Vue {
 
   handleClick() {
     this.$root.$emit('reportModalToTop')
-    this.$emit('traverse', this.selected)
+    this.$emit('traverse', this.selected.name)
   }
 
   mounted() {
