@@ -7,8 +7,11 @@
       <div class="report-header-container d-flex align-center pl-10 pr-5">
         <div>
           <h6 class="text-h5">{{ reportToShow.name }}</h6>
-          <p class="report-description">
-            {{ reportToShow.description }}
+          <p class="report-description">{{ reportToShow.description }}</p>
+          <p>
+            This page shows data on census subdivisions of B.C. communities
+            you've selected.
+            <a href="/footnotes#census-subdivisions">Learn more</a>.
           </p>
         </div>
         <v-spacer></v-spacer>
