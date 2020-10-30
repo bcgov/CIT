@@ -135,7 +135,7 @@
         <h4>Renter and Owner Households</h4>
         <p>
           The charts and statistics shown in the renters and owners section
-          apply to renter and owner _households_, and not individuals. In
+          apply to renter and owner <em>households</em>, and not individuals. In
           addition, the pie chart showing proportions of renters and owners
           refers to the number of households that are renter households or owner
           households. A caveat of the average monthly shelter cost statistics is
