@@ -41,9 +41,13 @@ class LocationGeoJSONList(APIView):
     schema = None
 
     def get_queryset(self):
-        unique_project_ids = list(Project.objects.order_by('project_id', '-source_date')
+        unique_project_ids = list(
+            Project.objects.order_by('project_id', '-source_date')
             .distinct('project_id').values_list("id", flat=True))
-        other_location_ids = list(Location.objects.exclude(location_type="projects").values_list("id", flat=True))
+        # TODO: remove deprecated economic_projects and natural_resource_projects datasets
+        location_types_to_exclude = ["projects", "natural_resource_projects", "economic_projects"]
+        other_location_ids = list(
+            Location.objects.exclude(location_type__in=location_types_to_exclude).values_list("id", flat=True))
 
         all_location_ids = unique_project_ids + other_location_ids
         return Location.objects.filter(id__in=all_location_ids)
