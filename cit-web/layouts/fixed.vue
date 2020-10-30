@@ -2,14 +2,10 @@
   <v-app light class="h-100">
     <Navigation></Navigation>
     <div class="fixed-content">
-      <div v-if="!legacy">
-        <nuxt class="h-100" />
+      <div v-if="legacy">
+        <v-alert type="error">{{ message }}</v-alert>
       </div>
-      <div>
-        <v-alert>
-          {{ message }}
-        </v-alert>
-      </div>
+      <nuxt class="h-100" />
     </div>
     <div class="fixed-footer">
       <Footer></Footer>

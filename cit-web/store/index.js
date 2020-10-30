@@ -2,7 +2,7 @@
 // import { getCommunityList } from '~/api/cit-api'
 
 export const state = () => ({
-  legacy: true,
+  legacy: false,
   message: null,
 })
 
