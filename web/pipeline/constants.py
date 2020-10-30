@@ -28,7 +28,7 @@ CIVIC_LEADER_CHOICES = (
 
 LOCATION_TYPES = [
     'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities', 'hospitals',
-    'natural_resource_projects', 'economic_projects', 'servicebc_locations', 'schools', 'clinics', 'courts',
+    'projects', 'servicebc_locations', 'schools', 'clinics', 'courts',
     'post_secondary_institutions', 'closed_mills', 'research_centres', 'airports']
 
 POWERBI_AGG_DOMESTIC = "ReportSection6249eac6d911d2930de3"

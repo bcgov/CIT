@@ -10,7 +10,7 @@
       v-model="psd"
       hide-details
       dense
-      label="Has Any Post Secondary"
+      label="Has Any Post-Secondary Institution"
     ></v-checkbox>
   </div>
 </template>

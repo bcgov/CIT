@@ -108,11 +108,11 @@ export default class LocationInputs extends Vue {
     },
     {
       value: 'projects',
-      title: 'Economic & Natural Resource Projects',
+      title: 'Major Projects',
     },
     {
       value: 'servicebc_locations',
-      title: 'ServiceBC Locations',
+      title: 'Service BC Locations',
     },
     {
       value: 'post_secondary_institutions',
