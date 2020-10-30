@@ -1,5 +1,7 @@
 from django.contrib.gis.db import models
 
+from pipeline.utils import serialize_regional_district_fields
+
 
 class DataSource(models.Model):
     from pipeline.constants import DATA_SOURCE_TYPE_CHOICES, DATA_SOURCE_CHOICES
@@ -141,10 +143,13 @@ class RegionalDistrict(models.Model):
     )
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("name",)
 
     def __str__(self):
         return self.name
+
+    def get_census_data(self):
+        return serialize_regional_district_fields(self)
 
     """
     {'AA_ID': 2, 'AA_NAME': 'Regional District of Bulkley-Nechako', 'ABRVN': 'RDBN', 'BDY_TYPE': 'Legal', 'AA_PARENT': 'Province of British Columbia', 'CHNG_ORG': 'MCSCD', 'UPT_TYPE': 'E', 'UPT_DATE': '20130606', 'MAP_STATUS': 'Not Appended', 'OC_M_NMBR': '', 'OC_M_YR': '', 'OC_M_TYPE': '', 'WBST_RL': '', 'IMAGE_URL': '', 'AFCTD_AREA': '', 'AREA_SQM': 78266556471.7951, 'LENGTH_M': 2057088.3374, 'SHAPE': 0, 'OBEJCTID': 2901}
@@ -249,3 +254,8 @@ class CivicLeader(models.Model):
 
     def get_name(self):
         return "{} {}".format(self.first_name, self.last_name)
+
+
+class PageView(models.Model):
+    url = models.URLField()
+    timestamp = models.DateTimeField()

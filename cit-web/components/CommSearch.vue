@@ -42,6 +42,8 @@ export default class CommSearch extends Vue {
     this.$nextTick(() => {
       this.commSearch = null
     })
+
+    this.$emit('changed')
   }
 }
 </script>

@@ -3,39 +3,9 @@ from functools import reduce
 from operator import and_
 
 from django.apps import apps
-from django.db.models import Q, F
+from django.db.models import Q, F, Sum, Avg, FloatField
 
 from pipeline.constants import LOCATION_TYPES
-
-
-def generate_line_strings():
-    from pipeline.models.general import LocationDistance   # local import to avoid circular import # noqa
-
-    line_strings = {"type": "FeatureCollection", "features": []}
-
-    _map = {}
-    for location_distance in LocationDistance.objects.select_related('community', 'hospital'):
-        if location_distance.community.id not in _map:
-            _map[location_distance.community.id] = location_distance
-        if location_distance.distance < _map[location_distance.community.id].distance:
-            _map[location_distance.community.id] = location_distance
-
-    for k, location_distance in _map.items():
-        line_strings["features"].append(
-            {
-                "type": "Feature",
-                "properties": {"distance": float(location_distance.distance)},
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": [
-                        [location_distance.community.longitude(), location_distance.community.latitude()],
-                        [location_distance.location.longitude(), location_distance.location.latitude()],
-                    ],
-                },
-            }
-        )
-
-    return line_strings
 
 
 def serialize_census_subdivision_groups(obj):
@@ -65,7 +35,7 @@ def serialize_census_subdivision_groups(obj):
             },
             "key": "population_density_per_sq_km",
             "value": commaize(obj.population_density_per_sq_km),
-            "units": "people per km\u00B2",
+            "units": " people per km\u00B2",
         },
         {
             "group": None,
@@ -401,6 +371,79 @@ def serialize_community_detail_fields(obj):
                 "description": "A - C (moderate); D and E (low)",
             },
         },
+        {
+            "key": "percent_50_10",
+            "value": (commaize(obj.percent_50_10 * 100) if obj.percent_50_10 else "0") + "%",
+            "metadata": {
+                "name": "% of Community with High-Speed Internet (> 50/10 mbps)",
+            }
+        }
+    ]
+
+
+def serialize_regional_district_fields(regional_district):
+    from pipeline.models.census import CensusSubdivision
+
+    census_subdivisions = CensusSubdivision.objects.filter(community__regional_district=regional_district)
+
+    census_aggregate_values = census_subdivisions.aggregate(
+        Sum("area"),
+        Avg("area"),
+        Sum("population"),
+        Sum("edu_field_total"),
+        Sum("edu_2"),
+        population_density_unweighted=Sum(F("population_density_per_sq_km") * F("area"), output_field=FloatField()),
+        population_age_unweighted=Sum(F("population_avg_age") * F("population"), output_field=FloatField()),
+        employment_rate_unweighted=Sum(F("employment_rate") * F("population"), output_field=FloatField()))
+
+    population_density = census_aggregate_values["population_density_unweighted"] / census_aggregate_values["area__sum"]
+    average_age = census_aggregate_values["population_age_unweighted"] / census_aggregate_values["population__sum"]
+    employment_rate = (
+        census_aggregate_values["employment_rate_unweighted"] / census_aggregate_values["population__sum"])
+    percent_post_secondary = (
+        census_aggregate_values["edu_2__sum"] / census_aggregate_values["edu_field_total__sum"]) * 100
+
+    return [
+        {
+            "key": "population_density",
+            "value": commaize(population_density),
+            "units": " people per km\u00B2",
+            "metadata": {
+                "name": "Population Density",
+            },
+        },
+        {
+            "key": "average_age",
+            "value": commaize(average_age),
+            "units": " years old",
+            "metadata": {
+                "name": "Average Age",
+            },
+        },
+        {
+            "key": "area",
+            "value": commaize(census_aggregate_values["area__avg"]),
+            "units": " km\u00B2",
+            "metadata": {
+                "name": "Area",
+            },
+        },
+        {
+            "key": "employment_rate",
+            "value": commaize(employment_rate),
+            "units": " %",
+            "metadata": {
+                "name": "Employment Rate",
+            },
+        },
+        {
+            "key": "percent_post_secondary",
+            "value": commaize(percent_post_secondary),
+            "units": " %",
+            "metadata": {
+                "name": "% of Population with Post-Secondary Education",
+            },
+        },
     ]
 
 
@@ -476,41 +519,9 @@ def get_location_assets_for_community(model_class, community):
 
 def get_fields_for_location_type(location_type):
     common_fields = [
-        "id", "name", "location_fuzzy", "location_phone", "location_email", "location_website"]
+        "name", "location_phone", "location_email", "location_website"]
 
-    location_specific_fields = {
-        "hospitals": ["rg_name", "sv_description", "hours"],
-        "courts": [
-            "address", "city", "postal_code", "contact_phone", "fax_number",
-            "hours_of_operation", "court_level"],
-        "economic_projects": [
-            "flnro_project_status", "project_type", "project_category", "proponent", "eao_project_status",
-            "project_comments"],
-        "natural_resource_projects": [
-            "project_comments", "project_description", "estimated_cost", "update_activity", "construction_type",
-            "construction_subtype", "project_type", "developer", "architect", "project_status", "project_stage",
-            "project_category_name", "provinvial_funding", "federal_funding", "municipal_funding",
-            "green_building_ind", "green_building_desc", "clean_energy_ind", "construction_jobs", "operating_jobs",
-            "standardized_start_date", "standardized_completion_date"],
-        "servicebc_locations": [],
-        "schools": ["district_number", "public_or_independent", "school_education_level"],
-        "post_secondary_institutions": ["institution_type", "economic_development_region"],
-        "clinics": ["sv_description", "hours"],
-        "first_responders": ["keywords"],
-        "diagnostic_facilities": ["ser_cd_dsc"],
-        "timber_facilities": ["bus_cat_ds"],
-        "civic_facilities": ["keywords", "bus_cat_cl", "bus_cat_ds"],
-        "closed_mills": [],
-        "research_centres": [
-            "research_specialties", "research_centre_affiliation", "institution", "inst_acrnm",
-            "research_sector", "cntr_type"],
-        "airports": [
-            "descriptn", "keywords", "aer_status", "aircr_acs", "data_srce", "datasrc_yr", "elevation", "fuel_avail",
-            "heli_acs", "iata", "mx_rway_ln", "num_rway", "rway_surf", "oil_avail", "seapln_acc",
-        ]
-    }
-
-    return common_fields + location_specific_fields[location_type]
+    return common_fields
 
 
 def get_quarterly_date_str_as_date(quarterly_date_str):
@@ -519,19 +530,19 @@ def get_quarterly_date_str_as_date(quarterly_date_str):
     the start date of the quarter (2020-01-01).
     """
     QUARTERLY_DATE_MAPPING = {
-        "Q1": {
+        "q1": {
             "month": 1,
             "day": 1,
         },
-        "Q2": {
+        "q2": {
             "month": 4,
             "day": 1,
         },
-        "Q3": {
+        "q3": {
             "month": 7,
             "day": 1,
         },
-        "Q4": {
+        "q4": {
             "month": 10,
             "day": 1,
         }
@@ -540,8 +551,8 @@ def get_quarterly_date_str_as_date(quarterly_date_str):
     year_str, quarter = quarterly_date_str.split("-")
     year = int(year_str)
     try:
-        month = QUARTERLY_DATE_MAPPING[quarter]["month"]
-        day = QUARTERLY_DATE_MAPPING[quarter]["day"]
+        month = QUARTERLY_DATE_MAPPING[quarter.lower()]["month"]
+        day = QUARTERLY_DATE_MAPPING[quarter.lower()]["day"]
         return datetime.date(year, month, day)
     except KeyError:
         return None
@@ -689,10 +700,16 @@ def _handle_location_filter(query_filter):
         # if filtering by distance, add a fallback for birds' eye distance if driving distance
         # is unavailable
         # (i.e. driving distance < 50km OR (driving distance is null AND birds' eye distance < 50km))
-        birds_eye_distance_query = "distances__distance__" + query_filter["operator"]
+
+        if query_filter["operator"] == "xgt":
+            birds_eye_field = "distances__distance__lt"
+            birds_eye_distance_query = ~Q(**{birds_eye_field: query_filter["value"][0]})
+        else:
+            birds_eye_field = "distances__distance__" + query_filter["operator"]
+            birds_eye_distance_query = Q(**{birds_eye_field: query_filter["value"][0]})
         distance_query = (
             distance_query |
-            (Q(distances__driving_distance__isnull=True) & Q(**{birds_eye_distance_query: query_filter["value"][0]})))
+            (Q(distances__driving_distance__isnull=True) & birds_eye_distance_query))
 
     print("location_query", location_type_query, distance_query)
 

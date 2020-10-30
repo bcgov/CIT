@@ -17,8 +17,8 @@ from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES
 
 
-def import_data_into_point_model(resource_type, Model, row):
-    print(row)
+def import_data_into_point_model(resource_type, Model, row, dry_run=False):
+    print("import_data_into_point_model", row)
 
     point = None
     location_fuzzy = False
@@ -32,7 +32,6 @@ def import_data_into_point_model(resource_type, Model, row):
             Community.objects.annotate(distance=Distance('point', point)).order_by('distance').first()
         )
     except TypeError:
-        # print(row, Model.LATITUDE_FIELD)
         # When no point is present, try the municipality name description
         if not row.get("MUNICIPALITY"):
             print(
@@ -42,7 +41,7 @@ def import_data_into_point_model(resource_type, Model, row):
             )
             return
 
-        closest_community = Community.objects.filter(place_name__icontains=_try_community_name).first()
+        closest_community = Community.objects.filter(place_name__icontains=_try_community_name(row)).first()
         if not closest_community:
             print(
                 "Skipping error:",
@@ -67,9 +66,9 @@ def import_data_into_point_model(resource_type, Model, row):
     instance.location_fuzzy = location_fuzzy
     import_contact_fields(instance, row, Model)
     import_variable_fields(instance, row, Model)
-    instance.save()
 
-    calculate_distances(instance)
+    instance.save()
+    calculate_distances(instance, dry_run=dry_run)
 
     return instance
 
@@ -97,9 +96,9 @@ def import_contact_fields(instance, row, Model):
     alt_website_field = getattr(Model, "ALT_WEBSITE_FIELD", None)
     instance.location_website = None
     if website_field or alt_website_field:
-        if row[website_field]:
+        if row.get(website_field):
             instance.location_website = row[website_field]
-        elif alt_website_field and row[alt_website_field]:
+        elif alt_website_field and row.get(alt_website_field):
             instance.location_website = row[alt_website_field]
 
     instance.location_phone = None
@@ -143,7 +142,7 @@ def calculate_communities_for_schools():
         print("communities", communities)
 
 
-def calculate_distances(location):
+def calculate_distances(location, dry_run=False):
     communities_within_50k = (
         Community.objects.filter(point__distance_lte=(location.point, D(m=50000)))
         .annotate(distance=Distance("point", location.point))
@@ -151,7 +150,7 @@ def calculate_distances(location):
     )
 
     for community in communities_within_50k:
-        create_distance(location, community, community.distance)
+        create_distance(location, community, community.distance, dry_run=dry_run)
 
 
 def calculate_nearest_location_types_outside_50k():
@@ -171,19 +170,35 @@ def calculate_nearest_location_type_outside_50k(location_type):
                 location_type=location_type))
             location_type_model_name = DataSource.objects.get(name=location_type).model_name
             location_type_model = apps.get_model("pipeline", location_type_model_name)
-            closest_location_type = location_type_model.objects.all()\
-                .annotate(distance=Distance("point", community.point))\
-                .order_by("distance").first()
-            print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
-                location_type=location_type,
-                community_name=community.place_name,
-                closest_location_type=closest_location_type.name,
-                distance=closest_location_type.distance.km))
 
-            create_distance(closest_location_type, community, closest_location_type.distance)
+            # TODO - refactor this later and don't hardcode the list of categories
+            if location_type == "first_responders":
+                for service_type in ["fire", "police", "ambulance"]:
+                    keyword = "{};".format(service_type)
+                    closest_location_type = location_type_model.objects.filter(keywords__startswith=keyword)\
+                        .annotate(distance=Distance("point", community.point))\
+                        .order_by("distance").first()
+                    print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
+                        location_type=location_type,
+                        community_name=community.place_name,
+                        closest_location_type=closest_location_type.name,
+                        distance=closest_location_type.distance.km))
+
+                    create_distance(closest_location_type, community, closest_location_type.distance)
+            else:
+                closest_location_type = location_type_model.objects.all()\
+                    .annotate(distance=Distance("point", community.point))\
+                    .order_by("distance").first()
+                print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
+                    location_type=location_type,
+                    community_name=community.place_name,
+                    closest_location_type=closest_location_type.name,
+                    distance=closest_location_type.distance.km))
+
+                create_distance(closest_location_type, community, closest_location_type.distance)
 
 
-def create_distance(location, community, distance):
+def create_distance(location, community, distance, dry_run=False):
     existing_distance = LocationDistance.objects.filter(location=location, community=community)
 
     fields = {
@@ -192,7 +207,7 @@ def create_distance(location, community, distance):
         "distance": distance.km,
     }
 
-    if not (existing_distance and existing_distance.first().driving_distance):
+    if not dry_run and not (existing_distance and existing_distance.first().driving_distance):
         try:
             driving_distance, travel_time, travel_time_display = get_route_planner_distance(community, location)
             fields["driving_distance"] = driving_distance
@@ -260,7 +275,7 @@ def _try_community_name(row):
 
 def read_csv(csv_path):
     data = []
-    with open(csv_path, mode='r', encoding='utf-8-sig') as f:
+    with open(csv_path, mode='r', encoding='utf-8-sig', errors='ignore') as f:
         reader = csv.DictReader(f)
         data = list(reader)
 

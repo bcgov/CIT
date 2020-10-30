@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.http import HttpResponse
 from django.core.serializers import serialize
 
@@ -7,7 +8,7 @@ from rest_framework.views import APIView
 from pipeline.models.location_assets import (
     Location,
     FirstResponder, DiagnosticFacility, TimberFacility, CivicFacility, Hospital, NaturalResourceProject,
-    EconomicProject, ServiceBCLocation, School, Clinic, Court,
+    EconomicProject, Project, ServiceBCLocation, School, Clinic, Court,
     PostSecondaryInstitution, ClosedMill, ResearchCentre, Airport,
 )
 from pipeline.serializers.location_types import (
@@ -18,6 +19,7 @@ from pipeline.serializers.location_types import (
     HospitalSerializer,
     NaturalResourceProjectSerializer,
     EconomicProjectSerializer,
+    ProjectSerializer,
     ServiceBCLocationSerializer,
     SchoolSerializer,
     PostSecondaryInstitutionSerializer,
@@ -26,7 +28,7 @@ from pipeline.serializers.location_types import (
     ClosedMillSerializer,
     ResearchCentreSerializer,
     AirportSerializer,
-    LocationSerializer
+    LocationSerializer,
 )
 
 
@@ -38,9 +40,21 @@ class LocationList(generics.ListAPIView):
 class LocationGeoJSONList(APIView):
     schema = None
 
+    def get_queryset(self):
+        unique_project_ids = list(
+            Project.objects.order_by('project_id', '-source_date')
+            .distinct('project_id').values_list("id", flat=True))
+        # TODO: remove deprecated economic_projects and natural_resource_projects datasets
+        location_types_to_exclude = ["projects", "natural_resource_projects", "economic_projects"]
+        other_location_ids = list(
+            Location.objects.exclude(location_type__in=location_types_to_exclude).values_list("id", flat=True))
+
+        all_location_ids = unique_project_ids + other_location_ids
+        return Location.objects.filter(id__in=all_location_ids)
+
     def get(self, request, format=None):
         return HttpResponse(
-            serialize('geojson', Location.objects.all(), geometry_field='point', fields=('name', 'location_type')),
+            serialize('geojson', self.get_queryset(), geometry_field='point', fields=('name', 'location_type')),
             content_type="application/json",
         )
 
@@ -78,6 +92,16 @@ class NaturalResourceProjectList(generics.ListAPIView):
 class EconomicProjectList(generics.ListAPIView):
     queryset = EconomicProject.objects.all()
     serializer_class = EconomicProjectSerializer
+
+
+class ProjectList(generics.ListAPIView):
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer
+
+
+class LatestProjectList(generics.ListAPIView):
+    queryset = Project.objects.order_by('project_id', '-source_date').distinct('project_id')
+    serializer_class = ProjectSerializer
 
 
 class ServiceBCLocationList(generics.ListAPIView):

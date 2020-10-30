@@ -30,10 +30,28 @@ export function advancedSearch(params) {
   })
 }
 
+export function exportSearch(params) {
+  return $axios.get(`api/pipeline/communities/csv/`, {
+    params,
+  })
+}
+
 export function getCommunityGeoJSON() {
   return $axios.get(`api/pipeline/communities/geojson/`)
 }
 
 export function getDataSourceList() {
   return $axios.get(`/api/pipeline/datasources/`)
+}
+
+export function getRegionalData(id) {
+  return $axios.get(`/api/pipeline/regionaldistricts/${id}/`)
+}
+
+export function getPageViews() {
+  return $axios.get(`/api/pipeline/pageviews/`)
+}
+
+export function setPageView(opts) {
+  return $axios.post(`/api/pipeline/pageviews/`, opts)
 }

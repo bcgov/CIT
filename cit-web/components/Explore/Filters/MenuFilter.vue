@@ -1,66 +1,125 @@
 <template>
-  <v-menu
-    v-model="menu"
-    class="pa-0 ma-0 rounded"
-    bottom
-    transition="scale-transition"
-    :close-on-content-click="false"
-    offset-y
-    nudge-bottom="5"
-    eager
-  >
-    <template v-slot:activator="{ on }">
-      <v-chip
-        pill
-        outlined
-        :input-value="active"
-        filter
-        :disabled="disabled"
-        class="text-body-1 filter-menu-chips px-2"
-        v-on="on"
-      >
-        {{ chipTitle }}
-        <v-icon v-if="menu" small>mdi-chevron-up</v-icon>
-        <v-icon v-else small>mdi-chevron-down</v-icon>
-      </v-chip>
-    </template>
-    <v-card :width="cardWidth" class="rounded-lg">
-      <v-list color="primary" class="pa-0 ma-0">
-        <v-list-item>
-          <v-list-item-content>
-            <v-list-item-title
-              class="white--text font-weight-bold d-flex justify-space-between align-center"
-              >{{ filterTitle }}
-              <v-btn x-small icon fab color="white" @click="menu = false">
-                <v-icon>mdi-close-circle</v-icon>
-              </v-btn>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-      <v-card-text>
-        <slot></slot>
-      </v-card-text>
-      <v-divider></v-divider>
-      <v-card-actions>
-        <v-btn
-          dense
-          text
-          class="text-body-1 font-weight-medium text-capitalize"
-          @click="$emit('clear')"
-          >Clear</v-btn
+  <div>
+    <v-menu
+      v-if="!isMobile"
+      v-model="menu"
+      class="pa-0 ma-0 rounded"
+      bottom
+      transition="scale-transition"
+      :close-on-content-click="false"
+      offset-y
+      nudge-bottom="5"
+      eager
+    >
+      <template v-slot:activator="{ on }">
+        <v-chip
+          pill
+          outlined
+          :input-value="active"
+          filter
+          :disabled="disabled"
+          class="text-body-1 filter-menu-chips px-2"
+          v-on="on"
         >
-        <v-spacer></v-spacer>
-        <v-btn
-          dense
-          color="primary"
-          class="text-body-1 font-weight-medium text-capitalize"
-          @click="$emit('save')"
-          >Save</v-btn
+          {{ chipTitle }}
+          <v-icon v-if="menu" small>mdi-chevron-up</v-icon>
+          <v-icon v-else small>mdi-chevron-down</v-icon>
+        </v-chip>
+      </template>
+      <v-card :width="cardWidth" class="rounded-lg">
+        <v-list color="primary" class="pa-0 ma-0">
+          <v-list-item>
+            <v-list-item-content>
+              <v-list-item-title
+                class="white--text font-weight-bold d-flex justify-space-between align-center"
+                >{{ filterTitle }}
+                <v-btn x-small icon fab color="white" @click="menu = false">
+                  <v-icon>mdi-close-circle</v-icon>
+                </v-btn>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+        <v-card-text style="max-height: 300px; overflow-y: auto;">
+          <slot></slot>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn
+            dense
+            text
+            class="text-body-1 font-weight-medium text-capitalize"
+            @click="$emit('clear')"
+            >Clear</v-btn
+          >
+          <v-spacer></v-spacer>
+          <v-btn
+            dense
+            color="primary"
+            class="text-body-1 font-weight-medium text-capitalize"
+            @click="$emit('save')"
+            >Save</v-btn
+          >
+        </v-card-actions>
+      </v-card>
+    </v-menu>
+
+    <v-dialog
+      v-else
+      v-model="dialog"
+      eager
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <template v-slot:activator="{ on, attrs }">
+        <v-chip
+          pill
+          outlined
+          :input-value="active"
+          filter
+          :disabled="disabled"
+          class="text-body-1 filter-menu-chips px-2"
+          v-bind="attrs"
+          v-on="on"
         >
-      </v-card-actions>
-    </v-card>
-  </v-menu>
+          {{ chipTitle }}
+          <v-icon v-if="menu" small>mdi-chevron-up</v-icon>
+          <v-icon v-else small>mdi-chevron-down</v-icon>
+        </v-chip>
+      </template>
+      <v-card>
+        <v-toolbar dark color="primary">
+          <v-btn icon dark @click="dialog = false">
+            <v-icon>mdi-close</v-icon>
+          </v-btn>
+          <v-toolbar-title>{{ filterTitle }}</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-toolbar-items>
+            <v-btn
+              dense
+              text
+              class="text-body-1 font-weight-medium text-capitalize"
+              @click="$emit('clear')"
+              >Clear</v-btn
+            >
+            <v-spacer></v-spacer>
+            <v-btn
+              dense
+              text
+              class="text-body-1 font-weight-medium text-capitalize"
+              @click="$emit('save')"
+              >Save</v-btn
+            >
+          </v-toolbar-items>
+        </v-toolbar>
+
+        <v-card-text class="pa-5">
+          <slot></slot>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
@@ -75,9 +134,25 @@ export default class MenuFilter extends Vue {
   @Prop({ default: false, type: Boolean }) disabled
 
   menu = false
+  dialog = false
 
   hide() {
     this.menu = false
+    this.dialog = false
+  }
+
+  isHydrated = false
+
+  get isMobile() {
+    if (this.isHydrated) {
+      return this.$vuetify.breakpoint.width < 600
+    } else {
+      return false
+    }
+  }
+
+  mounted() {
+    this.isHydrated = true
   }
 }
 </script>

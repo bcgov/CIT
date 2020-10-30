@@ -22,6 +22,8 @@ urlpatterns = [
     url(r"^locations/hospitals/$", pipeline.views.location_types.HospitalList.as_view()),
     url(r"^locations/natural_resource_projects/$", pipeline.views.location_types.NaturalResourceProjectList.as_view()),
     url(r"^locations/economic_projects/$", pipeline.views.location_types.EconomicProjectList.as_view()),
+    url(r"^locations/projects/latest/$", pipeline.views.location_types.LatestProjectList.as_view()),
+    url(r"^locations/projects/$", pipeline.views.location_types.ProjectList.as_view()),
     url(r"^locations/servicebc_locations/$", pipeline.views.location_types.ServiceBCLocationList.as_view()),
     url(r"^locations/schools/$", pipeline.views.location_types.SchoolList.as_view()),
     url(r"^locations/post_secondary_institutions/$",
@@ -38,8 +40,8 @@ urlpatterns = [
     url(r"^censussubdivisions/geojson/$", pipeline.views.general.CensusSubdivisionGeoJSONList.as_view()),
     url(r"^censussubdivisions/(?P<pk>[0-9]+)/$", pipeline.views.general.CensusSubdivisionDetail.as_view()),
     url(r"^censussubdivisions/$", pipeline.views.general.CensusSubdivisionList.as_view()),
-    url(r"^locationdistances/geojson/$", pipeline.views.general.LocationDistanceGeoJSONList.as_view()),
     url(r"^locationdistances/$", pipeline.views.general.LocationDistanceList.as_view()),
     url(r"^schooldistricts/$", pipeline.views.general.SchoolDistrictList.as_view()),
     url(r"^civicleaders/$", pipeline.views.general.CivicLeaderList.as_view()),
+    url(r"^pageviews/$", pipeline.views.general.PageViewList.as_view()),
 ]

@@ -107,24 +107,16 @@ export default class LocationInputs extends Vue {
       title: 'Diagnostic Facilities',
     },
     {
-      value: 'natural_resource_projects',
-      title: 'Natural Resource Projects',
-    },
-    {
-      value: 'economic_projects',
-      title: 'Economic Projects',
+      value: 'projects',
+      title: 'Major Projects',
     },
     {
       value: 'servicebc_locations',
-      title: 'ServiceBC Locations',
-    },
-    {
-      value: 'economic_projects',
-      title: 'Economic Projects',
+      title: 'Service BC Locations',
     },
     {
       value: 'post_secondary_institutions',
-      title: 'Post Secondary',
+      title: 'Post-secondary Institutions',
     },
     {
       value: 'courts',

@@ -2,43 +2,43 @@
   <div>
     <RegionalDistricts
       ref="regionalDistrictsFilter"
-      class="d-inline-block mb-3"
+      class="mb-3"
       :disabled="disabled"
       @filter="handleFilter"
     ></RegionalDistricts>
     <CommunityType
       ref="communityTypeFilter"
-      class="d-inline-block mb-3"
+      class="mb-3"
       :disabled="disabled"
       @filter="handleFilter"
     ></CommunityType>
     <Locations
       ref="locationsFilter"
-      class="d-inline-block mb-3"
+      class="mb-3"
       :disabled="disabled"
       @filter="handleFilter"
     ></Locations>
     <PopGrowth
       ref="popGrowthFilter"
-      class="d-inline-block mb-3"
+      class="mb-3"
       :disabled="disabled"
       @filter="handleFilter"
     ></PopGrowth>
     <Connectivity
       ref="connectivityFilter"
-      class="d-inline-block mb-3"
+      class="mb-3"
       :disabled="disabled"
       @filter="handleFilter"
     ></Connectivity>
     <Substation
       ref="substationFilter"
-      class="d-inline-block mb-3"
+      class="mb-3"
       :disabled="disabled"
       @filter="handleFilter"
     ></Substation>
     <EmergencyRisk
       ref="emergencyRiskFilter"
-      class="d-inline-block mb-3"
+      class="mb-3"
       :disabled="disabled"
       @filter="handleFilter"
     ></EmergencyRisk>
@@ -84,9 +84,9 @@ export default class ExploreFilters extends Vue {
 
   numActive = 0
 
-  handleFilter() {
+  handleFilter(fp) {
     const refs = this.$refs
-    let filterParams = {}
+    let filterParams = fp || {}
     for (const prop in refs) {
       const exploreFilter = refs[prop]
       exploreFilter.getParams().map((fp) => {
@@ -102,16 +102,27 @@ export default class ExploreFilters extends Vue {
     }
     this.$emit('loading', true)
 
-    advancedSearch(filterParams).then((result) => {
-      this.$emit('filtered', {
-        empty: false,
-        data: result.data.communities,
-        reportsToHide: result.data.hidden_report_pages,
-        communitiesWithInsufficientData:
-          result.data.communities_with_insufficient_data,
+    advancedSearch(filterParams)
+      .then((result) => {
+        this.$emit('filtered', {
+          filterParams,
+          empty: false,
+          data: result.data.communities,
+          reportsToHide: result.data.hidden_report_pages,
+          communitiesWithInsufficientData:
+            result.data.communities_with_insufficient_data,
+        })
+
+        this.$emit('error', false)
       })
-      this.$emit('loading', false)
-    })
+      .catch((e) => {
+        console.error(e)
+        this.reset()
+        this.$emit('error', true)
+      })
+      .finally(() => {
+        this.$emit('loading', false)
+      })
   }
 
   updateActive() {

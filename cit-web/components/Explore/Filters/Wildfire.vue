@@ -31,6 +31,11 @@ export default class Wildfire extends Vue {
 
   wildfireZones = [
     {
+      value: 'null',
+      title: 'N/A',
+      state: null,
+    },
+    {
       value: 1,
       title: '1 (low)',
       state: null,

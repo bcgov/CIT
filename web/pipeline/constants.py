@@ -5,6 +5,7 @@ SOURCE_INTERNAL = 'internal'
 SOURCE_DATABC = 'databc'
 SOURCE_STATSCAN = 'statscan'
 SOURCE_OPENCA = 'openca'
+SOURCE_OTHER = 'other'
 
 DATA_SOURCE_TYPE_CHOICES = (
     ("csv", "CSV"),
@@ -17,6 +18,7 @@ DATA_SOURCE_CHOICES = (
     (SOURCE_DATABC, "BC Data Catalogue"),
     (SOURCE_STATSCAN, "Statistics Canada"),
     (SOURCE_OPENCA, "Open Government (Canada)"),
+    (SOURCE_OTHER, "Other"),
 )
 
 CIVIC_LEADER_CHOICES = (
@@ -26,7 +28,7 @@ CIVIC_LEADER_CHOICES = (
 
 LOCATION_TYPES = [
     'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities', 'hospitals',
-    'natural_resource_projects', 'economic_projects', 'servicebc_locations', 'schools', 'clinics', 'courts',
+    'projects', 'servicebc_locations', 'schools', 'clinics', 'courts',
     'post_secondary_institutions', 'closed_mills', 'research_centres', 'airports']
 
 POWERBI_AGG_DOMESTIC = "ReportSection6249eac6d911d2930de3"

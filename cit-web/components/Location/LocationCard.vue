@@ -38,7 +38,9 @@
                 two-line
               >
                 <v-list-item-content>
-                  <v-list-item-title>{{ key }}</v-list-item-title>
+                  <v-list-item-title class="text-capitalize">{{
+                    key
+                  }}</v-list-item-title>
                   <v-list-item-subtitle v-if="key === 'website'">
                     <a :href="val">{{ val }}</a></v-list-item-subtitle
                   >

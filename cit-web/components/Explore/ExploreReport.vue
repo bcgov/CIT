@@ -7,13 +7,24 @@
         {{ errorMessage }}
       </v-alert>
     </div>
-    <div
-      v-else
-      ref="reportContainer"
-      class="reportContainer"
-      :style="`height: 70vw;`"
-      style="margin: 0 auto;"
-    ></div>
+    <div v-else>
+      <div
+        ref="reportContainer"
+        class="reportContainer"
+        style="margin: 0 auto;"
+      ></div>
+
+      <div class="d-flex justify-end report-options">
+        <FeedbackButton class="my-1 mx-1"></FeedbackButton>
+        <ShareButton class="my-1 mx-1"></ShareButton>
+        <div class="my-1 mx-1">
+          <v-btn color="primary" :loading="printLoading" @click="print"
+            >Print</v-btn
+          >
+        </div>
+        <CloseReportButton class="my-1 mx-1"></CloseReportButton>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -47,6 +58,7 @@ export default class MainReport extends Vue {
   embedUrl = null
   report = null
   loaded = false
+  printLoading = false
 
   async mounted() {
     if (this.accessTokenError === true) {
@@ -84,6 +96,14 @@ export default class MainReport extends Vue {
       const page = report.page(this.pageName)
       page.setActive()
       this.setFilter()
+    })
+  }
+
+  print() {
+    this.whenReportLoaded((report) => {
+      report.print().finally(() => {
+        this.printLoading = false
+      })
     })
   }
 
@@ -161,5 +181,22 @@ export default class MainReport extends Vue {
 <style lang="scss">
 iframe {
   border: none !important;
+}
+</style>
+<style lang="scss">
+.reportContainer {
+  height: 70vw;
+}
+
+@media screen and (max-width: 900px) {
+  .reportContainer {
+    height: 90vw;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .report-options {
+    flex-direction: column;
+  }
 }
 </style>

@@ -1,4 +1,4 @@
-from django.http import JsonResponse, HttpResponse
+from django.http import HttpResponse
 from django.core.serializers import serialize
 from django.shortcuts import get_object_or_404
 
@@ -7,27 +7,32 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets
-from rest_framework_csv import renderers as csv_renderers
 
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
-from pipeline.models.general import LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource, CivicLeader
+from pipeline.models.general import (
+    LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource, CivicLeader, PageView)
 from pipeline.serializers.general import (
-    CommunitySerializer,
-    CommunityCSVSerializer,
-    CommunitySearchSerializer,
-    CommunityDetailSerializer,
     CensusSubdivisionSerializer,
     CensusSubdivisionDetailSerializer,
     LocationDistanceSerializer,
     ServiceListSerializer,
     RegionalDistrictSerializer,
+    RegionalDistrictDetailSerializer,
     SchoolDistrictSerializer,
     DataSourceSerializer,
     CivicLeaderSerializer,
+    PageViewSerializer,
+)
+from pipeline.serializers.community import (
+    CommunitySerializer,
+    CommunityCSVRenderer,
+    CommunityCSVSerializer,
+    CommunitySearchSerializer,
+    CommunityDetailSerializer,
 )
 from pipeline.utils import (
-    generate_line_strings, serialize_communities_for_regional_districts, communities_advanced_search,
+    serialize_communities_for_regional_districts, communities_advanced_search,
     get_hidden_explore_report_pages, get_communities_with_insufficient_data
 )
 
@@ -47,8 +52,8 @@ class CommunityViewSet(viewsets.GenericViewSet):
         return self.get_paginated_response(serializer.data)
 
     def retrieve(self, request, pk):
-        user = get_object_or_404(self.get_queryset(), pk=pk)
-        serializer = CommunityDetailSerializer(user)
+        community = get_object_or_404(self.get_queryset(), pk=pk)
+        serializer = CommunityDetailSerializer(community)
         return Response(serializer.data)
 
     @action(detail=False)
@@ -82,9 +87,10 @@ class CommunityViewSet(viewsets.GenericViewSet):
             content_type="application/json",
         )
 
-    @action(detail=False, renderer_classes=[csv_renderers.CSVRenderer])
+    @action(detail=False, renderer_classes=[CommunityCSVRenderer])
     def csv(self, request):
-        serializer = CommunityCSVSerializer(self.get_queryset(), many=True)
+        communities = communities_advanced_search(request.query_params)
+        serializer = CommunityCSVSerializer(communities, many=True)
         return Response(serializer.data)
 
     @action(detail=True)
@@ -113,14 +119,6 @@ class CensusSubdivisionList(generics.ListAPIView):
 class CensusSubdivisionDetail(generics.RetrieveAPIView):
     queryset = CensusSubdivision.objects.all()
     serializer_class = CensusSubdivisionDetailSerializer
-
-
-class LocationDistanceGeoJSONList(APIView):
-    schema = None
-
-    def get(self, request, format=None):
-        line_strings = generate_line_strings()
-        return JsonResponse(line_strings, safe=False)
 
 
 class LocationDistanceList(generics.ListAPIView):
@@ -152,6 +150,11 @@ class RegionalDistrictViewSet(viewsets.GenericViewSet):
         serializer = RegionalDistrictSerializer(queryset, many=True)
         return self.get_paginated_response(serializer.data)
 
+    def retrieve(self, request, pk):
+        regional_district = get_object_or_404(self.get_queryset(), pk=pk)
+        serializer = RegionalDistrictDetailSerializer(regional_district)
+        return Response(serializer.data)
+
     @action(detail=False)
     def communities(self, request):
         regional_districts = serialize_communities_for_regional_districts(self.get_queryset())
@@ -175,3 +178,8 @@ class SchoolDistrictList(generics.ListAPIView):
 class CivicLeaderList(generics.ListAPIView):
     queryset = CivicLeader.objects.all()
     serializer_class = CivicLeaderSerializer
+
+
+class PageViewList(generics.ListCreateAPIView):
+    queryset = PageView.objects.all()
+    serializer_class = PageViewSerializer

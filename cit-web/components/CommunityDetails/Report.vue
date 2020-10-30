@@ -5,13 +5,23 @@
         {{ errorMessage }}
       </v-alert>
     </div>
-    <div
-      v-else
-      ref="reportContainer"
-      class="reportContainer"
-      :style="`height: ${height}px; width: ${width}px;`"
-      style="margin: 0 auto;"
-    ></div>
+    <div v-else>
+      <div>
+        <div
+          ref="reportContainer"
+          class="reportContainer"
+          :style="`height: ${height}px; width: ${width}px;`"
+          style="margin: 0 auto;"
+        ></div>
+        <v-btn
+          color="primary"
+          class="text-capitalize mt-5"
+          :loading="printLoading"
+          @click="print"
+          >Print</v-btn
+        >
+      </div>
+    </div>
   </div>
 </template>
 
@@ -58,8 +68,18 @@ export default class MainReport extends Vue {
   reportId = this.$config.reportId
   embedUrl = null
   report = null
+  printLoading = false
   loaded = false
   error = false
+
+  print() {
+    this.printLoading = true
+    this.whenReportLoaded((report) => {
+      report.print().finally(() => {
+        this.printLoading = false
+      })
+    })
+  }
 
   async mounted() {
     try {

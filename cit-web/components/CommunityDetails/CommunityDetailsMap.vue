@@ -128,8 +128,10 @@ export default class CommunityDetailsMap extends Vue {
 
   created() {
     this.map = null
+    this.listenToEvents()
     this.$root.$on('cdMapFilter', ({ layerName, filters }) => {
       this.whenMapLoaded((map) => {
+        console.log('Layername and filtesr', layerName, filters)
         map.setFilter(layerName, filters)
       })
     })

@@ -1,10 +1,12 @@
 <template>
   <div>
     <v-menu
+      v-model="menu"
       offset-y
       class="nav-menu px-10"
-      :close-on-content-click="true"
       content-class="nav-menu"
+      :close-on-content-click="false"
+      :close-on-click="false"
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn color="primary" v-bind="attrs" v-on="on">
@@ -12,7 +14,12 @@
         </v-btn>
       </template>
 
-      <v-list style="background-color: #073366;" class="px-5 py-1" width="225">
+      <v-list
+        style="background-color: #073366;"
+        class="px-5 py-1"
+        width="225"
+        @click.native="menu = false"
+      >
         <v-list-item
           class="pa-0 ma-0 font-weight-normal my-3"
           style="min-height: auto;"
@@ -40,7 +47,11 @@
       <div
         style="background-color: rgba(255, 255, 255, 0.1); height: 1px;"
       ></div>
-      <v-list style="background-color: #073366;" class="px-5">
+      <v-list
+        style="background-color: #073366;"
+        class="px-5"
+        @click.native="menu = false"
+      >
         <v-list-item-title>
           <h6 class="text-body-1 font-weight-bold white--text">
             Aggregate Reports
@@ -51,15 +62,15 @@
           :key="index"
           class="pa-0 ma-0 font-weight-normal my-3"
           style="min-height: auto;"
-          :to="mi.href"
+          :to="`/explore?tab=Reports&report=${encodeURIComponent(mi.name)}`"
         >
           <v-list-item-title class="white--text">{{
-            mi.title
+            mi.name
           }}</v-list-item-title>
         </v-list-item>
       </v-list>
       <v-sheet v-if="showSearch" color="white" class="pa-5">
-        <CommSearch></CommSearch>
+        <CommSearch @changed="menu = false"></CommSearch>
       </v-sheet>
       <div
         style="background-color: rgba(255, 255, 255, 0.1); height: 1px;"
@@ -84,6 +95,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import sortBy from 'lodash/sortBy'
 import CommSearch from '~/components/CommSearch.vue'
+import aggReports from '~/data/explore/explorePages.json'
 
 @Component({
   CommSearch,
@@ -92,40 +104,8 @@ import CommSearch from '~/components/CommSearch.vue'
   },
 })
 export default class Menu extends Vue {
-  menuItems = [
-    {
-      title: 'Domestic',
-      href: '/explore?tab=Reports&report=Domestic',
-    },
-    {
-      title: 'Culture',
-      href: '/explore?tab=Reports&report=Culture',
-    },
-    {
-      title: 'Education',
-      href: '/explore?tab=Reports&report=Education',
-    },
-    {
-      title: 'Income/Jobs',
-      href: '/explore?tab=Reports&report=Income/Jobs',
-    },
-    {
-      title: 'Natural Resources',
-      href: '/explore?tab=Reports&report=Natural Resources',
-    },
-    {
-      title: 'Economic Projects',
-      href: '/explore?tab=Reports&report=Economic Projects',
-    },
-    {
-      title: 'Connectivity',
-      href: '/explore?tab=Reports&report=Connectivity',
-    },
-    {
-      title: 'Health & Emergency',
-      href: '/explore?tab=Reports&report=Health & Emergency',
-    },
-  ]
+  menu = false
+  menuItems = aggReports
 
   get showSearch() {
     return this.$vuetify.breakpoint.width < 850

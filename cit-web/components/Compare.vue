@@ -2,18 +2,9 @@
   <div>
     <v-container
       fluid
-      style="
-        height: 210px;
-        border-top-left-radius: 8px;
-        border-top-right-radius: 8px;
-      "
-      class="compare-input-container"
+      style="height: 180px;"
+      class="compare-input-container align-center d-flex"
     >
-      <v-row>
-        <v-col sm="12" class="white--text">
-          Compare To
-        </v-col>
-      </v-row>
       <v-row>
         <v-col sm="12">
           <CompareSelect

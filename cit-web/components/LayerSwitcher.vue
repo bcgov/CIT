@@ -45,11 +45,25 @@
             class="d-flex align-center"
             :class="{ 'mt-3': index !== 0 }"
           >
-            <DynamicLegend
-              :component-name="layer.legendComponent"
-              class="mr-2"
-            ></DynamicLegend>
-            <label :for="layer.layerLabel">{{ layer.layerLabel }}</label>
+            <div class="d-flex legend-info">
+              <DynamicLegend
+                :component-name="layer.legendComponent"
+                class="mr-2"
+              ></DynamicLegend>
+              <div>
+                <label :for="layer.layerLabel">{{ layer.layerLabel }}</label>
+                <span v-if="layer.layerName === 'bc-roads'">
+                  <v-tooltip bottom color="primary" class="rounded-lg">
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn small fab icon v-bind="attrs" v-on="on">
+                        <v-icon color="primary">mdi-information</v-icon>
+                      </v-btn>
+                    </template>
+                    Speeds indicate download/upload speed in mbps.
+                  </v-tooltip>
+                </span>
+              </div>
+            </div>
 
             <v-spacer></v-spacer>
             <v-switch
@@ -74,12 +88,27 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 @Component
 export default class LayerSwitcher extends Vue {
   @Prop({ default: null, type: Array }) layers
-  menu = true
+  menu = false
   handleChange(e, data) {
     this.$emit('layerToggle', {
       visibility: e,
       layerName: data,
     })
   }
+
+  mounted() {
+    this.$root.$on('openLayerSwitcher', () => {
+      setTimeout(() => {
+        this.menu = true
+      }, 100)
+    })
+  }
 }
 </script>
+<style lang="scss" scoped>
+@media screen and (max-width: 493px) {
+  .legend-info {
+    flex-direction: column;
+  }
+}
+</style>

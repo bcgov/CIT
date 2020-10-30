@@ -117,6 +117,7 @@ class Community(models.Model):
         from pipeline.models.general import CivicLeader
 
         try:
-            return CivicLeader.objects.get(community=self, position="mayor").get_name()
+            mayors = CivicLeader.objects.filter(community=self, position="mayor")
+            return ", ".join([mayor.get_name() for mayor in mayors])
         except CivicLeader.DoesNotExist:
             return None
