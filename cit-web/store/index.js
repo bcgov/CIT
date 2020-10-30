@@ -17,7 +17,11 @@ export const getters = {
 
 export const actions = {
   nuxtClientInit({ commit }, context) {
-    if (navigator.appVersion.includes('MSIE 10')) {
+    if (
+      navigator.appVersion.includes('MSIE 10') ||
+      navigator.appVersion.includes('MSIE 9.') ||
+      (window.attachEvent && !window.addEventListener)
+    ) {
       this.legacy = true
       this.message =
         'The community information tool is currently not supported on this browser. Microsoft recommendeds you to upgrade to the latest browser'
