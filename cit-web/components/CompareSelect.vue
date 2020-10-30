@@ -2,9 +2,10 @@
   <div>
     <multiselect
       :value="value"
-      class="elevation-5 pa-0 ma-0"
+      class="elevation-5 pa-0 ma-0 cs-ms"
       :options="selections"
       :multiple="false"
+      :allow-empty="false"
       :close-on-select="true"
       :clear-on-select="true"
       :preserve-search="true"
@@ -42,5 +43,15 @@ export default class CompareSelect extends Vue {
 <style lang="scss">
 .multiselect__content {
   padding-left: 0 !important;
+}
+
+.cs-ms {
+  width: 100%;
+}
+
+@media screen and (max-width: 380px) {
+  .cs-ms {
+    width: 250px;
+  }
 }
 </style>

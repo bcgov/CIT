@@ -5,7 +5,7 @@
       :class="{ 'flex-column': isMobile }"
     >
       <FeedbackButton></FeedbackButton>
-      <ShareButton class="ml-2"></ShareButton>
+      <ShareButton class="ml-2" :class="{ 'my-3': isMobile }"></ShareButton>
       <CloseReportButton class="ml-2"></CloseReportButton>
       <v-spacer></v-spacer>
       <div class="mr-2" :class="{ 'mt-2': isMobile, 'mr-0': isMobile }">
@@ -18,6 +18,7 @@
           :close-on-select="true"
           :clear-on-select="true"
           :preserve-search="true"
+          :allow-empty="false"
           label="name"
           track-by="name"
           @input="handleUpdate"
@@ -47,7 +48,7 @@ export default class ReportTraverse extends Vue {
   isHydrated = false
   get isMobile() {
     if (this.isHydrated === true) {
-      return this.$vuetify.breakpoint.width < 559
+      return this.$vuetify.breakpoint.width < 900
     } else {
       return false
     }
