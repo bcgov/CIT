@@ -36,6 +36,7 @@
     "lodash-es": "^4.17.15",
     "mapbox-gl": "^1.11.1",
     "nuxt": "^2.13.0",
+    "nuxt-client-init-module": "^0.1.9",
     "nuxt-property-decorator": "^2.7.2",
     "nuxt-vue-multiselect": "^1.0.4",
     "powerbi-client": "^2.13.2",
