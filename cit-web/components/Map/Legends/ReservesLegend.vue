@@ -16,6 +16,6 @@ export default class ReservesLegend extends Vue {}
 .reserveslegend {
   width: 100px;
   height: 5px;
-  background-color: hsl(59, 100, 43, 0.31);
+  background-color: #a400db;
 }
 </style>
