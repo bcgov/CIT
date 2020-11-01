@@ -1,6 +1,8 @@
 version: '3.3'
 
 services:
+  web:
+    command: ./gunicorn.sh
   smtp:
     image: namshi/smtp
     networks:

@@ -1,4 +1,6 @@
 Django==2.2.16
+gunicorn
+gevent
 psycopg2==2.8.6
 djangorestframework==3.12.1
 djangorestframework-csv==2.1.0
