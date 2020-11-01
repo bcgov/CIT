@@ -388,7 +388,14 @@ const commModule = namespace('communities')
 export default class CommunityDetail extends Vue {
   head() {
     return {
-      title: `${this.placeName}`,
+      title: `${this.placeName} | Community Information Tool`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: `Visualize and download data on ${this.placeName}, sourced from DataBC and Statistics Canada.`,
+        },
+      ],
     }
   }
 
