@@ -105,6 +105,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
     'nuxt-vue-multiselect',
+    'nuxt-client-init-module',
   ],
   /*
    ** Axios module configuration

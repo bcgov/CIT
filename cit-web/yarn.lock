@@ -7729,6 +7729,11 @@ num2fraction@^1.2.2:
   resolved "https://registry.yarnpkg.com/num2fraction/-/num2fraction-1.2.2.tgz#6f682b6a027a4e9ddfa4564cd2589d1d4e669ede"
   integrity sha1-b2gragJ6Tp3fpFZM0lidHU5mnt4=
 
+nuxt-client-init-module@^0.1.9:
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/nuxt-client-init-module/-/nuxt-client-init-module-0.1.9.tgz#f01580ecd9414b522def840d16354be5910dbe09"
+  integrity sha512-HPm4tdxQG2G/IdyyCSqxyD3arFZaKA2tA08zxpmf1cWfRKTSW/qu1KCAcydbMljIeHhIMIBmupWlMwSWlGtGZA==
+
 nuxt-property-decorator@^2.7.2:
   version "2.7.2"
   resolved "https://registry.yarnpkg.com/nuxt-property-decorator/-/nuxt-property-decorator-2.7.2.tgz#c465d9fe10db3c11911c94ca9b10dbcd068e0149"

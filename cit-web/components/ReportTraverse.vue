@@ -5,21 +5,25 @@
       :class="{ 'flex-column': isMobile }"
     >
       <FeedbackButton></FeedbackButton>
-      <ShareButton class="ml-2"></ShareButton>
+      <ShareButton class="ml-2" :class="{ 'my-3': isMobile }"></ShareButton>
       <CloseReportButton class="ml-2"></CloseReportButton>
       <v-spacer></v-spacer>
       <div class="mr-2" :class="{ 'mt-2': isMobile, 'mr-0': isMobile }">
         Choose another report
       </div>
       <div class="report-traverse-select" :class="{ 'my-5': isMobile }">
-        <v-select
+        <multiselect
           v-model="selected"
-          class="ma-0 mt-0 pa-0"
-          hide-details
-          :items="items"
-          item-value="name"
-          item-text="name"
-        ></v-select>
+          :options="items"
+          :close-on-select="true"
+          :clear-on-select="true"
+          :preserve-search="true"
+          :allow-empty="false"
+          label="name"
+          track-by="name"
+          @input="handleUpdate"
+        >
+        </multiselect>
       </div>
       <v-btn
         :block="isMobile"
@@ -39,12 +43,12 @@ import reportPages from '~/data/communityDetails/reportPages.json'
 @Component
 export default class ReportTraverse extends Vue {
   items = reportPages
-  selected = 'Housing'
+  selected = reportPages.find((rp) => rp.name === 'Housing')
 
   isHydrated = false
   get isMobile() {
     if (this.isHydrated === true) {
-      return this.$vuetify.breakpoint.width < 559
+      return this.$vuetify.breakpoint.width < 900
     } else {
       return false
     }
@@ -52,7 +56,7 @@ export default class ReportTraverse extends Vue {
 
   handleClick() {
     this.$root.$emit('reportModalToTop')
-    this.$emit('traverse', this.selected)
+    this.$emit('traverse', this.selected.name)
   }
 
   mounted() {

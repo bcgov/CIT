@@ -2,6 +2,9 @@
   <v-app light class="h-100">
     <Navigation></Navigation>
     <div class="fixed-content">
+      <div v-if="legacy">
+        <v-alert type="error">{{ message }}</v-alert>
+      </div>
       <nuxt class="h-100" />
     </div>
     <div class="fixed-footer">
@@ -18,7 +21,15 @@ import Footer from '~/components/Footer.vue'
   Footer,
   Navigation,
 })
-export default class FixedLayout extends Vue {}
+export default class FixedLayout extends Vue {
+  get legacy() {
+    return this.$store.state.legacy
+  }
+
+  get message() {
+    return this.$store.state.message
+  }
+}
 </script>
 <style lang="scss" scoped>
 .fixed-content {
