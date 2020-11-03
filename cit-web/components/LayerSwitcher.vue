@@ -102,6 +102,10 @@ export default class LayerSwitcher extends Vue {
         this.menu = true
       }, 100)
     })
+
+    this.layers.map((l) => {
+      this.handleChange(l.on, l.layerName)
+    })
   }
 }
 </script>
