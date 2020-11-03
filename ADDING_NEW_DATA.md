@@ -69,9 +69,7 @@ let
         let Offset  = "offset=" & Text.From(Index * LimitPerPage),
             Limit   = "limit=" & Text.From(LimitPerPage),
             Url   = BaseUrl & "&" & Limit & "&" & Offset,
-            Json  = Json.Document(Web.Contents(Url)),
-            // replace the line above with the commented line below to add a delay to each page request
-            //Json  = Function.InvokeAfter(() => Json.Document(Web.Contents(Url)), #duration(0,0,0,1)),
+            Json  = Function.InvokeAfter(() => Json.Document(Web.Contents(Url)), #duration(0,0,0,1)),
             Value = Json[results]
         in  Value,
     
@@ -87,17 +85,15 @@ in
     #"Expanded Column2"
 ```
 
-The important features of this query are the BaseUrl, LimitPerPage, the commented lines inside the GetPage function, and the last Expanded column.
+The important features of this query are the BaseUrl, LimitPerPage, and the last Expanded column.
 
 The BaseUrl points to the API endpoint you have set up previously. It should also have ```?format=json``` at the end.
 
 The LimitPerPage should be left at 1000 unless the dataset is very large per entry and needs to be lowered. 
 
-The GetPage function has a line starting with '''Json = Json.Document''' which can be replaced with a commented line containing InvokeAfter. This is to add a 1s delay to each page retrieval. Use this if the server is unable to process the number of requests you are sending and needs more time.
-
 The last Expanded column is specific to the api endpoint and will describe all of the columns that will be retrieved. This line needs to be edited to conform to the data that is available from the API.
 
-If you need a way to update a large number of columns, an easy trick is to delete thiis Expanded Column 2 line, remove the ',' from the Expanded Column 1 line so the syntax is correct, and change the very last line to Expanded Column 1.
+If you need a way to update a large number of columns, an easy trick is to delete this Expanded Column 2 line, remove the ',' from the Expanded Column 1 line so the syntax is correct, and change the very last line to Expanded Column 1.
 
 Now you can press Done and the query preview will show one column. You can select the small icon in the top right of table, To the right of 'Column1' in the row header. This icon will ask you which columns you would like to expand. The default is that all columns are selected (this is what you want). Also be sure to uncheck the 'Use original column name as prefix' as this will make everything Column1.id, Column1.name, etc.... instead of id, name, etc..
 
