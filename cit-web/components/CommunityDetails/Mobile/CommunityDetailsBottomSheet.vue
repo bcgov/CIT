@@ -5,7 +5,6 @@
       persistent
       scrollable
       class="black--text"
-      @click.native="handleClick"
     >
       <v-card>
         <div class="mobile-collapse">
@@ -27,10 +26,6 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 @Component
 export default class CommunityDetailsBottomSheet extends Vue {
   @Prop({ default: false, type: Boolean }) sheetOpen
-
-  handleClick() {
-    console.log('Clicked')
-  }
 }
 </script>
 <style lang="scss" scoped>

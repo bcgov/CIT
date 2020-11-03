@@ -220,9 +220,7 @@ export default class CommunityDetailsMap extends Vue {
     this.addControls(map)
     map.on('click', function (e) {
       const features = map.queryRenderedFeatures(e.point)
-      const location = features.find(
-        (f) => f.sourceLayer === 'locations-2bvop8'
-      )
+      const location = features.find((f) => f.layer.id === 'locations')
       if (location) {
         new mapboxgl.Popup()
           .setLngLat(e.lngLat)
