@@ -45,6 +45,13 @@
       ></LayerSwitcher>
     </div>
 
+    <div v-show="false" ref="locationPopup">
+      <LocationPopup
+        :location-type="popUpLocationType"
+        :name="popUpLocationName"
+      ></LocationPopup>
+    </div>
+
     <div ref="zoomControl">
       <ZoomControl @zoomIn="zoomIn" @zoomOut="zoomOut"></ZoomControl>
     </div>
@@ -59,6 +66,9 @@ import layerData from '~/data/communityDetails/layers.json'
 export default class CommunityDetailsMap extends Vue {
   @Prop({ default: null, type: String }) placeName
   @Prop({ default: null, type: Object }) communityDetails
+
+  popUpLocationType = null
+  popUpLocationName = null
   layerSwitcher = layerData
   mapLoaded = false
   addControls(map) {
@@ -191,6 +201,16 @@ export default class CommunityDetailsMap extends Vue {
     })
   }
 
+  setLocationPopup(coordinates) {
+    this.$nextTick(() => {
+      const phtml = this.$refs.locationPopup.innerHTML
+      const locationPopup = new window.mapboxgl.Popup({
+        className: 'location-popup-container',
+      })
+      locationPopup.setLngLat(coordinates).setHTML(phtml).addTo(this.map)
+    })
+  }
+
   mounted() {
     window.mapboxgl.accessToken = this.$config.MAPBOX_API_KEY
     const mapboxgl = window.mapboxgl
@@ -218,19 +238,15 @@ export default class CommunityDetailsMap extends Vue {
       .addTo(map)
     marker.togglePopup()
     this.addControls(map)
-    map.on('click', function (e) {
+    map.on('click', (e) => {
       const features = map.queryRenderedFeatures(e.point)
       const location = features.find((f) => f.layer.id === 'locations')
       if (location) {
-        new mapboxgl.Popup()
-          .setLngLat(e.lngLat)
-          .setHTML(
-            `<p>${location.properties.name}</p>
-            <a href="mailto:networkbc@gov.bc.ca?subject=CIT Feedback" class="ml-2 v-btn v-btn--depressed theme--light v-size--small info"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mr-2 mdi mdi-comment theme--light" style="font-size:16px;"></i>
-              Give Feedback
-            </span></a>`
-          )
-          .addTo(map)
+        const locationType = location.properties.location_type
+        const locationName = location.properties.name
+        this.popUpLocationType = locationType
+        this.popUpLocationName = locationName
+        this.setLocationPopup(e.lngLat)
       }
     })
     map.on('load', () => {
@@ -241,3 +257,9 @@ export default class CommunityDetailsMap extends Vue {
   }
 }
 </script>
+<style lang="scss">
+.location-popup-container,
+.location-popup-container .mapboxgl-popup-content {
+  padding: 0 0 0 0;
+}
+</style>
