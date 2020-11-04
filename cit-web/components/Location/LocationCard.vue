@@ -13,7 +13,10 @@
             Phone: {{ location.location_phone }}
           </li>
           <li v-if="location.location_website">
-            Website: {{ location.location_phone }}
+            Website:
+            <a :href="location.location_website" target="_blank">{{
+              location.location_website
+            }}</a>
           </li>
         </ul>
       </v-card-text>
@@ -28,6 +31,7 @@
           Find On Map
           <v-icon small dark>mdi-map-marker</v-icon>
         </v-btn>
+        <!--
         <v-btn
           x-small
           text
@@ -38,6 +42,7 @@
           Info
           <v-icon small>mdi-arrow-right</v-icon>
         </v-btn>
+        -->
         <v-spacer></v-spacer>
         <v-btn v-if="!isEmpty(locationFields)" small icon @click="show = !show">
           <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
