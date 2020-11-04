@@ -48,6 +48,7 @@
     <div v-show="false" ref="locationPopup">
       <LocationPopup
         :location-type="popUpLocationType"
+        :location-props="popUpLocationProps"
         :name="popUpLocationName"
       ></LocationPopup>
     </div>
@@ -67,8 +68,10 @@ export default class CommunityDetailsMap extends Vue {
   @Prop({ default: null, type: String }) placeName
   @Prop({ default: null, type: Object }) communityDetails
 
+  popUpLocation = null
   popUpLocationType = null
   popUpLocationName = null
+  popUpLocationProps = null
   layerSwitcher = layerData
   mapLoaded = false
   addControls(map) {
@@ -141,7 +144,6 @@ export default class CommunityDetailsMap extends Vue {
     this.listenToEvents()
     this.$root.$on('cdMapFilter', ({ layerName, filters }) => {
       this.whenMapLoaded((map) => {
-        console.log('Layername and filtesr', layerName, filters)
         map.setFilter(layerName, filters)
       })
     })
@@ -149,11 +151,8 @@ export default class CommunityDetailsMap extends Vue {
 
   handleFind(center) {
     this.whenMapLoaded((map) => {
-      map.flyTo({
-        center,
-        zoom: 17,
-        essential: true,
-      })
+      map.setCenter(center)
+      map.setZoom(17)
     })
   }
 
@@ -199,6 +198,20 @@ export default class CommunityDetailsMap extends Vue {
     this.$root.$on('map-find', (center) => {
       this.handleFind(center)
     })
+
+    this.$root.$on('map-find-location', (data) => {
+      const { center, location } = data
+      this.handleFind(center)
+      this.whenMapLoaded((map) => {
+        this.popUpLocationProps = location
+        this.popUpLocationType = location.type
+        this.popUpLocationName = location.name
+        this.setLocationPopup({
+          lat: data.center[1],
+          lng: data.center[0],
+        })
+      })
+    })
   }
 
   setLocationPopup(coordinates) {
@@ -207,8 +220,35 @@ export default class CommunityDetailsMap extends Vue {
       const locationPopup = new window.mapboxgl.Popup({
         className: 'location-popup-container',
       })
+      if (this.popUpLocation) {
+        this.popUpLocation.remove()
+        this.popUpLocation = null
+      }
+      this.popUpLocation = locationPopup
+      document.addEventListener('click', (e) => {
+        if (
+          event.target.matches('.location-popup-close-icon') ||
+          event.target.matches('.location-popup-close')
+        ) {
+          locationPopup.remove()
+        }
+      })
       locationPopup.setLngLat(coordinates).setHTML(phtml).addTo(this.map)
     })
+  }
+
+  handleLocationPopUp(map, e) {
+    const features = map.queryRenderedFeatures(e.point)
+
+    const location = features.find((f) => f.layer.id === 'locations')
+    if (location) {
+      const locationType = location.properties.location_type
+      const locationName = location.properties.name
+      this.popUpLocationProps = location.properties
+      this.popUpLocationType = locationType
+      this.popUpLocationName = locationName
+      this.setLocationPopup(e.lngLat)
+    }
   }
 
   mounted() {
@@ -239,15 +279,7 @@ export default class CommunityDetailsMap extends Vue {
     marker.togglePopup()
     this.addControls(map)
     map.on('click', (e) => {
-      const features = map.queryRenderedFeatures(e.point)
-      const location = features.find((f) => f.layer.id === 'locations')
-      if (location) {
-        const locationType = location.properties.location_type
-        const locationName = location.properties.name
-        this.popUpLocationType = locationType
-        this.popUpLocationName = locationName
-        this.setLocationPopup(e.lngLat)
-      }
+      this.handleLocationPopUp(map, e)
     })
     map.on('load', () => {
       map.setLayoutProperty('locations', 'visibility', 'visible')

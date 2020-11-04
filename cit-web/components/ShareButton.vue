@@ -49,7 +49,6 @@ export default class ReportTraverse extends Vue {
   }
 
   copy() {
-    console.log('Copy')
     this.$copyText(this.url, this.$refs.cardText).then(
       function (e) {},
       function (e) {

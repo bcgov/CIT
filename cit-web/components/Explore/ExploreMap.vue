@@ -22,6 +22,7 @@
 
       <div v-show="false" ref="locationPopup">
         <LocationPopup
+          :location-props="popUpLocationProps"
           :location-type="popUpLocationType"
           :name="popUpLocationName"
         ></LocationPopup>
@@ -91,6 +92,7 @@ export default class Explore extends Vue {
 
   popUpLocationType = null
   popUpLocationName = null
+  popUpLocationProps = null
   communitySourcesReady = false
   communityPopUpName = null
   communityPopUpId = null
@@ -378,6 +380,7 @@ export default class Explore extends Vue {
       if (location) {
         const locationType = location.properties.location_type
         const locationName = location.properties.name
+        this.popUpLocationProps = location.properties
         this.popUpLocationType = locationType
         this.popUpLocationName = locationName
         this.setLocationPopup(e.lngLat)
