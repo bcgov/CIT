@@ -253,7 +253,7 @@ export default class Explore extends Vue {
       const locationPopup = new window.mapboxgl.Popup({
         className: 'location-popup-container',
       })
-      document.addEventListener('click', (e) => {
+      document.addEventListener('click', (event) => {
         if (
           event.target.matches('.location-popup-close-icon') ||
           event.target.matches('.location-popup-close')
@@ -274,7 +274,7 @@ export default class Explore extends Vue {
       const communityPopUp = new window.mapboxgl.Popup({
         className: 'community-popup-container',
       })
-      document.addEventListener('click', (e) => {
+      document.addEventListener('click', (event) => {
         if (
           event.target.matches('.community-popup-close-icon') ||
           event.target.matches('.community-popup-close')

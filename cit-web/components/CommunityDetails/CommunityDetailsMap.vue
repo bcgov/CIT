@@ -217,15 +217,15 @@ export default class CommunityDetailsMap extends Vue {
   setLocationPopup(coordinates) {
     this.$nextTick(() => {
       const phtml = this.$refs.locationPopup.innerHTML
-      const locationPopup = new window.mapboxgl.Popup({
-        className: 'location-popup-container',
-      })
       if (this.popUpLocation) {
         this.popUpLocation.remove()
         this.popUpLocation = null
       }
+      const locationPopup = new window.mapboxgl.Popup({
+        className: 'location-popup-container',
+      })
       this.popUpLocation = locationPopup
-      document.addEventListener('click', (e) => {
+      document.addEventListener('click', (event) => {
         if (
           event.target.matches('.location-popup-close-icon') ||
           event.target.matches('.location-popup-close')
