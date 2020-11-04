@@ -22,6 +22,7 @@
 
       <div v-show="false" ref="locationPopup">
         <LocationPopup
+          :location-props="popUpLocationProps"
           :location-type="popUpLocationType"
           :name="popUpLocationName"
         ></LocationPopup>
@@ -91,6 +92,7 @@ export default class Explore extends Vue {
 
   popUpLocationType = null
   popUpLocationName = null
+  popUpLocationProps = null
   communitySourcesReady = false
   communityPopUpName = null
   communityPopUpId = null
@@ -251,7 +253,7 @@ export default class Explore extends Vue {
       const locationPopup = new window.mapboxgl.Popup({
         className: 'location-popup-container',
       })
-      document.addEventListener('click', (e) => {
+      document.addEventListener('click', (event) => {
         if (
           event.target.matches('.location-popup-close-icon') ||
           event.target.matches('.location-popup-close')
@@ -272,7 +274,7 @@ export default class Explore extends Vue {
       const communityPopUp = new window.mapboxgl.Popup({
         className: 'community-popup-container',
       })
-      document.addEventListener('click', (e) => {
+      document.addEventListener('click', (event) => {
         if (
           event.target.matches('.community-popup-close-icon') ||
           event.target.matches('.community-popup-close')
@@ -378,6 +380,7 @@ export default class Explore extends Vue {
       if (location) {
         const locationType = location.properties.location_type
         const locationName = location.properties.name
+        this.popUpLocationProps = location.properties
         this.popUpLocationType = locationType
         this.popUpLocationName = locationName
         this.setLocationPopup(e.lngLat)

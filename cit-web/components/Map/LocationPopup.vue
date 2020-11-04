@@ -27,6 +27,17 @@
             }}</a>
           </li>
         </ul>
+        <ul v-if="locationProps" class="ma-0 pa-0" style="list-style: none;">
+          <li v-if="locationProps.location_email">
+            Email: {{ locationProps.location_email }}
+          </li>
+          <li v-if="locationProps.location_phone">
+            Phone: {{ locationProps.location_phone }}
+          </li>
+          <li v-if="locationProps.location_website">
+            Website: {{ locationProps.location_phone }}
+          </li>
+        </ul>
       </v-card-text>
     </v-card>
   </div>
@@ -38,10 +49,9 @@ import { getDataSourceList } from '~/api/cit-api'
 @Component
 export default class LocationPopup extends Vue {
   @Prop({ default: null, type: String }) locationType
+  @Prop({ default: null, type: Object }) locationProps
   @Prop({ default: null, type: String }) name
-  mounted() {
-    console.log('Location Popup Mounted')
-  }
+  mounted() {}
 
   dataSource = null
 

@@ -5,9 +5,17 @@
         location.name
       }}</v-card-title>
       <v-card-text class="pb-0">
-        <div class="text-body-1">
-          {{ location.public_or_independent }}
-        </div>
+        <ul class="ma-0 pa-0" style="list-style: none;">
+          <li v-if="location.location_email">
+            Email: {{ location.location_email }}
+          </li>
+          <li v-if="location.location_phone">
+            Phone: {{ location.location_phone }}
+          </li>
+          <li v-if="location.location_website">
+            Website: {{ location.location_phone }}
+          </li>
+        </ul>
       </v-card-text>
       <v-card-actions class="pt-0">
         <v-btn
@@ -19,6 +27,16 @@
         >
           Find On Map
           <v-icon small dark>mdi-map-marker</v-icon>
+        </v-btn>
+        <v-btn
+          x-small
+          text
+          color="primary accent-4"
+          class="text-body-1 text-capitalize font-weight-medium"
+          @click="triggerInfo"
+        >
+          Info
+          <v-icon small>mdi-arrow-right</v-icon>
         </v-btn>
         <v-spacer></v-spacer>
         <v-btn v-if="!isEmpty(locationFields)" small icon @click="show = !show">
@@ -109,6 +127,13 @@ export default class LocationCard extends Vue {
       this.location.longitude,
       this.location.latitude,
     ])
+  }
+
+  triggerInfo(e) {
+    this.$root.$emit('map-find-location', {
+      center: [this.location.longitude, this.location.latitude],
+      location: this.location,
+    })
   }
 }
 </script>

@@ -54,7 +54,7 @@ class LocationGeoJSONList(APIView):
 
     def get(self, request, format=None):
         return HttpResponse(
-            serialize('geojson', self.get_queryset(), geometry_field='point', fields=('name', 'location_type')),
+            serialize('geojson', self.get_queryset(), geometry_field='point', fields=('name', 'location_type', 'location_phone', 'location_email', 'location_website')),
             content_type="application/json",
         )
 

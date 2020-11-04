@@ -560,7 +560,6 @@ export default class CommunityDetail extends Vue {
     if (lt) {
       filters = ['==', ['get', 'location_type'], lt]
     }
-    console.log('Expand')
     this.$root.$emit('cdMapFilter', {
       layerName,
       filters,
@@ -646,7 +645,6 @@ export default class CommunityDetail extends Vue {
       this.$root.$emit('openLayerSwitcher')
     }
 
-    console.log('Report?', this.report)
     if (this.report) {
       document.documentElement.classList.add('overflow-y-hidden')
     }
