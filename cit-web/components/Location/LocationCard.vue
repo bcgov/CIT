@@ -43,37 +43,7 @@
           <v-icon small>mdi-arrow-right</v-icon>
         </v-btn>
         -->
-        <v-spacer></v-spacer>
-        <v-btn v-if="!isEmpty(locationFields)" small icon @click="show = !show">
-          <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
-        </v-btn>
       </v-card-actions>
-
-      <v-expand-transition>
-        <div v-show="show">
-          <v-divider></v-divider>
-
-          <v-card-text>
-            <v-list>
-              <v-list-item
-                v-for="(val, key) in locationFields"
-                :key="key"
-                two-line
-              >
-                <v-list-item-content>
-                  <v-list-item-title class="text-capitalize">{{
-                    key
-                  }}</v-list-item-title>
-                  <v-list-item-subtitle v-if="key === 'website'">
-                    <a :href="val">{{ val }}</a></v-list-item-subtitle
-                  >
-                  <v-list-item-subtitle v-else>{{ val }}</v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list>
-          </v-card-text>
-        </div>
-      </v-expand-transition>
     </v-card>
   </div>
 </template>
