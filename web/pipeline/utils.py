@@ -474,7 +474,7 @@ def serialize_location_assets(obj):
         location_assets = get_location_assets_for_community(model_class, obj)
 
         for location_asset in location_assets:
-            locations.append({
+            temp = {
                 "type": location_asset.location_type,
                 "latitude": location_asset.get_latitude(),
                 "longitude": location_asset.get_longitude(),
@@ -486,7 +486,12 @@ def serialize_location_assets(obj):
                 "within_municipality": location_asset.within_municipality,
                 **{field: getattr(location_asset, field) for
                    field in get_fields_for_location_type(location_asset.location_type)},
-            })
+            }
+
+            if hasattr(location_asset, 'project_name'):
+                temp['project_name'] = location_asset.project_name
+                
+            locations.append(temp)
 
     return locations
 
