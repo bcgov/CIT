@@ -1,4 +1,5 @@
-from django.db.models import Q
+import json
+
 from django.http import HttpResponse
 from django.core.serializers import serialize
 
@@ -40,21 +41,35 @@ class LocationList(generics.ListAPIView):
 class LocationGeoJSONList(APIView):
     schema = None
 
-    def get_queryset(self):
-        unique_project_ids = list(
-            Project.objects.order_by('project_id', '-source_date')
-            .distinct('project_id').values_list("id", flat=True))
+    def get(self, request, format=None):
+        unique_projects_query = Project.objects.order_by(
+            'project_id', '-source_date').distinct('project_id')
+        unique_project_ids = unique_projects_query.values_list('id', flat=True)
+        unique_projects_location_query = Location.objects.filter(id__in=unique_project_ids)
+        projects_serialized = json.loads(serialize(
+            'geojson', unique_projects_location_query, geometry_field='point',
+            fields=('name', 'location_type', 'location_phone', 'location_email', 'location_website')))
+
+        # use project_name instead of name for Projects
+        for project in projects_serialized["features"]:
+            project["properties"]["name"] = unique_projects_query.get(name=project["properties"]["name"]).project_name
+
         # TODO: remove deprecated economic_projects and natural_resource_projects datasets
         location_types_to_exclude = ["projects", "natural_resource_projects", "economic_projects"]
-        other_location_ids = list(
-            Location.objects.exclude(location_type__in=location_types_to_exclude).values_list("id", flat=True))
+        other_location_types_query = Location.objects.exclude(location_type__in=location_types_to_exclude)
 
-        all_location_ids = unique_project_ids + other_location_ids
-        return Location.objects.filter(id__in=all_location_ids)
+        other_location_types_serialized = serialize(
+            'geojson', other_location_types_query, geometry_field='point',
+            fields=('name', 'location_type', 'location_phone', 'location_email', 'location_website'))
 
-    def get(self, request, format=None):
+        all_location_types_serialized = json.loads(
+            other_location_types_serialized)
+
+        # add modified Projects back to full queryset
+        all_location_types_serialized["features"].extend(projects_serialized["features"])
+
         return HttpResponse(
-            serialize('geojson', self.get_queryset(), geometry_field='point', fields=('name', 'location_type', 'location_phone', 'location_email', 'location_website')),
+            json.dumps(all_location_types_serialized),
             content_type="application/json",
         )
 
