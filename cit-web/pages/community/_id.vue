@@ -134,6 +134,30 @@
                     </div>
                   </v-col>
                 </v-row>
+
+                <v-row>
+                  <v-col col="12">
+                    <div class="mt-10">
+                      <CommunityDetailsSectionHeader
+                        title="Miscellaneous"
+                        subtitle="Other items that may be of interest"
+                      ></CommunityDetailsSectionHeader>
+
+                      <div class="mt-5">
+                        <v-btn color="primary" @click="showRawData = true"
+                          >View Raw Data
+                          <v-icon right dark>mdi-database</v-icon>
+                        </v-btn>
+                        <v-btn
+                          class="ml-2"
+                          :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
+                          >Give Feedback</v-btn
+                        >
+                      </div>
+                    </div>
+                  </v-col>
+                </v-row>
+
                 <v-row>
                   <v-col col="12">
                     <div class="mt-10">
@@ -173,29 +197,6 @@
                   @reportOpen="reportOpen"
                   @reportClose="reportClose"
                 ></ReportSection>
-
-                <v-row>
-                  <v-col col="12">
-                    <div class="mt-10">
-                      <CommunityDetailsSectionHeader
-                        title="Miscellaneous"
-                        subtitle="Other items that may be of interest"
-                      ></CommunityDetailsSectionHeader>
-
-                      <div class="mt-5">
-                        <v-btn color="primary" @click="showRawData = true"
-                          >View Raw Data
-                          <v-icon right dark>mdi-database</v-icon>
-                        </v-btn>
-                        <v-btn
-                          class="ml-2"
-                          :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
-                          >Give Feedback</v-btn
-                        >
-                      </div>
-                    </div>
-                  </v-col>
-                </v-row>
               </v-container>
             </div>
           </div>
