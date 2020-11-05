@@ -2,7 +2,7 @@
   <div>
     <v-card>
       <v-card-title class="body-2 pb-0 text-body-1" dense>{{
-        location.name
+        name
       }}</v-card-title>
       <v-card-text class="pb-0">
         <ul class="ma-0 pa-0" style="list-style: none;">
@@ -92,6 +92,13 @@ export default class LocationCard extends Vue {
   @Prop({ default: null, type: Object }) location
 
   show = false
+
+  get name() {
+    if (this.location.type === 'projects') {
+      return this.location.project_name
+    }
+    return this.location.name
+  }
 
   get locationFields() {
     const temp = {}
