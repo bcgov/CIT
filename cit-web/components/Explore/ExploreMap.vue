@@ -19,6 +19,15 @@
           @layerToggle="handleLayerToggle"
         ></LayerSwitcher>
       </div>
+
+      <div v-show="false" ref="locationPopup">
+        <LocationPopup
+          :location-props="popUpLocationProps"
+          :location-type="popUpLocationType"
+          :name="popUpLocationName"
+        ></LocationPopup>
+      </div>
+
       <div ref="zoomControl">
         <ZoomControl @zoomIn="zoomIn" @zoomOut="zoomOut"></ZoomControl>
       </div>
@@ -81,6 +90,9 @@ export default class Explore extends Vue {
     return newGeoJson
   }
 
+  popUpLocationType = null
+  popUpLocationName = null
+  popUpLocationProps = null
   communitySourcesReady = false
   communityPopUpName = null
   communityPopUpId = null
@@ -235,6 +247,24 @@ export default class Explore extends Vue {
     }
   }
 
+  setLocationPopup(coordinates) {
+    this.$nextTick(() => {
+      const phtml = this.$refs.locationPopup.innerHTML
+      const locationPopup = new window.mapboxgl.Popup({
+        className: 'location-popup-container',
+      })
+      document.addEventListener('click', (event) => {
+        if (
+          event.target.matches('.location-popup-close-icon') ||
+          event.target.matches('.location-popup-close')
+        ) {
+          locationPopup.remove()
+        }
+      })
+      locationPopup.setLngLat(coordinates).setHTML(phtml).addTo(this.map)
+    })
+  }
+
   setPopUp(coordinates, cid) {
     getPopulation(cid).then((result) => {
       this.communityPopUpPopulation = result.data.population
@@ -244,7 +274,7 @@ export default class Explore extends Vue {
       const communityPopUp = new window.mapboxgl.Popup({
         className: 'community-popup-container',
       })
-      document.addEventListener('click', (e) => {
+      document.addEventListener('click', (event) => {
         if (
           event.target.matches('.community-popup-close-icon') ||
           event.target.matches('.community-popup-close')
@@ -343,6 +373,20 @@ export default class Explore extends Vue {
       this.communityPopUpId = cid
       this.setPopUp(coordinates, cid)
     })
+
+    this.map.on('click', 'locations', (e) => {
+      const features = this.map.queryRenderedFeatures(e.point)
+      const location = features.find((f) => f.layer.id === 'locations')
+      if (location) {
+        const locationType = location.properties.location_type
+        const locationName = location.properties.name
+        this.popUpLocationProps = location.properties
+        this.popUpLocationType = locationType
+        this.popUpLocationName = locationName
+        this.setLocationPopup(e.lngLat)
+      }
+    })
+
     // Change the cursor to a pointer when the mouse is over the places layer.
     this.map.on('mouseenter', 'communities', () => {
       this.map.getCanvas().style.cursor = 'pointer'
@@ -390,6 +434,10 @@ export default class Explore extends Vue {
 <style lang="scss">
 .community-popup-container,
 .community-popup-container .mapboxgl-popup-content {
+  padding: 0 0 0 0;
+}
+.location-popup-container,
+.location-popup-container .mapboxgl-popup-content {
   padding: 0 0 0 0;
 }
 </style>

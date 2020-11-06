@@ -33,7 +33,6 @@
       "regional-districts-label"
     ],
     "layerLabel": "Regional Districts",
-    "legendComponent": "RegionalLegend",
-    "on": true
+    "legendComponent": "RegionalLegend"
   }
 ]

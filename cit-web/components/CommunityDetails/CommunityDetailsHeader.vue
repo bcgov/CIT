@@ -116,10 +116,5 @@ export default class CommunityDetailsHeader extends Vue {
     }
     return df && `${df.value}${df.units || ''}`
   }
-
-  updated() {
-    console.log(this.censusData)
-    console.log('Comm details', this.communityDetails)
-  }
 }
 </script>
