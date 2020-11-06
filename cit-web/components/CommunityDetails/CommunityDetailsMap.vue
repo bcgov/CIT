@@ -180,7 +180,7 @@ export default class CommunityDetailsMap extends Vue {
   getMapboxOptions() {
     return {
       container: 'map',
-      style: 'mapbox://styles/countable-web/ckcspnxxz0ji81iliywxxclk0/draft',
+      style: 'mapbox://styles/citinfo/ckh6rpmo312pm19oby2y4g790',
       center: [-122.970072, 49.299062],
       zoom: 12,
     }
