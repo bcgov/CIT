@@ -22,6 +22,8 @@ class CommunitySerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "place_name",
+            "description",
+            "header_image",
             "child_communities",
             "latitude",
             "longitude",

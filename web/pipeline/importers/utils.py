@@ -5,6 +5,7 @@ from django.apps import apps
 from django.conf import settings
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
+from django.core.files import File
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.gis.measure import D
 from django.utils.dateparse import parse_datetime
@@ -471,3 +472,54 @@ def get_openca_last_modified_date(data_source):
 
     last_modified_date = make_aware(parse_datetime(date))
     return last_modified_date
+
+
+def import_community_descriptions():
+    community_descriptions_file = "data/community_descriptions.csv"
+
+    with open(community_descriptions_file, "r") as csv_file:
+        csv_reader = csv.DictReader(csv_file, delimiter=',')
+        for row in csv_reader:
+            census_subdivision_id = row["census_subdivision_id"]
+            community_description = row["short_description"]
+            header_image_path = row["header_image_path"]
+
+            matching_communities = Community.objects.filter(census_subdivision__id=census_subdivision_id)
+            if matching_communities.count() > 1:
+                if row["census_subdivision_name"] == "Northern Rockies":
+                    community = Community.objects.get(place_name="Fort Nelson")
+                elif row["census_subdivision_name"] == "Lake Country":
+                    community = Community.objects.get(place_name="Winfield")
+                elif row["census_subdivision_name"] == "West Kelowna":
+                    community = Community.objects.get(place_name="Westbank")
+                elif row["census_subdivision_name"] == "North Cowichan":
+                    community = Community.objects.get(place_name="Westholme")
+                elif row["census_subdivision_name"] == "Delta":
+                    community = Community.objects.get(place_name="Ladner")
+                elif row["census_subdivision_name"] == "North Cowichan":
+                    community = Community.objects.get(place_name="Westholme")
+                elif row["census_subdivision_name"] == "Bowen Island":
+                    community = Community.objects.get(place_name="Snug Cove")
+                elif row["census_subdivision_name"] == "Queen Charlotte":
+                    community = Community.objects.get(place_name="Snug Cove")
+                elif row["census_subdivision_name"] == "West Vancouver":
+                    community = Community.objects.get(place_name="Hollyburn")
+            elif matching_communities.count() == 1:
+                community = Community.objects.get(census_subdivision__id=census_subdivision_id)
+            else:
+                continue
+
+            community.description = community_description
+
+            image_folder = row["ItemGUID"].lower()
+            image_filename = header_image_path.split("/")[-1]
+            image_file_path = "data/Communities/{}/{}".format(image_folder, image_filename)
+            print("image_path", image_filename)
+            try:
+                image = open(image_file_path, "rb")
+                community.header_image.save("{}.png".format(community.id), File(image))
+                image.close()
+            except FileNotFoundError:
+                print("could not find file for {}: {}".format(community.place_name, image_file_path))
+
+            community.save()
