@@ -490,14 +490,14 @@ def serialize_location_assets(obj):
 
             if hasattr(location_asset, 'project_name'):
                 temp['project_name'] = location_asset.project_name
-                
+
             locations.append(temp)
 
     return locations
 
 
 def get_location_assets_for_community(model_class, community):
-    from pipeline.models.location_assets import School
+    from pipeline.models.location_assets import School, Project
 
     if model_class == School:
         school_districts = community.schooldistrict_set.all()
@@ -510,6 +510,18 @@ def get_location_assets_for_community(model_class, community):
                 distance=F('distances__distance'),
                 travel_time=F('distances__travel_time'),
                 within_municipality=F('distances__within_municipality'))
+    if model_class == Project:
+        return Project.objects.filter(
+            Q(distances__community=community) & (
+                Q(distances__driving_distance__lte=50) |
+                (Q(distances__driving_distance__isnull=True) & Q(distances__distance__lte=50))
+            )).annotate(
+                driving_distance=F('distances__driving_distance'),
+                distance=F('distances__distance'),
+                travel_time=F('distances__travel_time'),
+                within_municipality=F('distances__within_municipality'))\
+            .order_by(
+                'project_id', '-source_date').distinct('project_id')
     else:
         return model_class.objects.filter(
             Q(distances__community=community) & (
