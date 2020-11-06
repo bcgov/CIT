@@ -11,6 +11,8 @@ class Community(models.Model):
     place_name = models.CharField(null=True, blank=True, max_length=255)
     parent_community = models.ForeignKey('self', null=True, related_name='child_communities', on_delete=models.SET_NULL)
     point = PointField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    header_image = models.ImageField(null=True, blank=True, upload_to="community_images/")
     # TODO SY - make this into a choice field tuple
     community_type = models.CharField(null=True, blank=True, max_length=255)
     is_coastal = models.NullBooleanField()

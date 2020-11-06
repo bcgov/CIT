@@ -15,6 +15,7 @@ services:
     volumes:
       - ./web:/code
       - static:/static
+      - media:/media
     networks:
       - back-tier
     env_file:
@@ -37,6 +38,7 @@ services:
     volumes:
       - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
       - static:/static
+      - media:/media
     networks:
       - back-tier
 
@@ -44,6 +46,8 @@ volumes:
   pg-data:
     driver: local
   static:
+    driver: local
+  media:
     driver: local
 
 networks:
