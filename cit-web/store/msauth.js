@@ -1,6 +1,7 @@
 export const state = () => ({
   accessToken: null,
   isError: false,
+  isLoading: null,
 })
 
 export const getters = {

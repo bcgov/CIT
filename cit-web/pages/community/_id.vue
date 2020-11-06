@@ -376,7 +376,6 @@ import {
 } from '~/api/cit-api'
 import { yesno } from '~/utils/filters'
 import reportPages from '~/data/communityDetails/reportPages.json'
-import { getAuthToken } from '~/api/ms-auth-api/'
 const appStore = namespace('app')
 
 const commModule = namespace('communities')
@@ -618,13 +617,11 @@ export default class CommunityDetail extends Vue {
   async fetch() {
     try {
       const cid = this.$route.params?.id
-
       const results = await Promise.all([
         getRegionalDistricts(),
         getCommunityList(),
         getDataSourceList(),
         getCommunity(cid),
-        getAuthToken(),
       ])
       const regionalDistricts = results[0].data.results
       const communityList = results[1].data
@@ -633,8 +630,6 @@ export default class CommunityDetail extends Vue {
       this.$store.commit('communities/setCommunities', communityList)
       this.$store.commit('communities/setDataSources', dataSources)
       this.communityDetails = results[3].data
-      const accessToken = results[4].data.access_token
-      this.$store.commit('msauth/setAccessToken', accessToken)
     } catch (e) {
       console.error(e)
     }
