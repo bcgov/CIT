@@ -53,7 +53,7 @@ export default class MainReport extends Vue {
   @Watch('accessToken')
   async handleAccessToken(nv, ov) {
     if (nv !== null && nv !== false) {
-      await this.init()
+      await this.handleInit()
     }
   }
 
@@ -73,28 +73,25 @@ export default class MainReport extends Vue {
   report = null
   loaded = false
   printLoading = false
-  isAccessTokenValid() {
+  get isAccessTokenValid() {
     return this.accessToken !== null && this.accessToken !== false
   }
 
   async fetch() {
-    const result = await getAuthToken()
-    const accessToken = result.data.access_token
-    this.$store.commit('msauth/setAccessToken', accessToken)
+    try {
+      const result = await getAuthToken()
+      const accessToken = result.data.access_token
+      this.$store.commit('msauth/setAccessToken', accessToken)
+    } catch (e) {
+      this.$store.commit('msauth/setAccessToken', false)
+    }
   }
 
   async mounted() {
-    if (this.accessToken === null || this.accessToken === false) {
-      this.$emit('loaded')
-      return
-    }
+    await this.handleInit()
+  }
 
-    if (this.accessTokenError === true) {
-      this.errorMessage = 'There was an error retrieving an access token'
-      this.$emit('loaded')
-      return
-    }
-
+  async handleInit() {
     try {
       if (this.isAccessTokenValid) {
         await this.init()
@@ -107,24 +104,22 @@ export default class MainReport extends Vue {
     }
   }
 
-  init() {
-    this.nextTick(async () => {
-      const { data: reportInGroup } = await GetReportInGroup(
-        this.groupId,
-        this.reportId
-      )
-      this.embedUrl = reportInGroup.embedUrl
+  async init() {
+    const { data: reportInGroup } = await GetReportInGroup(
+      this.groupId,
+      this.reportId
+    )
+    this.embedUrl = reportInGroup.embedUrl
 
-      const { data: tokenInGroup } = await GenerateTokenInGroup(
-        this.groupId,
-        this.reportId
-      )
-      this.embedToken = tokenInGroup.token
-      const configuration = this.getEmbedConfiguration()
-      const container = this.$refs.reportContainer
-      this.report = this.embedReport(container, configuration)
-      this.listenToEvents()
-    })
+    const { data: tokenInGroup } = await GenerateTokenInGroup(
+      this.groupId,
+      this.reportId
+    )
+    this.embedToken = tokenInGroup.token
+    const configuration = this.getEmbedConfiguration()
+    const container = this.$refs.reportContainer
+    this.report = this.embedReport(container, configuration)
+    this.listenToEvents()
   }
 
   beforeUpdate(e) {

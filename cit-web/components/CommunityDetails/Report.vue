@@ -148,9 +148,13 @@ export default class MainReport extends Vue {
   }
 
   async fetch() {
-    const result = await getAuthToken()
-    const accessToken = result.data.access_token
-    this.$store.commit('msauth/setAccessToken', accessToken)
+    try {
+      const result = await getAuthToken()
+      const accessToken = result.data.access_token
+      this.$store.commit('msauth/setAccessToken', accessToken)
+    } catch (e) {
+      this.$store.commit('msauth/setAccessToken', false)
+    }
   }
 
   listenToEvents() {
