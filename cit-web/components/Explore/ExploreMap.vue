@@ -153,7 +153,7 @@ export default class Explore extends Vue {
     mapboxgl.accessToken = this.mapboxApiKey
     const map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/countable-web/ckcspnxxz0ji81iliywxxclk0',
+      style: 'mapbox://styles/citinfo/ckh6rpmo312pm19oby2y4g790',
       center: [-122.755485, 53.91988],
       zoom: 5,
     })

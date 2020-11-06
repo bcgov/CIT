@@ -182,7 +182,7 @@ export default {
   },
   publicRuntimeConfig: {
     MAPBOX_API_KEY:
-      'pk.eyJ1IjoiY291bnRhYmxlLXdlYiIsImEiOiJjamQyZG90dzAxcmxmMndtdzBuY3Ywa2ViIn0.MU-sGTVDS9aGzgdJJ3EwHA',
+      'pk.eyJ1IjoiY2l0aW5mbyIsImEiOiJja2ZuMnVlNTAwMHhvMnptaXdyZWZvcTVoIn0.15386aOfceY42CbXPIYTKg',
     reportId: process.env.POWERBI_REPORT_ID,
     citFeedbackEmail: 'citinfo@gov.bc.ca',
   },
