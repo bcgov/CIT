@@ -1,26 +1,29 @@
 <template>
   <div>
-    <div v-if="error || accessTokenError">
+    <div v-if="isAccessTokenValid">
+      <div
+        ref="reportContainer"
+        class="reportContainer"
+        :style="`height: ${height}px; width: ${width}px;`"
+        style="margin: 0 auto;"
+      ></div>
+      <v-btn
+        color="primary"
+        class="text-capitalize mt-5"
+        :loading="printLoading"
+        @click="print"
+        >Print</v-btn
+      >
+    </div>
+    <div v-else-if="error">
       <v-alert type="warning">
         {{ errorMessage }}
       </v-alert>
     </div>
     <div v-else>
-      <div>
-        <div
-          ref="reportContainer"
-          class="reportContainer"
-          :style="`height: ${height}px; width: ${width}px;`"
-          style="margin: 0 auto;"
-        ></div>
-        <v-btn
-          color="primary"
-          class="text-capitalize mt-5"
-          :loading="printLoading"
-          @click="print"
-          >Print</v-btn
-        >
-      </div>
+      <v-alert type="Info">
+        Access Token Loading
+      </v-alert>
     </div>
   </div>
 </template>
@@ -29,6 +32,8 @@
 import { Component, Vue, Prop, Watch, namespace } from 'nuxt-property-decorator'
 import { GenerateTokenInGroup } from '~/api/powerbi-rest-api/EmbedToken.js'
 import { GetReportInGroup } from '~/api/powerbi-rest-api/Report.js'
+import { getAuthToken } from '~/api/ms-auth-api/'
+
 const msauthModule = namespace('msauth')
 
 @Component
@@ -48,6 +53,14 @@ export default class MainReport extends Vue {
   }
 
   @msauthModule.Getter('getIsError') accessTokenError
+  @msauthModule.Getter('getAccessToken') accessToken
+
+  @Watch('accessToken')
+  async handleAccessToken(nv, ov) {
+    if (nv !== null && nv !== false) {
+      await this.init()
+    }
+  }
 
   @Watch('cids')
   onCidsChanged() {
@@ -81,10 +94,16 @@ export default class MainReport extends Vue {
     })
   }
 
+  isAccessTokenValid() {
+    return this.accessToken !== null && this.accessToken !== false
+  }
+
   async mounted() {
     try {
       this.isHydrated = true
-      await this.init()
+      if (this.isAccessTokenValid) {
+        await this.init()
+      }
     } catch (e) {
       console.error(e)
       this.error = true
@@ -92,28 +111,30 @@ export default class MainReport extends Vue {
     }
   }
 
-  async init() {
-    if (this.accessTokenError === true) {
-      this.errorMessage = 'There was an error retrieving an access token.'
-      return
-    }
-    const { data: reportInGroup } = await GetReportInGroup(
-      this.groupId,
-      this.reportId
-    )
-    this.embedUrl = reportInGroup.embedUrl
+  init() {
+    this.$nextTick(async () => {
+      if (this.accessTokenError === true) {
+        this.errorMessage = 'There was an error retrieving an access token.'
+        return
+      }
+      const { data: reportInGroup } = await GetReportInGroup(
+        this.groupId,
+        this.reportId
+      )
+      this.embedUrl = reportInGroup.embedUrl
 
-    const { data: tokenInGroup } = await GenerateTokenInGroup(
-      this.groupId,
-      this.reportId
-    )
-    this.embedToken = tokenInGroup.token
-    const configuration = this.getEmbedConfiguration()
-    const container = this.$refs.reportContainer
-    this.report = this.embedReport(container, configuration)
-    if (this.error === false) {
-      this.listenToEvents()
-    }
+      const { data: tokenInGroup } = await GenerateTokenInGroup(
+        this.groupId,
+        this.reportId
+      )
+      this.embedToken = tokenInGroup.token
+      const configuration = this.getEmbedConfiguration()
+      const container = this.$refs.reportContainer
+      this.report = this.embedReport(container, configuration)
+      if (this.error === false) {
+        this.listenToEvents()
+      }
+    })
   }
 
   whenReportLoaded(fn) {
@@ -123,6 +144,16 @@ export default class MainReport extends Vue {
       this.$on('loaded', (report) => {
         fn(report)
       })
+    }
+  }
+
+  async fetch() {
+    try {
+      const result = await getAuthToken()
+      const accessToken = result.data.access_token
+      this.$store.commit('msauth/setAccessToken', accessToken)
+    } catch (e) {
+      this.$store.commit('msauth/setAccessToken', false)
     }
   }
 

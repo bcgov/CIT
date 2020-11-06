@@ -2,12 +2,7 @@
   <div>
     <!-- To Trigger Lifecycle method on prop update -->
     <div v-show="false">{{ pageName }} {{ cids }}</div>
-    <div v-if="error || accessTokenError">
-      <v-alert type="warning">
-        {{ errorMessage }}
-      </v-alert>
-    </div>
-    <div v-else>
+    <div v-if="isAccessTokenValid">
       <div
         ref="reportContainer"
         class="reportContainer"
@@ -25,6 +20,16 @@
         <CloseReportButton class="my-1 mx-1"></CloseReportButton>
       </div>
     </div>
+    <div v-else-if="error || accessTokenError">
+      <v-alert type="warning">
+        {{ errorMessage }}
+      </v-alert>
+    </div>
+    <div v-else>
+      <v-alert type="Info">
+        Access Token Loading
+      </v-alert>
+    </div>
   </div>
 </template>
 
@@ -32,6 +37,7 @@
 import { Component, Vue, Prop, Watch, namespace } from 'nuxt-property-decorator'
 import { GenerateTokenInGroup } from '~/api/powerbi-rest-api/EmbedToken.js'
 import { GetReportInGroup } from '~/api/powerbi-rest-api/Report.js'
+import { getAuthToken } from '~/api/ms-auth-api/'
 const msauthModule = namespace('msauth')
 
 @Component
@@ -42,6 +48,14 @@ export default class MainReport extends Vue {
   @Prop({ default: '', type: String }) width
 
   @msauthModule.Getter('getIsError') accessTokenError
+  @msauthModule.Getter('getAccessToken') accessToken
+
+  @Watch('accessToken')
+  async handleAccessToken(nv, ov) {
+    if (nv !== null && nv !== false) {
+      await this.handleInit()
+    }
+  }
 
   @Watch('cids')
   onCidsChanged() {
@@ -59,36 +73,53 @@ export default class MainReport extends Vue {
   report = null
   loaded = false
   printLoading = false
+  get isAccessTokenValid() {
+    return this.accessToken !== null && this.accessToken !== false
+  }
+
+  async fetch() {
+    try {
+      const result = await getAuthToken()
+      const accessToken = result.data.access_token
+      this.$store.commit('msauth/setAccessToken', accessToken)
+    } catch (e) {
+      this.$store.commit('msauth/setAccessToken', false)
+    }
+  }
 
   async mounted() {
-    if (this.accessTokenError === true) {
-      this.errorMessage = 'There was an error retrieving an access token'
-      this.$emit('loaded')
-      return
-    }
+    await this.handleInit()
+  }
 
+  async handleInit() {
     try {
-      const { data: reportInGroup } = await GetReportInGroup(
-        this.groupId,
-        this.reportId
-      )
-      this.embedUrl = reportInGroup.embedUrl
-
-      const { data: tokenInGroup } = await GenerateTokenInGroup(
-        this.groupId,
-        this.reportId
-      )
-      this.embedToken = tokenInGroup.token
-      const configuration = this.getEmbedConfiguration()
-      const container = this.$refs.reportContainer
-      this.report = this.embedReport(container, configuration)
-      this.listenToEvents()
+      if (this.isAccessTokenValid) {
+        await this.init()
+      }
     } catch (e) {
       console.error(e)
       this.$emit('loaded')
       this.error = true
       this.errorMessage = 'There was an error loading the reports.'
     }
+  }
+
+  async init() {
+    const { data: reportInGroup } = await GetReportInGroup(
+      this.groupId,
+      this.reportId
+    )
+    this.embedUrl = reportInGroup.embedUrl
+
+    const { data: tokenInGroup } = await GenerateTokenInGroup(
+      this.groupId,
+      this.reportId
+    )
+    this.embedToken = tokenInGroup.token
+    const configuration = this.getEmbedConfiguration()
+    const container = this.$refs.reportContainer
+    this.report = this.embedReport(container, configuration)
+    this.listenToEvents()
   }
 
   beforeUpdate(e) {
