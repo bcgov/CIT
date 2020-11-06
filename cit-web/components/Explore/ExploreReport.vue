@@ -52,7 +52,9 @@ export default class MainReport extends Vue {
 
   @Watch('accessToken')
   async handleAccessToken(nv, ov) {
-    await this.init()
+    if (nv !== null && nv !== false) {
+      await this.init()
+    }
   }
 
   @Watch('cids')
@@ -94,7 +96,9 @@ export default class MainReport extends Vue {
     }
 
     try {
-      await this.init()
+      if (this.isAccessTokenValid) {
+        await this.init()
+      }
     } catch (e) {
       console.error(e)
       this.$emit('loaded')
@@ -103,22 +107,24 @@ export default class MainReport extends Vue {
     }
   }
 
-  async init() {
-    const { data: reportInGroup } = await GetReportInGroup(
-      this.groupId,
-      this.reportId
-    )
-    this.embedUrl = reportInGroup.embedUrl
+  init() {
+    this.nextTick(async () => {
+      const { data: reportInGroup } = await GetReportInGroup(
+        this.groupId,
+        this.reportId
+      )
+      this.embedUrl = reportInGroup.embedUrl
 
-    const { data: tokenInGroup } = await GenerateTokenInGroup(
-      this.groupId,
-      this.reportId
-    )
-    this.embedToken = tokenInGroup.token
-    const configuration = this.getEmbedConfiguration()
-    const container = this.$refs.reportContainer
-    this.report = this.embedReport(container, configuration)
-    this.listenToEvents()
+      const { data: tokenInGroup } = await GenerateTokenInGroup(
+        this.groupId,
+        this.reportId
+      )
+      this.embedToken = tokenInGroup.token
+      const configuration = this.getEmbedConfiguration()
+      const container = this.$refs.reportContainer
+      this.report = this.embedReport(container, configuration)
+      this.listenToEvents()
+    })
   }
 
   beforeUpdate(e) {
