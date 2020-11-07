@@ -30,7 +30,7 @@
 
     <div v-if="cidsEmpty">
       <v-alert type="info" class="primary--text elevation-5">
-        Please select a community, regional district or All of BC.
+        Please select a community, regional district or All of B.C.
       </v-alert>
     </div>
     <div v-else>
