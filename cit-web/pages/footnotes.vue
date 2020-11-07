@@ -46,7 +46,7 @@
         <p>
           We calculated driving distances and driving times using the
           <a href="https://catalogue.data.gov.bc.ca/dataset/bc-route-planner"
-            >BC Route Planner API</a
+            >B.C. Route Planner API</a
           >. We only calculate driving distances where the birds' eye distance
           is within 50 km between location assets and communities, OR the
           distances between the nearest location asset of each type for a

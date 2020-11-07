@@ -70,7 +70,7 @@
                       :title="`${placeName} Map`"
                       subtitle="Choose a report to view community data within that topic,
                     and compare to the average for the regional district, or all
-                    of BC."
+                    of B.C."
                     ></CommunityDetailsSectionHeader>
                   </v-col>
                 </v-row>
@@ -165,7 +165,7 @@
                         :title="`${placeName} Reports`"
                         subtitle="Choose a report to view community data within that topic,
                     and compare to the average for the regional district, or all
-                    of BC."
+                    of B.C."
                       ></CommunityDetailsSectionHeader>
 
                       <v-alert
@@ -249,7 +249,7 @@
                         :title="`${placeName} Reports`"
                         subtitle="Choose a report to view community data within that topic,
                     and compare to the average for the regional district, or all
-                    of BC."
+                    of B.C."
                       ></CommunityDetailsSectionHeader>
 
                       <v-alert
