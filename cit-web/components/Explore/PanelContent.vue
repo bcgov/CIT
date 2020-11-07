@@ -1,10 +1,12 @@
 <template>
   <v-expansion-panel-content class="ma-0 pa-0">
     <v-divider></v-divider>
-    <RegionProfileCard
-      :regional-district="regionalDistrict"
-    ></RegionProfileCard>
-    <v-divider></v-divider>
+    <div v-if="regionalDistrict && regionalDistrict !== 'null'">
+      <RegionProfileCard
+        :regional-district="regionalDistrict"
+      ></RegionProfileCard>
+      <v-divider></v-divider>
+    </div>
     <BaseList :communities="communities"> </BaseList>
   </v-expansion-panel-content>
 </template>
