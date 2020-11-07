@@ -35,7 +35,7 @@ export default class RegionProfileCard extends Vue {
   @Prop({ default: null }) regionalDistrict
 
   async fetch() {
-    if (!this.regionalDistrict) {
+    if (this.regionalDistrict === 'null') {
       return
     }
     const result = await getRegionalData(this.regionalDistrict)
