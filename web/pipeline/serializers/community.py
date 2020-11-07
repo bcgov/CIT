@@ -89,6 +89,8 @@ class CommunityDetailSerializer(serializers.ModelSerializer):
             "id",
             "parent_community",
             "child_communities",
+            "description",
+            "header_image",
             "display_fields",
             "latitude",
             "longitude",
