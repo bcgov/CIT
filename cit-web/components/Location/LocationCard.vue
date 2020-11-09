@@ -1,9 +1,12 @@
 <template>
   <div>
     <v-card>
-      <v-card-title class="body-2 pb-0 text-body-1" dense>{{
-        name
-      }}</v-card-title>
+      <v-card-title
+        class="body-2 pb-0 text-body-1"
+        dense
+        style="word-break: break-word;"
+        >{{ name }}</v-card-title
+      >
       <v-card-text class="pb-0">
         <ul class="ma-0 pa-0" style="list-style: none;">
           <li v-if="location.location_email">
