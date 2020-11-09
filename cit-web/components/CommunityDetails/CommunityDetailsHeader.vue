@@ -26,6 +26,18 @@
       <slot></slot>
     </div>
     <v-divider class="my-4"></v-divider>
+    <v-container v-if="image || description" fluid>
+      <v-row no-gutters>
+        <v-col v-if="image" cols="12" class="d-flex justify-center mb-5">
+          <v-img :src="image" max-width="800"></v-img>
+        </v-col>
+        <v-col v-if="description" cols="12" class="d-flex justify-center">
+          <p style="max-width: 800px;">
+            {{ description }}
+          </p>
+        </v-col>
+      </v-row>
+    </v-container>
     <v-container fluid>
       <v-row no-gutters>
         <v-col cols="12" sm="6" md="4">
@@ -87,6 +99,14 @@ export default class CommunityDetailsHeader extends Vue {
   pick = {
     name: true,
     area: true,
+  }
+
+  get image() {
+    return this.communityDetails.header_image
+  }
+
+  get description() {
+    return this.communityDetails.description
   }
 
   get filteredData() {
