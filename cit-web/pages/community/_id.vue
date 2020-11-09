@@ -144,12 +144,15 @@
                       ></CommunityDetailsSectionHeader>
 
                       <div class="mt-5">
-                        <v-btn color="primary" @click="showRawData = true"
+                        <v-btn
+                          color="primary"
+                          class="text-capitalize"
+                          @click="showRawData = true"
                           >View Raw Data
                           <v-icon right dark>mdi-database</v-icon>
                         </v-btn>
                         <v-btn
-                          class="ml-2"
+                          class="ml-2 text-capitalize"
                           :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
                           >Give Feedback</v-btn
                         >
@@ -291,7 +294,10 @@
                       ></CommunityDetailsSectionHeader>
 
                       <div class="mt-5">
-                        <v-btn color="primary" @click="showRawData = true"
+                        <v-btn
+                          color="primary"
+                          class="text-capitalize"
+                          @click="showRawData = true"
                           >View Raw Data
                           <v-icon right dark>mdi-database</v-icon>
                         </v-btn>
