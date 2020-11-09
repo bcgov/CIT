@@ -9,17 +9,6 @@
         <a :href="`/explore?&rid=${rid}`" class="text-h6 d-block mt-2">
           {{ regionalDistrict || 'Region N/A' }}
         </a>
-
-        <v-btn
-          color="primary"
-          class="text-uppercase mt-2"
-          small
-          dense
-          width="125"
-          @click="$emit('go')"
-        >
-          <v-icon small class="mr-1">mdi-file-document</v-icon>Reports
-        </v-btn>
       </div>
     </div>
     <div>
@@ -79,6 +68,20 @@
         <v-col cols="12" sm="6" md="4">
           <div class="font-weight-bold">% Fast Internet Access (50 Mbps):</div>
           <div>{{ getCDValue('percent_50_10', communityDetails) }}</div>
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col cols="12">
+          <v-btn
+            color="primary"
+            class="text-capitalize mt-2"
+            small
+            width="125"
+            @click="$emit('go')"
+          >
+            <v-icon small class="mr-1">mdi-file-document</v-icon>Reports
+          </v-btn>
         </v-col>
       </v-row>
     </v-container>
