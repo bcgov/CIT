@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="py-5">
     <v-pagination v-model="page" :length="length" circle></v-pagination>
     <div v-for="location in pageLocations" :key="location.id">
       <LocationCard
@@ -31,7 +31,7 @@ export default class PaginatedList extends Vue {
   }
 
   get length() {
-    return Math.floor(this.locations.length / 10)
+    return Math.ceil(this.locations.length / 10)
   }
 }
 </script>
