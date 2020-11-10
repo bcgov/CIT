@@ -31,17 +31,24 @@
           </div>
         </v-expansion-panel-header>
         <v-expansion-panel-content class="px-2">
-          <div
-            v-for="location in groupedLocation.locations"
-            :key="location.id"
-            class="pa-2"
-          >
-            <LocationCard
-              :location="location"
-              :type="groupedLocation.group"
-            ></LocationCard>
+          <div v-if="groupedLocation.locations.length <= 10">
+            <div
+              v-for="location in groupedLocation.locations"
+              :key="location.id"
+              class="pa-2"
+            >
+              <LocationCard
+                :location="location"
+                :type="groupedLocation.group"
+              ></LocationCard>
+            </div>
           </div>
-          .
+          <div v-else>
+            <PaginatedList
+              :locations="groupedLocation.locations"
+              :type="groupedLocation.group"
+            ></PaginatedList>
+          </div>
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
