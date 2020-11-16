@@ -1,32 +1,35 @@
 <template>
   <div>
     <div class="d-flex align-center">
-      <div class="cdh-header d-flex flex-column justify-center">
-        <h6 class="text-h3 font-weight-bold">
-          {{ placeName }}
-        </h6>
+      <v-container fluid>
+        <v-row>
+          <v-col cols="12" sm="12" md="12" lg="8" xl="8">
+            <div class="cdh-header d-flex flex-column justify-center">
+              <h6 class="text-h3 font-weight-bold">
+                {{ placeName }}
+              </h6>
 
-        <a :href="`/explore?&rid=${rid}`" class="text-h6 d-block mt-2">
-          {{ regionalDistrict || 'Region N/A' }}
-        </a>
-      </div>
+              <a :href="`/explore?&rid=${rid}`" class="text-h6 d-block mt-2">
+                {{ regionalDistrict || 'Region N/A' }}
+              </a>
+
+              <div v-if="description" class="d-flex py-5">
+                <p>
+                  {{ description }}
+                </p>
+              </div>
+            </div>
+          </v-col>
+          <v-col v-if="image" cols="12" sm="12" md="12" lg="4" xl="4">
+            <v-img :src="image" contain max-height="25vh"></v-img>
+          </v-col>
+        </v-row>
+      </v-container>
     </div>
     <div>
       <slot></slot>
     </div>
     <v-divider class="my-4"></v-divider>
-    <v-container v-if="image || description" fluid>
-      <v-row no-gutters>
-        <v-col v-if="image" cols="12" class="d-flex justify-center mb-5">
-          <v-img :src="image" max-width="800"></v-img>
-        </v-col>
-        <v-col v-if="description" cols="12" class="d-flex justify-center">
-          <p style="max-width: 800px;">
-            {{ description }}
-          </p>
-        </v-col>
-      </v-row>
-    </v-container>
     <v-container fluid>
       <v-row no-gutters>
         <v-col cols="12" sm="6" md="4">
