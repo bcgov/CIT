@@ -21,7 +21,6 @@
           :allow-empty="false"
           label="name"
           track-by="name"
-          @input="handleUpdate"
         >
         </multiselect>
       </div>

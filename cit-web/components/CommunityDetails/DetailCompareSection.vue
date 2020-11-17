@@ -24,6 +24,7 @@
               <v-row no-gutters>
                 <v-col cols="12">
                   <Report
+                    class="o-report"
                     :page-name="report.cpid"
                     :cids="[cid.toString()]"
                     height="1000"
@@ -59,3 +60,14 @@ export default class DetailCompareSetion extends Vue {
   @Prop({ default: null, type: String }) regionName
 }
 </script>
+<style lang="scss" scoped>
+.o-report {
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 1264px) {
+  .o-report {
+    border-right: 0;
+  }
+}
+</style>
