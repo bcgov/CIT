@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-btn color="primary" @click="$root.$emit('reportClose')">Close</v-btn>
+    <v-btn
+      height="44"
+      class="text-body-1 text-capitalize"
+      color="primary"
+      @click="$root.$emit('reportClose')"
+      >Close</v-btn
+    >
   </div>
 </template>
 

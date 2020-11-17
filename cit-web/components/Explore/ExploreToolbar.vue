@@ -3,15 +3,17 @@
     <v-toolbar>
       <v-btn
         color="primary"
-        class="text-capitalize rounded-0 et-button"
+        height="44"
+        class="text-capitalize rounded-0 et-button text-body-1"
         :text="!mapView"
         @click="$emit('change', 'Map')"
         >View Map</v-btn
       >
       <v-btn
         color="primary"
+        height="44"
         :text="mapView"
-        class="text-capitalize rounded-0 et-button"
+        class="text-capitalize rounded-0 et-button text-body-1"
         @click="$emit('change', 'Reports')"
         >View Reports</v-btn
       >

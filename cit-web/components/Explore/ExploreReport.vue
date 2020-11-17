@@ -13,7 +13,12 @@
         <FeedbackButton class="my-1 mx-1"></FeedbackButton>
         <ShareButton class="my-1 mx-1"></ShareButton>
         <div class="my-1 mx-1">
-          <v-btn color="primary" :loading="printLoading" @click="print"
+          <v-btn
+            color="primary"
+            height="44"
+            class="text-capitalize text-body-1"
+            :loading="printLoading"
+            @click="print"
             >Print</v-btn
           >
         </div>

@@ -9,7 +9,8 @@
       ></div>
       <v-btn
         color="primary"
-        class="text-capitalize mt-5"
+        height="44"
+        class="text-capitalize mt-5 text-body-1"
         :loading="printLoading"
         @click="print"
         >Print</v-btn

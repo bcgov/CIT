@@ -81,9 +81,10 @@
       >
         <v-btn
           color="primary"
+          height="44"
+          class="text-capitalize text-body-1"
           :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
           block
-          class="text-capitalize"
           >Give Feedback</v-btn
         >
       </v-sheet>
