@@ -1,8 +1,11 @@
 <template>
   <div class="landing-page-container">
-    <div class="d-flex justify-space-between">
+    <div class="d-flex justify-space-between pt-5">
       <div>
-        <h1 class="text-h3 font-weight-bold index-title">
+        <h1
+          class="text-h3 font-weight-bold index-title"
+          style="line-height: 1.4em;"
+        >
           Welcome to the Community Information Tool
         </h1>
         <h6 class="text-h6 font-weight-regular mt-10 mb-10 index-subtitle">

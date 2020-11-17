@@ -39,14 +39,17 @@
 
             <div class="py-3">
               <v-btn
+                height="44"
+                class="text-capitalize text-body-1"
                 color="primary"
                 :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
                 >Give Feedback</v-btn
               >
               <v-btn
                 v-if="!noCommunities"
+                height="44"
+                class="text-capitalize mx-1 text-body-1"
                 color="primary"
-                class="mx-1"
                 @click="handleExport"
                 >Export</v-btn
               >
@@ -193,14 +196,17 @@
 
                   <div class="py-3">
                     <v-btn
+                      height="44"
+                      class="text-capitalize text-body-1"
                       color="primary"
                       :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
                       >Give Feedback</v-btn
                     >
                     <v-btn
                       v-if="!noCommunities"
+                      height="44"
                       color="primary"
-                      class="mx-1"
+                      class="mx-1 text-capitalize text-body-1"
                       @click="handleExport"
                       >Export</v-btn
                     >

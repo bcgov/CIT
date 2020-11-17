@@ -146,13 +146,15 @@
                       <div class="mt-5">
                         <v-btn
                           color="primary"
-                          class="text-capitalize"
+                          height="44"
+                          class="text-capitalize text-body-1"
                           @click="showRawData = true"
                           >View Raw Data
                           <v-icon right dark>mdi-database</v-icon>
                         </v-btn>
                         <v-btn
-                          class="ml-2 text-capitalize"
+                          height="44"
+                          class="text-body-1 ml-2 text-capitalize"
                           :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
                           >Give Feedback</v-btn
                         >
@@ -296,13 +298,15 @@
                       <div class="mt-5">
                         <v-btn
                           color="primary"
-                          class="text-capitalize"
+                          height="44"
+                          class="text-capitalize text-body-1"
                           @click="showRawData = true"
                           >View Raw Data
                           <v-icon right dark>mdi-database</v-icon>
                         </v-btn>
                         <v-btn
-                          class="ml-2"
+                          height="44"
+                          class="text-capitalize ml-2 text-body-1"
                           :href="`mailto:${$config.citFeedbackEmail}?subject=CIT Feedback`"
                           >Give Feedback</v-btn
                         >

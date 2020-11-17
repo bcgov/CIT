@@ -77,13 +77,12 @@
       <v-row>
         <v-col cols="12">
           <v-btn
+            height="44"
             color="primary"
-            class="text-capitalize mt-2"
-            small
-            width="125"
+            class="text-capitalize mt-2 text-body-1"
             @click="$emit('go')"
           >
-            <v-icon small class="mr-1">mdi-file-document</v-icon>Reports
+            <v-icon class="mr-1">mdi-file-document</v-icon>Reports
           </v-btn>
         </v-col>
       </v-row>

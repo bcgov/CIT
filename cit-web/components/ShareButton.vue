@@ -2,7 +2,14 @@
   <div>
     <v-menu v-model="menu" :close-on-content-click="false" top>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on">
+        <v-btn
+          color="primary"
+          height="44"
+          class="text-body-1 text-capitalize"
+          dark
+          v-bind="attrs"
+          v-on="on"
+        >
           Share
         </v-btn>
       </template>

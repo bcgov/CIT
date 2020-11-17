@@ -26,8 +26,9 @@
         </multiselect>
       </div>
       <v-btn
+        height="44"
         :block="isMobile"
-        class="ml-3"
+        class="ml-3 text-capitalize text-body-1"
         :class="{ 'ml-0': isMobile }"
         color="primary"
         @click="handleClick"
