@@ -12,3 +12,4 @@ msal==1.5.1
 python-dateutil==2.8.1
 Pillow==8.0.1
 gunicorn==20.0.4
+gevent==20.9.0
