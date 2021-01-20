@@ -23,6 +23,8 @@ services:
     environment:
       - AUTHORITY=https://login.microsoftonline.com/
       - SCOPE=https://analysis.windows.net/powerbi/api/.default
+    ports:
+      - 8000:8000
   db:
     image: mdillon/postgis
     env_file:
@@ -32,6 +34,8 @@ services:
       - ./db:/code
     networks:
       - back-tier
+    ports:
+    - 5432:5432
 
   nginx:
     image: nginx:1.18

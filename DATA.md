@@ -9,6 +9,7 @@ Some data are loaded from locally stored csv (located in in ./web/data) or shape
 In addition, some of the shapefiles contain polygons for all of Canada, and can be preprocessed to filter to BC only.
 
 Roads need to be trimmed for upload to mapbox.
+https://open.canada.ca/data/en/dataset/00a331db-121b-445d-b119-35dbbe3eedd9
 ```
 unzip NBD_Roads_ShapeFile.zip
 cd NBD_Roads_ShapeFile
@@ -56,6 +57,7 @@ zip census.zip census/*
 ```
 
 To import all data, run:
+
 ```
 docker-compose exec web python manage.py bootstrap
 ```

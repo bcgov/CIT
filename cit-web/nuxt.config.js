@@ -114,8 +114,8 @@ export default {
   axios: {
     baseURL:
       process.env.NODE_ENV === 'development'
-        ? 'http://web:8000/'
-        : process.env.API_HOST || 'http://web:8000',
+        ? 'http://localhost:8000'
+        : process.env.API_HOST || 'http://localhost:8000',
     browserBaseURL: process.env.NODE_ENV === 'development' ? '/' : '/',
   },
   /*
@@ -144,7 +144,7 @@ export default {
     },
   },
   styleResources: {
-    scss: ['./assets/scss/globals/variables/*.scss'],
+    scss: ['./assets/scss/globals/variables/*.scss']
   },
   /*
    ** Build configuration
@@ -152,6 +152,12 @@ export default {
    */
   build: {
     analyze: true,
+    loaders:  {
+      vue: {
+         prettify: false
+      }
+    },
+    
     babel: {
       presets(env, [preset, options]) {
         return [
