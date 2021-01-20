@@ -199,8 +199,10 @@ def import_hexes():
 def import_census():
     # Get a mapping to GEO UID for loading data on census areas from statscan API.
     body = requests.get(
-        'https://www12.statcan.gc.ca/rest/census-recensement/CR2016Geo.json?lang=E&geos=CSD&cpt=59'
-    ).text[2:]
+        'https://www12.statcan.gc.ca/rest/census-recensement/CR2016Geo.json?lang=E&geos=CSD&cpt=59', verify=False
+    ).text[:]
+    print(body)
+    
     subdiv_metas = json.loads(body)
     for sd in subdiv_metas['DATA']:
         csduid = sd[3]
@@ -287,8 +289,8 @@ def _save_subdiv(feat):
 
     stats = json.loads(
         requests.get(
-            'https://www12.statcan.gc.ca/rest/census-recensement/CPR2016.json?dguid={}'.format(subdiv.geo_uid)
-        ).text[2:]
+            'https://www12.statcan.gc.ca/rest/census-recensement/CPR2016.json?dguid={}'.format(subdiv.geo_uid), verify=False
+        ).text[:]
     )
 
     import_census_population_data(stats, subdiv)
