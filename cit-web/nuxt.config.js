@@ -197,4 +197,5 @@ export default {
       ignored: /node_modules/,
     },
   },
+  telemetry: false,
 }
