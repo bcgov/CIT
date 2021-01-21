@@ -3,10 +3,9 @@ version: '3.3'
 
 services:
   cit-web:
-    image: 'node:14'
-    volumes:
-      - ./cit-web:/code
-    working_dir: /code/
+    build: ./cit-web
+    ports:
+      - 8080:8080
     networks:
       - back-tier
   web:

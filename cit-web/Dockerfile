@@ -1,14 +1,14 @@
 # base image
-FROM node:11.13.0-alpine
+FROM node:15.6.0-alpine
 
 # set working directory
 ENV NODE_ROOT /usr/src/app
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY package.json package-lock.json ./
-
-RUN npm ci
+RUN npm install yarn -g
+COPY package.json yarn.lock ./
+RUN yarn
 
 COPY . .
 
@@ -16,6 +16,6 @@ RUN npm run build
 
 EXPOSE 80
 ENV NUXT_HOST=0.0.0.0
-ENV NUXT_PORT=80
+ENV NUXT_PORT=8080
 
 CMD ["npm", "start"]
