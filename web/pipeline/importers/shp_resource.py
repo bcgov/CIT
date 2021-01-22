@@ -201,7 +201,6 @@ def import_census():
     body = requests.get(
         'https://www12.statcan.gc.ca/rest/census-recensement/CR2016Geo.json?lang=E&geos=CSD&cpt=59', verify=False
     ).text[:]
-    print(body)
     
     subdiv_metas = json.loads(body)
     for sd in subdiv_metas['DATA']:
