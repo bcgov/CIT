@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import { useHistory }  from 'react-router-dom';
 import {Header, Footer, Button} from 'shared-components';
+import MapContainer from './components/MapContainer';
 
 
 
@@ -19,12 +20,13 @@ function App() {
       
       <Header header={header}/>
 
-      <div style={{height: '80vh'}} className=' container d-flex justify-content-center align-items-center'>
-        <Button 
+      <div style={{height: '80vh'}} className='container d-flex flex-column justify-content-center align-items-center'>
+        {/* <Button 
           onClick={() => alert("You Shall Not Pass!")}
           label="Enter"
           styling="bcgov-normal-blue btn" 
-        />
+        /> */}
+        <MapContainer />
       </div>
       
     <div className='footer'>
