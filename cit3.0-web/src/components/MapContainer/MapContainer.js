@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import MapComponent from './Map/MapComponent';
+import MapComponent from '../Map/Map';
 
 
 import { Input, Button } from 'shared-components'
@@ -34,7 +34,6 @@ export default function MapContainer() {
         isRequired: true,
         styling: "bcgov-editable-white"
     }
-
 
 
     return (

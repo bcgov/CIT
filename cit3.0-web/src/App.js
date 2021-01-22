@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import { useHistory }  from 'react-router-dom';
 import {Header, Footer, Button} from 'shared-components';
-import MapContainer from './components/MapContainer';
+import MapContainer from './components/MapContainer/MapContainer';
 
 
 
