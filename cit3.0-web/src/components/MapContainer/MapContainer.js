@@ -39,17 +39,14 @@ export default function MapContainer() {
     return (
 
         <div className="d-flex flex-column justify-content-between">
-            {console.log(address)}
             <Input input={{...input}} onChange={setAddress}/>
             <Button 
                 onClick={request}
                 label="Search"
                 styling="bcgov-normal-blue btn" 
             />
-            <div id="mapContainer"  className="d-flex justify-content-center align-items-center p-2 m-2" style={{border: '2px solid red', height: '500px', width: '500px'}}>
-            {console.log("COORDS: ", coords)}
+            <div className="d-flex justify-content-center align-items-center p-2 m-2" style={{height: '500px', width: '500px'}}>
                 <MapComponent coords={coords}/>
-
             </div>
         </div>
         
