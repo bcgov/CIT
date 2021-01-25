@@ -1,5 +1,5 @@
 import React from 'react';
-import 'leaflet/dist/leaflet.css';
+// import 'leaflet/dist/leaflet.css';
 import Map from './Map';
 
 export default {
@@ -9,8 +9,8 @@ export default {
 
 const coords = [48.452708, -123.369984];
 
-export const MapStory = () => (
-    <div id="mapContainer" style={{height: '800px'}}>
+export const InvestmentsMap = () => (
+    <div style={{height: '800px'}}>
         <Map coords={coords} scrollWheelZoom={true}/>
     </div>
 );
