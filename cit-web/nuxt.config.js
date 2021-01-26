@@ -114,8 +114,8 @@ export default {
   axios: {
     baseURL:
       process.env.NODE_ENV === 'development'
-        ? 'http://web:8000/'
-        : process.env.API_HOST || 'http://web:8000',
+        ? 'http://cit-api:8000/'
+        : process.env.API_HOST || 'http://cit-api:8000',
     browserBaseURL: process.env.NODE_ENV === 'development' ? '/' : '/',
   },
   /*
