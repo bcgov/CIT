@@ -14,6 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
+from rest_framework_swagger.views import get_swagger_view
 
 from web import auth_tokens
 
@@ -22,8 +23,11 @@ def fail(request):
     raise Exception()
 
 
+schema_view = get_swagger_view(title='Pastebin API')
+
 urlpatterns = [
     url(r"^api/pipeline/", include('pipeline.urls')),
     url(r"^api/token/", auth_tokens.get_access_token),
     url(r"^api/health/fail/", fail),
+    url(r'^api/$', schema_view),
 ]
