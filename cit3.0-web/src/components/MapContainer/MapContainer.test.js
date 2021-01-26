@@ -21,8 +21,8 @@ describe("MapContainer", () => {
 
     describe("Layout", () => {
         it('renders a map',() => {
-        const { getByText} = render(<MapContainer />)
-        expect(getByText(/leaflet/i).textContent).toBe("Leaflet")
+            const { getByText} = render(<MapContainer />)
+            expect(getByText(/leaflet/i).textContent).toBe("Leaflet")
         });
         
         it('has input for an address', () => {
@@ -63,6 +63,5 @@ describe("MapContainer", () => {
     })
     
 })
-
 
 
