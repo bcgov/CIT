@@ -1,5 +1,4 @@
 import React from 'react';
-// import 'leaflet/dist/leaflet.css';
 import Map from './Map';
 
 export default {
