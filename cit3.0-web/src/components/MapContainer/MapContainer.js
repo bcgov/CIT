@@ -11,7 +11,7 @@ export default function MapContainer() {
     const request = () => {
         axios.get(`https://geocoder.api.gov.bc.ca/addresses.json?addressString=${address}`, {
             headers: {
-                'apikey': 'jPCilRkCnm1UJHL4yctAS5MkNUpeyVSj'
+                'apikey': process.env.REACT_APP_GEOCODER_API_KEY
             }
         })
         .then(data => {
