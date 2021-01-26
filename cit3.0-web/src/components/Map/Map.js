@@ -3,13 +3,7 @@ import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import './map.css';
 import{ useState } from 'react';
 import ChangeView from '../ChangeView/ChangeView';
-import AddLocationMarker from '../AddMarker/AddMarker'
-
-
-
-
-
-
+import AddLocationMarker from '../AddMarker/AddMarker';
 
 export default function Map(props) {
 
@@ -30,10 +24,10 @@ export default function Map(props) {
           />
           <AddLocationMarker />
           <Marker 
-            position={props.coords} 
+            position={ props.coords } 
           >
             <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
+              Lat: { props.coords[0] } Long: {props.coords[1]}
             </Popup>
           </Marker>
         </MapContainer>

@@ -20,12 +20,10 @@ function App() {
       
       <Header header={header}/>
 
-      <div style={{height: '80vh'}} className='container d-flex flex-column justify-content-center align-items-center'>
-        {/* <Button 
-          onClick={() => alert("You Shall Not Pass!")}
-          label="Enter"
-          styling="bcgov-normal-blue btn" 
-        /> */}
+      <div 
+        style={{height: '80vh'}} 
+        className='container d-flex flex-column justify-content-center align-items-center'
+      >
         <MapContainer />
       </div>
       

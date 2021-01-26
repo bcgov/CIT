@@ -12,7 +12,7 @@ export default function AddLocationMarker(props) {
     return (
        positions.map(position => 
          <Marker position={position} >
-            <Popup>You are here</Popup>
+            <Popup>Lat: {(position.lat).toFixed(4)}  Long: {(position.lng).toFixed(4)}</Popup>
             </Marker>)
     )
   }

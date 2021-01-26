@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import MapComponent from '../Map/Map';
+import Map from '../Map/Map';
+
 
 
 import { Input, Button } from 'shared-components'
@@ -46,7 +47,7 @@ export default function MapContainer() {
                 styling="bcgov-normal-blue btn" 
             />
             <div className="d-flex justify-content-center align-items-center p-2 m-2" style={{height: '500px', width: '500px'}}>
-                <MapComponent coords={coords}/>
+                <Map coords={coords}/>
             </div>
         </div>
         
