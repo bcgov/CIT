@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Input, Button } from "shared-components";
 import Map from "../Map/Map";

@@ -1,8 +1,5 @@
-import ReactDOM from "react-dom";
-import { render, fireEvent, cleanup, waitFor } from "@testing-library/react";
-import axiosMock from "axios";
+import { render, fireEvent, cleanup } from "@testing-library/react";
 import axios from "axios";
-import App from "../../App";
 import MapContainer from "./MapContainer";
 
 afterEach(cleanup);

@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function AddLocationMarker() {
   const [positions, setPositions] = useState([]);
 
-  const map = useMapEvent("click", (e) => {
+  useMapEvent("click", (e) => {
     setPositions([...positions, e.latlng]);
     console.log(positions);
   });
