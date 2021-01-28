@@ -15,12 +15,12 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", 'devsecret')  # default secret key for dev environments
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY",
+                            'devsecret')  # default secret key for dev environments
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG", False))
@@ -29,8 +29,8 @@ DEBUG = bool(os.environ.get("DEBUG", False))
 ALLOWED_HOSTS = ['*']
 
 ADMINS = (
-  ('Clark', 'clark@countable.ca'),
-  ('Merwyn', 'merwyn.Pereira@gov.bc.ca'),
+    ('Clark', 'clark@countable.ca'),
+    ('Merwyn', 'merwyn.Pereira@gov.bc.ca'),
 )
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'pipeline',
     'rest_framework',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +56,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'web.urls'
+ROOT_URLCONF = 'admin.urls'
 
 TEMPLATES = [
     {
@@ -71,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'web.wsgi.application'
+WSGI_APPLICATION = 'admin.wsgi.application'
 CORS_ORIGIN_ALLOW_ALL = True
 
 # Database
@@ -81,8 +82,10 @@ DATABASES = {
     'default': {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
         'NAME': os.environ.get("POSTGRES_DB", 'postgres'),
-        'USER': os.environ.get("POSTGRES_DJANGO_USER", 'postgres'),  # default user for dev environments
-        'PASSWORD': os.environ.get("POSTGRES_DJANGO_PASSWORD", 'postgres'),  # default password for dev environments
+        'USER': os.environ.get("POSTGRES_DJANGO_USER",
+                               'postgres'),  # default user for dev environments
+        'PASSWORD': os.environ.get("POSTGRES_DJANGO_PASSWORD",
+                                   'postgres'),  # default password for dev environments
         'HOST': 'db',
         'PORT': 5432,
     }
@@ -101,17 +104,19 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = '/media/'
 MEDIA_ROOT = '/media/'
+
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 100,
+    'DEFAULT_PAGINATION_CLASS':
+    'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE':
+    100,
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
@@ -119,7 +124,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_PERMISSION_CLASSES': [],
-    'UNAUTHENTICATED_USER': None,
+    'UNAUTHENTICATED_USER':
+    None,
 }
 
 # Caching
@@ -175,4 +181,3 @@ LOGGING = {
         }
     }
 }
-
