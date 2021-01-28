@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Map from '../Map/Map';
 import { Input, Button } from 'shared-components';
-import InvestOpForm from '../InvestOpForm/InvestOpForm';
+// import InvestOpForm from '../InvestOpForm/InvestOpForm';
 import {
     getAddressData,
     getHospitalData,
