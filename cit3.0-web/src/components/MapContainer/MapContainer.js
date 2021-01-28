@@ -121,7 +121,7 @@ export default function MapContainer() {
                 <Map coords={coords}/>
             </div>
             <div>
-                <InvestOpForm />
+                {/* <InvestOpForm /> */}
             </div>
             {
                 nearbyHospitals.length ?
