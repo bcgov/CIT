@@ -6,8 +6,8 @@ export default function AddLocationMarker() {
 
   useMapEvent("click", (e) => {
     setPositions([...positions, e.latlng]);
-    console.log(positions);
   });
+
   return positions.map((position) => (
     <Marker position={position}>
       <Popup>

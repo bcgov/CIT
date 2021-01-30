@@ -9,7 +9,7 @@ import MapContainer from "./components/MapContainer/MapContainer";
 function App() {
   const header = {
     name: "Community Information Tool",
-    history: useHistory(),
+    history: useHistory() || {},
   };
 
   return (
