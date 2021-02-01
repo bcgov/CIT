@@ -45,5 +45,5 @@ urlpatterns = [
     url(r"^civicleaders/$", pipeline.views.general.CivicLeaderList.as_view()),
     url(r"^pageviews/$", pipeline.views.general.PageViewList.as_view()),
     
-    url(r"^investments/$", pipeline.views.investment.InvestmentsList.as_view())
+    url(r"^investments/$", pipeline.views.investment.InvestmentsList.as_view(), name="investments")
 ]
