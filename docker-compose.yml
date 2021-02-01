@@ -1,19 +1,18 @@
-
-version: '3.3'
+version: "3.3"
 
 services:
   cit-web:
-    image: 'node:14'
+    image: "node:14"
     volumes:
       - ./cit-web:/code
     working_dir: /code/
     networks:
       - back-tier
-  web:
-    build: ./web
+  cit-api:
+    build: ./cit-api
     image: countable/cit
     volumes:
-      - ./web:/code
+      - ./cit-api:/code
       - static:/static
       - media:/media
     networks:
@@ -35,7 +34,7 @@ services:
     networks:
       - back-tier
     ports:
-    - 5432:5432
+      - 5432:5432
 
   nginx:
     image: nginx:1.18

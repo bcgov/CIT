@@ -46,6 +46,7 @@ TODO: Document mapbox layers and indicate how data were sourced, and how to upda
 If the editor of choice is Visual Studio Code during development, one can have automatic linting enabled
 
 In Files -> Settings -> Workspace -> Open Settings
+
 ```
 {
   "editor.formatOnSave": true,
@@ -67,6 +68,7 @@ To update Python packages, update the PyPI package version numbers in `web/requi
 ### Environment variables
 
 Create the `.env` file using `example.env` as a template:
+
 ```
 cp example.env .env
 ```
@@ -78,11 +80,13 @@ Replace all the placeholder values in `.env` with the real values.
 In production environments, we create an application user (defaulting to `cit`) instead of using the default `postgres` superuser.
 
 When initializing the database for the first time, run the `init_db.sh` script:
+
 ```
 docker-compose exec db code/init_db.sh
 ```
 
 When restoring the database from a sql file, load the file into the `django` database:
+
 ```
 docker-compose exec db dropdb -U postgres cit
 docker-compose exec db createdb -U postgres cit
@@ -90,7 +94,6 @@ docker-compose exec db code/init_db.sh
 docker cp db.sql "$(docker-compose ps -q db)":/tmp/
 docker-compose exec db psql -U postgres -f /tmp/db.sql cit
 ```
-
 
 ### Setting up REST OAuth tokens for Azure and Power BI
 
