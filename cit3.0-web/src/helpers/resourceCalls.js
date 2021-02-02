@@ -33,10 +33,10 @@ export async function getResourceData(resourceId) {
 export async function getDistanceViaRoutePlanner(mainCoords, resourceCoords) {
   // const test = `https://router.api.gov.bc.ca/distance.json?points=-123.70794%2C48.77869%2C-123.53785%2C48.38200`
   const result = await axios.get(
-    `https://router.api.gov.bc.ca/distance.json?points=${mainCoords[1]}%${mainCoords[0]}%${resourceCoords[1]}%${resourceCoords[0]}`,
+    `https://router.api.gov.bc.ca/distance.json?points=${mainCoords[1]}%2C${mainCoords[0]}%2C${resourceCoords[1]}%2C${resourceCoords[0]}`,
     {
       headers: {
-        apikey: process.env.REACT_APP_GEOCODER_API_KEY,
+        apikey: process.env.REACT_APP_BC_ROUTE_PLANNER_API_KEY,
       },
     }
   );
@@ -44,18 +44,7 @@ export async function getDistanceViaRoutePlanner(mainCoords, resourceCoords) {
   return result;
 }
 
-export function addDistanceToResources(resources, coords) {
-  return resources.map(async (resource) => {
-    const distance = await getDistanceViaRoutePlanner(coords, [
-      resource.LATITUDE,
-      resource.LONGITUDE,
-    ]);
-    const updatedResource = { ...resource, distance };
-    return updatedResource;
-  });
-}
-
-export function distanceBetween2Points(p1, p2) {
+function distanceBetween2Points(p1, p2) {
   try {
     const lat1 = p1[0] / (180 / Math.PI);
     const lat2 = p2[0] / (180 / Math.PI);
@@ -69,13 +58,34 @@ export function distanceBetween2Points(p1, p2) {
       );
     return distance;
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return null;
   }
  
 }
 
-export function returnResourcesWithinMaxDistance(
+export function addDistanceToResources(resources, coords) {
+  return resources.map(async (resource) => {
+    const distance = await getDistanceViaRoutePlanner(coords, [
+      resource.LATITUDE || resource.Latitude || resource.SCHOOL_LATITUDE,
+      resource.LONGITUDE || resource.Longitude || resource.SCHOOL_LONGITUDE,
+    ]);
+    const updatedResource = { ...resource, distance };
+    return updatedResource;
+  });
+}
+
+// eslint-disable-next-line no-unused-vars
+const addDistanceToResourcesMine = (resources, coords) => resources.map((resource) => {
+  const distance = distanceBetween2Points(coords, [
+    resource.LATITUDE || resource.Latitude || resource.SCHOOL_LATITUDE,
+    resource.LONGITUDE || resource.Longitude || resource.SCHOOL_LONGITUDE,
+  ]);
+  const updatedResource = { ...resource, distance };
+  return updatedResource;
+  })
+
+function returnResourcesWithinMaxDistance(
   resources,
   maxDistance,
   coords
@@ -88,14 +98,7 @@ export function returnResourcesWithinMaxDistance(
   return nearbyResources;
 }
 
-const addDistanceToResourcesMine = (resources, coords) => resources.map((resource) => {
-  const distance = distanceBetween2Points(coords, [
-    resource.LATITUDE || resource.Latitude || resource.SCHOOL_LATITUDE,
-    resource.LONGITUDE || resource.Longitude || resource.SCHOOL_LONGITUDE,
-  ]);
-  const updatedResource = { ...resource, distance };
-  return updatedResource;
-  })
+
 
 export const getProximityData = async (resources, coords) => {
   const final = Promise.all(Object.entries(resources).map(async ([resource, resourceId]) => {

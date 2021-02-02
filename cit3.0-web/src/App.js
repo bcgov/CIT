@@ -20,7 +20,7 @@ function App() {
       <Header header={header} />
       <div
         style={{ minHeight: "80vh" }}
-        className="container pb-5 w-75 d-flex flex-column"
+        className="container-fluid pb-5 w-75 d-flex flex-column"
       >
         <div className="my-1">
           <MapContainer
@@ -28,7 +28,7 @@ function App() {
             setNearbyResources={setNearbyResources}
           />
         </div>
-        <div className="container w-75 d-flex flex-column justify-items-center align-items-center pb-1">
+        <div className="container-fluid w-75 d-flex flex-column justify-items-center align-items-center pb-1">
           {JSON.stringify(nearbyResources) !== "{}" ? (
             <>
               <h1>Resources within 50km</h1>
