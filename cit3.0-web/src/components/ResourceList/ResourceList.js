@@ -3,7 +3,7 @@ import Resource from "../Resource/Resource";
 
 export default function ResourceList({ resources }) {
   return (
-    <div className="container pb-1">
+    <div className="container-fluid pb-1">
       <div className="row mb-3">
         <div className="col-sm font-weight-bold">
           <h2>Resource</h2>
@@ -16,12 +16,19 @@ export default function ResourceList({ resources }) {
         </div>
       </div>
       {Object.entries(resources).map(([resource, resourceData]) => (
-        <Resource resource={resource} resourceData={resourceData} />
+        <Resource
+          key={resource}
+          resource={resource}
+          resourceData={resourceData}
+        />
       ))}
     </div>
   );
 }
 
 ResourceList.propTypes = {
-  resources: PropTypes.shape.isRequired,
+  resources: PropTypes.shape({
+    resource: PropTypes.string,
+    data: PropTypes.arrayOf(PropTypes.shape),
+  }).isRequired,
 };

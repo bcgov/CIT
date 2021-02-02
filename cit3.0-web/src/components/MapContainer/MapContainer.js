@@ -21,10 +21,9 @@ const resourceIds = {
   // diagnosticFacilities: "e546be7a-a432-458b-91a0-1084887c291c",
 };
 
-export default function MapContainer({ setNearbyResources }) {
+export default function MapContainer({ nearbyResources, setNearbyResources }) {
   const [address, setAddress] = useState("");
   const [coords, setCoords] = useState([49.2827, -123.1207]);
-  // const [nearbyResources, setNearbyResources] = useState({});
 
   const getCoords = async () => {
     const data = await getAddressData(address);
@@ -64,12 +63,21 @@ export default function MapContainer({ setNearbyResources }) {
         styling="bcgov-normal-blue btn"
       />
       <div className="my-2" style={{ height: "500px", width: "600px" }}>
-        <Map coords={coords} />
+        <Map coords={coords} nearbyResources={nearbyResources} />
       </div>
     </div>
   );
 }
 
+MapContainer.defaultPropTypes = {
+  nearbyResources: null,
+};
+
 MapContainer.propTypes = {
+  // eslint-disable-next-line react/require-default-props
+  nearbyResources: PropTypes.shape({
+    resource: PropTypes.string,
+    data: PropTypes.arrayOf(PropTypes.shape),
+  }),
   setNearbyResources: PropTypes.func.isRequired,
 };
