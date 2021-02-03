@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Input, Button } from "shared-components";
 import Map from "../Map/Map";
-// import InvestOpForm from '../InvestOpForm/InvestOpForm';
+import InvestOpForm from "../InvestOpForm/InvestOpForm";
 import { getAddressData, getProximityData } from "../../helpers/resourceCalls";
 
 const resourceIds = {
@@ -14,6 +14,7 @@ const resourceIds = {
   "Walk-In Clinics": "3ca6b086-c92b-4654-ae82-ff5723d00611",
   "Natural Resource Projects": "2b69cc4b-4076-4272-a5a0-1c731455e063",
   "Economic Projects": "b12cd4cc-b58b-4079-b630-a20b6df58e8d",
+  // airports: "76b1b7a3-2112-4444-857a-afccf7b20da8",
   // airports: "604c8be1-b3f3-45b4-8030-5f9c8be71645",
   // civicFacilities: "64284a1e-0c89-4ae3-bea4-59bc0eb9d579",
   // timberFacilities: "c5553f20-f589-4ca5-8ed6-afb45ae281b1",
@@ -27,10 +28,18 @@ export default function MapContainer({ nearbyResources, setNearbyResources }) {
 
   const getCoords = async () => {
     const data = await getAddressData(address);
+    console.log("Data: ", data);
     setCoords([
       data.data.features[0].geometry.coordinates[1],
       data.data.features[0].geometry.coordinates[0],
     ]);
+  };
+
+  const dataForForm = {
+    defaultValues: {
+      address,
+      description: null,
+    },
   };
 
   useEffect(() => {
@@ -63,8 +72,16 @@ export default function MapContainer({ nearbyResources, setNearbyResources }) {
         styling="bcgov-normal-blue btn"
       />
       <div className="my-2" style={{ height: "500px", width: "600px" }}>
-        <Map coords={coords} nearbyResources={nearbyResources} />
+        <Map
+          resourceIds={resourceIds}
+          setNearbyResources={setNearbyResources}
+          coords={coords}
+          setCoords={setCoords}
+          setAddress={setAddress}
+          nearbyResources={nearbyResources}
+        />
       </div>
+      {address ? <InvestOpForm formValues={dataForForm} /> : null}
     </div>
   );
 }
