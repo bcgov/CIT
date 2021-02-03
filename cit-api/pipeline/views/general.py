@@ -8,10 +8,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import viewsets
 
+from drf_yasg.utils import swagger_auto_schema
+
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
-from pipeline.models.general import (
-    LocationDistance, Service, RegionalDistrict, SchoolDistrict, DataSource, CivicLeader, PageView)
+from pipeline.models.general import (LocationDistance, Service, RegionalDistrict, SchoolDistrict,
+                                     DataSource, CivicLeader, PageView)
 from pipeline.serializers.general import (
     CensusSubdivisionSerializer,
     CensusSubdivisionDetailSerializer,
@@ -31,10 +33,9 @@ from pipeline.serializers.community import (
     CommunitySearchSerializer,
     CommunityDetailSerializer,
 )
-from pipeline.utils import (
-    serialize_communities_for_regional_districts, communities_advanced_search,
-    get_hidden_explore_report_pages, get_communities_with_insufficient_data
-)
+from pipeline.utils import (serialize_communities_for_regional_districts,
+                            communities_advanced_search, get_hidden_explore_report_pages,
+                            get_communities_with_insufficient_data)
 
 
 class DataSourcesList(generics.ListAPIView):
@@ -43,6 +44,8 @@ class DataSourcesList(generics.ListAPIView):
 
 
 class CommunityViewSet(viewsets.GenericViewSet):
+    serializer_class = CommunitySerializer
+
     def get_queryset(self):
         return Community.objects.all()
 
@@ -82,7 +85,9 @@ class CommunityViewSet(viewsets.GenericViewSet):
     @action(detail=False)
     def geojson(self, request):
         return HttpResponse(
-            serialize('geojson', Community.objects.all(), geometry_field='point',
+            serialize('geojson',
+                      Community.objects.all(),
+                      geometry_field='point',
                       fields=('pk', 'place_name', 'community_type', 'regional_district')),
             content_type="application/json",
         )
@@ -142,6 +147,8 @@ class CensusSubdivisionGeoJSONList(APIView):
 
 
 class RegionalDistrictViewSet(viewsets.GenericViewSet):
+    serializer_class = RegionalDistrictSerializer
+
     def get_queryset(self):
         return RegionalDistrict.objects.all()
 
@@ -163,9 +170,10 @@ class RegionalDistrictViewSet(viewsets.GenericViewSet):
     @action(detail=False)
     def geojson(self, request):
         return HttpResponse(
-            serialize(
-                'geojson', RegionalDistrict.objects.all(),
-                geometry_field='geom_simplified', fields=('pk', 'name')),
+            serialize('geojson',
+                      RegionalDistrict.objects.all(),
+                      geometry_field='geom_simplified',
+                      fields=('pk', 'name')),
             content_type="application/json",
         )
 

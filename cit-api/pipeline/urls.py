@@ -5,11 +5,11 @@ from rest_framework.routers import DefaultRouter
 
 import pipeline.views.general
 import pipeline.views.location_types
+import pipeline.views.investment
 
 router = DefaultRouter()
 router.register(r'communities', pipeline.views.general.CommunityViewSet, basename='communities')
 router.register(r'regionaldistricts', pipeline.views.general.RegionalDistrictViewSet, basename='regionaldistricts')
-
 
 urlpatterns = [
     path("", include(router.urls)),
@@ -44,4 +44,6 @@ urlpatterns = [
     url(r"^schooldistricts/$", pipeline.views.general.SchoolDistrictList.as_view()),
     url(r"^civicleaders/$", pipeline.views.general.CivicLeaderList.as_view()),
     url(r"^pageviews/$", pipeline.views.general.PageViewList.as_view()),
+    
+    url(r"^investments/$", pipeline.views.investment.InvestmentsList.as_view(), name="investments")
 ]
