@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { Marker, Popup } from "react-leaflet";
-import { uuid } from "uuidv4";
+import { v4 } from "uuid";
 import newIcon from "./markers";
 import setColour from "../../helpers/helpers";
 
@@ -14,7 +14,7 @@ export default function ResourceMarker({ resourceName, resources }) {
     const long =
       resource.LONGITUDE || resource.Longitude || resource.SCHOOL_LONGITUDE;
     return (
-      <Marker key={uuid()} position={[lat, long]} icon={newIcon(colour)}>
+      <Marker key={v4()} position={[lat, long]} icon={newIcon(colour)}>
         <Popup>
           Lat: {lat.toFixed(4)} Long: {long.toFixed(4)}
         </Popup>
