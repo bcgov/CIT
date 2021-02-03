@@ -58,8 +58,4 @@ const resources = {
   ],
 };
 
-export const ResourceListContainer = () => (
-  <>
-    <ResourceList resources={resources} />
-  </>
-);
+export const NearbyResourcesList = () => <ResourceList resources={resources} />;
