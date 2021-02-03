@@ -1,29 +1,39 @@
 // import { useState } from "react";
+import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 
-export default function InvestOpForm() {
-  const { register, handleSubmit } = useForm({
-    defaultValues: {
-      email: "sarah@sarah.com",
-    },
-  });
+export default function InvestOpForm({ formValues }) {
+  const { register, handleSubmit } = useForm(formValues);
 
-  const onSubmit = (data) => data + 1;
+  const onSubmit = (data) => console.log(data);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="form-control">
-        {/* <label>Email</label> */}
-        <input type="text" name="email" ref={register} />
-      </div>
-      <div className="form-control">
-        {/* <label>Password</label> */}
-        <input type="password" name="password" ref={register} />
-      </div>
-      <div className="form-control">
-        {/* <label /> */}
-        <button type="submit">Login</button>
+      <input
+        className="form-control"
+        type="text"
+        name="address"
+        readOnly
+        ref={register}
+      />
+      <textarea
+        className="form-control"
+        type="textarea"
+        name="description"
+        placeholder="Description of Property"
+        ref={register}
+      />
+      <div className="d-flex justify-content-end">
+        <button type="submit">Preview</button>
       </div>
     </form>
   );
 }
+
+InvestOpForm.propTypes = {
+  formValues: PropTypes.shape({
+    defaultValues: PropTypes.shape({
+      address: PropTypes.string,
+    }),
+  }).isRequired,
+};
