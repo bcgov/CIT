@@ -1,12 +1,9 @@
-import React from "react";
-import Map from "./Map";
+import { render, cleanup } from "@testing-library/react";
+import ResourceList from "./ResourceList";
 
-export default {
-  title: "Map",
-  component: Map,
-};
+afterEach(cleanup);
 
-const nearbyResources = {
+const resources = {
   Hospitals: [
     {
       LINK:
@@ -37,9 +34,10 @@ const nearbyResources = {
         "https://www.islandhealth.ca/our-locations/hospitals-health-centre-locations/cowichan-district-hospital",
       WHEELCHAIR_ACCESSIBLE: "Y",
       _id: 57,
+      distance: 1,
     },
   ],
-  POST_SECONDARY: [
+  "Post Secondary Schools": [
     {
       Address: "4461 Interurban Rd",
       City: "Victoria",
@@ -51,35 +49,28 @@ const nearbyResources = {
       "Location Description": "Campus",
       Longitude: -123.416497,
       _id: 7,
+      distance: 2,
     },
   ],
 };
 
-const resourceIds = {
-  Hospitals: "5ff82cf4-0448-4063-804a-7321f0f2b4c6",
-  Schools: "5832eff2-3380-435e-911b-5ada41c1d30b",
-  "Post Secondary Schools": "8e4e2a87-2d1d-4931-828e-6327b49f310e",
-  Courts: "23aa0b75-2715-4ccb-9a36-9a608450dc2d",
-  "Walk-In Clinics": "3ca6b086-c92b-4654-ae82-ff5723d00611",
-  "Natural Resource Projects": "2b69cc4b-4076-4272-a5a0-1c731455e063",
-  "Economic Projects": "b12cd4cc-b58b-4079-b630-a20b6df58e8d",
-};
-
-const coords = [49.2827, -123.1207];
-
-// eslint-disable-next-line no-console
-const aFunc = () => console.log("");
-
-export const InvestmentsMap = () => (
-  <div style={{ height: "800px" }}>
-    <Map
-      coords={coords}
-      resourceIds={resourceIds}
-      scrollWheelZoom
-      nearbyResources={nearbyResources}
-      setCoords={aFunc}
-      setAddress={aFunc}
-      setNearbyResources={aFunc}
-    />
-  </div>
-);
+describe("ResourceList", () => {
+  it("renders a grid container", () => {
+    const { container } = render(<ResourceList resources={resources} />);
+    expect(container.firstChild).toHaveClass("container");
+  });
+  it("renders 3 columns", () => {
+    const { container } = render(<ResourceList resources={resources} />);
+    expect(container.getElementsByClassName("col").length).toBe(9);
+  });
+  it("renders the resource name", () => {
+    const { getByText } = render(<ResourceList resources={resources} />);
+    const post = getByText("Post Secondary Schools");
+    expect(post).toBeInTheDocument();
+  });
+  it("renders header #", () => {
+    const { getByText } = render(<ResourceList resources={resources} />);
+    const length = getByText(/#/);
+    expect(length).toBeInTheDocument();
+  });
+});
