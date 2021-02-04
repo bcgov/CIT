@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Input, Button } from "shared-components";
 import Map from "../Map/Map";
-import InvestOpForm from "../InvestOpForm/InvestOpForm";
 import { getAddressData, getProximityData } from "../../helpers/resourceCalls";
 
 const resourceIds = {
@@ -28,18 +27,10 @@ export default function MapContainer({ nearbyResources, setNearbyResources }) {
 
   const getCoords = async () => {
     const data = await getAddressData(address);
-    console.log("Data: ", data);
     setCoords([
       data.data.features[0].geometry.coordinates[1],
       data.data.features[0].geometry.coordinates[0],
     ]);
-  };
-
-  const dataForForm = {
-    defaultValues: {
-      address,
-      description: null,
-    },
   };
 
   useEffect(() => {
@@ -81,7 +72,6 @@ export default function MapContainer({ nearbyResources, setNearbyResources }) {
           nearbyResources={nearbyResources}
         />
       </div>
-      {address ? <InvestOpForm formValues={dataForForm} /> : null}
     </div>
   );
 }
