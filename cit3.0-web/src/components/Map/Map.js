@@ -13,7 +13,6 @@ export default function Map({
   setNearbyResources,
   setAddress,
 }) {
-  // const [currentView, ]
   const changeView = (centerCoords) => centerCoords;
   const multiPolygon = [
     [

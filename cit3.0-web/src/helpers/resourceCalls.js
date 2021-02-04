@@ -18,20 +18,12 @@ export async function getResourceData(resourceId) {
     .get(
       `https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id=${resourceId}&limit=10000`
     )
-    // eslint-disable-next-line arrow-body-style
-    .then((data) => {
-      // console.log("data", data);
-      return data.data.result.records;
-    })
-    .catch((err) => {
-      console.log("getResourceData ERR: ", err);
-      return null;
-    })
+    .then((data) => data.data.result.records)
+    .catch(() => null)
   )
 }
 
 export async function getDistanceViaRoutePlanner(mainCoords, resourceCoords) {
-  // const test = `https://router.api.gov.bc.ca/distance.json?points=-123.70794%2C48.77869%2C-123.53785%2C48.38200`
   const result = await axios.get(
     `https://router.api.gov.bc.ca/distance.json?points=${mainCoords[1]}%2C${mainCoords[0]}%2C${resourceCoords[1]}%2C${resourceCoords[0]}`,
     {
@@ -40,7 +32,6 @@ export async function getDistanceViaRoutePlanner(mainCoords, resourceCoords) {
       },
     }
   );
-  console.log(result);
   return result;
 }
 
@@ -58,10 +49,8 @@ function distanceBetween2Points(p1, p2) {
       );
     return distance;
   } catch (error) {
-    console.log(error);
     return null;
   }
- 
 }
 
 export function addDistanceToResources(resources, coords) {
@@ -75,7 +64,6 @@ export function addDistanceToResources(resources, coords) {
   });
 }
 
-// eslint-disable-next-line no-unused-vars
 const addDistanceToResourcesMine = (resources, coords) => resources.map((resource) => {
   const distance = distanceBetween2Points(coords, [
     resource.LATITUDE || resource.Latitude || resource.SCHOOL_LATITUDE,
@@ -97,8 +85,6 @@ function returnResourcesWithinMaxDistance(
   );
   return nearbyResources;
 }
-
-
 
 export const getProximityData = async (resources, coords) => {
   const final = Promise.all(Object.entries(resources).map(async ([resource, resourceId]) => {

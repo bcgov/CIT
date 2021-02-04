@@ -1,16 +1,14 @@
 import { useMapEvent, Marker, Popup } from "react-leaflet";
 import { useState } from "react";
 import { v4 } from "uuid";
-import { getAddressData, getProximityData } from "../../helpers/resourceCalls";
+import { getProximityData } from "../../helpers/resourceCalls";
 
 export default function AddLocationMarker(props) {
   const [positions, setPositions] = useState([]);
 
   useMapEvent("click", async (e) => {
     setPositions([...positions, e.latlng]);
-    const addressData = await getAddressData(e.latlng);
-    console.log(addressData);
-    props.setAddress(""); // will need to set address to be the new address of the clicked area
+    props.setAddress(""); // TODO: set address to be the new address of the clicked area
     props.setCoords([e.latlng.lat, e.latlng.lng]);
     const proximity = await getProximityData(props.resourceIds, [
       e.latlng.lat,
