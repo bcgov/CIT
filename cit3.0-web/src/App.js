@@ -16,7 +16,7 @@ function App() {
   };
 
   return (
-    <div style={{ minHeight: "100vh" }}>
+    <div className="app-container">
       <Header header={header} />
       <Router>
         <Switch>
@@ -24,10 +24,7 @@ function App() {
             <EDODashboard />
           </Route>
           <Route path="/addInvestment">
-            <div
-              style={{ height: "80vh" }}
-              className="container d-flex flex-column justify-content-center align-items-center"
-            >
+            <div className="invest-container container d-flex flex-column justify-content-center align-items-center">
               <MapContainer
                 nearbyResources={nearbyResources}
                 setNearbyResources={setNearbyResources}

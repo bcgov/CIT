@@ -74,10 +74,9 @@ MapContainer.defaultPropTypes = {
 };
 
 MapContainer.propTypes = {
-  // eslint-disable-next-line react/require-default-props
   nearbyResources: PropTypes.shape({
     resource: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.shape),
-  }),
+  }).isRequired,
   setNearbyResources: PropTypes.func.isRequired,
 };

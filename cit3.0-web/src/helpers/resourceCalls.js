@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import axios from "axios";
 
 export async function getAddressData(address) {
@@ -13,14 +12,12 @@ export async function getAddressData(address) {
 }
 
 export async function getResourceData(resourceId) {
-  return (
-    axios
+  return axios
     .get(
       `https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id=${resourceId}&limit=10000`
     )
     .then((data) => data.data.result.records)
-    .catch(() => null)
-  )
+    .catch(() => null);
 }
 
 export async function getDistanceViaRoutePlanner(mainCoords, resourceCoords) {
@@ -64,34 +61,39 @@ export function addDistanceToResources(resources, coords) {
   });
 }
 
-const addDistanceToResourcesMine = (resources, coords) => resources.map((resource) => {
-  const distance = distanceBetween2Points(coords, [
-    resource.LATITUDE || resource.Latitude || resource.SCHOOL_LATITUDE,
-    resource.LONGITUDE || resource.Longitude || resource.SCHOOL_LONGITUDE,
-  ]);
-  const updatedResource = { ...resource, distance };
-  return updatedResource;
-  })
+const addDistanceToResourcesMine = (resources, coords) =>
+  resources.map((resource) => {
+    const distance = distanceBetween2Points(coords, [
+      resource.LATITUDE || resource.Latitude || resource.SCHOOL_LATITUDE,
+      resource.LONGITUDE || resource.Longitude || resource.SCHOOL_LONGITUDE,
+    ]);
+    const updatedResource = { ...resource, distance };
+    return updatedResource;
+  });
 
-function returnResourcesWithinMaxDistance(
-  resources,
-  maxDistance,
-  coords
-) {
+function returnResourcesWithinMaxDistance(resources, maxDistance, coords) {
   const nearbyResources = resources.filter(
     (resource) =>
-      distanceBetween2Points(coords, [resource.LATITUDE || resource.Latitude || resource.SCHOOL_LATITUDE, resource.LONGITUDE || resource.Longitude || resource.SCHOOL_LONGITUDE]) <=
-      maxDistance
+      distanceBetween2Points(coords, [
+        resource.LATITUDE || resource.Latitude || resource.SCHOOL_LATITUDE,
+        resource.LONGITUDE || resource.Longitude || resource.SCHOOL_LONGITUDE,
+      ]) <= maxDistance
   );
   return nearbyResources;
 }
 
 export const getProximityData = async (resources, coords) => {
-  const final = Promise.all(Object.entries(resources).map(async ([resource, resourceId]) => {
-    const resourceData = await getResourceData(resourceId);
-    const resourcesWithinMax = returnResourcesWithinMaxDistance(resourceData, 50, coords)
-    return [resource, addDistanceToResourcesMine(resourcesWithinMax, coords)];
-  }));
+  const final = Promise.all(
+    Object.entries(resources).map(async ([resource, resourceId]) => {
+      const resourceData = await getResourceData(resourceId);
+      const resourcesWithinMax = returnResourcesWithinMaxDistance(
+        resourceData,
+        50,
+        coords
+      );
+      return [resource, addDistanceToResourcesMine(resourcesWithinMax, coords)];
+    })
+  );
   const result = await final;
   return Object.fromEntries(result);
 };
