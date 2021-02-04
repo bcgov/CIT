@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+import { Row, Col } from "react-bootstrap";
+
 import setColour from "../../helpers/helpers";
 
 export default function Resource({ resource, resourceData }) {
@@ -11,17 +13,15 @@ export default function Resource({ resource, resourceData }) {
     );
   }
   return (
-    <div className="row" key={resource}>
-      <div className="col-sm">
+    <Row key={resource}>
+      <Col>
         <h4 style={{ color: setColour(resource, "colourHex") }}>{resource}</h4>
-      </div>
-      <div className="col-sm d-flex justify-content-center">
-        {resourceData.length}
-      </div>
-      <div className="col-sm d-flex justify-content-end">
+      </Col>
+      <Col className="d-flex justify-content-center">{resourceData.length}</Col>
+      <Col className="d-flex justify-content-end">
         {showDistance(resourceData)}
-      </div>
-    </div>
+      </Col>
+    </Row>
   );
 }
 
