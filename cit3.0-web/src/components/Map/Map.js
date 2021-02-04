@@ -34,11 +34,6 @@ export default function Map({
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {/* <WMSTileLayer
-        opacity={1}
-        zIndex={100}
-        url="https://openmaps.gov.bc.ca/geo/pub/WHSE_IMAGERY_AND_BASE_MAPS.GSR_AIRPORTS_SVW/ows?"
-      /> */}
       <AddLocationMarker
         setCoords={setCoords}
         setAddress={setAddress}
