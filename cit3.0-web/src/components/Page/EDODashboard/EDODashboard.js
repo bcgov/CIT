@@ -2,8 +2,6 @@ import { Button } from "shared-components";
 import { useHistory } from "react-router-dom";
 
 export default function EDODashboard() {
-  // const { history } = props;
-
   const history = useHistory();
 
   const goToMap = () => {

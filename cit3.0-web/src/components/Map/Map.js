@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { MapContainer, Marker, Popup, TileLayer, Polygon } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "./map.css";
 import ChangeView from "../ChangeView/ChangeView";
 import AddLocationMarker from "../AddMarker/AddMarker";
@@ -14,14 +14,14 @@ export default function Map({
   setAddress,
 }) {
   const changeView = (centerCoords) => centerCoords;
-  const multiPolygon = [
-    [
-      [48.59509, -123.4056],
-      [48.598, -123.41],
-      [48.6, -123.42],
-      [48.6, -123.43],
-    ],
-  ];
+  // const multiPolygon = [
+  //   [
+  //     [48.59509, -123.4056],
+  //     [48.598, -123.41],
+  //     [48.6, -123.42],
+  //     [48.6, -123.43],
+  //   ],
+  // ];
   return (
     <MapContainer
       center={coords}
@@ -46,7 +46,7 @@ export default function Map({
         setNearbyResources={setNearbyResources}
         changeView={changeView}
       />
-      <Polygon pathOptions={{ color: "purple" }} positions={multiPolygon} />
+      {/* <Polygon pathOptions={{ color: "purple" }} positions={multiPolygon} /> */}
       {coords[0] !== 49.2827 ? (
         <Marker position={coords}>
           <Popup>
