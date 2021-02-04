@@ -65,7 +65,6 @@ const resourceIds = {
   "Economic Projects": "b12cd4cc-b58b-4079-b630-a20b6df58e8d",
 };
 
-// const coords = [48.452708, -123.369984];
 const coords = [49.2827, -123.1207];
 
 // eslint-disable-next-line no-console
