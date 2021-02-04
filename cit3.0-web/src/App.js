@@ -1,42 +1,36 @@
 import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
 import "bootstrap/dist/css/bootstrap.css";
 
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
 import { Header, Footer } from "shared-components";
 import MapContainer from "./components/MapContainer/MapContainer";
-import ResourceList from "./components/ResourceList/ResourceList";
+import EDODashboard from "./components/Page/EDODashboard/EDODashboard";
 
 function App() {
-  const [nearbyResources, setNearbyResources] = useState({});
   const header = {
     name: "Community Information Tool",
-    history: useHistory() || {},
+    history: {},
   };
 
   return (
     <div style={{ minHeight: "100vh" }}>
       <Header header={header} />
-      <div
-        style={{ minHeight: "80vh" }}
-        className="container-fluid pb-5 w-75 d-flex flex-column"
-      >
-        <div className="my-1">
-          <MapContainer
-            nearbyResources={nearbyResources}
-            setNearbyResources={setNearbyResources}
-          />
-        </div>
-        <div className="container-fluid w-75 d-flex flex-column justify-items-center align-items-center pb-1">
-          {JSON.stringify(nearbyResources) !== "{}" ? (
-            <>
-              <h1>Resources within 50km</h1>
-              <ResourceList resources={nearbyResources} />
-            </>
-          ) : null}
-        </div>
-      </div>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <EDODashboard />
+          </Route>
+          <Route path="/addInvestment">
+            <div
+              style={{ height: "80vh" }}
+              className="container d-flex flex-column justify-content-center align-items-center"
+            >
+              <MapContainer />
+            </div>
+          </Route>
+        </Switch>
+      </Router>
 
       <div className="footer">
         <Footer />
