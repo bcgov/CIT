@@ -8,7 +8,14 @@ export default function AddOpportunity() {
   const [nearbyResources, setNearbyResources] = useState({});
 
   return (
-    <div>
+    <div className="container">
+      <div className="my-5">
+        <h1>Add an Opportunity</h1>
+        <p>
+          Please drop a min on the map or enter the address of the property you
+          want to list as an opportunity for investors.
+        </p>
+      </div>
       <MapContainer
         setAddress={setAddress}
         address={address}
