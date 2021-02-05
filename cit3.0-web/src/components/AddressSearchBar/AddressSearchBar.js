@@ -1,45 +1,68 @@
 import { useState } from "react";
 import v4 from "uuid";
-import { Input } from "shared-components";
 import PropTypes from "prop-types";
-import { Dropdown, FormControl } from "react-bootstrap";
-
+import { FormControl, FormLabel } from "react-bootstrap";
 import { getAddressData } from "../../helpers/resourceCalls";
 
-export default function AddressSearchBar({ setAddress }) {
+export default function AddressSearchBar({ setAddress, getCoords }) {
   const [value, setValue] = useState("");
-  const [currentAddressData, setCurrentAddressData] = useState([]);
-
-  const input = {
-    label: "",
-    id: "address",
-    placeholder: "Address",
-    isReadOnly: false,
-    isRequired: true,
-    styling: "bcgov-editable-white",
-    autocomplete: "off",
-  };
+  const [addresses, setAddresses] = useState([]);
+  const [show, setShow] = useState(false);
   // can send bounding box for areas
   const runSearch = async (event) => {
+    if (event.target.value) {
+      setShow(true);
+    }
     setValue(event.target.value);
     const addressData = await getAddressData(event.target.value);
-    console.log(addressData.data.features);
-    setCurrentAddressData(addressData.data.features);
+    setAddresses(addressData.data.features);
+  };
+
+  const setCoordsForSelectedAddress = (e, address) => {
+    console.log(e.key, address);
+    setAddress(address);
+    getCoords(address);
+    setShow(false);
+  };
+  const selectAddress = (e) => {
+    setValue(e.target.value);
+    setCoordsForSelectedAddress(e, e.target.value);
   };
 
   const list = () => (
     <ul className="list-unstyled">
-      {currentAddressData.map((addressData) => (
-        <li key={v4()}>{addressData.properties.fullAddress}</li>
+      {addresses.map((addressData) => (
+        <li key={v4()}>
+          <button
+            style={{
+              background: "transparent",
+              padding: "0",
+              border: "0px solid transparent",
+            }}
+            type="button"
+            onClick={(e) => selectAddress(e)}
+            value={addressData.properties.fullAddress}
+          >
+            {addressData.properties.fullAddress}
+          </button>
+        </li>
       ))}
     </ul>
   );
 
   return (
     <div style={{ position: "relative" }}>
-      {console.log(currentAddressData)}
-      <FormControl onChange={(e) => runSearch(e)} />
-      {value ? (
+      {console.log(addresses)}
+      <FormLabel className="font-weight-bold">Enter Address</FormLabel>
+      <FormControl
+        id="addressSearch"
+        value={value}
+        onChange={(e) => runSearch(e)}
+        onKeyPress={(e) => {
+          if (e.which === 13) setCoordsForSelectedAddress(e, value);
+        }}
+      />
+      {show ? (
         <div
           className="rounded-bottom"
           style={{
@@ -62,4 +85,5 @@ export default function AddressSearchBar({ setAddress }) {
 
 AddressSearchBar.propTypes = {
   setAddress: PropTypes.func.isRequired,
+  getCoords: PropTypes.func.isRequired,
 };
