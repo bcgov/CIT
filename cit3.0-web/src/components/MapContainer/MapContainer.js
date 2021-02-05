@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Input, Button } from "shared-components";
+import { Button } from "shared-components";
+import AddressSearchBar from "../AddressSearchBar/AddressSearchBar";
 import Map from "../Map/Map";
 import { getAddressData, getProximityData } from "../../helpers/resourceCalls";
 
@@ -14,12 +15,17 @@ const resourceIds = {
   "Economic Projects": "b12cd4cc-b58b-4079-b630-a20b6df58e8d",
 };
 
-export default function MapContainer({ nearbyResources, setNearbyResources }) {
-  const [address, setAddress] = useState("");
-  const [coords, setCoords] = useState([49.2827, -123.1207]);
+export default function MapContainer({
+  nearbyResources,
+  setNearbyResources,
+  address,
+  setAddress,
+}) {
+  // const [coords, setCoords] = useState([49.2827, -123.1207]);
+  const [coords, setCoords] = useState([54.1722, -124.1207]);
 
-  const getCoords = async () => {
-    const data = await getAddressData(address);
+  const getCoords = async (addy) => {
+    const data = await getAddressData(addy);
     setCoords([
       data.data.features[0].geometry.coordinates[1],
       data.data.features[0].geometry.coordinates[0],
@@ -31,30 +37,16 @@ export default function MapContainer({ nearbyResources, setNearbyResources }) {
       const proximity = await getProximityData(resourceIds, coords);
       setNearbyResources(proximity);
     };
-    if (coords[0] !== 49.2827) {
+    if (coords[0] !== 54.1722) {
       run();
     }
   }, [coords]);
 
-  const input = {
-    label: "",
-    id: "address",
-    placeholder: "Address",
-    isReadOnly: false,
-    isRequired: true,
-    styling: "bcgov-editable-white",
-  };
-
   return (
-    <div className="d-flex flex-column justify-content-between align-items-center w-100">
-      <div className="w-100 mb-2 pt-2">
-        <Input input={{ ...input }} onChange={setAddress} />
+    <div style={{ minHeight: "100%" }} className="d-flex w-100">
+      <div className="w-50 my-3 pr-5">
+        <AddressSearchBar setAddress={setAddress} getCoords={getCoords} />
       </div>
-      <Button
-        onClick={getCoords}
-        label="Search"
-        styling="bcgov-normal-blue btn"
-      />
       <div className="my-2" style={{ height: "500px", width: "600px" }}>
         <Map
           resourceIds={resourceIds}
@@ -74,10 +66,11 @@ MapContainer.defaultPropTypes = {
 };
 
 MapContainer.propTypes = {
-  // eslint-disable-next-line react/require-default-props
   nearbyResources: PropTypes.shape({
     resource: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.shape),
-  }),
+  }).isRequired,
+  address: PropTypes.string.isRequired,
   setNearbyResources: PropTypes.func.isRequired,
+  setAddress: PropTypes.func.isRequired,
 };
