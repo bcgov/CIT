@@ -5,7 +5,7 @@ export default function EDODashboard() {
   const history = useHistory();
 
   const goToMap = () => {
-    history.push("/addInvestment");
+    history.push("/addOpportunity");
   };
 
   return (
