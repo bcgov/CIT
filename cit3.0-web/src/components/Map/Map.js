@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "./map.css";
 import ChangeView from "../ChangeView/ChangeView";
@@ -25,11 +26,12 @@ export default function Map({
   return (
     <MapContainer
       center={coords}
-      zoom={2}
+      // zoom={2}
+      zoom={5}
       scrollWheelZoom
       style={{ width: "100%", height: "100%" }}
     >
-      <ChangeView center={changeView(coords)} zoom={13} />
+      {coords[0] !== 54.1722 ? <ChangeView center={coords} /> : null}
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -47,7 +49,7 @@ export default function Map({
         changeView={changeView}
       />
       {/* <Polygon pathOptions={{ color: "purple" }} positions={multiPolygon} /> */}
-      {coords[0] !== 49.2827 ? (
+      {coords[0] !== 54.1722 ? (
         <Marker position={coords}>
           <Popup>
             Lat: {coords[0]} Long: {coords[1]}
