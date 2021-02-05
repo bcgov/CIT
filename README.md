@@ -33,7 +33,7 @@ To run the entire project in Docker use:
 docker-compose up -d --build
 ```
 
-If you wish to run the cit-web locally you can run:
+If you wish to run the cit-web outside of docker for hot reloading you can run:
 
 ```
 docker-compose up db -d --build
@@ -96,8 +96,18 @@ docker exec -it cit_cit-api_1 bash
 python3 runtests.py
 ```
 
+to target and run only specific tests you can use:
+
+```
+python manage.py test /path/to/your/test --settings=admin.test_settings
+```
+
 All tests are found under the tests directory in the cit-api and should be added to models views or serializers based on what they are testing.
 
 ## Deployment
 
 #todo when worked out.
+
+## How to Contribute
+
+If you would like to contribute please follow the [contributing](CONTRIBUTING.md) readme.
