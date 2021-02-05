@@ -19,19 +19,11 @@ export default function MapContainer({
   nearbyResources,
   setNearbyResources,
   address,
+  coords,
+  setCoords,
+  getCoords,
   setAddress,
 }) {
-  // const [coords, setCoords] = useState([49.2827, -123.1207]);
-  const [coords, setCoords] = useState([54.1722, -124.1207]);
-
-  const getCoords = async (addy) => {
-    const data = await getAddressData(addy);
-    setCoords([
-      data.data.features[0].geometry.coordinates[1],
-      data.data.features[0].geometry.coordinates[0],
-    ]);
-  };
-
   useEffect(() => {
     const run = async () => {
       const proximity = await getProximityData(resourceIds, coords);
@@ -44,9 +36,6 @@ export default function MapContainer({
 
   return (
     <div style={{ minHeight: "100%" }} className="d-flex w-100">
-      <div className="w-50 my-3 pr-5">
-        <AddressSearchBar setAddress={setAddress} getCoords={getCoords} />
-      </div>
       <div className="my-2" style={{ height: "500px", width: "600px" }}>
         <Map
           resourceIds={resourceIds}
@@ -71,6 +60,9 @@ MapContainer.propTypes = {
     data: PropTypes.arrayOf(PropTypes.shape),
   }).isRequired,
   address: PropTypes.string.isRequired,
+  coords: PropTypes.arrayOf(PropTypes.number).isRequired,
+  getCoords: PropTypes.func.isRequired,
+  setCoords: PropTypes.func.isRequired,
   setNearbyResources: PropTypes.func.isRequired,
   setAddress: PropTypes.func.isRequired,
 };
