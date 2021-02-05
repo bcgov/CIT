@@ -19,7 +19,6 @@ export default function AddressSearchBar({ setAddress, getCoords }) {
   };
 
   const setCoordsForSelectedAddress = (e, address) => {
-    console.log(e.key, address);
     setAddress(address);
     getCoords(address);
     setShow(false);
@@ -52,15 +51,11 @@ export default function AddressSearchBar({ setAddress, getCoords }) {
 
   return (
     <div style={{ position: "relative" }}>
-      {console.log(addresses)}
       <FormLabel className="font-weight-bold">Enter Address</FormLabel>
       <FormControl
         id="addressSearch"
         value={value}
         onChange={(e) => runSearch(e)}
-        onKeyPress={(e) => {
-          if (e.which === 13) setCoordsForSelectedAddress(e, value);
-        }}
       />
       {show ? (
         <div

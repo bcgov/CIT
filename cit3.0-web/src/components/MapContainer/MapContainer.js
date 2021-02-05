@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Button } from "shared-components";
-import AddressSearchBar from "../AddressSearchBar/AddressSearchBar";
 import Map from "../Map/Map";
-import { getAddressData, getProximityData } from "../../helpers/resourceCalls";
+import { getProximityData } from "../../helpers/resourceCalls";
 
 const resourceIds = {
   Hospitals: "5ff82cf4-0448-4063-804a-7321f0f2b4c6",
@@ -18,10 +16,8 @@ const resourceIds = {
 export default function MapContainer({
   nearbyResources,
   setNearbyResources,
-  address,
   coords,
   setCoords,
-  getCoords,
   setAddress,
 }) {
   useEffect(() => {
@@ -59,9 +55,7 @@ MapContainer.propTypes = {
     resource: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.shape),
   }).isRequired,
-  address: PropTypes.string.isRequired,
   coords: PropTypes.arrayOf(PropTypes.number).isRequired,
-  getCoords: PropTypes.func.isRequired,
   setCoords: PropTypes.func.isRequired,
   setNearbyResources: PropTypes.func.isRequired,
   setAddress: PropTypes.func.isRequired,
