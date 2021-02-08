@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import NavigationHeaderItem from "./NavigationHeaderItem/NavigationHeaderItem";
+import NavigationHeaderItem from "../NavigationHeaderItem/NavigationHeaderItem";
 
 export default function NavigationHeader({ navItems }) {
   const renderNavItems = (items) =>
