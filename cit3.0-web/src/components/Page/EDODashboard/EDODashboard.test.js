@@ -1,4 +1,4 @@
-import { render, cleanup } from "@testing-library/react";
+import { render, cleanup, waitFor } from "@testing-library/react";
 import axios from "axios";
 import EDODashboard from "./EDODashboard";
 
@@ -46,7 +46,7 @@ describe("EDODashboard", () => {
     );
   });
 
-  it("Displays a table of opportunities if opportunities have been previously entered", () => {
+  it("Displays a table of opportunities if opportunities have been previously entered", async () => {
     axios.get.mockResolvedValueOnce({
       data: {
         results: [
@@ -70,11 +70,10 @@ describe("EDODashboard", () => {
     });
 
     const { getByText } = render(<EDODashboard />);
-    expect(
-      getByText(/As soon as you add opportunities, you can see/i)
-    ).not.toBeInTheDocument();
-    expect(getByText(/1234/i).textContent).toBe("1234 Test Pl.");
-    expect(getByText(/5678/i).textContent).toBe("5678 Test Ave.");
-    expect(getByText(/9999/i).textContent).toBe("9999 Test Rd.");
+    await waitFor(() => {
+      expect(getByText(/1234/i).textContent).toBe("1234 Test Pl.");
+      expect(getByText(/5678/i).textContent).toBe("5678 Test Ave.");
+      expect(getByText(/9999/i).textContent).toBe("9999 Test Rd.");
+    });
   });
 });
