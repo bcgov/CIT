@@ -21,7 +21,7 @@ function App() {
           <Route exact path="/">
             <EDODashboard />
           </Route>
-          <Route path="/addInvestment">
+          <Route path="/addOpportunity">
             <div
               style={{ height: "80vh" }}
               className="container d-flex flex-column justify-content-center align-items-center"
