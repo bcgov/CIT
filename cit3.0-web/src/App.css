@@ -1,4 +1,6 @@
-
+.app-container {
+  padding-bottom: 75px;
+} 
 
 .footer {
   position: fixed;

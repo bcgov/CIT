@@ -6,6 +6,7 @@ import "./App.css";
 import { Header, Footer } from "shared-components";
 import AddOpportunity from "./components/Page/AddOpportunity/AddOpportunity";
 import EDODashboard from "./components/Page/EDODashboard/EDODashboard";
+import InvestOpForm from "./components/InvestOpForm/InvestOpForm";
 
 function App() {
   const header = {

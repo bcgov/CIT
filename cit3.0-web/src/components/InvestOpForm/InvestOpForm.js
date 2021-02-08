@@ -1,4 +1,3 @@
-// import { useState } from "react";
 import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 
@@ -9,6 +8,12 @@ export default function InvestOpForm({ formValues }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {/* <div className="form-control">
+        <label htmlFor="email">
+          Email
+          <input id="email" type="text" name="email" ref={register} />
+        </label>
+      </div> */}
       <input
         className="form-control"
         type="text"
