@@ -2,24 +2,41 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useState, useEffect } from "react";
+import Map from "../Map/Map";
+import "./OpportunityTable.css";
 
 export default function OpportunityTable(props) {
   const [tableData, setTableData] = useState(null);
   const tableContent = [];
   const opportunities = props.tableData;
 
-  console.log(props);
+  const latLongFromPoint = (point) => {
+    const splitText = point.split(/[\s()]+/);
+
+    return [parseFloat(splitText[1]), parseFloat(splitText[2])];
+  };
 
   useEffect(() => {
     if (opportunities) {
       for (let i = 0; i < opportunities.length; i += 1) {
         const tableRow = (
-          <Row key={i}>
-            <Col>{opportunities[i].point}</Col>
-            <Col>{opportunities[i].address}</Col>
-            <Col>Awaiting Review</Col>
-            <Col>View opportunity</Col>
-          </Row>
+          <div key={i} className="opportunity-table-row">
+            <Row>
+              <Col>
+                <Map
+                  coords={latLongFromPoint(opportunities[i].point)}
+                  isReadOnly
+                />
+              </Col>
+              <Col>{opportunities[i].address}</Col>
+              <Col>Awaiting Review</Col>
+              <Col>
+                <p>View listing</p>
+                <p>Edit listing</p>
+                <p>Delete</p>
+              </Col>
+            </Row>
+          </div>
         );
         tableContent.push(tableRow);
       }

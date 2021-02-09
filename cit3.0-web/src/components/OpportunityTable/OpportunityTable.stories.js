@@ -11,17 +11,17 @@ const tableData = [
   {
     id: 1,
     address: "1234 Test Pl.",
-    point: "SRID=4326;POINT (90 -90)",
+    point: "SRID=4326;POINT (48.4774108 -123.8687427)",
   },
   {
     id: 2,
     address: "5678 Test Ave.",
-    point: "SRID=4326;POINT (20 -40)",
+    point: "SRID=4326;POINT (48.452708 -123.369984)",
   },
   {
     id: 3,
     address: "9999 Test Rd.",
-    point: "SRID=4326;POINT (20 -40)",
+    point: "SRID=4326;POINT (48.4527115 -123.3721727)",
   },
 ];
 
