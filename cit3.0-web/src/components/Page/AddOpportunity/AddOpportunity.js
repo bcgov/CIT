@@ -1,19 +1,29 @@
 import { useState } from "react";
 import "./AddOpportunity.css";
+import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { Button } from "shared-components";
+import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
+import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MapContainer from "../../MapContainer/MapContainer";
 import AddressSearchBar from "../../AddressSearchBar/AddressSearchBar";
 import { getAddressData } from "../../../helpers/resourceCalls";
 import PropertyInfo from "../../PropertyInfo/PropertyInfo";
 import PageTitleHeader from "../../Headers/PageTitleHeader/PageTitleHeader";
-import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
-import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 
-export default function AddOpportunity() {
-  const [address, setAddress] = useState("");
+export default function AddOpportunity({ match }) {
   const [nearbyResources, setNearbyResources] = useState({});
   const [coords, setCoords] = useState([54.1722, -124.1207]);
+  const [address, setAddress] = useState("");
+
+  const history = useHistory();
+  const title1 = "Add an Opportunity";
+  const title2 = "Confirm Property";
+  const text1 =
+    "Please drop a min on the map or enter the address of the property you want to list as an opportunity for investors.";
+  const text2 =
+    "Please confirm this is the property you want to list as an investment opportunity in your community";
 
   const getCoords = async (addy) => {
     const data = await getAddressData(addy);
@@ -23,17 +33,11 @@ export default function AddOpportunity() {
     ]);
   };
 
-  const title1 = "Add an Opportunity";
-  const title2 = "Confirm Property";
-  const text1 =
-    "Please drop a min on the map or enter the address of the property you want to list as an opportunity for investors.";
-  const text2 =
-    "Please confirm this is the property you want to list as an investment opportunity in your community";
-
   return (
     <>
       <PortalHeader />
       <NavigationHeader />
+
       <Container>
         <Row>
           {!address ? (
@@ -53,12 +57,8 @@ export default function AddOpportunity() {
                 {address ? (
                   <>
                     <PropertyInfo info={address} tag={false} />
-                    <PropertyInfo info={"TYPE OF PARCEL: crown, property"} />
-                    <PropertyInfo
-                      info={
-                        "If private, write something that must be done, like get permission from land owner"
-                      }
-                    />
+                    <PropertyInfo info={"Ownership: <ownership_type>"} />
+                    <PropertyInfo info={"Parcel Size: <size> ha"} />
                   </>
                 ) : null}
               </Col>
@@ -77,14 +77,19 @@ export default function AddOpportunity() {
         <Row className="bottom">
           <Col>
             <Button
-              onClick={() => null}
-              label="Cancel"
+              onClick={() => history.push("/")}
+              label="Cancel & Return to Dashboard"
               styling="bcgov-normal-white btn"
             />
           </Col>
           <Col className="d-flex justify-content-end">
             <Button
-              onClick={() => null}
+              onClick={() =>
+                history.push({
+                  pathname: `${match.url}/siteDetails`,
+                  state: { address },
+                })
+              }
               label="Continue"
               styling="bcgov-normal-blue btn"
             />
@@ -94,3 +99,7 @@ export default function AddOpportunity() {
     </>
   );
 }
+
+AddOpportunity.propTypes = {
+  match: PropTypes.shape().isRequired,
+};
