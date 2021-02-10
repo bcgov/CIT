@@ -84,12 +84,12 @@ export default function AddOpportunity({ match }) {
           </Col>
           <Col className="d-flex justify-content-end">
             <Button
-              onClick={() =>
+              onClick={() => {
                 history.push({
                   pathname: `${match.url}/siteDetails`,
                   state: { address },
-                })
-              }
+                });
+              }}
               label="Continue"
               styling="bcgov-normal-blue btn"
             />

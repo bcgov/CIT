@@ -23,9 +23,6 @@ function App() {
           <Route exact path="/">
             <EDODashboard />
           </Route>
-          {/* <Route path="/addOpportunity">
-            <AddOpportunity />
-          </Route> */}
           <Route
             path="/addOpportunity"
             render={({ match: { url } }) => (
