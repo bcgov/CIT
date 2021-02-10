@@ -1,0 +1,10 @@
+.step {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    width: 50px;
+    background-color: #036;
+    border-radius: 50%;
+    color: white;
+}

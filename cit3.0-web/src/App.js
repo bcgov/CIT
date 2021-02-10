@@ -6,6 +6,7 @@ import "./App.css";
 import { Header, Footer } from "shared-components";
 import AddOpportunity from "./components/Page/AddOpportunity/AddOpportunity";
 import EDODashboard from "./components/Page/EDODashboard/EDODashboard";
+import SiteInfomation from "./components/Page/SiteInformation/SiteInformation";
 import InvestOpForm from "./components/InvestOpForm/InvestOpForm";
 
 function App() {
@@ -22,9 +23,34 @@ function App() {
           <Route exact path="/">
             <EDODashboard />
           </Route>
-          <Route path="/addOpportunity">
-            <AddOpportunity />
-          </Route>
+          <Route
+            path="/addOpportunity"
+            render={({ match: { url } }) => (
+              <>
+                <Route path={`${url}/`} component={AddOpportunity} exact />
+                <Route
+                  path={`${url}/siteDetails`}
+                  component={SiteInfomation}
+                  exact
+                />
+                <Route
+                  path={`${url}/propDetails1`}
+                  component={AddOpportunity}
+                  exact
+                />
+                <Route
+                  path={`${url}/propDetails2`}
+                  component={AddOpportunity}
+                  exact
+                />
+                <Route
+                  path={`${url}/review`}
+                  component={AddOpportunity}
+                  exact
+                />
+              </>
+            )}
+          />
         </Switch>
       </Router>
 
