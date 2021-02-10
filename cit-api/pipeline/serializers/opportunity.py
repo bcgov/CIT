@@ -1,10 +1,10 @@
 from rest_framework import serializers
 
-from pipeline.models.investment import Investment
+from pipeline.models.opportunity import Opportunity
 
-class InvestmentSerializer(serializers.ModelSerializer):
+class OpportunitySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Investment
+        model = Opportunity
         fields = (
             "id",
             "address",
