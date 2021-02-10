@@ -1,11 +1,13 @@
 import PropTypes from "prop-types";
+import { Col, Row } from "react-bootstrap";
+import "./NavigationHeaderItem.css";
 
 export default function NavigationHeaderItem({ label, step }) {
   return (
-    <div className="d-flex px-3 flex-column justify-content-center align-items-center">
-      <div>{step}</div>
-      <div>{label}</div>
-    </div>
+    <Col className="d-flex px-3 flex-column justify-content-center align-items-center">
+      <Row className="step mb-2">{step}</Row>
+      <Row>{label}</Row>
+    </Col>
   );
 }
 
