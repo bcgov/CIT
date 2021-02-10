@@ -1,9 +1,7 @@
 import { useState } from "react";
-import "./AddOpportunity.css";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
-import { Button } from "shared-components";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MapContainer from "../../MapContainer/MapContainer";
@@ -11,6 +9,7 @@ import AddressSearchBar from "../../AddressSearchBar/AddressSearchBar";
 import { getAddressData } from "../../../helpers/resourceCalls";
 import PropertyInfo from "../../PropertyInfo/PropertyInfo";
 import PageTitleHeader from "../../Headers/PageTitleHeader/PageTitleHeader";
+import ButtonRow from "../../ButtonRow/ButtonRow";
 
 export default function AddOpportunity({ match }) {
   const [nearbyResources, setNearbyResources] = useState({});
@@ -31,6 +30,13 @@ export default function AddOpportunity({ match }) {
       data.data.features[0].geometry.coordinates[1],
       data.data.features[0].geometry.coordinates[0],
     ]);
+  };
+
+  const goToNextPage = () => {
+    history.push({
+      pathname: `${match.url}/siteDetails`,
+      state: { address, match },
+    });
   };
 
   return (
@@ -74,27 +80,7 @@ export default function AddOpportunity({ match }) {
             />
           </Col>
         </Row>
-        <Row className="bottom">
-          <Col>
-            <Button
-              onClick={() => history.push("/")}
-              label="Cancel & Return to Dashboard"
-              styling="bcgov-normal-white btn"
-            />
-          </Col>
-          <Col className="d-flex justify-content-end">
-            <Button
-              onClick={() => {
-                history.push({
-                  pathname: `${match.url}/siteDetails`,
-                  state: { address },
-                });
-              }}
-              label="Continue"
-              styling="bcgov-normal-blue btn"
-            />
-          </Col>
-        </Row>
+        <ButtonRow onClick={goToNextPage} />
       </Container>
     </>
   );
