@@ -9,7 +9,7 @@ export default function ButtonRow({ onClick, prevRoute, noContinue }) {
   return (
     <Container className="bottom">
       {prevRoute && (
-        <Row className="mb-2">
+        <Row className="mb-4">
           <Col>
             <NavLink to={prevRoute} replace>
               {"<<"} Previous Page

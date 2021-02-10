@@ -7,7 +7,8 @@ import { Header, Footer } from "shared-components";
 import AddOpportunity from "./components/Page/AddOpportunity/AddOpportunity";
 import EDODashboard from "./components/Page/EDODashboard/EDODashboard";
 import SiteInfomation from "./components/Page/SiteInformation/SiteInformation";
-import InvestOpForm from "./components/InvestOpForm/InvestOpForm";
+import PropertyDetails1 from "./components/Page/PropertyDetails1/PropertyDetails1";
+import PropertyDetails2 from "./components/Page/PropertyDetails2/PropertyDetails2";
 
 function App() {
   const header = {
@@ -35,12 +36,12 @@ function App() {
                 />
                 <Route
                   path={`${url}/propDetails1`}
-                  component={AddOpportunity}
+                  component={PropertyDetails1}
                   exact
                 />
                 <Route
                   path={`${url}/propDetails2`}
-                  component={AddOpportunity}
+                  component={PropertyDetails2}
                   exact
                 />
                 <Route
