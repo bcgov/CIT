@@ -1,4 +1,6 @@
 import PropTypes from "prop-types";
+import { Row, Col } from "react-bootstrap";
+import { v4 } from "uuid";
 import NavigationHeaderItem from "../NavigationHeaderItem/NavigationHeaderItem";
 
 export default function NavigationHeader({ navItems }) {
@@ -6,21 +8,25 @@ export default function NavigationHeader({ navItems }) {
     items.map((item, i, arr) => {
       while (i < arr.length - 1) {
         return (
-          <>
+          <div key={v4()} className="d-flex">
             <NavigationHeaderItem label={item} step={i + 1} />
-            <div className="d-flex align-items-center">...</div>
-          </>
+            <div style={{ color: "#A0A0A0" }} className="pt-1 px-3 mx-2">
+              ...
+            </div>
+          </div>
         );
       }
-      return <NavigationHeaderItem label={item} step={i + 1} />;
+      return <NavigationHeaderItem key={v4()} label={item} step={i + 1} />;
     });
   return (
-    <div
+    <Col
       style={{ backgroundColor: "#E0E0E0" }}
       className="d-flex py-4 justify-content-center align-items-center"
     >
-      {renderNavItems(navItems)}
-    </div>
+      <Row style={{ backgroundColor: "#E0E0E0" }}>
+        {renderNavItems(navItems)}
+      </Row>
+    </Col>
   );
 }
 
