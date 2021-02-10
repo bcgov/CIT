@@ -4,11 +4,11 @@ import { Button } from "shared-components";
 import { useHistory, NavLink } from "react-router-dom";
 import "./ButtonRow.css";
 
-export default function ButtonRow({ showPrevious, onClick, prevRoute }) {
+export default function ButtonRow({ onClick, prevRoute, noContinue }) {
   const history = useHistory();
   return (
     <Container className="bottom">
-      {showPrevious && (
+      {prevRoute && (
         <Row className="mb-2">
           <Col>
             <NavLink to={prevRoute} replace>
@@ -27,6 +27,7 @@ export default function ButtonRow({ showPrevious, onClick, prevRoute }) {
         </Col>
         <Col className="d-flex justify-content-end">
           <Button
+            disabled={noContinue}
             onClick={onClick}
             label="Continue"
             styling="bcgov-normal-blue btn"
@@ -38,12 +39,12 @@ export default function ButtonRow({ showPrevious, onClick, prevRoute }) {
 }
 
 ButtonRow.defaultProps = {
-  showPrevious: false,
   prevRoute: null,
+  noContinue: false,
 };
 
 ButtonRow.propTypes = {
-  showPrevious: PropTypes.bool,
   onClick: PropTypes.func.isRequired,
   prevRoute: PropTypes.string,
+  noContinue: PropTypes.bool,
 };

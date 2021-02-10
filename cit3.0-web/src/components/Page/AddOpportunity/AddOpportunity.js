@@ -81,7 +81,7 @@ export default function AddOpportunity({ match }) {
           </Col>
         </Row>
       </Container>
-      <ButtonRow onClick={goToNextPage} />
+      <ButtonRow noContinue={!address} onClick={goToNextPage} />
     </>
   );
 }
