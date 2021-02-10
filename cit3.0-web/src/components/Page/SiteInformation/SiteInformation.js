@@ -27,9 +27,11 @@ export default function SiteInformation({ location }) {
         <Row>Some warning about this data not being editable</Row>
       </Container>
       <OpportunityView data={location.state} />
-      <Container>
-        <ButtonRow onClick={goToNextPage} />
-      </Container>
+      <ButtonRow
+        showPrevious
+        prevRoute="/addOpportunity"
+        onClick={goToNextPage}
+      />
     </>
   );
 }

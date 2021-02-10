@@ -80,8 +80,8 @@ export default function AddOpportunity({ match }) {
             />
           </Col>
         </Row>
-        <ButtonRow onClick={goToNextPage} />
       </Container>
+      <ButtonRow onClick={goToNextPage} />
     </>
   );
 }
