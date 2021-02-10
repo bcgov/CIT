@@ -5,7 +5,7 @@ import EDODashboard from "./EDODashboard";
 afterEach(cleanup);
 
 describe("EDODashboard", () => {
-  it("Renders a clickable next button", () => {
+  it("Renders a clickable next button", async () => {
     axios.get.mockResolvedValueOnce({
       data: {
         results: [],
@@ -14,9 +14,11 @@ describe("EDODashboard", () => {
 
     const { getByText } = render(<EDODashboard />);
     expect(axios.get).toHaveBeenCalledTimes(1);
-    expect(getByText(/Add your first/i).textContent).toBe(
-      "Add your first opportunity"
-    );
+    await waitFor(() => {
+      expect(getByText(/Add your first/i).textContent).toBe(
+        "Add your first opportunity"
+      );
+    });
   });
 
   it("Renders how it works blurb", () => {
@@ -33,7 +35,7 @@ describe("EDODashboard", () => {
     );
   });
 
-  it("Displays a message if there are no opportunities entered", () => {
+  it("Displays a message if there are no opportunities entered", async () => {
     axios.get.mockResolvedValueOnce({
       data: {
         results: [],
@@ -41,9 +43,11 @@ describe("EDODashboard", () => {
     });
 
     const { getByText } = render(<EDODashboard />);
-    expect(getByText(/As soon as you add/i).textContent).toContain(
-      "As soon as you add opportunities, you can see"
-    );
+    await waitFor(() => {
+      expect(getByText(/As soon as you add/i).textContent).toContain(
+        "As soon as you add opportunities, you can see"
+      );
+    });
   });
 
   it("Displays a table of opportunities if opportunities have been previously entered", async () => {

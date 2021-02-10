@@ -11,7 +11,7 @@ export default function EDODashboard() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/pipeline/investments")
+      .get("/api/pipeline/investments")
       .then((data) => {
         setTableData(data.data.results);
       })
@@ -73,7 +73,11 @@ export default function EDODashboard() {
       <h1 className="dashboard-header">How it works</h1>
       <p className="dashboard-text">
         We invite you to promote up to 5 opportunities for investment in your
-        community. We will guide you through this simple 3 step process.
+        community. We will guide you through this simple 3 step process. Once
+        your opportunity is added, you will get to review it before submitting
+        it for review. It usually takes about 3-5 business days to get your
+        opportunity reviewed and live on our Investor Portal. You can view your
+        opportunities and update them on your dashboard below.
       </p>
       <div className="add-opportunity-button">{addOpportunityButton}</div>
       <hr />

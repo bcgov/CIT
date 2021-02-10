@@ -17,16 +17,11 @@ export default function Map(props) {
     height: window.innerHeight,
     width: window.innerWidth,
   });
-  const { coords, isReadOnly } = props;
+  const { coords, isInteractive } = props;
 
-  let enableInteraction;
   let additionalComponents;
 
-  if (isReadOnly) {
-    enableInteraction = false;
-    additionalComponents = <Marker position={coords} />;
-  } else {
-    enableInteraction = true;
+  if (isInteractive) {
     additionalComponents = (
       <>
         <ChangeView center={coords} zoom={16} />
@@ -38,6 +33,8 @@ export default function Map(props) {
         </Marker>
       </>
     );
+  } else {
+    additionalComponents = <Marker position={coords} />;
   }
 
   const handleResize = () => {
@@ -59,17 +56,17 @@ export default function Map(props) {
     <MapContainer
       center={coords}
       zoom={16}
-      scrollWheelZoom={enableInteraction}
-      zoomControl={enableInteraction}
-      attributionControl={enableInteraction}
-      fadeAnimation={enableInteraction}
-      zoomAnimation={enableInteraction}
-      doubleClickZoom={enableInteraction}
-      dragging={enableInteraction}
-      zoomSnap={enableInteraction}
-      zoomDelta={enableInteraction}
-      trackResize={enableInteraction}
-      touchZoom={enableInteraction}
+      scrollWheelZoom={isInteractive}
+      zoomControl={isInteractive}
+      attributionControl={isInteractive}
+      fadeAnimation={isInteractive}
+      zoomAnimation={isInteractive}
+      doubleClickZoom={isInteractive}
+      dragging={isInteractive}
+      zoomSnap={isInteractive}
+      zoomDelta={isInteractive}
+      trackResize={isInteractive}
+      touchZoom={isInteractive}
       style={{ width: "100%", height: "100%" }}
     >
       <MapConsumer>
@@ -88,10 +85,10 @@ export default function Map(props) {
 }
 
 Map.defaultProps = {
-  isReadOnly: false,
+  isInteractive: true,
 };
 
 Map.propTypes = {
   coords: PropTypes.arrayOf(PropTypes.number).isRequired,
-  isReadOnly: PropTypes.bool,
+  isInteractive: PropTypes.bool,
 };

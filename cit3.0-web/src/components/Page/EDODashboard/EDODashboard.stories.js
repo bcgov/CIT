@@ -12,7 +12,7 @@ export default {
 export const DashboardWithOpportunities = () => {
   const mock = new MockAdapter(axios);
 
-  mock.onGet("http://localhost:8000/api/pipeline/investments").reply(200, {
+  mock.onGet("/api/pipeline/investments").reply(200, {
     results: [
       {
         id: 1,
@@ -37,6 +37,6 @@ export const DashboardWithOpportunities = () => {
 export const DashboardWithoutOpportunities = () => {
   const mock = new MockAdapter(axios);
 
-  mock.onGet("http://localhost:8000/api/pipeline/investments").reply(400);
+  mock.onGet("/api/pipeline/investments").reply(400);
   return <EDODashboard />;
 };

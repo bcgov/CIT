@@ -23,17 +23,21 @@ export default function OpportunityTable(props) {
           <div key={i} className="opportunity-table-row">
             <Row>
               <Col>
-                <Map
-                  coords={latLongFromPoint(opportunities[i].point)}
-                  isReadOnly
-                />
+                <div className="opportunity-table-map-container">
+                  <Map
+                    coords={latLongFromPoint(opportunities[i].point)}
+                    isInteractive={false}
+                  />
+                </div>
               </Col>
               <Col>{opportunities[i].address}</Col>
               <Col>Awaiting Review</Col>
               <Col>
-                <p>View listing</p>
-                <p>Edit listing</p>
-                <p>Delete</p>
+                <a href="/">View Listing</a>
+                <br />
+                <a href="/">Edit Listing</a>
+                <br />
+                <a href="/">Delete</a>
               </Col>
             </Row>
           </div>

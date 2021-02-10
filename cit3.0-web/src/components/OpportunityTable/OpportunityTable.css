@@ -1,3 +1,7 @@
 .opportunity-table-row {
     padding-bottom: 2vh;
 }
+
+.opportunity-table-map-container {
+    height: 120px;
+}
