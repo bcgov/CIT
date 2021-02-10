@@ -1,0 +1,17 @@
+.BusinessContact {
+    padding: 1rem;
+    border: 1px solid black;
+}
+
+.BusinessContact svg {
+    transform: scale(1.5);
+    fill: var(--warning);
+}
+
+.BusinessContact h5 {
+    margin: 0.5rem;
+}
+
+.BusinessContact label {
+    width: 7ex;
+}
