@@ -16,6 +16,47 @@ export default function OpportunityTable(props) {
     return [parseFloat(splitText[1]), parseFloat(splitText[2])];
   };
 
+  const determineTextColour = (approvalStatus) => {
+    if (approvalStatus === "Pending Review") {
+      return <div className="status-text-orange">{approvalStatus}</div>;
+    }
+    if (approvalStatus === "Published") {
+      return <div className="status-text-green">{approvalStatus}</div>;
+    }
+    if (approvalStatus === "Needs to be edited") {
+      return <div className="status-text-red">{approvalStatus}</div>;
+    }
+    if (approvalStatus === "Not completed") {
+      return <div className="status-text-red">{approvalStatus}</div>;
+    }
+    return approvalStatus;
+  };
+
+  const determineActions = (approvalStatus) => {
+    if (approvalStatus === "Published") {
+      return (
+        <>
+          <a href="/">View Listing</a>
+          <br />
+          <a href="/">Mark as &quot;sold&quot;</a>
+          <br />
+          <a href="/">Edit Listing</a>
+          <br />
+          <a href="/">Delete</a>
+        </>
+      );
+    }
+    return (
+      <>
+        <a href="/">View Listing</a>
+        <br />
+        <a href="/">Edit Listing</a>
+        <br />
+        <a href="/">Delete</a>
+      </>
+    );
+  };
+
   useEffect(() => {
     if (opportunities) {
       for (let i = 0; i < opportunities.length; i += 1) {
@@ -31,14 +72,8 @@ export default function OpportunityTable(props) {
                 </div>
               </Col>
               <Col>{opportunities[i].address}</Col>
-              <Col>{opportunities[i].approval_status}</Col>
-              <Col>
-                <a href="/">View Listing</a>
-                <br />
-                <a href="/">Edit Listing</a>
-                <br />
-                <a href="/">Delete</a>
-              </Col>
+              <Col>{determineTextColour(opportunities[i].approval_status)}</Col>
+              <Col>{determineActions(opportunities[i].approval_status)}</Col>
             </Row>
           </div>
         );
