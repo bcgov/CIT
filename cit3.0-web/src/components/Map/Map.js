@@ -5,32 +5,69 @@ import {
   Marker,
   Popup,
   TileLayer,
+  Polygon,
   MapConsumer,
 } from "react-leaflet";
 import "./map.css";
 import ChangeView from "../ChangeView/ChangeView";
 import AddLocationMarker from "../AddMarker/AddMarker";
+import ResourceMarker from "../AddMarker/ResourceMarker";
 
-export default function Map(props) {
+export default function Map({
+  nearbyResources,
+  coords,
+  setCoords,
+  resourceIds,
+  setNearbyResources,
+  setAddress,
+  isInteractive,
+}) {
   // eslint-disable-next-line no-unused-vars
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
     width: window.innerWidth,
   });
-  const { coords, isInteractive } = props;
 
   let additionalComponents;
+
+  const changeView = (centerCoords) => centerCoords;
+  const multiPolygon = [
+    [
+      [48.59509, -123.4056],
+      [48.598, -123.41],
+      [48.6, -123.42],
+      [48.6, -123.43],
+    ],
+  ];
 
   if (isInteractive) {
     additionalComponents = (
       <>
-        <ChangeView center={coords} zoom={16} />
-        <AddLocationMarker />
-        <Marker position={coords}>
-          <Popup>
-            Lat: {coords[0]} Long: {coords[1]}
-          </Popup>
-        </Marker>
+        <ChangeView center={changeView(coords)} zoom={13} />
+        <AddLocationMarker
+          setCoords={setCoords}
+          setAddress={setAddress}
+          resourceIds={resourceIds}
+          setNearbyResources={setNearbyResources}
+          changeView={changeView}
+        />
+        <Polygon pathOptions={{ color: "purple" }} positions={multiPolygon} />
+        {coords[0] !== 49.2827 ? (
+          <Marker position={coords}>
+            <Popup>
+              Lat: {coords[0]} Long: {coords[1]}
+            </Popup>
+          </Marker>
+        ) : null}
+        {JSON.stringify(nearbyResources) !== "{}"
+          ? Object.entries(nearbyResources).map(([resource, resourceData]) => (
+              <ResourceMarker
+                key={resource}
+                resourceName={resource}
+                resources={resourceData}
+              />
+            ))
+          : null}
       </>
     );
   } else {
@@ -55,7 +92,7 @@ export default function Map(props) {
   return (
     <MapContainer
       center={coords}
-      zoom={16}
+      zoom={2}
       scrollWheelZoom={isInteractive}
       zoomControl={isInteractive}
       attributionControl={isInteractive}
@@ -86,9 +123,21 @@ export default function Map(props) {
 
 Map.defaultProps = {
   isInteractive: true,
+  nearbyResources: null,
 };
 
 Map.propTypes = {
   coords: PropTypes.arrayOf(PropTypes.number).isRequired,
   isInteractive: PropTypes.bool,
+  nearbyResources: PropTypes.shape({
+    resource: PropTypes.string,
+    data: PropTypes.arrayOf(PropTypes.shape),
+  }),
+  resourceIds: PropTypes.shape({
+    name: PropTypes.string,
+    id: PropTypes.string,
+  }).isRequired,
+  setNearbyResources: PropTypes.func.isRequired,
+  setCoords: PropTypes.func.isRequired,
+  setAddress: PropTypes.func.isRequired,
 };
