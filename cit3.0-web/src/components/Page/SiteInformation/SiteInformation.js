@@ -15,6 +15,8 @@ export default function SiteInformation({ location }) {
       state: { stuff: "stuff" },
     });
   };
+
+  // this page will run the searches and pass the data to opportunity view and map
   return (
     <>
       <PortalHeader />
