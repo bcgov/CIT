@@ -1,6 +1,5 @@
 import React from "react";
 import OpportunityTable from "./OpportunityTable";
-import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
 
 export default {
   title: "OpportunityTable",
