@@ -21,7 +21,7 @@ export default function NavigationHeader({ navItems }) {
   return (
     <Col
       style={{ backgroundColor: "#E0E0E0" }}
-      className="d-flex py-4 justify-content-center align-items-center"
+      className="nav-header d-flex py-4 justify-content-center align-items-center"
     >
       <Row style={{ backgroundColor: "#E0E0E0" }}>
         {renderNavItems(navItems)}

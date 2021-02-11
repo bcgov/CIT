@@ -23,3 +23,6 @@ yarn-debug.log*
 yarn-error.log*
 
 .eslintcache
+
+/src/components/Map/testing.js
+../docker-compose.override_2.yml
