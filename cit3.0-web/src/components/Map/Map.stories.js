@@ -58,16 +58,25 @@ const nearbyResources = {
 const resourceIds = {
   Hospitals: "5ff82cf4-0448-4063-804a-7321f0f2b4c6",
   Schools: "5832eff2-3380-435e-911b-5ada41c1d30b",
+  // servicesISP: "00a331db-121b-445d-b119-35dbbe3eedd9",
   "Post Secondary Schools": "8e4e2a87-2d1d-4931-828e-6327b49f310e",
   Courts: "23aa0b75-2715-4ccb-9a36-9a608450dc2d",
   "Walk-In Clinics": "3ca6b086-c92b-4654-ae82-ff5723d00611",
   "Natural Resource Projects": "2b69cc4b-4076-4272-a5a0-1c731455e063",
   "Economic Projects": "b12cd4cc-b58b-4079-b630-a20b6df58e8d",
+  // airports: "76b1b7a3-2112-4444-857a-afccf7b20da8",
+  // airports: "604c8be1-b3f3-45b4-8030-5f9c8be71645",
+  // civicFacilities: "64284a1e-0c89-4ae3-bea4-59bc0eb9d579",
+  // timberFacilities: "c5553f20-f589-4ca5-8ed6-afb45ae281b1",
+  // firstResponders: "70899feb-b62f-4cd0-aeff-32e1936c3018",
+  // diagnosticFacilities: "e546be7a-a432-458b-91a0-1084887c291c",
 };
 
+// const coords = [48.452708, -123.369984];
 const coords = [49.2827, -123.1207];
 
-const aFunc = () => null;
+// eslint-disable-next-line no-console
+const aFunc = () => console.log("Hey");
 
 export const InvestmentsMap = () => (
   <div style={{ height: "800px" }}>
