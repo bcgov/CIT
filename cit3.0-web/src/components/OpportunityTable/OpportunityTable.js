@@ -31,7 +31,7 @@ export default function OpportunityTable(props) {
                 </div>
               </Col>
               <Col>{opportunities[i].address}</Col>
-              <Col>Awaiting Review</Col>
+              <Col>{opportunities[i].approval_status}</Col>
               <Col>
                 <a href="/">View Listing</a>
                 <br />
