@@ -4,7 +4,7 @@ import { Col } from "react-bootstrap";
 export default function PageTitleHeader({ title, text }) {
   return (
     <Col className="my-5">
-      <h1>{title}</h1>
+      <h2 className="mb-4">{title}</h2>
       <p>{text}</p>
     </Col>
   );

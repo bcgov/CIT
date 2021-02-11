@@ -27,6 +27,7 @@ export default function OpportunityView({ data }) {
       "- Speed average": "20 Mbps",
       "- Speed at nearest road": "23 Mbps",
     },
+    "Nearest Post-Secondary Institution": "7km",
     "Power Transmission Lines": "stuff",
     "Nearest Health Care Facility": "3km",
     "Nearest First Responders": {
