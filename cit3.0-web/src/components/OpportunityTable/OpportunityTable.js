@@ -12,8 +12,7 @@ export default function OpportunityTable(props) {
 
   const latLongFromPoint = (point) => {
     const splitText = point.split(/[\s()]+/);
-
-    return [parseFloat(splitText[1]), parseFloat(splitText[2])];
+    return [parseFloat(splitText[2]), parseFloat(splitText[1])];
   };
 
   const determineTextColour = (approvalStatus) => {

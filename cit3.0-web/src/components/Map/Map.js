@@ -29,6 +29,7 @@ export default function Map({
   });
 
   let additionalComponents;
+  let zoomLevel;
 
   const changeView = (centerCoords) => centerCoords;
   const multiPolygon = [
@@ -70,8 +71,10 @@ export default function Map({
           : null}
       </>
     );
+    zoomLevel = 2;
   } else {
     additionalComponents = <Marker position={coords} />;
+    zoomLevel = 13;
   }
 
   const handleResize = () => {
@@ -92,7 +95,7 @@ export default function Map({
   return (
     <MapContainer
       center={coords}
-      zoom={2}
+      zoom={zoomLevel}
       scrollWheelZoom={isInteractive}
       zoomControl={isInteractive}
       attributionControl={isInteractive}
