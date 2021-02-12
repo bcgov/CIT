@@ -24,3 +24,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.hr-bold {
+  height: 2px;
+  background: #00000044;
+  border: none;
+}

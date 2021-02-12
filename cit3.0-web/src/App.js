@@ -14,6 +14,7 @@ import ReviewOpportunity from "./components/Page/ReviewOpportunity/ReviewOpportu
 // import InvestOpForm from "./components/InvestOpForm/InvestOpForm";
 
 import { store } from "./store";
+import ReviewSubmitted from "./components/Page/ReviewSubmitted/ReviewSubmitted";
 
 function App() {
   const header = {
@@ -52,6 +53,11 @@ function App() {
                 <Route
                   path={`${url}/review`}
                   component={ReviewOpportunity}
+                  exact
+                />
+                <Route
+                  path={`${url}/success`}
+                  component={ReviewSubmitted}
                   exact
                 />
               </>

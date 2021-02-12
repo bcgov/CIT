@@ -38,12 +38,6 @@ export default function OpportunityView() {
     <Container>
       <Row className="mt-3">
         <Col>
-          <Row className="font-weight-bold">
-            Site Information - General Details
-          </Row>
-          <Row>Ownership:</Row>
-          <Row>Parcel Size:</Row>
-          <Row>PID:</Row>
           <Resource
             title="Site Info - General Details"
             itemsToDisplay={siteInfo}
