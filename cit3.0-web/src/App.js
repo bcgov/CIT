@@ -2,6 +2,7 @@ import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
 import "bootstrap/dist/css/bootstrap.css";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Provider } from "react-redux";
 import "./App.css";
 import { Header, Footer } from "shared-components";
 import AddOpportunity from "./components/Page/AddOpportunity/AddOpportunity";
@@ -9,6 +10,10 @@ import EDODashboard from "./components/Page/EDODashboard/EDODashboard";
 import SiteInfomation from "./components/Page/SiteInformation/SiteInformation";
 import PropertyDetails1 from "./components/Page/PropertyDetails1/PropertyDetails1";
 import PropertyDetails2 from "./components/Page/PropertyDetails2/PropertyDetails2";
+import ReviewOpportunity from "./components/Page/ReviewOpportunity/ReviewOpportunity";
+// import InvestOpForm from "./components/InvestOpForm/InvestOpForm";
+
+import { store } from "./store";
 
 function App() {
   const header = {
@@ -17,7 +22,7 @@ function App() {
   };
 
   return (
-    <div className="app-container">
+    <Provider className="app-container" store={store}>
       <Header header={header} />
       <Router>
         <Switch>
@@ -46,7 +51,7 @@ function App() {
                 />
                 <Route
                   path={`${url}/review`}
-                  component={AddOpportunity}
+                  component={ReviewOpportunity}
                   exact
                 />
               </>
@@ -58,7 +63,7 @@ function App() {
       <div className="footer">
         <Footer />
       </div>
-    </div>
+    </Provider>
   );
 }
 
