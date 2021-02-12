@@ -1,5 +1,4 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import "./map.css";
 import ChangeView from "../ChangeView/ChangeView";
@@ -70,7 +69,7 @@ export default function Map({
 }
 
 Map.defaultProps = {
-  nearbyResources: null,
+  nearbyResources: {},
 };
 
 Map.propTypes = {

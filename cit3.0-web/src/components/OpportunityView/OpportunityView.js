@@ -1,42 +1,38 @@
 import { Container, Row, Col } from "react-bootstrap";
-import PropTypes from "prop-types";
+/// import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import Resource from "./Resource";
+import LocationsPanel from "../LocationsPanel/LocationsPanel";
+import BusinessContact from "../BusinessContact/BusinessContact";
+import Map from "../Map/Map";
+import {
+  setCoords,
+  setAddress,
+  setNearbyResources,
+} from "../../store/actions/opportunity";
+import "./OpportunityView.css";
 
-export default function OpportunityView({ data }) {
-  const siteInfo = {
-    Ownership: "Crown",
-    "Parcel Size": "5 ha",
-    PID: "456fdsagjio438u9g",
-  };
-  const physical = {
-    "Elevation at location": "100m",
-    "Soil Name, Texture, Drainage": "Info here",
-    "Access to water (nearest lake)": "3km",
-    "Access to water (nearest river)": "5km",
-  };
-  const transportation = {
-    "Nearest Highway": "50m",
-    "Nearest Airport": "5km",
-    "Nearest railway": "15km",
-    "Nearest Port": " 47km",
-    "Nearest Canada Customs Port of Entry": "35km",
-  };
+export default function OpportunityView() {
+  const dispatch = useDispatch();
 
-  const services = {
-    "Network Connectivity": {
-      "- Speed average": "20 Mbps",
-      "- Speed at nearest road": "23 Mbps",
-    },
-    "Nearest Post-Secondary Institution": "7km",
-    "Power Transmission Lines": "stuff",
-    "Nearest Health Care Facility": "3km",
-    "Nearest First Responders": {
-      "- Fire": "3km",
-      "- Ambulance": "4km",
-      "- Police": "2km",
-      "- Coast Guard": "10km",
-    },
-  };
+  // Site info sections
+  const siteInfo = useSelector((state) => state.opportunity.siteInfo);
+  const physical = useSelector((state) => state.opportunity.physical);
+  const transportation = useSelector(
+    (state) => state.opportunity.transportation
+  );
+  const services = useSelector((state) => state.opportunity.services);
+  const address = useSelector((state) => state.opportunity.address);
+  const coords = useSelector((state) => state.opportunity.coords);
+  const municipalities = useSelector(
+    (state) => state.opportunity.municipalities
+  );
+  const nearbyResources = useSelector(
+    (state) => state.opportunity.nearbyResources
+  );
+  const businessContact = useSelector(
+    (state) => state.opportunity.businessContact
+  );
 
   return (
     <Container>
@@ -56,12 +52,31 @@ export default function OpportunityView({ data }) {
           <Resource title="Transportation" itemsToDisplay={transportation} />
           <Resource title="Services" itemsToDisplay={services} />
         </Col>
-        <Col>{/* Map Component Here */}</Col>
+        <Col xs lg="5" className="leaflet-border pr-0">
+          <Map
+            setNearbyResources={(r) => dispatch(setNearbyResources(r))}
+            coords={coords}
+            setCoords={(c) => dispatch(setCoords(c))}
+            setAddress={(a) => dispatch(setAddress(a))}
+            nearbyResources={nearbyResources}
+          />
+          <LocationsPanel
+            address={address}
+            coords={coords}
+            municipalities={municipalities}
+          />
+          {businessContact.name || businessContact.email ? (
+            <BusinessContact
+              name={businessContact.name}
+              email={businessContact.email}
+            />
+          ) : null}
+        </Col>
       </Row>
     </Container>
   );
 }
 
-OpportunityView.propTypes = {
-  data: PropTypes.shape().isRequired,
-};
+// OpportunityView.propTypes = {
+//   data: PropTypes.shape().isRequired,
+// };

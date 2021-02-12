@@ -12,6 +12,9 @@ const ReviewAndSubmitCallout = ({ prevRoute, onClick }) => {
       history.push("/");
     }
   };
+  const submitOpportunity = () => {
+    console.log("calling submission endpoint");
+  };
   return (
     <Container
       className={styles.ReviewAndSubmitCallout}
@@ -35,7 +38,7 @@ const ReviewAndSubmitCallout = ({ prevRoute, onClick }) => {
       {prevRoute && (
         <Row className="mb-4">
           <Col>
-            <NavLink to={prevRoute} replace>
+            <NavLink id="back" to={prevRoute} replace>
               {"<<"} Previous Page
             </NavLink>
           </Col>
@@ -44,6 +47,7 @@ const ReviewAndSubmitCallout = ({ prevRoute, onClick }) => {
       <Row>
         <Col>
           <Button
+            id="cancel"
             onClick={confirmCancel}
             label="Cancel & Return to Dashboard"
             styling="bcgov-normal-white btn"
@@ -51,7 +55,8 @@ const ReviewAndSubmitCallout = ({ prevRoute, onClick }) => {
         </Col>
         <Col className="d-flex justify-content-end">
           <Button
-            onClick={onClick}
+            id="submit"
+            onClick={submitOpportunity}
             label="Submit my Opportunity"
             styling="bcgov-normal-blue btn"
           />

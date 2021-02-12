@@ -1,7 +1,7 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MapContainer from "../../MapContainer/MapContainer";
@@ -10,11 +10,19 @@ import { getAddressData } from "../../../helpers/resourceCalls";
 import PropertyInfo from "../../PropertyInfo/PropertyInfo";
 import PageTitleHeader from "../../Headers/PageTitleHeader/PageTitleHeader";
 import ButtonRow from "../../ButtonRow/ButtonRow";
+import {
+  setAddress,
+  setCoords,
+  setNearbyResources,
+} from "../../../store/actions/opportunity";
 
 export default function AddOpportunity({ match }) {
-  const [nearbyResources, setNearbyResources] = useState({});
-  const [coords, setCoords] = useState([54.1722, -124.1207]);
-  const [address, setAddress] = useState("");
+  const dispatch = useDispatch();
+  const address = useSelector((state) => state.opportunity.address);
+  const coords = useSelector((state) => state.opportunity.coords);
+  const nearbyResources = useSelector(
+    (state) => state.opportunity.nearbyResources
+  );
 
   const history = useHistory();
   const title1 = "Add an Opportunity";
@@ -26,10 +34,12 @@ export default function AddOpportunity({ match }) {
 
   const getCoords = async (addy) => {
     const data = await getAddressData(addy);
-    setCoords([
-      data.data.features[0].geometry.coordinates[1],
-      data.data.features[0].geometry.coordinates[0],
-    ]);
+    dispatch(
+      setCoords([
+        data.data.features[0].geometry.coordinates[1],
+        data.data.features[0].geometry.coordinates[0],
+      ])
+    );
   };
 
   const goToNextPage = () => {
@@ -57,7 +67,7 @@ export default function AddOpportunity({ match }) {
             <Row className="top">
               <Col>
                 <AddressSearchBar
-                  setAddress={setAddress}
+                  setAddress={(adress) => dispatch(setAddress(adress))}
                   getCoords={getCoords}
                 />
                 {address ? (
@@ -70,13 +80,13 @@ export default function AddOpportunity({ match }) {
               </Col>
             </Row>
           </Col>
-          <Col>
+          <Col className="leaflet-shadow">
             <MapContainer
-              setAddress={setAddress}
               nearbyResources={nearbyResources}
-              setNearbyResources={setNearbyResources}
               coords={coords}
-              setCoords={setCoords}
+              setNearbyResources={(r) => dispatch(setNearbyResources(r))}
+              setAddress={(a) => dispatch(setAddress(a))}
+              setCoords={(c) => dispatch(setCoords(c))}
             />
           </Col>
         </Row>

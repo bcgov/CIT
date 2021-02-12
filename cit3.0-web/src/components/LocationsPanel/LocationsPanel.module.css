@@ -1,0 +1,10 @@
+.LocationsPanel {
+    padding: 1rem;
+    margin: 0 0  1rem 0;
+    border: 1px solid black;
+}
+
+.LocationsPanel ul {
+    list-style: none;
+    padding: 0;
+}

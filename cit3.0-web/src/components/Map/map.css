@@ -1,3 +1,8 @@
-.leaflet-container {
+.leaflet-shadow .leaflet-container {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.leaflet-border .leaflet-container {  
+    border: 1px solid #000;
+    border-bottom: none;
 }
