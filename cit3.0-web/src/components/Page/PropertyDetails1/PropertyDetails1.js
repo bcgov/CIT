@@ -116,14 +116,16 @@ export default function PropertyDetails1() {
     <>
       <PortalHeader />
       <NavigationHeader />
-      <Container>
+      <Container role="form">
         <Row>
-          <PageTitleHeader
-            title={"Enter Property Details"}
-            text={
-              "Tell us more about this investment opportunity.  All fields are optional."
-            }
-          />
+          <Row>
+            <PageTitleHeader
+              title={"Enter Property Details"}
+              text={
+                "Tell us more about this investment opportunity.  All fields are optional."
+              }
+            />
+          </Row>
         </Row>
 
         <Row className="mb-3">
@@ -131,9 +133,10 @@ export default function PropertyDetails1() {
         </Row>
         <Row className="mb-3">
           <Col className="mr-5">
-            <Row>Property Status</Row>
+            <Row id="prop-status-label">Property Status</Row>
             <Row>
               <Select
+                aria-labelledby="prop-status-label"
                 onChange={(value) => handleSelectChange("propStatus", value)}
                 className="w-100"
                 options={PropStatusOptions}
@@ -141,9 +144,12 @@ export default function PropertyDetails1() {
             </Row>
           </Col>
           <Col>
-            <Row>Official Community Planning Zoning</Row>
+            <Row id="community-plan-label">
+              Official Community Planning Zoning
+            </Row>
             <Row>
               <Select
+                aria-labelledby="community-plan-label"
                 onChange={(value) => handleSelectChange("communityZone", value)}
                 className="w-100"
                 options={zoningOptions}
@@ -153,9 +159,10 @@ export default function PropertyDetails1() {
         </Row>
         <Row className="mb-3">
           <Col className="mr-5">
-            <Row>Land Use Zoning</Row>
+            <Row id="land-zone-label">Land Use Zoning</Row>
             <Row>
               <Select
+                aria-labelledby="land-zone-label"
                 onChange={(value) => handleSelectChange("landZone", value)}
                 className="w-100"
                 options={zoningOptions}
@@ -164,9 +171,10 @@ export default function PropertyDetails1() {
           </Col>
 
           <Col>
-            <Row>OCP Zoning</Row>
+            <Row id="ocp-zone-label">OCP Zoning</Row>
             <Row>
               <Select
+                aria-labelledby="ocp-zone-label"
                 onChange={(value) => handleSelectChange("ocpZone", value)}
                 className="w-100"
                 options={zoningOptions}
@@ -177,10 +185,11 @@ export default function PropertyDetails1() {
 
         <Row className="mb-3">
           <Col className="mr-5">
-            <Row>Preferred Development</Row>
+            <Row id="preferred-dev-label">Preferred Development</Row>
             <Row>
               <Select
                 isMulti
+                aria-labelledby="preferred-dev-label"
                 onChange={(value) => handleSelectChange("preferred", value)}
                 closeMenuOnSelect={false}
                 className="w-100"

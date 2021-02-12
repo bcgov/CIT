@@ -10,10 +10,10 @@ export default function Radios({ labels, name, handleRadioChange }) {
         inline
         type="radio"
         label={label}
+        aria-label={label}
       />
     ));
   return <Row>{mapLabels(labels)}</Row>;
-  //   return <Form.Check type="radio" label={labels[0]} />;
 }
 Radios.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.string).isRequired,
