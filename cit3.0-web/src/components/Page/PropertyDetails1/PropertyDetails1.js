@@ -5,6 +5,8 @@ import Select from "react-select";
 import PageTitleHeader from "../../Headers/PageTitleHeader/PageTitleHeader";
 import ButtonRow from "../../ButtonRow/ButtonRow";
 import Radios from "../../FormComponents/Radios";
+import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
+import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 
 const PropStatusOptions = [
   {
@@ -112,6 +114,8 @@ export default function PropertyDetails1() {
 
   return (
     <>
+      <PortalHeader />
+      <NavigationHeader />
       <Container>
         <Row>
           <PageTitleHeader
@@ -189,8 +193,10 @@ export default function PropertyDetails1() {
         <Row className="mb-3">
           <h4>Site Servicing</h4>
         </Row>
-        <Row>
-          <Col>
+        <Row className="mb-3">
+          <Col className="mr-5">
+            <Row className="mb-1">Is the site accessible by road?</Row>
+
             <Radios
               labels={radioLabels}
               name="accessibleByRoad"
@@ -198,6 +204,7 @@ export default function PropertyDetails1() {
             />
           </Col>
           <Col>
+            <Row className="mb-1">Is the site connected to water/sewage?</Row>
             <Radios
               labels={radioLabels}
               name="waterSewage"
@@ -205,8 +212,9 @@ export default function PropertyDetails1() {
             />
           </Col>
         </Row>
-        <Row>
-          <Col>
+        <Row className="mb-3">
+          <Col className="mr-5">
+            <Row className="mb-1">Is the site connected to Natural Gas?</Row>
             <Radios
               labels={radioLabels}
               name="naturalGas"
