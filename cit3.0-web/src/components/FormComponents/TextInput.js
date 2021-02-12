@@ -26,14 +26,16 @@ export default function TextInput({
 }
 
 TextInput.defaultProps = {
+  heading: null,
+  notes: null,
   placeholder: null,
   rows: 3,
   disabled: false,
 };
 
 TextInput.propTypes = {
-  heading: PropTypes.string.isRequired,
-  notes: PropTypes.string.isRequired,
+  heading: PropTypes.string,
+  notes: PropTypes.string,
   placeholder: PropTypes.string,
   rows: PropTypes.number,
   disabled: PropTypes.bool,
