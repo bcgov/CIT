@@ -35,4 +35,8 @@ describe("AddOpportunity", () => {
     const addOp = getByText("Add an Opportunity");
     expect(addOp).toBeInTheDocument();
   });
+  it("renders the Map", () => {
+    const { getByText } = render(<AddOpportunity match={{}} />);
+    expect(getByText(/leaflet/i).textContent).toBe("Leaflet");
+  });
 });
