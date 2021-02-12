@@ -7,7 +7,6 @@ import OpportunityView from "../../OpportunityView/OpportunityView";
 import ButtonRow from "../../ButtonRow/ButtonRow";
 
 export default function SiteInformation({ location }) {
-  console.log(location.state);
   const history = useHistory();
   const goToNextPage = () => {
     history.push({
