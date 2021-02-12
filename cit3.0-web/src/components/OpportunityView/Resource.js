@@ -6,14 +6,12 @@ export default function Resource({ title, itemsToDisplay }) {
   // TODO:  handle sub objects
   const displayItems = (items) =>
     Object.keys(items).map((key) => {
-      console.log(key, items[key]);
       if (typeof items[key] === "object") {
-        console.log("yes");
         return (
-          <>
-            <Row key={v4()}>{key}:</Row>
+          <div key={v4()}>
+            <Row>{key}:</Row>
             <Col>{displayItems(items[key])}</Col>
-          </>
+          </div>
         );
       }
       return (

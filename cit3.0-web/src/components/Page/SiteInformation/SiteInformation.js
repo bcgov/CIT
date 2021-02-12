@@ -7,7 +7,6 @@ import OpportunityView from "../../OpportunityView/OpportunityView";
 import ButtonRow from "../../ButtonRow/ButtonRow";
 
 export default function SiteInformation({ location }) {
-  console.log(location.state);
   const history = useHistory();
   const goToNextPage = () => {
     history.push({
@@ -15,6 +14,8 @@ export default function SiteInformation({ location }) {
       state: { stuff: "stuff" },
     });
   };
+
+  // this page will run the searches and pass the data to opportunity view and map
   return (
     <>
       <PortalHeader />

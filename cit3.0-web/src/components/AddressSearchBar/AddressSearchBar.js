@@ -51,7 +51,9 @@ export default function AddressSearchBar({ setAddress, getCoords }) {
 
   return (
     <div style={{ position: "relative" }}>
-      <FormLabel className="font-weight-bold">Enter Address</FormLabel>
+      <FormLabel htmlFor="addressSearch" className="font-weight-bold">
+        Enter Address
+      </FormLabel>
       <FormControl
         id="addressSearch"
         value={value}

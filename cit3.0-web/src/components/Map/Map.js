@@ -1,9 +1,19 @@
 import PropTypes from "prop-types";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { useState, useEffect } from "react";
+import {
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  MapConsumer,
+} from "react-leaflet";
+import L from "leaflet";
+
 import "./map.css";
 import ChangeView from "../ChangeView/ChangeView";
 import AddLocationMarker from "../AddMarker/AddMarker";
 import ResourceMarker from "../AddMarker/ResourceMarker";
+import Test from "./testing";
 
 export default function Map({
   nearbyResources,
@@ -14,14 +24,22 @@ export default function Map({
   setAddress,
 }) {
   const changeView = (centerCoords) => centerCoords;
-  // const multiPolygon = [
-  //   [
-  //     [48.59509, -123.4056],
-  //     [48.598, -123.41],
-  //     [48.6, -123.42],
-  //     [48.6, -123.43],
-  //   ],
-  // ];
+  const [geoData, setGeoData] = useState({});
+  const [bounds, setBounds] = useState("");
+  // const [url, setUrl] = useState("");
+
+  const boundsString =
+    "-123.4468460083008%2C48.56672520488946%2C-123.34384918212892%2C48.62349154574442";
+
+  const str = "1188753.04%2C397932.21%2C1196127.68%2C404508.68";
+  const url2 = `https://openmaps.gov.bc.ca/geo/pub/wms?service=WMS&version=1.1.1&request=GetMap&layers=pub%3AWHSE_IMAGERY_AND_BASE_MAPS.GSR_SCHOOLS_K_TO_12_SVW&bbox=${boundsString}&width=500&height=600&srs=crs%3A84&format=image%2Fjpeg`;
+
+  const url = `https://openmaps.gov.bc.ca/geo/pub/wms?service=WMS&version=1.1.1&request=GetMap&layers=pub%3AWHSE_IMAGERY_AND_BASE_MAPS.GSR_SCHOOLS_K_TO_12_SVW&bbox=${str}&width=500&height=600&srs=EPSG%3A3005&format=image%2Fpng`;
+
+  const wmsLayer = L.tileLayer.wms(
+    "https://openmaps.gov.bc.ca/geo/pub/wms?service=WMS&version=1.1.0&request=GetMap&layers=pub%3AWHSE_IMAGERY_AND_BASE_MAPS.BCNC_BC_NETWORK_COVERAGE_SV&bbox=1188753.04%2C397932.21%2C1196127.68%2C404508.68&width=500&height=600&srs=EPSG%3A3005&format=image%2Fjpeg"
+  );
+
   return (
     <MapContainer
       center={coords}
@@ -35,11 +53,30 @@ export default function Map({
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {/* <WMSTileLayer
-        opacity={1}
-        zIndex={100}
-        url="https://openmaps.gov.bc.ca/geo/pub/WHSE_IMAGERY_AND_BASE_MAPS.GSR_AIRPORTS_SVW/ows?"
+      {/* <TileLayer
+        opacity={0.3}
+        zIndex={1000}
+        url={url2}
+        transparent
+        noWrap
+        maxZoom={5}
+        // version="1.3.0"
+        // styles={{}}
+        // layers="3601:Schools_Public_All"
+        // srs="EPSG:4326"
+        // format="image/png"
       /> */}
+      <MapConsumer>
+        {(localMap) => {
+          const bb = localMap.getBounds().toBBoxString();
+          console.log(bb);
+          useEffect(() => {
+            setBounds(bb);
+          });
+          return null;
+        }}
+      </MapConsumer>
+      {/* <Test setUrl={setUrl} setBounds={setBounds} /> */}
       <AddLocationMarker
         setCoords={setCoords}
         setAddress={setAddress}
