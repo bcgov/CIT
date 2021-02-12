@@ -7,6 +7,8 @@ import ButtonRow from "../../ButtonRow/ButtonRow";
 import Radios from "../../FormComponents/Radios";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
+import TextInput from "../../FormComponents/TextInput";
+import MaxCapRow from "../../FormComponents/MaxCapRow";
 
 const PropStatusOptions = [
   {
@@ -61,17 +63,18 @@ const developmentOptions = [
 
 export default function PropertyDetails1() {
   const [selectData, setSelectData] = useState({
-    propStatus: null,
-    communityZone: null,
-    landZone: null,
+    saleOrLease: null,
+    currentZone: null,
+    futureZone: null,
     preferred: null,
-    ocpZone: null,
   });
 
   const [radioData, setRadioData] = useState({
-    accessibleByRoad: null,
-    waterSewage: null,
+    roadAccess: null,
+    waterSupply: null,
     naturalGas: null,
+    sewer: null,
+    electrical: null,
   });
 
   const history = useHistory();
@@ -114,6 +117,7 @@ export default function PropertyDetails1() {
 
   return (
     <>
+      {console.log(radioData)}
       <PortalHeader />
       <NavigationHeader />
       <Container role="form">
@@ -133,37 +137,35 @@ export default function PropertyDetails1() {
         </Row>
         <Row className="mb-3">
           <Col className="mr-5">
-            <Row id="prop-status-label">Property Status</Row>
+            <Row id="sale-label">Sale or Lease</Row>
             <Row>
               <Select
-                aria-labelledby="prop-status-label"
-                onChange={(value) => handleSelectChange("propStatus", value)}
+                aria-labelledby="sale-label"
+                onChange={(value) => handleSelectChange("saleOrLease", value)}
                 className="w-100"
                 options={PropStatusOptions}
               />
             </Row>
           </Col>
           <Col>
-            <Row id="community-plan-label">
-              Official Community Planning Zoning
-            </Row>
+            <Row id="current-zone-label">Current Zoning</Row>
             <Row>
               <Select
-                aria-labelledby="community-plan-label"
-                onChange={(value) => handleSelectChange("communityZone", value)}
+                aria-labelledby="current-zone-label"
+                onChange={(value) => handleSelectChange("currentZone", value)}
                 className="w-100"
                 options={zoningOptions}
               />
             </Row>
           </Col>
         </Row>
-        <Row className="mb-3">
+        <Row className="mb-5">
           <Col className="mr-5">
-            <Row id="land-zone-label">Land Use Zoning</Row>
+            <Row id="future-zone-label">Future Zoning</Row>
             <Row>
               <Select
-                aria-labelledby="land-zone-label"
-                onChange={(value) => handleSelectChange("landZone", value)}
+                aria-labelledby="future-zone-label"
+                onChange={(value) => handleSelectChange("futureZone", value)}
                 className="w-100"
                 options={zoningOptions}
               />
@@ -171,20 +173,6 @@ export default function PropertyDetails1() {
           </Col>
 
           <Col>
-            <Row id="ocp-zone-label">OCP Zoning</Row>
-            <Row>
-              <Select
-                aria-labelledby="ocp-zone-label"
-                onChange={(value) => handleSelectChange("ocpZone", value)}
-                className="w-100"
-                options={zoningOptions}
-              />
-            </Row>
-          </Col>
-        </Row>
-
-        <Row className="mb-3">
-          <Col className="mr-5">
             <Row id="preferred-dev-label">Preferred Development</Row>
             <Row>
               <Select
@@ -197,39 +185,80 @@ export default function PropertyDetails1() {
               />
             </Row>
           </Col>
-          <Col> </Col>
         </Row>
+
         <Row className="mb-3">
           <h4>Site Servicing</h4>
         </Row>
         <Row className="mb-3">
           <Col className="mr-5">
-            <Row className="mb-1">Is the site accessible by road?</Row>
+            <Row id="water-label" className="mb-1">
+              Does the site have access to water supply?
+            </Row>
 
             <Radios
+              aria-labelledby="water-label"
               labels={radioLabels}
-              name="accessibleByRoad"
+              name="waterSupply"
               handleRadioChange={handleRadioChange}
             />
+            {radioData.waterSupply === "Yes" && <MaxCapRow />}
           </Col>
           <Col>
-            <Row className="mb-1">Is the site connected to water/sewage?</Row>
+            <Row id="sewer-label" className="mb-1">
+              Does the site have access to sewer?
+            </Row>
             <Radios
+              aria-labelledby="sewer-label"
               labels={radioLabels}
-              name="waterSewage"
+              name="sewer"
               handleRadioChange={handleRadioChange}
             />
+            {radioData.sewer === "Yes" && <MaxCapRow />}
           </Col>
         </Row>
         <Row className="mb-3">
           <Col className="mr-5">
-            <Row className="mb-1">Is the site connected to Natural Gas?</Row>
+            <Row id="road-label" className="mb-1">
+              Does the site have road access?
+            </Row>
+
             <Radios
+              aria-labelledby="road-label"
+              labels={radioLabels}
+              name="roadAccess"
+              handleRadioChange={handleRadioChange}
+            />
+          </Col>
+
+          <Col>
+            <Row id="gas-label" className="mb-1">
+              Does the site have access to natural gas supply and
+              infrastructure?
+            </Row>
+            <Radios
+              aria-labelledby="gas-label"
               labels={radioLabels}
               name="naturalGas"
               handleRadioChange={handleRadioChange}
             />
+            {radioData.naturalGas === "Yes" && <MaxCapRow units="MMBTU/hour" />}
           </Col>
+        </Row>
+        <Row className="mb-3">
+          <Col className="mr-5">
+            <Row id="electrical-label" className="mb-1">
+              Does the site have access to electrical supply and infrastructure?
+            </Row>
+            <Radios
+              aria-labelledby="electrical-label"
+              labels={radioLabels}
+              name="electrical"
+              handleRadioChange={handleRadioChange}
+            />
+            {radioData.electrical === "Yes" && <MaxCapRow units="MW" />}
+          </Col>
+          <Col />
         </Row>
       </Container>
       <ButtonRow
