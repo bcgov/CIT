@@ -1,5 +1,5 @@
-import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
 import "bootstrap/dist/css/bootstrap.css";
+import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
 
 import { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";

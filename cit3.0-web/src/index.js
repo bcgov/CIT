@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "bootstrap/dist/css/bootstrap.css";
 import "./index.css";
 import axios from "axios";
 import App from "./App";
