@@ -18,6 +18,6 @@ describe("PageTitleHeader", () => {
   });
   it("renders a column", () => {
     const { container } = render(<PageTitleHeader title={title} text={text} />);
-    expect(container.firstChild.toHaveClass("col"));
+    expect(container.firstChild).toHaveClass("col");
   });
 });
