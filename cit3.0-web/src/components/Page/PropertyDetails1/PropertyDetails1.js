@@ -7,7 +7,6 @@ import ButtonRow from "../../ButtonRow/ButtonRow";
 import Radios from "../../FormComponents/Radios";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
-import TextInput from "../../FormComponents/TextInput";
 import MaxCapRow from "../../FormComponents/MaxCapRow";
 
 const PropStatusOptions = [
@@ -70,7 +69,7 @@ export default function PropertyDetails1() {
   });
 
   const [radioData, setRadioData] = useState({
-    roadAccess: null,
+    roadAccess: { value: null },
     waterSupply: { value: null, capacity: null },
     naturalGas: { value: null, capacity: null },
     sewer: { value: null, capacity: null },
@@ -103,7 +102,6 @@ export default function PropertyDetails1() {
   };
 
   const handleRadioChange = (name, label) => {
-    console.log(label);
     const capacity = null;
     if (label !== "Yes") {
       setRadioData((prev) => ({
@@ -119,7 +117,6 @@ export default function PropertyDetails1() {
   };
 
   const handleCapacityChange = (name, value) => {
-    console.log(name, value);
     setRadioData((prev) => ({
       ...prev,
       [name]: { ...prev[name], capacity: value },
@@ -127,14 +124,11 @@ export default function PropertyDetails1() {
   };
 
   const handleContinue = () => {
-    console.log("selectData: ", selectData);
-    console.log("RadioData: ", radioData);
     goToNextPage();
   };
 
   return (
     <>
-      {console.log(radioData)}
       <PortalHeader />
       <NavigationHeader />
       <Container role="form">
@@ -236,8 +230,8 @@ export default function PropertyDetails1() {
               name="sewer"
               handleRadioChange={handleRadioChange}
             />
-            {radioData.sewer === "Yes" && (
-              <MaxCapRow handleChange={handleCapacityChange} />
+            {radioData.sewer.value === "Yes" && (
+              <MaxCapRow name="sewer" handleChange={handleCapacityChange} />
             )}
           </Col>
         </Row>
@@ -266,8 +260,9 @@ export default function PropertyDetails1() {
               name="naturalGas"
               handleRadioChange={handleRadioChange}
             />
-            {radioData.naturalGas === "Yes" && (
+            {radioData.naturalGas.value === "Yes" && (
               <MaxCapRow
+                name="naturalGas"
                 handleChange={handleCapacityChange}
                 units="MMBTU/hour"
               />
@@ -285,8 +280,12 @@ export default function PropertyDetails1() {
               name="electrical"
               handleRadioChange={handleRadioChange}
             />
-            {radioData.electrical === "Yes" && (
-              <MaxCapRow handleChange={handleCapacityChange} units="MW" />
+            {radioData.electrical.value === "Yes" && (
+              <MaxCapRow
+                name="electrical"
+                handleChange={handleCapacityChange}
+                units="MW"
+              />
             )}
           </Col>
           <Col />
