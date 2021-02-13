@@ -71,10 +71,10 @@ export default function PropertyDetails1() {
 
   const [radioData, setRadioData] = useState({
     roadAccess: null,
-    waterSupply: null,
-    naturalGas: null,
-    sewer: null,
-    electrical: null,
+    waterSupply: { value: null, capacity: null },
+    naturalGas: { value: null, capacity: null },
+    sewer: { value: null, capacity: null },
+    electrical: { value: null, capacity: null },
   });
 
   const history = useHistory();
@@ -102,10 +102,27 @@ export default function PropertyDetails1() {
     }
   };
 
-  const handleRadioChange = (name, label, data) => {
+  const handleRadioChange = (name, label) => {
+    console.log(label);
+    const capacity = null;
+    if (label !== "Yes") {
+      setRadioData((prev) => ({
+        ...prev,
+        [name]: { capacity, value: label },
+      }));
+    } else {
+      setRadioData((prev) => ({
+        ...prev,
+        [name]: { ...prev[name], value: label },
+      }));
+    }
+  };
+
+  const handleCapacityChange = (name, value) => {
+    console.log(name, value);
     setRadioData((prev) => ({
       ...prev,
-      [name]: label,
+      [name]: { ...prev[name], capacity: value },
     }));
   };
 
@@ -202,7 +219,12 @@ export default function PropertyDetails1() {
               name="waterSupply"
               handleRadioChange={handleRadioChange}
             />
-            {radioData.waterSupply === "Yes" && <MaxCapRow />}
+            {radioData.waterSupply.value === "Yes" && (
+              <MaxCapRow
+                name="waterSupply"
+                handleChange={handleCapacityChange}
+              />
+            )}
           </Col>
           <Col>
             <Row id="sewer-label" className="mb-1">
@@ -214,7 +236,9 @@ export default function PropertyDetails1() {
               name="sewer"
               handleRadioChange={handleRadioChange}
             />
-            {radioData.sewer === "Yes" && <MaxCapRow />}
+            {radioData.sewer === "Yes" && (
+              <MaxCapRow handleChange={handleCapacityChange} />
+            )}
           </Col>
         </Row>
         <Row className="mb-3">
@@ -242,7 +266,12 @@ export default function PropertyDetails1() {
               name="naturalGas"
               handleRadioChange={handleRadioChange}
             />
-            {radioData.naturalGas === "Yes" && <MaxCapRow units="MMBTU/hour" />}
+            {radioData.naturalGas === "Yes" && (
+              <MaxCapRow
+                handleChange={handleCapacityChange}
+                units="MMBTU/hour"
+              />
+            )}
           </Col>
         </Row>
         <Row className="mb-3">
@@ -256,7 +285,9 @@ export default function PropertyDetails1() {
               name="electrical"
               handleRadioChange={handleRadioChange}
             />
-            {radioData.electrical === "Yes" && <MaxCapRow units="MW" />}
+            {radioData.electrical === "Yes" && (
+              <MaxCapRow handleChange={handleCapacityChange} units="MW" />
+            )}
           </Col>
           <Col />
         </Row>
