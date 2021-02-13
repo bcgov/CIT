@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Row, Col } from "react-bootstrap";
 import TextInput from "./TextInput";
 
-export default function MaxCapRow({ units }) {
+export default function MaxCapRow({ units, handleChange, name }) {
   return (
     <>
       <Row id="water-max-cap-label">
@@ -10,7 +10,7 @@ export default function MaxCapRow({ units }) {
       </Row>
       <Row className="align-items-center">
         <Col md className="pl-0 w-25 justify-content-center">
-          <TextInput rows={1} />
+          <TextInput handleChange={handleChange} name={name} rows={1} />
         </Col>
         <Col xs className="justify-content-center pl-0">
           {units ? (
@@ -33,4 +33,6 @@ MaxCapRow.defaultProps = {
 
 MaxCapRow.propTypes = {
   units: PropTypes.string,
+  handleChange: PropTypes.func.isRequired,
+  name: PropTypes.string.isRequired,
 };
