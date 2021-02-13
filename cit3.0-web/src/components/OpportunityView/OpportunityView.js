@@ -1,5 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
-/// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import Resource from "./Resource";
 import LocationsPanel from "../LocationsPanel/LocationsPanel";
@@ -12,11 +12,16 @@ import {
 } from "../../store/actions/opportunity";
 import "./OpportunityView.css";
 
-export default function OpportunityView() {
+export default function OpportunityView({ view }) {
   const dispatch = useDispatch();
 
   // Site info sections
   const siteInfo = useSelector((state) => state.opportunity.siteInfo);
+  const userInfo = useSelector((state) => state.opportunity.userInfo);
+  let overallInfo = siteInfo;
+  if (view === "all") {
+    overallInfo = { ...overallInfo, ...userInfo };
+  }
   const physical = useSelector((state) => state.opportunity.physical);
   const transportation = useSelector(
     (state) => state.opportunity.transportation
@@ -26,6 +31,9 @@ export default function OpportunityView() {
   const coords = useSelector((state) => state.opportunity.coords);
   const municipalities = useSelector(
     (state) => state.opportunity.municipalities
+  );
+  const firstNationCommunity = useSelector(
+    (state) => state.opportunity.firstNationCommunity
   );
   const nearbyResources = useSelector(
     (state) => state.opportunity.nearbyResources
@@ -40,7 +48,7 @@ export default function OpportunityView() {
         <Col>
           <Resource
             title="Site Info - General Details"
-            itemsToDisplay={siteInfo}
+            itemsToDisplay={overallInfo}
           />
           <Resource title="Physical" itemsToDisplay={physical} />
           <Resource title="Transportation" itemsToDisplay={transportation} />
@@ -58,6 +66,7 @@ export default function OpportunityView() {
             address={address}
             coords={coords}
             municipalities={municipalities}
+            firstNationCommunity={firstNationCommunity}
           />
           {businessContact.name || businessContact.email ? (
             <BusinessContact
@@ -71,6 +80,10 @@ export default function OpportunityView() {
   );
 }
 
-// OpportunityView.propTypes = {
-//   data: PropTypes.shape().isRequired,
-// };
+OpportunityView.propTypes = {
+  view: PropTypes.string,
+};
+
+OpportunityView.defaultProps = {
+  view: "",
+};

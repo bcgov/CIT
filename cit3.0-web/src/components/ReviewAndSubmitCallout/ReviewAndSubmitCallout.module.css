@@ -4,3 +4,12 @@
     border: 2px solid #1d9f05;
     background: #eaf2ec;
 }
+
+.ReviewAndSubmitCallout label span {
+    opacity: 0.75;
+}
+
+.ReviewAndSubmitCallout input {
+    border: 2px solid #606060;
+    border-radius: 4px;
+}

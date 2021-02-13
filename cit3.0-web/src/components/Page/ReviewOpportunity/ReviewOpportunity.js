@@ -30,7 +30,7 @@ const ReviewOpportunity = ({ location }) => {
         cancelOpportunity={() => confirmCancel()}
         prevRoute="/addOpportunity/propDetails2"
       />
-      <OpportunityView data={location.state} />
+      <OpportunityView data={location.state} view="all" />
     </div>
   );
 };

@@ -13,8 +13,8 @@ import "./map.css";
 import ChangeView from "../ChangeView/ChangeView";
 import AddLocationMarker from "../AddMarker/AddMarker";
 import ResourceMarker from "../AddMarker/ResourceMarker";
-import Test from "./testing";
 
+/* eslint-disable no-unused-vars */
 export default function Map({
   nearbyResources,
   coords,

@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { Row, Col } from "react-bootstrap";
 import { v4 } from "uuid";
+import "./Resource.css";
 
 export default function Resource({ title, itemsToDisplay }) {
   // TODO:  handle sub objects
@@ -9,20 +10,22 @@ export default function Resource({ title, itemsToDisplay }) {
       if (typeof items[key] === "object") {
         return (
           <div key={v4()}>
-            <Row>{key}:</Row>
+            <Row>{key}: </Row>
             <Col>{displayItems(items[key])}</Col>
           </div>
         );
       }
       return (
         <Row key={v4()}>
-          {key}: {items[key]}
+          {key}: <b className="resource-value">{items[key]}</b>
         </Row>
       );
     });
   return (
-    <div className="my-4">
-      <Row className="font-weight-bold mb-2">{title}</Row>
+    <div className="my-6">
+      <Row className="mb-3">
+        <h3>{title}</h3>
+      </Row>
       {displayItems(itemsToDisplay)}
     </div>
   );
