@@ -219,6 +219,7 @@ export default function PropertyDetails1() {
                 name="waterSupply"
                 handleChange={handleCapacityChange}
                 value={radioData.waterSupply.capacity}
+                unitString="cubic meters"
               />
             )}
           </Col>
@@ -237,6 +238,7 @@ export default function PropertyDetails1() {
                 name="sewer"
                 handleChange={handleCapacityChange}
                 value={radioData.sewer.capacity}
+                unitString="cubic meters"
               />
             )}
           </Col>
@@ -272,6 +274,7 @@ export default function PropertyDetails1() {
                 value={radioData.naturalGas.capacity}
                 handleChange={handleCapacityChange}
                 units="MMBTU/hour"
+                unitString="MMBtu"
               />
             )}
           </Col>
