@@ -16,17 +16,17 @@ export default function OpportunityTable(props) {
   };
 
   const determineTextColour = (approvalStatus) => {
-    if (approvalStatus === "Pending Review") {
-      return <div className="status-text-orange">{approvalStatus}</div>;
+    if (approvalStatus === "PEND") {
+      return <div className="status-text-orange">Pending Review</div>;
     }
-    if (approvalStatus === "Published") {
-      return <div className="status-text-green">{approvalStatus}</div>;
+    if (approvalStatus === "PUBL") {
+      return <div className="status-text-green">Published</div>;
     }
-    if (approvalStatus === "Needs to be edited") {
-      return <div className="status-text-red">{approvalStatus}</div>;
+    if (approvalStatus === "EDIT") {
+      return <div className="status-text-red">Needs to be edited</div>;
     }
-    if (approvalStatus === "Not completed") {
-      return <div className="status-text-red">{approvalStatus}</div>;
+    if (approvalStatus === "NCOM") {
+      return <div className="status-text-red">Not completed</div>;
     }
     return approvalStatus;
   };
@@ -56,6 +56,11 @@ export default function OpportunityTable(props) {
     );
   };
 
+  const formatDate = (ISODate) => {
+    const dateString = ISODate.substring(0, 10);
+    return dateString;
+  };
+
   useEffect(() => {
     if (opportunities) {
       for (let i = 0; i < opportunities.length; i += 1) {
@@ -71,6 +76,7 @@ export default function OpportunityTable(props) {
                 </div>
               </Col>
               <Col>{opportunities[i].address}</Col>
+              <Col>{formatDate(opportunities[i].date_created)}</Col>
               <Col>{determineTextColour(opportunities[i].approval_status)}</Col>
               <Col>{determineActions(opportunities[i].approval_status)}</Col>
             </Row>
@@ -90,6 +96,9 @@ export default function OpportunityTable(props) {
         </Col>
         <Col>
           <b>Details</b>
+        </Col>
+        <Col>
+          <b>Date added</b>
         </Col>
         <Col>
           <b>Status</b>
