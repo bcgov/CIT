@@ -70,10 +70,10 @@ export default function PropertyDetails1() {
 
   const [radioData, setRadioData] = useState({
     roadAccess: { value: null },
-    waterSupply: { value: null, capacity: null },
-    naturalGas: { value: null, capacity: null },
-    sewer: { value: null, capacity: null },
-    electrical: { value: null, capacity: null },
+    waterSupply: { value: null, capacity: "" },
+    naturalGas: { value: null, capacity: "" },
+    sewer: { value: null, capacity: "" },
+    electrical: { value: null, capacity: "" },
   });
 
   const history = useHistory();
@@ -129,6 +129,7 @@ export default function PropertyDetails1() {
 
   return (
     <>
+      {console.log(radioData)}
       <PortalHeader />
       <NavigationHeader />
       <Container role="form">
@@ -217,6 +218,7 @@ export default function PropertyDetails1() {
               <MaxCapRow
                 name="waterSupply"
                 handleChange={handleCapacityChange}
+                value={radioData.waterSupply.capacity}
               />
             )}
           </Col>
@@ -231,7 +233,11 @@ export default function PropertyDetails1() {
               handleRadioChange={handleRadioChange}
             />
             {radioData.sewer.value === "Yes" && (
-              <MaxCapRow name="sewer" handleChange={handleCapacityChange} />
+              <MaxCapRow
+                name="sewer"
+                handleChange={handleCapacityChange}
+                value={radioData.sewer.capacity}
+              />
             )}
           </Col>
         </Row>
@@ -263,6 +269,7 @@ export default function PropertyDetails1() {
             {radioData.naturalGas.value === "Yes" && (
               <MaxCapRow
                 name="naturalGas"
+                value={radioData.naturalGas.capacity}
                 handleChange={handleCapacityChange}
                 units="MMBTU/hour"
               />
@@ -285,6 +292,7 @@ export default function PropertyDetails1() {
                 name="electrical"
                 handleChange={handleCapacityChange}
                 units="MW"
+                value={radioData.electrical.capacity}
               />
             )}
           </Col>
