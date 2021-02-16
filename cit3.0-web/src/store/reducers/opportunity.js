@@ -28,7 +28,7 @@ const OPPORTUNITY_MODEL = {
     email: "",
   },
   resourceIds: [],
-  nearByResources: {},
+  nearbyResources: {},
   municipalities: [
     {
       name: "Comox",
@@ -153,7 +153,7 @@ export default function opportunity(state = OPPORTUNITY_MODEL, action) {
       state.resourceIds = action.payload;
       break;
     case ADD_NEARBY_RESOUCES:
-      state.nearByResources = action.payload;
+      state.nearbyResources = action.payload;
       break;
     default:
       console.error("Invalid action performed on opportunities store");

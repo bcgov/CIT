@@ -9,7 +9,12 @@
     opacity: 0.75;
 }
 
-.ReviewAndSubmitCallout input {
-    border: 2px solid #606060;
-    border-radius: 4px;
+.ReviewAndSubmitCallout textarea {
+    width: 50vw;
+}
+
+@media (max-width: 768px) {
+    .ReviewAndSubmitCallout textarea { 
+        width: 100%;
+    }
 }
