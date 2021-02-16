@@ -11,6 +11,7 @@ export default function Radios({ labels, name, handleRadioChange }) {
         type="radio"
         label={label}
         aria-label={label}
+        name={name}
       />
     ));
   return <Row>{mapLabels(labels)}</Row>;

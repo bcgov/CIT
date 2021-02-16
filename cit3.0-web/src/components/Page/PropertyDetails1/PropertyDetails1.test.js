@@ -1,4 +1,4 @@
-import { render, cleanup } from "@testing-library/react";
+import { render, cleanup, fireEvent } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import PropertyDetails1 from "./PropertyDetails1";
 
@@ -14,21 +14,23 @@ describe("Property Details1", () => {
     const pageTitle = getByText(/Enter/i);
     expect(pageTitle.textContent).toBe("Enter Property Details");
   });
-  it("renders 5 dropdowns", () => {
+  it("renders all inputs", () => {
     const { container } = render(
       <BrowserRouter>
         <PropertyDetails1 />
       </BrowserRouter>
     );
-    const inputs = container.querySelector("input");
-    expect(inputs.length).toBe(5);
+    const inputs = container.querySelectorAll("input");
+    expect(inputs.length).toBe(19);
   });
-  it("renders radio inputs", () => {
-    const { container } = render(
+  it("renders a select with an associated label", () => {
+    const { getByLabelText } = render(
       <BrowserRouter>
         <PropertyDetails1 />
       </BrowserRouter>
     );
-    const inputs = container.querySelector("input");
+    const propStatus = getByLabelText("Sale or Lease");
+    fireEvent.change(propStatus, { target: { value: "sale" } });
+    expect(propStatus.value).toBe("sale");
   });
 });
