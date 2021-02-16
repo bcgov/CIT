@@ -9,20 +9,25 @@ export default function TextInput({
   disabled,
   handleChange,
   name,
+  value,
 }) {
   return (
     <div className="d-flex flex-column w-100">
-      <p className="mb-0">{heading}</p>
+      <p id={`${name}-label`} className="mb-0">
+        {heading}
+      </p>
       <p className="mb-0" style={{ opacity: "0.5" }}>
         {notes}
       </p>
       <textarea
+        aria-labelledby={`${name}-label`}
         type="textarea"
         className="bcgov-text-input mb-4"
         rows={rows}
         placeholder={placeholder}
         disabled={disabled}
         onChange={(e) => handleChange(name, e.target.value)}
+        value={value}
       />
     </div>
   );
@@ -34,6 +39,7 @@ TextInput.defaultProps = {
   placeholder: null,
   rows: 3,
   disabled: false,
+  value: "",
 };
 
 TextInput.propTypes = {
@@ -44,4 +50,5 @@ TextInput.propTypes = {
   disabled: PropTypes.bool,
   handleChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
+  value: PropTypes.string,
 };

@@ -10,6 +10,14 @@ import TextInput from "../../FormComponents/TextInput";
 
 export default function PropertyDetails2({ location }) {
   const [checked, setChecked] = useState(false);
+  const [formData, setFormData] = useState({
+    oppDesc: "",
+    envDesc: "",
+    commLink: "",
+    moreInfoLink: "",
+    busName: "",
+    busEmail: "",
+  });
 
   console.log("location: ", location.state);
   const history = useHistory();
@@ -31,15 +39,34 @@ export default function PropertyDetails2({ location }) {
 
   const goToNextPage = () => {
     history.push({
-      pathname: `propDetails2`,
-      state: { stuff: "stuff" },
+      pathname: `review`,
+      state: { formData, checked },
     });
   };
   const handleContinue = () => {
-    goToNextPage();
+    // goToNextPage();
+    const state = { formData, checked };
+    console.log(state);
+  };
+
+  const handleTextInput = (name, text) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: text,
+    }));
+  };
+
+  const handleCheck = (isChecked) => {
+    setChecked(isChecked);
+    setFormData((prev) => ({
+      ...prev,
+      busEmail: "",
+      busName: "",
+    }));
   };
   return (
     <>
+      {console.log(formData)}
       <PortalHeader />
       <NavigationHeader />
       <Container role="form">
@@ -57,13 +84,25 @@ export default function PropertyDetails2({ location }) {
           <h4>Site Information</h4>
         </Row>
         <Row>
-          <TextInput heading={oppDescLabel} notes={noteLabel} />
+          <TextInput
+            heading={oppDescLabel}
+            handleChange={handleTextInput}
+            notes={noteLabel}
+            name="oppDesc"
+            value={formData.oppDesc}
+          />
         </Row>
         <Row className="mb-3">
           <h4>Environmental Information</h4>
         </Row>
         <Row>
-          <TextInput heading={enviroLabel} notes={noteLabel} />
+          <TextInput
+            handleChange={handleTextInput}
+            heading={enviroLabel}
+            notes={noteLabel}
+            name="envDesc"
+            value={formData.envDesc}
+          />
         </Row>
         <Row>
           <TextInput
@@ -71,6 +110,9 @@ export default function PropertyDetails2({ location }) {
             notes={urlNoteComm}
             rows={1}
             placeholder={placeholderComm}
+            name="commLink"
+            handleChange={handleTextInput}
+            value={formData.commLink}
           />
         </Row>
         <Row>
@@ -79,6 +121,9 @@ export default function PropertyDetails2({ location }) {
             notes={urlNote}
             rows={1}
             placeholder={placeholder}
+            name="moreInfoLink"
+            handleChange={handleTextInput}
+            value={formData.moreInfoLink}
           />
         </Row>
         <Row className="mb-3">
@@ -86,9 +131,10 @@ export default function PropertyDetails2({ location }) {
         </Row>
         <Row className="mb-3">
           <Form.Check
-            onClick={(e) => setChecked(e.target.checked)}
+            onClick={(e) => handleCheck(e.target.checked)}
             type="checkbox"
             label="Use the Contact Name/Email associated with the BCeID logged in."
+            aria-label="Use the Contact Name/Email associated with the BCeID logged in."
           />
         </Row>
         <Row>
@@ -98,12 +144,22 @@ export default function PropertyDetails2({ location }) {
               heading="Business Contact Name"
               notes={""}
               rows={1}
+              name="busName"
+              handleChange={handleTextInput}
+              value={formData.busName}
             />
-            <TextInput
+            <p id="email-label" className="mb-0">
+              Business Contact Email
+            </p>
+            <input
               disabled={checked}
-              heading="Business Contact Email"
-              notes={""}
-              rows={1}
+              aria-labelledby="email-label"
+              className="bcgov-text-input mb-4 w-100"
+              type="email"
+              name="busEmail"
+              pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g"
+              onChange={(e) => handleTextInput("busEmail", e.target.value)}
+              value={formData.busEmail}
             />
           </Col>
           <Col />
