@@ -1,0 +1,19 @@
+.opportunity-table-row {
+    padding-bottom: 2vh;
+}
+
+.opportunity-table-map-container {
+    height: 120px;
+}
+
+.status-text-green {
+    color:green;
+}
+
+.status-text-orange {
+    color:orange;
+}
+
+.status-text-red {
+    color:red;
+}

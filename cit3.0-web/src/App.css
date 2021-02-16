@@ -1,6 +1,11 @@
 .app-container {
   padding-bottom: 75px;
-} 
+  min-height: "100vh";
+}
+
+.invest-container {
+  height: "80vh";
+}
 
 .footer {
   position: fixed;
