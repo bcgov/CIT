@@ -65,6 +65,13 @@ export function setNearbyResources(resourses) {
 }
 
 /**
+ * @param {Object} shared
+ */
+export function setBusinessNameShared(shared) {
+  return { type: ADD_BUSINESS_CONTACT, payload: { shared } };
+}
+
+/**
  * Set the opportunity state back to initial state
  */
 export function resetOpportunity() {

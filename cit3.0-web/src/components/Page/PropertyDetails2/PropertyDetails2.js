@@ -12,6 +12,7 @@ import {
   setBusinessContact,
   setSiteInfo,
   setUserInfo,
+  setBusinessNameShared,
 } from "../../../store/actions/opportunity";
 
 export default function PropertyDetails2({ location }) {
@@ -69,7 +70,7 @@ export default function PropertyDetails2({ location }) {
   };
 
   const handleCheck = (isChecked) => {
-    setChecked(isChecked);
+    dispatch(setBusinessNameShared(isChecked));
     setFormData((prev) => ({
       ...prev,
       busEmail: "",
@@ -153,6 +154,7 @@ export default function PropertyDetails2({ location }) {
         </Row>
         <Row className="mb-3">
           <Form.Check
+            checked={businessContact.shared}
             onClick={(e) => handleCheck(e.target.checked)}
             type="checkbox"
             label="Use the Contact Name/Email associated with the BCeID logged in."
@@ -162,6 +164,7 @@ export default function PropertyDetails2({ location }) {
         <Row>
           <Col className="pl-0">
             <TextInput
+              required={false}
               disabled={checked}
               heading="Business Contact Name"
               notes={""}
@@ -173,6 +176,7 @@ export default function PropertyDetails2({ location }) {
               name="busName"
             />
             <TextInput
+              required={false}
               disabled={checked}
               aria-labelledby="email-label"
               heading="Business Contact Email"

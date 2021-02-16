@@ -26,6 +26,7 @@ const OPPORTUNITY_MODEL = {
   businessContact: {
     name: "",
     email: "",
+    shared: false,
   },
   resourceIds: [],
   nearbyResources: {},
