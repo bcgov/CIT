@@ -23,51 +23,53 @@ function App() {
   };
 
   return (
-    <Provider className="app-container" store={store}>
-      <Header header={header} />
-      <Router>
-        <Switch>
-          <Route exact path="/">
-            <EDODashboard />
-          </Route>
-          <Route
-            path="/addOpportunity"
-            render={({ match: { url } }) => (
-              <>
-                <Route path={`${url}/`} component={AddOpportunity} exact />
-                <Route
-                  path={`${url}/siteDetails`}
-                  component={SiteInfomation}
-                  exact
-                />
-                <Route
-                  path={`${url}/propDetails1`}
-                  component={PropertyDetails1}
-                  exact
-                />
-                <Route
-                  path={`${url}/propDetails2`}
-                  component={PropertyDetails2}
-                  exact
-                />
-                <Route
-                  path={`${url}/review`}
-                  component={ReviewOpportunity}
-                  exact
-                />
-                <Route
-                  path={`${url}/success`}
-                  component={ReviewSubmitted}
-                  exact
-                />
-              </>
-            )}
-          />
-        </Switch>
-      </Router>
+    <Provider store={store}>
+      <div className="app-container">
+        <Header header={header} />
+        <Router>
+          <Switch>
+            <Route exact path="/">
+              <EDODashboard />
+            </Route>
+            <Route
+              path="/addOpportunity"
+              render={({ match: { url } }) => (
+                <>
+                  <Route path={`${url}/`} component={AddOpportunity} exact />
+                  <Route
+                    path={`${url}/siteDetails`}
+                    component={SiteInfomation}
+                    exact
+                  />
+                  <Route
+                    path={`${url}/propDetails1`}
+                    component={PropertyDetails1}
+                    exact
+                  />
+                  <Route
+                    path={`${url}/propDetails2`}
+                    component={PropertyDetails2}
+                    exact
+                  />
+                  <Route
+                    path={`${url}/review`}
+                    component={ReviewOpportunity}
+                    exact
+                  />
+                  <Route
+                    path={`${url}/success`}
+                    component={ReviewSubmitted}
+                    exact
+                  />
+                </>
+              )}
+            />
+          </Switch>
+        </Router>
 
-      <div className="footer">
-        <Footer />
+        <div className="footer">
+          <Footer />
+        </div>
       </div>
     </Provider>
   );
