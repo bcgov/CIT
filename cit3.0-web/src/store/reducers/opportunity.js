@@ -71,7 +71,7 @@ const OPPORTUNITY_MODEL = {
     "Nearest Health Care Facility": "Drop-in Clinic - 3km",
     "Nearest First Responders": {
       "- Fire": "Firehouse #1 - 3km",
-      "- Ambulance": "First Resonder Hub - 4km",
+      "- Ambulance": "First Responder Hub - 4km",
       "- Police": "Station 2 - 2km",
       "- Coast Guard": "Intl. Port - 10km",
     },
