@@ -19,10 +19,17 @@ export default function PropertyDetails2({ location }) {
   const businessContact = useSelector(
     (state) => state.opportunity.businessContact
   );
-  const siteInfo = useSelector((state) => state.opportunity.siteInfo);
   const userInfo = useSelector((state) => state.opportunity.userInfo);
 
   const [checked, setChecked] = useState(false);
+  const [formData, setFormData] = useState({
+    oppDesc: "",
+    envDesc: "",
+    commLink: "",
+    moreInfoLink: "",
+    busName: "",
+    busEmail: "",
+  });
 
   console.log("location: ", location.state);
   const history = useHistory();
@@ -45,14 +52,33 @@ export default function PropertyDetails2({ location }) {
   const goToNextPage = () => {
     history.push({
       pathname: `review`,
-      state: { stuff: "stuff" },
+      state: { formData, checked },
     });
   };
   const handleContinue = () => {
     goToNextPage();
+    const state = { formData, checked };
+    console.log(state);
+  };
+
+  const handleTextInput = (name, text) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: text,
+    }));
+  };
+
+  const handleCheck = (isChecked) => {
+    setChecked(isChecked);
+    setFormData((prev) => ({
+      ...prev,
+      busEmail: "",
+      busName: "",
+    }));
   };
   return (
     <>
+      {console.log(formData)}
       <PortalHeader />
       <NavigationHeader />
       <Container role="form">
@@ -73,6 +99,7 @@ export default function PropertyDetails2({ location }) {
           <TextInput
             heading={oppDescLabel}
             notes={noteLabel}
+            name="oppDesc"
             value={userInfo["Opportunity Description"]}
             handleChange={(name, value) =>
               dispatch(setUserInfo({ "Opportunity Description": value }))
@@ -86,6 +113,7 @@ export default function PropertyDetails2({ location }) {
           <TextInput
             heading={enviroLabel}
             notes={noteLabel}
+            name="envDesc"
             value={userInfo["Environmental Information"]}
             handleChange={(name, value) =>
               dispatch(setUserInfo({ "Environmental Information": value }))
@@ -98,6 +126,7 @@ export default function PropertyDetails2({ location }) {
             notes={urlNoteComm}
             rows={1}
             placeholder={placeholderComm}
+            name="commLink"
             value={userInfo["Visit Community website"]}
             handleChange={(name, value) =>
               dispatch(setUserInfo({ "Visit Community website": value }))
@@ -116,6 +145,7 @@ export default function PropertyDetails2({ location }) {
                 setUserInfo({ "View listing for this Opportunity": value })
               )
             }
+            name="moreInfoLink"
           />
         </Row>
         <Row className="mb-3">
@@ -123,9 +153,10 @@ export default function PropertyDetails2({ location }) {
         </Row>
         <Row className="mb-3">
           <Form.Check
-            onClick={(e) => setChecked(e.target.checked)}
+            onClick={(e) => handleCheck(e.target.checked)}
             type="checkbox"
             label="Use the Contact Name/Email associated with the BCeID logged in."
+            aria-label="Use the Contact Name/Email associated with the BCeID logged in."
           />
         </Row>
         <Row>
@@ -139,12 +170,16 @@ export default function PropertyDetails2({ location }) {
               handleChange={(name, value) =>
                 dispatch(setBusinessContact({ name: value }))
               }
+              name="busName"
             />
             <TextInput
               disabled={checked}
+              aria-labelledby="email-label"
               heading="Business Contact Email"
               notes={""}
               rows={1}
+              name="busEmail"
+              pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g"
               value={businessContact.email}
               handleChange={(name, value) =>
                 dispatch(setBusinessContact({ email: value }))

@@ -13,11 +13,14 @@ export default function TextInput({
 }) {
   return (
     <div className="d-flex flex-column w-100">
-      <p className="mb-0">{heading}</p>
+      <p id={`${name}-label`} className="mb-0">
+        {heading}
+      </p>
       <p className="mb-0" style={{ opacity: "0.5" }}>
         {notes}
       </p>
       <textarea
+        aria-labelledby={`${name}-label`}
         type="textarea"
         className="bcgov-text-input mb-4"
         rows={rows}
