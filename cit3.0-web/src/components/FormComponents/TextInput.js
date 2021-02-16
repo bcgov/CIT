@@ -9,6 +9,7 @@ export default function TextInput({
   disabled,
   handleChange,
   name,
+  value,
 }) {
   return (
     <div className="d-flex flex-column w-100">
@@ -22,6 +23,7 @@ export default function TextInput({
         rows={rows}
         placeholder={placeholder}
         disabled={disabled}
+        value={value}
         onChange={(e) => handleChange(name, e.target.value)}
       />
     </div>
@@ -34,6 +36,7 @@ TextInput.defaultProps = {
   placeholder: null,
   rows: 3,
   disabled: false,
+  value: "",
 };
 
 TextInput.propTypes = {
@@ -44,4 +47,5 @@ TextInput.propTypes = {
   disabled: PropTypes.bool,
   handleChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
+  value: PropTypes.string,
 };

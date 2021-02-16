@@ -5,6 +5,9 @@ import {
   ADD_RESOUCE_IDS,
   ADD_NEARBY_RESOUCES,
   RESET_OPPORTUNITY,
+  ADD_SITE_INFO,
+  ADD_USER_INFO,
+  ADD_NAME,
 } from "../constants/action-types";
 
 /**
@@ -17,31 +20,32 @@ import {
  * @todo remove/update siteInfo
  */
 const OPPORTUNITY_MODEL = {
+  name: "",
   address: "",
   coords: [54.1722, -124.1207],
   businessContact: {
-    name: "Jane Doe",
-    email: "jane.doe@example.com",
+    name: "",
+    email: "",
   },
   resourceIds: [],
   nearByResources: {},
   municipalities: [
     {
-      name: "Landville",
+      name: "Comox",
       link: "www.example.com",
-      distance: 1.23,
+      distance: 1,
       population: 10900,
     },
     {
-      name: "Coast",
+      name: "Courtney & Surrounding",
       link: "www.example.com",
-      distance: 4.56,
+      distance: 3.5,
       population: 190,
     },
     {
       name: "Victoria",
       link: "www.example.com",
-      distance: 7.89,
+      distance: 177.89,
       population: 109000,
     },
   ],
@@ -59,7 +63,8 @@ const OPPORTUNITY_MODEL = {
     "Power Transmission Lines": "BCHydro Trunk - 10m",
     "Site servicing": {
       "- Road Access": "Yes",
-      "- Sewer/Water": "Yes",
+      "- Sewer": "Yes",
+      "- Water": "Yes",
       "- Natural Gas": "No",
     },
     "Nearest Health Care Facility": "Drop-in Clinic - 3km",
@@ -94,11 +99,23 @@ const OPPORTUNITY_MODEL = {
     "Current Zoning": "",
     "Future Zoning": "",
     "Preferred Development": "",
-    "Oppotunity Description": "",
-    "Environmental Information": "",
-    "Visit Community website": "",
-    "View listing for this Opportunity": "",
+    "Opportunity Description":
+      "This is a great area for a light industrial venture. There is an awesome local life style for employees.",
+    "Environmental Information":
+      "There is no soil pollution. A river near by is used for road runoff.",
+    "Visit Community website": "www.example.net",
+    "View listing for this Opportunity": "www.example.net",
   },
+  // userInfo: {
+  //   propertyStatus: { name: "Sale or Lease", value: "" },
+  //   currentZoning: { name: "Current Zoning", value: "" },
+  //   futreZoning: { name: "Future Zoning", value: "" },
+  //   preferredDevelopment: { name: "Preferred Development", value: "" },
+  //   opDesc: { name: "Oppotunity Description", value: "" },
+  //   envInfo: { name: "Environmental Information", value: "" },
+  //   commWebsite: { name: "Visit Community website", value: "" },
+  //   listing: { name: "View listing for this Opportunity", value: "" },
+  // },
 };
 
 /**
@@ -121,7 +138,16 @@ export default function opportunity(state = OPPORTUNITY_MODEL, action) {
       state.coords = action.payload;
       break;
     case ADD_BUSINESS_CONTACT:
-      state.businessContact = action.payload;
+      state.businessContact = { ...state.businessContact, ...action.payload };
+      break;
+    case ADD_SITE_INFO:
+      state.siteInfo = { ...state.siteInfo, ...action.payload };
+      break;
+    case ADD_USER_INFO:
+      state.userInfo = { ...state.userInfo, ...action.payload };
+      break;
+    case ADD_NAME:
+      state.name = action.payload;
       break;
     case ADD_RESOUCE_IDS:
       state.resourceIds = action.payload;

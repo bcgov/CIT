@@ -2,13 +2,26 @@ import PropTypes from "prop-types";
 import { Container, Col, Row, Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import PageTitleHeader from "../../Headers/PageTitleHeader/PageTitleHeader";
 import ButtonRow from "../../ButtonRow/ButtonRow";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import TextInput from "../../FormComponents/TextInput";
+import {
+  setBusinessContact,
+  setSiteInfo,
+  setUserInfo,
+} from "../../../store/actions/opportunity";
 
 export default function PropertyDetails2({ location }) {
+  const dispatch = useDispatch();
+  const businessContact = useSelector(
+    (state) => state.opportunity.businessContact
+  );
+  const siteInfo = useSelector((state) => state.opportunity.siteInfo);
+  const userInfo = useSelector((state) => state.opportunity.userInfo);
+
   const [checked, setChecked] = useState(false);
 
   console.log("location: ", location.state);
@@ -31,7 +44,7 @@ export default function PropertyDetails2({ location }) {
 
   const goToNextPage = () => {
     history.push({
-      pathname: `propDetails2`,
+      pathname: `review`,
       state: { stuff: "stuff" },
     });
   };
@@ -57,13 +70,27 @@ export default function PropertyDetails2({ location }) {
           <h4>Site Information</h4>
         </Row>
         <Row>
-          <TextInput heading={oppDescLabel} notes={noteLabel} />
+          <TextInput
+            heading={oppDescLabel}
+            notes={noteLabel}
+            value={userInfo["Opportunity Description"]}
+            handleChange={(name, value) =>
+              dispatch(setUserInfo({ "Opportunity Description": value }))
+            }
+          />
         </Row>
         <Row className="mb-3">
           <h4>Environmental Information</h4>
         </Row>
         <Row>
-          <TextInput heading={enviroLabel} notes={noteLabel} />
+          <TextInput
+            heading={enviroLabel}
+            notes={noteLabel}
+            value={userInfo["Environmental Information"]}
+            handleChange={(name, value) =>
+              dispatch(setUserInfo({ "Environmental Information": value }))
+            }
+          />
         </Row>
         <Row>
           <TextInput
@@ -71,6 +98,10 @@ export default function PropertyDetails2({ location }) {
             notes={urlNoteComm}
             rows={1}
             placeholder={placeholderComm}
+            value={userInfo["Visit Community website"]}
+            handleChange={(name, value) =>
+              dispatch(setUserInfo({ "Visit Community website": value }))
+            }
           />
         </Row>
         <Row>
@@ -79,6 +110,12 @@ export default function PropertyDetails2({ location }) {
             notes={urlNote}
             rows={1}
             placeholder={placeholder}
+            value={userInfo["View listing for this Opportunity"]}
+            handleChange={(name, value) =>
+              dispatch(
+                setUserInfo({ "View listing for this Opportunity": value })
+              )
+            }
           />
         </Row>
         <Row className="mb-3">
@@ -98,12 +135,20 @@ export default function PropertyDetails2({ location }) {
               heading="Business Contact Name"
               notes={""}
               rows={1}
+              value={businessContact.name}
+              handleChange={(name, value) =>
+                dispatch(setBusinessContact({ name: value }))
+              }
             />
             <TextInput
               disabled={checked}
               heading="Business Contact Email"
               notes={""}
               rows={1}
+              value={businessContact.email}
+              handleChange={(name, value) =>
+                dispatch(setBusinessContact({ email: value }))
+              }
             />
           </Col>
           <Col />

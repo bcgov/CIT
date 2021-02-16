@@ -17,13 +17,26 @@ export default function Resource({ title, itemsToDisplay }) {
       }
       return (
         <Row key={v4()}>
-          {key}: <b className="resource-value">{items[key]}</b>
+          {["Opportunity Description", "Environmental Information"].includes(
+            key
+          ) ? (
+            <Col className="mb-2">
+              <Row>{key}: </Row>
+              <Row>
+                <b>{items[key]}</b>
+              </Row>
+            </Col>
+          ) : (
+            <span>
+              {key}: <b className="resource-value">{items[key]}</b>
+            </span>
+          )}
         </Row>
       );
     });
   return (
-    <div className="my-6">
-      <Row className="mb-3">
+    <div className="mb-6">
+      <Row className="mb-4">
         <h3>{title}</h3>
       </Row>
       {displayItems(itemsToDisplay)}

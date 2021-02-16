@@ -28,7 +28,7 @@ const ReviewOpportunity = ({ location }) => {
       <ReviewAndSubmitCallout
         submitOpportunity={() => submitOpportunity()}
         cancelOpportunity={() => confirmCancel()}
-        prevRoute="/addOpportunity/propDetails2"
+        prevRoute="propDetails2"
       />
       <OpportunityView data={location.state} view="all" />
     </div>

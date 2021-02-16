@@ -5,8 +5,16 @@ import {
   ADD_RESOUCE_IDS,
   ADD_NEARBY_RESOUCES,
   RESET_OPPORTUNITY,
+  ADD_SITE_INFO,
+  ADD_USER_INFO,
+  ADD_NAME,
 } from "../constants/action-types";
-
+/**
+ * @param {string} resourses
+ */
+export function setOpportunityName(name) {
+  return { type: ADD_NAME, payload: name };
+}
 /**
  * @param {string} resourses
  */
@@ -15,17 +23,31 @@ export function setAddress(address) {
 }
 
 /**
- * @param {Array} resourses
+ * @param {Array} coords
  */
 export function setCoords(coords) {
   return { type: ADD_COORDS, payload: coords };
 }
 
 /**
- * @param {Object} resourses
+ * @param {Object} bContact
  */
 export function setBusinessContact(bContact) {
   return { type: ADD_BUSINESS_CONTACT, payload: bContact };
+}
+
+/**
+ * @param {Object} sInfo
+ */
+export function setSiteInfo(sInfo) {
+  return { type: ADD_SITE_INFO, payload: sInfo };
+}
+
+/**
+ * @param {Object} sInfo
+ */
+export function setUserInfo(sInfo) {
+  return { type: ADD_USER_INFO, payload: sInfo };
 }
 
 /**
