@@ -8,7 +8,7 @@ class OpportunitySerializerTest(TestCase):
     def test_contains_expected_fields(self):
         serializer = OpportunitySerializer()
         field_names = serializer.Meta.fields
-        expected_fields = ['id', 'address', 'point', 'approval_status']
+        expected_fields = ['id', 'address', 'point', 'approval_status', 'date_created', 'date_updated']
         self.assertCountEqual(field_names, expected_fields)
 
     def test_field_content(self):

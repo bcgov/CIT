@@ -3,21 +3,6 @@
 from django.db import migrations, models
 import django.db.models.deletion
 
-def populate_statuses(apps, schema_editor):
-    ApprovalStatus = apps.get_model("pipeline", "ApprovalStatus")
-    statuses = [
-        ["Pending Review", "Opportunity has been submitted and is awaiting approval."],
-        ["Needs to be edited", "Opportunity has been sent back for editing."],
-        ["Not completed", "Opportunity has been saved by submitter in an incomplete state."],
-        ["Published", "Opportunity has been approved and is now publicly viewable."]
-    ]
-    for status in statuses:
-        approval_status = ApprovalStatus()
-        approval_status.status_name = status[0]
-        approval_status.status_description = status[1]
-        approval_status.save()
-
-
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -38,5 +23,4 @@ class Migration(migrations.Migration):
             name='approval_status',
             field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='pipeline.ApprovalStatus'),
         ),
-        migrations.RunPython(populate_statuses),
     ]
