@@ -2,7 +2,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
 }
 
-.leaflet-border .leaflet-container {  
-    border: 1px solid #000;
+.leaflet-border .leaflet-container {
+    border: 2px solid #606060;
     border-bottom: none;
 }

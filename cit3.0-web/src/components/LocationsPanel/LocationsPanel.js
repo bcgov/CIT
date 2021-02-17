@@ -21,7 +21,7 @@ const LocationsPanel = ({
           {coords.length ? `${coords[0]}, ${coords[1]}` : "No Coordinates"}
         </span>
       </div>
-      <h4 className="h5">{address || "No Address"}</h4>
+      <h4 className="h4">{address || "No Address"}</h4>
     </div>
     {municipalities ? (
       <>
