@@ -21,7 +21,7 @@ export default function SiteInformation({ location }) {
       <PortalHeader />
       <NavigationHeader />
       <Container>
-        <Row>
+        <Row className="mt-3">
           This shows you all the information we could collect from many open
           source BC Gov. databases
         </Row>
