@@ -10,7 +10,8 @@ class Location(models.Model):
     point = PointField(null=True, blank=True)
     location_fuzzy = models.BooleanField(
         default=False,
-        help_text="This field should be set to True if the `point` field was not present in the original dataset "
+        help_text=
+        "This field should be set to True if the `point` field was not present in the original dataset "
         "and is inferred or approximated by other fields.",
     )
 
@@ -45,7 +46,7 @@ class Location(models.Model):
         # Note: `name` and `location_type` are not unique; e.g. there are two mills in different cities
         # named "West Fraser Mills Ltd."
         unique_together = [['name', 'point', 'location_type']]
-        ordering = ("id",)
+        ordering = ("id", )
 
 
 class Hospital(Location):
@@ -63,7 +64,8 @@ class Hospital(Location):
     num_communities_within_50km = models.IntegerField(null=True, blank=True)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
+
     '''
     {
         "_id": 5,
@@ -122,7 +124,8 @@ class Court(Location):
     court_level = models.CharField(max_length=20)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
+
     '''
     {
         "_id": 4,
@@ -161,7 +164,8 @@ class EconomicProject(Location):
     project_comments = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
+
     '''
     {
         '_id': 1,
@@ -215,7 +219,7 @@ class NaturalResourceProject(Location):
     standardized_completion_date = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
 
     def get_standardized_start_date_as_date(self):
         if not self.standardized_start_date:
@@ -228,6 +232,7 @@ class NaturalResourceProject(Location):
             return None
 
         return get_quarterly_date_str_as_date(self.standardized_completion_date)
+
     '''
     {
         '_id': 1,
@@ -332,7 +337,7 @@ class Project(Location):
     is_latest_entry = models.NullBooleanField()
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
 
     def get_standardized_start_date_as_date(self):
         if not self.standardized_start_date:
@@ -383,7 +388,8 @@ class ServiceBCLocation(Location):
     WEBSITE_FIELD = 'Website_URL'
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
+
     '''
     {
         '_id': 1,
@@ -416,7 +422,8 @@ class School(Location):
     school_district = models.ForeignKey('SchoolDistrict', null=True, on_delete=models.SET_NULL)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
+
     '''
     {
         '_id': 1,
@@ -450,7 +457,8 @@ class PostSecondaryInstitution(Location):
     economic_development_region = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
+
     '''
     {
         '_id': 137,
@@ -480,7 +488,8 @@ class Clinic(Location):
     hours = models.TextField(null=True, blank=True)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
+
     '''
     {
         '_id': 1,
@@ -516,21 +525,22 @@ class Clinic(Location):
 class FirstResponder(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
-    NAME_FIELD = 'FCLTY_NM'
-    PHONE_FIELD = 'CONT_PHONE'
-    WEBSITE_FIELD = 'WEBSITE'
-    EMAIL_FIELD = 'CONT_EMAIL'
+    NAME_FIELD = 'FACILITY_NAME'
+    PHONE_FIELD = 'CONTACT_PHONE'
+    WEBSITE_FIELD = 'WEBSITE_URL'
+    EMAIL_FIELD = 'CONTACT_EMAIL'
 
     keywords = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
 
     def category(self):
         return self.keywords.split(';')[0].strip()
 
     def subcategory(self):
         return self.keywords.split(';')[-1].strip()
+
     '''
     OrderedDict([
         ('CUST_ORG', 'Ministry of Forest, Lands and Natural Resource Operations and Rural Development - GeoBC '),
@@ -568,12 +578,13 @@ class FirstResponder(Location):
 class DiagnosticFacility(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
-    NAME_FIELD = 'FCTY_NAME'
+    NAME_FIELD = 'OWNERSHIP_NAME'
 
     ser_cd_dsc = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
+
     '''
     OrderedDict([
         ('DIA_FAC_ID', '909'),
@@ -596,12 +607,13 @@ class DiagnosticFacility(Location):
 class TimberFacility(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
-    NAME_FIELD = 'COMPANY_NM'
+    NAME_FIELD = 'COMPANY_NAME'
 
     bus_cat_ds = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
+
     '''
     OrderedDict([
         ('COMPANY_NM','Bear Lumber Ltd.'),
@@ -647,13 +659,14 @@ class CivicFacility(Location):
     bus_cat_ds = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
 
     def category(self):
         return self.keywords.split(';')[0].strip()
 
     def subcategory(self):
         return self.keywords.split(';')[-1].strip()
+
     '''
     OrderedDict([
         ('FCLTY_NM', 'Alberni Valley Multiplex'),
@@ -686,10 +699,12 @@ class ClosedMill(Location):
     NAME_FIELD = 'Name'
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
+
     '''
     OrderedDict([('Place_ID', '7928'), ('Place_Name', 'Baynes Lake'), ('Name', 'Canfor Sawmill - Elko'), ('Resource_Longitude', '-115.10295'), ('Resource_Latitude', '49.27562'), ('Type', 'Closed Mill')])
     '''
+
 
 class ResearchCentre(Location):
     LATITUDE_FIELD = 'LATITUDE'
@@ -705,7 +720,8 @@ class ResearchCentre(Location):
     cntr_type = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
+
     '''
     {'_id': 1, 'RESEARCH_CENTRE_ID': 1, 'CENSUS_YEAR': 2011, 'CENSUS_SUBDIVISION_ID': 5915020, 'RESEARCH_CENTRE_NAME': 'The Centre for Advanced Wood Processing', 'RESEARCH_SPECIALTIES': 'Wood Products Processing, Advanced Wood Products Manufacturing', 'RESEARCH_CENTRE_AFFILIATION': 'University', 'INSTITUTION': 'University of British Columbia', 'INST_ACRNM': 'UBC', 'RESEARCH_CENTRE_ADDRESS': '2424 Main Mall', 'RESEARCH_CENTRE_MUNICIPALITY': 'Vancouver', 'RESEARCH_SECTOR': 'Forestry', 'RESEARCH_CENTRE_WEBSITE_URL': 'http://cawp.ubc.ca/', 'DATA_UPDATED_YEAR': 2014, 'POSTAL_CODE': '', 'SOURCE': '', 'NOTES': '', 'CNTR_TYPE': '', 'LONGITUDE': -123.2499699, 'LATITUDE': 49.260633}
     '''
@@ -735,7 +751,8 @@ class Airport(Location):
     seapln_acc = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
+
     '''
     OrderedDict([('CUST_ORG', 'Ministry of Forest, Lands and Natural Resource Operations and Rural Development - GeoBC '), ('BUS_CAT_CL', 'airTransportation'), ('BUS_CAT_DS', 'Air Transportation'), ('OCCPNT_TYP', 'BC Airports'), ('SRCDATA_ID', '455'), ('SRC_ID_IND', 'N'), ('NAME', 'Terrace (Northwest Regional) Airport'), ('DESCRIPTN', 'airport'), ('ADDRESS', '4401 Bristol Rd, Terrace, BC'), ('ALIAS_ADDR', '4401 Bristol Rd, Terrace, BC'), ('ST_ADDRESS', '4401 Bristol Rd'), ('POSTAL_CD', ''), ('LOCALITY', 'Terrace'), ('CONT_PHONE', '250-635-2659'), ('CONT_EMAIL', ''), ('CONT_FAX', ''), ('WEBSITE', ''), ('IMAGE_URL', ''), ('LATITUDE', '54.4686111'), ('LONGITUDE', '-128.5783333'), ('KEYWORDS', 'aerodrome; airport; airstrip; runway'), ('DT_UPDATE', '20200205073805'), ('GEOCD_IND', ''), ('AER_STATUS', 'Certified'), ('AIRCR_ACS', 'Y'), ('DATA_SRCE', 'Canadian Flight Supplement'), ('DATASRC_YR', '2014'), ('ELEVATION', '217.32'), ('FUEL_AVAIL', 'Y'), ('HELI_ACS', 'N'), ('IATA', ''), ('ICAO', 'CYXT'), ('MX_RWAY_LN', '2285.39'), ('NUM_RWAY', '2'), ('OIL_AVAIL', 'Y'), ('RWAY_SURF', 'asphalt'), ('SEAPLN_ACC', 'N'), ('TC_LID', ''), ('SHAPE', ''), ('SEQ_ID', '578'), ('X', '833323.8826999993'), ('Y', '1054949.9463999951')])
     '''

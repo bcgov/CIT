@@ -1,18 +1,29 @@
 import requests
+import bcdata
 
 from django.apps import apps
 
 from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA
 from pipeline.models.general import DataSource
-from pipeline.importers.utils import (
-    import_data_into_point_model, calculate_nearest_location_type_outside_50k, get_databc_last_modified_date,
-    get_openca_last_modified_date)
+from pipeline.importers.utils import (import_data_into_point_model, import_data_into_area_model,
+                                      calculate_nearest_location_type_outside_50k,
+                                      get_databc_last_modified_date, get_openca_last_modified_date,
+                                      _generate_geom, _generate_simplified_geom)
 
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}&limit=10000"
+LOCATION_RESOURCES = [
+    'first_responders',
+    'diagnostic_facilities',
+    'timber_facilities',
+    'civic_facilities',
+    'closed_mills',
+    'airports',
+]
 
 
 def import_databc_resources(resource_type):
-    databc_resource_names = DataSource.objects.filter(source_type="api").values_list("name", flat=True)
+    databc_resource_names = DataSource.objects.filter(source_type="api").values_list("name",
+                                                                                     flat=True)
     if resource_type not in ['all', *databc_resource_names]:
         print("Error: Resource type {} not supported".format(resource_type))
         return
@@ -48,3 +59,29 @@ def import_resource(resource_type):
     elif data_source.source == SOURCE_OPENCA:
         data_source.last_updated = get_openca_last_modified_date(data_source)
         data_source.save()
+
+
+def import_wms_resource(resource):
+
+    ds = bcdata.get_data(resource.dataset, as_gdf=True)
+
+    for index, row in ds.iterrows():
+        model_class = apps.get_model("pipeline", resource.model_name)
+        print(resource.name)
+        if resource.name in LOCATION_RESOURCES:
+            instance = import_data_into_point_model(resource.name, model_class, row)
+        else:
+            instance = import_data_into_area_model(resource.name, model_class, row)
+
+            geos_geom_out, geos_geom_simplified = _generate_simplified_geom(row)
+            instance.geom = geos_geom_out
+            instance.geom_simplified = geos_geom_simplified
+
+        instance.save()
+
+    # if data_source.source == SOURCE_DATABC:
+    #     data_source.last_updated = get_databc_last_modified_date(data_source)
+    #     data_source.save()
+    # elif data_source.source == SOURCE_OPENCA:
+    #     data_source.last_updated = get_openca_last_modified_date(data_source)
+    #     data_source.save()

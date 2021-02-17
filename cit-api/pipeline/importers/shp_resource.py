@@ -61,13 +61,12 @@ from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA
 from pipeline.models.census import CensusSubdivision
 from pipeline.models.general import DataSource, Road, Hex, ISP, Service
 from pipeline.constants import BC_ALBERS_SRID, WGS84_SRID
-from pipeline.importers.census import (
-    import_census_population_data, import_census_languages_data,
-    import_census_income_data, import_census_housing_data, import_census_education_employment_data,
-    import_census_families_data)
-from pipeline.importers.utils import (
-    import_data_into_area_model, get_databc_last_modified_date, get_openca_last_modified_date)
-
+from pipeline.importers.census import (import_census_population_data, import_census_languages_data,
+                                       import_census_income_data, import_census_housing_data,
+                                       import_census_education_employment_data,
+                                       import_census_families_data)
+from pipeline.importers.utils import (import_data_into_area_model, get_databc_last_modified_date,
+                                      get_openca_last_modified_date, _generate_geom)
 
 logger = logging.getLogger(__name__)
 csduid_to_geo_uid = {}
@@ -199,9 +198,9 @@ def import_hexes():
 def import_census():
     # Get a mapping to GEO UID for loading data on census areas from statscan API.
     body = requests.get(
-        'https://www12.statcan.gc.ca/rest/census-recensement/CR2016Geo.json?lang=E&geos=CSD&cpt=59', verify=False
-    ).text[:]
-    
+        'https://www12.statcan.gc.ca/rest/census-recensement/CR2016Geo.json?lang=E&geos=CSD&cpt=59',
+        verify=False).text
+    print(body)
     subdiv_metas = json.loads(body)
     for sd in subdiv_metas['DATA']:
         csduid = sd[3]
@@ -278,7 +277,8 @@ def _save_subdiv(feat):
         return
 
     geos_geom_out, geos_geom_simplified = _generate_geom(feat, WGS84_SRID)
-    subdiv = CensusSubdivision.objects.get_or_create(id=int(feat.get('CSDUID')), name=feat.get('CSDNAME'))[0]
+    subdiv = CensusSubdivision.objects.get_or_create(id=int(feat.get('CSDUID')),
+                                                     name=feat.get('CSDNAME'))[0]
 
     print(subdiv.name)
 
@@ -288,9 +288,9 @@ def _save_subdiv(feat):
 
     stats = json.loads(
         requests.get(
-            'https://www12.statcan.gc.ca/rest/census-recensement/CPR2016.json?dguid={}'.format(subdiv.geo_uid), verify=False
-        ).text[:]
-    )
+            'https://www12.statcan.gc.ca/rest/census-recensement/CPR2016.json?dguid={}'.format(
+                subdiv.geo_uid),
+            verify=False).text[:])
 
     import_census_population_data(stats, subdiv)
     import_census_families_data(stats, subdiv)
@@ -301,25 +301,6 @@ def _save_subdiv(feat):
     import_census_education_employment_data(stats, subdiv)
 
     subdiv.save()
-
-
-def _generate_geom(feat, srid=None):
-    """
-    Generate a clean geometry, and simplified snapshot for PostGIS insertion
-    """
-    # Source data tends to be in BC Alberts. #TODO: detect this instead?
-    geos_geom = GEOSGeometry(feat.geom.wkt, srid=srid or feat.geom.srid)
-    # Convert MultiPolygons to plain Polygons,
-    # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
-    geos_geom_out = _coerce_to_multipolygon(geos_geom, srid)
-    geos_geom.transform(WGS84_SRID)
-    geos_geom_simplified = copy.deepcopy(geos_geom)
-    geos_geom_simplified.transform(WGS84_SRID)
-    geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
-
-    geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, srid)
-
-    return geos_geom_out, geos_geom_simplified
 
 
 def _coerce_to_multipolygon(geom, srid=WGS84_SRID):

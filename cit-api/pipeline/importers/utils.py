@@ -1,5 +1,6 @@
 import csv
 import requests
+import copy
 
 from django.apps import apps
 from django.conf import settings
@@ -10,10 +11,12 @@ from django.core.exceptions import FieldDoesNotExist
 from django.contrib.gis.measure import D
 from django.utils.dateparse import parse_datetime
 from django.utils.timezone import make_aware
+from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 
+from pipeline.constants import BC_ALBERS_SRID, WGS84_SRID
 from pipeline.models.community import Community
-from pipeline.models.general import (
-    DataSource, LocationDistance, SchoolDistrict, Municipality, CivicLeader, Hex, Service, ISP)
+from pipeline.models.general import (DataSource, LocationDistance, SchoolDistrict, Municipality,
+                                     CivicLeader, Hex, Service, ISP)
 from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES
 
@@ -28,10 +31,13 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
     name = ", ".join([str(row[name_field]) for name_field in name_fields])
 
     try:
-        point = Point(float(row[Model.LONGITUDE_FIELD]), float(row[Model.LATITUDE_FIELD]), srid=4326)
-        closest_community = (
-            Community.objects.annotate(distance=Distance('point', point)).order_by('distance').first()
-        )
+        point = Point(float(row[Model.LONGITUDE_FIELD]),
+                      float(row[Model.LATITUDE_FIELD]),
+                      srid=4326)
+        print(point)
+        closest_community = (Community.objects.annotate(
+            distance=Distance('point', point)).order_by('distance').first())
+        print(closest_community)
     except TypeError:
         # When no point is present, try the municipality name description
         if not row.get("MUNICIPALITY"):
@@ -42,7 +48,8 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
             )
             return
 
-        closest_community = Community.objects.filter(place_name__icontains=_try_community_name(row)).first()
+        closest_community = Community.objects.filter(
+            place_name__icontains=_try_community_name(row)).first()
         if not closest_community:
             print(
                 "Skipping error:",
@@ -75,7 +82,6 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
 
 
 def import_data_into_area_model(resource_type, Model, row):
-    print(row)
 
     name_fields = Model.NAME_FIELD.split(",")
     name = ", ".join([str(row[name_field]) for name_field in name_fields])
@@ -121,7 +127,7 @@ def import_variable_fields(instance, row, Model):
         transformed_field_name = field_name.replace(" ", "_").lower()
         if isinstance(field_value, str):
             try:
-                field_value = field_value[: Model._meta.get_field(transformed_field_name).max_length]
+                field_value = field_value[:Model._meta.get_field(transformed_field_name).max_length]
             except FieldDoesNotExist:
                 pass
         setattr(instance, transformed_field_name, field_value)
@@ -144,11 +150,9 @@ def calculate_communities_for_schools():
 
 
 def calculate_distances(location, dry_run=False):
-    communities_within_50k = (
-        Community.objects.filter(point__distance_lte=(location.point, D(m=50000)))
-        .annotate(distance=Distance("point", location.point))
-        .order_by("distance")
-    )
+    communities_within_50k = (Community.objects.filter(
+        point__distance_lte=(location.point, D(m=50000))).annotate(
+            distance=Distance("point", location.point)).order_by("distance"))
 
     for community in communities_within_50k:
         create_distance(location, community, community.distance, dry_run=dry_run)
@@ -167,8 +171,7 @@ def calculate_nearest_location_type_outside_50k(location_type):
         # just get the closest location and create a LocationDistance object for that
         if not locations_within_50k:
             print("community {community_name} has no {location_type} within 50km".format(
-                community_name=community.place_name,
-                location_type=location_type))
+                community_name=community.place_name, location_type=location_type))
             location_type_model_name = DataSource.objects.get(name=location_type).model_name
             location_type_model = apps.get_model("pipeline", location_type_model_name)
 
@@ -179,22 +182,25 @@ def calculate_nearest_location_type_outside_50k(location_type):
                     closest_location_type = location_type_model.objects.filter(keywords__startswith=keyword)\
                         .annotate(distance=Distance("point", community.point))\
                         .order_by("distance").first()
-                    print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
-                        location_type=location_type,
-                        community_name=community.place_name,
-                        closest_location_type=closest_location_type.name,
-                        distance=closest_location_type.distance.km))
+                    print(
+                        "closest {location_type} to {community_name} is {closest_location_type} {distance} km"
+                        .format(location_type=location_type,
+                                community_name=community.place_name,
+                                closest_location_type=closest_location_type.name,
+                                distance=closest_location_type.distance.km))
 
-                    create_distance(closest_location_type, community, closest_location_type.distance)
+                    create_distance(closest_location_type, community,
+                                    closest_location_type.distance)
             else:
                 closest_location_type = location_type_model.objects.all()\
                     .annotate(distance=Distance("point", community.point))\
                     .order_by("distance").first()
-                print("closest {location_type} to {community_name} is {closest_location_type} {distance} km".format(
-                    location_type=location_type,
-                    community_name=community.place_name,
-                    closest_location_type=closest_location_type.name,
-                    distance=closest_location_type.distance.km))
+                print(
+                    "closest {location_type} to {community_name} is {closest_location_type} {distance} km"
+                    .format(location_type=location_type,
+                            community_name=community.place_name,
+                            closest_location_type=closest_location_type.name,
+                            distance=closest_location_type.distance.km))
 
                 create_distance(closest_location_type, community, closest_location_type.distance)
 
@@ -210,7 +216,8 @@ def create_distance(location, community, distance, dry_run=False):
 
     if not dry_run and not (existing_distance and existing_distance.first().driving_distance):
         try:
-            driving_distance, travel_time, travel_time_display = get_route_planner_distance(community, location)
+            driving_distance, travel_time, travel_time_display = get_route_planner_distance(
+                community, location)
             fields["driving_distance"] = driving_distance
             fields["travel_time"] = travel_time
             fields["travel_time_display"] = travel_time_display
@@ -248,9 +255,11 @@ def get_route_planner_distance(origin, destination):
 
     print(api_url)
 
-    response = requests.get(
-        api_url,
-        headers={"accept": "*/*", "apikey": settings.ROUTE_PLANNER_API_KEY})
+    response = requests.get(api_url,
+                            headers={
+                                "accept": "*/*",
+                                "apikey": settings.ROUTE_PLANNER_API_KEY
+                            })
 
     print("response", response, response.content)
     route = response.json()
@@ -289,7 +298,8 @@ def read_csv(csv_path):
 def calculate_community_num_schools():
     for community in Community.objects.all():
         # TODO SY - make resource types constants?
-        num_schools = LocationDistance.objects.filter(community=community, location__location_type="schools").count()
+        num_schools = LocationDistance.objects.filter(community=community,
+                                                      location__location_type="schools").count()
         community.num_schools = num_schools
 
         if num_schools > 0:
@@ -303,7 +313,8 @@ def calculate_community_num_schools():
 def calculate_community_num_courts():
     for community in Community.objects.all():
         # TODO - make resource types constants?
-        num_courts = LocationDistance.objects.filter(community=community, location__location_type="courts").count()
+        num_courts = LocationDistance.objects.filter(community=community,
+                                                     location__location_type="courts").count()
         community.num_courts = num_courts
         community.save()
 
@@ -366,7 +377,7 @@ def import_civic_leaders_from_csv(file_path):
         csv_reader = csv.DictReader(csv_file, delimiter=',')
         for row in csv_reader:
             # Only import elected mayors and [todo] councillors
-            if not(row['Elected (YES/NO)'] == 'YES' and
+            if not (row['Elected (YES/NO)'] == 'YES' and
                     (row['Type'] == 'MAYOR' or row['Type'] == 'COUNCILLOR')):
                 continue
 
@@ -425,7 +436,8 @@ def import_services(file_path):
 def get_databc_last_modified_date(data_source):
     from pipeline.constants import DATABC_METADATA_API_URL
 
-    response = requests.get(DATABC_METADATA_API_URL.format(dataset_resource_id=data_source.resource_id))
+    response = requests.get(
+        DATABC_METADATA_API_URL.format(dataset_resource_id=data_source.resource_id))
     result = response.json()["result"]
 
     if not result:
@@ -449,7 +461,8 @@ def get_databc_last_modified_date(data_source):
 def get_openca_last_modified_date(data_source):
     from pipeline.constants import OPENCA_METADATA_API_URL
 
-    response = requests.get(OPENCA_METADATA_API_URL.format(dataset_resource_id=data_source.resource_id))
+    response = requests.get(
+        OPENCA_METADATA_API_URL.format(dataset_resource_id=data_source.resource_id))
     if response.status_code == 404:
         print("data source metadata not found", data_source.resource_id)
         return
@@ -458,7 +471,9 @@ def get_openca_last_modified_date(data_source):
 
     sub_resources = result["resources"]
     sub_resource = next(
-        (sub_resource for sub_resource in sub_resources if sub_resource["id"] == data_source.sub_resource_id), None)
+        (sub_resource
+         for sub_resource in sub_resources if sub_resource["id"] == data_source.sub_resource_id),
+        None)
     print(sub_resource)
 
     if sub_resource["last_modified"]:
@@ -484,7 +499,8 @@ def import_community_descriptions():
             community_description = row["short_description"]
             header_image_path = row["header_image_path"]
 
-            matching_communities = Community.objects.filter(census_subdivision__id=census_subdivision_id)
+            matching_communities = Community.objects.filter(
+                census_subdivision__id=census_subdivision_id)
             if matching_communities.count() > 1:
                 if row["census_subdivision_name"] == "Northern Rockies":
                     community = Community.objects.get(place_name="Fort Nelson")
@@ -520,6 +536,54 @@ def import_community_descriptions():
                 community.header_image.save("{}.png".format(community.id), File(image))
                 image.close()
             except FileNotFoundError:
-                print("could not find file for {}: {}".format(community.place_name, image_file_path))
+                print("could not find file for {}: {}".format(community.place_name,
+                                                              image_file_path))
 
             community.save()
+
+
+def _generate_geom(feat, srid=None):
+    """
+    Generate a clean geometry, and simplified snapshot for PostGIS insertion
+    """
+    # Source data tends to be in BC Alberts. #TODO: detect this instead?
+    geos_geom = GEOSGeometry(feat.geom.wkt, srid=srid or feat.geom.srid)
+    # Convert MultiPolygons to plain Polygons,
+    # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
+    geos_geom_out = _coerce_to_multipolygon(geos_geom, srid)
+    geos_geom.transform(WGS84_SRID)
+    geos_geom_simplified = copy.deepcopy(geos_geom)
+    geos_geom_simplified.transform(WGS84_SRID)
+    geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
+
+    geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, srid)
+
+    return geos_geom_out, geos_geom_simplified
+
+
+def _generate_simplified_geom(feat):
+    """
+    Generate a clean geometry, and simplified snapshot for PostGIS insertion
+    """
+    # Source data tends to be in BC Alberts. #TODO: detect this instead?
+    geos_geom = GEOSGeometry(str(feat.geometry), srid=BC_ALBERS_SRID)
+    # Convert MultiPolygons to plain Polygons,
+    # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
+    geos_geom_out = _coerce_to_multipolygon(geos_geom, BC_ALBERS_SRID)
+    geos_geom.transform(WGS84_SRID)
+    geos_geom_simplified = copy.deepcopy(geos_geom)
+    geos_geom_simplified.transform(WGS84_SRID)
+    geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
+
+    geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, BC_ALBERS_SRID)
+
+    return geos_geom_out, geos_geom_simplified
+
+
+def _coerce_to_multipolygon(geom, srid=WGS84_SRID):
+    if isinstance(geom, Polygon):
+        return MultiPolygon([geom], srid=srid)
+    elif isinstance(geom, MultiPolygon):
+        return geom
+    else:
+        raise Exception("Bad geometry type: {}, skipping.".format(geom.__class__))
