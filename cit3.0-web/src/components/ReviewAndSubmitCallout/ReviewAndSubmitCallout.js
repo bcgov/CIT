@@ -82,7 +82,7 @@ const ReviewAndSubmitCallout = ({
             id="cancel"
             onClick={cancelOpportunity}
             label="Cancel & Return to Dashboard"
-            styling="bcgov-normal-white btn"
+            styling="BC-Gov-SecondaryButton bc-gov-btn"
           />
         </Col>
         <Col className="d-flex justify-content-end">
@@ -90,7 +90,7 @@ const ReviewAndSubmitCallout = ({
             id="submit"
             onClick={submitOpportunity}
             label="Submit my Opportunity"
-            styling="bcgov-normal-blue btn"
+            styling="bcgov-normal-blue btn primary"
           />
         </Col>
       </Row>
