@@ -16,6 +16,5 @@ export const MaximumCapacityRowWithUnits = () => (
     units="MMBTU/hour"
     handleChange={action("change handled")}
     name="maxCap"
-    value=""
   />
 );

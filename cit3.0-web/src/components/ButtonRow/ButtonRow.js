@@ -22,7 +22,7 @@ export default function ButtonRow({ onClick, prevRoute, noContinue }) {
           <Button
             onClick={() => history.push("/")}
             label="Cancel & Return to Dashboard"
-            styling="bcgov-normal-white btn"
+            styling=" BC-Gov-SecondaryButton bc-gov-btn"
           />
         </Col>
         <Col className="d-flex justify-content-end">
@@ -30,7 +30,7 @@ export default function ButtonRow({ onClick, prevRoute, noContinue }) {
             disabled={noContinue}
             onClick={onClick}
             label="Continue"
-            styling="bcgov-normal-blue btn"
+            styling="bcgov-normal-blue btn primary"
           />
         </Col>
       </Row>

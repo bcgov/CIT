@@ -2,15 +2,24 @@ import PropTypes from "prop-types";
 import { Row, Col } from "react-bootstrap";
 import TextInput from "./TextInput";
 
-export default function MaxCapRow({ units, handleChange, name, value }) {
+export default function MaxCapRow({
+  units,
+  handleChange,
+  name,
+  value,
+  unitString,
+}) {
   return (
     <>
-      <Row id="water-max-cap-label">
-        Indicate the maximum capacity per hour in cubic metres, if known
+      <Row className="mt-4" id="water-max-cap-label">
+        {units !== "MW"
+          ? `Indicate the maximum capacity per hour in ${unitString}, if known`
+          : `Indicate the total capacity in Megawatts, if known`}
       </Row>
       <Row className="align-items-center">
         <Col md className="pl-0 w-25 justify-content-center">
           <TextInput
+            aria-labelledby="water-max-cap-label"
             handleChange={handleChange}
             name={name}
             rows={1}
@@ -34,6 +43,7 @@ export default function MaxCapRow({ units, handleChange, name, value }) {
 
 MaxCapRow.defaultProps = {
   units: null,
+  unitString: "",
 };
 
 MaxCapRow.propTypes = {
@@ -41,4 +51,5 @@ MaxCapRow.propTypes = {
   handleChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
+  unitString: PropTypes.string,
 };
