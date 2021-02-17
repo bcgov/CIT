@@ -9,7 +9,7 @@ export default function NavigationCircle({ step, currentStep }) {
       {currentStep < step && <div className="step future mb-2">{step}</div>}
       {currentStep > step && (
         <div className="step past mb-2">
-          <AiOutlineCheck className="fa-2x gov-blue" />
+          <AiOutlineCheck className="gov-blue" style={{ fontSize: "32px" }} />
         </div>
       )}
     </>
