@@ -32,7 +32,7 @@ export default function OpportunityTable(props) {
   };
 
   const determineActions = (approvalStatus) => {
-    if (approvalStatus === "Published") {
+    if (approvalStatus === "PUBL") {
       return (
         <>
           <a href="/">View Listing</a>
