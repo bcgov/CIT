@@ -68,7 +68,7 @@ export default function PropertyDetails2({ location }) {
     <>
       {console.log(formData)}
       <PortalHeader />
-      <NavigationHeader />
+      <NavigationHeader currentStep={4} />
       <Container role="form">
         <Row>
           <Row>

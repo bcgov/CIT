@@ -7,4 +7,19 @@
     background-color: #036;
     border-radius: 50%;
     color: white;
+    font-weight: bold;
+}
+
+.past {
+    background-color: #FCBA19;
+}
+
+.current {
+    height: 65px;
+    width: 65px;
+    font-size: x-large;
+}
+
+.gov-blue {
+    color: #036;
 }

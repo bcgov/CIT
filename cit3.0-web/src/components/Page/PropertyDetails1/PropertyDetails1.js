@@ -131,7 +131,7 @@ export default function PropertyDetails1() {
     <>
       {console.log(radioData)}
       <PortalHeader />
-      <NavigationHeader />
+      <NavigationHeader currentStep={3} />
       <Container role="form">
         <Row>
           <Row>
