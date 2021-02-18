@@ -10,7 +10,6 @@ import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import TextInput from "../../FormComponents/TextInput";
 import {
   setBusinessContact,
-  setSiteInfo,
   setUserInfo,
   setBusinessNameShared,
 } from "../../../store/actions/opportunity";
@@ -20,7 +19,18 @@ export default function PropertyDetails2({ location }) {
   const businessContact = useSelector(
     (state) => state.opportunity.businessContact
   );
-  const userInfo = useSelector((state) => state.opportunity.userInfo);
+  const commLink = useSelector(
+    (state) => state.opportunity.userInfo.commLink.value
+  );
+  const listingLink = useSelector(
+    (state) => state.opportunity.userInfo.listingLink.value
+  );
+  const oppDesc = useSelector(
+    (state) => state.opportunity.userInfo.oppDesc.value
+  );
+  const envInfo = useSelector(
+    (state) => state.opportunity.userInfo.envInfo.value
+  );
 
   const [checked, setChecked] = useState(false);
   const [formData, setFormData] = useState({
@@ -87,9 +97,7 @@ export default function PropertyDetails2({ location }) {
           <Row>
             <PageTitleHeader
               title="Enter Property Details"
-              text={
-                "Tell us more about this investment opportunity.  All fields are optional."
-              }
+              text="Tell us more about this investment opportunity.  All fields are optional."
             />
           </Row>
         </Row>
@@ -101,10 +109,8 @@ export default function PropertyDetails2({ location }) {
             heading={oppDescLabel}
             notes={noteLabel}
             name="oppDesc"
-            value={userInfo["Opportunity Description"]}
-            handleChange={(name, value) =>
-              dispatch(setUserInfo({ "Opportunity Description": value }))
-            }
+            value={oppDesc}
+            handleChange={(_, value) => dispatch(setUserInfo("oppDesc", value))}
           />
         </Row>
         <Row className="mb-3">
@@ -115,10 +121,8 @@ export default function PropertyDetails2({ location }) {
             heading={enviroLabel}
             notes={noteLabel}
             name="envDesc"
-            value={userInfo["Environmental Information"]}
-            handleChange={(name, value) =>
-              dispatch(setUserInfo({ "Environmental Information": value }))
-            }
+            value={envInfo}
+            handleChange={(_, value) => dispatch(setUserInfo("envInfo", value))}
           />
         </Row>
         <Row>
@@ -128,9 +132,9 @@ export default function PropertyDetails2({ location }) {
             rows={1}
             placeholder={placeholderComm}
             name="commLink"
-            value={userInfo["Visit Community website"]}
-            handleChange={(name, value) =>
-              dispatch(setUserInfo({ "Visit Community website": value }))
+            value={commLink}
+            handleChange={(_, value) =>
+              dispatch(setUserInfo("commLink", value))
             }
           />
         </Row>
@@ -140,11 +144,9 @@ export default function PropertyDetails2({ location }) {
             notes={urlNote}
             rows={1}
             placeholder={placeholder}
-            value={userInfo["View listing for this Opportunity"]}
-            handleChange={(name, value) =>
-              dispatch(
-                setUserInfo({ "View listing for this Opportunity": value })
-              )
+            value={listingLink}
+            handleChange={(_, value) =>
+              dispatch(setUserInfo("listingLink", value))
             }
             name="moreInfoLink"
           />
@@ -167,7 +169,7 @@ export default function PropertyDetails2({ location }) {
               required={false}
               disabled={checked}
               heading="Business Contact Name"
-              notes={""}
+              notes=""
               rows={1}
               value={businessContact.name}
               handleChange={(name, value) =>
@@ -180,7 +182,7 @@ export default function PropertyDetails2({ location }) {
               disabled={checked}
               aria-labelledby="email-label"
               heading="Business Contact Email"
-              notes={""}
+              notes=""
               rows={1}
               name="busEmail"
               pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g"

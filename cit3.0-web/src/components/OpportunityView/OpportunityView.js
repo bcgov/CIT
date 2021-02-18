@@ -15,7 +15,7 @@ import "./OpportunityView.css";
 export default function OpportunityView({ view }) {
   const dispatch = useDispatch();
 
-  // Site info sections
+  // Site info sections on left side of page
   const siteInfo = useSelector((state) => state.opportunity.siteInfo);
   const userInfo = useSelector((state) => state.opportunity.userInfo);
   let overallInfo = siteInfo;
@@ -29,6 +29,8 @@ export default function OpportunityView({ view }) {
   const services = useSelector((state) => state.opportunity.services);
   const address = useSelector((state) => state.opportunity.address);
   const coords = useSelector((state) => state.opportunity.coords);
+
+  // For Location panel on the right side
   const municipalities = useSelector(
     (state) => state.opportunity.municipalities
   );

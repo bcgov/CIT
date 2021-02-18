@@ -1,13 +1,136 @@
 import PropTypes from "prop-types";
 import { Row, Col } from "react-bootstrap";
 import { v4 } from "uuid";
+import NumberFormat from "react-number-format";
 import "./Resource.css";
 
+/**
+ * @param {Object} resources from redux state: opportunity
+ */
+function displayResources(resources) {
+  // toDisplay to control nesting of elements
+  const toDisplay = {};
+
+  // Process resource entries
+  Object.entries(resources).forEach((resource) => {
+    // Datapoint element
+    let element = null;
+
+    // Insert Category section/datapoint
+    if (!toDisplay[resource[1].title]) {
+      toDisplay[resource[1].title] = {};
+    }
+
+    // Individual data points
+    if (
+      resource[1].subtitle &&
+      typeof toDisplay[resource[1].title][resource[1].subtitle] === "undefined"
+    ) {
+      toDisplay[resource[1].title][resource[1].subtitle] = {};
+    }
+
+    // Different markup for datapoint types
+    switch (resource[1].type) {
+      case "distance":
+        element = (
+          <span className="ml-2">
+            <b>
+              {resource[1].name}{" "}
+              {resource[1].name && resource[1].value ? "-" : ""}{" "}
+              {resource[1].value ? (
+                <NumberFormat
+                  displayType="text"
+                  value={resource[1].value}
+                  suffix="km"
+                  thousandSeparator
+                />
+              ) : null}
+            </b>
+          </span>
+        );
+        break;
+      case "capacity":
+        element = (
+          <span className="ml-2">
+            <b>
+              {resource[1].name}{" "}
+              {resource[1].name && resource[1].value ? "-" : ""}{" "}
+              {resource[1].value ? (
+                <NumberFormat
+                  displayType="text"
+                  value={resource[1].value}
+                  suffix="m³/hour"
+                  thousandSeparator
+                />
+              ) : null}
+            </b>
+          </span>
+        );
+        break;
+      case "size":
+        element = (
+          <span className="ml-2">
+            <b>
+              {resource[1].name}{" "}
+              {resource[1].name && resource[1].value ? "-" : ""}{" "}
+              {resource[1].value ? (
+                <NumberFormat
+                  displayType="text"
+                  value={resource[1].value}
+                  suffix="h"
+                  thousandSeparator
+                />
+              ) : null}
+            </b>
+          </span>
+        );
+        break;
+      case "link":
+        element = (
+          <span className="ml-2">
+            <a href={resource[1].value}>{resource[1].value}</a>
+          </span>
+        );
+        break;
+      case "paragraph":
+        element = (
+          <div className="d-flex flex-column">
+            <div>{resource[1].name}</div>
+            <div>
+              <b>{resource[1].value}</b>
+            </div>
+          </div>
+        );
+        break;
+      default:
+        element = (
+          <span className="ml-2">
+            <b>
+              {resource[1].name}{" "}
+              {resource[1].name && resource[1].value ? "-" : ""}{" "}
+              {resource[1].value}
+            </b>
+          </span>
+        );
+    }
+
+    // Nest, if there are Category section datapoints
+    if (resource[1].subtitle) {
+      toDisplay[resource[1].title][resource[1].subtitle] = element;
+      return;
+    }
+    // Otherwise it is a datapoint
+    toDisplay[resource[1].title] = element;
+  });
+  return toDisplay;
+}
+
+/* eslint-disable no-lone-blocks, no-unused-expressions */
 export default function Resource({ title, itemsToDisplay }) {
-  // TODO:  handle sub objects
+  const resourcesAsView = displayResources(itemsToDisplay);
   const displayItems = (items) =>
     Object.keys(items).map((key) => {
-      if (typeof items[key] === "object") {
+      if (items[key].$$typeof !== Symbol.for("react.element")) {
         return (
           <div key={v4()}>
             <Row>{key}: </Row>
@@ -17,20 +140,7 @@ export default function Resource({ title, itemsToDisplay }) {
       }
       return (
         <Row key={v4()}>
-          {["Opportunity Description", "Environmental Information"].includes(
-            key
-          ) ? (
-            <Col className="mb-2">
-              <Row>{key}: </Row>
-              <Row>
-                <b>{items[key]}</b>
-              </Row>
-            </Col>
-          ) : (
-            <span>
-              {key}: <b className="resource-value">{items[key]}</b>
-            </span>
-          )}
+          {key}: {items[key]}
         </Row>
       );
     });
@@ -39,7 +149,7 @@ export default function Resource({ title, itemsToDisplay }) {
       <Row className="mb-4">
         <h3>{title}</h3>
       </Row>
-      {displayItems(itemsToDisplay)}
+      {displayItems(resourcesAsView)}
     </div>
   );
 }

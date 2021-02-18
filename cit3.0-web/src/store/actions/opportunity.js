@@ -46,8 +46,8 @@ export function setSiteInfo(sInfo) {
 /**
  * @param {Object} sInfo
  */
-export function setUserInfo(sInfo) {
-  return { type: ADD_USER_INFO, payload: sInfo };
+export function setUserInfo(key, sInfo) {
+  return { type: ADD_USER_INFO, payload: { key, value: sInfo } };
 }
 
 /**

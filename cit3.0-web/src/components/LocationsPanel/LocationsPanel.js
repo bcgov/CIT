@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import NumberFormat from "react-number-format";
 import { Container, Row, Col } from "react-bootstrap";
+import { v4 } from "uuid";
 import styles from "./LocationsPanel.module.css";
 
 /** eslint-disable react/prop-types */
@@ -32,7 +33,7 @@ const LocationsPanel = ({
         </p>
         <Container className="mb-4">
           {municipalities.map((muni) => (
-            <Row className="d-flex justify-content-between">
+            <Row key={v4()} className="d-flex justify-content-between">
               <Col className="pl-0">
                 <a target="_blank" rel="noreferrer" href={muni.link}>
                   {muni.name} - {muni.distance}km

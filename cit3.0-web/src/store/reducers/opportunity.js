@@ -57,66 +57,190 @@ const OPPORTUNITY_MODEL = {
     population: 200,
   },
   services: {
-    "Network Connectivity": {
-      "- Speed average": "20 Mbps",
-      "- Speed at nearest road": "23 Mbps",
+    networkAvg: {
+      title: "Network Connectivity",
+      subtitle: "- Speed average",
+      value: "20 Mbps",
+      type: "text",
     },
-    "Power Transmission Lines": "BCHydro Trunk - 10m",
-    "Site servicing": {
-      "- Road Access": "Yes",
-      "- Sewer": "Yes",
-      "- Water": "Yes",
-      "- Natural Gas": "No",
+    networkAtRoad: {
+      title: "Network Connectivity",
+      subtitle: "- Speed at nearest road",
+      value: "25 Mbps",
+      type: "text",
     },
-    "Nearest Health Care Facility": "Drop-in Clinic - 3km",
-    "Nearest First Responders": {
-      "- Fire": "Firehouse #1 - 3km",
-      "- Ambulance": "First Responder Hub - 4km",
-      "- Police": "Station 2 - 2km",
-      "- Coast Guard": "Intl. Port - 10km",
+    roadAccess: {
+      title: "Site servicing",
+      subtitle: "- Road Access",
+      value: "Yes",
+      type: "text",
     },
-    "Nearest Post-Secondary Institution": "Junior High School - 7km",
+    waterSupply: {
+      title: "Site servicing",
+      subtitle: "- Water",
+      name: "Yes",
+      value: "300m3/hour",
+      type: "capacity",
+    },
+    naturalGas: {
+      title: "Site servicing",
+      subtitle: "- Natural Gas",
+      name: "No",
+      value: "10m3/hour",
+      type: "capacity",
+    },
+    sewer: {
+      title: "Site servicing",
+      subtitle: "- Sewer",
+      name: "Yes",
+      value: "1m3/hour",
+      type: "capacity",
+    },
+    electrical: {
+      title: "Power Transmission Lines",
+      name: "BCHydro Trunk",
+      value: "",
+      type: "capacity",
+    },
+    nearHealth: {
+      title: "Nearest Health Care Facility",
+      name: "General Hospital",
+      value: 11,
+      type: "distance",
+    },
+    nearFire: {
+      title: "Nearest First Responders",
+      subtitle: "- Fire",
+      name: "Firehouse #1",
+      value: "",
+      type: "distance",
+    },
+    nearAmbulance: {
+      title: "Nearest First Responders",
+      subtitle: "- Ambulance",
+      name: "First Responder Hub",
+      value: 6,
+      type: "distance",
+    },
+    nearPolice: {
+      title: "Nearest First Responders",
+      subtitle: "- Police",
+      name: "Station #2",
+      value: 1.5,
+      type: "distance",
+    },
+    nearCoastGuard: {
+      title: "Nearest First Responders",
+      subtitle: "- Coast Guard",
+      name: "Intl. Port",
+      value: 35,
+      type: "distance",
+    },
+    nearSecondarySchool: {
+      title: "Nearest Post-Secondary Institution",
+      name: "High School",
+      value: 10,
+      type: "distance",
+    },
   },
   transportation: {
-    "Nearest Highway": "Highway 1 - 50m",
-    "Nearest Airport": "Main Airport - 5km",
-    "Nearest Railway": "CN Rail - 15km",
-    "Nearest Port": "Boat Dock - 47km",
-    "Nearest Canada Customs Port of Entry": "Intl. Port - 35km",
+    nearHighway: {
+      title: "Nearest Highway",
+      name: "Highway 1",
+      value: 0.5,
+      type: "distance",
+    },
+    nearAirport: {
+      title: "Nearest Airport",
+      name: "Comox Airport",
+      value: 0.1,
+      type: "distance",
+    },
+    nearRailway: {
+      title: "Nearest Railway",
+      name: "CN Rail",
+      value: 15,
+      type: "distance",
+    },
+    nearPort: {
+      title: "Nearest Port",
+      name: "Boat Dock",
+      value: 47,
+      type: "distance",
+    },
+    nearCustomsPort: {
+      title: "Nearest Canada Customs Port of Entry",
+      name: "Intl. Port",
+      value: 35,
+      type: "distance",
+    },
   },
   physical: {
-    "Elevation at location": "100m",
-    "Soil Name, Texture, Drainage": "Info here",
-    "Access to water (nearest lake)": "3km",
-    "Access to water (nearest river)": "5km",
+    nearElevation: {
+      title: "Elevation at location",
+      name: null,
+      value: 100,
+      type: "distance",
+    },
+    nearGround: {
+      title: "Soil Name, Texture, Drainage",
+      name: null,
+      value: "Info here",
+      type: "text",
+    },
+    nearLake: {
+      title: "Access to water (nearest lake)",
+      name: "Local Lake",
+      value: 3,
+      type: "distance",
+    },
+    nearRiver: {
+      title: "Access to water (nearest river)",
+      name: "Forest River",
+      value: 5,
+      type: "distance",
+    },
   },
   siteInfo: {
-    Ownership: "Crown",
-    "Parcel size": "5 ha",
-    PID: "456fdsagjio438u9g",
+    ownership: {
+      title: "Ownership",
+      value: "Crown",
+      type: "text",
+    },
+    parcelSize: {
+      title: "Parcel size",
+      name: "Crown",
+      value: "5",
+      type: "size",
+    },
+    PID: {
+      title: "Parcel size",
+      value: "456-234-456",
+      type: "text",
+    },
   },
   userInfo: {
-    "Sale or Lease": "",
-    "Current Zoning": "",
-    "Future Zoning": "",
-    "Preferred Development": "",
-    "Opportunity Description":
-      "This is a great area for a light industrial venture. There is an awesome local life style for employees.",
-    "Environmental Information":
-      "There is no soil pollution. A river near by is used for road runoff.",
-    "Visit Community website": "www.example.net",
-    "View listing for this Opportunity": "www.example.net",
+    propertyStatus: { title: "Sale or Lease", value: "", type: "text" },
+    currentZoning: { title: "Current Zoning", value: "", type: "text" },
+    futreZoning: { title: "Future Zoning", value: "", type: "text" },
+    preferredDevelopment: {
+      title: "Preferred Development",
+      value: "",
+      type: "text",
+    },
+    oppDesc: { title: "Oppotunity Description", value: "", type: "paragraph" },
+    envInfo: {
+      title: "Environmental Information",
+      value: "",
+      type: "paragraph",
+    },
+    commLink: { title: "Visit Community website", value: "", type: "link" },
+    listingLink: {
+      title: "View listing for this Opportunity",
+      value: "",
+      type: "link",
+    },
   },
-  // userInfo: {
-  //   propertyStatus: { name: "Sale or Lease", value: "" },
-  //   currentZoning: { name: "Current Zoning", value: "" },
-  //   futreZoning: { name: "Future Zoning", value: "" },
-  //   preferredDevelopment: { name: "Preferred Development", value: "" },
-  //   opDesc: { name: "Oppotunity Description", value: "" },
-  //   envInfo: { name: "Environmental Information", value: "" },
-  //   commWebsite: { name: "Visit Community website", value: "" },
-  //   listing: { name: "View listing for this Opportunity", value: "" },
-  // },
 };
 
 /**
@@ -127,7 +251,7 @@ const OPPORTUNITY_MODEL = {
  * @param {String} action.payload incoming action payload, varying on opportunity field
  */
 export default function opportunity(state = OPPORTUNITY_MODEL, action) {
-  /* eslint-disable no-param-reassign, no-console */
+  /* eslint-disable no-param-reassign */
   switch (action.type) {
     case RESET_OPPORTUNITY:
       state = OPPORTUNITY_MODEL;
@@ -145,7 +269,7 @@ export default function opportunity(state = OPPORTUNITY_MODEL, action) {
       state.siteInfo = { ...state.siteInfo, ...action.payload };
       break;
     case ADD_USER_INFO:
-      state.userInfo = { ...state.userInfo, ...action.payload };
+      state.userInfo[action.payload.key].value = action.payload.value;
       break;
     case ADD_NAME:
       state.name = action.payload;
@@ -157,7 +281,7 @@ export default function opportunity(state = OPPORTUNITY_MODEL, action) {
       state.nearbyResources = action.payload;
       break;
     default:
-      console.error("Invalid action performed on opportunities store");
+      console.error("Invalid action performed on opportunities store", action);
   }
   return state;
 }
