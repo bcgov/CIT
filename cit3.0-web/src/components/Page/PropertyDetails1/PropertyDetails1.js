@@ -76,6 +76,8 @@ export default function PropertyDetails1() {
     electrical: { value: null, capacity: "" },
   });
 
+  const [isValid, setIsValid] = useState(true);
+
   const history = useHistory();
 
   const goToNextPage = () => {
@@ -121,6 +123,11 @@ export default function PropertyDetails1() {
       ...prev,
       [name]: { ...prev[name], capacity: value },
     }));
+    if (value !== "" && Number.isNaN(value)) {
+      setIsValid(false);
+    } else if (value === "") {
+      setIsValid(true);
+    }
   };
 
   const handleContinue = () => {
@@ -220,6 +227,12 @@ export default function PropertyDetails1() {
                 handleChange={handleCapacityChange}
                 value={radioData.waterSupply.capacity}
                 unitString="cubic meters"
+                valid={
+                  !(
+                    radioData.waterSupply.capacity &&
+                    Number.isNaN(Number(radioData.waterSupply.capacity))
+                  )
+                }
               />
             )}
           </Col>
@@ -239,6 +252,12 @@ export default function PropertyDetails1() {
                 handleChange={handleCapacityChange}
                 value={radioData.sewer.capacity}
                 unitString="cubic meters"
+                valid={
+                  !(
+                    radioData.sewer.capacity &&
+                    Number.isNaN(Number(radioData.sewer.capacity))
+                  )
+                }
               />
             )}
           </Col>
@@ -275,6 +294,12 @@ export default function PropertyDetails1() {
                 handleChange={handleCapacityChange}
                 units="MMBTU/hour"
                 unitString="MMBtu"
+                valid={
+                  !(
+                    radioData.naturalGas.capacity &&
+                    Number.isNaN(Number(radioData.naturalGas.capacity))
+                  )
+                }
               />
             )}
           </Col>
@@ -296,6 +321,12 @@ export default function PropertyDetails1() {
                 handleChange={handleCapacityChange}
                 units="MW"
                 value={radioData.electrical.capacity}
+                valid={
+                  !(
+                    radioData.electrical.capacity &&
+                    Number.isNaN(Number(radioData.electrical.capacity))
+                  )
+                }
               />
             )}
           </Col>
@@ -305,6 +336,7 @@ export default function PropertyDetails1() {
       <ButtonRow
         prevRoute="/addOpportunity/siteDetails"
         onClick={handleContinue}
+        noContinue={!isValid}
       />
     </>
   );

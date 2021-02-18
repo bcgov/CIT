@@ -14,7 +14,6 @@ export default function NavigationHeader({ navItems, currentStep }) {
           step={i + 1}
           currentStep={currentStep}
         />
-
         {i !== arr.length - 1 && (
           <Col
             xs="auto"
@@ -29,7 +28,6 @@ export default function NavigationHeader({ navItems, currentStep }) {
       </Row>
     ));
   return (
-    // keep like this
     <div className="py-4" style={{ backgroundColor: "#E0E0E0" }}>
       <Container>
         <Row className="justify-content-center align-items-center">

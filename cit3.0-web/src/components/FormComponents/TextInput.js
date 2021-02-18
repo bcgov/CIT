@@ -22,7 +22,7 @@ export default function TextInput({
       <textarea
         aria-labelledby={`${name}-label`}
         type="textarea"
-        className="bcgov-text-input mb-4"
+        className="bcgov-text-input"
         rows={rows}
         placeholder={placeholder}
         disabled={disabled}

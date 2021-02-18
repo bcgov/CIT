@@ -7,9 +7,11 @@ import ButtonRow from "../../ButtonRow/ButtonRow";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import TextInput from "../../FormComponents/TextInput";
+import Validator from "../../FormComponents/Validator";
 
 export default function PropertyDetails2({ location }) {
   const [checked, setChecked] = useState(false);
+  const [validEmail, setValidEmail] = useState(true);
   const [formData, setFormData] = useState({
     oppDesc: "",
     envDesc: "",
@@ -19,7 +21,10 @@ export default function PropertyDetails2({ location }) {
     busEmail: "",
   });
 
-  console.log("location: ", location.state);
+  const regex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+  const validateEmail = (value) =>
+    value ? setValidEmail(regex.test(value)) : setValidEmail(true);
+
   const history = useHistory();
 
   const noteLabel =
@@ -44,9 +49,7 @@ export default function PropertyDetails2({ location }) {
     });
   };
   const handleContinue = () => {
-    // goToNextPage();
-    const state = { formData, checked };
-    console.log(state);
+    goToNextPage();
   };
 
   const handleTextInput = (name, text) => {
@@ -66,7 +69,7 @@ export default function PropertyDetails2({ location }) {
   };
   return (
     <>
-      {console.log(formData)}
+      {console.log(validEmail)}
       <PortalHeader />
       <NavigationHeader currentStep={4} />
       <Container role="form">
@@ -83,7 +86,7 @@ export default function PropertyDetails2({ location }) {
         <Row className="mb-3">
           <h4>Site Information</h4>
         </Row>
-        <Row>
+        <Row className="mb-4">
           <TextInput
             heading={oppDescLabel}
             handleChange={handleTextInput}
@@ -95,7 +98,7 @@ export default function PropertyDetails2({ location }) {
         <Row className="mb-3">
           <h4>Environmental Information</h4>
         </Row>
-        <Row>
+        <Row className="mb-4">
           <TextInput
             handleChange={handleTextInput}
             heading={enviroLabel}
@@ -104,7 +107,7 @@ export default function PropertyDetails2({ location }) {
             value={formData.envDesc}
           />
         </Row>
-        <Row>
+        <Row className="mb-4">
           <TextInput
             heading={commUrlLabel}
             notes={urlNoteComm}
@@ -115,7 +118,7 @@ export default function PropertyDetails2({ location }) {
             value={formData.commLink}
           />
         </Row>
-        <Row>
+        <Row className="mb-4">
           <TextInput
             heading={listingUrlLabel}
             notes={urlNote}
@@ -137,7 +140,7 @@ export default function PropertyDetails2({ location }) {
             aria-label="Use the Contact Name/Email associated with the BCeID logged in."
           />
         </Row>
-        <Row>
+        <Row className="mb-4">
           <Col className="pl-0">
             <TextInput
               disabled={checked}
@@ -152,15 +155,22 @@ export default function PropertyDetails2({ location }) {
               Business Contact Email
             </p>
             <input
+              autoComplete="off"
               disabled={checked}
               aria-labelledby="email-label"
-              className="bcgov-text-input mb-4 w-100"
+              className="bcgov-text-input mb-1 w-100"
               type="email"
               name="busEmail"
               pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g"
-              onChange={(e) => handleTextInput("busEmail", e.target.value)}
+              onChange={(e) => {
+                handleTextInput("busEmail", e.target.value);
+                validateEmail(e.target.value);
+              }}
               value={formData.busEmail}
             />
+            {!validEmail && (
+              <Validator message="Please enter a valid email address" />
+            )}
           </Col>
           <Col />
         </Row>
@@ -168,6 +178,7 @@ export default function PropertyDetails2({ location }) {
       <ButtonRow
         prevRoute="/addOpportunity/propDetails1"
         onClick={handleContinue}
+        noContinue={!validEmail}
       />
     </>
   );
