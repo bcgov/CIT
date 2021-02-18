@@ -12,7 +12,10 @@ export default function NavigationCircle({ step, currentStep }) {
       {currentStep < step && <Row className="step future mb-2">{step}</Row>}
       {currentStep > step && (
         <Row className="step past mb-2">
-          <AiOutlineCheck className="gov-blue" style={{ fontSize: "32px" }} />
+          <AiOutlineCheck
+            className="gov-blue check"
+            style={{ fontSize: "32px" }}
+          />
         </Row>
       )}
     </>

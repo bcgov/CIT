@@ -23,3 +23,30 @@
 .gov-blue {
     color: #036;
 }
+
+@media only screen and (max-width: 495px ) {
+    .ellipsis {
+        margin: 0px;
+        padding: 0px !important;
+    }
+
+    .step {
+        height: 30px;
+        width: 30px;
+    }
+
+    .current {
+        height: 40px;
+        width: 40px;
+    }
+
+    .check {
+        font-size: 16px;
+    }
+
+    .nav-label {
+        font-size: 12px;
+    }
+}
+
+/* 405 */

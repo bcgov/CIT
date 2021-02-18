@@ -7,7 +7,7 @@ import NavigationHeaderItem from "../NavigationHeaderItem/NavigationHeaderItem";
 export default function NavigationHeader({ navItems, currentStep }) {
   const renderNavItems = (items) =>
     items.map((item, i, arr) => (
-      <Row sm="auto" className="mx-1 px-1">
+      <Row xs="auto" className="mx-1 px-1">
         <NavigationHeaderItem
           key={v4()}
           label={item}
@@ -20,7 +20,7 @@ export default function NavigationHeader({ navItems, currentStep }) {
             style={{
               color: "#A0A0A0",
             }}
-            className="pt-3"
+            className="pt-3 ellipsis"
           >
             <IoEllipsisHorizontalSharp style={{ fontSize: "32px" }} />
           </Col>
@@ -29,8 +29,8 @@ export default function NavigationHeader({ navItems, currentStep }) {
     ));
   return (
     <div className="py-4" style={{ backgroundColor: "#E0E0E0" }}>
-      <Container>
-        <Row className="justify-content-center align-items-center">
+      <Container fluid>
+        <Row className=" main-row justify-content-center align-items-center">
           {renderNavItems(navItems)}
         </Row>
       </Container>
