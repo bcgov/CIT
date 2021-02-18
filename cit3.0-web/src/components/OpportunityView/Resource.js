@@ -15,6 +15,7 @@ function displayResources(resources) {
   Object.entries(resources).forEach((resource) => {
     // Datapoint element
     let element = null;
+    let suffix = "";
 
     // Insert Category section/datapoint
     if (!toDisplay[resource[1].title]) {
@@ -30,61 +31,8 @@ function displayResources(resources) {
     }
 
     // Different markup for datapoint types
+    /* eslint-disable no-fallthrough */
     switch (resource[1].type) {
-      case "distance":
-        element = (
-          <span className="ml-2">
-            <b>
-              {resource[1].name}{" "}
-              {resource[1].name && resource[1].value ? "-" : ""}{" "}
-              {resource[1].value ? (
-                <NumberFormat
-                  displayType="text"
-                  value={resource[1].value}
-                  suffix="km"
-                  thousandSeparator
-                />
-              ) : null}
-            </b>
-          </span>
-        );
-        break;
-      case "capacity":
-        element = (
-          <span className="ml-2">
-            <b>
-              {resource[1].name}{" "}
-              {resource[1].name && resource[1].value ? "-" : ""}{" "}
-              {resource[1].value ? (
-                <NumberFormat
-                  displayType="text"
-                  value={resource[1].value}
-                  suffix="m³/hour"
-                  thousandSeparator
-                />
-              ) : null}
-            </b>
-          </span>
-        );
-        break;
-      case "size":
-        element = (
-          <span className="ml-2">
-            <b>
-              {resource[1].name}{" "}
-              {resource[1].name && resource[1].value ? "-" : ""}{" "}
-              {resource[1].value ? (
-                <NumberFormat
-                  displayType="text"
-                  value={resource[1].value}
-                  suffix="h"
-                  thousandSeparator
-                />
-              ) : null}
-            </b>
-          </span>
-        );
-        break;
       case "link":
         element = (
           <span className="ml-2">
@@ -95,20 +43,39 @@ function displayResources(resources) {
       case "paragraph":
         element = (
           <div className="d-flex flex-column">
-            <div>{resource[1].name}</div>
+            <div classsName="mr-2">{resource[1].name}</div>
             <div>
               <b>{resource[1].value}</b>
             </div>
           </div>
         );
         break;
+      case "distance":
+        suffix = "km";
+      case "capacity":
+        suffix = "m³/hour";
+      case "size":
+        suffix = "ha";
+      case "height":
+        suffix = "m";
+      case "pressure":
+        suffix = "MMBTU/hour";
+      case "power":
+        suffix = "MW";
       default:
         element = (
           <span className="ml-2">
             <b>
               {resource[1].name}{" "}
               {resource[1].name && resource[1].value ? "-" : ""}{" "}
-              {resource[1].value}
+              {resource[1].value ? (
+                <NumberFormat
+                  displayType="text"
+                  value={resource[1].value}
+                  suffix={suffix}
+                  thousandSeparator
+                />
+              ) : null}
             </b>
           </span>
         );

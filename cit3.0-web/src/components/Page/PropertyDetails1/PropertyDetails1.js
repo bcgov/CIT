@@ -1,6 +1,6 @@
-import { useState } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import PageTitleHeader from "../../Headers/PageTitleHeader/PageTitleHeader";
 import ButtonRow from "../../ButtonRow/ButtonRow";
@@ -8,6 +8,11 @@ import Radios from "../../FormComponents/Radios";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MaxCapRow from "../../FormComponents/MaxCapRow";
+import {
+  setUserInfo,
+  setService,
+  setServiceCapacity,
+} from "../../../store/actions/opportunity";
 
 const PropStatusOptions = [
   {
@@ -61,19 +66,91 @@ const developmentOptions = [
 ];
 
 export default function PropertyDetails1() {
-  const [selectData, setSelectData] = useState({
-    saleOrLease: null,
-    currentZone: null,
-    futureZone: null,
-    preferred: null,
+  const dispatch = useDispatch();
+
+  // Select states
+  const preferred = useSelector(
+    (state) => state.opportunity.userInfo.preferred.value
+  );
+  const saleOrLease = useSelector((state) => {
+    const { value } = state.opportunity.userInfo.saleOrLease;
+    const index = PropStatusOptions.findIndex(
+      (item) => value && item.value === value
+    );
+    if (index === -1) {
+      return value;
+    }
+    const { label } = PropStatusOptions[index];
+    return {
+      value,
+      label,
+    };
+  });
+  const currentZone = useSelector((state) => {
+    const { value } = state.opportunity.userInfo.currentZone;
+    const index = zoningOptions.findIndex(
+      (item) => value && item.value === value
+    );
+    if (index === -1) {
+      return value;
+    }
+    const { label } = zoningOptions[index];
+    return {
+      value,
+      label,
+    };
+  });
+  const futureZone = useSelector((state) => {
+    const { value } = state.opportunity.userInfo.futureZone;
+    const index = zoningOptions.findIndex(
+      (item) => value && item.value === value
+    );
+    if (index === -1) {
+      return value;
+    }
+    const { label } = zoningOptions[index];
+    return {
+      value,
+      label,
+    };
   });
 
-  const [radioData, setRadioData] = useState({
-    roadAccess: { value: null },
-    waterSupply: { value: null, capacity: "" },
-    naturalGas: { value: null, capacity: "" },
-    sewer: { value: null, capacity: "" },
-    electrical: { value: null, capacity: "" },
+  // Radio states
+  const roadAccess = useSelector((state) => {
+    const { name } = state.opportunity.services.roadAccess;
+    return name;
+  });
+  const waterSupply = useSelector((state) => {
+    const { name } = state.opportunity.services.waterSupply;
+    return name;
+  });
+  const waterSupplyCapacity = useSelector((state) => {
+    const { value } = state.opportunity.services.waterSupply;
+    return value;
+  });
+  const sewer = useSelector((state) => {
+    const { name } = state.opportunity.services.sewer;
+    return name;
+  });
+  const sewerCapacity = useSelector((state) => {
+    const { value } = state.opportunity.services.sewer;
+    return value;
+  });
+  const naturalGas = useSelector((state) => {
+    const { name } = state.opportunity.services.naturalGas;
+    return name;
+  });
+  const naturalGasCapacity = useSelector((state) => {
+    const { value } = state.opportunity.services.naturalGas;
+    return value;
+  });
+  const electrical = useSelector((state) => {
+    const { name } = state.opportunity.services.electrical;
+    return name;
+  });
+  const electricalCapacity = useSelector((state) => {
+    const { value } = state.opportunity.services.electrical;
+    return value;
   });
 
   const history = useHistory();
@@ -81,7 +158,6 @@ export default function PropertyDetails1() {
   const goToNextPage = () => {
     history.push({
       pathname: `propDetails2`,
-      state: { selectData, radioData },
     });
   };
 
@@ -89,38 +165,25 @@ export default function PropertyDetails1() {
 
   const handleSelectChange = (selectName, data) => {
     if (selectName === "preferred") {
-      setSelectData((prev) => ({
-        ...prev,
-        [selectName]: data,
-      }));
+      dispatch(setUserInfo(selectName, data));
     } else {
-      setSelectData((prev) => ({
-        ...prev,
-        [selectName]: data.value,
-      }));
+      dispatch(setUserInfo(selectName, data.value));
     }
   };
 
   const handleRadioChange = (name, label) => {
-    const capacity = null;
+    console.log(name, label);
     if (label !== "Yes") {
-      setRadioData((prev) => ({
-        ...prev,
-        [name]: { capacity, value: label },
-      }));
+      dispatch(setService(name, label));
+      dispatch(setServiceCapacity(name, ""));
     } else {
-      setRadioData((prev) => ({
-        ...prev,
-        [name]: { ...prev[name], value: label },
-      }));
+      dispatch(setService(name, label));
     }
   };
 
   const handleCapacityChange = (name, value) => {
-    setRadioData((prev) => ({
-      ...prev,
-      [name]: { ...prev[name], capacity: value },
-    }));
+    console.log(name, value);
+    dispatch(setServiceCapacity(name, value));
   };
 
   const handleContinue = () => {
@@ -129,17 +192,14 @@ export default function PropertyDetails1() {
 
   return (
     <>
-      {console.log(radioData)}
       <PortalHeader />
       <NavigationHeader />
       <Container role="form">
         <Row>
           <Row>
             <PageTitleHeader
-              title={"Enter Property Details"}
-              text={
-                "Tell us more about this investment opportunity.  All fields are optional."
-              }
+              title="Enter Property Details"
+              text="Tell us more about this investment opportunity.  All fields are optional."
             />
           </Row>
         </Row>
@@ -153,6 +213,7 @@ export default function PropertyDetails1() {
             <Row>
               <Select
                 aria-labelledby="sale-label"
+                value={saleOrLease}
                 onChange={(value) => handleSelectChange("saleOrLease", value)}
                 className="w-100"
                 options={PropStatusOptions}
@@ -164,6 +225,7 @@ export default function PropertyDetails1() {
             <Row>
               <Select
                 aria-labelledby="current-zone-label"
+                value={currentZone}
                 onChange={(value) => handleSelectChange("currentZone", value)}
                 className="w-100"
                 options={zoningOptions}
@@ -177,6 +239,7 @@ export default function PropertyDetails1() {
             <Row>
               <Select
                 aria-labelledby="future-zone-label"
+                value={futureZone}
                 onChange={(value) => handleSelectChange("futureZone", value)}
                 className="w-100"
                 options={zoningOptions}
@@ -190,6 +253,7 @@ export default function PropertyDetails1() {
               <Select
                 isMulti
                 aria-labelledby="preferred-dev-label"
+                value={preferred}
                 onChange={(value) => handleSelectChange("preferred", value)}
                 closeMenuOnSelect={false}
                 className="w-100"
@@ -212,13 +276,16 @@ export default function PropertyDetails1() {
               aria-labelledby="water-label"
               labels={radioLabels}
               name="waterSupply"
+              value={waterSupply}
               handleRadioChange={handleRadioChange}
             />
-            {radioData.waterSupply.value === "Yes" && (
+            {waterSupply === "Yes" && (
               <MaxCapRow
                 name="waterSupply"
-                handleChange={handleCapacityChange}
-                value={radioData.waterSupply.capacity}
+                value={waterSupplyCapacity}
+                handleChange={(iName, iValue) =>
+                  handleCapacityChange(iName, iValue)
+                }
                 unitString="cubic meters"
               />
             )}
@@ -231,13 +298,16 @@ export default function PropertyDetails1() {
               aria-labelledby="sewer-label"
               labels={radioLabels}
               name="sewer"
+              value={sewer}
               handleRadioChange={handleRadioChange}
             />
-            {radioData.sewer.value === "Yes" && (
+            {sewer === "Yes" && (
               <MaxCapRow
                 name="sewer"
-                handleChange={handleCapacityChange}
-                value={radioData.sewer.capacity}
+                value={sewerCapacity}
+                handleChange={(iName, iValue) =>
+                  handleCapacityChange(iName, iValue)
+                }
                 unitString="cubic meters"
               />
             )}
@@ -253,6 +323,7 @@ export default function PropertyDetails1() {
               aria-labelledby="road-label"
               labels={radioLabels}
               name="roadAccess"
+              value={roadAccess}
               handleRadioChange={handleRadioChange}
             />
           </Col>
@@ -266,13 +337,16 @@ export default function PropertyDetails1() {
               aria-labelledby="gas-label"
               labels={radioLabels}
               name="naturalGas"
+              value={naturalGas}
               handleRadioChange={handleRadioChange}
             />
-            {radioData.naturalGas.value === "Yes" && (
+            {naturalGas === "Yes" && (
               <MaxCapRow
                 name="naturalGas"
-                value={radioData.naturalGas.capacity}
-                handleChange={handleCapacityChange}
+                value={naturalGasCapacity}
+                handleChange={(iName, iValue) =>
+                  handleCapacityChange(iName, iValue)
+                }
                 units="MMBTU/hour"
                 unitString="MMBtu"
               />
@@ -288,14 +362,17 @@ export default function PropertyDetails1() {
               aria-labelledby="electrical-label"
               labels={radioLabels}
               name="electrical"
+              value={electrical}
               handleRadioChange={handleRadioChange}
             />
-            {radioData.electrical.value === "Yes" && (
+            {electrical === "Yes" && (
               <MaxCapRow
                 name="electrical"
-                handleChange={handleCapacityChange}
+                value={electricalCapacity}
+                handleChange={(iName, iValue) =>
+                  handleCapacityChange(iName, iValue)
+                }
                 units="MW"
-                value={radioData.electrical.capacity}
               />
             )}
           </Col>

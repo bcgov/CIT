@@ -8,6 +8,8 @@ import {
   ADD_SITE_INFO,
   ADD_USER_INFO,
   ADD_NAME,
+  ADD_SERVICE,
+  ADD_SERVICE_CAPACITY,
 } from "../constants/action-types";
 /**
  * @param {string} resourses
@@ -48,6 +50,20 @@ export function setSiteInfo(sInfo) {
  */
 export function setUserInfo(key, sInfo) {
   return { type: ADD_USER_INFO, payload: { key, value: sInfo } };
+}
+
+/**
+ * @param {Object} sInfo
+ */
+export function setService(key, sInfo) {
+  return { type: ADD_SERVICE, payload: { key, value: sInfo } };
+}
+
+/**
+ * @param {Object} sInfo
+ */
+export function setServiceCapacity(key, sInfo) {
+  return { type: ADD_SERVICE_CAPACITY, payload: { key, capacity: sInfo } };
 }
 
 /**

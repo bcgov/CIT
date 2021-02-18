@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { Container, Col, Row, Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PageTitleHeader from "../../Headers/PageTitleHeader/PageTitleHeader";
 import ButtonRow from "../../ButtonRow/ButtonRow";
@@ -14,7 +13,7 @@ import {
   setBusinessNameShared,
 } from "../../../store/actions/opportunity";
 
-export default function PropertyDetails2({ location }) {
+export default function PropertyDetails2() {
   const dispatch = useDispatch();
   const businessContact = useSelector(
     (state) => state.opportunity.businessContact
@@ -32,17 +31,6 @@ export default function PropertyDetails2({ location }) {
     (state) => state.opportunity.userInfo.envInfo.value
   );
 
-  const [checked, setChecked] = useState(false);
-  const [formData, setFormData] = useState({
-    oppDesc: "",
-    envDesc: "",
-    commLink: "",
-    moreInfoLink: "",
-    busName: "",
-    busEmail: "",
-  });
-
-  console.log("location: ", location.state);
   const history = useHistory();
 
   const noteLabel =
@@ -63,33 +51,17 @@ export default function PropertyDetails2({ location }) {
   const goToNextPage = () => {
     history.push({
       pathname: `review`,
-      state: { formData, checked },
     });
   };
   const handleContinue = () => {
     goToNextPage();
-    const state = { formData, checked };
-    console.log(state);
-  };
-
-  const handleTextInput = (name, text) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: text,
-    }));
   };
 
   const handleCheck = (isChecked) => {
     dispatch(setBusinessNameShared(isChecked));
-    setFormData((prev) => ({
-      ...prev,
-      busEmail: "",
-      busName: "",
-    }));
   };
   return (
     <>
-      {console.log(formData)}
       <PortalHeader />
       <NavigationHeader />
       <Container role="form">
@@ -167,7 +139,6 @@ export default function PropertyDetails2({ location }) {
           <Col className="pl-0">
             <TextInput
               required={false}
-              disabled={checked}
               heading="Business Contact Name"
               notes=""
               rows={1}
@@ -179,7 +150,6 @@ export default function PropertyDetails2({ location }) {
             />
             <TextInput
               required={false}
-              disabled={checked}
               aria-labelledby="email-label"
               heading="Business Contact Email"
               notes=""
@@ -202,7 +172,3 @@ export default function PropertyDetails2({ location }) {
     </>
   );
 }
-
-PropertyDetails2.propTypes = {
-  location: PropTypes.shape().isRequired,
-};

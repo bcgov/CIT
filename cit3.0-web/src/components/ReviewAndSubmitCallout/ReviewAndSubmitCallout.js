@@ -9,14 +9,6 @@ import { setOpportunityName } from "../../store/actions/opportunity";
 import styles from "./ReviewAndSubmitCallout.module.css";
 import TextInput from "../FormComponents/TextInput";
 
-/* eslint-disable jsx-a11y/label-has-associated-control */
-const input = {
-  id: "opportunity-name",
-  placeholder: "Enter Name here. (eg. Old mill on Main St)",
-  isReadOnly: false,
-  isRequired: false,
-};
-
 const ReviewAndSubmitCallout = ({
   prevRoute,
   submitOpportunity,
@@ -50,14 +42,11 @@ const ReviewAndSubmitCallout = ({
             of your submission on your dashboard.
           </p>
           <div role="form">
-            <label className="d-flex flex-column" aria-label="opportunity-name">
-              Name this Opportunity
-              <span>
-                This field is optional and will only be seen by you on your
-                dashboard
-              </span>
-            </label>
             <TextInput
+              heading="Name this Opportunity"
+              notes="This field is optional and will only be seen by you on your
+              dashboard"
+              id="opportunity-name"
               rows={1}
               placeholder="Enter Name here. (eg. Old mill on Main St)"
               value={name}

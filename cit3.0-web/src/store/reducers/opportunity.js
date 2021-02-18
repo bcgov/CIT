@@ -8,6 +8,8 @@ import {
   ADD_SITE_INFO,
   ADD_USER_INFO,
   ADD_NAME,
+  ADD_SERVICE,
+  ADD_SERVICE_CAPACITY,
 } from "../constants/action-types";
 
 /**
@@ -72,35 +74,35 @@ const OPPORTUNITY_MODEL = {
     roadAccess: {
       title: "Site servicing",
       subtitle: "- Road Access",
-      value: "Yes",
+      name: "Yes",
       type: "text",
     },
     waterSupply: {
       title: "Site servicing",
       subtitle: "- Water",
       name: "Yes",
-      value: "300m3/hour",
+      value: 300,
       type: "capacity",
     },
     naturalGas: {
       title: "Site servicing",
       subtitle: "- Natural Gas",
       name: "No",
-      value: "10m3/hour",
-      type: "capacity",
+      value: 10,
+      type: "pressure",
     },
     sewer: {
       title: "Site servicing",
       subtitle: "- Sewer",
       name: "Yes",
-      value: "1m3/hour",
+      value: 1,
       type: "capacity",
     },
     electrical: {
       title: "Power Transmission Lines",
-      name: "BCHydro Trunk",
-      value: "",
-      type: "capacity",
+      name: "Yes",
+      value: 10,
+      type: "power",
     },
     nearHealth: {
       title: "Nearest Health Care Facility",
@@ -112,7 +114,7 @@ const OPPORTUNITY_MODEL = {
       title: "Nearest First Responders",
       subtitle: "- Fire",
       name: "Firehouse #1",
-      value: "",
+      value: 0,
       type: "distance",
     },
     nearAmbulance: {
@@ -180,7 +182,7 @@ const OPPORTUNITY_MODEL = {
       title: "Elevation at location",
       name: null,
       value: 100,
-      type: "distance",
+      type: "height",
     },
     nearGround: {
       title: "Soil Name, Texture, Drainage",
@@ -214,16 +216,16 @@ const OPPORTUNITY_MODEL = {
       type: "size",
     },
     PID: {
-      title: "Parcel size",
+      title: "PID",
       value: "456-234-456",
       type: "text",
     },
   },
   userInfo: {
-    propertyStatus: { title: "Sale or Lease", value: "", type: "text" },
-    currentZoning: { title: "Current Zoning", value: "", type: "text" },
-    futreZoning: { title: "Future Zoning", value: "", type: "text" },
-    preferredDevelopment: {
+    saleOrLease: { title: "Sale or Lease", value: "", type: "text" },
+    currentZone: { title: "Current Zoning", value: "", type: "text" },
+    futureZone: { title: "Future Zoning", value: "", type: "text" },
+    preferred: {
       title: "Preferred Development",
       value: "",
       type: "text",
@@ -270,6 +272,12 @@ export default function opportunity(state = OPPORTUNITY_MODEL, action) {
       break;
     case ADD_USER_INFO:
       state.userInfo[action.payload.key].value = action.payload.value;
+      break;
+    case ADD_SERVICE:
+      state.services[action.payload.key].name = action.payload.value;
+      break;
+    case ADD_SERVICE_CAPACITY:
+      state.services[action.payload.key].value = action.payload.capacity;
       break;
     case ADD_NAME:
       state.name = action.payload;

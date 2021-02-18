@@ -7,3 +7,5 @@ export const RESET_OPPORTUNITY = "RESET_OPPORTUNITY";
 export const ADD_SITE_INFO = "ADD_SITE_INFO";
 export const ADD_USER_INFO = "ADD_USER_INFO";
 export const ADD_NAME = "ADD_NAME";
+export const ADD_SERVICE = "ADD_SERVICE";
+export const ADD_SERVICE_CAPACITY = "ADD_USER_INFO_CAPACITY";
