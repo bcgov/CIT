@@ -1,16 +1,19 @@
 import PropTypes from "prop-types";
 import "../NavigationHeaderItem/NavigationHeaderItem.css";
 import { AiOutlineCheck } from "react-icons/ai";
+import { Row } from "react-bootstrap";
 
 export default function NavigationCircle({ step, currentStep }) {
   return (
     <>
-      {currentStep === step && <div className="step current mb-2">{step}</div>}
-      {currentStep < step && <div className="step future mb-2">{step}</div>}
+      {currentStep === step && (
+        <Row className="step current mb-2 mx-2">{step}</Row>
+      )}
+      {currentStep < step && <Row className="step future mb-2">{step}</Row>}
       {currentStep > step && (
-        <div className="step past mb-2">
+        <Row className="step past mb-2">
           <AiOutlineCheck className="gov-blue" style={{ fontSize: "32px" }} />
-        </div>
+        </Row>
       )}
     </>
   );

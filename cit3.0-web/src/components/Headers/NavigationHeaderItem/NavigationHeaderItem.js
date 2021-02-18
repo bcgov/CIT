@@ -5,10 +5,11 @@ import NavigationCircle from "../NavigationCircle/NavigationCircle";
 
 export default function NavigationHeaderItem({ label, step, currentStep }) {
   return (
-    <Col className="d-flex px-3 flex-column justify-content-center align-items-center">
-      <Row>
-        <NavigationCircle step={step} currentStep={currentStep} />
-      </Row>
+    <Col
+      xs="auto"
+      className="d-flex flex-column justify-content-center align-items-center"
+    >
+      <NavigationCircle step={step} currentStep={currentStep} />
       <Row>{label}</Row>
     </Col>
   );
