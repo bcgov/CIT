@@ -1,10 +1,11 @@
-import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import {
   MapContainer,
   Marker,
   Popup,
   TileLayer,
+  Polygon,
   MapConsumer,
 } from "react-leaflet";
 import L from "leaflet";
@@ -22,7 +23,17 @@ export default function Map({
   resourceIds,
   setNearbyResources,
   setAddress,
+  isInteractive,
 }) {
+  // eslint-disable-next-line no-unused-vars
+  const [dimensions, setDimensions] = useState({
+    height: window.innerHeight,
+    width: window.innerWidth,
+  });
+
+  let additionalComponents;
+  let zoomLevel;
+
   const changeView = (centerCoords) => centerCoords;
   const [geoData, setGeoData] = useState({});
   const [bounds, setBounds] = useState("");
@@ -40,15 +51,89 @@ export default function Map({
     "https://openmaps.gov.bc.ca/geo/pub/wms?service=WMS&version=1.1.0&request=GetMap&layers=pub%3AWHSE_IMAGERY_AND_BASE_MAPS.BCNC_BC_NETWORK_COVERAGE_SV&bbox=1188753.04%2C397932.21%2C1196127.68%2C404508.68&width=500&height=600&srs=EPSG%3A3005&format=image%2Fjpeg"
   );
 
+  const multiPolygon = [
+    [
+      [48.59509, -123.4056],
+      [48.598, -123.41],
+      [48.6, -123.42],
+      [48.6, -123.43],
+    ],
+  ];
+
+  if (isInteractive) {
+    additionalComponents = (
+      <>
+        <ChangeView center={changeView(coords)} zoom={13} />
+        <AddLocationMarker
+          setCoords={setCoords}
+          setAddress={setAddress}
+          resourceIds={resourceIds}
+          setNearbyResources={setNearbyResources}
+          changeView={changeView}
+        />
+        <Polygon pathOptions={{ color: "purple" }} positions={multiPolygon} />
+        {coords[0] !== 49.2827 ? (
+          <Marker position={coords}>
+            <Popup>
+              Lat: {coords[0]} Long: {coords[1]}
+            </Popup>
+          </Marker>
+        ) : null}
+        {JSON.stringify(nearbyResources) !== "{}"
+          ? Object.entries(nearbyResources).map(([resource, resourceData]) => (
+              <ResourceMarker
+                key={resource}
+                resourceName={resource}
+                resources={resourceData}
+              />
+            ))
+          : null}
+      </>
+    );
+    zoomLevel = 2;
+  } else {
+    additionalComponents = <Marker position={coords} />;
+    zoomLevel = 13;
+  }
+
+  const handleResize = () => {
+    setDimensions({
+      height: window.innerHeight,
+      width: window.innerWidth,
+    });
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  });
+
   return (
     <MapContainer
       center={coords}
-      // zoom={2}
-      zoom={5}
-      scrollWheelZoom
+      zoom={zoomLevel}
+      scrollWheelZoom={isInteractive}
+      zoomControl={isInteractive}
+      attributionControl={isInteractive}
+      fadeAnimation={isInteractive}
+      zoomAnimation={isInteractive}
+      doubleClickZoom={isInteractive}
+      dragging={isInteractive}
+      zoomSnap={isInteractive}
+      zoomDelta={isInteractive}
+      trackResize={isInteractive}
+      touchZoom={isInteractive}
       style={{ width: "100%", height: "100%" }}
     >
-      {coords[0] !== 54.1722 ? <ChangeView center={coords} /> : null}
+      <MapConsumer>
+        {(map) => {
+          map.invalidateSize();
+          return null;
+        }}
+      </MapConsumer>
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -76,41 +161,19 @@ export default function Map({
           return null;
         }}
       </MapConsumer>
-      {/* <Test setUrl={setUrl} setBounds={setBounds} /> */}
-      <AddLocationMarker
-        setCoords={setCoords}
-        setAddress={setAddress}
-        resourceIds={resourceIds}
-        setNearbyResources={setNearbyResources}
-        changeView={changeView}
-      />
-      {/* <Polygon pathOptions={{ color: "purple" }} positions={multiPolygon} /> */}
-      {coords[0] !== 54.1722 ? (
-        <Marker position={coords}>
-          <Popup>
-            Lat: {coords[0]} Long: {coords[1]}
-          </Popup>
-        </Marker>
-      ) : null}
-      {JSON.stringify(nearbyResources) !== "{}"
-        ? Object.entries(nearbyResources).map(([resource, resourceData]) => (
-            <ResourceMarker
-              key={resource}
-              resourceName={resource}
-              resources={resourceData}
-            />
-          ))
-        : null}
+      {additionalComponents}
     </MapContainer>
   );
 }
 
 Map.defaultProps = {
-  nearbyResources: {},
+  isInteractive: true,
+  nearbyResources: null,
 };
 
 Map.propTypes = {
   coords: PropTypes.arrayOf(PropTypes.number).isRequired,
+  isInteractive: PropTypes.bool,
   nearbyResources: PropTypes.shape({
     resource: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.shape),

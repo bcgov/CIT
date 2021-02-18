@@ -19,9 +19,7 @@ module.exports = {
   plugins: ["react", "prettier"],
   ignorePatterns: ["node_modules/", "build/"],
   rules: {
-    "import/no-unresolved": "off",
     "react/jsx-filename-extension": "off",
-    "react/jsx-curly-brace-presence": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "react/jsx-one-expression-per-line": "off",
