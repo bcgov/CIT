@@ -30,24 +30,32 @@ const OPPORTUNITY_MODEL = {
     email: "",
     shared: false,
   },
-  resourceIds: [],
+  resourceIds: {
+    Hospitals: "5ff82cf4-0448-4063-804a-7321f0f2b4c6",
+    Schools: "5832eff2-3380-435e-911b-5ada41c1d30b",
+    "Post Secondary Schools": "8e4e2a87-2d1d-4931-828e-6327b49f310e",
+    Courts: "23aa0b75-2715-4ccb-9a36-9a608450dc2d",
+    "Walk-In Clinics": "3ca6b086-c92b-4654-ae82-ff5723d00611",
+    "Natural Resource Projects": "2b69cc4b-4076-4272-a5a0-1c731455e063",
+    "Economic Projects": "b12cd4cc-b58b-4079-b630-a20b6df58e8d",
+  },
   nearbyResources: {},
   municipalities: [
     {
       name: "Comox",
-      link: "www.example.com",
+      link: "http://www.example.com",
       distance: 1,
       population: 10900,
     },
     {
       name: "Courtney & Surrounding",
-      link: "www.example.com",
+      link: "http://www.example.com",
       distance: 3.5,
       population: 190,
     },
     {
       name: "Victoria",
-      link: "www.example.com",
+      link: "http://www.example.com",
       distance: 177.89,
       population: 109000,
     },
@@ -81,8 +89,9 @@ const OPPORTUNITY_MODEL = {
       title: "Site servicing",
       subtitle: "- Water",
       name: "Yes",
-      value: 300,
+      value: 3003,
       type: "capacity",
+      suffix: "m³/hour",
     },
     naturalGas: {
       title: "Site servicing",
@@ -90,6 +99,7 @@ const OPPORTUNITY_MODEL = {
       name: "No",
       value: 10,
       type: "pressure",
+      suffix: "MMBTU/hour",
     },
     sewer: {
       title: "Site servicing",
@@ -97,25 +107,29 @@ const OPPORTUNITY_MODEL = {
       name: "Yes",
       value: 1,
       type: "capacity",
+      suffix: "m³/hour",
     },
     electrical: {
       title: "Power Transmission Lines",
       name: "Yes",
       value: 10,
       type: "power",
+      suffix: "MW",
     },
     nearHealth: {
       title: "Nearest Health Care Facility",
       name: "General Hospital",
       value: 11,
       type: "distance",
+      suffix: "km",
     },
     nearFire: {
       title: "Nearest First Responders",
       subtitle: "- Fire",
       name: "Firehouse #1",
-      value: 0,
+      value: 1,
       type: "distance",
+      suffix: "km",
     },
     nearAmbulance: {
       title: "Nearest First Responders",
@@ -123,6 +137,7 @@ const OPPORTUNITY_MODEL = {
       name: "First Responder Hub",
       value: 6,
       type: "distance",
+      suffix: "km",
     },
     nearPolice: {
       title: "Nearest First Responders",
@@ -130,6 +145,7 @@ const OPPORTUNITY_MODEL = {
       name: "Station #2",
       value: 1.5,
       type: "distance",
+      suffix: "km",
     },
     nearCoastGuard: {
       title: "Nearest First Responders",
@@ -137,12 +153,14 @@ const OPPORTUNITY_MODEL = {
       name: "Intl. Port",
       value: 35,
       type: "distance",
+      suffix: "km",
     },
     nearSecondarySchool: {
       title: "Nearest Post-Secondary Institution",
       name: "High School",
       value: 10,
       type: "distance",
+      suffix: "km",
     },
   },
   transportation: {
@@ -151,30 +169,35 @@ const OPPORTUNITY_MODEL = {
       name: "Highway 1",
       value: 0.5,
       type: "distance",
+      suffix: "km",
     },
     nearAirport: {
       title: "Nearest Airport",
       name: "Comox Airport",
       value: 0.1,
       type: "distance",
+      suffix: "km",
     },
     nearRailway: {
       title: "Nearest Railway",
       name: "CN Rail",
       value: 15,
       type: "distance",
+      suffix: "km",
     },
     nearPort: {
       title: "Nearest Port",
       name: "Boat Dock",
       value: 47,
       type: "distance",
+      suffix: "km",
     },
     nearCustomsPort: {
       title: "Nearest Canada Customs Port of Entry",
       name: "Intl. Port",
       value: 35,
       type: "distance",
+      suffix: "km",
     },
   },
   physical: {
@@ -183,6 +206,7 @@ const OPPORTUNITY_MODEL = {
       name: null,
       value: 100,
       type: "height",
+      suffix: "m",
     },
     nearGround: {
       title: "Soil Name, Texture, Drainage",
@@ -195,25 +219,27 @@ const OPPORTUNITY_MODEL = {
       name: "Local Lake",
       value: 3,
       type: "distance",
+      suffix: "km",
     },
     nearRiver: {
       title: "Access to water (nearest river)",
       name: "Forest River",
       value: 5,
       type: "distance",
+      suffix: "km",
     },
   },
   siteInfo: {
     ownership: {
       title: "Ownership",
-      value: "Crown",
+      name: "Crown",
       type: "text",
     },
     parcelSize: {
       title: "Parcel size",
-      name: "Crown",
       value: "5",
       type: "size",
+      suffix: "ha",
     },
     PID: {
       title: "PID",
@@ -228,7 +254,7 @@ const OPPORTUNITY_MODEL = {
     preferred: {
       title: "Preferred Development",
       value: "",
-      type: "text",
+      type: "multi",
     },
     oppDesc: { title: "Oppotunity Description", value: "", type: "paragraph" },
     envInfo: {
@@ -253,7 +279,7 @@ const OPPORTUNITY_MODEL = {
  * @param {String} action.payload incoming action payload, varying on opportunity field
  */
 export default function opportunity(state = OPPORTUNITY_MODEL, action) {
-  /* eslint-disable no-param-reassign */
+  /* eslint-disable no-param-reassign, no-console */
   switch (action.type) {
     case RESET_OPPORTUNITY:
       state = OPPORTUNITY_MODEL;

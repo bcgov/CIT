@@ -35,7 +35,12 @@ const LocationsPanel = ({
           {municipalities.map((muni) => (
             <Row key={v4()} className="d-flex justify-content-between">
               <Col className="pl-0">
-                <a target="_blank" rel="noreferrer" href={muni.link}>
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={`${muni.link}`}
+                  onClick={() => window.open(muni.link, "_blank")}
+                >
                   {muni.name} - {muni.distance}km
                 </a>
               </Col>
@@ -66,7 +71,8 @@ const LocationsPanel = ({
               <a
                 target="_blank"
                 rel="noreferrer"
-                href={firstNationCommunity.link}
+                href={`${firstNationCommunity.link}`}
+                onClick={() => window.open(firstNationCommunity.link, "_blank")}
               >
                 {firstNationCommunity.name} - {firstNationCommunity.distance}km
               </a>
@@ -97,17 +103,16 @@ LocationsPanel.propTypes = {
     PropTypes.shape({
       name: PropTypes.string,
       link: PropTypes.string,
-      distance: PropTypes.string,
+      distance: PropTypes.number,
+      population: PropTypes.number,
     })
   ),
-  firstNationCommunity: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      link: PropTypes.string,
-      distance: PropTypes.string,
-      popluation: PropTypes.number,
-    })
-  ),
+  firstNationCommunity: PropTypes.shape({
+    name: PropTypes.string,
+    link: PropTypes.string,
+    distance: PropTypes.number,
+    population: PropTypes.number,
+  }),
 };
 
 LocationsPanel.defaultProps = {

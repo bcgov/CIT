@@ -15,7 +15,7 @@ function displayResources(resources) {
   Object.entries(resources).forEach((resource) => {
     // Datapoint element
     let element = null;
-    let suffix = "";
+    let multiValues = [];
 
     // Insert Category section/datapoint
     if (!toDisplay[resource[1].title]) {
@@ -36,7 +36,14 @@ function displayResources(resources) {
       case "link":
         element = (
           <span className="ml-2">
-            <a href={resource[1].value}>{resource[1].value}</a>
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href={resource[1].value}
+              onClick={() => window.open(resource[1].value, "_blank")}
+            >
+              {resource[1].value}
+            </a>
           </span>
         );
         break;
@@ -50,18 +57,18 @@ function displayResources(resources) {
           </div>
         );
         break;
-      case "distance":
-        suffix = "km";
-      case "capacity":
-        suffix = "m³/hour";
-      case "size":
-        suffix = "ha";
-      case "height":
-        suffix = "m";
-      case "pressure":
-        suffix = "MMBTU/hour";
-      case "power":
-        suffix = "MW";
+      case "multi":
+        if (Array.isArray(resource[1].value)) {
+          multiValues = resource[1].value;
+        }
+        element = (
+          <div className="d-flex flex-column">
+            <div className="ml-2">
+              <b>{multiValues.map((v) => `${v.label}`).join(", ")}</b>
+            </div>
+          </div>
+        );
+        break;
       default:
         element = (
           <span className="ml-2">
@@ -72,8 +79,8 @@ function displayResources(resources) {
                 <NumberFormat
                   displayType="text"
                   value={resource[1].value}
-                  suffix={suffix}
-                  thousandSeparator
+                  suffix={resource[1].suffix}
+                  thousandSeparator={isNaN(resource[1].value) ? false : ","}
                 />
               ) : null}
             </b>

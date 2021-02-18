@@ -154,7 +154,6 @@ export default function Map({
       <MapConsumer>
         {(localMap) => {
           const bb = localMap.getBounds().toBBoxString();
-          console.log(bb);
           useEffect(() => {
             setBounds(bb);
           });

@@ -14,6 +14,7 @@ import {
   setAddress,
   setCoords,
   setNearbyResources,
+  setResourceIds,
 } from "../../../store/actions/opportunity";
 
 export default function AddOpportunity({ match }) {
@@ -73,8 +74,8 @@ export default function AddOpportunity({ match }) {
                 {address ? (
                   <>
                     <PropertyInfo info={address} tag={false} />
-                    <PropertyInfo info={"Ownership: <ownership_type>"} />
-                    <PropertyInfo info={"Parcel Size: <size> ha"} />
+                    <PropertyInfo info="Ownership: <ownership_type>" />
+                    <PropertyInfo info="Parcel Size: <size> ha" />
                   </>
                 ) : null}
               </Col>
@@ -84,6 +85,7 @@ export default function AddOpportunity({ match }) {
             <MapContainer
               nearbyResources={nearbyResources}
               coords={coords}
+              setResourceIds={(r) => dispatch(setResourceIds(r))}
               setNearbyResources={(r) => dispatch(setNearbyResources(r))}
               setAddress={(a) => dispatch(setAddress(a))}
               setCoords={(c) => dispatch(setCoords(c))}

@@ -1,7 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
 
-import { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import "./App.css";
@@ -12,7 +11,6 @@ import SiteInfomation from "./components/Page/SiteInformation/SiteInformation";
 import PropertyDetails1 from "./components/Page/PropertyDetails1/PropertyDetails1";
 import PropertyDetails2 from "./components/Page/PropertyDetails2/PropertyDetails2";
 import ReviewOpportunity from "./components/Page/ReviewOpportunity/ReviewOpportunity";
-// import InvestOpForm from "./components/InvestOpForm/InvestOpForm";
 
 import { store } from "./store";
 import ReviewSubmitted from "./components/Page/ReviewSubmitted/ReviewSubmitted";

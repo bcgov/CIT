@@ -40,6 +40,7 @@ export default function OpportunityView({ view }) {
   const nearbyResources = useSelector(
     (state) => state.opportunity.nearbyResources
   );
+  const resourceIds = useSelector((state) => state.opportunity.resourceIds);
   const businessContact = useSelector(
     (state) => state.opportunity.businessContact
   );
@@ -63,6 +64,7 @@ export default function OpportunityView({ view }) {
             setCoords={(c) => dispatch(setCoords(c))}
             setAddress={(a) => dispatch(setAddress(a))}
             nearbyResources={nearbyResources}
+            resourceIds={resourceIds}
           />
           <LocationsPanel
             address={address}
