@@ -5,24 +5,30 @@ afterEach(cleanup);
 
 const navItems = [
   "Location",
+  "View Data",
   "Property Details",
   "Additional Info",
   "Review & Submit",
 ];
 
 describe("Navigation Header", () => {
-  it("renders a column", () => {
-    const { container } = render(<NavigationHeader navItems={navItems} />);
-    expect(container.firstChild).toHaveClass("col");
+  it("renders NavigationHeaderItems", () => {
+    const { container } = render(
+      <NavigationHeader currentStep={1} navItems={navItems} />
+    );
+    expect(container.firstChild.classList.contains("nav-item"));
   });
-  it("renders 4 navItems", () => {
-    const { container } = render(<NavigationHeader navItems={navItems} />);
-    const childCol = container.firstChild;
-    const childRow = childCol.firstChild;
-    expect(childRow.childElementCount).toBe(4);
+  it("renders 5 navItems", () => {
+    const { queryAllByTestId } = render(
+      <NavigationHeader currentStep={1} navItems={navItems} />
+    );
+    const items = queryAllByTestId("nav-item");
+    expect(items.length).toBe(5);
   });
   it("renders the first Item in navItems", () => {
-    const { getByText } = render(<NavigationHeader navItems={navItems} />);
+    const { getByText } = render(
+      <NavigationHeader currentStep={1} navItems={navItems} />
+    );
     const item = getByText(navItems[0]);
     expect(item).toBeInTheDocument();
   });

@@ -7,9 +7,13 @@ import NavigationHeaderItem from "../NavigationHeaderItem/NavigationHeaderItem";
 export default function NavigationHeader({ navItems, currentStep }) {
   const renderNavItems = (items) =>
     items.map((item, i, arr) => (
-      <Row xs="auto" className="mx-1 px-1">
+      <Row
+        key={v4()}
+        xs="auto"
+        className="mx-1 px-1"
+        data-testid="header-items-row"
+      >
         <NavigationHeaderItem
-          key={v4()}
           label={item}
           step={i + 1}
           currentStep={currentStep}

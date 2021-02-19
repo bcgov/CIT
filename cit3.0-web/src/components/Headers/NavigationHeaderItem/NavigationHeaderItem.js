@@ -7,6 +7,7 @@ export default function NavigationHeaderItem({ label, step, currentStep }) {
   return (
     <Col
       xs="auto"
+      data-testid="nav-item"
       className="d-flex flex-column justify-content-center align-items-center nav-item"
     >
       <NavigationCircle step={step} currentStep={currentStep} />

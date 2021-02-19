@@ -5,7 +5,6 @@ import {
   Marker,
   Popup,
   TileLayer,
-  Polygon,
   MapConsumer,
 } from "react-leaflet";
 import L from "leaflet";
@@ -71,7 +70,7 @@ export default function Map({
           setNearbyResources={setNearbyResources}
           changeView={changeView}
         />
-        <Polygon pathOptions={{ color: "purple" }} positions={multiPolygon} />
+        {/* <Polygon pathOptions={{ color: "purple" }} positions={multiPolygon} /> */}
         {coords[0] !== 49.2827 ? (
           <Marker position={coords}>
             <Popup>
