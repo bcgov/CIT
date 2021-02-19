@@ -21,6 +21,9 @@ class Command(BaseCommand):
         # print("Importing Communities...")
         # import_csv_resources("communities")
 
-        wms_resources = DataSource.objects.filter(source_type="WMS").order_by('import_order')
-        for resource in wms_resources:
-            import_wms_resource(resource)
+        # wms_resources = DataSource.objects.filter(source_type="WMS").order_by('import_order')
+        # for resource in wms_resources:
+        #     import_wms_resource(resource)
+
+        ds = bcdata.get_data('emergency-social-services-facilities', as_gdf=True)
+        print(ds.iloc[0])

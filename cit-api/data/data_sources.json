@@ -80,7 +80,7 @@
         "source_type": "api",
         "resource_id": "5ff82cf4-0448-4063-804a-7321f0f2b4c6",
         "permalink_id": "383eaf98-afd7-436a-9556-67ecf14f64a7",
-        "import_order": 15
+        "import_order": 35
     },
     {
         "name": "projects",
@@ -100,7 +100,7 @@
         "source_type": "api",
         "resource_id": "2b69cc4b-4076-4272-a5a0-1c731455e063",
         "permalink_id": "5ee75843-06b3-4767-b6c2-3248289f5e8d",
-        "import_order": 16
+        "import_order": 36
     },
     {
         "name": "economic_projects",
@@ -110,7 +110,7 @@
         "source_type": "api",
         "resource_id": "b12cd4cc-b58b-4079-b630-a20b6df58e8d",
         "permalink_id": "ea4c0bdb-a63f-49a4-b14a-09c1560aad0b",
-        "import_order": 17
+        "import_order": 37
     },
     {
         "name": "servicebc_locations",
@@ -120,7 +120,7 @@
         "source_type": "api",
         "resource_id": "c7cc9297-220c-4d6c-a9a7-72d0680b2f74",
         "permalink_id": "2b44d212-5438-47a9-ad23-20eb8ada9709",
-        "import_order": 18
+        "import_order": 38
     },
     {
         "name": "schools",
@@ -130,7 +130,7 @@
         "source_type": "api",
         "resource_id": "5832eff2-3380-435e-911b-5ada41c1d30b",
         "permalink_id": "95da1091-7e8c-4aa6-9c1b-5ab159ea7b42",
-        "import_order": 19
+        "import_order": 39
     },
     {
         "name": "clinics",
@@ -140,7 +140,7 @@
         "source_type": "api",
         "resource_id": "3ca6b086-c92b-4654-ae82-ff5723d00611",
         "permalink_id": "5e2707c3-0aa4-4d2d-aedc-4dd0914b686a",
-        "import_order": 20
+        "import_order": 40
     },
     {
         "name": "courts",
@@ -150,7 +150,7 @@
         "source_type": "api",
         "resource_id": "23aa0b75-2715-4ccb-9a36-9a608450dc2d",
         "permalink_id": "c95a2ad5-f62a-43d6-8678-80a617b6200e",
-        "import_order": 21
+        "import_order": 41
     },
     {
         "name": "post_secondary_institutions",
@@ -160,7 +160,7 @@
         "source_type": "api",
         "resource_id": "8e4e2a87-2d1d-4931-828e-6327b49f310e",
         "permalink_id": "81558d54-1f96-46c2-94fe-56d26f69c4f5",
-        "import_order": 22
+        "import_order": 42
     },
     {
         "name": "research_centres",
@@ -170,7 +170,7 @@
         "source_type": "api",
         "resource_id": "b930d0c7-31e5-4816-a06d-3ea23dbc7635",
         "permalink_id": "7859ae46-2aa1-47ee-a05b-7d0daa472678",
-        "import_order": 23
+        "import_order": 43
     },
     {
         "name": "wildfires_zones",
@@ -292,5 +292,150 @@
         "sub_resource_id": "4c5d8d60-f9dd-4b80-89ed-0b07205c3026",
         "external_url": "https://open.canada.ca/data/en/dataset/00a331db-121b-445d-b119-35dbbe3eedd9",
         "import_order": 2
+    },
+    {
+        "name": "lakes",
+        "display_name": "Lakes",
+        "model_name": "Lake",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "cb1e3aba-d3fe-4de1-a2d4-b8b6650fb1f6",
+        "dataset": "freshwater-atlas-lakes",
+        "import_order": 15
+    },
+    {
+        "name": "rivers",
+        "display_name": "Rivers",
+        "model_name": "River",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "f7dac054-efbf-402f-ab62-6fc4b32a619e",
+        "dataset": "freshwater-atlas-rivers",
+        "import_order": 16
+    },{
+        "name": "port_and_terminal",
+        "display_name": "Ports and Terminals",
+        "model_name": "PortAndTerminal",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "5f3c273a-7a0d-4b5f-8059-b34cc3f116c7",
+        "dataset": "bc-ports-and-terminals",
+        "import_order": 17
+    },{
+        "name": "eao_projects",
+        "display_name": "EAO Projects",
+        "model_name": "EAOProjects",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "bc1c5380-6fca-4666-996b-049ad8ca04cc",
+        "dataset": "environmental-assessment-office-eao-points-svw",
+        "import_order": 18
+    },{
+        "name": "permitted_major_mines",
+        "display_name": "Permitted Major Mines",
+        "model_name": "PermittedMajorMines",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "01e8a35e-35e3-4b48-93a7-b0d7c9705b62",
+        "dataset": "permitted-mine-areas-major-mine",
+        "import_order": 19
+    },{
+        "name": "railways",
+        "display_name": "Railways",
+        "model_name": "Railway",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "01e8a35e-35e3-4b48-93a7-b0d7c9705b62",
+        "dataset": "permitted-mine-areas-major-mine",
+        "import_order": 20
+    },{
+        "name": "laboratory_service",
+        "display_name": "Laboratory Service",
+        "model_name": "LaboratoryService",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "401671c5-4fc4-4ffb-9e29-0cdc3c9433ba",
+        "dataset": "laboratory-services-in-bc",
+        "import_order": 21
+    },{
+        "name": "local_govt_offices",
+        "display_name": "Local Government Offices",
+        "model_name": "LocalGovernmentOffice",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "0fe8083a-881a-4fa8-8925-3a23b788e1b9",
+        "dataset": "local-government-offices",
+        "import_order": 22
+    },{
+        "name": "provincial_electoral_district",
+        "display_name": "Provincial Electoral Districts",
+        "model_name": "ProvincialElectoralDistrict",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "9530a41d-6484-41e5-b694-acb76e212a58",
+        "dataset": "provincial-electoral-districts-electoral-boundaries-redistribution-2015",
+        "import_order": 23
+    },{
+        "name": "health_authority_boundaries",
+        "display_name": "Health Authority Boundaries",
+        "model_name": "HealthAuthorityBoundary",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "7bc6018f-bb4f-4e5d-845e-c529e3d1ac3b",
+        "dataset": "health-authority-boundaries",
+        "import_order": 24
+    },{
+        "name": "census_economic_region",
+        "display_name": "Census Economic Regions",
+        "model_name": "CensusEconomicRegion",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "1aebc451-a41c-496f-8b18-6f414cde93b7",
+        "dataset": "current-census-economic-regions",
+        "import_order": 25
+    },{
+        "name": "natural_resource_regions",
+        "display_name": "Natural Resource Regions",
+        "model_name": "NaturalResourceRegion",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "dfc492c0-69c5-4c20-a6de-2c9bc999301f",
+        "dataset": "natural-resource-nr-regions",
+        "import_order": 26
+    },{
+        "name": "bc_floodplain",
+        "display_name": "BC Floodplains",
+        "model_name": "BCFloodplain",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "cdf4900e-90c0-449f-beea-43b669bd76a8",
+        "dataset": "mapped-floodplains-in-bc-historical",
+        "import_order": 27
+    },{
+        "name": "emergency_social_service_facilities",
+        "display_name": "Emergency Social Service Facilities",
+        "model_name": "EmergencySocialServiceFacility",
+        "source": "databc",
+        "source_type": "WMS",
+        "resource_id": null,
+        "permalink_id": "8473689f-2d06-4e84-ac8b-e91033fd0f0b",
+        "dataset": "emergency-social-services-facilities",
+        "import_order": 27
     }
+    
+    
+    
 ]

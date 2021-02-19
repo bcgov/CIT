@@ -756,3 +756,91 @@ class Airport(Location):
     '''
     OrderedDict([('CUST_ORG', 'Ministry of Forest, Lands and Natural Resource Operations and Rural Development - GeoBC '), ('BUS_CAT_CL', 'airTransportation'), ('BUS_CAT_DS', 'Air Transportation'), ('OCCPNT_TYP', 'BC Airports'), ('SRCDATA_ID', '455'), ('SRC_ID_IND', 'N'), ('NAME', 'Terrace (Northwest Regional) Airport'), ('DESCRIPTN', 'airport'), ('ADDRESS', '4401 Bristol Rd, Terrace, BC'), ('ALIAS_ADDR', '4401 Bristol Rd, Terrace, BC'), ('ST_ADDRESS', '4401 Bristol Rd'), ('POSTAL_CD', ''), ('LOCALITY', 'Terrace'), ('CONT_PHONE', '250-635-2659'), ('CONT_EMAIL', ''), ('CONT_FAX', ''), ('WEBSITE', ''), ('IMAGE_URL', ''), ('LATITUDE', '54.4686111'), ('LONGITUDE', '-128.5783333'), ('KEYWORDS', 'aerodrome; airport; airstrip; runway'), ('DT_UPDATE', '20200205073805'), ('GEOCD_IND', ''), ('AER_STATUS', 'Certified'), ('AIRCR_ACS', 'Y'), ('DATA_SRCE', 'Canadian Flight Supplement'), ('DATASRC_YR', '2014'), ('ELEVATION', '217.32'), ('FUEL_AVAIL', 'Y'), ('HELI_ACS', 'N'), ('IATA', ''), ('ICAO', 'CYXT'), ('MX_RWAY_LN', '2285.39'), ('NUM_RWAY', '2'), ('OIL_AVAIL', 'Y'), ('RWAY_SURF', 'asphalt'), ('SEAPLN_ACC', 'N'), ('TC_LID', ''), ('SHAPE', ''), ('SEQ_ID', '578'), ('X', '833323.8826999993'), ('Y', '1054949.9463999951')])
     '''
+
+
+class PortAndTerminal(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'FACILITY_NAME'
+    WEBSITE_FIELD = 'WEBSITE_URL'
+    PHONE_FIELD = 'CONTACT_PHONE'
+
+    description = models.CharField(null=True, blank=True, max_length=255)
+    keywords = models.CharField(null=True, blank=True, max_length=255)
+    custodian_org_description = models.CharField(null=True, blank=True, max_length=255)
+    occupant_type_description = models.CharField(null=True, blank=True, max_length=255)
+    data_source = models.CharField(null=True, blank=True, max_length=255)
+    authority = models.CharField(null=True, blank=True, max_length=255)
+    commodities_handled = models.CharField(null=True, blank=True, max_length=255)
+    physical_address = models.CharField(null=True, blank=True, max_length=255)
+    other_address = models.CharField(null=True, blank=True, max_length=255)
+    street_address = models.CharField(null=True, blank=True, max_length=255)
+    postal_code = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id", )
+
+
+class EAOProjects(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'PROJECT_NAME'
+    WEBSITE_FIELD = 'PROJECT_URL'
+
+    project_description = models.CharField(null=True, blank=True, max_length=255)
+    type = models.CharField(null=True, blank=True, max_length=255)
+    sub_type = models.CharField(null=True, blank=True, max_length=255)
+    proponent = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id", )
+
+
+class LaboratoryService(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'SERVICE_NAME'
+    WEBSITE_FIELD = 'WEBSITE_URL'
+    PHONE_FIELD = 'CONTACT_PHONE'
+    EMAIL_FIELD = 'CONTACT_EMAIL'
+
+    description = models.CharField(null=True, blank=True, max_length=255)
+    type = models.CharField(null=True, blank=True, max_length=255)
+    sub_type = models.CharField(null=True, blank=True, max_length=255)
+    street_address = models.CharField(null=True, blank=True, max_length=255)
+    keywords = models.CharField(null=True, blank=True, max_length=255)
+    organization_name = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id", )
+
+
+class LocalGovernmentOffice(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'FACILITY_NAME'
+    WEBSITE_FIELD = 'WEBSITE_URL'
+    PHONE_FIELD = 'CONTACT_PHONE'
+    EMAIL_FIELD = 'CONTACT_EMAIL'
+
+    description = models.CharField(null=True, blank=True, max_length=255)
+    type = models.CharField(null=True, blank=True, max_length=255)
+    sub_type = models.CharField(null=True, blank=True, max_length=255)
+    street_address = models.CharField(null=True, blank=True, max_length=255)
+    keywords = models.CharField(null=True, blank=True, max_length=255)
+    custodian_org_name = models.CharField(null=True, blank=True, max_length=255)
+    occupant_type_description = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id", )
+
+
+class EmergencySocialServiceFacility(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'FACILITY_NAME'
+
+    address = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id", )
