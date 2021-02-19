@@ -775,7 +775,6 @@ class PortAndTerminal(Location):
     physical_address = models.CharField(null=True, blank=True, max_length=255)
     other_address = models.CharField(null=True, blank=True, max_length=255)
     street_address = models.CharField(null=True, blank=True, max_length=255)
-    postal_code = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
         ordering = ("id", )
