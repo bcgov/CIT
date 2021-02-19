@@ -1,5 +1,13 @@
-.opportunity-table-row {
+.opportunity-table {
+    border: 1px solid lightgray;
     padding-bottom: 2vh;
+    padding-top: 2vh;
+}
+
+.opportunity-table-row {
+    border: 1px solid gray;
+    margin-top: 1vh;
+    margin-bottom: 1vh;
 }
 
 .opportunity-table-map-container {
