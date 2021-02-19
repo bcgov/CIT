@@ -89,26 +89,28 @@ export default function OpportunityTable(props) {
   }, []);
 
   const table = (
-    <Container fluid>
-      <Row>
-        <Col>
-          <b>Point</b>
-        </Col>
-        <Col>
-          <b>Details</b>
-        </Col>
-        <Col>
-          <b>Date added</b>
-        </Col>
-        <Col>
-          <b>Status</b>
-        </Col>
-        <Col>
-          <b>Actions</b>
-        </Col>
-      </Row>
-      {tableData}
-    </Container>
+    <div className="opportunity-table">
+      <Container fluid>
+        <Row>
+          <Col>
+            <b>Point</b>
+          </Col>
+          <Col>
+            <b>Details</b>
+          </Col>
+          <Col>
+            <b>Date added</b>
+          </Col>
+          <Col>
+            <b>Status</b>
+          </Col>
+          <Col>
+            <b>Actions</b>
+          </Col>
+        </Row>
+        {tableData}
+      </Container>
+    </div>
   );
 
   return table;
