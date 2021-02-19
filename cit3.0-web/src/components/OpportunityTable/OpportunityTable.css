@@ -1,11 +1,10 @@
 .opportunity-table {
-    border: 1px solid lightgray;
     padding-bottom: 2vh;
     padding-top: 2vh;
 }
 
 .opportunity-table-row {
-    border: 1px solid gray;
+    border: 2px solid #606060;
     margin-top: 1vh;
     margin-bottom: 1vh;
 }
