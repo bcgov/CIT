@@ -39,7 +39,7 @@ describe("SiteInformation", () => {
     expect(physical).toBeInTheDocument();
   });
   it("renders the Previous page link", () => {
-    const { getByText, container } = render(
+    const { getByText } = render(
       <BrowserRouter>
         <SiteInformation location={location} />
       </BrowserRouter>

@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import { useState } from "react";
 import { Container, Col, Row, Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,6 +12,7 @@ import {
   setUserInfo,
   setBusinessNameShared,
 } from "../../../store/actions/opportunity";
+import Validator from "../../FormComponents/Validator";
 
 export default function PropertyDetails2() {
   const dispatch = useDispatch();
@@ -30,6 +31,12 @@ export default function PropertyDetails2() {
   const envInfo = useSelector(
     (state) => state.opportunity.userInfo.envInfo.value
   );
+
+  const [validEmail, setValidEmail] = useState(true);
+
+  const regex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+  const validateEmail = (value) =>
+    value ? setValidEmail(regex.test(value)) : setValidEmail(true);
 
   const history = useHistory();
 
@@ -63,7 +70,7 @@ export default function PropertyDetails2() {
   return (
     <>
       <PortalHeader />
-      <NavigationHeader />
+      <NavigationHeader currentStep={4} />
       <Container role="form">
         <Row>
           <Row>
@@ -76,7 +83,7 @@ export default function PropertyDetails2() {
         <Row className="mb-3">
           <h4>Site Information</h4>
         </Row>
-        <Row>
+        <Row className="mb-4">
           <TextInput
             heading={oppDescLabel}
             notes={noteLabel}
@@ -88,7 +95,7 @@ export default function PropertyDetails2() {
         <Row className="mb-3">
           <h4>Environmental Information</h4>
         </Row>
-        <Row>
+        <Row className="mb-4">
           <TextInput
             heading={enviroLabel}
             notes={noteLabel}
@@ -97,7 +104,7 @@ export default function PropertyDetails2() {
             handleChange={(_, value) => dispatch(setUserInfo("envInfo", value))}
           />
         </Row>
-        <Row>
+        <Row className="mb-4">
           <TextInput
             heading={commUrlLabel}
             notes={urlNoteComm}
@@ -110,7 +117,7 @@ export default function PropertyDetails2() {
             }
           />
         </Row>
-        <Row>
+        <Row className="mb-4">
           <TextInput
             heading={listingUrlLabel}
             notes={urlNote}
@@ -135,7 +142,7 @@ export default function PropertyDetails2() {
             aria-label="Use the Contact Name/Email associated with the BCeID logged in."
           />
         </Row>
-        <Row>
+        <Row className="mb-4">
           <Col className="pl-0">
             <TextInput
               required={false}
@@ -148,19 +155,25 @@ export default function PropertyDetails2() {
               }
               name="busName"
             />
-            <TextInput
-              required={false}
+            <p id="email-label" className="mb-0">
+              Business Contact Email
+            </p>
+            <input
+              autoComplete="off"
               aria-labelledby="email-label"
-              heading="Business Contact Email"
-              notes=""
-              rows={1}
+              className="bcgov-text-input mb-1 w-100"
+              type="email"
               name="busEmail"
               pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g"
+              onChange={(e) => {
+                dispatch(setBusinessContact({ email: e.target.value }));
+                validateEmail(e.target.value);
+              }}
               value={businessContact.email}
-              handleChange={(name, value) =>
-                dispatch(setBusinessContact({ email: value }))
-              }
             />
+            {!validEmail && (
+              <Validator message="Please enter a valid email address" />
+            )}
           </Col>
           <Col />
         </Row>
@@ -168,6 +181,7 @@ export default function PropertyDetails2() {
       <ButtonRow
         prevRoute="/addOpportunity/propDetails1"
         onClick={handleContinue}
+        noContinue={!validEmail}
       />
     </>
   );

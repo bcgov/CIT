@@ -19,7 +19,7 @@ export default function SiteInformation({ location }) {
   return (
     <>
       <PortalHeader />
-      <NavigationHeader />
+      <NavigationHeader currentStep={2} />
       <Container>
         <Row className="mt-3">
           This shows you all the information we could collect from many open

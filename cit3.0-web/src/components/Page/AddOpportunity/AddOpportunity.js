@@ -53,7 +53,7 @@ export default function AddOpportunity({ match }) {
   return (
     <>
       <PortalHeader />
-      <NavigationHeader />
+      <NavigationHeader currentStep={1} />
 
       <Container>
         <Row>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -153,6 +154,8 @@ export default function PropertyDetails1() {
     return value;
   });
 
+  const [isValid, setIsValid] = useState(true);
+
   const history = useHistory();
 
   const goToNextPage = () => {
@@ -172,7 +175,6 @@ export default function PropertyDetails1() {
   };
 
   const handleRadioChange = (name, label) => {
-    console.log(name, label);
     if (label !== "Yes") {
       dispatch(setService(name, label));
       dispatch(setServiceCapacity(name, ""));
@@ -182,8 +184,12 @@ export default function PropertyDetails1() {
   };
 
   const handleCapacityChange = (name, value) => {
-    console.log(name, value);
     dispatch(setServiceCapacity(name, value));
+    if (value !== "" && Number.isNaN(value)) {
+      setIsValid(false);
+    } else if (value === "") {
+      setIsValid(true);
+    }
   };
 
   const handleContinue = () => {
@@ -193,7 +199,7 @@ export default function PropertyDetails1() {
   return (
     <>
       <PortalHeader />
-      <NavigationHeader />
+      <NavigationHeader currentStep={3} />
       <Container role="form">
         <Row>
           <Row>
@@ -282,11 +288,16 @@ export default function PropertyDetails1() {
             {waterSupply === "Yes" && (
               <MaxCapRow
                 name="waterSupply"
-                value={waterSupplyCapacity}
                 handleChange={(iName, iValue) =>
                   handleCapacityChange(iName, iValue)
                 }
                 unitString="cubic meters"
+                valid={
+                  !(
+                    waterSupplyCapacity &&
+                    Number.isNaN(Number(waterSupplyCapacity))
+                  )
+                }
               />
             )}
           </Col>
@@ -304,11 +315,11 @@ export default function PropertyDetails1() {
             {sewer === "Yes" && (
               <MaxCapRow
                 name="sewer"
-                value={sewerCapacity}
                 handleChange={(iName, iValue) =>
                   handleCapacityChange(iName, iValue)
                 }
                 unitString="cubic meters"
+                valid={!(sewerCapacity && Number.isNaN(Number(sewerCapacity)))}
               />
             )}
           </Col>
@@ -349,6 +360,12 @@ export default function PropertyDetails1() {
                 }
                 units="MMBTU/hour"
                 unitString="MMBtu"
+                valid={
+                  !(
+                    naturalGasCapacity &&
+                    Number.isNaN(Number(naturalGasCapacity))
+                  )
+                }
               />
             )}
           </Col>
@@ -373,6 +390,12 @@ export default function PropertyDetails1() {
                   handleCapacityChange(iName, iValue)
                 }
                 units="MW"
+                valid={
+                  !(
+                    electricalCapacity &&
+                    Number.isNaN(Number(electricalCapacity))
+                  )
+                }
               />
             )}
           </Col>
@@ -382,6 +405,7 @@ export default function PropertyDetails1() {
       <ButtonRow
         prevRoute="/addOpportunity/siteDetails"
         onClick={handleContinue}
+        noContinue={!isValid}
       />
     </>
   );

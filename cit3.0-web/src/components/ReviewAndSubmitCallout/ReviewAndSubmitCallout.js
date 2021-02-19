@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Button } from "shared-components/build/components/button/Button";
 import { Col, Container, NavLink, Row } from "react-bootstrap";
-import { Input } from "shared-components/build/components/input/Input";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setOpportunityName } from "../../store/actions/opportunity";

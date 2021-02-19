@@ -55,7 +55,9 @@ describe("AddressSearchBar", () => {
     );
     const input = container.querySelector("input");
     fireEvent.change(input, { target: { value: "305 Belleville St" } });
+    /* eslint-disable no-unused-vars */
     const list = await waitFor(() => container.querySelector("ul"));
+    /* eslint-enable no-unused-vars */
     expect(axios.get).toHaveBeenCalledTimes(1);
   });
   it("does not render dropdown when input is empty", () => {

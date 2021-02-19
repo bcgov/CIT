@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { Row, Col } from "react-bootstrap";
 import TextInput from "./TextInput";
+import Validator from "./Validator";
 
 export default function MaxCapRow({
   units,
@@ -8,6 +9,7 @@ export default function MaxCapRow({
   name,
   value,
   unitString,
+  valid,
 }) {
   return (
     <>
@@ -16,7 +18,7 @@ export default function MaxCapRow({
           ? `Indicate the maximum capacity per hour in ${unitString}, if known`
           : `Indicate the total capacity in Megawatts, if known`}
       </Row>
-      <Row className="align-items-center">
+      <Row className="align-items-center mb-0">
         <Col md className="pl-0 w-25 justify-content-center">
           <TextInput
             aria-labelledby="water-max-cap-label"
@@ -37,6 +39,11 @@ export default function MaxCapRow({
         </Col>
         <Col xs />
       </Row>
+      {!valid && (
+        <Row>
+          <Validator message="Please enter a valid number" />
+        </Row>
+      )}
     </>
   );
 }
@@ -44,6 +51,7 @@ export default function MaxCapRow({
 MaxCapRow.defaultProps = {
   units: null,
   unitString: "",
+  valid: true,
 };
 
 MaxCapRow.propTypes = {
@@ -52,4 +60,5 @@ MaxCapRow.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   unitString: PropTypes.string,
+  valid: PropTypes.number,
 };

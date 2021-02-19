@@ -1,4 +1,4 @@
-import { Form, Row, Col } from "react-bootstrap";
+import { Form, Row } from "react-bootstrap";
 import PropTypes from "prop-types";
 
 export default function Radios({ labels, name, value, handleRadioChange }) {
