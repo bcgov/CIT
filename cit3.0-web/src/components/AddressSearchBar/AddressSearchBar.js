@@ -55,6 +55,7 @@ export default function AddressSearchBar({ setAddress, getCoords }) {
         Enter Address
       </FormLabel>
       <FormControl
+        autoComplete="off"
         className=" bcgov-text-input"
         id="addressSearch"
         value={value}
