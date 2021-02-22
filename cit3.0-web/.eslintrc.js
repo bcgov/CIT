@@ -23,7 +23,16 @@ module.exports = {
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off",
     "react/jsx-one-expression-per-line": "off",
+    "no-alert": "off",
+    "no-restricted-globals": "off",
     "import/no-extraneous-dependencies": "off",
     "prettier/prettier": ["error"],
+  },
+  settings: {
+    "import/resolver": {
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+      },
+    },
   },
 };

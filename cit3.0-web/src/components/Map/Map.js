@@ -5,14 +5,16 @@ import {
   Marker,
   Popup,
   TileLayer,
-  Polygon,
   MapConsumer,
 } from "react-leaflet";
+import L from "leaflet";
+
 import "./map.css";
 import ChangeView from "../ChangeView/ChangeView";
 import AddLocationMarker from "../AddMarker/AddMarker";
 import ResourceMarker from "../AddMarker/ResourceMarker";
 
+/* eslint-disable no-unused-vars */
 export default function Map({
   nearbyResources,
   coords,
@@ -22,7 +24,6 @@ export default function Map({
   setAddress,
   isInteractive,
 }) {
-  // eslint-disable-next-line no-unused-vars
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
     width: window.innerWidth,
@@ -32,6 +33,21 @@ export default function Map({
   let zoomLevel;
 
   const changeView = (centerCoords) => centerCoords;
+  const [geoData, setGeoData] = useState({});
+  const [bounds, setBounds] = useState("");
+
+  const boundsString =
+    "-123.4468460083008%2C48.56672520488946%2C-123.34384918212892%2C48.62349154574442";
+
+  const str = "1188753.04%2C397932.21%2C1196127.68%2C404508.68";
+  const url2 = `https://openmaps.gov.bc.ca/geo/pub/wms?service=WMS&version=1.1.1&request=GetMap&layers=pub%3AWHSE_IMAGERY_AND_BASE_MAPS.GSR_SCHOOLS_K_TO_12_SVW&bbox=${boundsString}&width=500&height=600&srs=crs%3A84&format=image%2Fjpeg`;
+
+  const url = `https://openmaps.gov.bc.ca/geo/pub/wms?service=WMS&version=1.1.1&request=GetMap&layers=pub%3AWHSE_IMAGERY_AND_BASE_MAPS.GSR_SCHOOLS_K_TO_12_SVW&bbox=${str}&width=500&height=600&srs=EPSG%3A3005&format=image%2Fpng`;
+
+  const wmsLayer = L.tileLayer.wms(
+    "https://openmaps.gov.bc.ca/geo/pub/wms?service=WMS&version=1.1.0&request=GetMap&layers=pub%3AWHSE_IMAGERY_AND_BASE_MAPS.BCNC_BC_NETWORK_COVERAGE_SV&bbox=1188753.04%2C397932.21%2C1196127.68%2C404508.68&width=500&height=600&srs=EPSG%3A3005&format=image%2Fjpeg"
+  );
+
   const multiPolygon = [
     [
       [48.59509, -123.4056],
@@ -52,7 +68,7 @@ export default function Map({
           setNearbyResources={setNearbyResources}
           changeView={changeView}
         />
-        <Polygon pathOptions={{ color: "purple" }} positions={multiPolygon} />
+        {/* <Polygon pathOptions={{ color: "purple" }} positions={multiPolygon} /> */}
         {coords[0] !== 49.2827 ? (
           <Marker position={coords}>
             <Popup>
@@ -119,6 +135,15 @@ export default function Map({
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
+      <MapConsumer>
+        {(localMap) => {
+          const bb = localMap.getBounds().toBBoxString();
+          useEffect(() => {
+            setBounds(bb);
+          });
+          return null;
+        }}
+      </MapConsumer>
       {additionalComponents}
     </MapContainer>
   );
