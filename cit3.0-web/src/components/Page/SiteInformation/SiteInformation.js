@@ -1,10 +1,13 @@
 import PropTypes from "prop-types";
-import { Container, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import { Alert } from "shared-components";
+import { MdError } from "react-icons/md";
+import { Container } from "react-bootstrap";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import OpportunityView from "../../OpportunityView/OpportunityView";
 import ButtonRow from "../../ButtonRow/ButtonRow";
+import "./SiteInformation.css";
 
 export default function SiteInformation({ location }) {
   const history = useHistory();
@@ -20,12 +23,14 @@ export default function SiteInformation({ location }) {
     <>
       <PortalHeader />
       <NavigationHeader currentStep={2} />
-      <Container>
-        <Row className="mt-3">
-          This shows you all the information we could collect from many open
-          source BC Gov. databases
-        </Row>
-        <Row>Some warning about this data not being editable</Row>
+      <Container className="p-0 mt-3">
+        <Alert
+          icon={<MdError size={32} />}
+          type="warning"
+          styling="bcgov-warning-background"
+          element="This shows you all the information we could collect from many open
+        source BC Gov. databases"
+        />
       </Container>
       <OpportunityView data={location.state} />
       <ButtonRow
