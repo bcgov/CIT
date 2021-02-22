@@ -61,6 +61,7 @@ export default function Map({
   ];
 
   if (isInteractive) {
+    // Used in the add opportunity workflow
     additionalComponents = (
       <>
         <ChangeView center={changeView(coords)} zoom={13} />
@@ -71,6 +72,21 @@ export default function Map({
           setNearbyResources={setNearbyResources}
           changeView={changeView}
         />
+        <LayersControl position="bottomleft">
+          <LayersControl.BaseLayer checked name="OpenStreetMap">
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+          </LayersControl.BaseLayer>
+
+          <LayersControl.BaseLayer name="Satellite">
+            <TileLayer
+              attribution='&copy; <a href="http://www.esri.com/">Esri</a> contributors'
+              url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+            />
+          </LayersControl.BaseLayer>
+        </LayersControl>
         {/* <Polygon pathOptions={{ color: "purple" }} positions={multiPolygon} /> */}
         {coords[0] !== 49.2827 ? (
           <Marker position={coords}>
@@ -92,7 +108,16 @@ export default function Map({
     );
     zoomLevel = 2;
   } else {
-    additionalComponents = <Marker position={coords} />;
+    // Used in the list view of opportunities
+    additionalComponents = (
+      <>
+        <TileLayer
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Marker position={coords} />
+      </>
+    );
     zoomLevel = 13;
   }
 
@@ -128,45 +153,6 @@ export default function Map({
       touchZoom={isInteractive}
       style={{ width: "100%", height: "100%" }}
     >
-      <MapConsumer>
-        {(map) => {
-          // Extend tile sizing to fix white borders on map
-          /* eslint-disable */
-          map.invalidateSize();
-          const originalInitTile = L.GridLayer.prototype._initTile;
-          L.GridLayer.include({
-            _initTile(tile) {
-              originalInitTile.call(this, tile);
-
-              const tileSize = this.getTileSize();
-
-              tile.style.width = `${tileSize.x + 1}px`;
-              tile.style.height = `${tileSize.y + 1}px`;
-            },
-          });
-          /* eslint-enable */
-          return null;
-        }}
-      </MapConsumer>
-      <LayersControl position="bottomleft">
-        <LayersControl.BaseLayer checked name="OpenStreetMap">
-          <TileLayer
-            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
-        </LayersControl.BaseLayer>
-
-        <LayersControl.BaseLayer name="Satellite">
-          <TileLayer
-            attribution='&copy; <a href="http://www.esri.com/">Esri</a> contributors'
-            url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-          />
-        </LayersControl.BaseLayer>
-      </LayersControl>
-      <TileLayer
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
       {/* <TileLayer
         opacity={0.3}
         zIndex={1000}
@@ -182,6 +168,21 @@ export default function Map({
       /> */}
       <MapConsumer>
         {(localMap) => {
+          // Extend tile sizing to fix white borders on map
+          /* eslint-disable */
+          localMap.invalidateSize();
+          const originalInitTile = L.GridLayer.prototype._initTile;
+          L.GridLayer.include({
+            _initTile(tile) {
+              originalInitTile.call(this, tile);
+
+              const tileSize = this.getTileSize();
+
+              tile.style.width = `${tileSize.x + 1}px`;
+              tile.style.height = `${tileSize.y + 1}px`;
+            },
+          });
+          /* eslint-enable */
           const bb = localMap.getBounds().toBBoxString();
           useEffect(() => {
             setBounds(bb);
