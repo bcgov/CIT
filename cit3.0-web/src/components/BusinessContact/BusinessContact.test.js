@@ -16,13 +16,13 @@ describe("<BusinessContact />", () => {
     expect(businessContact.querySelector("svg")).toBeInTheDocument();
   });
 
-  it("it should contain a h5 header", () => {
+  it("it should contain a h3 header", () => {
     const { getByTestId } = render(<BusinessContact />);
     const businessContact = getByTestId("BusinessContact");
-    expect(businessContact.querySelector("h5")).toBeInTheDocument();
+    expect(businessContact.querySelector("h3")).toBeInTheDocument();
   });
 
-  it("it should have a bunines name N/A  when empty", () => {
+  it("it should have a business name N/A  when empty", () => {
     const { getByTestId } = render(<BusinessContact />);
     const businessContact = getByTestId("BusinessContact");
     expect(
@@ -30,7 +30,7 @@ describe("<BusinessContact />", () => {
     ).toBe("N/A");
   });
 
-  it("it should have a bunines email N/A when empty", () => {
+  it("it should have a business email N/A when empty", () => {
     const { getByTestId } = render(<BusinessContact />);
     const businessContact = getByTestId("BusinessContact");
     expect(
@@ -38,7 +38,7 @@ describe("<BusinessContact />", () => {
     ).toBe("N/A");
   });
 
-  it("it should have a bunines name to be assigned", () => {
+  it("it should have a business name to be assigned", () => {
     const { getByTestId } = render(<BusinessContact name="Jane Doe" />);
     const businessContact = getByTestId("BusinessContact");
     expect(
@@ -46,7 +46,7 @@ describe("<BusinessContact />", () => {
     ).toBe("Jane Doe");
   });
 
-  it("it should have a bunines email to be assigned", () => {
+  it("it should have a business email to be assigned", () => {
     const { getByTestId } = render(
       <BusinessContact email="jane.doe@example.com" />
     );

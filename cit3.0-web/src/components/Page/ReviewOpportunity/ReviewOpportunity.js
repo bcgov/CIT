@@ -24,7 +24,7 @@ const ReviewOpportunity = ({ location }) => {
   return (
     <div className={styles.ReviewOpportunity} data-testid="ReviewOpportunity">
       <PortalHeader />
-      <NavigationHeader />
+      <NavigationHeader currentStep={5} />
       <ReviewAndSubmitCallout
         submitOpportunity={() => submitOpportunity()}
         cancelOpportunity={() => confirmCancel()}

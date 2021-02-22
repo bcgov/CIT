@@ -29,7 +29,7 @@ export default function AddOpportunity({ match }) {
   const title1 = "Add an Opportunity";
   const title2 = "Confirm Property";
   const text1 =
-    "Please drop a min on the map or enter the address of the property you want to list as an opportunity for investors.";
+    "Please drop a pin on the map or enter the address of the property you want to list as an opportunity for investors.";
   const text2 =
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 

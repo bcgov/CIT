@@ -1,22 +1,11 @@
-import { render, fireEvent, cleanup } from "@testing-library/react";
-import axios from "axios";
+import { render, cleanup } from "@testing-library/react";
 import MapContainer from "./MapContainer";
 
 afterEach(cleanup);
 
-const address = "501 Belleville St, Victoria";
-const changeEvent = (content) => ({
-  target: {
-    value: content,
-  },
-});
 const coords = [54.1722, -124.1207];
 
 const genericFunc = () => null;
-
-const setNearbyResources = () => {
-  console.log("resources set");
-};
 
 const nearbyResources = {
   Hospitals: [
@@ -81,24 +70,5 @@ describe("MapContainer", () => {
       );
       expect(getByText(/leaflet/i).textContent).toBe("Leaflet");
     });
-  });
-});
-
-describe("api call", () => {
-  it("returns data from axios call", async () => {
-    axios.get.mockResolvedValueOnce({
-      data: { coords: [49.2827, -123.1207] },
-    });
-    const { container, queryByPlaceholderText } = render(
-      <MapContainer
-        nearbyResources={nearbyResources}
-        setNearbyResources={setNearbyResources}
-      />
-    );
-    const searchButton = container.querySelector("button");
-    const addressInput = queryByPlaceholderText("Address");
-    fireEvent.change(addressInput, changeEvent(address));
-    fireEvent.click(searchButton);
-    expect(axios.get).toHaveBeenCalledTimes(1);
   });
 });

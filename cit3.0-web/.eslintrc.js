@@ -28,4 +28,11 @@ module.exports = {
     "import/no-extraneous-dependencies": "off",
     "prettier/prettier": ["error"],
   },
+  settings: {
+    "import/resolver": {
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
+      },
+    },
+  },
 };
