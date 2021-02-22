@@ -34,8 +34,8 @@ export default function OpportunityView({ view }) {
   const municipalities = useSelector(
     (state) => state.opportunity.municipalities
   );
-  const firstNationCommunity = useSelector(
-    (state) => state.opportunity.firstNationCommunity
+  const firstNationCommunities = useSelector(
+    (state) => state.opportunity.firstNationCommunities
   );
   const nearbyResources = useSelector(
     (state) => state.opportunity.nearbyResources
@@ -70,7 +70,7 @@ export default function OpportunityView({ view }) {
             address={address}
             coords={coords}
             municipalities={municipalities}
-            firstNationCommunity={firstNationCommunity}
+            firstNationCommunities={firstNationCommunities}
           />
           {businessContact.name || businessContact.email ? (
             <BusinessContact
