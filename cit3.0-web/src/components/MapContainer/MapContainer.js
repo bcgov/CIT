@@ -32,7 +32,7 @@ export default function MapContainer({
 
   return (
     <div style={{ minHeight: "100%" }} className="d-flex w-100">
-      <div className="my-2" style={{ height: "500px", width: "600px" }}>
+      <div className="my-3" style={{ height: "500px", width: "600px" }}>
         <Map
           resourceIds={resourceIds}
           setNearbyResources={setNearbyResources}
