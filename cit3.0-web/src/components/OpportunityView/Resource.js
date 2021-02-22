@@ -50,7 +50,7 @@ function displayResources(resources) {
         element = (
           <div className="d-flex flex-column">
             <div classsName="mr-2">{resource[1].name}</div>
-            <div classnName="ml-2">
+            <div className="ml-2">
               <b>{resource[1].value}</b>
             </div>
           </div>

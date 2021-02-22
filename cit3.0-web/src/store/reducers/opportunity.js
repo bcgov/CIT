@@ -79,13 +79,13 @@ const OPPORTUNITY_MODEL = {
       title: "Network Connectivity",
       subtitle: "- Speed average",
       value: "20 Mbps",
-      type: "text",
+      type: "paragraph",
     },
     networkAtRoad: {
       title: "Network Connectivity",
       subtitle: "- Speed at nearest road",
       value: "25 Mbps",
-      type: "text",
+      type: "paragraph",
     },
     roadAccess: {
       title: "Site servicing",
