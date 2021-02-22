@@ -1,13 +1,6 @@
 version: "3.3"
 
 services:
-  cit-web:
-    image: "node:14"
-    volumes:
-      - ./cit-web:/code
-    working_dir: /code/
-    networks:
-      - back-tier
   cit-api:
     build: ./cit-api
     image: countable/cit
@@ -22,6 +15,7 @@ services:
     environment:
       - AUTHORITY=https://login.microsoftonline.com/
       - SCOPE=https://analysis.windows.net/powerbi/api/.default
+      - DEBUG=true
     ports:
       - 8000:8000
   db:

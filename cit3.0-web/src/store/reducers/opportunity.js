@@ -25,6 +25,7 @@ const OPPORTUNITY_MODEL = {
   name: "",
   address: "",
   coords: [54.1722, -124.1207],
+  approvalStatus: "PEND",
   businessContact: {
     name: "",
     email: "",
