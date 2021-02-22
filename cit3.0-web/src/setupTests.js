@@ -2,9 +2,7 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
-/* eslint-disable */
 import "@testing-library/jest-dom";
-
 
 // the following needs to be here to allow Polyline/Polygon
 // see link for further details:  https://stackoverflow.com/questions/54382414/fixing-react-leaflet-testing-error-cannot-read-property-layeradd-of-null/54384719#54384719

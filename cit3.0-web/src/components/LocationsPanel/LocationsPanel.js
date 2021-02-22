@@ -5,7 +5,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import { v4 } from "uuid";
 import styles from "./LocationsPanel.module.css";
 
-/** eslint-disable react/prop-types */
 const LocationsPanel = ({
   address,
   coords,

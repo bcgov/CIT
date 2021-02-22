@@ -31,7 +31,6 @@ function displayResources(resources) {
     }
 
     // Different markup for datapoint types
-    /* eslint-disable no-fallthrough */
     switch (resource[1].type) {
       case "link":
         element = (
