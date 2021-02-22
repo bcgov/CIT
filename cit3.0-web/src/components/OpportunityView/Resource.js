@@ -50,7 +50,7 @@ function displayResources(resources) {
         element = (
           <div className="d-flex flex-column">
             <div classsName="mr-2">{resource[1].name}</div>
-            <div>
+            <div className="ml-2">
               <b>{resource[1].value}</b>
             </div>
           </div>
@@ -112,7 +112,7 @@ export default function Resource({ title, itemsToDisplay }) {
         );
       }
       return (
-        <Row key={v4()}>
+        <Row className="mb-2" key={v4()}>
           {key}: {items[key]}
         </Row>
       );

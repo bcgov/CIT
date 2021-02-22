@@ -9,7 +9,7 @@ const LocationsPanel = ({
   address,
   coords,
   municipalities,
-  firstNationCommunity,
+  firstNationCommunities,
 }) => (
   <div className={styles.LocationsPanel} data-testid="LocationsPanel">
     <div>
@@ -61,34 +61,39 @@ const LocationsPanel = ({
       </>
     ) : null}
 
-    {firstNationCommunity ? (
+    {firstNationCommunities ? (
       <>
-        <h3 className="mb-3">Nearest First Nation Community</h3>
-        <Container>
-          <Row className="d-flex justify-content-between mb-4">
-            <Col className="pl-0">
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={`${firstNationCommunity.link}`}
-                onClick={() => window.open(firstNationCommunity.link, "_blank")}
-              >
-                {firstNationCommunity.name} - {firstNationCommunity.distance}km
-              </a>
-            </Col>
-            <Col className="d-flex justify-content-end pr-0" md="auto">
-              {"Pop. "}
-            </Col>
-            <Col className="d-flex justify-content-end px-0" md={2}>
-              <span>
-                <NumberFormat
-                  displayType="text"
-                  value={firstNationCommunity.population}
-                  thousandSeparator
-                />
-              </span>
-            </Col>
-          </Row>
+        <h3 className="mb-3">Nearest First Nation Communities</h3>
+        <Container className="pb-2">
+          {firstNationCommunities.map((firstNationCommunity) => (
+            <Row className="d-flex justify-content-between mb-2">
+              <Col className="pl-0">
+                <a
+                  target="_blank"
+                  rel="noreferrer"
+                  href={`${firstNationCommunity.link}`}
+                  onClick={() =>
+                    window.open(firstNationCommunity.link, "_blank")
+                  }
+                >
+                  {firstNationCommunity.name} - {firstNationCommunity.distance}
+                  km
+                </a>
+              </Col>
+              <Col className="d-flex justify-content-end pr-0" md="auto">
+                {"Pop. "}
+              </Col>
+              <Col className="d-flex justify-content-end px-0" md={2}>
+                <span>
+                  <NumberFormat
+                    displayType="text"
+                    value={firstNationCommunity.population}
+                    thousandSeparator
+                  />
+                </span>
+              </Col>
+            </Row>
+          ))}
         </Container>
       </>
     ) : null}
@@ -106,12 +111,14 @@ LocationsPanel.propTypes = {
       population: PropTypes.number,
     })
   ),
-  firstNationCommunity: PropTypes.shape({
-    name: PropTypes.string,
-    link: PropTypes.string,
-    distance: PropTypes.number,
-    population: PropTypes.number,
-  }),
+  firstNationCommunities: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      link: PropTypes.string,
+      distance: PropTypes.number,
+      population: PropTypes.number,
+    })
+  ),
 };
 
 LocationsPanel.defaultProps = {
@@ -124,7 +131,7 @@ LocationsPanel.defaultProps = {
       distance: 0,
     },
   ],
-  firstNationCommunity: null,
+  firstNationCommunities: [],
 };
 
 export default LocationsPanel;
