@@ -14,10 +14,6 @@ const coords = [54.1722, -124.1207];
 
 const genericFunc = () => null;
 
-const setNearbyResources = () => {
-  console.log("resources set");
-};
-
 const nearbyResources = {
   Hospitals: [
     {

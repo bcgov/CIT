@@ -14,5 +14,5 @@ const navItems = [
 ];
 
 export const NavigationHeaderDisplay = () => (
-  <NavigationHeader navItems={navItems} />
+  <NavigationHeader navItems={navItems} currentStep={3} />
 );

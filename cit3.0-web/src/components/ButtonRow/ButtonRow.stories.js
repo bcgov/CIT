@@ -21,7 +21,7 @@ export const ButtonRowContinueEnabled = () => (
 export const ButtonRowWithPreviousPageLink = () => (
   <ButtonRow
     noContinue={false}
-    previousPage="/addOpportunity/siteDetails"
+    prevRoute="/addOpportunity/siteDetails"
     onClick={() => action("clicked")}
   />
 );
