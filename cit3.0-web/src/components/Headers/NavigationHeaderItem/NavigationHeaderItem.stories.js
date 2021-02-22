@@ -8,6 +8,6 @@ export default {
 
 export const NavigationHeaderItemDisplay = () => (
   <div className="py-4" style={{ backgroundColor: "#E0E0E0" }}>
-    <NavigationHeaderItem label="Location" step="1" />
+    <NavigationHeaderItem label="Location" step={1} currentStep={1} />
   </div>
 );

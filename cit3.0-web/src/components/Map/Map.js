@@ -23,7 +23,6 @@ export default function Map({
   setAddress,
   isInteractive,
 }) {
-  // eslint-disable-next-line no-unused-vars
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
     width: window.innerWidth,
@@ -35,7 +34,6 @@ export default function Map({
   const changeView = (centerCoords) => centerCoords;
   const [geoData, setGeoData] = useState({});
   const [bounds, setBounds] = useState("");
-  // const [url, setUrl] = useState("");
 
   const boundsString =
     "-123.4468460083008%2C48.56672520488946%2C-123.34384918212892%2C48.62349154574442";
@@ -136,19 +134,6 @@ export default function Map({
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      {/* <TileLayer
-        opacity={0.3}
-        zIndex={1000}
-        url={url2}
-        transparent
-        noWrap
-        maxZoom={5}
-        // version="1.3.0"
-        // styles={{}}
-        // layers="3601:Schools_Public_All"
-        // srs="EPSG:4326"
-        // format="image/png"
-      /> */}
       <MapConsumer>
         {(localMap) => {
           const bb = localMap.getBounds().toBBoxString();
