@@ -15,6 +15,7 @@ import ChangeView from "../ChangeView/ChangeView";
 import AddLocationMarker from "../AddMarker/AddMarker";
 import ResourceMarker from "../AddMarker/ResourceMarker";
 
+/* eslint-disable no-unused-vars */
 export default function Map({
   nearbyResources,
   coords,
