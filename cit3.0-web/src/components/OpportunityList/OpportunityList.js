@@ -20,5 +20,5 @@ export default function OpportunityList({ opportunities }) {
 }
 
 OpportunityList.propTypes = {
-  opportunities: PropTypes.arrayOf(PropTypes.string).isRequired,
+  opportunities: PropTypes.arrayOf(PropTypes.shape).isRequired,
 };
