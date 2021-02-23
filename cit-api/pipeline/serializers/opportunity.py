@@ -7,8 +7,9 @@ class OpportunitySerializer(serializers.ModelSerializer):
         model = Opportunity
         fields = (
             "id",
-            "address",
-            "point",
+            "opportunity_address",
+            "opportunity_name",
+            "geo_position",
             "approval_status",
             "date_created",
             "date_updated",

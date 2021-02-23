@@ -11,7 +11,7 @@ export default function EDODashboard() {
 
   useEffect(() => {
     axios
-      .get("/api/pipeline/opportunities")
+      .get("/api/opportunity/list")
       .then((data) => {
         setTableData(data.data.results);
       })

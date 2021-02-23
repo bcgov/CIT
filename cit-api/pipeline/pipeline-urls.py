@@ -5,7 +5,6 @@ from rest_framework.routers import DefaultRouter
 
 import pipeline.views.general
 import pipeline.views.location_types
-import pipeline.views.opportunity
 
 router = DefaultRouter()
 router.register(r'communities', pipeline.views.general.CommunityViewSet, basename='communities')
@@ -44,6 +43,5 @@ urlpatterns = [
     url(r"^schooldistricts/$", pipeline.views.general.SchoolDistrictList.as_view()),
     url(r"^civicleaders/$", pipeline.views.general.CivicLeaderList.as_view()),
     url(r"^pageviews/$", pipeline.views.general.PageViewList.as_view()),
-    
-    url(r"^opportunities/$", pipeline.views.opportunity.OpportunitiesList.as_view(), name="opportunities")
+
 ]
