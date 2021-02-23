@@ -60,7 +60,6 @@ export default function AddressSearchBar({ setAddress, getCoords }) {
         id="addressSearch"
         value={value}
         onChange={(e) => runSearch(e)}
-        autocomplete="off"
       />
       {show ? (
         <div

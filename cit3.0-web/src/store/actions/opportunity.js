@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   ADD_ADDRESS,
   ADD_COORDS,
@@ -11,14 +12,30 @@ import {
   ADD_SERVICE,
   ADD_SERVICE_CAPACITY,
 } from "../constants/action-types";
+import { POST_OPPOTUNITIES_URL } from "../constants/api-urls";
+import OpportunityRequest from "../factory/OpportunityRequest";
+
+/**
+ * @param {Object} opportunityModel from redux store
+ * @return {Promise} of axios api call
+ */
+export function postOpportunity(opportunityModel) {
+  return axios.post(
+    POST_OPPOTUNITIES_URL,
+    OpportunityRequest.createFromModel(opportunityModel)
+  );
+}
+
 /**
  * @param {string} resourses
+ * @return {Object} for redux reducer
  */
 export function setOpportunityName(name) {
   return { type: ADD_NAME, payload: name };
 }
 /**
  * @param {string} resourses
+ * @return {Object} for redux reducer
  */
 export function setAddress(address) {
   return { type: ADD_ADDRESS, payload: address };
@@ -26,6 +43,7 @@ export function setAddress(address) {
 
 /**
  * @param {Array} coords
+ * @return {Object} for redux reducer
  */
 export function setCoords(coords) {
   return { type: ADD_COORDS, payload: coords };
@@ -33,6 +51,7 @@ export function setCoords(coords) {
 
 /**
  * @param {Object} bContact
+ * @return {Object} for redux reducer
  */
 export function setBusinessContact(bContact) {
   return { type: ADD_BUSINESS_CONTACT, payload: bContact };
@@ -40,6 +59,7 @@ export function setBusinessContact(bContact) {
 
 /**
  * @param {Object} sInfo
+ * @return {Object} for redux reducer
  */
 export function setSiteInfo(sInfo) {
   return { type: ADD_SITE_INFO, payload: sInfo };
@@ -47,6 +67,7 @@ export function setSiteInfo(sInfo) {
 
 /**
  * @param {Object} sInfo
+ * @return {Object} for redux reducer
  */
 export function setUserInfo(key, sInfo) {
   return { type: ADD_USER_INFO, payload: { key, value: sInfo } };
@@ -54,6 +75,7 @@ export function setUserInfo(key, sInfo) {
 
 /**
  * @param {Object} sInfo
+ * @return {Object} for redux reducer
  */
 export function setService(key, sInfo) {
   return { type: ADD_SERVICE, payload: { key, value: sInfo } };
@@ -61,6 +83,7 @@ export function setService(key, sInfo) {
 
 /**
  * @param {Object} sInfo
+ * @return {Object} for redux reducer
  */
 export function setServiceCapacity(key, sInfo) {
   return { type: ADD_SERVICE_CAPACITY, payload: { key, capacity: sInfo } };
@@ -68,6 +91,7 @@ export function setServiceCapacity(key, sInfo) {
 
 /**
  * @param {Array} resourses
+ * @return {Object} for redux reducer
  */
 export function setResourceIds(rIds) {
   return { type: ADD_RESOUCE_IDS, payload: rIds };
@@ -75,6 +99,7 @@ export function setResourceIds(rIds) {
 
 /**
  * @param {Object} resourses
+ * @return {Object} for redux reducer
  */
 export function setNearbyResources(resourses) {
   return { type: ADD_NEARBY_RESOUCES, payload: resourses };
@@ -82,6 +107,7 @@ export function setNearbyResources(resourses) {
 
 /**
  * @param {Object} shared
+ * @return {Object} for redux reducer
  */
 export function setBusinessNameShared(shared) {
   return { type: ADD_BUSINESS_CONTACT, payload: { shared } };
@@ -89,6 +115,7 @@ export function setBusinessNameShared(shared) {
 
 /**
  * Set the opportunity state back to initial state
+ * @return {Object} for redux reducer
  */
 export function resetOpportunity() {
   return { type: RESET_OPPORTUNITY };
