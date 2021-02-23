@@ -14,6 +14,7 @@ import ReviewOpportunity from "./components/Page/ReviewOpportunity/ReviewOpportu
 
 import { store } from "./store";
 import ReviewSubmitted from "./components/Page/ReviewSubmitted/ReviewSubmitted";
+import OpportunityPage from "./components/Page/OpportunityPage/OpportunityPage";
 
 function App() {
   const header = {
@@ -63,6 +64,7 @@ function App() {
                 </>
               )}
             />
+            <Route path="/investment/*:path" component={OpportunityPage} />
           </Switch>
         </Router>
 

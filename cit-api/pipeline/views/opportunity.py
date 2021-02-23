@@ -1,12 +1,24 @@
+from django.utils.decorators import method_decorator
 from rest_framework import generics
+from rest_framework import pagination
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 from pipeline.models.opportunity import Opportunity
 from pipeline.serializers.opportunity import OpportunitySerializer
 
+class LargeResultsSetPagination(pagination.PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
 class OpportunitiesList(generics.ListAPIView):
+    pagination_class = LargeResultsSetPagination
     queryset = Opportunity.objects.all()
     serializer_class = OpportunitySerializer
 
-class Opportunity(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Opportunity.objects.all()
+class OpportunityView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OpportunitySerializer
+    lookup_field = 'id'
+    def get_queryset(self):
+        return Opportunity.objects.filter(id=self.kwargs['id'])

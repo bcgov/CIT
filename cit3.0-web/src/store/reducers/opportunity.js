@@ -1,4 +1,6 @@
+import _ from "lodash";
 import {
+  ADD_ALL,
   ADD_ADDRESS,
   ADD_COORDS,
   ADD_BUSINESS_CONTACT,
@@ -305,6 +307,10 @@ const OPPORTUNITY_MODEL = {
 export default function opportunity(state = OPPORTUNITY_MODEL, action) {
   /* eslint-disable no-param-reassign, no-console */
   switch (action.type) {
+    case ADD_ALL:
+      state = OPPORTUNITY_MODEL;
+      state = _.mergeWith(state, action.payload);
+      break;
     case RESET_OPPORTUNITY:
       state = OPPORTUNITY_MODEL;
       break;

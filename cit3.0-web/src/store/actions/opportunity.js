@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  ADD_ALL,
   ADD_ADDRESS,
   ADD_COORDS,
   ADD_BUSINESS_CONTACT,
@@ -12,8 +13,11 @@ import {
   ADD_SERVICE,
   ADD_SERVICE_CAPACITY,
 } from "../constants/action-types";
-import { POST_OPPOTUNITIES_URL } from "../constants/api-urls";
-import OpportunityRequest from "../factory/OpportunityRequest";
+import {
+  POST_OPPOTUNITIES_URL,
+  GET_OPPOTUNITIES_URL,
+} from "../constants/api-urls";
+import OpportunityFactory from "../factory/OpportunityFactory";
 
 /**
  * @param {Object} opportunityModel from redux store
@@ -22,8 +26,24 @@ import OpportunityRequest from "../factory/OpportunityRequest";
 export function postOpportunity(opportunityModel) {
   return axios.post(
     POST_OPPOTUNITIES_URL,
-    OpportunityRequest.createFromModel(opportunityModel)
+    OpportunityFactory.createFromModel(opportunityModel)
   );
+}
+
+/**
+ * @param {number} opportunityId
+ * @return {Promise} of axios api call
+ */
+export function getOpportunity(opportunityId) {
+  return axios.get(GET_OPPOTUNITIES_URL + opportunityId);
+}
+
+/**
+ * @param {Object} opportunity
+ * @return {Object} for redux reducer
+ */
+export function setOpportunity(opportunity) {
+  return { type: ADD_ALL, payload: opportunity };
 }
 
 /**

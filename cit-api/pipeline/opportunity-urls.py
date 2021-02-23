@@ -11,5 +11,5 @@ urlpatterns = [
     path("", include(router.urls)),
     
     url(r"^list/$", pipeline.views.opportunity.OpportunitiesList.as_view()),
-    url(r"^single/$", pipeline.views.opportunity.Opportunity.as_view()),
+    url(r"^single/(?P<id>\w+)/$", pipeline.views.opportunity.OpportunityView.as_view()),
 ]

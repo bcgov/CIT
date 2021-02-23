@@ -1,3 +1,4 @@
+export const ADD_ALL = "ADD_ALL";
 export const ADD_ADDRESS = "ADD_ADDRESS";
 export const ADD_COORDS = "ADD_COORDS";
 export const ADD_BUSINESS_CONTACT = "ADD_BUSINESS_CONTACT";

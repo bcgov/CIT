@@ -3,17 +3,13 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { useState, useEffect } from "react";
 import Map from "../Map/Map";
+import OpportunityFactory from "../../store/factory/OpportunityFactory";
 import "./OpportunityTable.css";
 
 export default function OpportunityTable(props) {
   const [tableData, setTableData] = useState(null);
   const tableContent = [];
   const opportunities = props.tableData;
-
-  const latLongFromPoint = (point) => {
-    const splitText = point.split(/[\s()]+/);
-    return [parseFloat(splitText[2]), parseFloat(splitText[1])];
-  };
 
   const determineTextColour = (approvalStatus) => {
     if (approvalStatus === "PEND") {
@@ -31,11 +27,11 @@ export default function OpportunityTable(props) {
     return approvalStatus;
   };
 
-  const determineActions = (approvalStatus) => {
-    if (approvalStatus === "PUBL") {
+  const determineActions = (opportunity) => {
+    if (opportunity.approvalStatus === "PUBL") {
       return (
         <>
-          <a href="/">View Listing</a>
+          <a href={opportunity.link}>View Listing</a>
           <br />
           <a href="/">Mark as &quot;sold&quot;</a>
           <br />
@@ -47,7 +43,7 @@ export default function OpportunityTable(props) {
     }
     return (
       <>
-        <a href="/">View Listing</a>
+        <a href={opportunity.link}>View Listing</a>
         <br />
         <a href="/">Edit Listing</a>
         <br />
@@ -64,21 +60,21 @@ export default function OpportunityTable(props) {
   useEffect(() => {
     if (opportunities) {
       for (let i = 0; i < opportunities.length; i += 1) {
+        const opportunity = OpportunityFactory.createFromResponse(
+          opportunities[i]
+        );
         const tableRow = (
           <div key={i} className="opportunity-table-row">
             <Row>
               <Col>
                 <div className="opportunity-table-map-container">
-                  <Map
-                    coords={latLongFromPoint(opportunities[i].point)}
-                    isInteractive={false}
-                  />
+                  <Map coords={opportunity.coords} isInteractive={false} />
                 </div>
               </Col>
-              <Col>{opportunities[i].address}</Col>
-              <Col>{formatDate(opportunities[i].date_created)}</Col>
-              <Col>{determineTextColour(opportunities[i].approval_status)}</Col>
-              <Col>{determineActions(opportunities[i].approval_status)}</Col>
+              <Col>{opportunity.address}</Col>
+              <Col>{formatDate(opportunity.dateCreated)}</Col>
+              <Col>{determineTextColour(opportunity.approvalStatus)}</Col>
+              <Col>{determineActions(opportunity)}</Col>
             </Row>
           </div>
         );

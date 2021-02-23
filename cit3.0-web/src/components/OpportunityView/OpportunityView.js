@@ -44,11 +44,17 @@ export default function OpportunityView({ view }) {
   const businessContact = useSelector(
     (state) => state.opportunity.businessContact
   );
+  const name = useSelector((state) => state.opportunity.name);
 
   return (
     <Container>
       <Row className="mt-3">
         <Col>
+          {name ? (
+            <Row>
+              <h2 className="mb-4">{name}</h2>
+            </Row>
+          ) : null}
           <Resource
             title="Site Info - General Details"
             itemsToDisplay={overallInfo}
