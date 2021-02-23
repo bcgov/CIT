@@ -65,7 +65,6 @@ export default function OpportunityListItem(props) {
             className="opportunity-table-map-container"
           >
             <Map
-              className="full-border"
               coords={latLongFromPoint(props.coords)}
               isInteractive={false}
             />
