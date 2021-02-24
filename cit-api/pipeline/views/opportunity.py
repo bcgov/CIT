@@ -1,8 +1,6 @@
 from django.utils.decorators import method_decorator
 from rest_framework import generics
 from rest_framework import pagination
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
 
 from pipeline.models.opportunity import Opportunity
 from pipeline.serializers.opportunity import OpportunitySerializer
@@ -25,3 +23,4 @@ class OpportunityView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
     def get_queryset(self):
         return Opportunity.objects.filter(id=self.kwargs['id'])
+
