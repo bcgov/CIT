@@ -15,7 +15,7 @@ const OpportunityPage = ({ id }) => {
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
-  const opId = id;
+  let opId = id;
   if (!id) {
     const found = location.pathname.match(/(\d+)+$/);
     opId = found && found[0];
