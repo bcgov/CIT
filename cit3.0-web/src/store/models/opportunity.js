@@ -302,6 +302,10 @@ export class Opportunity {
     this.state.id = value;
   }
 
+  set approvalStatus(value) {
+    this.state.approvalStatus = value;
+  }
+
   set geoPosition(value) {
     const geo = value.match(/\((.*) (.*)\)/);
     this.state.coords = [parseFloat(geo[2]), parseFloat(geo[1])];

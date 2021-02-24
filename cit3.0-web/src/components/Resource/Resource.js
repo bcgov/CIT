@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Row, Col } from "react-bootstrap";
 
-import setColour from "../../helpers/helpers";
+import { setColour } from "../../helpers/helpers";
 
 export default function Resource({ resource, resourceData }) {
   const sortDataByDistance = (data) =>
