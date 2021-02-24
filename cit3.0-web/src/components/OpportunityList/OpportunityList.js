@@ -16,7 +16,6 @@ export default function OpportunityList({ opportunities }) {
             public
           />
         ))}
-      <Col />
     </>
   );
 }
