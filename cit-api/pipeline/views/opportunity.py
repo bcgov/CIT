@@ -9,12 +9,10 @@ class LargeResultsSetPagination(pagination.PageNumberPagination):
     page_size_query_param = 'page_size'
     max_page_size = 100
 
-class OpportunitiesList(generics.ListAPIView):
+class OpportunitiesList(generics.ListCreateAPIView):
     pagination_class = LargeResultsSetPagination
     queryset = Opportunity.objects.all()
     serializer_class = OpportunitySerializer
    
  
-class OpportunityCreateView(generics.CreateAPIView):
-    serializer_class = OpportunitySerializer
 
