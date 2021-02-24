@@ -1,0 +1,9 @@
+.ReviewSubmitted {}
+
+.ReviewSubmitted h2 {
+    margin: 6rem 0 3rem;
+}
+
+.ReviewSubmitted p {
+    margin: 2rem 0 10rem 0;
+}

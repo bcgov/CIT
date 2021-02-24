@@ -70,7 +70,7 @@ const coords = [49.2827, -123.1207];
 // eslint-disable-next-line no-console
 const aFunc = () => console.log("");
 
-export const InvestmentsMap = () => (
+export const OpportunitiesMap = () => (
   <div style={{ height: "800px" }}>
     <Map
       coords={coords}
@@ -80,6 +80,22 @@ export const InvestmentsMap = () => (
       setCoords={aFunc}
       setAddress={aFunc}
       setNearbyResources={aFunc}
+      isInteractive
+    />
+  </div>
+);
+
+export const NoninteractiveOpportunitiesMap = () => (
+  <div style={{ height: "800px" }}>
+    <Map
+      coords={coords}
+      resourceIds={resourceIds}
+      scrollWheelZoom
+      nearbyResources={nearbyResources}
+      setCoords={aFunc}
+      setAddress={aFunc}
+      setNearbyResources={aFunc}
+      isInteractive={false}
     />
   </div>
 );
