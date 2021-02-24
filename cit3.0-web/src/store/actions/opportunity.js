@@ -4,6 +4,8 @@ import {
   ADD_ADDRESS,
   ADD_COORDS,
   ADD_BUSINESS_CONTACT,
+  ADD_BUSINESS_CONTACT_NAME,
+  ADD_BUSINESS_CONTACT_EMAIL,
   ADD_RESOUCE_IDS,
   ADD_NEARBY_RESOUCES,
   RESET_OPPORTUNITY,
@@ -26,7 +28,7 @@ import OpportunityFactory from "../factory/OpportunityFactory";
 export function postOpportunity(opportunityModel) {
   return axios.post(
     POST_OPPOTUNITIES_URL,
-    OpportunityFactory.createFromModel(opportunityModel)
+    OpportunityFactory.createRequestFromModel(opportunityModel)
   );
 }
 
@@ -70,11 +72,19 @@ export function setCoords(coords) {
 }
 
 /**
- * @param {Object} bContact
+ * @param {Object} bName
  * @return {Object} for redux reducer
  */
-export function setBusinessContact(bContact) {
-  return { type: ADD_BUSINESS_CONTACT, payload: bContact };
+export function setBusinessContactName(bName) {
+  return { type: ADD_BUSINESS_CONTACT_NAME, payload: bName };
+}
+
+/**
+ * @param {Object} bEmail
+ * @return {Object} for redux reducer
+ */
+export function setBusinessContactEmail(bEmail) {
+  return { type: ADD_BUSINESS_CONTACT_EMAIL, payload: bEmail };
 }
 
 /**

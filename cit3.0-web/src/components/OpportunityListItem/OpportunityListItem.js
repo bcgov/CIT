@@ -1,15 +1,10 @@
 /* eslint-disable react/destructuring-assignment */
-/* eslint-disable react/prop-types */
 import { Row, Col } from "react-bootstrap";
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Map from "../Map/Map";
 
-export default function OpportunityListItem(props) {
-  const latLongFromPoint = (point) => {
-    const splitText = point.split(/[\s()]+/);
-    return [parseFloat(splitText[2]), parseFloat(splitText[1])];
-  };
-
+const OpportunityListItem = ({ opportunity }) => {
   const determineTextColour = (approvalStatus) => {
     if (approvalStatus === "PEND") {
       return <div className="status-text-orange">Pending Review</div>;
@@ -26,11 +21,11 @@ export default function OpportunityListItem(props) {
     return approvalStatus;
   };
 
-  const determineActions = (approvalStatus) => {
-    if (approvalStatus === "PUBL") {
+  const determineActions = (opp) => {
+    if (opp.approvalStatus === "PUBL") {
       return (
         <>
-          <a href="/">View Listing</a>
+          <a href={opp.link}>View Listing</a>
           <br />
           <a href="/">Mark as &quot;sold&quot;</a>
           <br />
@@ -42,7 +37,7 @@ export default function OpportunityListItem(props) {
     }
     return (
       <>
-        <a href="/">View Listing</a>
+        <a href={opp.link}>View Listing</a>
         <br />
         <a href="/">Edit Listing</a>
         <br />
@@ -57,34 +52,37 @@ export default function OpportunityListItem(props) {
   };
 
   return (
-    <div key={props.id} className="opportunity-table-row w-100">
+    <div key={opportunity.id} className="opportunity-table-row w-100">
       <Row>
         <Col>
           <div
             style={{ borderRight: "2px solid #606060" }}
             className="opportunity-table-map-container"
           >
-            <Map
-              coords={latLongFromPoint(props.coords)}
-              isInteractive={false}
-            />
+            <Map coords={opportunity.coords} isInteractive={false} />
           </div>
         </Col>
-        <Col>{props.address}</Col>
-        {!props.public ? (
+        <Col>{opportunity.address}</Col>
+        {!opportunity.public ? (
           <>
-            <Col>{formatDate(props.date_created)}</Col>
-            <Col>{determineTextColour(props.approval_status)}</Col>
-            <Col>{determineActions(props.approval_status)}</Col>
+            <Col>{formatDate(opportunity.dateCreated)}</Col>
+            <Col>{determineTextColour(opportunity.approvalStatus)}</Col>
+            <Col>{determineActions(opportunity)}</Col>
           </>
         ) : (
           <Col className="d-flex align-items-end justify-content-end mr-1">
-            {props.public && (
-              <Link to={`/investment/${props.id}`}>View property details</Link>
+            {opportunity.public && (
+              <Link to={opportunity.link}>View property details</Link>
             )}
           </Col>
         )}
       </Row>
     </div>
   );
-}
+};
+
+OpportunityListItem.propTypes = {
+  opportunity: PropTypes.shape().isRequired,
+};
+
+export default OpportunityListItem;

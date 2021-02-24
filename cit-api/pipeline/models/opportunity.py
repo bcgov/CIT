@@ -31,7 +31,7 @@ class Opportunity(models.Model):
     # Parcel
     parcel_ownership = models.TextField(blank=True, null=True)
     parcel_size = models.DecimalField(max_digits=7, decimal_places=3, blank=True, null=True)
-    pid = models.IntegerField(blank=True, null=True)
+    pid = models.TextField(blank=True, null=True)
     # Physical
     geo_position = models.PointField(srid=4326, null=False, blank=False)
     elevation_at_location = models.DecimalField(max_digits=7, decimal_places=3, blank=True, null=True)

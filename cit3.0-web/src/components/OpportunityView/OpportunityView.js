@@ -41,8 +41,11 @@ export default function OpportunityView({ view }) {
     (state) => state.opportunity.nearbyResources
   );
   const resourceIds = useSelector((state) => state.opportunity.resourceIds);
-  const businessContact = useSelector(
-    (state) => state.opportunity.businessContact
+  const businessContactName = useSelector(
+    (state) => state.opportunity.businessContactName
+  );
+  const businessContactEmail = useSelector(
+    (state) => state.opportunity.businessContactEmail
   );
   const name = useSelector((state) => state.opportunity.name);
 
@@ -64,24 +67,26 @@ export default function OpportunityView({ view }) {
           <Resource title="Services" itemsToDisplay={services} />
         </Col>
         <Col xs lg="5" className="leaflet-border pr-0">
-          <Map
-            setNearbyResources={(r) => dispatch(setNearbyResources(r))}
-            coords={coords}
-            setCoords={(c) => dispatch(setCoords(c))}
-            setAddress={(a) => dispatch(setAddress(a))}
-            nearbyResources={nearbyResources}
-            resourceIds={resourceIds}
-          />
+          <div className="full-border" style={{ height: "100%" }}>
+            <Map
+              setNearbyResources={(r) => dispatch(setNearbyResources(r))}
+              coords={coords}
+              setCoords={(c) => dispatch(setCoords(c))}
+              setAddress={(a) => dispatch(setAddress(a))}
+              nearbyResources={nearbyResources}
+              resourceIds={resourceIds}
+            />
+          </div>
           <LocationsPanel
             address={address}
             coords={coords}
             municipalities={municipalities}
             firstNationCommunities={firstNationCommunities}
           />
-          {businessContact.name || businessContact.email ? (
+          {businessContactName || businessContactEmail ? (
             <BusinessContact
-              name={businessContact.name}
-              email={businessContact.email}
+              name={businessContactName}
+              email={businessContactEmail}
             />
           ) : null}
         </Col>

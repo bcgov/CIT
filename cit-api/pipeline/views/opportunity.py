@@ -17,6 +17,9 @@ class OpportunitiesList(generics.ListAPIView):
     queryset = Opportunity.objects.all()
     serializer_class = OpportunitySerializer
 
+class OpportunityCreateView(generics.CreateAPIView):
+    serializer_class = OpportunitySerializer
+
 class OpportunityView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OpportunitySerializer
     lookup_field = 'id'

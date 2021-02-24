@@ -16,15 +16,17 @@ const OpportunityPage = () => {
   const id = location.pathname.match(/(\d+)+$/)[0];
 
   getOpportunity(id).then((response) => {
-    dispatch(
-      setOpportunity(OpportunityFactory.createFromResponse(response.data))
+    const opportunity = OpportunityFactory.createStateFromResponse(
+      response.data
     );
+    dispatch(setOpportunity(opportunity));
+    document.title = `Investment - ${opportunity.name}`;
   });
 
   return (
     <div className={styles.OpportunityPage} data-testid="OpportunityPage">
       <PortalHeader />
-      <OpportunityView />
+      <OpportunityView view="all" />
     </div>
   );
 };

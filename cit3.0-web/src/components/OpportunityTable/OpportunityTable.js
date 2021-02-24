@@ -1,4 +1,5 @@
 import Container from "react-bootstrap/Container";
+import { v4 } from "uuid";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./OpportunityTable.css";
@@ -32,8 +33,10 @@ export default function OpportunityTable(props) {
         )}
         {opportunities &&
           opportunities.map((oppData) => {
-            const opportunity = OpportunityFactory.createFromResponse(oppData);
-            return <OpportunityListItem opportunity={opportunity} />;
+            const opportunity = OpportunityFactory.createStateFromResponse(
+              oppData
+            );
+            return <OpportunityListItem key={v4()} opportunity={opportunity} />;
           })}
       </Container>
     </div>
