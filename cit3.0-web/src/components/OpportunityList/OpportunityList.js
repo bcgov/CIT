@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { Col } from "react-bootstrap";
 import OpportunityListItem from "../OpportunityListItem/OpportunityListItem";
 
 export default function OpportunityList({ opportunities }) {
