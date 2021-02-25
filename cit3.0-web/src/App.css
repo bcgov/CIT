@@ -1,15 +1,19 @@
 .app-container {
-  padding-bottom: 75px;
-  min-height: "100vh";
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-container header,
+.app-container .footer {
+  flex: 0
+}
+
+.app-container #search-page-layout {
+  flex: 1;
 }
 
 .invest-container {
-  height: "80vh";
+  height: 80vh;
 }
 
-.footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  z-index: 1000;
-}
