@@ -183,6 +183,10 @@ export default function Map({
 Map.defaultProps = {
   isInteractive: true,
   nearbyResources: null,
+  resourceIds: {},
+  setNearbyResources: () => {},
+  setCoords: () => {},
+  setAddress: () => {},
 };
 
 Map.propTypes = {
@@ -195,8 +199,8 @@ Map.propTypes = {
   resourceIds: PropTypes.shape({
     name: PropTypes.string,
     id: PropTypes.string,
-  }).isRequired,
-  setNearbyResources: PropTypes.func.isRequired,
-  setCoords: PropTypes.func.isRequired,
-  setAddress: PropTypes.func.isRequired,
+  }),
+  setNearbyResources: PropTypes.func,
+  setCoords: PropTypes.func,
+  setAddress: PropTypes.func,
 };

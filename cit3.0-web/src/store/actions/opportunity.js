@@ -1,8 +1,11 @@
 import axios from "axios";
 import {
+  ADD_ALL,
   ADD_ADDRESS,
   ADD_COORDS,
   ADD_BUSINESS_CONTACT,
+  ADD_BUSINESS_CONTACT_NAME,
+  ADD_BUSINESS_CONTACT_EMAIL,
   ADD_RESOUCE_IDS,
   ADD_NEARBY_RESOUCES,
   RESET_OPPORTUNITY,
@@ -12,8 +15,11 @@ import {
   ADD_SERVICE,
   ADD_SERVICE_CAPACITY,
 } from "../constants/action-types";
-import { POST_OPPOTUNITIES_URL } from "../constants/api-urls";
-import OpportunityRequest from "../factory/OpportunityRequest";
+import {
+  POST_OPPOTUNITIES_URL,
+  GET_OPPOTUNITIES_URL,
+} from "../constants/api-urls";
+import OpportunityFactory from "../factory/OpportunityFactory";
 
 /**
  * @param {Object} opportunityModel from redux store
@@ -22,8 +28,24 @@ import OpportunityRequest from "../factory/OpportunityRequest";
 export function postOpportunity(opportunityModel) {
   return axios.post(
     POST_OPPOTUNITIES_URL,
-    OpportunityRequest.createFromModel(opportunityModel)
+    OpportunityFactory.createRequestFromModel(opportunityModel)
   );
+}
+
+/**
+ * @param {number} opportunityId
+ * @return {Promise} of axios api call
+ */
+export function getOpportunity(opportunityId) {
+  return axios.get(GET_OPPOTUNITIES_URL + opportunityId);
+}
+
+/**
+ * @param {Object} opportunity
+ * @return {Object} for redux reducer
+ */
+export function setOpportunity(opportunity) {
+  return { type: ADD_ALL, payload: opportunity };
 }
 
 /**
@@ -50,11 +72,19 @@ export function setCoords(coords) {
 }
 
 /**
- * @param {Object} bContact
+ * @param {Object} bName
  * @return {Object} for redux reducer
  */
-export function setBusinessContact(bContact) {
-  return { type: ADD_BUSINESS_CONTACT, payload: bContact };
+export function setBusinessContactName(bName) {
+  return { type: ADD_BUSINESS_CONTACT_NAME, payload: bName };
+}
+
+/**
+ * @param {Object} bEmail
+ * @return {Object} for redux reducer
+ */
+export function setBusinessContactEmail(bEmail) {
+  return { type: ADD_BUSINESS_CONTACT_EMAIL, payload: bEmail };
 }
 
 /**

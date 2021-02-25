@@ -21,6 +21,7 @@ import { NOTIFICATION_ERROR } from "../../../store/constants/notification";
 import "./ReviewOpportunity.css";
 
 const ReviewOpportunity = ({ location }) => {
+  document.title = `Investments - Add Opportunity - Review Submission`;
   const history = useHistory();
   const dispatch = useDispatch();
   const error = useSelector((state) => state.notification.data);
