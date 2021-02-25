@@ -40,7 +40,7 @@
     } 
     .sidebar { 
       transition: transform var(--secs);
-      height: 100vh;
+      height: 100%;
       @media (orientation: portrait) { 
         width: var(--portrait-width); 
       }
