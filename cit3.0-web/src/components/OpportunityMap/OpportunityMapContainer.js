@@ -4,8 +4,9 @@ import axios from "axios";
 import { CgCloseR } from "react-icons/cg";
 import { Row, Col } from "react-bootstrap";
 import OpportunitiesMap from "./OpportunitiesMap";
+import "./OppMap.css";
 
-export default function OpportunityMapContainer({ setMapVisible }) {
+export default function OpportunityMapContainer() {
   const [opportunities, setOpportunities] = useState(null);
   const [showMap, setShowMap] = useState(true);
 
@@ -32,20 +33,28 @@ export default function OpportunityMapContainer({ setMapVisible }) {
       zIndex: 1000,
       cursor: "pointer",
     },
+    small: {
+      height: "40px",
+    },
+    large: {
+      height: "600px",
+    },
   };
+
+  const heightClass = showMap ? "large" : "small";
 
   const toggleMap = () => {
     setShowMap(!showMap);
-    setMapVisible(!showMap);
   };
   return (
-    <>
+    <Row
+      className={styles[heightClass]}
+      style={{
+        position: "relative",
+      }}
+    >
       <CgCloseR style={styles.close} onClick={toggleMap} />
       {showMap && <OpportunitiesMap opportunities={opportunities} />}
-    </>
+    </Row>
   );
 }
-
-OpportunityMapContainer.propTypes = {
-  setMapVisible: PropTypes.func.isRequired,
-};
