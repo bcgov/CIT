@@ -16,6 +16,8 @@ import Flyout from "./components/Flyout/Flyout";
 import { store } from "./store";
 import ReviewSubmitted from "./components/Page/ReviewSubmitted/ReviewSubmitted";
 import OpportunityPage from "./components/Page/OpportunityPage/OpportunityPage";
+import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainView";
+import OpportunitiesMap from "./components/OpportunityMap/OpportunitiesMap";
 
 function App() {
   const header = {
@@ -67,7 +69,7 @@ function App() {
             />
             <Route path="/investment/*:path" component={OpportunityPage} />
             <Route exact path="/search">
-              <Flyout />
+              <InvestorMainView />
             </Route>
           </Switch>
         </Router>
