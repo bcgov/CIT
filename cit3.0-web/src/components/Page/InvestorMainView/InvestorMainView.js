@@ -7,7 +7,6 @@ import Flyout from "../../Flyout/Flyout";
 
 export default function InvestorMainView() {
   const [totalCount, setTotalCount] = useState(null);
-  console.log(totalCount);
   return (
     <div className="w-100">
       <PortalHeader title="Investor Portal" text="Description" />

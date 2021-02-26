@@ -9,7 +9,6 @@ export default function OpportunityList({ opportunities }) {
       {opportunities.length &&
         opportunities.map((opp) => {
           const opportunity = OpportunityFactory.createStateFromResponse(opp);
-          console.log("OPP: ", opp);
           return <OpportunityListItem key={v4()} opportunity={opportunity} />;
         })}
     </>

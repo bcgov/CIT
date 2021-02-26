@@ -4,7 +4,6 @@ import axios from "axios";
 import { CgCloseR } from "react-icons/cg";
 import { Row, Col } from "react-bootstrap";
 import OpportunitiesMap from "./OpportunitiesMap";
-import "./OppMap.css";
 
 export default function OpportunityMapContainer({ setTotalCount }) {
   const [opportunities, setOpportunities] = useState(null);
@@ -14,12 +13,10 @@ export default function OpportunityMapContainer({ setTotalCount }) {
     axios
       .get(`/api/opportunity/list`)
       .then((data) => {
-        console.log(data.data.results);
         setOpportunities(data.data.results);
         setTotalCount(data.data.count);
       })
       .catch((err) => {
-        console.log(err);
         setOpportunities(null);
       });
   }, []);
