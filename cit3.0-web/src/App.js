@@ -17,7 +17,6 @@ import { store } from "./store";
 import ReviewSubmitted from "./components/Page/ReviewSubmitted/ReviewSubmitted";
 import OpportunityPage from "./components/Page/OpportunityPage/OpportunityPage";
 import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainView";
-import OpportunitiesMap from "./components/OpportunityMap/OpportunitiesMap";
 
 function App() {
   const header = {

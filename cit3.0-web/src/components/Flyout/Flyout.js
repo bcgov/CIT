@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { Container, Col, Row } from "react-bootstrap";
 import { Button } from "shared-components";
 import "./Flyout.scss";
-import OpportunityMapContainer from "../OpportunityMap/OpportunityMapContainer";
-import OpportunityListContainer from "../OpportunitiesListContainer/OpportunitiesListContainer";
 
 export default function Flyout(props) {
   const [leftOpenState, setLeftOpenState] = useState(false);
