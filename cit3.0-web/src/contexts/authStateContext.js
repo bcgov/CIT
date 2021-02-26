@@ -21,6 +21,7 @@ const AuthStateContextProvider = ({ children }) => {
             setUserInfo(user);
           })
           .catch((e) => {
+            // eslint-disable-next-line
             console.error(e);
           });
       }

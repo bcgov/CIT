@@ -22,9 +22,7 @@ const usingIE = () => {
 };
 
 const Login = () => {
-  const query = useQuery();
-  console.log(query);
-  const { redirect } = query;
+  const { redirect } = useQuery();
   const keyCloakWrapper = useKeycloakWrapper();
   const keycloak = keyCloakWrapper.obj;
   const isIE = usingIE();
