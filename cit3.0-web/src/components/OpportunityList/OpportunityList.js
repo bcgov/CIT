@@ -1,19 +1,17 @@
 import PropTypes from "prop-types";
+import { v4 } from "uuid";
 import OpportunityListItem from "../OpportunityListItem/OpportunityListItem";
+import OpportunityFactory from "../../store/factory/OpportunityFactory";
 
 export default function OpportunityList({ opportunities }) {
   return (
     <>
-      {opportunities &&
-        opportunities.map((opp) => (
-          <OpportunityListItem
-            key={opp.id}
-            id={opp.id}
-            coords={opp.point}
-            address={opp.address}
-            public
-          />
-        ))}
+      {opportunities.length &&
+        opportunities.map((opp) => {
+          const opportunity = OpportunityFactory.createStateFromResponse(opp);
+          console.log("OPP: ", opp);
+          return <OpportunityListItem key={v4()} opportunity={opportunity} />;
+        })}
     </>
   );
 }
