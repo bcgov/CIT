@@ -27,7 +27,6 @@ describe("logout", () => {
 
   it("should redirect to login page", () => {
     useKeycloak.mockReturnValue({ keycloak: { authenticated: false } });
-    useConfiguration.mockReturnValue({ siteMinderLogoutUrl: undefined });
 
     render(
       <Router history={history}>

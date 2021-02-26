@@ -4,7 +4,6 @@ const useConfiguration = () => {
   const isProduction = process.env.NODE_ENV === "production";
 
   return {
-    siteMinderLogoutUrl: process.env.REACT_APP_KC_LOGOUT_URL,
     isTest,
     isDevelopment,
     isProduction,
