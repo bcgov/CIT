@@ -1,7 +1,8 @@
 import React from "react";
 import Proptypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useHistory, NavLink } from "react-router-dom";
+import { Container } from "react-bootstrap";
 import OpportunityView from "../../OpportunityView/OpportunityView";
 import {
   setOpportunity,
@@ -36,6 +37,11 @@ const OpportunityPage = ({ id }) => {
   return (
     <div className={styles.OpportunityPage} data-testid="OpportunityPage">
       <PortalHeader />
+      <Container className="p-0">
+        <NavLink className="mt-2" to={document.referrer}>
+          {"<<"} Return to Search
+        </NavLink>
+      </Container>
       <OpportunityView view="all" />
     </div>
   );

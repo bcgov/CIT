@@ -3,7 +3,7 @@ import { setKeycloakReady } from "../store/reducers/keycloakReadySlice";
 import { store } from "../store";
 
 const getKeycloakEventHandler = (keycloak) => {
-  const keycloakEventHandler = (event, error) => {
+  const keycloakEventHandler = (event) => {
     if (event === "onAuthSuccess") {
       if (keycloak.token) {
         store.dispatch(saveJwt(keycloak.token));
@@ -16,9 +16,6 @@ const getKeycloakEventHandler = (keycloak) => {
       store.dispatch(clearJwt());
     } else if (event === "onReady") {
       store.dispatch(setKeycloakReady(true));
-    } else {
-      // TODO: log error properly
-      console.debug(`keycloak event: ${event} error ${error}`);
     }
   };
   return keycloakEventHandler;

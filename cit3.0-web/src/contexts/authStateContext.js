@@ -13,11 +13,16 @@ const AuthStateContextProvider = ({ children }) => {
   const keycloakReady = useSelector((state) => state.keycloakReady);
 
   React.useEffect(() => {
-    const loadUserInfo = async () => {
-      console.log(keycloak);
-      if (keycloak.obj) {
-        const user = await keycloak.obj.loadUserInfo();
-        setUserInfo(user);
+    const loadUserInfo = () => {
+      if (keycloak.obj && keycloak.obj.authenticated) {
+        keycloak.obj
+          .loadUserInfo()
+          .then((user) => {
+            setUserInfo(user);
+          })
+          .catch((e) => {
+            console.error(e);
+          });
       }
     };
 

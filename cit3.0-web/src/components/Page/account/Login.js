@@ -1,21 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Redirect } from "react-router-dom";
-import {
-  Container,
-  Row,
-  Col,
-  Button,
-  Spinner,
-  Jumbotron,
-} from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { Container, Row, Col, Spinner, Jumbotron } from "react-bootstrap";
+import { Button } from "shared-components";
+// import { useSelector } from "react-redux";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useQuery } from "../../../hooks/use-query";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+// import { ADD_ACTIVATE_USER } from "../../../constants/actionTypes";
 
 // @todo: Move to actions / status sources
-const NEW_CIT_USER = 201;
-const ADD_ACTIVATE_USER = "activateUser";
+// const NEW_CIT_USER = 201;
 
 // check to see if user is using Internet Explorer
 // as their browser
@@ -28,25 +22,26 @@ const usingIE = () => {
 };
 
 const Login = () => {
-  const { redirect } = useQuery();
-  const [showInstruction, setShowInstruction] = useState(false);
+  const query = useQuery();
+  console.log(query);
+  const { redirect } = query;
   const keyCloakWrapper = useKeycloakWrapper();
   const keycloak = keyCloakWrapper.obj;
   const isIE = usingIE();
-  const activated = useSelector((state) => state.network[ADD_ACTIVATE_USER]);
+  // const activated = useSelector((state) => state.network[ADD_ACTIVATE_USER]);
   if (!keycloak) {
     return <Spinner animation="border" />;
   }
   if (keycloak && keycloak.authenticated) {
-    if (
-      (activated && activated.status === NEW_CIT_USER) ||
-      (keyCloakWrapper &&
-        keyCloakWrapper.roles &&
-        !keyCloakWrapper.roles.length)
-    ) {
-      return <Redirect to={{ pathname: "/access/request" }} />;
-    }
-    return <Redirect to={redirect || "/mapview"} />;
+    // if (
+    //   (activated && activated.status === NEW_CIT_USER) ||
+    //   (keyCloakWrapper &&
+    //     keyCloakWrapper.roles &&
+    //     !keyCloakWrapper.roles.length)
+    // ) {
+    //   return <Redirect to={{ pathname: "/access/request" }} />;
+    // }
+    return <Redirect to={redirect || "/search"} />;
   }
   if (isIE) {
     return <Redirect to={{ pathname: "/ienotsupported" }} />;
@@ -54,66 +49,59 @@ const Login = () => {
   return (
     <Container className="login" fluid>
       <Container className="unauth" fluid>
-        <h1>Search and visualize government property information</h1>
+        <h2 className="my-4">Login to Community Information Tool</h2>
         <Row className="sign-in">
-          <Col xs={1} md={3} />
-          <Col xs={16} md={6} className="block">
-            <h6>
-              CIT enables you to search opportunities owned by the Government of
-              British Columbia
-            </h6>
-            <p>
-              The data provided can assist your agency in making informed,
-              timely, and strategic decisions on the optimal use of real
-              property assets on behalf of the people and priorities of British
-              Columbia.
-            </p>
-            <Button variant="primary" onClick={() => keycloak.login()}>
-              Sign In
-            </Button>
-            <p>
-              Sign into CIT with your government issued IDIR or with your
-              Business BCeID.
-            </p>
-            <Row className="bceid">
+          <Col>
+            <Jumbotron className="pl-0" style={{ background: "transparent" }}>
+              <h3 className="mb-4">
+                Create and manage investment opportunities
+              </h3>
+              <p className="mb-4">
+                The data provided can assist your agency in making informed,
+                timely, and strategic decisions on the optimal use of real
+                community assets on behalf of the people and priorities of
+                British Columbia.
+              </p>
+              <hr className="hr-bold" />
               <Button
-                variant="link"
-                onClick={() => setShowInstruction(!showInstruction)}
-              >
-                Don&apos;t have a Business BCeID?
-              </Button>
-            </Row>
-            <Row>
-              {showInstruction && (
-                <Jumbotron>
-                  <p>
-                    1. Search to see if your entity is{" "}
-                    <a
-                      href="https://www.bceid.ca/directories/whitepages"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      already registered
-                    </a>{" "}
-                    <FaExternalLinkAlt />
-                  </p>
-                  <p>
-                    If you&apos;re not yet registered, <br />
-                    2.{" "}
-                    <a
-                      href="https://www.bceid.ca/os/?7169"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Register for your Business BCeID
-                    </a>{" "}
-                    <FaExternalLinkAlt />
-                  </p>
-                </Jumbotron>
-              )}
-            </Row>
+                label="Sign In"
+                styling="bcgov-button bcgov-normal-blue btn mb-4"
+                onClick={() => keycloak.login()}
+              />
+              <p>
+                Sign into CIT with your government issued IDIR or with your
+                Business BCeID.
+              </p>
+            </Jumbotron>
           </Col>
-          <Col xs={1} md={3} />
+          <Col md>
+            <Jumbotron>
+              <h3 className="mb-4">Don&apos;t have a Business BCeID?</h3>
+              <p>
+                1. Search to see if your entity is{" "}
+                <a
+                  href="https://www.bceid.ca/directories/whitepages"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  already registered
+                </a>{" "}
+                <FaExternalLinkAlt />
+              </p>
+              <p>
+                If you&apos;re not yet registered, <br />
+                2.{" "}
+                <a
+                  href="https://www.bceid.ca/os/?7169"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Register for your Business BCeID
+                </a>{" "}
+                <FaExternalLinkAlt />
+              </p>
+            </Jumbotron>
+          </Col>
         </Row>
       </Container>
     </Container>

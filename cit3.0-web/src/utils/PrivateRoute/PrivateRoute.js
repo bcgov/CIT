@@ -1,6 +1,6 @@
 import React from "react";
 import Proptypes from "prop-types";
-import { Route, Redirect, useLocation } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 /**
  * @todo: Find our sets of action interfaces
  */
@@ -11,7 +11,6 @@ import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
  * @param props - Properties to pass { component, role, claim }
  */
 const PrivateRoute = (props) => {
-  const location = useLocation();
   const keycloak = useKeycloakWrapper();
   const { component: Component, layout: Layout, ...rest } = props;
   /* eslint consistent-return: "off" */
@@ -20,26 +19,26 @@ const PrivateRoute = (props) => {
       {...rest}
       render={(subprops) => {
         if (keycloak.obj && !!keycloak.obj.authenticated) {
-          if (
-            (!rest.role && !rest.claim) ||
-            keycloak.hasRole(rest.role) ||
-            keycloak.hasClaim(rest.claim)
-          ) {
-            return (
-              <Layout>
-                <Component {...subprops} {...rest.componentProps} />
-              </Layout>
-            );
-          }
+          // if (
+          //   (!rest.role && !rest.claim) ||
+          //   keycloak.hasRole(rest.role) ||
+          //   keycloak.hasClaim(rest.claim)
+          // ) {
           return (
-            <Redirect
-              to={{
-                pathname: "/forbidden",
-                state: { referer: subprops.location },
-              }}
-            />
+            <Layout>
+              <Component {...subprops} {...rest.componentProps} />
+            </Layout>
           );
         }
+        // return (
+        //   <Redirect
+        //     to={{
+        //       pathname: "/forbidden",
+        //       state: { referer: subprops.location },
+        //     }}
+        //   />
+        // );
+        // }
         if (subprops.location.pathname !== "/login") {
           const redirectTo = encodeURI(
             `${location.pathname}${location.search}`

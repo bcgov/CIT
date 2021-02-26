@@ -1,6 +1,5 @@
 {
     "url": "http://localhost:8080/auth",
     "realm": "cit-dev-realm",
-    "clientId": "cit-dev",
-    "clientSecret": "d059a0e5-bf7e-4748-950c-d3605f5bacd3"
+    "clientId": "cit-dev"
 }

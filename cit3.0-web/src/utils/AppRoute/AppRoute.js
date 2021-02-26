@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import Proptypes from "prop-types";
-import { Route } from "react-router-dom";
+import { useLocation, Route } from "react-router-dom";
+
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import PublicLayout from "../../layouts/PublicLayout";
 
@@ -13,6 +14,11 @@ const AppRoute = ({
   title,
   ...rest
 }) => {
+  const location = useLocation();
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   /* eslint react/prop-types: "off" */
   const Layout =
     layout === undefined ? (props) => <>{props.children}</> : layout;
@@ -35,9 +41,9 @@ const AppRoute = ({
     <Route
       {...rest}
       render={(props) => (
-        <PublicLayout>
+        <main>
           <Component {...props} />
-        </PublicLayout>
+        </main>
       )}
     />
   );

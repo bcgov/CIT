@@ -22,7 +22,6 @@ services:
     environment:
       - AUTHORITY=https://login.microsoftonline.com/
       - SCOPE=https://analysis.windows.net/powerbi/api/.default
-      - DEBUG=true
     ports:
       - 8000:8000
   db:
