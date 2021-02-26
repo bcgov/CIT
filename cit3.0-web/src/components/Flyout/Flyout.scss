@@ -56,7 +56,7 @@
   #left { 
     transition: width var(--secs); 
     width: 0;
-    z-index: 10;
+    z-index: 1001;
     @media (orientation: landscape) {
       &.open { 
         width: 400px; 
