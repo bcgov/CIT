@@ -192,31 +192,15 @@ class NaturalResourceProject(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'PROJECT_NAME'
-    PHONE_FIELD = 'TELEPHONE'
-    WEBSITE_FIELD = 'PROJECT_WEBSITE'
+    WEBSITE_FIELD = 'ORGANIZATION_ WEBSITE'
 
-    project_comments = models.TextField(null=True, blank=True)
     project_description = models.CharField(null=True, blank=True, max_length=255)
-    estimated_cost = models.CharField(null=True, blank=True, max_length=255)
-    update_activity = models.CharField(null=True, blank=True, max_length=255)
-    construction_type = models.CharField(null=True, blank=True, max_length=255)
-    construction_subtype = models.CharField(null=True, blank=True, max_length=255)
+    project_location = models.CharField(null=True, blank=True, max_length=255)
+    project_comments = models.CharField(null=True, blank=True, max_length=255)
     project_type = models.CharField(null=True, blank=True, max_length=255)
-    developer = models.CharField(null=True, blank=True, max_length=255)
-    architect = models.CharField(null=True, blank=True, max_length=255)
-    project_status = models.CharField(null=True, blank=True, max_length=255)
-    project_stage = models.CharField(null=True, blank=True, max_length=255)
-    project_category_name = models.CharField(null=True, blank=True, max_length=255)
-    provinvial_funding = models.CharField(null=True, blank=True, max_length=255)
-    federal_funding = models.CharField(null=True, blank=True, max_length=255)
-    municipal_funding = models.CharField(null=True, blank=True, max_length=255)
-    green_building_ind = models.CharField(null=True, blank=True, max_length=255)
-    green_building_desc = models.CharField(null=True, blank=True, max_length=255)
-    clean_energy_ind = models.CharField(null=True, blank=True, max_length=255)
-    construction_jobs = models.CharField(null=True, blank=True, max_length=255)
-    operating_jobs = models.CharField(null=True, blank=True, max_length=255)
-    standardized_start_date = models.CharField(null=True, blank=True, max_length=255)
-    standardized_completion_date = models.CharField(null=True, blank=True, max_length=255)
+    project_category = models.CharField(null=True, blank=True, max_length=255)
+    proponent = models.CharField(null=True, blank=True, max_length=255)
+    eao_project_status = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
         ordering = ("id", )
@@ -651,8 +635,8 @@ class TimberFacility(Location):
 class CivicFacility(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
-    NAME_FIELD = 'FCLTY_NM'
-    WEBSITE_FIELD = 'WEBSITE'
+    NAME_FIELD = 'FACILITY_NAME'
+    WEBSITE_FIELD = 'WEBSITE_URL'
 
     keywords = models.CharField(null=True, blank=True, max_length=255)
     bus_cat_cl = models.CharField(null=True, blank=True, max_length=255)
@@ -730,25 +714,25 @@ class ResearchCentre(Location):
 class Airport(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
-    NAME_FIELD = 'NAME'
-    WEBSITE_FIELD = 'WEBSITE'
-    PHONE_FIELD = 'CONT_PHONE'
+    NAME_FIELD = 'AIRPORT_NAME'
+    WEBSITE_FIELD = 'WEBSITE_URL'
+    PHONE_FIELD = 'CONTACT_PHONE'
 
-    descriptn = models.CharField(null=True, blank=True, max_length=255)
+    description = models.CharField(null=True, blank=True, max_length=255)
     keywords = models.CharField(null=True, blank=True, max_length=255)
-    aer_status = models.CharField(null=True, blank=True, max_length=255)
-    aircr_acs = models.CharField(null=True, blank=True, max_length=255)
-    data_srce = models.CharField(null=True, blank=True, max_length=255)
-    datasrc_yr = models.CharField(null=True, blank=True, max_length=255)
+    aerodrome_status = models.CharField(null=True, blank=True, max_length=255)
+    aircraft_access_ind = models.CharField(null=True, blank=True, max_length=255)
+    data_source = models.CharField(null=True, blank=True, max_length=255)
+    data_source_year = models.CharField(null=True, blank=True, max_length=255)
     elevation = models.CharField(null=True, blank=True, max_length=255)
-    fuel_avail = models.CharField(null=True, blank=True, max_length=255)
-    heli_acs = models.CharField(null=True, blank=True, max_length=255)
-    iata = models.CharField(null=True, blank=True, max_length=255)
-    mx_rway_ln = models.CharField(null=True, blank=True, max_length=255)
-    num_rway = models.CharField(null=True, blank=True, max_length=255)
-    rway_surf = models.CharField(null=True, blank=True, max_length=255)
-    oil_avail = models.CharField(null=True, blank=True, max_length=255)
-    seapln_acc = models.CharField(null=True, blank=True, max_length=255)
+    fuel_availability_ind = models.CharField(null=True, blank=True, max_length=255)
+    helicopter_access_ind = models.CharField(null=True, blank=True, max_length=255)
+    iata_code = models.CharField(null=True, blank=True, max_length=255)
+    max_runway_length = models.CharField(null=True, blank=True, max_length=255)
+    number_of_runways = models.CharField(null=True, blank=True, max_length=255)
+    runway_surface = models.CharField(null=True, blank=True, max_length=255)
+    oil_availability_ind = models.CharField(null=True, blank=True, max_length=255)
+    seaplane_access_ind = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
         ordering = ("id", )
@@ -819,15 +803,10 @@ class LocalGovernmentOffice(Location):
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'FACILITY_NAME'
     WEBSITE_FIELD = 'WEBSITE_URL'
-    PHONE_FIELD = 'CONTACT_PHONE'
-    EMAIL_FIELD = 'CONTACT_EMAIL'
 
-    description = models.CharField(null=True, blank=True, max_length=255)
-    type = models.CharField(null=True, blank=True, max_length=255)
-    sub_type = models.CharField(null=True, blank=True, max_length=255)
     street_address = models.CharField(null=True, blank=True, max_length=255)
     keywords = models.CharField(null=True, blank=True, max_length=255)
-    custodian_org_name = models.CharField(null=True, blank=True, max_length=255)
+    custodian_org_description = models.CharField(null=True, blank=True, max_length=255)
     occupant_type_description = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
@@ -835,11 +814,13 @@ class LocalGovernmentOffice(Location):
 
 
 class EmergencySocialServiceFacility(Location):
-    LATITUDE_FIELD = 'LATITUDE'
-    LONGITUDE_FIELD = 'LONGITUDE'
+    LATITUDE_FIELD = None
+    LONGITUDE_FIELD = None
     NAME_FIELD = 'FACILITY_NAME'
 
     address = models.CharField(null=True, blank=True, max_length=255)
+    facility_type_code = models.CharField(null=True, blank=True, max_length=255)
+    status = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
         ordering = ("id", )

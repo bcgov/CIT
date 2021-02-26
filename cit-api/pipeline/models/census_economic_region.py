@@ -6,9 +6,11 @@ from pipeline.utils import get_quarterly_date_str_as_date
 
 
 class CensusEconomicRegion(models.Model):
+    NAME_FIELD = "ECONOMIC_REGION_NAME"
+
     census_year = models.CharField(max_length=32)
     economic_region_id = models.IntegerField(null=True)
-    economic_region_name = models.CharField(max_length=127)
+    name = models.CharField(max_length=127)
     geom = models.MultiPolygonField(srid=4326, null=True)
     geom_simplified = models.MultiPolygonField(srid=4326, null=True)
 

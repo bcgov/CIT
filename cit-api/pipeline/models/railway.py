@@ -1,5 +1,5 @@
 from django.contrib.gis.db import models
-from django.contrib.gis.db.models import LineStringField
+from django.contrib.gis.db.models import MultiLineStringField
 from django.contrib.gis.geos import Point
 
 from pipeline.utils import get_quarterly_date_str_as_date
@@ -16,8 +16,8 @@ class Railway(models.Model):
     electrification = models.CharField(max_length=32)
     status = models.CharField(max_length=32)
     name = models.CharField(max_length=127)
-    geom = models.LineStringField(srid=4326, null=True)
-    geom_simplified = models.LineStringField(srid=4326, null=True)
+    geom = models.MultiLineStringField(srid=4326, null=True)
+    geom_simplified = models.MultiLineStringField(srid=4326, null=True)
     operator_english_name = models.CharField(max_length=64)
     owner_name = models.CharField(max_length=32)
 

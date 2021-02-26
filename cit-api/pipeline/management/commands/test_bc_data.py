@@ -17,13 +17,17 @@ class Command(BaseCommand):
 
         # print("Importing connectivity Hexes...")
         # import_shp_resources("hexes")
+        # wms_resource = DataSource.objects.filter(name="municipalities").first()
+        # import_wms_resource(wms_resource)
 
         # print("Importing Communities...")
         # import_csv_resources("communities")
 
-        # wms_resources = DataSource.objects.filter(source_type="WMS").order_by('import_order')
+        # wms_resources = DataSource.objects.filter(source_type="WMS").exclude(
+        #     name__in=["municipalities"]).order_by('import_order')
         # for resource in wms_resources:
         #     import_wms_resource(resource)
 
-        ds = bcdata.get_data('emergency-social-services-facilities', as_gdf=True)
+        ds = bcdata.get_data("natural-resource-sector-major-projects-points", as_gdf=True)
+
         print(ds.iloc[0])

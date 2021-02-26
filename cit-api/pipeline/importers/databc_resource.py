@@ -12,12 +12,9 @@ from pipeline.importers.utils import (import_data_into_point_model, import_data_
 
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}&limit=10000"
 LOCATION_RESOURCES = [
-    'first_responders',
-    'diagnostic_facilities',
-    'timber_facilities',
-    'civic_facilities',
-    'closed_mills',
-    'airports',
+    'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities',
+    'closed_mills', 'airports', 'port_and_terminal', 'eao_projects', 'laboratory_service',
+    'local_govt_offices', 'emergency_social_service_facilities', 'natural_resource_projects'
 ]
 
 
@@ -51,7 +48,7 @@ def import_resource(resource_type):
         model_class = apps.get_model("pipeline", data_source.model_name)
         import_data_into_point_model(resource_type, model_class, row)
 
-    calculate_nearest_location_type_outside_50k(resource_type)
+    # calculate_nearest_location_type_outside_50k(resource_type)
 
     if data_source.source == SOURCE_DATABC:
         data_source.last_updated = get_databc_last_modified_date(data_source)
@@ -76,7 +73,8 @@ def import_wms_resource(resource):
             geos_geom_out, geos_geom_simplified = _generate_simplified_geom(row)
             instance.geom = geos_geom_out
             instance.geom_simplified = geos_geom_simplified
-
+        if resource == "emergency_social_service_facilities":
+            print(instance)
         instance.save()
 
     # if data_source.source == SOURCE_DATABC:

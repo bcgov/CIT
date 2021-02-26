@@ -31,9 +31,12 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
     name = ", ".join([str(row[name_field]) for name_field in name_fields])
 
     try:
-        point = Point(float(row[Model.LONGITUDE_FIELD]),
-                      float(row[Model.LATITUDE_FIELD]),
-                      srid=4326)
+        if Model.LONGITUDE_FIELD and Model.LATITUDE_FIELD:
+            point = Point(float(row[Model.LONGITUDE_FIELD]),
+                          float(row[Model.LATITUDE_FIELD]),
+                          srid=4326)
+        else:
+            point = Point(row.geometry.x, row.geometry.y, srid=4326)
         print(point)
         closest_community = (Community.objects.annotate(
             distance=Distance('point', point)).order_by('distance').first())
@@ -76,7 +79,7 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
     import_variable_fields(instance, row, Model)
 
     instance.save()
-    calculate_distances(instance, dry_run=dry_run)
+    # calculate_distances(instance, dry_run=dry_run)
 
     return instance
 
@@ -85,6 +88,9 @@ def import_data_into_area_model(resource_type, Model, row):
 
     name_fields = Model.NAME_FIELD.split(",")
     name = ", ".join([str(row[name_field]) for name_field in name_fields])
+
+    if name is None:
+        name = ""
 
     instance, created = Model.objects.get_or_create(name=name)
 
@@ -569,13 +575,22 @@ def _generate_simplified_geom(feat):
     geos_geom = GEOSGeometry(str(feat.geometry), srid=BC_ALBERS_SRID)
     # Convert MultiPolygons to plain Polygons,
     # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
-    geos_geom_out = _coerce_to_multipolygon(geos_geom, BC_ALBERS_SRID)
-    geos_geom.transform(WGS84_SRID)
-    geos_geom_simplified = copy.deepcopy(geos_geom)
-    geos_geom_simplified.transform(WGS84_SRID)
-    geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
+    if isinstance(geos_geom, MultiPolygon) or isinstance(geos_geom, Polygon):
+        geos_geom_out = _coerce_to_multipolygon(geos_geom, BC_ALBERS_SRID)
+        geos_geom.transform(WGS84_SRID)
+        geos_geom_simplified = copy.deepcopy(geos_geom)
+        geos_geom_simplified.transform(WGS84_SRID)
+        geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
 
-    geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, BC_ALBERS_SRID)
+        geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, BC_ALBERS_SRID)
+    elif isinstance(geos_geom, LineString) or isinstance(geos_geom, MultiLineString):
+        geos_geom_out = _coerce_to_multilinestring(geos_geom, BC_ALBERS_SRID)
+        geos_geom.transform(WGS84_SRID)
+        geos_geom_simplified = copy.deepcopy(geos_geom)
+        geos_geom_simplified.transform(WGS84_SRID)
+        geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
+
+        geos_geom_simplified = _coerce_to_multilinestring(geos_geom_simplified, BC_ALBERS_SRID)
 
     return geos_geom_out, geos_geom_simplified
 
@@ -584,6 +599,15 @@ def _coerce_to_multipolygon(geom, srid=WGS84_SRID):
     if isinstance(geom, Polygon):
         return MultiPolygon([geom], srid=srid)
     elif isinstance(geom, MultiPolygon):
+        return geom
+    else:
+        raise Exception("Bad geometry type: {}, skipping.".format(geom.__class__))
+
+
+def _coerce_to_multilinestring(geom, srid=WGS84_SRID):
+    if isinstance(geom, LineString):
+        return MultiLineString([geom], srid=srid)
+    elif isinstance(geom, MultiLineString):
         return geom
     else:
         raise Exception("Bad geometry type: {}, skipping.".format(geom.__class__))

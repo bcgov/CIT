@@ -6,8 +6,10 @@ from pipeline.utils import get_quarterly_date_str_as_date
 
 
 class ProvincialElectoralDistrict(models.Model):
+    NAME_FIELD = "ED_NAME"
+
     electoral_district_id = models.IntegerField(null=True)
-    ed_name = models.CharField(max_length=127)
+    name = models.CharField(max_length=127)
     ed_abbreviation = models.CharField(max_length=127)
     geom = models.MultiPolygonField(srid=4326, null=True)
     geom_simplified = models.MultiPolygonField(srid=4326, null=True)
