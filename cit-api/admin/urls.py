@@ -47,7 +47,8 @@ urlpatterns = [
         name='schema-json'),
     url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    url(r"^api/pipeline/", include('pipeline.urls')),
+    url(r"^api/pipeline/", include('pipeline.pipeline-urls')),
+    url(r"^api/opportunity/", include('pipeline.opportunity-urls')),
     url(r"^api/token/", auth_tokens.get_access_token),
     url(r"^api/health/fail/", fail),
 ]

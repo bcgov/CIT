@@ -1,10 +1,13 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import { Container, Col, Row } from "react-bootstrap";
 import { Button } from "shared-components";
-import "./FilterPanel.scss";
+import "./Flyout.scss";
 
-export default function FilterPanel() {
+export default function Flyout(props) {
   const [leftOpenState, setLeftOpenState] = useState(false);
+
+  const { children } = props;
 
   const toggleSidebar = () => {
     setLeftOpenState(!leftOpenState);
@@ -18,7 +21,7 @@ export default function FilterPanel() {
           <div className="header" align="right">
             <Button
               onClick={toggleSidebar}
-              label="Close filter panel"
+              label="<< Close filter panel"
               styling="bcgov-normal-blue btn"
             />
           </div>
@@ -50,13 +53,27 @@ export default function FilterPanel() {
         <Container fluid>
           <Row>
             <div className={`icon ${leftOpen}`}>
-              <Col xs="auto">
-                <Button onClick={toggleSidebar} label=">>" styling="" />
+              <Col>
+                <Button
+                  onClick={toggleSidebar}
+                  label=">>"
+                  styling="bcgov-normal-white"
+                />
               </Col>
             </div>
           </Row>
         </Container>
       </div>
+
+      <div>{children}</div>
     </div>
   );
 }
+
+Flyout.defaultProps = {
+  children: <div />,
+};
+
+Flyout.propTypes = {
+  children: PropTypes.node,
+};

@@ -1,8 +1,10 @@
 import Container from "react-bootstrap/Container";
+import { v4 } from "uuid";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./OpportunityTable.css";
 import OpportunityListItem from "../OpportunityListItem/OpportunityListItem";
+import OpportunityFactory from "../../store/factory/OpportunityFactory";
 
 export default function OpportunityTable(props) {
   const opportunities = props.tableData;
@@ -30,15 +32,12 @@ export default function OpportunityTable(props) {
           </Row>
         )}
         {opportunities &&
-          opportunities.map((opp, i) => (
-            <OpportunityListItem
-              id={i}
-              coords={opp.point}
-              address={opp.address}
-              date_created={opp.date_created}
-              approval_status={opp.approval_status}
-            />
-          ))}
+          opportunities.map((oppData) => {
+            const opportunity = OpportunityFactory.createStateFromResponse(
+              oppData
+            );
+            return <OpportunityListItem key={v4()} opportunity={opportunity} />;
+          })}
       </Container>
     </div>
   );

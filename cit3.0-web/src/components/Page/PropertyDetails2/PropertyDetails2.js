@@ -8,28 +8,33 @@ import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import TextInput from "../../FormComponents/TextInput";
 import {
-  setBusinessContact,
+  setBusinessContactName,
+  setBusinessContactEmail,
   setUserInfo,
   setBusinessNameShared,
 } from "../../../store/actions/opportunity";
 import Validator from "../../FormComponents/Validator";
 
 export default function PropertyDetails2() {
+  document.title = `Investments - Add Opportunity - Additional Information`;
   const dispatch = useDispatch();
-  const businessContact = useSelector(
-    (state) => state.opportunity.businessContact
+  const businessContactEmail = useSelector(
+    (state) => state.opportunity.businessContactEmail
+  );
+  const businessContactName = useSelector(
+    (state) => state.opportunity.businessContactName
   );
   const commLink = useSelector(
-    (state) => state.opportunity.userInfo.commLink.value
+    (state) => state.opportunity.userInfo.communityLink.value
   );
   const listingLink = useSelector(
-    (state) => state.opportunity.userInfo.listingLink.value
+    (state) => state.opportunity.userInfo.opportunityLink.value
   );
   const oppDesc = useSelector(
-    (state) => state.opportunity.userInfo.oppDesc.value
+    (state) => state.opportunity.userInfo.opportunityDescription.value
   );
   const envInfo = useSelector(
-    (state) => state.opportunity.userInfo.envInfo.value
+    (state) => state.opportunity.userInfo.environmentalInformation.value
   );
 
   const [validEmail, setValidEmail] = useState(true);
@@ -87,9 +92,11 @@ export default function PropertyDetails2() {
           <TextInput
             heading={oppDescLabel}
             notes={noteLabel}
-            name="oppDesc"
+            name="opportunityDescription"
             value={oppDesc}
-            handleChange={(_, value) => dispatch(setUserInfo("oppDesc", value))}
+            handleChange={(_, value) =>
+              dispatch(setUserInfo("opportunityDescription", value))
+            }
           />
         </Row>
         <Row className="mb-3">
@@ -99,9 +106,11 @@ export default function PropertyDetails2() {
           <TextInput
             heading={enviroLabel}
             notes={noteLabel}
-            name="envDesc"
+            name="environmentalInformation"
             value={envInfo}
-            handleChange={(_, value) => dispatch(setUserInfo("envInfo", value))}
+            handleChange={(_, value) =>
+              dispatch(setUserInfo("environmentalInformation", value))
+            }
           />
         </Row>
         <Row className="mb-4">
@@ -110,10 +119,10 @@ export default function PropertyDetails2() {
             notes={urlNoteComm}
             rows={1}
             placeholder={placeholderComm}
-            name="commLink"
+            name="communityLink"
             value={commLink}
             handleChange={(_, value) =>
-              dispatch(setUserInfo("commLink", value))
+              dispatch(setUserInfo("communityLink", value))
             }
           />
         </Row>
@@ -125,9 +134,9 @@ export default function PropertyDetails2() {
             placeholder={placeholder}
             value={listingLink}
             handleChange={(_, value) =>
-              dispatch(setUserInfo("listingLink", value))
+              dispatch(setUserInfo("opportunityLink", value))
             }
-            name="moreInfoLink"
+            name="opportunityLink"
           />
         </Row>
         <Row className="mb-3">
@@ -135,7 +144,6 @@ export default function PropertyDetails2() {
         </Row>
         <Row className="mb-3">
           <Form.Check
-            checked={businessContact.shared}
             onClick={(e) => handleCheck(e.target.checked)}
             type="checkbox"
             label="Use the Contact Name/Email associated with the BCeID logged in."
@@ -149,9 +157,9 @@ export default function PropertyDetails2() {
               heading="Business Contact Name"
               notes=""
               rows={1}
-              value={businessContact.name}
+              value={businessContactName}
               handleChange={(name, value) =>
-                dispatch(setBusinessContact({ name: value }))
+                dispatch(setBusinessContactName(value))
               }
               name="busName"
             />
@@ -166,10 +174,10 @@ export default function PropertyDetails2() {
               name="busEmail"
               pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g"
               onChange={(e) => {
-                dispatch(setBusinessContact({ email: e.target.value }));
+                dispatch(setBusinessContactEmail(e.target.value));
                 validateEmail(e.target.value);
               }}
-              value={businessContact.email}
+              value={businessContactEmail}
             />
             {!validEmail && (
               <Validator message="Please enter a valid email address" />

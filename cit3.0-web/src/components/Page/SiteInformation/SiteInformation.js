@@ -10,6 +10,7 @@ import ButtonRow from "../../ButtonRow/ButtonRow";
 import "./SiteInformation.css";
 
 export default function SiteInformation({ location }) {
+  document.title = `Investments - Add Opportunity - Site Information`;
   const history = useHistory();
   const goToNextPage = () => {
     history.push({

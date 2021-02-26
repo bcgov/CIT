@@ -67,11 +67,12 @@ const developmentOptions = [
 ];
 
 export default function PropertyDetails1() {
+  document.title = `Investments - Add Opportunity - Property Details`;
   const dispatch = useDispatch();
 
   // Select states
   const preferred = useSelector(
-    (state) => state.opportunity.userInfo.preferred.value
+    (state) => state.opportunity.userInfo.preferredDevelopment.value
   );
   const saleOrLease = useSelector((state) => {
     const { value } = state.opportunity.userInfo.saleOrLease;

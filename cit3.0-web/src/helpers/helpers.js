@@ -1,6 +1,6 @@
 import * as Constants from "./constants";
 
-export default function setColour(name, type) {
+export function setColour(name, type) {
   switch (name) {
     case "Hospitals":
       return Constants.HOSPITALS[type];
@@ -19,4 +19,15 @@ export default function setColour(name, type) {
     default:
       return "black";
   }
+}
+export function toKebabCase(str = "") {
+  return (
+    str &&
+    str
+      .match(
+        /[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g
+      )
+      .map((x) => x.toLowerCase())
+      .join("-")
+  );
 }

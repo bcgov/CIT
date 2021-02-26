@@ -11,10 +11,11 @@ import SiteInfomation from "./components/Page/SiteInformation/SiteInformation";
 import PropertyDetails1 from "./components/Page/PropertyDetails1/PropertyDetails1";
 import PropertyDetails2 from "./components/Page/PropertyDetails2/PropertyDetails2";
 import ReviewOpportunity from "./components/Page/ReviewOpportunity/ReviewOpportunity";
-import FilterPanel from "./components/FilterPanel/FilterPanel";
+import Flyout from "./components/Flyout/Flyout";
 
 import { store } from "./store";
 import ReviewSubmitted from "./components/Page/ReviewSubmitted/ReviewSubmitted";
+import OpportunityPage from "./components/Page/OpportunityPage/OpportunityPage";
 
 function App() {
   const header = {
@@ -64,8 +65,9 @@ function App() {
                 </>
               )}
             />
+            <Route path="/investment/*:path" component={OpportunityPage} />
             <Route exact path="/search">
-              <FilterPanel />
+              <Flyout />
             </Route>
           </Switch>
         </Router>
