@@ -51,11 +51,11 @@ describe("login", () => {
   //   expect(tree).toMatchSnapshot();
   // });
 
-  it("authenticated users are redirected to the mapview", () => {
+  it("authenticated users are redirected to the search", () => {
     useKeycloak.mockReturnValue({
       keycloak: {
         authenticated: true,
-        userInfo: { groups: ["System Administrator"] },
+        userInfo: { groups: [] },
       },
     });
     const history = createMemoryHistory();
@@ -67,7 +67,7 @@ describe("login", () => {
         </Router>
       </Provider>
     );
-    expect(history.location.pathname).toBe("/mapview");
+    expect(history.location.pathname).toBe("/search");
   });
 
   it("new users are sent to the guest page", () => {
@@ -95,18 +95,7 @@ describe("login", () => {
         </Router>
       </Provider>
     );
-    expect(history.location.pathname).toBe("/access/request");
-  });
-
-  it("unAuthenticated users are shown the login screen", () => {
-    useKeycloak.mockReturnValue({ keycloak: { authenticated: false } });
-    const { getAllByRole } = renderLogin();
-    expect(getAllByRole("heading")[0]).toHaveTextContent(
-      "Login to Community Information Tool"
-    );
-    expect(getAllByRole("heading")[1]).toHaveTextContent(
-      "Create and manage investment opportunities"
-    );
+    expect(history.location.pathname).toBe("/search");
   });
 
   it("a spinner is displayed if keycloak has not yet been initialized", () => {

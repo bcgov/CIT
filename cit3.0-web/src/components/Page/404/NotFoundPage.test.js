@@ -2,18 +2,18 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-import AccessDenied from "./AccessDenied";
+import NotFoundPage from "./NotFoundPage";
 
 const history = createMemoryHistory();
 
-describe("AccessDenied", () => {
+describe("NotFoundPage", () => {
   it("renders correctly", () => {
     render(
       <Router history={history}>
-        <AccessDenied />
+        <NotFoundPage />
       </Router>
     );
-    const AccessDeniedPage = screen.getByTestId("AccessDeniedPage");
-    expect(AccessDeniedPage).toBeInTheDocument();
+    const notFoundPage = screen.getByTestId("NotFoundPage");
+    expect(notFoundPage).toBeInTheDocument();
   });
 });

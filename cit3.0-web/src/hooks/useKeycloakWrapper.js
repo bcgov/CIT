@@ -171,7 +171,7 @@ export function useKeycloakWrapper() {
       hasRole(Roles.SYSTEM_ADMINISTRATOR) ||
       hasRole(Roles.AGENCY_ADMINISTRATOR),
     roles: roles(),
-    agencyId: userInfo && userInfo.agencies.find((x) => x),
+    agencyId: userInfo && userInfo.agencies && userInfo.agencies.find((x) => x),
     hasRole,
     hasClaim,
     hasAgency,

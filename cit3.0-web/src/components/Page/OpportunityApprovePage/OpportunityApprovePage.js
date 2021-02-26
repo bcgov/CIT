@@ -1,7 +1,7 @@
 import React from "react";
 import Proptypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import OpportunityView from "../../OpportunityView/OpportunityView";
 import {
   setOpportunity,
@@ -12,7 +12,6 @@ import styles from "./OpportunityApprovePage.module.css";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 
 const OpportunityApprovePage = ({ id }) => {
-  const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
   let opId = id;
@@ -28,13 +27,13 @@ const OpportunityApprovePage = ({ id }) => {
       dispatch(setOpportunity(opportunity));
       document.title = `Investment Approval - ${opportunity.name}`;
     });
-  } else {
-    // @todo: Make opportunity 404 page
-    history.push("/");
   }
 
   return (
-    <div className={styles.OpportunityPage} data-testid="OpportunityPage">
+    <div
+      className={styles.OpportunityApprovePage}
+      data-testid="OpportunityApprovePage"
+    >
       <PortalHeader />
       <OpportunityView view="all" />
     </div>

@@ -7,7 +7,7 @@ import useConfiguration from "../../../hooks/useConfiguration";
 import { LogoutPage } from "./Logout";
 
 jest.mock("@react-keycloak/web");
-jest.mock("hooks/useConfiguration");
+jest.mock("../../../hooks/useConfiguration");
 
 describe("logout", () => {
   const history = createMemoryHistory();
@@ -35,21 +35,6 @@ describe("logout", () => {
       </Router>
     );
 
-    expect(history.location.pathname).toBe("/login");
-  });
-
-  it("should redirect to siteminder logout page", async () => {
-    useKeycloak.mockReturnValue({ keycloak: { authenticated: false } });
-    useConfiguration.mockReturnValue({
-      siteMinderLogoutUrl: "http://fakesiteminder.com",
-    });
-
-    render(
-      <Router history={history}>
-        <LogoutPage />
-      </Router>
-    );
-
-    await wait(() => expect(window.location.replace).toHaveBeenCalledTimes(1));
+    expect(history.location.pathname).toBe("/");
   });
 });

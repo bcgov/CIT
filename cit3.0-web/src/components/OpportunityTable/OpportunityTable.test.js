@@ -1,4 +1,6 @@
 import { render } from "@testing-library/react";
+import { Router } from "react-router-dom";
+import { createMemoryHistory } from "history";
 import OpportunityTable from "./OpportunityTable";
 
 const tableData = [
@@ -34,7 +36,12 @@ const tableData = [
 
 describe("OpportunityTable", () => {
   it("displays the opportunity data", () => {
-    const { getByText } = render(<OpportunityTable tableData={tableData} />);
+    const history = createMemoryHistory();
+    const { getByText } = render(
+      <Router history={history}>
+        <OpportunityTable tableData={tableData} />
+      </Router>
+    );
 
     expect(getByText(/1234/i).textContent).toBe("1234 Test Pl.");
     expect(getByText(/5678/i).textContent).toBe("5678 Test Ave.");
@@ -43,7 +50,11 @@ describe("OpportunityTable", () => {
   });
 
   it("colour codes the status based on the status value", () => {
-    const { getByText } = render(<OpportunityTable tableData={tableData} />);
+    const { getByText } = render(
+      <Router history={history}>
+        <OpportunityTable tableData={tableData} />
+      </Router>
+    );
 
     expect(getByText(/Published/i)).toHaveClass("status-text-green");
     expect(getByText(/Pending Review/i)).toHaveClass("status-text-orange");
@@ -52,7 +63,11 @@ describe("OpportunityTable", () => {
   });
 
   it('displays the option to mark as "sold" for published opportunities', () => {
-    const { getByText } = render(<OpportunityTable tableData={tableData} />);
+    const { getByText } = render(
+      <Router history={history}>
+        <OpportunityTable tableData={tableData} />
+      </Router>
+    );
 
     expect(getByText(/sold/i).textContent).toBe('Mark as "sold"');
   });
