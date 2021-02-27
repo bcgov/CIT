@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import $ from "jquery";
 import { CgCloseR } from "react-icons/cg";
-import { Row, Col } from "react-bootstrap";
+import { GrMapLocation } from "react-icons/gr";
+import { Row } from "react-bootstrap";
 import OpportunitiesMap from "./OpportunitiesMap";
 
 export default function OpportunityMapContainer({ setTotalCount }) {
@@ -26,33 +28,55 @@ export default function OpportunityMapContainer({ setTotalCount }) {
       height: "30px",
       width: "30px",
       position: "absolute",
-      right: "0",
-      top: "0",
+      right: "30",
+      top: "30",
       zIndex: 1000,
       cursor: "pointer",
     },
-    small: {
-      height: "40px",
+    "map-visible": {
+      height: "50px",
     },
-    large: {
-      height: "600px",
+    "map-hidden": {
+      border: "1px solid red",
+      height: "50px",
+      display: "flex",
+      "flex-direction": "row",
+      width: "100%",
+      "justify-content": "flex-end",
+      "padding-right": "25px",
     },
   };
-
-  const heightClass = showMap ? "large" : "small";
 
   const toggleMap = () => {
-    setShowMap(!showMap);
+    if (showMap) {
+      $(".leaflet-container").slideUp("500");
+      setShowMap(!showMap);
+    } else {
+      $(".leaflet-container").slideDown("500");
+      setShowMap(!showMap);
+    }
   };
+
   return (
     <Row
-      className={styles[heightClass]}
       style={{
         position: "relative",
       }}
     >
-      <CgCloseR style={styles.close} onClick={toggleMap} />
-      {showMap && <OpportunitiesMap opportunities={opportunities} />}
+      <div
+        className={!showMap ? "map-hidden" : "map-visible"}
+        style={!showMap ? styles["map-hidden"] : styles["map-visible"]}
+      >
+        {showMap && <CgCloseR style={styles.close} onClick={toggleMap} />}
+        {!showMap && (
+          <button type="button" onClick={toggleMap}>
+            <GrMapLocation />
+            Show Map
+          </button>
+        )}
+      </div>
+
+      <OpportunitiesMap className="map" opportunities={opportunities} />
     </Row>
   );
 }
