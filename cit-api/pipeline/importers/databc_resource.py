@@ -8,7 +8,7 @@ from pipeline.models.general import DataSource
 from pipeline.importers.utils import (import_data_into_point_model, import_data_into_area_model,
                                       calculate_nearest_location_type_outside_50k,
                                       get_databc_last_modified_date, get_openca_last_modified_date,
-                                      _generate_geom, _generate_simplified_geom)
+                                      _generate_geom, _generate_bcdata_geom)
 
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}&limit=10000"
 LOCATION_RESOURCES = [
@@ -69,16 +69,8 @@ def import_wms_resource(resource):
             instance = import_data_into_point_model(resource.name, model_class, row)
         else:
             instance = import_data_into_area_model(resource.name, model_class, row)
-            geos_geom_out, geos_geom_simplified = _generate_simplified_geom(row,
-                                                                            srid=BC_ALBERS_SRID)
+            geos_geom_out, geos_geom_simplified = _generate_bcdata_geom(row, srid=BC_ALBERS_SRID)
             instance.geom = geos_geom_out
             instance.geom_simplified = geos_geom_simplified
 
         instance.save()
-
-    # if data_source.source == SOURCE_DATABC:
-    #     data_source.last_updated = get_databc_last_modified_date(data_source)
-    #     data_source.save()
-    # elif data_source.source == SOURCE_OPENCA:
-    #     data_source.last_updated = get_openca_last_modified_date(data_source)
-    #     data_source.save()

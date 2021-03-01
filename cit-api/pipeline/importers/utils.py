@@ -570,7 +570,7 @@ def _generate_geom(feat, srid=None):
     return geos_geom_out, geos_geom_simplified
 
 
-def _generate_simplified_geom(feat, srid=None):
+def _generate_bcdata_geom(feat, srid=None):
     """
     Generate a clean geometry, and simplified snapshot for PostGIS insertion
     """
