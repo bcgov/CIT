@@ -1,0 +1,23 @@
+.LocationsPanel {
+    padding: 1rem;
+    margin: 0 0  1rem 0;
+    border: 2px solid #606060;
+    border-top: none;
+}
+
+@media(max-width: 845px) {
+    .LocationsPanel .location-col {
+        width: unset;
+    }
+}
+
+
+@media print {
+    .LocationsPanel .row {
+        display: inline;
+        padding-right: 2rem;
+    }
+    .LocationsPanel .location-col {
+        text-align: left;
+    }
+}

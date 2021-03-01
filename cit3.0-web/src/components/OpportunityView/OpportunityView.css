@@ -1,3 +1,23 @@
 .leaflet-border {
     height: 400px;
 }
+
+@media print {
+    .leaflet-container {
+        width: calc(100% - 3px);
+    }
+}
+
+@media screen {
+    .map-col-lg-5 {
+        flex: 0 0 41.66667%;
+        max-width: 41.66667%;
+    }
+}
+
+@media screen and (max-width: 1092px) {
+    .map-col-lg-5 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+} 

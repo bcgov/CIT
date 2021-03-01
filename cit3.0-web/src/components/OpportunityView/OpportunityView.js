@@ -66,7 +66,7 @@ export default function OpportunityView({ view }) {
           <Resource title="Transportation" itemsToDisplay={transportation} />
           <Resource title="Services" itemsToDisplay={services} />
         </Col>
-        <Col xs lg="5" className="leaflet-border pr-0">
+        <Col className="leaflet-border px-0 map-col-lg-5">
           <div className="full-border" style={{ height: "100%" }}>
             <Map
               setNearbyResources={(r) => dispatch(setNearbyResources(r))}

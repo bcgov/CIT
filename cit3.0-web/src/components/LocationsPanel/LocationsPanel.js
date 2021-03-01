@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import NumberFormat from "react-number-format";
 import { Container, Row, Col } from "react-bootstrap";
 import { v4 } from "uuid";
-import styles from "./LocationsPanel.module.css";
+import "./LocationsPanel.css";
 
 const LocationsPanel = ({
   address,
@@ -11,7 +11,7 @@ const LocationsPanel = ({
   municipalities,
   firstNationCommunities,
 }) => (
-  <div className={styles.LocationsPanel} data-testid="LocationsPanel">
+  <div className="LocationsPanel" data-testid="LocationsPanel">
     <div>
       <div className="d-flex flex-row justify-content-between mb-3">
         <div>
@@ -33,7 +33,7 @@ const LocationsPanel = ({
         <Container className="mb-4">
           {municipalities.map((muni) => (
             <Row key={v4()} className="d-flex justify-content-between">
-              <Col className="pl-0">
+              <Col className="location-col px-0">
                 <a
                   target="_blank"
                   rel="noreferrer"
@@ -43,10 +43,18 @@ const LocationsPanel = ({
                   {muni.name} - {muni.distance}km
                 </a>
               </Col>
-              <Col className="d-flex justify-content-end pr-0" md="auto">
+              <Col
+                className="location-col d-flex justify-content-end px-0"
+                md="auto"
+              >
                 {"Pop. "}
               </Col>
-              <Col className="d-flex justify-content-end px-0" md={2}>
+              <Col
+                className="location-col d-flex justify-content-end px-0"
+                xs={2}
+                md={3}
+                lg={2}
+              >
                 <span>
                   <NumberFormat
                     displayType="text"
@@ -67,7 +75,7 @@ const LocationsPanel = ({
         <Container className="pb-2">
           {firstNationCommunities.map((firstNationCommunity) => (
             <Row key={v4()} className="d-flex justify-content-between mb-2">
-              <Col className="pl-0">
+              <Col className="location-col px-0">
                 <a
                   target="_blank"
                   rel="noreferrer"
@@ -80,10 +88,18 @@ const LocationsPanel = ({
                   km
                 </a>
               </Col>
-              <Col className="d-flex justify-content-end pr-0" md="auto">
+              <Col
+                className="location-col d-flex justify-content-end px-0"
+                md="auto"
+              >
                 {"Pop. "}
               </Col>
-              <Col className="d-flex justify-content-end px-0" md={2}>
+              <Col
+                className="location-col d-flex justify-content-end px-0"
+                xs={2}
+                md={3}
+                lg={2}
+              >
                 <span>
                   <NumberFormat
                     displayType="text"
