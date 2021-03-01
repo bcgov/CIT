@@ -5,7 +5,7 @@ import $ from "jquery";
 import { CgCloseR } from "react-icons/cg";
 import { GrMapLocation } from "react-icons/gr";
 import { Row, Col } from "react-bootstrap";
-import OpportunitiesMap from "../OpportunitiesMap";
+import OpportunitiesMap from "../OpportunitiesMap/OpportunitiesMap";
 import "./OpportunityMapContainer.scss";
 
 export default function OpportunityMapContainer({ totalCount, setTotalCount }) {
@@ -42,9 +42,15 @@ export default function OpportunityMapContainer({ totalCount, setTotalCount }) {
   };
 
   return (
-    <Row className="row-relative">
+    <Row className="row-relative" data-testid="opportunities-map">
       <div className={!showMap ? "map-hidden" : "map-visible"}>
-        {showMap && <CgCloseR style={styles.close} onClick={toggleMap} />}
+        {showMap && (
+          <CgCloseR
+            data-testid="close-map-icon"
+            style={styles.close}
+            onClick={toggleMap}
+          />
+        )}
       </div>
 
       <OpportunitiesMap className="map" opportunities={opportunities} />
@@ -63,7 +69,11 @@ export default function OpportunityMapContainer({ totalCount, setTotalCount }) {
         {!showMap && (
           <Col className="d-flex justify-content-end">
             <button className="btnLink" type="button" onClick={toggleMap}>
-              <GrMapLocation onClick={toggleMap} className="mapIcon" />
+              <GrMapLocation
+                data-testid="show-map-icon"
+                onClick={toggleMap}
+                className="mapIcon"
+              />
               Show Map
             </button>
           </Col>
