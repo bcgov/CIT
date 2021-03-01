@@ -23,11 +23,10 @@ export default function OpportunityListContainer({ totalCount }) {
     opportunities && (
       <>
         <Row>
-          {totalCount && <h4>{totalCount} Properties match your search</h4>}
           <OpportunityList opportunities={opportunities} />
         </Row>
 
-        {totalCount && (
+        {totalCount ? (
           <Row className="d-flex flex-column align-items-center justify-content-center p-2">
             <Paginator
               count={totalCount}
@@ -39,7 +38,7 @@ export default function OpportunityListContainer({ totalCount }) {
               Showing {pageSize} of {totalCount} properties
             </p>
           </Row>
-        )}
+        ) : null}
       </>
     )
   );

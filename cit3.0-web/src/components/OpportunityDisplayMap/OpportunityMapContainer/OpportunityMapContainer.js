@@ -1,14 +1,14 @@
-import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import axios from "axios";
 import $ from "jquery";
 import { CgCloseR } from "react-icons/cg";
 import { GrMapLocation } from "react-icons/gr";
-import { Row } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import OpportunitiesMap from "../OpportunitiesMap";
 import "./OpportunitiesMapContainer.scss";
 
-export default function OpportunityMapContainer({ setTotalCount }) {
+export default function OpportunityMapContainer({ totalCount, setTotalCount }) {
   const [opportunities, setOpportunities] = useState(null);
   const [showMap, setShowMap] = useState(true);
 
@@ -19,7 +19,7 @@ export default function OpportunityMapContainer({ setTotalCount }) {
         setOpportunities(data.data.results);
         setTotalCount(data.data.count);
       })
-      .catch((err) => {
+      .catch(() => {
         setOpportunities(null);
       });
   }, []);
@@ -45,19 +45,35 @@ export default function OpportunityMapContainer({ setTotalCount }) {
     <Row className="row-relative">
       <div className={!showMap ? "map-hidden" : "map-visible"}>
         {showMap && <CgCloseR style={styles.close} onClick={toggleMap} />}
-        {!showMap && (
-          <button className="btnLink" type="button" onClick={toggleMap}>
-            <GrMapLocation onClick={toggleMap} className="mapIcon" />
-            Show Map
-          </button>
-        )}
       </div>
 
       <OpportunitiesMap className="map" opportunities={opportunities} />
+
+      <Row className="w-100">
+        <Col className="pt-3">
+          {totalCount ? (
+            <h4>{totalCount} Properties match your search</h4>
+          ) : (
+            <h4>
+              {totalCount} Properties match your search. Please add or modify
+              your filters.
+            </h4>
+          )}
+        </Col>
+        {!showMap && (
+          <Col className="d-flex justify-content-end">
+            <button className="btnLink" type="button" onClick={toggleMap}>
+              <GrMapLocation onClick={toggleMap} className="mapIcon" />
+              Show Map
+            </button>
+          </Col>
+        )}
+      </Row>
     </Row>
   );
 }
 
 OpportunityMapContainer.propTypes = {
+  totalCount: PropTypes.number.isRequired,
   setTotalCount: PropTypes.func.isRequired,
 };

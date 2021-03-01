@@ -6,7 +6,7 @@ import OpportunityMapContainer from "../../OpportunityDisplayMap/OpportunityMapC
 import Flyout from "../../Flyout/Flyout";
 
 export default function InvestorMainView() {
-  const [totalCount, setTotalCount] = useState(null);
+  const [totalCount, setTotalCount] = useState(0);
   return (
     <div className="w-100">
       <PortalHeader title="Investor Portal" text="Description" />
@@ -14,7 +14,10 @@ export default function InvestorMainView() {
         <Container>
           <Row>
             <Col>
-              <OpportunityMapContainer setTotalCount={setTotalCount} />
+              <OpportunityMapContainer
+                totalCount={totalCount}
+                setTotalCount={setTotalCount}
+              />
             </Col>
           </Row>
           <Row>
