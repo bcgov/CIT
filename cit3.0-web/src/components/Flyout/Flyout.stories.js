@@ -1,11 +1,11 @@
 import Flyout from "./Flyout";
 
 export default {
-  title: "FilterPanel",
+  title: "Flyout",
   component: Flyout,
 };
 
-export const FilterPanelStory = () => (
+export const LeftFlyout = () => (
   <div>
     <Flyout>
       <p>
