@@ -89,9 +89,6 @@ def import_data_into_area_model(resource_type, Model, row):
     name_fields = Model.NAME_FIELD.split(",")
     name = ", ".join([str(row[name_field]) for name_field in name_fields])
 
-    if name is None:
-        name = ""
-
     instance, created = Model.objects.get_or_create(name=name)
 
     print("instance", instance)
