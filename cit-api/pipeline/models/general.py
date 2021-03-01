@@ -1,6 +1,7 @@
 from django.contrib.gis.db import models
 
 from pipeline.utils import serialize_regional_district_fields
+from pipeline.constants import BC_ALBERS_SRID
 
 
 class DataSource(models.Model):
@@ -14,22 +15,23 @@ class DataSource(models.Model):
 
     source_file_path = models.CharField(max_length=255, unique=True, null=True)
     resource_id = models.CharField(
-        max_length=255, null=True,
+        max_length=255,
+        null=True,
         help_text="Resource ID for datasets from the BC Data Catalogue or Open Government")
     permalink_id = models.CharField(
-        max_length=255, null=True,
-        help_text="Permalink ID for datasets from the BC Data Catalogue")
+        max_length=255, null=True, help_text="Permalink ID for datasets from the BC Data Catalogue")
     sub_resource_id = models.CharField(
-        max_length=255, null=True,
-        help_text="Sub-resource ID for datasets from Open Government")
+        max_length=255, null=True, help_text="Sub-resource ID for datasets from Open Government")
     external_url = models.URLField(null=True)
     last_updated = models.DateTimeField(null=True)
+    dataset = models.CharField(max_length=255, null=True)
+    import_order = models.IntegerField(null=True)
 
     def __str__(self):
         return self.name
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
 
 
 class Hex(models.Model):
@@ -56,26 +58,27 @@ class Service(models.Model):
 
 
 class Road(models.Model):
-    geom = models.MultiLineStringField(srid=4326, null=True)
+    geom = models.MultiLineStringField(srid=BC_ALBERS_SRID, null=True)
     best_broadband = models.CharField(max_length=5)
 
 
 class Municipality(models.Model):
-    ID_FIELD = 'AA_ID'
-    NAME_FIELD = 'ABRVN'
+    ID_FIELD = 'LGL_ADMIN_AREA_ID'
+    NAME_FIELD = 'ADMIN_AREA_ABBREVIATION'
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=4326, null=True)
-    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
+    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
     oc_m_yr = models.CharField(
         max_length=4,
-        help_text="The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
+        help_text=
+        "The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
         " e.g., 2014.",
     )
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
 
     def __str__(self):
         return self.name
@@ -104,20 +107,18 @@ class Municipality(models.Model):
 
 
 class SchoolDistrict(models.Model):
-    ID_FIELD = 'ADMIN_SID'
-    NAME_FIELD = 'SD_NAME'
+    ID_FIELD = 'ADMIN_AREA_SID'
+    NAME_FIELD = 'SCHOOL_DISTRICT_NAME'
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=4326, null=True)
-    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
-    sd_num = models.CharField(
-        max_length=5,
-    )
+    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    sd_num = models.CharField(max_length=5, )
     community = models.ManyToManyField('Community')
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
 
     def __str__(self):
         return self.name
@@ -128,22 +129,23 @@ class SchoolDistrict(models.Model):
 
 
 class RegionalDistrict(models.Model):
-    ID_FIELD = 'AA_ID'
-    NAME_FIELD = 'AA_NAME'
+    ID_FIELD = 'LGL_ADMIN_AREA_ID'
+    NAME_FIELD = 'ADMIN_AREA_NAME'
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=4326, null=True)
-    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
+    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
     oc_m_yr = models.CharField(
         null=True,
         max_length=4,
-        help_text="The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
+        help_text=
+        "The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
         " e.g., 2014.",
     )
 
     class Meta:
-        ordering = ("name",)
+        ordering = ("name", )
 
     def __str__(self):
         return self.name
@@ -157,21 +159,26 @@ class RegionalDistrict(models.Model):
 
 
 class LocationDistance(models.Model):
-    community = models.ForeignKey(
-        'Community', on_delete=models.DO_NOTHING, related_name='distances',
-        help_text="Community for this distance")
+    community = models.ForeignKey('Community',
+                                  on_delete=models.DO_NOTHING,
+                                  related_name='distances',
+                                  help_text="Community for this distance")
     location = models.ForeignKey('Location', on_delete=models.DO_NOTHING, related_name='distances')
-    distance = models.DecimalField(
-        null=True, blank=True, max_digits=24, decimal_places=4,
-        help_text="Birds' eye distance from community to Location (km)"
-    )
+    distance = models.DecimalField(null=True,
+                                   blank=True,
+                                   max_digits=24,
+                                   decimal_places=4,
+                                   help_text="Birds' eye distance from community to Location (km)")
     driving_distance = models.DecimalField(
-        null=True, blank=True, max_digits=24, decimal_places=4,
-        help_text="Driving distance from community to Location (km)"
-    )
+        null=True,
+        blank=True,
+        max_digits=24,
+        decimal_places=4,
+        help_text="Driving distance from community to Location (km)")
     travel_time = models.IntegerField(
-        null=True, blank=True, help_text="Travel time (in minutes) corresponding to driving distance"
-    )
+        null=True,
+        blank=True,
+        help_text="Travel time (in minutes) corresponding to driving distance")
     travel_time_display = models.CharField(
         null=True,
         blank=True,
@@ -184,10 +191,11 @@ class LocationDistance(models.Model):
         unique_together = ('community', 'location')
         verbose_name = "Location Distance"
         verbose_name_plural = "Location Distances"
-        ordering = ("id",)
+        ordering = ("id", )
 
     def __str__(self):
-        return '{} to {}: {} km'.format(self.community.place_name, self.location.name, self.distance)
+        return '{} to {}: {} km'.format(self.community.place_name, self.location.name,
+                                        self.distance)
 
 
 class WildfireZone(models.Model):
@@ -195,11 +203,13 @@ class WildfireZone(models.Model):
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=4326, null=True)
-    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
+    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
     risk_class = models.CharField(
         max_length=1,
-        help_text="A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 " "(extreme).",
+        help_text=
+        "A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 "
+        "(extreme).",
     )  # 1-5
 
     def __str__(self):
@@ -207,17 +217,19 @@ class WildfireZone(models.Model):
 
 
 class TsunamiZone(models.Model):
-    NAME_FIELD = 'TNZ_ID'
+    NAME_FIELD = 'TSUNAMI_NOTIFY_ZONE_ID'
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=4326, null=True)
-    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
+    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
     zone_class = models.CharField(
         max_length=1,
-        help_text="See https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/"
+        help_text=
+        "See https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/"
         "preparedbc/know-your-hazards/tsunamis - A-C:moderate D,E:low",
     )
+
     # "Tsunamis are rare but serious events. Many areas of coastal B.C. may be threatened in the event
     # of a tsunami. However, it is generally accepted by scientific and technical experts that Victoria,
     # eastern Vancouver Island, Vancouver and the lower mainland are low-risk areas."
@@ -241,13 +253,11 @@ class CivicLeader(models.Model):
     gender = models.CharField(max_length=255)
     experience = models.CharField(max_length=255)
     position = models.CharField(choices=CIVIC_LEADER_CHOICES, max_length=255)
-
     """
 [('Local Government', '100 Mile House'), ('Jurisdiction Type', 'District'), ('First Name', 'Mitch'), ('Last Name', 'Campsall'), ('Middle Name', ''), ('Gender', 'M'), ('Age', ''), ('Experience', 'Incumbent'), ('Type', 'MAYOR'), ('Elected (YES/NO)', 'YES'), ('Number of Votes', '410'), ('Acclamation(YES/NO)', ''), ('Electoral/SD Area', ''), ('Electoral/SD Area Est. Eligible Voters', ''), ('Elector Organization', ''), ('Regional District', 'Cariboo'), ('Geographic Region', 'North Central / Cariboo'), ('Last Updated', '2018-10-21 06:38:07')]
     """
-
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
 
     def __str__(self):
         return "{}: {} {}".format(self.community, self.first_name, self.last_name)

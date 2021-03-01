@@ -3,3 +3,12 @@ from .community import *
 from .general import *
 from .location_assets import *
 from .opportunity import *
+from .census_economic_region import *
+from .health_authority_boundary import *
+from .lake import *
+from .natural_resource_region import *
+from .permitted_major_mines import *
+from .provincial_electoral_district import *
+from .railway import *
+from .river import *
+from .bc_floodplain import *
