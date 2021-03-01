@@ -1,23 +1,15 @@
-import {
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-  MapConsumer,
-  LayersControl,
-} from "react-leaflet";
-import L from "leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import PropTypes from "prop-types";
 import OpportunitiesMarker from "./OpportunitiesMarker";
 
 export default function OpportunitiesMap({ opportunities }) {
-  const position = [53.726669, -127.647621];
+  const center = [53.726669, -127.647621];
 
   return (
     <MapContainer
       className="full-border"
       style={{ height: "600px", width: "100%" }}
-      center={position}
+      center={center}
       zoom={5}
     >
       <TileLayer

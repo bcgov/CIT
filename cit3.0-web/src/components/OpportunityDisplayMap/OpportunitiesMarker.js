@@ -7,7 +7,6 @@ export default function OpportunitiesMarker({ opportunities }) {
   const markers = (opps) =>
     opps.map((opp) => {
       const opportunity = OpportunityFactory.createStateFromResponse(opp);
-      console.log(opportunity);
       return (
         <Marker key={v4()} position={opportunity.coords}>
           <Popup>{opportunity.address}</Popup>
