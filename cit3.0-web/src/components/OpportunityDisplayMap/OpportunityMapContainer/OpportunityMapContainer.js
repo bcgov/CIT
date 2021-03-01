@@ -5,8 +5,8 @@ import $ from "jquery";
 import { CgCloseR } from "react-icons/cg";
 import { GrMapLocation } from "react-icons/gr";
 import { Row, Col } from "react-bootstrap";
-import OpportunitiesMap from "../OpportunitiesMap";
-import "./OpportunitiesMapContainer.scss";
+import OpportunitiesMap from "../OpportunityMap";
+import "./OpportunityMapContainer.scss";
 
 export default function OpportunityMapContainer({ totalCount, setTotalCount }) {
   const [opportunities, setOpportunities] = useState(null);
