@@ -1,13 +1,14 @@
 from django.contrib.gis.db import models
 
 from pipeline.utils import serialize_census_subdivision_groups, get_pct_field_as_decimal
+from pipeline.constants import BC_ALBERS_SRID
 
 
 class CensusSubdivision(models.Model):
     # CSUID is used as primary key, just 'id' in Django.
     name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=4326, null=True)
-    geom_simplified = models.MultiPolygonField(srid=4326, null=True)
+    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
 
     # "1.1.1", "Population, 2016"
     population = models.IntegerField(null=True)
@@ -555,7 +556,7 @@ class CensusSubdivision(models.Model):
     naics_public_admin = models.IntegerField(null=True)
 
     class Meta:
-        ordering = ("id",)
+        ordering = ("id", )
 
     def __str__(self):
         return self.name
@@ -596,9 +597,12 @@ class CensusSubdivision(models.Model):
     def get_percentage_of_null_fields(self):
         model_fields = self._meta.get_fields()
         meta_field_names = ["id", "name", "geom", "geom_simplified", "community"]
-        census_field_names = [field.name for field in model_fields if field.name not in meta_field_names]
+        census_field_names = [
+            field.name for field in model_fields if field.name not in meta_field_names
+        ]
 
-        number_of_null_fields = sum(map(lambda field: getattr(self, field) is None, census_field_names))
+        number_of_null_fields = sum(
+            map(lambda field: getattr(self, field) is None, census_field_names))
         return number_of_null_fields / len(census_field_names)
 
     def get_hidden_detail_report_pages(self):
