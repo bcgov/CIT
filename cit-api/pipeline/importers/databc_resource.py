@@ -3,7 +3,7 @@ import bcdata
 
 from django.apps import apps
 
-from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA
+from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA, BC_ALBERS_SRID
 from pipeline.models.general import DataSource
 from pipeline.importers.utils import (import_data_into_point_model, import_data_into_area_model,
                                       calculate_nearest_location_type_outside_50k,
@@ -69,12 +69,11 @@ def import_wms_resource(resource):
             instance = import_data_into_point_model(resource.name, model_class, row)
         else:
             instance = import_data_into_area_model(resource.name, model_class, row)
-
-            geos_geom_out, geos_geom_simplified = _generate_simplified_geom(row)
+            geos_geom_out, geos_geom_simplified = _generate_simplified_geom(row,
+                                                                            srid=BC_ALBERS_SRID)
             instance.geom = geos_geom_out
             instance.geom_simplified = geos_geom_simplified
-        if resource == "emergency_social_service_facilities":
-            print(instance)
+
         instance.save()
 
     # if data_source.source == SOURCE_DATABC:

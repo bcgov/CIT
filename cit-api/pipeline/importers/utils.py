@@ -34,9 +34,9 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
         if Model.LONGITUDE_FIELD and Model.LATITUDE_FIELD:
             point = Point(float(row[Model.LONGITUDE_FIELD]),
                           float(row[Model.LATITUDE_FIELD]),
-                          srid=4326)
+                          srid=BC_ALBERS_SRID)
         else:
-            point = Point(row.geometry.x, row.geometry.y, srid=4326)
+            point = Point(row.geometry.x, row.geometry.y, srid=BC_ALBERS_SRID)
         print(point)
         closest_community = (Community.objects.annotate(
             distance=Distance('point', point)).order_by('distance').first())
@@ -347,12 +347,15 @@ def calculate_regional_districts_for_communities():
     from pipeline.models.general import RegionalDistrict
 
     for community in Community.objects.all():
+        print("Community", community)
         try:
-            regional_district = RegionalDistrict.objects.get(geom__contains=community.point)
+            regional_district = RegionalDistrict.objects.filter(
+                geom__contains=community.point).first()
             # print("community regional_district", community, regional_district.name)
         except RegionalDistrict.DoesNotExist:
             print("Error: regional district for community {} was not found".format(community))
         else:
+            print("Regional District", regional_district)
             community.regional_district = regional_district
             community.save()
 
@@ -567,30 +570,29 @@ def _generate_geom(feat, srid=None):
     return geos_geom_out, geos_geom_simplified
 
 
-def _generate_simplified_geom(feat):
+def _generate_simplified_geom(feat, srid=None):
     """
     Generate a clean geometry, and simplified snapshot for PostGIS insertion
     """
     # Source data tends to be in BC Alberts. #TODO: detect this instead?
-    geos_geom = GEOSGeometry(str(feat.geometry), srid=BC_ALBERS_SRID)
+    geos_geom = GEOSGeometry(str(feat.geometry), srid=srid or feat.geom.srid)
     # Convert MultiPolygons to plain Polygons,
     # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
     if isinstance(geos_geom, MultiPolygon) or isinstance(geos_geom, Polygon):
-        geos_geom_out = _coerce_to_multipolygon(geos_geom, BC_ALBERS_SRID)
+        geos_geom_out = _coerce_to_multipolygon(geos_geom, srid)
         geos_geom.transform(WGS84_SRID)
         geos_geom_simplified = copy.deepcopy(geos_geom)
         geos_geom_simplified.transform(WGS84_SRID)
         geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
+        geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, srid)
 
-        geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, BC_ALBERS_SRID)
     elif isinstance(geos_geom, LineString) or isinstance(geos_geom, MultiLineString):
-        geos_geom_out = _coerce_to_multilinestring(geos_geom, BC_ALBERS_SRID)
+        geos_geom_out = _coerce_to_multilinestring(geos_geom, srid)
         geos_geom.transform(WGS84_SRID)
         geos_geom_simplified = copy.deepcopy(geos_geom)
         geos_geom_simplified.transform(WGS84_SRID)
         geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
-
-        geos_geom_simplified = _coerce_to_multilinestring(geos_geom_simplified, BC_ALBERS_SRID)
+        geos_geom_simplified = _coerce_to_multilinestring(geos_geom_simplified, srid)
 
     return geos_geom_out, geos_geom_simplified
 

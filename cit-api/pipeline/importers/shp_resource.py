@@ -276,7 +276,7 @@ def _save_subdiv(feat):
     if "British Columbia" not in feat.get('PRNAME'):
         return
 
-    geos_geom_out, geos_geom_simplified = _generate_geom(feat, WGS84_SRID)
+    geos_geom_out, geos_geom_simplified = _generate_geom(feat, BC_ALBERS_SRID)
     subdiv = CensusSubdivision.objects.get_or_create(id=int(feat.get('CSDUID')),
                                                      name=feat.get('CSDNAME'))[0]
 

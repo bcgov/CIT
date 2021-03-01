@@ -6,28 +6,31 @@ from pipeline.importers.shp_resource import import_shp_resources
 from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.models.general import DataSource, Road, Hex, ISP, Service
 
+from pipeline.constants import BC_ALBERS_SRID
+
+from pipeline.models.community import Community
+from pipeline.models.general import (DataSource, LocationDistance, SchoolDistrict, Municipality,
+                                     CivicLeader, Hex, Service, ISP)
+from pipeline.models.location_assets import School, Hospital
+
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        # print("Importing CensusSubdivisions...")
-        # import_shp_resources("census")
 
-        # print("Importing Roads...")
-        # import_shp_resources("roads")
+        # for school in School.objects.all():
+        #     print("school", school.point)
+        #     school_district = SchoolDistrict.objects.get(geom__contains=school.point)
+        #     print("school district", school_district)
 
-        # print("Importing connectivity Hexes...")
-        # import_shp_resources("hexes")
-        # wms_resource = DataSource.objects.filter(name="municipalities").first()
-        # import_wms_resource(wms_resource)
+        #     school.school_district = school_district
+        #     school.save()
 
-        # print("Importing Communities...")
-        # import_csv_resources("communities")
+        #     # Note: using the Community point is better than checking for municipality area overlap because
+        #     # most communities are unincorporated and thus do not have a linked municipality
+        #     communities = Community.objects.filter(point__intersects=school_district.geom)
+        #     school_district.community.set(communities)
+        #     print("communities", communities)
 
-        # wms_resources = DataSource.objects.filter(source_type="WMS").exclude(
-        #     name__in=["municipalities"]).order_by('import_order')
-        # for resource in wms_resources:
-        #     import_wms_resource(resource)
-
-        ds = bcdata.get_data("natural-resource-sector-major-projects-points", as_gdf=True)
-
-        print(ds.iloc[0])
+        # ds = bcdata.get_data('school-districts-of-bc', as_gdf=True)
+        wms_resources = DataSource.objects.get(name='school_districts')
+        import_wms_resource(wms_resources)
