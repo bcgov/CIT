@@ -49,7 +49,7 @@ function displayResources(resources) {
       case "paragraph":
         element = (
           <div className="d-flex flex-column">
-            <div classsName="mr-2">{resource[1].name}</div>
+            <div className="mr-2">{resource[1].name}</div>
             <div className="ml-2">
               <b>{resource[1].value}</b>
             </div>

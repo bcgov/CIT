@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Marker, Popup } from "react-leaflet";
 import { v4 } from "uuid";
 import newIcon from "./markers";
-import setColour from "../../helpers/helpers";
+import { setColour } from "../../helpers/helpers";
 
 export default function ResourceMarker({ resourceName, resources }) {
   const colour = setColour(resourceName, "colourName");

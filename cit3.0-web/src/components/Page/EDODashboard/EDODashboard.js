@@ -8,15 +8,17 @@ import OpportunityTable from "../../OpportunityTable/OpportunityTable";
 export default function EDODashboard() {
   const [tableData, setTableData] = useState(null);
   const history = useHistory();
+  document.title = `Investments`;
 
   useEffect(() => {
     axios
-      .get("/api/pipeline/opportunities")
+      .get("/api/opportunity/list")
       .then((data) => {
         setTableData(data.data.results);
       })
       .catch((err) => {
-        console.log(err);
+        /* eslint-disable-next-line */
+        console.error(err);
         setTableData([]);
       });
   }, []);

@@ -66,7 +66,7 @@ const LocationsPanel = ({
         <h3 className="mb-3">Nearest First Nation Communities</h3>
         <Container className="pb-2">
           {firstNationCommunities.map((firstNationCommunity) => (
-            <Row className="d-flex justify-content-between mb-2">
+            <Row key={v4()} className="d-flex justify-content-between mb-2">
               <Col className="pl-0">
                 <a
                   target="_blank"

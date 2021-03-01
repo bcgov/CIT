@@ -18,6 +18,7 @@ import {
 } from "../../../store/actions/opportunity";
 
 export default function AddOpportunity({ match }) {
+  document.title = `Investments - Add Opportunity`;
   const dispatch = useDispatch();
   const address = useSelector((state) => state.opportunity.address);
   const coords = useSelector((state) => state.opportunity.coords);
