@@ -59,8 +59,11 @@ def import_resource(resource_type):
 
 
 def import_wms_resource(resource):
+    query = None
+    if resource.name == 'lakes':
+        query = "FEATURE_AREA_SQM >= 1000000"
 
-    ds = bcdata.get_data(resource.dataset, as_gdf=True)
+    ds = bcdata.get_data(resource.dataset, as_gdf=True, query=query)
 
     for index, row in ds.iterrows():
         model_class = apps.get_model("pipeline", resource.model_name)
