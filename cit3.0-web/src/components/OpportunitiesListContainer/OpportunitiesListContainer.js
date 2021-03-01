@@ -15,7 +15,7 @@ export default function OpportunityListContainer({ totalCount }) {
       .then((data) => {
         setOpportunities(data.data.results);
       })
-      .catch((err) => {
+      .catch(() => {
         setOpportunities(null);
       });
   }, [currentPage]);
