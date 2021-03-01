@@ -37,24 +37,32 @@ export default function OpportunityMapContainer({ setTotalCount }) {
       height: "50px",
     },
     "map-hidden": {
-      border: "1px solid red",
       height: "50px",
       display: "flex",
-      "flex-direction": "row",
+      flexDirection: "row",
       width: "100%",
-      "justify-content": "flex-end",
-      "padding-right": "25px",
+      justifyContent: "flex-end",
+      alignItems: "flex-end",
+      paddingRight: "25px",
+    },
+    btnLink: {
+      background: "none",
+      border: "none",
+      textDecoration: "underline",
+      display: "flex",
+      alignItems: "center",
+      padding: "0px",
+    },
+    mapIcon: {
+      height: "30px",
+      width: "30px",
+      marginRight: "5px",
     },
   };
 
   const toggleMap = () => {
-    if (showMap) {
-      $(".leaflet-container").slideUp("500");
-      setShowMap(!showMap);
-    } else {
-      $(".leaflet-container").slideDown("500");
-      setShowMap(!showMap);
-    }
+    $(".leaflet-container").fadeToggle("500");
+    setShowMap(!showMap);
   };
 
   return (
@@ -69,8 +77,8 @@ export default function OpportunityMapContainer({ setTotalCount }) {
       >
         {showMap && <CgCloseR style={styles.close} onClick={toggleMap} />}
         {!showMap && (
-          <button type="button" onClick={toggleMap}>
-            <GrMapLocation />
+          <button style={styles.btnLink} type="button" onClick={toggleMap}>
+            <GrMapLocation onClick={toggleMap} style={styles.mapIcon} />
             Show Map
           </button>
         )}
