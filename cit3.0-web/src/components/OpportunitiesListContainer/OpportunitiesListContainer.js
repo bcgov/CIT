@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { Row, Col, Container } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 import axios from "axios";
 import OpportunityList from "../OpportunityList/OpportunityList";
 import Paginator from "../Paginator/Paginator";
@@ -13,19 +13,16 @@ export default function OpportunityListContainer({ totalCount }) {
     axios
       .get(`/api/opportunity/list?page=${currentPage}&page_size=${pageSize}`)
       .then((data) => {
-        console.log("oppListCont: ", data.data.results);
         setOpportunities(data.data.results);
-        // setCount(data.data.count);
       })
       .catch((err) => {
-        console.log(err);
         setOpportunities(null);
       });
   }, [currentPage]);
   return (
     opportunities && (
       <>
-        <Row className="mt-3">
+        <Row>
           {totalCount && <h4>{totalCount} Properties match your search</h4>}
           <OpportunityList opportunities={opportunities} />
         </Row>

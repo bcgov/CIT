@@ -5,7 +5,8 @@ import $ from "jquery";
 import { CgCloseR } from "react-icons/cg";
 import { GrMapLocation } from "react-icons/gr";
 import { Row } from "react-bootstrap";
-import OpportunitiesMap from "./OpportunitiesMap";
+import OpportunitiesMap from "../OpportunitiesMap";
+import "./OpportunitiesMapContainer.scss";
 
 export default function OpportunityMapContainer({ setTotalCount }) {
   const [opportunities, setOpportunities] = useState(null);
@@ -23,62 +24,30 @@ export default function OpportunityMapContainer({ setTotalCount }) {
       });
   }, []);
 
+  const toggleMap = () => {
+    $(".leaflet-container").fadeToggle("300");
+    setShowMap(!showMap);
+  };
+
   const styles = {
     close: {
       height: "30px",
       width: "30px",
       position: "absolute",
-      right: "30",
-      top: "30",
+      right: 30,
+      top: 30,
       zIndex: 1000,
       cursor: "pointer",
     },
-    "map-visible": {
-      height: "50px",
-    },
-    "map-hidden": {
-      height: "50px",
-      display: "flex",
-      flexDirection: "row",
-      width: "100%",
-      justifyContent: "flex-end",
-      alignItems: "flex-end",
-      paddingRight: "25px",
-    },
-    btnLink: {
-      background: "none",
-      border: "none",
-      textDecoration: "underline",
-      display: "flex",
-      alignItems: "center",
-      padding: "0px",
-    },
-    mapIcon: {
-      height: "30px",
-      width: "30px",
-      marginRight: "5px",
-    },
-  };
-
-  const toggleMap = () => {
-    $(".leaflet-container").fadeToggle("500");
-    setShowMap(!showMap);
   };
 
   return (
-    <Row
-      style={{
-        position: "relative",
-      }}
-    >
-      <div
-        className={!showMap ? "map-hidden" : "map-visible"}
-        style={!showMap ? styles["map-hidden"] : styles["map-visible"]}
-      >
+    <Row className="row-relative">
+      <div className={!showMap ? "map-hidden" : "map-visible"}>
         {showMap && <CgCloseR style={styles.close} onClick={toggleMap} />}
         {!showMap && (
-          <button style={styles.btnLink} type="button" onClick={toggleMap}>
-            <GrMapLocation onClick={toggleMap} style={styles.mapIcon} />
+          <button className="btnLink" type="button" onClick={toggleMap}>
+            <GrMapLocation onClick={toggleMap} className="mapIcon" />
             Show Map
           </button>
         )}

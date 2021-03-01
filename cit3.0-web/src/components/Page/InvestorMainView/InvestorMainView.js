@@ -2,7 +2,7 @@ import { Row, Col, Container } from "react-bootstrap";
 import { useState } from "react";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import OpportunityListContainer from "../../OpportunitiesListContainer/OpportunitiesListContainer";
-import OpportunityMapContainer from "../../OpportunityDisplayMap/OpportunityMapContainer";
+import OpportunityMapContainer from "../../OpportunityDisplayMap/OpportunityMapContainer/OpportunityMapContainer";
 import Flyout from "../../Flyout/Flyout";
 
 export default function InvestorMainView() {
