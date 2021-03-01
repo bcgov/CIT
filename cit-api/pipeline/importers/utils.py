@@ -84,13 +84,18 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
     return instance
 
 
-def import_data_into_area_model(resource_type, Model, row):
+def import_data_into_area_model(resource_type, Model, row, index=None):
 
     name_fields = Model.NAME_FIELD.split(",")
     name = ", ".join([str(row[name_field]) for name_field in name_fields])
 
-    if name is None:
-        name = ""
+    if name == 'None':
+        if hasattr(Model, 'ID_FIELD'):
+            name = f'Unnamed {resource_type} {row[Model.ID_FIELD]}'
+            print("Name", name)
+        else:
+            name = f'Unnamed {resource_type} {index}'
+            print("Name", name)
 
     instance, created = Model.objects.get_or_create(name=name)
 
