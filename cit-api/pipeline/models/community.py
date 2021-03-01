@@ -1,23 +1,28 @@
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models import PointField
 
-from pipeline.utils import (
-    serialize_community_detail_fields, get_community_type_display_name,
-    serialize_location_assets)
+from pipeline.utils import (serialize_community_detail_fields, get_community_type_display_name,
+                            serialize_location_assets)
+from pipeline.constants import BC_ALBERS_SRID
 
 
 class Community(models.Model):
     place_id = models.CharField(null=True, blank=True, max_length=255, unique=True)
     place_name = models.CharField(null=True, blank=True, max_length=255)
-    parent_community = models.ForeignKey('self', null=True, related_name='child_communities', on_delete=models.SET_NULL)
-    point = PointField(null=True, blank=True)
+    parent_community = models.ForeignKey('self',
+                                         null=True,
+                                         related_name='child_communities',
+                                         on_delete=models.SET_NULL)
+    point = PointField(null=True, blank=True, srid=BC_ALBERS_SRID)
     description = models.TextField(null=True, blank=True)
     header_image = models.ImageField(null=True, blank=True, upload_to="community_images/")
     # TODO SY - make this into a choice field tuple
     community_type = models.CharField(null=True, blank=True, max_length=255)
     is_coastal = models.NullBooleanField()
 
-    census_subdivision = models.ForeignKey('CensusSubdivision', null=True, on_delete=models.SET_NULL)
+    census_subdivision = models.ForeignKey('CensusSubdivision',
+                                           null=True,
+                                           on_delete=models.SET_NULL)
     municipality = models.ForeignKey('Municipality', null=True, on_delete=models.SET_NULL)
     regional_district = models.ForeignKey('RegionalDistrict', null=True, on_delete=models.SET_NULL)
 
@@ -25,13 +30,21 @@ class Community(models.Model):
     tsunami_zone = models.ForeignKey('TsunamiZone', null=True, on_delete=models.SET_NULL)
 
     percent_50_10 = models.FloatField(
-        null=True, blank=True, help_text='portion (0-1) of area with 50/10 speeds (calc. by road length)')
+        null=True,
+        blank=True,
+        help_text='portion (0-1) of area with 50/10 speeds (calc. by road length)')
     percent_25_5 = models.FloatField(
-        null=True, blank=True, help_text='portion (0-1) of area with 25/5 speeds (calc. by road length)')
+        null=True,
+        blank=True,
+        help_text='portion (0-1) of area with 25/5 speeds (calc. by road length)')
     percent_10_2 = models.FloatField(
-        null=True, blank=True, help_text='portion (0-1) of area with 10/2 speeds (calc. by road length)')
+        null=True,
+        blank=True,
+        help_text='portion (0-1) of area with 10/2 speeds (calc. by road length)')
     percent_5_1 = models.FloatField(
-        null=True, blank=True, help_text='portion (0-1) of area with 5/1 speeds (calc. by road length)')
+        null=True,
+        blank=True,
+        help_text='portion (0-1) of area with 5/1 speeds (calc. by road length)')
 
     hexuid = models.ForeignKey(
         'Hex',
@@ -66,12 +79,16 @@ class Community(models.Model):
     nearest_transmission_distance = models.FloatField(null=True, blank=True)
     transmission_lines_owner = models.CharField(max_length=255, null=True, blank=True)
     transmission_line_description = models.CharField(max_length=255, null=True, blank=True)
-    transmission_line_voltage = models.FloatField(null=True, blank=True, help_text="Transmission Line Voltage (kV)")
+    transmission_line_voltage = models.FloatField(null=True,
+                                                  blank=True,
+                                                  help_text="Transmission Line Voltage (kV)")
     pop_2km_capacity = models.FloatField(
-        null=True, blank=True,
+        null=True,
+        blank=True,
         help_text="POP Capacity (Gbps) for communities that are within 2km of POP")
     remaining_pop_capacity = models.FloatField(
-        null=True, blank=True,
+        null=True,
+        blank=True,
         help_text="Remaining Capacity of POP (Gbps) - (-1 indicates capacity is unknown)")
 
     # Calculated fields (cached in the model for performance reasons)
@@ -88,7 +105,7 @@ class Community(models.Model):
 
     class Meta:
         verbose_name_plural = "Communities"
-        ordering = ("place_name",)
+        ordering = ("place_name", )
 
     def latitude(self):
         if self.point:
