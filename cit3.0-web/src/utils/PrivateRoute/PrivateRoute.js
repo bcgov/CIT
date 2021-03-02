@@ -4,8 +4,6 @@ import { Route, Redirect } from "react-router-dom";
 /**
  * @todo: Find our sets of action interfaces
  */
-import { useSelector } from "react-redux";
-import { Spinner } from "react-bootstrap";
 import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
 
 /**
@@ -14,20 +12,12 @@ import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
  */
 const PrivateRoute = (props) => {
   const keycloak = useKeycloakWrapper();
-  const keycloakReady = useSelector((state) => state.keycloakReady);
   const { component: Component, layout: Layout, ...rest } = props;
   /* eslint consistent-return: "off" */
   return (
     <Route
       {...rest}
       render={(subprops) => {
-        if (!keycloakReady) {
-          return (
-            <main className="center-spinner">
-              <Spinner animation="border" />
-            </main>
-          );
-        }
         if (keycloak.obj && !!keycloak.obj.authenticated) {
           // if (
           //   (!rest.role && !rest.claim) ||
@@ -49,7 +39,7 @@ const PrivateRoute = (props) => {
         //   />
         // );
         // }
-        if (keycloakReady && subprops.location.pathname !== "/login") {
+        if (subprops.location.pathname !== "/login") {
           const redirectTo = encodeURI(
             `${location.pathname}${location.search}`
           );

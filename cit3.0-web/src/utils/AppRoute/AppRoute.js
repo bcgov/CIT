@@ -2,6 +2,8 @@ import React, { useLayoutEffect } from "react";
 import Proptypes from "prop-types";
 import { useLocation, Route } from "react-router-dom";
 
+import { useSelector } from "react-redux";
+import { Spinner } from "react-bootstrap";
 import PrivateRoute from "../PrivateRoute/PrivateRoute";
 import PublicLayout from "../../layouts/PublicLayout";
 
@@ -20,6 +22,15 @@ const AppRoute = ({
       window.scrollTo(0, 0);
     }
   }, [location.pathname]);
+
+  const keycloakReady = useSelector((state) => state.keycloakReady);
+  if (!keycloakReady) {
+    return (
+      <main className="center-spinner">
+        <Spinner animation="border" />
+      </main>
+    );
+  }
 
   /* eslint react/prop-types: "off" */
   const Layout =
