@@ -4,7 +4,7 @@ import "./index.css";
 import axios from "axios";
 import App from "./App";
 
-axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
+axios.defaults.baseURL = window.env.apiUrl || "/";
 
 ReactDOM.render(
   <React.StrictMode>

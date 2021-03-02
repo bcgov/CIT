@@ -22,5 +22,5 @@ COPY --from=build-deps /usr/src/app/nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
 
 RUN printenv
-CMD ["sh", "-c", "envsubst < /usr/share/nginx/html/assets/env.template.js > /usr/share/nginx/html/assets/env.js && exec nginx -g 'daemon off;'"]
+CMD ["sh", "-c", "envsubst < /usr/share/nginx/html/static/env.template.js > /usr/share/nginx/html/static/env.js && exec nginx -g 'daemon off;'"]
 
