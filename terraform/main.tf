@@ -25,7 +25,7 @@ module "webapp" {
   github_token    = var.github_token
   github_owner    = var.github_owner
 
-  app_name        = "CIT3.0"
+  app_name        = "CIT3"
   owner           = "CITZ"
   description     = "Community Information Toolkit"
 
