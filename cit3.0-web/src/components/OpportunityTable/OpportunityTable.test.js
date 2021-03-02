@@ -1,32 +1,34 @@
 import { render } from "@testing-library/react";
+import { Router } from "react-router-dom";
+import { createMemoryHistory } from "history";
 import OpportunityTable from "./OpportunityTable";
 
 const tableData = [
   {
     id: 1,
     opportunity_address: "1234 Test Pl.",
-    point: "SRID=4326;POINT (-123.8687427 48.4774108)",
+    point: "SRID=3005;POINT (-123.8687427 48.4774108)",
     approval_status: "PEND",
     date_created: "2021-02-16T17:34:38.184663Z",
   },
   {
     id: 2,
     opportunity_address: "5678 Test Ave.",
-    point: "SRID=4326;POINT (-123.369984 48.452708)",
+    point: "SRID=3005;POINT (-123.369984 48.452708)",
     approval_status: "PUBL",
     date_created: "2021-02-16T17:34:38.184663Z",
   },
   {
     id: 3,
     opportunity_address: "9999 Test Rd.",
-    point: "SRID=4326;POINT (-123.3721727 48.4527115)",
+    point: "SRID=3005;POINT (-123.3721727 48.4527115)",
     approval_status: "EDIT",
     date_created: "2021-02-16T17:34:38.184663Z",
   },
   {
     id: 4,
     opportunity_address: "5555 Test St.",
-    point: "SRID=4326;POINT (-123.3721727 48.4527115)",
+    point: "SRID=3005;POINT (-123.3721727 48.4527115)",
     approval_status: "NCOM",
     date_created: "2021-02-16T17:34:38.184663Z",
   },
@@ -34,7 +36,12 @@ const tableData = [
 
 describe("OpportunityTable", () => {
   it("displays the opportunity data", () => {
-    const { getByText } = render(<OpportunityTable tableData={tableData} />);
+    const history = createMemoryHistory();
+    const { getByText } = render(
+      <Router history={history}>
+        <OpportunityTable tableData={tableData} />
+      </Router>
+    );
 
     expect(getByText(/1234/i).textContent).toBe("1234 Test Pl.");
     expect(getByText(/5678/i).textContent).toBe("5678 Test Ave.");
@@ -43,7 +50,11 @@ describe("OpportunityTable", () => {
   });
 
   it("colour codes the status based on the status value", () => {
-    const { getByText } = render(<OpportunityTable tableData={tableData} />);
+    const { getByText } = render(
+      <Router history={history}>
+        <OpportunityTable tableData={tableData} />
+      </Router>
+    );
 
     expect(getByText(/Published/i)).toHaveClass("status-text-green");
     expect(getByText(/Pending Review/i)).toHaveClass("status-text-orange");
@@ -52,7 +63,11 @@ describe("OpportunityTable", () => {
   });
 
   it('displays the option to mark as "sold" for published opportunities', () => {
-    const { getByText } = render(<OpportunityTable tableData={tableData} />);
+    const { getByText } = render(
+      <Router history={history}>
+        <OpportunityTable tableData={tableData} />
+      </Router>
+    );
 
     expect(getByText(/sold/i).textContent).toBe('Mark as "sold"');
   });

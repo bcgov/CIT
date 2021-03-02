@@ -1,0 +1,76 @@
+.App-header.navbar {
+  padding: 0 10px;
+  min-height: 70px;
+  color: #ffffff;
+
+  .longAppName {
+    display: none;
+  }
+  .shortAppName {
+    display: block;
+  }
+  
+  .longIcon {
+    display: none;
+  }
+  .shortIcon {
+    display: block;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .other {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    padding: 0;
+    :hover {
+      color: red;
+      cursor: pointer;
+    }
+  }
+}
+
+.dropdown-style {
+  font-size: 14px;
+  .dropdown-menu {
+    width: 300px;
+    height: 150px;
+  }
+  .nav-link {
+    color: #fff;
+    padding: 1px;
+  }
+  .dropdown-item {
+    background-color: transparent;
+    border-top: 2px solid transparent;
+  }
+}
+
+.avatar {
+  height: 30px;
+  cursor: pointer;
+  width: 30px;
+}
+
+// show long App Name when space allows
+@media (min-width: 992px) {
+  .App-header.navbar {
+    .longAppName {
+      display: block;
+      text-align: left;
+      padding-left: 40px;
+    }
+    .shortAppName {
+      display: none;
+    }
+    .longIcon {
+      display: block;
+    }
+    .shortIcon {
+      display: none;
+    }
+  }
+}

@@ -1,19 +1,17 @@
 import React from "react";
 import Proptypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { useLocation, useHistory, NavLink } from "react-router-dom";
-import { Container } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
 import OpportunityView from "../../OpportunityView/OpportunityView";
 import {
   setOpportunity,
   getOpportunity,
 } from "../../../store/actions/opportunity";
 import OpportunityFactory from "../../../store/factory/OpportunityFactory";
-import styles from "./OpportunityPage.module.css";
+import styles from "./OpportunityApprovePage.module.css";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 
-const OpportunityPage = ({ id }) => {
-  const history = useHistory();
+const OpportunityApprovePage = ({ id }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   let opId = id;
@@ -27,28 +25,23 @@ const OpportunityPage = ({ id }) => {
         response.data
       );
       dispatch(setOpportunity(opportunity));
-      document.title = `Investment - ${opportunity.name}`;
+      document.title = `Investment Approval - ${opportunity.name}`;
     });
-  } else {
-    // @todo: Make opportunity 404 page
-    history.push("/");
   }
 
   return (
-    <div className={styles.OpportunityPage} data-testid="OpportunityPage">
+    <div
+      className={styles.OpportunityApprovePage}
+      data-testid="OpportunityApprovePage"
+    >
       <PortalHeader />
-      <Container className="p-0">
-        <NavLink className="mt-2" to={document.referrer}>
-          {"<<"} Return to Search
-        </NavLink>
-      </Container>
       <OpportunityView view="all" />
     </div>
   );
 };
 
-OpportunityPage.propTypes = { id: Proptypes.number };
+OpportunityApprovePage.propTypes = { id: Proptypes.number };
 
-OpportunityPage.defaultProps = { id: 0 };
+OpportunityApprovePage.defaultProps = { id: 0 };
 
-export default OpportunityPage;
+export default OpportunityApprovePage;

@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +16,7 @@ import {
   setResourceIds,
 } from "../../../store/actions/opportunity";
 
-export default function AddOpportunity({ match }) {
+export default function AddOpportunity() {
   document.title = `Investments - Add Opportunity`;
   const dispatch = useDispatch();
   const address = useSelector((state) => state.opportunity.address);
@@ -45,10 +44,7 @@ export default function AddOpportunity({ match }) {
   };
 
   const goToNextPage = () => {
-    history.push({
-      pathname: `${match.url}/siteDetails`,
-      state: { address, match },
-    });
+    history.push(`/addOpportunity/siteDetails`);
   };
 
   return (
@@ -99,6 +95,4 @@ export default function AddOpportunity({ match }) {
   );
 }
 
-AddOpportunity.propTypes = {
-  match: PropTypes.shape().isRequired,
-};
+AddOpportunity.propTypes = {};

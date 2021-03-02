@@ -62,7 +62,7 @@ export default function PropertyDetails2() {
 
   const goToNextPage = () => {
     history.push({
-      pathname: `review`,
+      pathname: `/addOpportunity/review`,
     });
   };
   const handleContinue = () => {
