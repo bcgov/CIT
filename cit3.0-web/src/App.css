@@ -6,7 +6,7 @@
 
 .app-container header,
 .app-container .footer {
-  flex: 0
+  flex: 0;
 }
 
 main {

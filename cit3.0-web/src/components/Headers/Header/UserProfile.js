@@ -3,6 +3,7 @@ import { Image, NavDropdown } from "react-bootstrap";
 import { Button } from "shared-components";
 
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
 
@@ -23,7 +24,9 @@ const UserProfile = () => {
 
   return (
     <>
-      <Image className="avatar" src="/images/profile.svg" rounded />
+      <NavLink to="/dashboard">
+        <Image className="avatar" src="/images/profile.svg" rounded />
+      </NavLink>
       <div
         className="dropdown-style px-0"
         title={displayName}

@@ -1,12 +1,7 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
 import "./App.css";
 import { Footer } from "shared-components";
 import LoadingBar from "react-redux-loading-bar";
@@ -22,13 +17,13 @@ import ReviewOpportunity from "./components/Page/ReviewOpportunity/ReviewOpportu
 import { AuthStateContext } from "./contexts/authStateContext";
 import Login from "./components/Page/account/Login";
 import Logout from "./components/Page/account/Logout";
-import Flyout from "./components/Flyout/Flyout";
 import AccessDenied from "./components/Page/Errors/401/AccessDenied";
 
 import ReviewSubmitted from "./components/Page/ReviewSubmitted/ReviewSubmitted";
 import OpportunityPage from "./components/Page/OpportunityPage/OpportunityPage";
 import AppRoute from "./utils/AppRoute/AppRoute";
 import AuthLayout from "./layouts/AuthLayout";
+import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainView";
 
 function App() {
   const getTitle = (page) => `Investments${` - ${page}`}`;
@@ -49,10 +44,10 @@ function App() {
               height: "3px",
             }}
           />
-          <Header header={header} />
           <Router>
+            <Header header={header} />
             <Switch>
-              <Redirect exact from="/" to="/dashboard" />
+              <Redirect exact from="/" to="/search" />
               <AppRoute
                 title={getTitle("Login")}
                 path="/login"
@@ -69,8 +64,10 @@ function App() {
                 component={AccessDenied}
               />
               <AppRoute
+                protected
                 title={getTitle("Opportunity Dashboard")}
                 path="/dashboard"
+                layout={AuthLayout}
                 component={EDODashboard}
               />
               <AppRoute
@@ -97,7 +94,7 @@ function App() {
                 layout={AuthLayout}
                 component={PropertyDetails1}
               />
-              <Route
+              <AppRoute
                 protected
                 exact
                 path="/addOpportunity/propDetails2"
@@ -128,12 +125,12 @@ function App() {
                 layout={AuthLayout}
                 component={OpportunityApprovePage}
               />
-              <AppRoute path="/search" component={Flyout} />
+              <AppRoute path="/search" component={InvestorMainView} />
             </Switch>
+            <div className="footer">
+              <Footer />
+            </div>
           </Router>
-          <div className="footer">
-            <Footer />
-          </div>
         </div>
       )}
     </AuthStateContext.Consumer>
