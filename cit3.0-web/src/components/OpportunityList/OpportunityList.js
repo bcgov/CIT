@@ -1,21 +1,16 @@
 import PropTypes from "prop-types";
-import { Col } from "react-bootstrap";
+import { v4 } from "uuid";
 import OpportunityListItem from "../OpportunityListItem/OpportunityListItem";
+import OpportunityFactory from "../../store/factory/OpportunityFactory";
 
 export default function OpportunityList({ opportunities }) {
   return (
     <>
-      <h4>{opportunities.length} Properties match your search</h4>
-      {opportunities &&
-        opportunities.map((opp) => (
-          <OpportunityListItem
-            key={opp.id}
-            id={opp.id}
-            coords={opp.point}
-            address={opp.address}
-            public
-          />
-        ))}
+      {opportunities.length &&
+        opportunities.map((opp) => {
+          const opportunity = OpportunityFactory.createStateFromResponse(opp);
+          return <OpportunityListItem key={v4()} opportunity={opportunity} />;
+        })}
     </>
   );
 }

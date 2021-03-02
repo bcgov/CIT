@@ -64,8 +64,7 @@ export default function Flyout(props) {
           </Row>
         </Container>
       </div>
-
-      <div>{children}</div>
+      <div className="children">{children}</div>
     </div>
   );
 }
