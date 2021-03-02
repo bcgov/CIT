@@ -14,6 +14,17 @@ main {
   flex: 1;
 }
 
+.center-spinner {
+  position: relative;
+}
+
+.center-spinner .spinner-border {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #244278;
+}
+
 .invest-container {
   height: 80vh;
 }
