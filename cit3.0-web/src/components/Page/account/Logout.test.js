@@ -3,7 +3,6 @@ import { createMemoryHistory } from "history";
 import { render, cleanup } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import { useKeycloak } from "@react-keycloak/web";
-import useConfiguration from "../../../hooks/useConfiguration";
 import { LogoutPage } from "./Logout";
 
 jest.mock("@react-keycloak/web");

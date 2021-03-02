@@ -3,48 +3,6 @@ import _ from "lodash";
 import Roles from "../constants/roles";
 import Claims from "../constants/claims";
 
-// /**
-//  * IUserInfo interface, represents the userinfo provided by keycloak.
-//  */
-// export interface IUserInfo {
-//   displayName?: string;
-//   username: string;
-//   name?: string;
-//   preferred_username?: string;
-//   firstName?: string;
-//   lastName?: string;
-//   email: string;
-//   groups: string[];
-//   roles: string[];
-//   given_name?: string;
-//   family_name?: string;
-//   agencies: number[];
-// }
-
-// /**
-//  * IKeycloak interface, represents the keycloak object for the authenticated user.
-//  */
-// export interface IKeycloak {
-//   obj: any;
-//   displayName?: string;
-//   username: string;
-//   name?: string;
-//   preferred_username?: string;
-//   firstName?: string;
-//   lastName?: string;
-//   email?: string;
-//   roles: string[];
-//   agencyId?: number;
-//   isAdmin: boolean;
-//   hasRole(role?: string | Array<string>): boolean;
-//   hasClaim(claim?: string | Array<string>): boolean;
-//   hasAgency(agency?: number): boolean;
-//   agencyIds: number[];
-//   canUserEditProperty: (property: IProperty | null) => boolean;
-//   canUserViewProperty: (property: IProperty | null) => boolean;
-//   canUserDeleteProperty: (property: IProperty | null) => boolean;
-// }
-
 /**
  * Provides extension methods to interact with the `keycloak` object.
  */

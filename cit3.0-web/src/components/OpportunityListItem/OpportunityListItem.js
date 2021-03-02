@@ -1,4 +1,3 @@
-/* eslint-disable react/destructuring-assignment */
 import { Row, Col } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { Link, NavLink } from "react-router-dom";
@@ -37,7 +36,7 @@ const OpportunityListItem = ({ opportunity }) => {
     }
     return (
       <>
-        <a href={opp.link}>View Listing</a>
+        <NavLink to={opp.link}>View Listing</NavLink>
         <br />
         <a href="/">Edit Listing</a>
         <br />

@@ -9,12 +9,16 @@ import useConfiguration from "../../../hooks/useConfiguration";
 /** Component that allows the user to logout, and gives information on current user's agency/roles */
 const UserProfile = () => {
   const keycloak = useKeycloakWrapper();
-  // eslint-disable-next-line
+
+  const fallbacDisplayName =
+    !!keycloak.firstName && !!keycloak.lastName
+      ? `${keycloak.firstName} ${keycloak.lastName}`
+      : "default";
+
   const displayName = keycloak.displayName
     ? keycloak.displayName
-    : !!keycloak.firstName && !!keycloak.lastName
-    ? `${keycloak.firstName} ${keycloak.lastName}`
-    : "default";
+    : fallbacDisplayName;
+
   const configuration = useConfiguration();
 
   return (

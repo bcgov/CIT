@@ -23,7 +23,7 @@ import { AuthStateContext } from "./contexts/authStateContext";
 import Login from "./components/Page/account/Login";
 import Logout from "./components/Page/account/Logout";
 import Flyout from "./components/Flyout/Flyout";
-import AccessDenied from "./components/Page/401/AccessDenied";
+import AccessDenied from "./components/Page/Errors/401/AccessDenied";
 
 import ReviewSubmitted from "./components/Page/ReviewSubmitted/ReviewSubmitted";
 import OpportunityPage from "./components/Page/OpportunityPage/OpportunityPage";
@@ -75,13 +75,15 @@ function App() {
               />
               <AppRoute
                 protected
-                path="/addOpportunity/"
+                exact
+                path="/addOpportunity"
                 title={getTitle("Add Opportunity Parcel")}
                 layout={AuthLayout}
                 component={AddOpportunity}
               />
               <AppRoute
                 protected
+                exact
                 path="/addOpportunity/siteDetails"
                 title={getTitle("Opportunity Site Information")}
                 layout={AuthLayout}
@@ -89,6 +91,7 @@ function App() {
               />
               <AppRoute
                 protected
+                exact
                 path="/addOpportunity/propDetails1"
                 title={getTitle("Add Property Details")}
                 layout={AuthLayout}
@@ -96,6 +99,7 @@ function App() {
               />
               <Route
                 protected
+                exact
                 path="/addOpportunity/propDetails2"
                 title={getTitle("Add Additional Details")}
                 layout={AuthLayout}
@@ -103,6 +107,7 @@ function App() {
               />
               <AppRoute
                 protected
+                exact
                 path="/addOpportunity/review"
                 title={getTitle("Opportunity Review & Submit")}
                 layout={AuthLayout}
@@ -110,6 +115,7 @@ function App() {
               />
               <AppRoute
                 protected
+                exact
                 path="/addOpportunity/success"
                 title={getTitle("Opportunity Submitted!")}
                 layout={AuthLayout}

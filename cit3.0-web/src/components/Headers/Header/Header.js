@@ -1,40 +1,12 @@
 import "./Header.scss";
 
-import React, { useState } from "react";
+import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { FaBomb } from "react-icons/fa";
-import _ from "lodash";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import UserProfile from "./UserProfile";
-/* eslint-disable */
-const Header = () => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const keycloak = useKeycloakWrapper();
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-  const handleClear = () => {
-    errors.forEach((error) => dispatch(clear(error.name)));
-    setShow(false);
-  };
 
-  const isNetworkError = (x) => x.type === "ERROR";
-  const errors = useSelector((state) => {
-    const errors = [];
-    _.values(state).forEach((reducer) => {
-      _.values(reducer)
-        .filter((x) => x instanceof Object)
-        .forEach((action) => {
-          if (isNetworkError(action)) {
-            errors.push(action);
-          }
-        });
-    });
-    return errors;
-  });
+const Header = () => {
+  const keycloak = useKeycloakWrapper();
 
   return (
     <header className="bcgov-header">
@@ -68,11 +40,6 @@ const Header = () => {
           </Nav.Item>
         </Nav>
         {keycloak.obj && <UserProfile />}
-        <Nav className="other">
-          {errors && errors.length ? (
-            <FaBomb size={30} className="errors" onClick={handleShow} />
-          ) : null}
-        </Nav>
       </Navbar>
     </header>
   );
