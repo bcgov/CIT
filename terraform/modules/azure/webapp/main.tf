@@ -96,6 +96,8 @@ resource "azurerm_app_service" "backend" {
     POSTGRES_DJANGO_USER            = "${azurerm_postgresql_server.postgres.administrator_login}@${azurerm_postgresql_server.postgres.fqdn}"
     POSTGRES_DJANGO_PASSWORD        = azurerm_postgresql_server.postgres.administrator_login_password
     POSTGRES_HOST                   = azurerm_postgresql_server.postgres.fqdn
+    AUTHORITY                       = "https://login.microsoftonline.com/"
+    SCOPE                           = "https://analysis.windows.net/powerbi/api/.default"
     DOCKER_ENABLE_CI                = true
   }
 
