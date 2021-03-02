@@ -8,7 +8,8 @@ import Paginator from "../Paginator/Paginator";
 export default function OpportunityListContainer({ totalCount }) {
   const [opportunities, setOpportunities] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(4);
+  const [pageSize] = useState(4);
+  //   const [pageSize, setPageSize] = useState(4);
   useEffect(() => {
     axios
       .get(`/api/opportunity/list?page=${currentPage}&page_size=${pageSize}`)

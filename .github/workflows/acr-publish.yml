@@ -24,7 +24,7 @@ jobs:
       # TODO: tags with ${{ github.sha }}
       - run: |
           docker build cit-api -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-dotnet-webapi:latest
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:latest
 
       - name: "Build and push frontend"
         uses: azure/docker-login@v1
@@ -34,4 +34,4 @@ jobs:
           password: ${{ secrets.REGISTRY_PASSWORD }}
       - run: |
           docker build cit3.0-web -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-angular-frontend:latest
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest
