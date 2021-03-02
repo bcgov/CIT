@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import axios from "axios";
 import $ from "jquery";
 import { CgCloseR } from "react-icons/cg";
+import L from "leaflet";
 import { GrMapLocation } from "react-icons/gr";
 import { Row, Col } from "react-bootstrap";
 import OpportunitiesMap from "../OpportunitiesMap/OpportunitiesMap";
@@ -25,7 +26,7 @@ export default function OpportunityMapContainer({ totalCount, setTotalCount }) {
   }, []);
 
   const toggleMap = () => {
-    $(".leaflet-container").fadeToggle("300");
+    $("#myMap").fadeToggle("300");
     setShowMap(!showMap);
   };
 
@@ -53,7 +54,9 @@ export default function OpportunityMapContainer({ totalCount, setTotalCount }) {
         )}
       </div>
 
-      <OpportunitiesMap className="map" opportunities={opportunities} />
+      <div className="w-100" id="myMap">
+        <OpportunitiesMap className="map" opportunities={opportunities} />
+      </div>
 
       <Row className="w-100">
         <Col className="pt-3">
