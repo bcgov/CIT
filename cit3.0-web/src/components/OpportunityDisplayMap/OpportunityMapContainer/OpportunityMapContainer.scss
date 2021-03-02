@@ -1,0 +1,34 @@
+.row-relative {
+  position: relative;
+}
+
+.map-hidden {
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding-right: 25px;
+  padding-top: 10px;
+  margin-bottom: 0px;
+}
+
+.map-visible {
+  height: 50px;
+}
+
+.btnLink {
+  background: none;
+  border: none;
+  text-decoration: underline;
+  display: flex;
+  align-items: center;
+  padding: 0px;
+}
+
+.mapIcon {
+  height: 30px;
+  width: 30px;
+  margin-right: 8px;
+};
