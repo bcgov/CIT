@@ -18,66 +18,11 @@ Detailed instructions
 Basically do this: `az login` `az account list` If there's several subscriptions then you may need
 to specify which subscription you wish to use. `az account set --subscription="SUBSCRIPTION_ID"`
 
-We need to create a custom role for the service principal to be able to provision read access to the
-container registry. You can do this by running this command:
-
-```
-az role definition create --role-definition '{
-  "Name": "Provisioner",
-  "IsCustom": true,
-  "Description": "Custom role to provision Azure resources", "IsCustom": true,
-  "Actions": [
-    "Microsoft.Authorization/roleAssignments/read",
-    "Microsoft.Authorization/roleAssignments/write",
-    "Microsoft.Authorization/roleAssignments/delete"
-  ],
-  "AssignableScopes": [
-    "/subscriptions/SUBSCRIPTION_ID"
-  ]
-}'
-```
-
-Let's now create the service principal `az ad sp create-for-rbac --rol="Contributor"
---scopes="/subscriptions/SUBSCRIPTION_ID"`
-
-This will output the following cable
-
-```{
-  "appId": "00000000-0000-0000-0000-000000000000",
-  "displayName": "azure-cli-2017-06-05-10-41-15",
-  "name": "http://azure-cli-2017-06-05-10-41-15",
-  "password": "0000-0000-0000-0000-000000000000",
-  "tenant": "00000000-0000-0000-0000-000000000000"
-}
-```
-
-which maps to:
-* appId is the client_id defined above.
-* password is the client_secret defined above.
-* tenant is the tenant_id defined above.
-
-Now we need to assign the service principal the custom role we created above
-```
-az role assignment create --role "Provisioner" --assignee CLIENT_ID
-```
-
-Confirm the creation of the service principal: `az login --service-principal -u CLIENT_ID -p
-CLIENT_SECRET --tenant TENANT_ID`
-
-see what you can see: `az vm list-sizes --location westus`
-
-then log out of the service principal `az logout`
-
 Finally, copy the `variables.auto.tfvars.template` file and rename it `variables.auto.tfvars`, then
 populate the following variables:
 
 * **subscription_id**={Your Azure subscription ID} 
 * **tenant_id**={tenant}
-* **client_id**={appId}
-* **client_secret**={password} - displayed when the service account was created **ensure the
-  client_secret is set to "sensitive"**
-  }
-
 
 ## Configure Github Repository
 Terraform includes a provider which allows us to automatically provision Github Action build secrets

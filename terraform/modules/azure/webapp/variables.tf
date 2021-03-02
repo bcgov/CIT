@@ -83,17 +83,6 @@ variable "tenant_id" {
 #############################
 ## Application - Variables ##
 #############################
-
-variable "client_id" {
-  type        = string
-  description = "The id of the principle client"
-}
-
-variable "client_secret" {
-  type        = string
-  description = "The secret/password for this client_id account"
-}
-
 # ACR variables
 variable acr_name {
   type        = string
