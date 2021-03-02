@@ -1,5 +1,5 @@
 output "rg_name" {
-  value       = azurerm_resource_group.webapp.name
+  value       = azurerm_resource_group.cit.name
   description = "The Resource Group Name"
 }
 

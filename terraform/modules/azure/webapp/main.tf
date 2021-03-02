@@ -7,14 +7,17 @@ data "azurerm_client_config" "current" {}
 ##############################
 
 # Create a Resource Group
-resource "azurerm_resource_group" "webapp" {
-  name     = "cit-${var.location}-${var.environment}-${var.app_name}-app-service-rg2"
-  location = var.location
+resource "azurerm_resource_group" "cit" {
+  name     = "CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01"
+  location = "canadacentral"
 
   tags = {
-    description = var.description
-    environment = var.environment
-    owner       = var.owner
+    "Classification" = "None"
+    "Cost-Center"    = "None"
+    "Environment"    = "NPD"
+    "Expiry-Date"    = "None"
+    "GL-Code"        = "None"
+    "Solution-Name"  = "Network BC-ICT Community Information Tool(CIT)"
   }
 }
 
@@ -25,15 +28,15 @@ resource "azurerm_resource_group" "webapp" {
 # Create the App Service Plan
 resource "azurerm_app_service_plan" "webapp" {
   name                = "cit-${var.location}-${var.environment}-${var.app_name}"
-  location            = azurerm_resource_group.webapp.location
-  resource_group_name = azurerm_resource_group.webapp.name
+  location            = azurerm_resource_group.cit.location
+  resource_group_name = azurerm_resource_group.cit.name
   kind                = "Linux"
   reserved            = true
   sku {
     capacity = 1
-    size = "P1v2"
-    tier = "PremiumV2"
-    }
+    size     = "P1v2"
+    tier     = "PremiumV2"
+  }
 
   tags = {
     description = var.description
@@ -45,10 +48,10 @@ resource "azurerm_app_service_plan" "webapp" {
 # Create the Front-end App Service
 resource "azurerm_app_service" "frontend" {
   name                = "cit-${var.location}-${var.environment}-${var.app_name}-frontend"
-  location            = azurerm_resource_group.webapp.location
-  resource_group_name = azurerm_resource_group.webapp.name
+  location            = azurerm_resource_group.cit.location
+  resource_group_name = azurerm_resource_group.cit.name
   app_service_plan_id = azurerm_app_service_plan.webapp.id
-  https_only = true
+  https_only          = true
 
   site_config {
     linux_fx_version = "DOCKER|${var.acr_name}.azurecr.io/cit-frontend:latest"
@@ -56,11 +59,11 @@ resource "azurerm_app_service" "frontend" {
   }
 
   app_settings = {
-    DOCKER_REGISTRY_SERVER_URL = "https://${var.acr_name}.azurecr.io"
+    DOCKER_REGISTRY_SERVER_URL      = "https://${var.acr_name}.azurecr.io"
     DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.acr.admin_password
-    REACT_APP_API_BASE_URL = "https://${azurerm_app_service.backend.default_site_hostname}"
-    DOCKER_ENABLE_CI = true
+    REACT_APP_API_BASE_URL          = "https://${azurerm_app_service.backend.default_site_hostname}"
+    DOCKER_ENABLE_CI                = true
   }
 
   tags = {
@@ -73,27 +76,27 @@ resource "azurerm_app_service" "frontend" {
 # Create the Backend App Service
 resource "azurerm_app_service" "backend" {
   name                = "cit-${var.location}-${var.environment}-${var.app_name}-backend2"
-  location            = azurerm_resource_group.webapp.location
-  resource_group_name = azurerm_resource_group.webapp.name
+  location            = azurerm_resource_group.cit.location
+  resource_group_name = azurerm_resource_group.cit.name
   app_service_plan_id = azurerm_app_service_plan.webapp.id
 
   site_config {
     linux_fx_version = "DOCKER|${var.acr_name}.azurecr.io/cit-webapi:latest"
     cors {
-      allowed_origins = ["https://cit-${var.location}-${var.environment}-${var.app_name}-frontend"] 
+      allowed_origins = ["https://cit-${var.location}-${var.environment}-${var.app_name}-frontend"]
     }
   }
 
   # TODO: Get connection secrets from AKV
   app_settings = {
-    DOCKER_REGISTRY_SERVER_URL = "https://${var.acr_name}.azurecr.io"
+    DOCKER_REGISTRY_SERVER_URL      = "https://${var.acr_name}.azurecr.io"
     DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.acr.admin_password
-    POSTGRES_DB = azurerm_postgresql_database.postgres.name
-    POSTGRES_DJANGO_USER = "${azurerm_postgresql_server.postgres.administrator_login}@${azurerm_postgresql_server.postgres.fqdn}"
-    POSTGRES_DJANGO_PASSWORD = azurerm_postgresql_server.postgres.administrator_login_password
-    POSTGRES_HOST = azurerm_postgresql_server.postgres.fqdn
-    DOCKER_ENABLE_CI = true
+    POSTGRES_DB                     = azurerm_postgresql_database.postgres.name
+    POSTGRES_DJANGO_USER            = "${azurerm_postgresql_server.postgres.administrator_login}@${azurerm_postgresql_server.postgres.fqdn}"
+    POSTGRES_DJANGO_PASSWORD        = azurerm_postgresql_server.postgres.administrator_login_password
+    POSTGRES_HOST                   = azurerm_postgresql_server.postgres.fqdn
+    DOCKER_ENABLE_CI                = true
   }
 
   tags = {
@@ -123,8 +126,8 @@ resource "random_password" "db_password" {
 
 resource "azurerm_postgresql_server" "postgres" {
   name                = var.psql_name
-  location            = azurerm_resource_group.webapp.location
-  resource_group_name = azurerm_resource_group.webapp.name
+  location            = azurerm_resource_group.cit.location
+  resource_group_name = azurerm_resource_group.cit.name
 
   sku_name = "B_Gen5_2"
 
@@ -145,18 +148,18 @@ resource "azurerm_postgresql_server" "postgres" {
 }
 
 resource "azurerm_postgresql_database" "postgres" {
-  name                = "mydb"    #TODO: set as variable
-  resource_group_name = azurerm_resource_group.webapp.name
+  name                = "cit" #TODO: set as variable
+  resource_group_name = azurerm_resource_group.cit.name
   server_name         = azurerm_postgresql_server.postgres.name
   charset             = "UTF8"
   collation           = "English_United States.1252"
 }
 
 # TODO: This is wide open - not optimial.  Better to restrict access to just the AKS.  But not sure how that's done.  Does it use public IP?  If so then
-# TODO: will have to assign a Elastic IP then setup an ingress with routes?  The default AKS loadbalancer doesn't seem to init without a deployment.
+# TODO: will have to assign a Elastic IP then setup an ingress with routes?  The default AKS lo adbalancer doesn't seem to init without a deployment.
 # resource "azurerm_postgresql_firewall_rule" "postgres" {
 #   name                = "AllowAll"
-#   resource_group_name = azurerm_resource_group.webapp.name
+#   resource_group_name = azurerm_resource_group.cit.name
 #   server_name         = azurerm_postgresql_server.postgres.name
 #   start_ip_address    = "0.0.0.0"
 #   end_ip_address      = "255.255.255.255"
@@ -173,8 +176,8 @@ resource "azurerm_postgresql_database" "postgres" {
 
 resource "azurerm_container_registry" "acr" {
   name                = var.acr_name
-  resource_group_name = azurerm_resource_group.webapp.name
-  location            = azurerm_resource_group.webapp.location
+  resource_group_name = azurerm_resource_group.cit.name
+  location            = azurerm_resource_group.cit.location
   sku                 = "Basic"
   admin_enabled       = true
 
@@ -187,9 +190,9 @@ resource "azurerm_container_registry" "acr" {
 
 # resource "azurerm_container_registry_webhook" "webhook" {
 #   name                = "mywebhook"
-#   resource_group_name = azurerm_resource_group.webapp.name
+#   resource_group_name = azurerm_resource_group.cit.name
 #   registry_name       = azurerm_container_registry.acr.name
-#   location            = azurerm_resource_group.webapp.location
+#   location            = azurerm_resource_group.cit.location
 
 #   service_uri = "https://mywebhookreceiver.example/mytag"
 #   status      = "enabled"
@@ -207,19 +210,19 @@ data "azurerm_subscription" "primary" {}
 ##############################
 
 resource "github_actions_secret" "registry_username" {
-  repository       = var.github_repository
-  secret_name      = "REGISTRY_USERNAME"
-  plaintext_value  = azurerm_container_registry.acr.admin_username
+  repository      = var.github_repository
+  secret_name     = "REGISTRY_USERNAME"
+  plaintext_value = azurerm_container_registry.acr.admin_username
 }
 
 resource "github_actions_secret" "registry_password" {
-  repository       = var.github_repository
-  secret_name      = "REGISTRY_PASSWORD"
-  plaintext_value  = azurerm_container_registry.acr.admin_password
+  repository      = var.github_repository
+  secret_name     = "REGISTRY_PASSWORD"
+  plaintext_value = azurerm_container_registry.acr.admin_password
 }
 
 resource "github_actions_secret" "registry_login_server" {
-  repository       = var.github_repository
-  secret_name      = "REGISTRY_LOGIN_SERVER"
-  plaintext_value  = azurerm_container_registry.acr.login_server
+  repository      = var.github_repository
+  secret_name     = "REGISTRY_LOGIN_SERVER"
+  plaintext_value = azurerm_container_registry.acr.login_server
 }

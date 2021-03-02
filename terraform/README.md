@@ -46,7 +46,11 @@ renaming the `acr-publish.yml.disabled` file in `.github/workflows` folder to `a
 NOTE: This action will fail until you have provisioned the ACR as part of the Terraform provisioning
 process.
 
+## Import Existing Resource Group
 
+We have a specific resource group to use with this, so we need to import the instance into our terraform state.
+
+`terraform import module.webapp.azurerm_resource_group.cit /subscriptions/be5c5c2b-d7e6-4940-ae15-37d7ef061283/resourceGroups/CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01`
 # How to Deploy to Azure
 
 Once you have configured your Azure CLI and populated the `varaibles.auto.tfvars` file with your
@@ -56,6 +60,7 @@ necessary for deploying the app.
 First, change into the `terraform` directory of this repository and then perform these commands.
 
 1. `terraform init`
+2. `terraform import module.webapp.azurerm_resource_group.cit /subscriptions/be5c5c2b-d7e6-4940-ae15-37d7ef061283/resourceGroups/CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01`
 2. `terraform plan`
 3. `terraform apply`
 
