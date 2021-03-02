@@ -44,7 +44,7 @@ resource "azurerm_app_service_plan" "webapp" {
 
 # Create the Front-end App Service
 resource "azurerm_app_service" "frontend" {
-  name                = "cit-${var.location}-${var.environment}-${var.app_name}-frontend2"
+  name                = "cit-${var.location}-${var.environment}-${var.app_name}-frontend"
   location            = azurerm_resource_group.webapp.location
   resource_group_name = azurerm_resource_group.webapp.name
   app_service_plan_id = azurerm_app_service_plan.webapp.id
@@ -59,8 +59,7 @@ resource "azurerm_app_service" "frontend" {
     DOCKER_REGISTRY_SERVER_URL = "https://${var.acr_name}.azurecr.io"
     DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.acr.admin_password
-    API_URL = "https://${azurerm_app_service.backend.default_site_hostname}/api/v1"
-    API_HOST = azurerm_app_service.backend.default_site_hostname
+    REACT_APP_API_BASE_URL = "https://${azurerm_app_service.backend.default_site_hostname}"
     DOCKER_ENABLE_CI = true
   }
 
@@ -81,7 +80,7 @@ resource "azurerm_app_service" "backend" {
   site_config {
     linux_fx_version = "DOCKER|${var.acr_name}.azurecr.io/cit-webapi:latest"
     cors {
-      allowed_origins = ["https://cit-${var.location}-${var.environment}-${var.app_name}-frontend","http://explorebc.xyz","http://www.explorebc.xyz"] 
+      allowed_origins = ["https://cit-${var.location}-${var.environment}-${var.app_name}-frontend"] 
     }
   }
 
@@ -90,7 +89,10 @@ resource "azurerm_app_service" "backend" {
     DOCKER_REGISTRY_SERVER_URL = "https://${var.acr_name}.azurecr.io"
     DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.acr.admin_password
-    DB_CONNECTION_STRING = "Server=${azurerm_postgresql_server.postgres.fqdn}; User Id=${azurerm_postgresql_server.postgres.administrator_login}@${azurerm_postgresql_server.postgres.fqdn}; Database=${azurerm_postgresql_database.postgres.name}; Port=5432; Password=${azurerm_postgresql_server.postgres.administrator_login_password}; SSLMode=Prefer"
+    POSTGRES_DB = azurerm_postgresql_database.postgres.name
+    POSTGRES_DJANGO_USER = "${azurerm_postgresql_server.postgres.administrator_login}@${azurerm_postgresql_server.postgres.fqdn}"
+    POSTGRES_DJANGO_PASSWORD = azurerm_postgresql_server.postgres.administrator_login_password
+    POSTGRES_HOST = azurerm_postgresql_server.postgres.fqdn
     DOCKER_ENABLE_CI = true
   }
 
