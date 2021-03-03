@@ -14,9 +14,11 @@ export default function OpportunityListContainer({ totalCount }) {
       .get(`/api/opportunity/list?page=${currentPage}&page_size=${pageSize}`)
       .then((data) => {
         setOpportunities(data.data.results);
+        setPageSize(data.data.count);
       })
       .catch(() => {
         setOpportunities(null);
+        setPageSize(0);
       });
   }, [currentPage]);
   return (
@@ -32,7 +34,7 @@ export default function OpportunityListContainer({ totalCount }) {
               count={totalCount}
               setCurrentPage={setCurrentPage}
               currentPage={currentPage}
-              pageSize={4}
+              pageSize={pageSize}
             />
             <p>
               Showing {pageSize} of {totalCount} properties
