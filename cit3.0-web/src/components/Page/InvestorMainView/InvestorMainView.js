@@ -13,7 +13,14 @@ export default function InvestorMainView() {
       <PortalHeader title="Investor Portal" text="Description" />
       <Flyout
         flyoutComponent={DummyFlyoutContent}
-        flyoutProps={{ title: "Filters", text: "General Details" }}
+        flyoutProps={{
+          title: "Filters",
+          text: "General Details",
+          onClick: () => {
+            // eslint-disable-next-line
+            console.log("asd");
+          },
+        }}
       >
         <Container>
           <Row>
