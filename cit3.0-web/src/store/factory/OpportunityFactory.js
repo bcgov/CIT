@@ -24,7 +24,7 @@ export default {
     return {
       ...request,
       opportunity_address: state.address,
-      geo_position: `SRID=4326;POINT(${state.coords[1]} ${state.coords[0]})`,
+      geo_position: `SRID=3005;POINT(${state.coords[1]} ${state.coords[0]})`,
       approval_status: state.approvalStatus,
       opportunity_name: state.name,
       business_contact_name: state.businessContactName,

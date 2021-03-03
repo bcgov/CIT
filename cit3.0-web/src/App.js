@@ -1,83 +1,139 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
 
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Provider } from "react-redux";
+import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
 import "./App.css";
-import { Header, Footer } from "shared-components";
+import { Footer } from "shared-components";
+import LoadingBar from "react-redux-loading-bar";
+import Header from "./components/Headers/Header/Header";
+
+import OpportunityApprovePage from "./components/Page/OpportunityApprovePage/OpportunityApprovePage";
 import AddOpportunity from "./components/Page/AddOpportunity/AddOpportunity";
 import EDODashboard from "./components/Page/EDODashboard/EDODashboard";
 import SiteInfomation from "./components/Page/SiteInformation/SiteInformation";
 import PropertyDetails1 from "./components/Page/PropertyDetails1/PropertyDetails1";
 import PropertyDetails2 from "./components/Page/PropertyDetails2/PropertyDetails2";
 import ReviewOpportunity from "./components/Page/ReviewOpportunity/ReviewOpportunity";
-import Flyout from "./components/Flyout/Flyout";
+import { AuthStateContext } from "./contexts/authStateContext";
+import Login from "./components/Page/account/Login";
+import Logout from "./components/Page/account/Logout";
+import AccessDenied from "./components/Page/Errors/401/AccessDenied";
 
-import { store } from "./store";
 import ReviewSubmitted from "./components/Page/ReviewSubmitted/ReviewSubmitted";
 import OpportunityPage from "./components/Page/OpportunityPage/OpportunityPage";
+import AppRoute from "./utils/AppRoute/AppRoute";
+import AuthLayout from "./layouts/AuthLayout";
 import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainView";
 
 function App() {
+  const getTitle = (page) => `Investments${` - ${page}`}`;
+
   const header = {
     name: "Community Information Tool",
     history: {},
   };
 
   return (
-    <Provider store={store}>
-      <div className="app-container">
-        <Header header={header} />
-        <Router>
-          <Switch>
-            <Route exact path="/">
-              <EDODashboard />
-            </Route>
-            <Route
-              path="/addOpportunity"
-              render={({ match: { url } }) => (
-                <>
-                  <Route path={`${url}/`} component={AddOpportunity} exact />
-                  <Route
-                    path={`${url}/siteDetails`}
-                    component={SiteInfomation}
-                    exact
-                  />
-                  <Route
-                    path={`${url}/propDetails1`}
-                    component={PropertyDetails1}
-                    exact
-                  />
-                  <Route
-                    path={`${url}/propDetails2`}
-                    component={PropertyDetails2}
-                    exact
-                  />
-                  <Route
-                    path={`${url}/review`}
-                    component={ReviewOpportunity}
-                    exact
-                  />
-                  <Route
-                    path={`${url}/success`}
-                    component={ReviewSubmitted}
-                    exact
-                  />
-                </>
-              )}
-            />
-            <Route path="/investment/*:path" component={OpportunityPage} />
-            <Route exact path="/search">
-              <InvestorMainView />
-            </Route>
-          </Switch>
-        </Router>
-
-        <div className="footer">
-          <Footer />
+    <AuthStateContext.Consumer>
+      {() => (
+        <div className="app-container">
+          <LoadingBar
+            style={{
+              zIndex: 9999,
+              backgroundColor: "#fcba19",
+              height: "3px",
+            }}
+          />
+          <Router>
+            <Header header={header} />
+            <Switch>
+              <Redirect exact from="/" to="/search" />
+              <AppRoute
+                title={getTitle("Login")}
+                path="/login"
+                component={Login}
+              />
+              <AppRoute
+                title={getTitle("Logout")}
+                path="/logout"
+                component={Logout}
+              />
+              <AppRoute
+                title={getTitle("Access Denied - Login to continue")}
+                path="/forbidden"
+                component={AccessDenied}
+              />
+              <AppRoute
+                protected
+                title={getTitle("Opportunity Dashboard")}
+                path="/dashboard"
+                layout={AuthLayout}
+                component={EDODashboard}
+              />
+              <AppRoute
+                protected
+                exact
+                path="/addOpportunity"
+                title={getTitle("Add Opportunity Parcel")}
+                layout={AuthLayout}
+                component={AddOpportunity}
+              />
+              <AppRoute
+                protected
+                exact
+                path="/addOpportunity/siteDetails"
+                title={getTitle("Opportunity Site Information")}
+                layout={AuthLayout}
+                component={SiteInfomation}
+              />
+              <AppRoute
+                protected
+                exact
+                path="/addOpportunity/propDetails1"
+                title={getTitle("Add Property Details")}
+                layout={AuthLayout}
+                component={PropertyDetails1}
+              />
+              <AppRoute
+                protected
+                exact
+                path="/addOpportunity/propDetails2"
+                title={getTitle("Add Additional Details")}
+                layout={AuthLayout}
+                component={PropertyDetails2}
+              />
+              <AppRoute
+                protected
+                exact
+                path="/addOpportunity/review"
+                title={getTitle("Opportunity Review & Submit")}
+                layout={AuthLayout}
+                component={ReviewOpportunity}
+              />
+              <AppRoute
+                protected
+                exact
+                path="/addOpportunity/success"
+                title={getTitle("Opportunity Submitted!")}
+                layout={AuthLayout}
+                component={ReviewSubmitted}
+              />
+              <AppRoute path="/investment/*:path" component={OpportunityPage} />
+              <AppRoute
+                protected
+                path="/investment/*:path/approve"
+                layout={AuthLayout}
+                component={OpportunityApprovePage}
+              />
+              <AppRoute path="/search" component={InvestorMainView} />
+            </Switch>
+            <div className="footer">
+              <Footer />
+            </div>
+          </Router>
         </div>
-      </div>
-    </Provider>
+      )}
+    </AuthStateContext.Consumer>
   );
 }
 
