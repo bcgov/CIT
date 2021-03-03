@@ -1,12 +1,13 @@
 import React from "react";
 import Proptypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { useLocation, useHistory, NavLink } from "react-router-dom";
-import { Container } from "react-bootstrap";
+import { useLocation, useHistory } from "react-router-dom";
+import { Button, Container } from "react-bootstrap";
 import OpportunityView from "../../OpportunityView/OpportunityView";
 import {
   setOpportunity,
   getOpportunity,
+  resetOpportunity,
 } from "../../../store/actions/opportunity";
 import OpportunityFactory from "../../../store/factory/OpportunityFactory";
 import styles from "./OpportunityPage.module.css";
@@ -34,13 +35,23 @@ const OpportunityPage = ({ id }) => {
     history.push("/");
   }
 
+  const resetState = (e) => {
+    dispatch(resetOpportunity());
+    history.goBack();
+    e.preventDefault();
+  };
+
   return (
     <div className={styles.OpportunityPage} data-testid="OpportunityPage">
       <PortalHeader />
       <Container className="p-0">
-        <NavLink className="mt-2" to={document.referrer}>
+        <Button
+          className="a-tag mt-2 p-0"
+          onClick={resetState}
+          onKeyDown={resetState}
+        >
           {"<<"} Return to Search
-        </NavLink>
+        </Button>
       </Container>
       <OpportunityView view="all" />
     </div>
