@@ -4,13 +4,17 @@ import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import OpportunityListContainer from "../../OpportunitiesListContainer/OpportunitiesListContainer";
 import OpportunityMapContainer from "../../OpportunityDisplayMap/OpportunityMapContainer/OpportunityMapContainer";
 import Flyout from "../../Flyout/Flyout";
+import DummyFlyoutContent from "./DummyFlyoutContent";
 
 export default function InvestorMainView() {
   const [totalCount, setTotalCount] = useState(0);
   return (
     <div className="w-100">
       <PortalHeader title="Investor Portal" text="Description" />
-      <Flyout>
+      <Flyout
+        flyoutComponent={DummyFlyoutContent}
+        flyoutProps={{ title: "Filters", text: "General Details" }}
+      >
         <Container>
           <Row>
             <Col>
