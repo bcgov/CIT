@@ -59,8 +59,11 @@ def import_resource(resource_type):
 
 
 def import_wms_resource(resource):
+    query = None
+    if resource.name == 'lakes':
+        query = "FEATURE_AREA_SQM >= 1000000"
 
-    ds = bcdata.get_data(resource.dataset, as_gdf=True)
+    ds = bcdata.get_data(resource.dataset, as_gdf=True, query=query)
 
     for index, row in ds.iterrows():
         model_class = apps.get_model("pipeline", resource.model_name)
@@ -68,7 +71,7 @@ def import_wms_resource(resource):
         if resource.name in LOCATION_RESOURCES:
             instance = import_data_into_point_model(resource.name, model_class, row)
         else:
-            instance = import_data_into_area_model(resource.name, model_class, row)
+            instance = import_data_into_area_model(resource.display_name, model_class, row, index)
             geos_geom_out, geos_geom_simplified = _generate_bcdata_geom(row, srid=BC_ALBERS_SRID)
             instance.geom = geos_geom_out
             instance.geom_simplified = geos_geom_simplified
