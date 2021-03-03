@@ -3,9 +3,12 @@ import PropTypes from "prop-types";
 import { Button } from "shared-components";
 import { useHistory, NavLink } from "react-router-dom";
 import "./ButtonRow.css";
+import { useDispatch } from "react-redux";
+import { resetOpportunity } from "../../store/actions/opportunity";
 
 export default function ButtonRow({ onClick, prevRoute, noContinue }) {
   const history = useHistory();
+  const dispatch = useDispatch();
   return (
     <Container className="bottom">
       {prevRoute && (
@@ -20,7 +23,10 @@ export default function ButtonRow({ onClick, prevRoute, noContinue }) {
       <Row>
         <Col>
           <Button
-            onClick={() => history.push("/")}
+            onClick={() => {
+              dispatch(resetOpportunity());
+              history.push("/dashboard");
+            }}
             label="Cancel & Return to Dashboard"
             styling=" BC-Gov-SecondaryButton bc-gov-btn"
           />
