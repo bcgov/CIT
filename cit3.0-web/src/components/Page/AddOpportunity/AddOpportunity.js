@@ -10,11 +10,16 @@ import { getAddressData } from "../../../helpers/resourceCalls";
 import PropertyInfo from "../../PropertyInfo/PropertyInfo";
 import PageTitleHeader from "../../Headers/PageTitleHeader/PageTitleHeader";
 import ButtonRow from "../../ButtonRow/ButtonRow";
+import { getParcelData, getPID } from "../../../helpers/parcelData";
 import {
   setAddress,
   setCoords,
   setNearbyResources,
   setResourceIds,
+  setPID,
+  setGeometry,
+  setParcelOwner,
+  setParcelSize,
 } from "../../../store/actions/opportunity";
 
 export default function AddOpportunity({ match }) {
@@ -22,6 +27,14 @@ export default function AddOpportunity({ match }) {
   const dispatch = useDispatch();
   const address = useSelector((state) => state.opportunity.address);
   const coords = useSelector((state) => state.opportunity.coords);
+  const siteInfo = useSelector((state) => state.opportunity.siteInfo);
+  const PID = useSelector((state) => state.opportunity.siteInfo.PID.value);
+  const parcelSize = useSelector(
+    (state) => state.opportunity.siteInfo.parcelSize.value
+  );
+  const parcelOwner = useSelector(
+    (state) => state.opportunity.siteInfo.parcelOwnership.name
+  );
   const nearbyResources = useSelector(
     (state) => state.opportunity.nearbyResources
   );
@@ -34,6 +47,7 @@ export default function AddOpportunity({ match }) {
   const text2 =
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 
+  // The PID and parcel data is now retrieved and set here as well
   const getCoords = async (addy) => {
     const data = await getAddressData(addy);
     dispatch(
@@ -41,6 +55,17 @@ export default function AddOpportunity({ match }) {
         data.data.features[0].geometry.coordinates[1],
         data.data.features[0].geometry.coordinates[0],
       ])
+    );
+    const pid = await getPID(data.data.features[0].properties.siteID);
+    dispatch(setPID(pid));
+    const parcelData = await getParcelData(pid);
+    dispatch(setGeometry(parcelData.data.features[0].geometry.coordinates));
+    dispatch(setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE));
+    // convert sqM to acres
+    dispatch(
+      setParcelSize(
+        parcelData.data.features[0].properties.FEATURE_AREA_SQM * 0.000247105
+      )
     );
   };
 
@@ -69,14 +94,17 @@ export default function AddOpportunity({ match }) {
             <Row className="top">
               <Col>
                 <AddressSearchBar
-                  setAddress={(adress) => dispatch(setAddress(adress))}
+                  setAddress={(addy) => dispatch(setAddress(addy))}
                   getCoords={getCoords}
                 />
-                {address ? (
+                {parcelSize > 5 ? (
                   <>
                     <PropertyInfo info={address} tag={false} />
-                    <PropertyInfo info="Ownership: <ownership_type>" />
-                    <PropertyInfo info="Parcel Size: <size> ha" />
+                    <PropertyInfo info={`Ownership: ${parcelOwner}`} />
+                    <PropertyInfo
+                      info={`Parcel Size: ${parcelSize.toFixed(2)} acres`}
+                    />
+                    <PropertyInfo info={`PID: ${PID}`} />
                   </>
                 ) : null}
               </Col>

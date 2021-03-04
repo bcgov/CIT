@@ -248,13 +248,21 @@ export const OPPORTUNITY_MODEL = {
       title: "Parcel size",
       value: "5",
       type: "size",
-      suffix: "ha",
+      suffix: "acres",
     },
     PID: {
       title: "PID",
       value: "456-234-456",
       type: "text",
     },
+    geometry: {
+      polygon: [[]],
+    },
+    // siteId: {
+    //   title: "Site ID",
+    //   value: "xyz",
+    //   type: "text",
+    // },
   },
   userInfo: {
     saleOrLease: { title: "Sale or Lease", value: "", type: "text" },
@@ -391,6 +399,10 @@ export class Opportunity {
 
   set PID(value) {
     this.state.siteInfo.PID.value = value;
+  }
+
+  set geometry(value) {
+    this.state.siteInfo.geometry.polygon = value;
   }
 
   // User Info

@@ -3,6 +3,10 @@ import {
   ADD_ALL,
   ADD_ADDRESS,
   ADD_COORDS,
+  ADD_PID,
+  ADD_GEOMETRY,
+  ADD_PARCEL_OWNER,
+  ADD_PARCEL_SIZE,
   ADD_BUSINESS_CONTACT,
   ADD_BUSINESS_CONTACT_NAME,
   ADD_BUSINESS_CONTACT_EMAIL,
@@ -93,6 +97,38 @@ export function setBusinessContactEmail(bEmail) {
  */
 export function setSiteInfo(sInfo) {
   return { type: ADD_SITE_INFO, payload: sInfo };
+}
+
+/**
+ * @param {string} pid
+ * @return {Object} for redux reducer
+ */
+export function setPID(pid) {
+  return { type: ADD_PID, payload: pid };
+}
+
+/**
+ * @param {Array} geom
+ * @return {Object} for redux reducer
+ */
+export function setGeometry(geom) {
+  return { type: ADD_GEOMETRY, payload: geom };
+}
+
+/**
+ * @param {string} owner
+ * @return {Object} for redux reducer
+ */
+export function setParcelOwner(owner) {
+  return { type: ADD_PARCEL_OWNER, payload: owner };
+}
+
+/**
+ * @param {Number} size
+ * @return {Object} for redux reducer
+ */
+export function setParcelSize(size) {
+  return { type: ADD_PARCEL_SIZE, payload: size };
 }
 
 /**
