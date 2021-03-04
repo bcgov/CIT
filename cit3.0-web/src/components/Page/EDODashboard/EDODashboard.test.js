@@ -1,9 +1,11 @@
 import { render, cleanup, waitFor } from "@testing-library/react";
 import axios from "axios";
+import { Router } from "react-router-dom";
+import { createMemoryHistory } from "history";
 import EDODashboard from "./EDODashboard";
 
 afterEach(cleanup);
-
+const history = createMemoryHistory();
 describe("EDODashboard", () => {
   it("Renders a clickable next button", async () => {
     axios.get.mockResolvedValueOnce({
@@ -12,7 +14,11 @@ describe("EDODashboard", () => {
       },
     });
 
-    const { getByText } = render(<EDODashboard />);
+    const { getByText } = render(
+      <Router history={history}>
+        <EDODashboard />
+      </Router>
+    );
     expect(axios.get).toHaveBeenCalledTimes(1);
     await waitFor(() => {
       expect(getByText(/Add your first/i).textContent).toBe(
@@ -28,7 +34,11 @@ describe("EDODashboard", () => {
       },
     });
 
-    const { getByText } = render(<EDODashboard />);
+    const { getByText } = render(
+      <Router history={history}>
+        <EDODashboard />
+      </Router>
+    );
     expect(getByText(/How it /i).textContent).toBe("How it works");
     expect(getByText(/We invite you to/i).textContent).toContain(
       "We invite you to promote up to 5 opportunities for investment"
@@ -42,7 +52,11 @@ describe("EDODashboard", () => {
       },
     });
 
-    const { getByText } = render(<EDODashboard />);
+    const { getByText } = render(
+      <Router history={history}>
+        <EDODashboard />
+      </Router>
+    );
     await waitFor(() => {
       expect(getByText(/As soon as you add/i).textContent).toContain(
         "As soon as you add opportunities, you can see"
@@ -56,30 +70,41 @@ describe("EDODashboard", () => {
         results: [
           {
             id: 1,
-            opportunityAddress: "1234 Test Pl.",
-            coords: [48.4774108, -123.8687427],
-            approvalStatus: "PEND",
-            dateCreated: "2021-02-16T17:34:38.184663Z",
+            opportunity_address: "1234 Test Pl.",
+            point: "SRID=4326;POINT (-123.8687427 48.4774108)",
+            approval_status: "PEND",
+            date_created: "2021-02-16T17:34:38.184663Z",
           },
           {
             id: 2,
-            opportunityAddress: "5678 Test Ave.",
-            coords: [48.452708, -123.369984],
-            approvalStatus: "PUBL",
-            dateCreated: "2021-02-16T17:34:38.184663Z",
+            opportunity_address: "5678 Test Ave.",
+            point: "SRID=4326;POINT (-123.369984 48.452708)",
+            approval_status: "PUBL",
+            date_created: "2021-02-16T17:34:38.184663Z",
           },
           {
             id: 3,
-            opportunityAddress: "9999 Test Rd.",
-            coords: [48.4527115, -123.3721727],
-            approvalStatus: "EDIT",
-            dateCreated: "2021-02-16T17:34:38.184663Z",
+            opportunity_address: "9999 Test Rd.",
+            point: "SRID=4326;POINT (-123.3721727 48.4527115)",
+            approval_status: "EDIT",
+            date_created: "2021-02-16T17:34:38.184663Z",
+          },
+          {
+            id: 4,
+            opportunity_address: "5555 Test St.",
+            point: "SRID=4326;POINT (-123.3721727 48.4527115)",
+            approval_status: "NCOM",
+            date_created: "2021-02-16T17:34:38.184663Z",
           },
         ],
       },
     });
 
-    const { getByText } = render(<EDODashboard />);
+    const { getByText } = render(
+      <Router history={history}>
+        <EDODashboard />
+      </Router>
+    );
     expect(axios.get).toHaveBeenCalledTimes(1);
     await waitFor(() => {
       expect(getByText(/1234/i).textContent).toBe("1234 Test Pl.");

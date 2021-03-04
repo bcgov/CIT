@@ -1,18 +1,26 @@
 import requests
+import bcdata
 
 from django.apps import apps
 
-from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA
+from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA, BC_ALBERS_SRID
 from pipeline.models.general import DataSource
-from pipeline.importers.utils import (
-    import_data_into_point_model, calculate_nearest_location_type_outside_50k, get_databc_last_modified_date,
-    get_openca_last_modified_date)
+from pipeline.importers.utils import (import_data_into_point_model, import_data_into_area_model,
+                                      calculate_nearest_location_type_outside_50k,
+                                      get_databc_last_modified_date, get_openca_last_modified_date,
+                                      _generate_geom, _generate_bcdata_geom)
 
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}&limit=10000"
+LOCATION_RESOURCES = [
+    'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities',
+    'closed_mills', 'airports', 'port_and_terminal', 'eao_projects', 'laboratory_service',
+    'local_govt_offices', 'emergency_social_service_facilities', 'natural_resource_projects'
+]
 
 
 def import_databc_resources(resource_type):
-    databc_resource_names = DataSource.objects.filter(source_type="api").values_list("name", flat=True)
+    databc_resource_names = DataSource.objects.filter(source_type="api").values_list("name",
+                                                                                     flat=True)
     if resource_type not in ['all', *databc_resource_names]:
         print("Error: Resource type {} not supported".format(resource_type))
         return
@@ -40,7 +48,7 @@ def import_resource(resource_type):
         model_class = apps.get_model("pipeline", data_source.model_name)
         import_data_into_point_model(resource_type, model_class, row)
 
-    calculate_nearest_location_type_outside_50k(resource_type)
+    # calculate_nearest_location_type_outside_50k(resource_type)
 
     if data_source.source == SOURCE_DATABC:
         data_source.last_updated = get_databc_last_modified_date(data_source)
@@ -48,3 +56,24 @@ def import_resource(resource_type):
     elif data_source.source == SOURCE_OPENCA:
         data_source.last_updated = get_openca_last_modified_date(data_source)
         data_source.save()
+
+
+def import_wms_resource(resource):
+    query = None
+    if resource.name == 'lakes':
+        query = "FEATURE_AREA_SQM >= 1000000"
+
+    ds = bcdata.get_data(resource.dataset, as_gdf=True, query=query)
+
+    for index, row in ds.iterrows():
+        model_class = apps.get_model("pipeline", resource.model_name)
+        print(resource.name)
+        if resource.name in LOCATION_RESOURCES:
+            instance = import_data_into_point_model(resource.name, model_class, row)
+        else:
+            instance = import_data_into_area_model(resource.display_name, model_class, row, index)
+            geos_geom_out, geos_geom_simplified = _generate_bcdata_geom(row, srid=BC_ALBERS_SRID)
+            instance.geom = geos_geom_out
+            instance.geom_simplified = geos_geom_simplified
+
+        instance.save()

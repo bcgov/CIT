@@ -1,0 +1,5 @@
+{
+    "url": "http://localhost:8080/auth",
+    "realm": "cit-dev-realm",
+    "clientId": "cit-dev"
+}

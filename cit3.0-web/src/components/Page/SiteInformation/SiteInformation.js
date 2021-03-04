@@ -14,7 +14,7 @@ export default function SiteInformation({ location }) {
   const history = useHistory();
   const goToNextPage = () => {
     history.push({
-      pathname: `propDetails1`,
+      pathname: `/addOpportunity/propDetails1`,
       state: { stuff: "stuff" },
     });
   };

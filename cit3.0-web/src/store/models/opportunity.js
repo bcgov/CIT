@@ -119,21 +119,21 @@ export const OPPORTUNITY_MODEL = {
       suffix: "km",
     },
     nearResearchCenter: {
-      title: "Nearest Research Center",
+      title: "Research Center within 100km",
       name: "Yes",
       value: 10,
       type: "distance",
       suffix: "km",
     },
     nearHealth: {
-      title: "Nearest Health Care Facility",
+      title: "Health Care Facility within 100km",
       name: "Yes",
       value: 11,
       type: "distance",
       suffix: "km",
     },
     nearFire: {
-      title: "Nearest First Responders",
+      title: "First Responders within 100km",
       subtitle: "- Fire",
       name: "Yes",
       value: 1,
@@ -141,7 +141,7 @@ export const OPPORTUNITY_MODEL = {
       suffix: "km",
     },
     nearAmbulance: {
-      title: "Nearest First Responders",
+      title: "First Responders within 100km",
       subtitle: "- Ambulance",
       name: "Yes",
       value: 6,
@@ -149,7 +149,7 @@ export const OPPORTUNITY_MODEL = {
       suffix: "km",
     },
     nearPolice: {
-      title: "Nearest First Responders",
+      title: "First Responders within 100km",
       subtitle: "- Police",
       name: "No",
       value: 0,
@@ -157,7 +157,7 @@ export const OPPORTUNITY_MODEL = {
       suffix: "km",
     },
     nearCoastGuard: {
-      title: "Nearest First Responders",
+      title: "First Responders within 100km",
       subtitle: "- Coast Guard",
       name: "Yes",
       value: 35,
@@ -165,7 +165,7 @@ export const OPPORTUNITY_MODEL = {
       suffix: "km",
     },
     nearSecondarySchool: {
-      title: "Nearest Post-Secondary Institution",
+      title: "Post-Secondary Education Facility within 100km",
       name: "Yes",
       value: 10,
       type: "distance",
@@ -295,7 +295,7 @@ export const OPPORTUNITY_MODEL = {
  */
 export class Opportunity {
   constructor() {
-    this.state = OPPORTUNITY_MODEL;
+    this.state = { ...OPPORTUNITY_MODEL };
   }
 
   set id(value) {

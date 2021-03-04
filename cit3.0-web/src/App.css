@@ -6,11 +6,40 @@
 
 .app-container header,
 .app-container .footer {
-  flex: 0
+  flex: 0;
 }
 
-.app-container #search-page-layout {
+main {
+  padding: 0;
   flex: 1;
+  
+}
+
+button.a-tag.a-tag {
+  cursor: pointer;
+  color: #1a5a96;
+  text-decoration: underline;
+  background: transparent;
+  border: none;
+}
+button.a-tag.a-tag:hover {
+  color: #0631f3 !important;
+}
+button.a-tag.a-tag:active {
+  color: #0631f3 !important;
+  background-color: transparent !important;
+  border-color: none !important;
+}
+
+.center-spinner {
+  position: relative;
+}
+
+.center-spinner .spinner-border {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #244278;
 }
 
 .invest-container {

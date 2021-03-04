@@ -1,12 +1,14 @@
 import csv
 
 from django.contrib.gis.geos import Point
+from django.db.utils import IntegrityError
+from django.contrib.gis.measure import D
 
 from pipeline.models.community import Community
 from pipeline.models.general import WildfireZone, TsunamiZone, Road, Municipality
 from pipeline.models.census import CensusSubdivision
-from django.db.utils import IntegrityError
-from django.contrib.gis.measure import D
+
+from pipeline.constants import BC_ALBERS_SRID
 
 
 def import_communities_from_csv(communities_file_path):
@@ -15,8 +17,8 @@ def import_communities_from_csv(communities_file_path):
         for row in csv_reader:
             place_id = row["Place ID"]
 
-            print("{place_name} ({place_id})".format(
-                place_name=row["Place Name"], place_id=place_id))
+            print("{place_name} ({place_id})".format(place_name=row["Place Name"],
+                                                     place_id=place_id))
 
             try:
                 community = Community.objects.get(place_id=place_id)
@@ -25,7 +27,9 @@ def import_communities_from_csv(communities_file_path):
 
             community.place_name = row["Place Name"]
 
-            community.point = Point(float(row["Longitude"]), float(row["Latitude"]), srid=4326)
+            community.point = Point(float(row["Longitude"]),
+                                    float(row["Latitude"]),
+                                    srid=BC_ALBERS_SRID)
 
             # TODO: spatial query?
             try:
@@ -33,9 +37,11 @@ def import_communities_from_csv(communities_file_path):
                 community.census_subdivision_id = census_subdivision.id
             except CensusSubdivision.DoesNotExist:
                 # TODO: spatial query
-                print("CensusSubdivision {} corresponding to Community {} was not found in the CensusSubdivision data"
-                      .format(row['CSDUID'], community.place_name))
-                census_subdivisions = CensusSubdivision.objects.filter(geom__contains=community.point)
+                print(
+                    "CensusSubdivision {} corresponding to Community {} was not found in the CensusSubdivision data"
+                    .format(row['CSDUID'], community.place_name))
+                census_subdivisions = CensusSubdivision.objects.filter(
+                    geom__contains=community.point)
                 print("performing spatial search for census subdivision", census_subdivisions)
                 if census_subdivisions:
                     community.census_subdivision_id = census_subdivisions.first().id
@@ -44,9 +50,9 @@ def import_communities_from_csv(communities_file_path):
             # points inside the polygon return a distance of 0
             # https://postgis.net/docs/ST_DistanceSphere.html
             community.wildfire_zone = WildfireZone.objects.filter(
-                geom__distance_lt=(community.point, D(m=5000))
-            ).first()
-            community.tsunami_zone = TsunamiZone.objects.filter(geom__distance_lt=(community.point, D(m=5000))).first()
+                geom__distance_lt=(community.point, D(m=5000))).first()
+            community.tsunami_zone = TsunamiZone.objects.filter(
+                geom__distance_lt=(community.point, D(m=5000))).first()
 
             community.hexuid_id = row['HEXID']
             community.community_type = row['Place Type']
@@ -61,7 +67,8 @@ def import_communities_from_csv(communities_file_path):
 
             if community.incorporated:
                 try:
-                    community.municipality = Municipality.objects.get(geom__contains=community.point)
+                    community.municipality = Municipality.objects.get(
+                        geom__contains=community.point)
                 except Municipality.DoesNotExist:
                     print("Error: Municipality not found for {}!".format(community.place_name))
 
@@ -96,13 +103,15 @@ def import_communities_from_csv(communities_file_path):
 
             community.nearest_substation_name = row['Nearest Substation Name']
             try:
-                community.nearest_substation_distance = float(row['Distance to Nearest Substation (km)'])
+                community.nearest_substation_distance = float(
+                    row['Distance to Nearest Substation (km)'])
             except ValueError:
                 # nearest_substation_distance is null
                 pass
 
             try:
-                community.nearest_transmission_distance = float(row['Distance to Nearest Transmission Line (km)'])
+                community.nearest_transmission_distance = float(
+                    row['Distance to Nearest Transmission Line (km)'])
             except ValueError:
                 # nearest_transmission_distance is null
                 pass

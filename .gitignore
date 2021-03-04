@@ -42,6 +42,7 @@ share/python-wheels/
 *.egg
 MANIFEST
 cit-api/static/
+cit-api/data/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template

@@ -3,13 +3,12 @@ import PropTypes from "prop-types";
 import { Container, Col, Row } from "react-bootstrap";
 // import Switch from "react-switch";
 import { Button } from "shared-components";
-import NumberRangeFilter from "../NumberRangeFilter/NumberRangeFilter";
 import "./Flyout.scss";
 
 export default function Flyout(props) {
   const [leftOpenState, setLeftOpenState] = useState(false);
 
-  const { children } = props;
+  const { children, flyoutComponent: FlyoutComponent, flyoutProps } = props;
 
   // let waterSwitchValue = false;
 
@@ -34,14 +33,7 @@ export default function Flyout(props) {
             />
           </div>
           <div className="content">
-            <h2>Filter your search</h2>
-            <h3>General site details</h3>
-            <NumberRangeFilter />
-            <br />
-            {/* <Switch
-              checked={waterSwitchValue}
-              onChange={updateWaterSwitchValue(waterSwitchValue)}
-            /> */}
+            <FlyoutComponent {...flyoutProps} />
           </div>
         </div>
       </div>
@@ -61,16 +53,19 @@ export default function Flyout(props) {
           </Row>
         </Container>
       </div>
-
-      <div>{children}</div>
+      <div className="children">{children}</div>
     </div>
   );
 }
 
 Flyout.defaultProps = {
   children: <div />,
+  flyoutComponent: () => <div />,
+  flyoutProps: {},
 };
 
 Flyout.propTypes = {
   children: PropTypes.node,
+  flyoutComponent: PropTypes.func,
+  flyoutProps: PropTypes.shape(),
 };
