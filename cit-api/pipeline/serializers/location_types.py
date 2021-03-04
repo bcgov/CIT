@@ -120,8 +120,6 @@ class HospitalSerializer(serializers.ModelSerializer):
 
 
 class NaturalResourceProjectSerializer(serializers.ModelSerializer):
-    standardized_start_date = serializers.DateField(source='get_standardized_start_date_as_date')
-    standardized_completion_date = serializers.DateField(source='get_standardized_completion_date_as_date')
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
     community = serializers.IntegerField(source="closest_community_id")
@@ -139,26 +137,11 @@ class NaturalResourceProjectSerializer(serializers.ModelSerializer):
             "location_website",
             "project_comments",
             "project_description",
-            "estimated_cost",
-            "update_activity",
-            "construction_type",
-            "construction_subtype",
+            "proponent",
             "project_type",
-            "developer",
-            "architect",
-            "project_status",
-            "project_stage",
-            "project_category_name",
-            "provinvial_funding",
-            "federal_funding",
-            "municipal_funding",
-            "green_building_ind",
-            "green_building_desc",
-            "clean_energy_ind",
-            "construction_jobs",
-            "operating_jobs",
-            "standardized_start_date",
-            "standardized_completion_date",
+            "eao_project_status",
+            "project_category",
+            "project_location",
         )
 
 
@@ -412,19 +395,19 @@ class AirportSerializer(serializers.ModelSerializer):
             "community",
             "location_website",
             "location_phone",
-            "descriptn",
+            "description",
             "keywords",
-            "aer_status",
-            "aircr_acs",
-            "data_srce",
-            "datasrc_yr",
+            "aerodrome_status",
+            "aircraft_access_ind",
+            "data_source",
+            "data_source_year",
             "elevation",
-            "fuel_avail",
-            "heli_acs",
-            "iata",
-            "mx_rway_ln",
-            "num_rway",
-            "rway_surf",
-            "oil_avail",
-            "seapln_acc",
+            "fuel_availability_ind",
+            "helicopter_access_ind",
+            "iata_code",
+            "max_runway_length",
+            "number_of_runways",
+            "runway_surface",
+            "oil_availability_ind",
+            "seaplane_access_ind",
         )
