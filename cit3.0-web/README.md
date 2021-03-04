@@ -3,12 +3,21 @@
 The Community Investment Opportunity Tool is a place where Economic Development Officers (EDO) can go to post possible investment opportunities for their respective communities. This tool includes a user authenticated portion where EDO's can go to see their currently posted investment opportunities as well as post new ones. It also includes a public facing view where possible investors can go to see all the currently available opportunities in the province or narrow down the opportunities on a set of filterable
 criteria.
 
+## Prerequisites:
+1. Copy environment variables
+```bash
+cp .env.template .env
+```
+2. Start all CIT docker containers
+3. Set up keycloak
+   * Navigate to keycloak instance: https://localhost:8080
+   * Follow this [article](https://medium.com/keycloak/keycloak-realm-client-configuration-dfd7c8583489) to set up realm and client.
+
 ## Available Scripts
 
 In the project directory, you can run:
 
 ### `yarn start`
-
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
