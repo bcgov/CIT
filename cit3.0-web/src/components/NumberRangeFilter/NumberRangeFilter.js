@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./NumberRangeFilter.css";
+import "./NumberRangeFilter.scss";
 import { Button } from "shared-components";
 import { Modal, Row, Container } from "react-bootstrap";
 import InputRange from "react-input-range";
@@ -7,7 +7,7 @@ import TextInput from "../FormComponents/TextInput";
 import Validator from "../FormComponents/Validator";
 import "react-input-range/src/scss/index.scss";
 
-export default function NumberRangeFilter() {
+export default function NumberRangeFilter(props) {
   const [show, setShow] = useState(false);
   const [inputRangeValue, setInputRangeValue] = useState({
     min: 0,
@@ -17,12 +17,12 @@ export default function NumberRangeFilter() {
   const [maxInput, setMaxInput] = useState(50000);
   const [validMax, setValidMax] = useState(true);
   const [validMin, setValidMin] = useState(true);
+  const [displayRange, setDisplayRange] = useState({});
+  const [isSelected, setIsSelected] = useState(false);
 
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
-
-  const maxValue = 50000;
-  const minValue = 0;
+  const inputRangeMax = 50000;
+  const inputRangeMin = 0;
+  const units = "acres";
 
   const minName = "number-range-min";
   const maxName = "number-range-max";
@@ -32,7 +32,7 @@ export default function NumberRangeFilter() {
       return false;
     }
 
-    if (value < minValue || value > maxValue) {
+    if (value < inputRangeMin || value > inputRangeMax) {
       return false;
     }
 
@@ -72,11 +72,11 @@ export default function NumberRangeFilter() {
     const updatedValue = { ...value };
 
     // Fix component allowing you select values beyond min/max range by clicking the edges of the input range
-    if (updatedValue.min < minValue) {
-      updatedValue.min = minValue;
+    if (updatedValue.min < inputRangeMin) {
+      updatedValue.min = inputRangeMin;
     }
-    if (updatedValue.max > maxValue) {
-      updatedValue.max = maxValue;
+    if (updatedValue.max > inputRangeMax) {
+      updatedValue.max = inputRangeMax;
     }
 
     setInputRangeValue(updatedValue);
@@ -86,29 +86,64 @@ export default function NumberRangeFilter() {
     setValidMax(true);
   };
 
+  const handleSave = () => {
+    setIsSelected(true);
+    setShow(false);
+    setDisplayRange({
+      min: inputRangeValue.min,
+      max: inputRangeValue.max,
+    });
+  };
+  const handleClear = () => {
+    setInputRangeValue({ min: inputRangeMin, max: inputRangeMax });
+    setMaxInput(inputRangeMax);
+    setMinInput(inputRangeMin);
+    setValidMin(true);
+    setValidMax(true);
+  };
+  const handleShow = () => setShow(true);
+  const handleClose = () => {
+    setIsSelected(true);
+    setShow(false);
+  };
+
   return (
     <>
-      <Button
-        label="Parcel Size"
-        styling="bcgov-normal-white filter-button unselected btn"
-        onClick={handleShow}
-      />
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
+      {!isSelected ? (
+        <Button
+          label="Parcel Size"
+          styling="bcgov-normal-white filter-button unselected btn"
+          onClick={handleShow}
+        />
+      ) : (
+        <Button
+          label={`Parcel Size: ${displayRange.min}-${displayRange.max} ${units}`}
+          styling="bcgov-normal-blue filter-button selected btn"
+          onClick={handleShow}
+        />
+      )}
+
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Modal.Header>
           <Modal.Title>Parcel Size</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <p>Size of Property (in square feet)</p>
-          <div className="input-range-section">
-            <InputRange
-              maxValue={maxValue}
-              minValue={minValue}
-              value={inputRangeValue}
-              formatLabel={() => {}}
-              onChange={(value) => updateTextFields(value)}
-            />
-          </div>
           <Container fluid>
+            <div className="modal-input-range">
+              <InputRange
+                maxValue={inputRangeMax}
+                minValue={inputRangeMin}
+                value={inputRangeValue}
+                formatLabel={() => {}}
+                onChange={(value) => updateTextFields(value)}
+              />
+            </div>
             <Row className="d-flex justify-content-between">
               <div className="modal-text-input">
                 <TextInput
@@ -146,7 +181,17 @@ export default function NumberRangeFilter() {
           </Container>
         </Modal.Body>
         <Modal.Footer>
-          <p>Save</p>
+          <Button
+            label="Clear"
+            styling="bcgov-normal-white mr-auto modal-reset-button btn"
+            onClick={handleClear}
+          />
+          <Button
+            label="Save"
+            styling="bcgov-normal-blue modal-save-button btn"
+            onClick={handleSave}
+            disabled={!validMin || !validMax}
+          />
         </Modal.Footer>
       </Modal>
     </>

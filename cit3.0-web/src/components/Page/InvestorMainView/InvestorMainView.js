@@ -4,24 +4,14 @@ import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import OpportunityListContainer from "../../OpportunitiesListContainer/OpportunitiesListContainer";
 import OpportunityMapContainer from "../../OpportunityDisplayMap/OpportunityMapContainer/OpportunityMapContainer";
 import Flyout from "../../Flyout/Flyout";
-import DummyFlyoutContent from "./DummyFlyoutContent";
+import SearchFlyoutContent from "../../SearchFlyoutContent/SearchFlyoutContent";
 
 export default function InvestorMainView() {
   const [totalCount, setTotalCount] = useState(0);
   return (
     <div className="w-100">
       <PortalHeader title="Investor Portal" text="Description" />
-      <Flyout
-        flyoutComponent={DummyFlyoutContent}
-        flyoutProps={{
-          title: "Filters",
-          text: "General Details",
-          onClick: () => {
-            // eslint-disable-next-line
-            console.log("asd");
-          },
-        }}
-      >
+      <Flyout flyoutComponent={SearchFlyoutContent} flyoutProps={{}}>
         <Container>
           <Row>
             <Col>

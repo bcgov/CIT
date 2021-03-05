@@ -1,0 +1,29 @@
+.unselected {
+    color: #313132;
+    border-color: #707070;
+    border-width: 2px;
+}
+
+.selected {
+}
+
+.filter-button {
+    border-radius: 30px;
+    font-weight: 400;
+}
+
+.modal-text-input {
+    width: 140px
+}
+
+.modal-content {
+    .input-range__track--active {
+        background:#707070;
+        border-color: #707070;
+    }
+    
+    .input-range__slider {
+      background: #003366; 
+      border-color: #003366;
+    }
+}
