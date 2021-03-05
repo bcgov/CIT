@@ -29,6 +29,9 @@ export default {
       opportunity_name: state.name,
       business_contact_name: state.businessContactName,
       business_contact_email: state.businessContactEmail,
+      public_note: state.publicNote,
+      private_note: state.privateNote,
+      last_admin: state.lastAdmin,
     };
   },
   createStateFromResponse(response) {

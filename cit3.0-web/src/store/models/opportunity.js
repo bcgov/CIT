@@ -16,6 +16,12 @@ export const OPPORTUNITY_MODEL = {
   approvalStatus: "NEW",
   businessContactName: "",
   businessContactEmail: "",
+  publicNote: "",
+  privateNote: "",
+  lastAdmin: "",
+  dateCreated: "",
+  dateUpdated: "",
+  datePublished: "",
   resourceIds: {
     Hospitals: "5ff82cf4-0448-4063-804a-7321f0f2b4c6",
     Schools: "5832eff2-3380-435e-911b-5ada41c1d30b",

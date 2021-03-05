@@ -14,6 +14,9 @@ import {
   ADD_NAME,
   ADD_SERVICE,
   ADD_SERVICE_CAPACITY,
+  ADD_APPROVAL_STATUS,
+  ADD_PUBLIC_NOTE,
+  ADD_PRIVATE_NOTE,
 } from "../constants/action-types";
 
 import { OPPORTUNITY_MODEL } from "../models/opportunity";
@@ -46,6 +49,15 @@ export default function opportunity(state = { ...OPPORTUNITY_MODEL }, action) {
       break;
     case ADD_BUSINESS_CONTACT_EMAIL:
       state.businessContactEmail = action.payload;
+      break;
+    case ADD_APPROVAL_STATUS:
+      state.approvalStatus = action.payload;
+      break;
+    case ADD_PUBLIC_NOTE:
+      state.publicNote = action.payload;
+      break;
+    case ADD_PRIVATE_NOTE:
+      state.privateNote = action.payload;
       break;
     case ADD_BUSINESS_CONTACT:
       state.businessContactName = action.payload.name;

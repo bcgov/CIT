@@ -6,6 +6,9 @@ import {
   ADD_BUSINESS_CONTACT,
   ADD_BUSINESS_CONTACT_NAME,
   ADD_BUSINESS_CONTACT_EMAIL,
+  ADD_APPROVAL_STATUS,
+  ADD_PUBLIC_NOTE,
+  ADD_PRIVATE_NOTE,
   ADD_RESOUCE_IDS,
   ADD_NEARBY_RESOUCES,
   RESET_OPPORTUNITY,
@@ -28,6 +31,17 @@ import OpportunityFactory from "../factory/OpportunityFactory";
 export function postOpportunity(opportunityModel) {
   return axios.post(
     POST_OPPOTUNITIES_URL,
+    OpportunityFactory.createRequestFromModel(opportunityModel)
+  );
+}
+
+/**
+ * @param {Object} opportunityModel from redux store
+ * @return {Promise} of axios api call
+ */
+export function updateOpportunity(opportunityModel) {
+  return axios.put(
+    `${POST_OPPOTUNITIES_URL + opportunityModel.id}/`,
     OpportunityFactory.createRequestFromModel(opportunityModel)
   );
 }
@@ -85,6 +99,30 @@ export function setBusinessContactName(bName) {
  */
 export function setBusinessContactEmail(bEmail) {
   return { type: ADD_BUSINESS_CONTACT_EMAIL, payload: bEmail };
+}
+
+/**
+ * @param {Object} bEmail
+ * @return {Object} for redux reducer
+ */
+export function setApprovalStatus(bEmail) {
+  return { type: ADD_APPROVAL_STATUS, payload: bEmail };
+}
+
+/**
+ * @param {Object} bEmail
+ * @return {Object} for redux reducer
+ */
+export function setPrivateNote(bEmail) {
+  return { type: ADD_PRIVATE_NOTE, payload: bEmail };
+}
+
+/**
+ * @param {Object} bEmail
+ * @return {Object} for redux reducer
+ */
+export function setPublicNote(bEmail) {
+  return { type: ADD_PUBLIC_NOTE, payload: bEmail };
 }
 
 /**
