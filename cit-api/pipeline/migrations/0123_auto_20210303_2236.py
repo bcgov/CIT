@@ -5,8 +5,13 @@ from django.db import migrations, models
 
 def populate_statuses(apps, schema_editor):
     ApprovalStatus = apps.get_model("pipeline", "ApprovalStatus")
+
+    # Remove old status
+    ApprovalStatus.objects.filter(status_code="EDIT").delete()
+
     statuses = [
-        ["Pending Edit from Community User/EDO", "Opportunity has been saved by submitter in an incomplete state.", "EDIT"],
+        ["New", "Opportunity has just been submitted", "NEW"],
+        ["Pending Edit from Community User/EDO", "Opportunity has been saved by submitter in an incomplete state.", "NCOM"],
         ["New - Edited", "Opportunity has been udpate by EDO for further review", "NWED"],
         ["Closed/Won", "Opportunity has been Closed or Won.", "CLOS"]
     ]
@@ -19,6 +24,22 @@ def populate_statuses(apps, schema_editor):
         approval_status.active_status = True
         approval_status.save()
 
+def unpopulate_statuses(apps, schema_editor):
+    ApprovalStatus = apps.get_model("pipeline", "ApprovalStatus")
+    statuses = [
+        ["New - Edited", "Opportunity has been udpate by EDO for further review", "NWED"],
+        ["Closed/Won", "Opportunity has been Closed or Won.", "CLOS"]
+    ]
+    ApprovalStatus.objects.filter(status_code="NWED").delete()
+    ApprovalStatus.objects.filter(status_code="CLOS").delete()
+    ApprovalStatus.objects.filter(status_code="NEW").delete()
+    approval_status = ApprovalStatus()
+    approval_status.status_name = "Needs to be edited"
+    approval_status.status_description = "Opportunity has been sent back for editing."
+    approval_status.status_code = "EDIT"
+    approval_status.active_status = True
+    approval_status.save()
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -26,7 +47,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(populate_statuses),
+        migrations.RunPython(populate_statuses, unpopulate_statuses),
         migrations.AddField(
             model_name='opportunity',
             name='last_admin',

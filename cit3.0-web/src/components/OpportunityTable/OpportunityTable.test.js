@@ -24,7 +24,7 @@ const tableData = [
     id: 3,
     opportunity_address: "9999 Test Rd.",
     point: "SRID=3005;POINT (-123.3721727 48.4527115)",
-    approval_status: "EDIT",
+    approval_status: "NEW",
     date_created: "2021-02-16T17:34:38.184663Z",
   },
   {
@@ -64,7 +64,7 @@ describe("OpportunityTable", () => {
 
     expect(getByText(/Published/i)).toHaveClass("status-text-green");
     expect(getByText(/Pending Review/i)).toHaveClass("status-text-orange");
-    expect(getByText(/Needs to be edited/i)).toHaveClass("status-text-red");
+    expect(getByText(/New/i)).toHaveClass("status-text-green");
     expect(getByText(/Not completed/i)).toHaveClass("status-text-red");
   });
 

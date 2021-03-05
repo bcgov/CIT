@@ -13,7 +13,7 @@ export const OPPORTUNITY_MODEL = {
   name: "",
   address: "",
   coords: [54.1722, -124.1207],
-  approvalStatus: "PEND",
+  approvalStatus: "NEW",
   businessContactName: "",
   businessContactEmail: "",
   resourceIds: {

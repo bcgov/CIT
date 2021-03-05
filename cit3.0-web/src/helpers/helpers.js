@@ -33,14 +33,14 @@ export function toKebabCase(str = "") {
 }
 
 export function determineStatusTextColour(approvalStatus) {
+  if (approvalStatus === "NEW") {
+    return <div className="status-text-green">New</div>;
+  }
   if (approvalStatus === "PEND") {
     return <div className="status-text-orange">Pending Review</div>;
   }
   if (approvalStatus === "PUBL") {
     return <div className="status-text-green">Published</div>;
-  }
-  if (approvalStatus === "EDIT") {
-    return <div className="status-text-red">Needs to be edited</div>;
   }
   if (approvalStatus === "NCOM") {
     return <div className="status-text-red">Not completed</div>;
