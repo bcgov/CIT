@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import { Row, Col } from "react-bootstrap";
+import "./PropertyInfo.css";
 
 export default function PropertyInfo({ info, tag }) {
   return (
-    <Row className="my-4">
+    <Row className="padding">
       <Col>{tag ? <p>{info}</p> : <h3>{info}</h3>}</Col>
     </Row>
   );
