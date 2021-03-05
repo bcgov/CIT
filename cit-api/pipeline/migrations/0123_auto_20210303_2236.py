@@ -6,7 +6,7 @@ from django.db import migrations, models
 def populate_statuses(apps, schema_editor):
     ApprovalStatus = apps.get_model("pipeline", "ApprovalStatus")
     statuses = [
-        ["Pending Edit from Community User/EDO", "Opportunity has been saved by submitter in an incomplete state.", "NCOM"],
+        ["Pending Edit from Community User/EDO", "Opportunity has been saved by submitter in an incomplete state.", "EDIT"],
         ["New - Edited", "Opportunity has been udpate by EDO for further review", "NWED"],
         ["Closed/Won", "Opportunity has been Closed or Won.", "CLOS"]
     ]
