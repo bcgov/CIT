@@ -16,6 +16,10 @@ class Opportunity(models.Model):
                                         on_delete=models.PROTECT)
     date_created = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(auto_now=True)
+    date_published = models.DateTimeField(auto_now=False, blank=True, null=True)
+    private_note  = models.TextField(blank=True, null=True)
+    public_note  = models.TextField(blank=True, null=True)
+    last_admin  = models.TextField(blank=True, null=True)
     # Site Info
     opportunity_address = models.CharField(max_length=255, null=False)
     opportunity_name = models.TextField(blank=False, null=True)

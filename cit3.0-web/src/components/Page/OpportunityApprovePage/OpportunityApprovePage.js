@@ -1,17 +1,19 @@
 import React from "react";
 import Proptypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
+import { Button, Container } from "react-bootstrap";
 import OpportunityView from "../../OpportunityView/OpportunityView";
 import {
   setOpportunity,
   getOpportunity,
+  resetOpportunity,
 } from "../../../store/actions/opportunity";
 import OpportunityFactory from "../../../store/factory/OpportunityFactory";
 import styles from "./OpportunityApprovePage.module.css";
-import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 
 const OpportunityApprovePage = ({ id }) => {
+  const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
   let opId = id;
@@ -28,13 +30,26 @@ const OpportunityApprovePage = ({ id }) => {
       document.title = `Investment Approval - ${opportunity.name}`;
     });
   }
+  const resetState = (e) => {
+    dispatch(resetOpportunity());
+    history.goBack();
+    e.preventDefault();
+  };
 
   return (
     <div
       className={styles.OpportunityApprovePage}
       data-testid="OpportunityApprovePage"
     >
-      <PortalHeader />
+      <Container className="p-0">
+        <Button
+          className="a-tag mt-2 p-0"
+          onClick={resetState}
+          onKeyDown={resetState}
+        >
+          {"<<"} Return to Manage Opportunities
+        </Button>
+      </Container>
       <OpportunityView view="all" />
     </div>
   );

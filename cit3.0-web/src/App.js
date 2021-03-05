@@ -24,6 +24,7 @@ import OpportunityPage from "./components/Page/OpportunityPage/OpportunityPage";
 import AppRoute from "./utils/AppRoute/AppRoute";
 import AuthLayout from "./layouts/AuthLayout";
 import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainView";
+import OpportunityApproveListPage from "./components/Page/OpportunityApproveListPage/OpportunityApproveListPage";
 
 function App() {
   const getTitle = (page) => `Investments${` - ${page}`}`;
@@ -118,10 +119,17 @@ function App() {
                 layout={AuthLayout}
                 component={ReviewSubmitted}
               />
+              <AppRoute
+                protected
+                exact
+                path="/manage/opportunities"
+                layout={AuthLayout}
+                component={OpportunityApproveListPage}
+              />
               <AppRoute path="/investment/*:path" component={OpportunityPage} />
               <AppRoute
                 protected
-                path="/investment/*:path/approve"
+                path="/manage/opportunity/*:path"
                 layout={AuthLayout}
                 component={OpportunityApprovePage}
               />

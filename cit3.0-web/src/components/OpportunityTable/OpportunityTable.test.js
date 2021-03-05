@@ -1,7 +1,9 @@
 import { render } from "@testing-library/react";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
+import { Provider } from "react-redux";
 import OpportunityTable from "./OpportunityTable";
+import { store } from "../../store";
 
 const tableData = [
   {
@@ -33,14 +35,16 @@ const tableData = [
     date_created: "2021-02-16T17:34:38.184663Z",
   },
 ];
+const history = createMemoryHistory();
 
 describe("OpportunityTable", () => {
   it("displays the opportunity data", () => {
-    const history = createMemoryHistory();
     const { getByText } = render(
-      <Router history={history}>
-        <OpportunityTable tableData={tableData} />
-      </Router>
+      <Provider store={store}>
+        <Router history={history}>
+          <OpportunityTable tableData={tableData} />
+        </Router>
+      </Provider>
     );
 
     expect(getByText(/1234/i).textContent).toBe("1234 Test Pl.");
@@ -51,9 +55,11 @@ describe("OpportunityTable", () => {
 
   it("colour codes the status based on the status value", () => {
     const { getByText } = render(
-      <Router history={history}>
-        <OpportunityTable tableData={tableData} />
-      </Router>
+      <Provider store={store}>
+        <Router history={history}>
+          <OpportunityTable tableData={tableData} />
+        </Router>
+      </Provider>
     );
 
     expect(getByText(/Published/i)).toHaveClass("status-text-green");
@@ -64,9 +70,11 @@ describe("OpportunityTable", () => {
 
   it('displays the option to mark as "sold" for published opportunities', () => {
     const { getByText } = render(
-      <Router history={history}>
-        <OpportunityTable tableData={tableData} />
-      </Router>
+      <Provider store={store}>
+        <Router history={history}>
+          <OpportunityTable tableData={tableData} />
+        </Router>
+      </Provider>
     );
 
     expect(getByText(/sold/i).textContent).toBe('Mark as "sold"');

@@ -333,6 +333,18 @@ export class Opportunity {
     this.state.dateUpdated = value;
   }
 
+  set publicNote(value) {
+    this.state.publicNote = value;
+  }
+
+  set privateNote(value) {
+    this.state.privateNote = value;
+  }
+
+  set lastAdmin(value) {
+    this.state.lastAdmin = value;
+  }
+
   // Business Contact
   set businessContactName(value) {
     this.state.businessContactName = value;
