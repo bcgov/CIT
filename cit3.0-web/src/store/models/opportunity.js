@@ -256,7 +256,7 @@ export const OPPORTUNITY_MODEL = {
       type: "text",
     },
     geometry: {
-      polygon: [[]],
+      polygon: null,
     },
     // siteId: {
     //   title: "Site ID",
