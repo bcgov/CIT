@@ -13,7 +13,7 @@ export const OPPORTUNITY_MODEL = {
   name: "",
   address: "",
   coords: [54.1722, -124.1207],
-  approvalStatus: "PEND",
+  approvalStatus: "NEW",
   businessContactName: "",
   businessContactEmail: "",
   resourceIds: {
@@ -331,6 +331,18 @@ export class Opportunity {
 
   set dateUpdated(value) {
     this.state.dateUpdated = value;
+  }
+
+  set publicNote(value) {
+    this.state.publicNote = value;
+  }
+
+  set privateNote(value) {
+    this.state.privateNote = value;
+  }
+
+  set lastAdmin(value) {
+    this.state.lastAdmin = value;
   }
 
   // Business Contact

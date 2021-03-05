@@ -35,4 +35,7 @@ class OpportunitySerializer(serializers.ModelSerializer):
             "opportunity_natual_gas_capacity",
             "opportunity_electrical_connected",
             "opportunity_electrical_capacity",
+            "private_note",
+            "public_note",
+            "last_admin",
         )    

@@ -27,3 +27,8 @@ code {
   background: #00000044;
   border: none;
 }
+
+.visually-hidden {
+  position: absolute;
+  right: 10000px;
+}
