@@ -30,7 +30,7 @@ import { OPPORTUNITY_MODEL } from "../models/opportunity";
  * @param {String} action.payload incoming action payload, varying on opportunity field
  */
 export default function opportunity(state = { ...OPPORTUNITY_MODEL }, action) {
-  /* eslint-disable no-param-reassign, no-console */
+  /* eslint-disable no-param-reassign */
   switch (action.type) {
     case ADD_ALL:
       state = { ...OPPORTUNITY_MODEL };
@@ -89,7 +89,7 @@ export default function opportunity(state = { ...OPPORTUNITY_MODEL }, action) {
       state.nearbyResources = action.payload;
       break;
     default:
-      console.error("Invalid action performed on opportunities store", action);
+      break;
   }
   return state;
 }
