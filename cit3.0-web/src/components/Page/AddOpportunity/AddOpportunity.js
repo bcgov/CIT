@@ -66,7 +66,7 @@ export default function AddOpportunity({ match }) {
     const pid = await getPID(data.data.features[0].properties.siteID);
     dispatch(setPID(pid));
     const parcelData = await getParcelData(pid);
-    dispatch(setGeometry(parcelData.data.features[0].geometry.coordinates));
+    dispatch(setGeometry(parcelData.data.features[0].geometry.coordinates[0]));
     dispatch(setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE));
     // convert sqM to acres
     dispatch(
@@ -112,7 +112,7 @@ export default function AddOpportunity({ match }) {
                         Ownership: <b>{parcelOwner}</b>
                       </p>
                       <p className="mb-0 pb-0">
-                        Parcel Size: <b>{parcelSize.toFixed(2)} acres</b>
+                        Parcel Size: <b>{parcelSize.toFixed(3)} acres</b>
                       </p>
                       <p>
                         PID: <b>{PID}</b>
