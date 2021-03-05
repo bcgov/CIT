@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Col, NavLink, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
+import LinesEllipsis from "react-lines-ellipsis";
 import Map from "../Map/Map";
 import { determineStatusTextColour, formatDate } from "../../helpers/helpers";
 import "./OpportunityApprovalItem.css";
@@ -48,16 +49,32 @@ const OpportunityApprovalItem = ({ opportunity }) => {
             </Col>
             {opportunity.privateNote ? (
               <Col className="pl-0">
-                <b className="note">
+                <b className="note-title">
                   Internal Note from {opportunity.lastAdmin}:
                 </b>
-                <p className="note pr-3">{opportunity.privateNote}</p>
+                <LinesEllipsis
+                  className="note pr-3"
+                  text={opportunity.privateNote}
+                  maxLine="3"
+                  ellipsis="..."
+                  trimRight
+                  basedOn="letters"
+                />
               </Col>
             ) : null}
             {opportunity.publicNote ? (
               <Col className="pl-0">
-                <b className="note">Comment from {opportunity.lastAdmin}:</b>
-                <p className="note pr-3">{opportunity.publicNote}</p>
+                <b className="note-title">
+                  Comment from {opportunity.lastAdmin}:
+                </b>
+                <LinesEllipsis
+                  className="note pr-3"
+                  text={opportunity.publicNote}
+                  maxLine="3"
+                  ellipsis="..."
+                  trimRight
+                  basedOn="letters"
+                />
               </Col>
             ) : null}
           </Row>

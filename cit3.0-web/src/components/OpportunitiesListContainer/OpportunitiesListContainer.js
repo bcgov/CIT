@@ -13,7 +13,6 @@ export default function OpportunityListContainer({
 }) {
   const [opportunities, setOpportunities] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  // eslint-disable-next-line
   const [pageSize, setPageSize] = useState(4);
   useEffect(() => {
     axios
