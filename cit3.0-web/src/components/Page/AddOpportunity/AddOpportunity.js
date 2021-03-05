@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MapContainer from "../../MapContainer/MapContainer";
@@ -21,13 +22,13 @@ import {
   setParcelOwner,
   setParcelSize,
 } from "../../../store/actions/opportunity";
+import Radios from "../../FormComponents/Radios";
 
 export default function AddOpportunity({ match }) {
   document.title = `Investments - Add Opportunity`;
   const dispatch = useDispatch();
   const address = useSelector((state) => state.opportunity.address);
   const coords = useSelector((state) => state.opportunity.coords);
-  const siteInfo = useSelector((state) => state.opportunity.siteInfo);
   const PID = useSelector((state) => state.opportunity.siteInfo.PID.value);
   const parcelSize = useSelector(
     (state) => state.opportunity.siteInfo.parcelSize.value
@@ -38,6 +39,12 @@ export default function AddOpportunity({ match }) {
   const nearbyResources = useSelector(
     (state) => state.opportunity.nearbyResources
   );
+
+  const [hasApproval, setHasApproval] = useState(false);
+
+  const handleRadioChange = (name, label, value) => {
+    setHasApproval(label);
+  };
 
   const history = useHistory();
   const title1 = "Add an Opportunity";
@@ -98,14 +105,46 @@ export default function AddOpportunity({ match }) {
                   getCoords={getCoords}
                 />
                 {parcelSize > 5 ? (
-                  <>
-                    <PropertyInfo info={address} tag={false} />
-                    <PropertyInfo info={`Ownership: ${parcelOwner}`} />
-                    <PropertyInfo
-                      info={`Parcel Size: ${parcelSize.toFixed(2)} acres`}
-                    />
-                    <PropertyInfo info={`PID: ${PID}`} />
-                  </>
+                  <Row>
+                    <Col>
+                      <PropertyInfo info={address} tag={false} />
+                      <p className="mb-0 mt-3 pb-0">
+                        Ownership: <b>{parcelOwner}</b>
+                      </p>
+                      <p className="mb-0 pb-0">
+                        Parcel Size: <b>{parcelSize.toFixed(2)} acres</b>
+                      </p>
+                      <p>
+                        PID: <b>{PID}</b>
+                      </p>
+                      {parcelOwner === "Private" && (
+                        <>
+                          <PropertyInfo info="This land parcel or development opportunity resides on private land." />
+                          <PropertyInfo info="As a rep from <INSERT COMMUNITY HERE> do you have the approval from the land owner to promote this investment opportunity?" />
+                          <Col>
+                            <Radios
+                              aria-label="approval to sell"
+                              labels={["Yes", "No", "Pending Approval"]}
+                              name="approval-to-sell"
+                              value={hasApproval}
+                              handleRadioChange={handleRadioChange}
+                            />
+                          </Col>
+                          {hasApproval !== "Yes" && (
+                            <Row className="mt-2">
+                              <Col style={{ color: "red" }}>
+                                <p>
+                                  You must have the approval of the land owner
+                                  to promote this opportunity. Please get the
+                                  approval before listing this site.
+                                </p>
+                              </Col>
+                            </Row>
+                          )}
+                        </>
+                      )}
+                    </Col>
+                  </Row>
                 ) : null}
               </Col>
             </Row>
@@ -122,7 +161,10 @@ export default function AddOpportunity({ match }) {
           </Col>
         </Row>
       </Container>
-      <ButtonRow noContinue={!address} onClick={goToNextPage} />
+      <ButtonRow
+        noContinue={!address || hasApproval !== ("Yes" || null)}
+        onClick={goToNextPage}
+      />
     </>
   );
 }
