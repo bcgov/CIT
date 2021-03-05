@@ -7,10 +7,14 @@ import {
   TileLayer,
   MapConsumer,
   LayersControl,
+  WMSTileLayer,
+  Polygon,
 } from "react-leaflet";
+
 import L from "leaflet";
 
 import "./map.css";
+import { useSelector } from "react-redux";
 import ChangeView from "../ChangeView/ChangeView";
 import AddLocationMarker from "../AddMarker/AddMarker";
 import ResourceMarker from "../AddMarker/ResourceMarker";
@@ -29,40 +33,30 @@ export default function Map({
     height: window.innerHeight,
     width: window.innerWidth,
   });
+  const parcelPoly = useSelector(
+    (state) => state.opportunity.siteInfo.geometry.polygon
+  );
 
   let additionalComponents;
   let zoomLevel;
 
   const changeView = (centerCoords) => centerCoords;
-  const [geoData, setGeoData] = useState({});
-  const [bounds, setBounds] = useState("");
 
-  const boundsString =
-    "-123.4468460083008%2C48.56672520488946%2C-123.34384918212892%2C48.62349154574442";
-
-  const str = "1188753.04%2C397932.21%2C1196127.68%2C404508.68";
-  const url2 = `https://openmaps.gov.bc.ca/geo/pub/wms?service=WMS&version=1.1.1&request=GetMap&layers=pub%3AWHSE_IMAGERY_AND_BASE_MAPS.GSR_SCHOOLS_K_TO_12_SVW&bbox=${boundsString}&width=500&height=600&srs=crs%3A84&format=image%2Fjpeg`;
-
-  const url = `https://openmaps.gov.bc.ca/geo/pub/wms?service=WMS&version=1.1.1&request=GetMap&layers=pub%3AWHSE_IMAGERY_AND_BASE_MAPS.GSR_SCHOOLS_K_TO_12_SVW&bbox=${str}&width=500&height=600&srs=EPSG%3A3005&format=image%2Fpng`;
-
-  const wmsLayer = L.tileLayer.wms(
-    "https://openmaps.gov.bc.ca/geo/pub/wms?service=WMS&version=1.1.0&request=GetMap&layers=pub%3AWHSE_IMAGERY_AND_BASE_MAPS.BCNC_BC_NETWORK_COVERAGE_SV&bbox=1188753.04%2C397932.21%2C1196127.68%2C404508.68&width=500&height=600&srs=EPSG%3A3005&format=image%2Fjpeg"
-  );
-
-  const multiPolygon = [
-    [
-      [48.59509, -123.4056],
-      [48.598, -123.41],
-      [48.6, -123.42],
-      [48.6, -123.43],
-    ],
-  ];
+  // geometry returned to us is an array of arrays with Long, Lat
+  // leaflet needs [lat, long]
+  const convert = (lngLatAry) => {
+    const converted = lngLatAry.map((polyCoords) => [
+      polyCoords[1],
+      polyCoords[0],
+    ]);
+    return converted;
+  };
 
   if (isInteractive) {
     // Used in the add opportunity workflow
     additionalComponents = (
       <>
-        <ChangeView center={changeView(coords)} zoom={13} />
+        <ChangeView center={changeView(coords)} zoom={16} />
         <AddLocationMarker
           setCoords={setCoords}
           setAddress={setAddress}
@@ -84,8 +78,33 @@ export default function Map({
               url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
             />
           </LayersControl.BaseLayer>
+
+          <LayersControl.Overlay name="Parcels">
+            <WMSTileLayer
+              version="1.3.0"
+              transparent="true"
+              crs={L.CRS.EPSG3857}
+              format="image/png"
+              layers="pub:WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_SVW"
+              url="https://openmaps.gov.bc.ca/geo/pub/WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_SVW/ows"
+            />
+          </LayersControl.Overlay>
+          <LayersControl.Overlay name="Crown Tenures">
+            <WMSTileLayer
+              version="1.3.0"
+              transparent="true"
+              format="image/png"
+              layers="pub:WHSE_TANTALIS.TA_CROWN_TENURES_SVW"
+              url="https://openmaps.gov.bc.ca/geo/pub/WHSE_TANTALIS.TA_CROWN_TENURES_SVW/ows"
+            />
+          </LayersControl.Overlay>
         </LayersControl>
-        {/* <Polygon pathOptions={{ color: "purple" }} positions={multiPolygon} /> */}
+        {parcelPoly && (
+          <Polygon
+            pathOptions={{ color: "rgb(255, 0, 128)" }}
+            positions={convert(parcelPoly)}
+          />
+        )}
         {coords[0] !== 49.2827 ? (
           <Marker position={coords}>
             <Popup>
@@ -166,11 +185,6 @@ export default function Map({
               tile.style.width = `${tileSize.x + 1}px`;
               tile.style.height = `${tileSize.y + 1}px`;
             },
-          });
-          /* eslint-enable */
-          const bb = localMap.getBounds().toBBoxString();
-          useEffect(() => {
-            setBounds(bb);
           });
           return null;
         }}
