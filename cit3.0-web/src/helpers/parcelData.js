@@ -17,6 +17,6 @@ export const getPID = async (siteId) =>
 // will need to then retrieve for each etc
 // run multiple calls or build up query string
 export async function getParcelData(pid) {
-  const url = `https://openmaps.gov.bc.ca/geo/pub/WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_SVW/wfs?service=wfs&version=2.0.0&request=GetFeature&outputFormat=application%2Fjson&TypeNames=pub:WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_SVW&srsName=EPSG%3A4326&cql_filter=PID='${pid}'`;
+  const url = `https://openmaps.gov.bc.ca/geo/pub/WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_SVW/wfs?service=wfs&version=2.0.0&request=GetFeature&outputFormat=application%2Fjson&TypeNames=pub:WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_SVW&srsName=EPSG%3A3005&cql_filter=PID='${pid}'`;
   return axios.get(url);
 }
