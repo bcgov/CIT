@@ -241,28 +241,30 @@ export const OPPORTUNITY_MODEL = {
   siteInfo: {
     parcelOwnership: {
       title: "Ownership",
-      name: "Crown",
+      name: "",
       type: "text",
     },
     parcelSize: {
       title: "Parcel size",
-      value: "5",
+      value: "",
       type: "size",
       suffix: "acres",
     },
     PID: {
       title: "PID",
-      value: "456-234-456",
-      type: "text",
+      value: "",
+      type: "paragraph",
     },
     geometry: {
+      title: "Polygon",
+      name: "Yes",
       polygon: null,
     },
-    // siteId: {
-    //   title: "Site ID",
-    //   value: "xyz",
-    //   type: "text",
-    // },
+    siteId: {
+      title: "Site ID",
+      value: null,
+      type: "text",
+    },
   },
   userInfo: {
     saleOrLease: { title: "Sale or Lease", value: "", type: "text" },

@@ -7,6 +7,7 @@ import {
   ADD_GEOMETRY,
   ADD_PARCEL_OWNER,
   ADD_PARCEL_SIZE,
+  ADD_SITE_ID,
   ADD_BUSINESS_CONTACT,
   ADD_BUSINESS_CONTACT_NAME,
   ADD_BUSINESS_CONTACT_EMAIL,
@@ -105,6 +106,14 @@ export function setSiteInfo(sInfo) {
  */
 export function setPID(pid) {
   return { type: ADD_PID, payload: pid };
+}
+
+/**
+ * @param {string} siteId
+ * @return {Object} for redux reducer
+ */
+export function setSiteId(id) {
+  return { type: ADD_SITE_ID, payload: id };
 }
 
 /**
