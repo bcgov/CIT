@@ -1,14 +1,17 @@
 import axios from "axios";
 
 export async function getAddressData(address) {
-  return axios.get(
-    `https://geocoder.api.gov.bc.ca/addresses.json?addressString=${address}&autoComplete=true&maxResults=15`,
-    {
-      headers: {
-        apikey: process.env.REACT_APP_GEOCODER_API_KEY,
-      },
-    }
-  );
+  return axios
+    .get(
+      `https://geocoder.api.gov.bc.ca/addresses.json?addressString=${address}&autoComplete=true&maxResults=15`,
+      {
+        headers: {
+          apikey: process.env.REACT_APP_GEOCODER_API_KEY,
+        },
+      }
+    )
+    .then((data) => data)
+    .catch((err) => null);
 }
 
 // TODO: Get address Data from lat long -> /sites/nearest.{output format} (geocoder)

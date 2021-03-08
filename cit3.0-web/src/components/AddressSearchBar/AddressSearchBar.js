@@ -4,28 +4,34 @@ import PropTypes from "prop-types";
 import { FormControl, FormLabel } from "react-bootstrap";
 import { getAddressData } from "../../helpers/resourceCalls";
 
-export default function AddressSearchBar({ setAddress, getCoords }) {
+export default function AddressSearchBar({ setAddress, getCoords, setError }) {
   const [value, setValue] = useState("");
   const [addresses, setAddresses] = useState([]);
   const [show, setShow] = useState(false);
-  // can send bounding box for areas
+
   const runSearch = async (event) => {
     if (event.target.value) {
       setShow(true);
     }
     setValue(event.target.value);
-    const addressData = await getAddressData(event.target.value);
-    setAddresses(addressData.data.features);
+    try {
+      const addressData = await getAddressData(event.target.value);
+      setAddresses(addressData.data.features);
+      return true;
+    } catch (error) {
+      setShow(false);
+      return setError(true);
+    }
   };
 
-  const setCoordsForSelectedAddress = (e, address) => {
+  const setCoordsForSelectedAddress = (address) => {
     setAddress(address);
     getCoords(address);
     setShow(false);
   };
   const selectAddress = (e) => {
     setValue(e.target.value);
-    setCoordsForSelectedAddress(e, e.target.value);
+    setCoordsForSelectedAddress(e.target.value);
   };
 
   const list = () => (
@@ -85,4 +91,5 @@ export default function AddressSearchBar({ setAddress, getCoords }) {
 AddressSearchBar.propTypes = {
   setAddress: PropTypes.func.isRequired,
   getCoords: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
 };
