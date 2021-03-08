@@ -1,7 +1,7 @@
 import { useHistory } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MapContainer from "../../MapContainer/MapContainer";
@@ -20,6 +20,7 @@ import {
   setGeometry,
   setParcelOwner,
   setParcelSize,
+  setSiteId,
 } from "../../../store/actions/opportunity";
 import Radios from "../../FormComponents/Radios";
 
@@ -29,6 +30,9 @@ export default function AddOpportunity() {
   const address = useSelector((state) => state.opportunity.address);
   const coords = useSelector((state) => state.opportunity.coords);
   const PID = useSelector((state) => state.opportunity.siteInfo.PID.value);
+  const siteId = useSelector(
+    (state) => state.opportunity.siteInfo.siteId.value
+  );
   const parcelSize = useSelector(
     (state) => state.opportunity.siteInfo.parcelSize.value
   );
@@ -54,7 +58,32 @@ export default function AddOpportunity() {
   const text2 =
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 
-  // The PID and parcel data is now retrieved and set here as well
+  const setParcelData = async (id) => {
+    const pid = await getPID(id);
+    dispatch(setPID(pid));
+    const parcelData = await getParcelData(pid);
+    console.log(parcelData);
+    if (
+      !pid ||
+      parcelData.data.features[0].properties.OWNER_TYPE !== "Private"
+    ) {
+      setHasApproval("Yes");
+    }
+    if (parcelData.data.features.length) {
+      dispatch(setGeometry(parcelData.data.features[0].geometry.coordinates));
+      dispatch(
+        setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE)
+      );
+      // convert sqM to acres
+      dispatch(
+        setParcelSize(
+          parcelData.data.features[0].properties.FEATURE_AREA_SQM * 0.000247105
+        )
+      );
+    }
+    setError(false);
+  };
+
   const getCoords = async (addy) => {
     try {
       const data = await getAddressData(addy);
@@ -64,34 +93,18 @@ export default function AddOpportunity() {
           data.data.features[0].geometry.coordinates[0],
         ])
       );
-      const pid = await getPID(data.data.features[0].properties.siteID);
-      dispatch(setPID(pid));
-      const parcelData = await getParcelData(pid);
-      if (
-        !pid ||
-        parcelData.data.features[0].properties.OWNER_TYPE !== "Private"
-      ) {
-        setHasApproval("Yes");
-      }
-      if (parcelData.data.features.length) {
-        dispatch(setGeometry(parcelData.data.features[0].geometry.coordinates));
-        dispatch(
-          setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE)
-        );
-        // convert sqM to acres
-        dispatch(
-          setParcelSize(
-            parcelData.data.features[0].properties.FEATURE_AREA_SQM *
-              0.000247105
-          )
-        );
-      }
-      setError(false);
+      dispatch(setSiteId(data.data.features[0].properties.siteID));
     } catch (err) {
       console.log("Error retrieving data for address", err);
       setError(true);
     }
   };
+
+  useEffect(() => {
+    if (siteId) {
+      setParcelData(siteId);
+    }
+  }, [siteId]);
 
   const goToNextPage = () => {
     history.push(`/addOpportunity/siteDetails`);
@@ -117,6 +130,8 @@ export default function AddOpportunity() {
                 <AddressSearchBar
                   setAddress={(addy) => dispatch(setAddress(addy))}
                   getCoords={getCoords}
+                  setError={setError}
+                  currentAddress={address}
                 />
                 {error && (
                   <Row>
@@ -128,7 +143,7 @@ export default function AddOpportunity() {
                     </Col>
                   </Row>
                 )}
-                {parcelSize > 5 ? (
+                {parcelSize ? (
                   <Row>
                     <Col>
                       <PropertyInfo info={address} tag={false} />
@@ -181,6 +196,7 @@ export default function AddOpportunity() {
               setNearbyResources={(r) => dispatch(setNearbyResources(r))}
               setAddress={(a) => dispatch(setAddress(a))}
               setCoords={(c) => dispatch(setCoords(c))}
+              setSiteId={(id) => dispatch(setSiteId(id))}
             />
           </Col>
         </Row>
