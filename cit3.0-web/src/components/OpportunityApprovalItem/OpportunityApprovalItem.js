@@ -21,7 +21,11 @@ const OpportunityApprovalItem = ({ opportunity }) => {
             style={{ borderRight: "2px solid #606060" }}
             className="opportunity-approve-map-container"
           >
-            <Map coords={opportunity.coords} isInteractive={false} />
+            <Map
+              coords={opportunity.coords}
+              isInteractive={false}
+              isSearchMode={false}
+            />
           </div>
         </Col>
         <Col>

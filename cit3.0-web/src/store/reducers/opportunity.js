@@ -36,7 +36,7 @@ export default function opportunity(state = { ...OPPORTUNITY_MODEL }, action) {
       state = _.mergeWith(state, action.payload);
       break;
     case RESET_OPPORTUNITY:
-      state = { ...OPPORTUNITY_MODEL };
+      state = _.mergeWith({}, OPPORTUNITY_MODEL);
       break;
     case ADD_ADDRESS:
       state.address = action.payload;

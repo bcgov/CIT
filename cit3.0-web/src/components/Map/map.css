@@ -1,3 +1,13 @@
 .full-border {
     border: 2px solid #606060;
 }
+
+@media print {
+    .leaflet-control-container {
+        display: none;
+    }
+    .col-lg-5 {
+        flex: 0 0 100% !important;
+        width: 100% !important;
+    }
+}

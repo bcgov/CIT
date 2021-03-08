@@ -12,6 +12,7 @@ import ReviewAndSubmitCallout from "../../ReviewAndSubmitCallout/ReviewAndSubmit
 import {
   postOpportunity,
   resetOpportunity,
+  setApprovalStatus,
 } from "../../../store/actions/opportunity";
 import {
   setNotification,
@@ -28,6 +29,7 @@ const ReviewOpportunity = ({ location }) => {
   const opportunityModel = useSelector((state) => state.opportunity);
 
   const handleSubmitOpportunity = () => {
+    dispatch(setApprovalStatus("NEW"));
     postOpportunity(opportunityModel)
       .then(() => {
         dispatch(resetOpportunity());

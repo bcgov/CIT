@@ -24,6 +24,7 @@ export default function Map({
   setNearbyResources,
   setAddress,
   isInteractive,
+  isSearchMode,
 }) {
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
@@ -31,6 +32,7 @@ export default function Map({
   });
 
   let additionalComponents;
+  let searchComponents;
   let zoomLevel;
 
   const changeView = (centerCoords) => centerCoords;
@@ -58,18 +60,23 @@ export default function Map({
     ],
   ];
 
+  if (isSearchMode) {
+    searchComponents = (
+      <AddLocationMarker
+        setCoords={setCoords}
+        setAddress={setAddress}
+        resourceIds={resourceIds}
+        setNearbyResources={setNearbyResources}
+        changeView={changeView}
+      />
+    );
+  }
+
   if (isInteractive) {
     // Used in the add opportunity workflow
     additionalComponents = (
       <>
         <ChangeView center={changeView(coords)} zoom={13} />
-        <AddLocationMarker
-          setCoords={setCoords}
-          setAddress={setAddress}
-          resourceIds={resourceIds}
-          setNearbyResources={setNearbyResources}
-          changeView={changeView}
-        />
         <LayersControl position="bottomleft">
           <LayersControl.BaseLayer checked name="OpenStreetMap">
             <TileLayer
@@ -175,6 +182,7 @@ export default function Map({
           return null;
         }}
       </MapConsumer>
+      {searchComponents}
       {additionalComponents}
     </MapContainer>
   );
@@ -182,6 +190,7 @@ export default function Map({
 
 Map.defaultProps = {
   isInteractive: true,
+  isSearchMode: true,
   nearbyResources: null,
   resourceIds: {},
   setNearbyResources: () => {},
@@ -192,6 +201,7 @@ Map.defaultProps = {
 Map.propTypes = {
   coords: PropTypes.arrayOf(PropTypes.number).isRequired,
   isInteractive: PropTypes.bool,
+  isSearchMode: PropTypes.bool,
   nearbyResources: PropTypes.shape({
     resource: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.shape),

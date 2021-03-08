@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { toKebabCase } from "../../helpers/helpers";
 
 /**
@@ -9,11 +10,11 @@ import { toKebabCase } from "../../helpers/helpers";
  * @todo remove/update physical
  * @todo remove/update siteInfo
  */
-export const OPPORTUNITY_MODEL = {
+export const OPPORTUNITY_MODEL = Object.freeze({
   name: "",
   address: "",
   coords: [54.1722, -124.1207],
-  approvalStatus: "NEW",
+  approvalStatus: "",
   businessContactName: "",
   businessContactEmail: "",
   publicNote: "",
@@ -292,7 +293,7 @@ export const OPPORTUNITY_MODEL = {
       type: "link",
     },
   },
-};
+});
 
 /**
  * Model used to map visual sections of the screens.
@@ -301,7 +302,7 @@ export const OPPORTUNITY_MODEL = {
  */
 export class Opportunity {
   constructor() {
-    this.state = { ...OPPORTUNITY_MODEL };
+    this.state = _.mergeWith({}, OPPORTUNITY_MODEL);
   }
 
   set id(value) {

@@ -102,27 +102,27 @@ export function setBusinessContactEmail(bEmail) {
 }
 
 /**
- * @param {Object} bEmail
+ * @param {Object} approvalStatus
  * @return {Object} for redux reducer
  */
-export function setApprovalStatus(bEmail) {
-  return { type: ADD_APPROVAL_STATUS, payload: bEmail };
+export function setApprovalStatus(approvalStatus) {
+  return { type: ADD_APPROVAL_STATUS, payload: approvalStatus };
 }
 
 /**
- * @param {Object} bEmail
+ * @param {Object} note
  * @return {Object} for redux reducer
  */
-export function setPrivateNote(bEmail) {
-  return { type: ADD_PRIVATE_NOTE, payload: bEmail };
+export function setPrivateNote(note) {
+  return { type: ADD_PRIVATE_NOTE, payload: note };
 }
 
 /**
- * @param {Object} bEmail
+ * @param {Object} note
  * @return {Object} for redux reducer
  */
-export function setPublicNote(bEmail) {
-  return { type: ADD_PUBLIC_NOTE, payload: bEmail };
+export function setPublicNote(note) {
+  return { type: ADD_PUBLIC_NOTE, payload: note };
 }
 
 /**

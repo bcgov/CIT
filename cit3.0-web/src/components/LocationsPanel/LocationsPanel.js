@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import NumberFormat from "react-number-format";
 import { Container, Row, Col } from "react-bootstrap";
 import { v4 } from "uuid";
-import styles from "./LocationsPanel.module.css";
+import "./LocationsPanel.css";
 
 const LocationsPanel = ({
   address,
@@ -11,9 +11,9 @@ const LocationsPanel = ({
   municipalities,
   firstNationCommunities,
 }) => (
-  <div className={styles.LocationsPanel} data-testid="LocationsPanel">
+  <div className="LocationsPanel" data-testid="LocationsPanel">
     <div>
-      <div className="d-flex flex-row justify-content-between mb-3">
+      <div className="d-flex justify-content-between mb-3 location-coords">
         <div>
           <h3>Location</h3>
         </div>

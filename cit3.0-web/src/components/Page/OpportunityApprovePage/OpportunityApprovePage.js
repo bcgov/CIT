@@ -1,13 +1,14 @@
 import React from "react";
 import Proptypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import OpportunityView from "../../OpportunityView/OpportunityView";
 import {
   setOpportunity,
   getOpportunity,
   updateOpportunity,
+  resetOpportunity,
 } from "../../../store/actions/opportunity";
 import { getOptions, setOptions } from "../../../store/actions/options";
 import OpportunityFactory from "../../../store/factory/OpportunityFactory";
@@ -15,6 +16,7 @@ import styles from "./OpportunityApprovePage.module.css";
 import OpportunityApproveCallout from "../../OpportunityApproveCallout/OpportunityApproveCallout";
 
 const OpportunityApprovePage = ({ id }) => {
+  const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
   const opportunity = useSelector((state) => state.opportunity);
@@ -38,7 +40,10 @@ const OpportunityApprovePage = ({ id }) => {
   }
 
   const handleUpdateOpportunity = () => {
-    updateOpportunity(opportunity);
+    updateOpportunity(opportunity).then(() => {
+      dispatch(resetOpportunity());
+      history.push("/manage/opportunities");
+    });
   };
 
   return (
@@ -52,7 +57,7 @@ const OpportunityApprovePage = ({ id }) => {
           privateNote={opportunity.privateNote}
           currentStatus={opportunity.approvalStatus}
           approvalStatuses={statuses}
-          onStatusChange={(change) => handleUpdateOpportunity(change)}
+          onStatusChange={() => handleUpdateOpportunity()}
         />
       </Container>
       <OpportunityView view="all" />

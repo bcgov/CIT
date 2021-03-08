@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import { Button } from "shared-components";
-import styles from "./OpportunityApproveCallout.module.css";
+import "./OpportunityApproveCallout.css";
 import TextInput from "../FormComponents/TextInput";
 import {
   resetOpportunity,
@@ -27,6 +27,8 @@ const OpportunityApproveCallout = ({
   const [newPrivateNote, setNewPrivateNote] = useState(privateNote);
   const [publicValidated, setPublicValidated] = useState(true);
   const [privateValidated, setPrivateValidated] = useState(true);
+  const listingLink = useSelector((state) => state.opportunity.link);
+  const opportunityName = useSelector((state) => state.opportunity.name);
 
   const goBackToAdmin = () => {
     dispatch(resetOpportunity());
@@ -37,7 +39,7 @@ const OpportunityApproveCallout = ({
     setPublicValidated(true);
     setPrivateValidated(true);
     // No business logic
-    if (["PUBL", "CLOS", "NWED"].includes(nextStatus)) {
+    if (["PUBL", "CLOS", "NWED", "NEW"].includes(nextStatus)) {
       return true;
     }
     // EDO Comment needed
@@ -53,27 +55,69 @@ const OpportunityApproveCallout = ({
     return true;
   };
 
+  // Get current status name
+  const statusOption = approvalStatuses.find(
+    (s) => currentStatus === s.status_code
+  );
+  const currentStatusName = statusOption && statusOption.status_name;
+
+  // This catches possible delays in props
+  useEffect(() => {
+    setNextStatus(currentStatus);
+    setNewPublicNote(publicNote);
+    setNewPrivateNote(privateNote);
+  }, [currentStatus]);
+
+  // Validate form changes
   useEffect(() => {
     validateStatusChange();
   }, [nextStatus, newPublicNote, newPrivateNote]);
 
+  // Add form data to state, and submit to DB
   const submitStatusChange = () => {
     if (validateStatusChange()) {
       dispatch(setApprovalStatus(nextStatus));
       dispatch(setPublicNote(newPublicNote));
       dispatch(setPrivateNote(newPrivateNote));
-      onStatusChange({});
+      onStatusChange();
     }
+  };
+
+  // Copy the visually hidden textarea
+  const copyLink = () => {
+    document.getElementById("link").select();
+    document.execCommand("copy");
+  };
+
+  // Use broswer print method
+  const openPdf = () => {
+    window.print();
+  };
+
+  // Open generic email with link
+  const emailLink = () => {
+    const subject = opportunityName;
+    let uri = "mailto:?subject=";
+    uri += encodeURIComponent(subject);
+    uri += "&body=";
+    uri += encodeURIComponent(window.location.origin + listingLink);
+    window.open(uri);
   };
 
   return (
     <Container
-      className={styles.OpportunityApproveCallout}
+      className="OpportunityApproveCallout"
       data-testid="OpportunityApproveCallout"
     >
+      <textarea id="link" className="visually-hidden">
+        {window.location.origin + listingLink}
+      </textarea>
       <Row>
         <Col>
           <div role="form">
+            <p>
+              <b>Current Status - {currentStatusName}</b>
+            </p>
             <TextInput
               heading="Internal Note"
               notes="This note will only be visible to administrators."
@@ -104,22 +148,49 @@ const OpportunityApproveCallout = ({
             >
               You must send a comment with this status
             </Form.Control.Feedback>
-            <Form.Group controlId="regional_district">
-              <Form.Label>Change Opportunity Status to</Form.Label>
-              <Form.Control
-                as="select"
-                name="status-change"
-                value={nextStatus}
-                onChange={(e) => setNextStatus(e.target.value)}
-              >
-                {approvalStatuses &&
-                  approvalStatuses.map((status) => (
-                    <option value={status.status_code}>
-                      {status.status_name}
-                    </option>
-                  ))}
-              </Form.Control>
-            </Form.Group>
+            <div className="d-flex flex-row">
+              <Form.Group controlId="regional_district">
+                <Form.Label>Change Opportunity Status to</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="status-change"
+                  value={nextStatus}
+                  onChange={(e) => setNextStatus(e.target.value)}
+                >
+                  {approvalStatuses &&
+                    approvalStatuses.map((status) => (
+                      <option value={status.status_code}>
+                        {status.status_name}
+                      </option>
+                    ))}
+                </Form.Control>
+              </Form.Group>
+              <div className="d-flex flex-grow-1 justify-content-end">
+                <div className="d-flex flex-column">
+                  <button
+                    type="button"
+                    className="a-tag"
+                    onClick={() => copyLink()}
+                  >
+                    Copy Listing Link
+                  </button>
+                  <button
+                    type="button"
+                    className="a-tag"
+                    onClick={() => emailLink()}
+                  >
+                    Email Listing Link
+                  </button>
+                  <button
+                    type="button"
+                    className="a-tag"
+                    onClick={() => openPdf()}
+                  >
+                    View Listing PDF
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
           <hr className="hr-bold" />
         </Col>
