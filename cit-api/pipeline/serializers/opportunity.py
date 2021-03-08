@@ -22,6 +22,7 @@ class OpportunitySerializer(serializers.ModelSerializer):
             "parcel_ownership",
             "parcel_size",
             "pid",
+            "parcel_geometry",
             "elevation_at_location",
             "soil_name",
             "soil_texture",
