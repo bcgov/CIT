@@ -14,7 +14,19 @@ export async function getAddressData(address) {
     .catch((err) => null);
 }
 
-// TODO: Get address Data from lat long -> /sites/nearest.{output format} (geocoder)
+export async function getAddressFromPoint(point) {
+  return axios
+    .get(
+      `https://geocoder.api.gov.bc.ca/sites/nearest.json?point=${point[1]},${point[0]}&maxDistance=50`,
+      {
+        headers: {
+          apikey: process.env.REACT_APP_GEOCODER_API_KEY,
+        },
+      }
+    )
+    .then((data) => data)
+    .catch((err) => null);
+}
 
 export async function getResourceData(resourceId) {
   return axios
