@@ -85,17 +85,25 @@ function returnResourcesWithinMaxDistance(resources, maxDistance, coords) {
 }
 
 export const getProximityData = async (resources, coords) => {
-  const final = Promise.all(
-    Object.entries(resources).map(async ([resource, resourceId]) => {
-      const resourceData = await getResourceData(resourceId);
-      const resourcesWithinMax = returnResourcesWithinMaxDistance(
-        resourceData,
-        50,
-        coords
-      );
-      return [resource, addDistanceToResourcesMine(resourcesWithinMax, coords)];
-    })
-  );
-  const result = await final;
-  return Object.fromEntries(result);
+  try {
+    const final = Promise.all(
+      Object.entries(resources).map(async ([resource, resourceId]) => {
+        const resourceData = await getResourceData(resourceId);
+        const resourcesWithinMax = returnResourcesWithinMaxDistance(
+          resourceData,
+          50,
+          coords
+        );
+        return [
+          resource,
+          addDistanceToResourcesMine(resourcesWithinMax, coords),
+        ];
+      })
+    );
+    const result = await final;
+    return Object.fromEntries(result);
+  } catch (error) {
+    console.log("Error retrieving proximity data");
+    return null;
+  }
 };
