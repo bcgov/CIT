@@ -1,13 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import v4 from "uuid";
 import PropTypes from "prop-types";
 import { FormControl, FormLabel } from "react-bootstrap";
 import { getAddressData } from "../../helpers/resourceCalls";
 
-export default function AddressSearchBar({ setAddress, getCoords, setError }) {
+export default function AddressSearchBar({
+  setAddress,
+  currentAddress,
+  getCoords,
+  setError,
+}) {
   const [value, setValue] = useState("");
   const [addresses, setAddresses] = useState([]);
   const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    setValue(currentAddress);
+  }, [currentAddress]);
 
   const runSearch = async (event) => {
     if (event.target.value) {
@@ -88,8 +97,13 @@ export default function AddressSearchBar({ setAddress, getCoords, setError }) {
   );
 }
 
+AddressSearchBar.defaultProps = {
+  currentAddress: "",
+};
+
 AddressSearchBar.propTypes = {
   setAddress: PropTypes.func.isRequired,
   getCoords: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
+  currentAddress: PropTypes.string,
 };
