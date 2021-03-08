@@ -40,6 +40,7 @@ export default function AddOpportunity() {
   );
 
   const [hasApproval, setHasApproval] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleRadioChange = (name, label, value) => {
     setHasApproval(label);
@@ -55,24 +56,41 @@ export default function AddOpportunity() {
 
   // The PID and parcel data is now retrieved and set here as well
   const getCoords = async (addy) => {
-    const data = await getAddressData(addy);
-    dispatch(
-      setCoords([
-        data.data.features[0].geometry.coordinates[1],
-        data.data.features[0].geometry.coordinates[0],
-      ])
-    );
-    const pid = await getPID(data.data.features[0].properties.siteID);
-    dispatch(setPID(pid));
-    const parcelData = await getParcelData(pid);
-    dispatch(setGeometry(parcelData.data.features[0].geometry.coordinates[0]));
-    dispatch(setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE));
-    // convert sqM to acres
-    dispatch(
-      setParcelSize(
-        parcelData.data.features[0].properties.FEATURE_AREA_SQM * 0.000247105
-      )
-    );
+    try {
+      const data = await getAddressData(addy);
+      dispatch(
+        setCoords([
+          data.data.features[0].geometry.coordinates[1],
+          data.data.features[0].geometry.coordinates[0],
+        ])
+      );
+      const pid = await getPID(data.data.features[0].properties.siteID);
+      dispatch(setPID(pid));
+      const parcelData = await getParcelData(pid);
+      if (
+        !pid ||
+        parcelData.data.features[0].properties.OWNER_TYPE !== "Private"
+      ) {
+        setHasApproval("Yes");
+      }
+      if (parcelData.data.features.length) {
+        dispatch(setGeometry(parcelData.data.features[0].geometry.coordinates));
+        dispatch(
+          setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE)
+        );
+        // convert sqM to acres
+        dispatch(
+          setParcelSize(
+            parcelData.data.features[0].properties.FEATURE_AREA_SQM *
+              0.000247105
+          )
+        );
+      }
+      setError(false);
+    } catch (err) {
+      console.log("Error retrieving data for address", err);
+      setError(true);
+    }
   };
 
   const goToNextPage = () => {
@@ -100,6 +118,16 @@ export default function AddOpportunity() {
                   setAddress={(addy) => dispatch(setAddress(addy))}
                   getCoords={getCoords}
                 />
+                {error && (
+                  <Row>
+                    <Col>
+                      <h3>
+                        We are unable to find data for this address. Please try
+                        a different address or try again later.{" "}
+                      </h3>
+                    </Col>
+                  </Row>
+                )}
                 {parcelSize > 5 ? (
                   <Row>
                     <Col>
@@ -122,7 +150,7 @@ export default function AddOpportunity() {
                               aria-label="approval to sell"
                               labels={["Yes", "No", "Pending Approval"]}
                               name="approval-to-sell"
-                              value={hasApproval}
+                              value={hasApproval || ""}
                               handleRadioChange={handleRadioChange}
                             />
                           </Col>
