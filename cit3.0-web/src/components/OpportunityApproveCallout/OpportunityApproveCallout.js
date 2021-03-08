@@ -109,9 +109,12 @@ const OpportunityApproveCallout = ({
       className="OpportunityApproveCallout"
       data-testid="OpportunityApproveCallout"
     >
-      <textarea id="link" className="visually-hidden">
-        {window.location.origin + listingLink}
-      </textarea>
+      <textarea
+        readOnly
+        id="link"
+        className="visually-hidden"
+        value={window.location.origin + listingLink}
+      />
       <Row>
         <Col>
           <div role="form">
@@ -122,6 +125,7 @@ const OpportunityApproveCallout = ({
               heading="Internal Note"
               notes="This note will only be visible to administrators."
               id="public-note"
+              name="public-note"
               rows={3}
               value={newPrivateNote}
               handleChange={(_, value) => setNewPrivateNote(value)}
@@ -137,6 +141,7 @@ const OpportunityApproveCallout = ({
               heading="Comment to Community/EDO"
               notes="This comment will be returned to the Community User/EDO along with the status change."
               id="private-note"
+              name="private-note"
               rows={3}
               value={newPublicNote}
               handleChange={(_, value) => setNewPublicNote(value)}
@@ -159,7 +164,10 @@ const OpportunityApproveCallout = ({
                 >
                   {approvalStatuses &&
                     approvalStatuses.map((status) => (
-                      <option value={status.status_code}>
+                      <option
+                        key={status.status_code}
+                        value={status.status_code}
+                      >
                         {status.status_name}
                       </option>
                     ))}

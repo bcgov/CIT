@@ -10,7 +10,7 @@ import { toKebabCase } from "../../helpers/helpers";
  * @todo remove/update physical
  * @todo remove/update siteInfo
  */
-export const OPPORTUNITY_MODEL = Object.freeze({
+export const OPPORTUNITY_MODEL = () => ({
   name: "",
   address: "",
   coords: [54.1722, -124.1207],
@@ -302,7 +302,7 @@ export const OPPORTUNITY_MODEL = Object.freeze({
  */
 export class Opportunity {
   constructor() {
-    this.state = _.mergeWith({}, OPPORTUNITY_MODEL);
+    this.state = _.mergeWith({}, OPPORTUNITY_MODEL());
   }
 
   set id(value) {

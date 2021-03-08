@@ -51,7 +51,7 @@ export function updateOpportunity(opportunityModel) {
  * @return {Promise} of axios api call
  */
 export function getOpportunity(opportunityId) {
-  return axios.get(GET_OPPOTUNITIES_URL + opportunityId);
+  return axios.get(`${GET_OPPOTUNITIES_URL + opportunityId}/`);
 }
 
 /**

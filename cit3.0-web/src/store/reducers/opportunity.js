@@ -28,15 +28,18 @@ import { OPPORTUNITY_MODEL } from "../models/opportunity";
  * @param {String} action.type incoming action type
  * @param {String} action.payload incoming action payload, varying on opportunity field
  */
-export default function opportunity(state = { ...OPPORTUNITY_MODEL }, action) {
+export default function opportunity(
+  state = { ...OPPORTUNITY_MODEL() },
+  action
+) {
   /* eslint-disable no-param-reassign */
   switch (action.type) {
     case ADD_ALL:
-      state = { ...OPPORTUNITY_MODEL };
+      state = { ...OPPORTUNITY_MODEL() };
       state = _.mergeWith(state, action.payload);
       break;
     case RESET_OPPORTUNITY:
-      state = _.mergeWith({}, OPPORTUNITY_MODEL);
+      state = OPPORTUNITY_MODEL();
       break;
     case ADD_ADDRESS:
       state.address = action.payload;
