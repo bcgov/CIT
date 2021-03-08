@@ -19,6 +19,7 @@ import proj4 from "proj4";
 import ChangeView from "../ChangeView/ChangeView";
 import AddLocationMarker from "../AddMarker/AddMarker";
 import ResourceMarker from "../AddMarker/ResourceMarker";
+import { createMultiPolygonString } from "../../store/factory/OpportunityFactory";
 
 /* eslint-disable no-unused-vars */
 export default function Map({
@@ -37,6 +38,7 @@ export default function Map({
   const parcelPoly = useSelector(
     (state) => state.opportunity.siteInfo.geometry.polygon
   );
+  const address = useSelector((state) => state.opportunity.address);
 
   let additionalComponents;
   let zoomLevel;
@@ -45,6 +47,7 @@ export default function Map({
 
   // convert long/lat in 3005 to lat/long in 4326 to draw polygon
   const convert = (lngLatAry) => {
+    // createMultiPolygonString(lngLatAry);
     const defString =
       "+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
     proj4.defs("EPSG:3005", defString);
@@ -114,14 +117,8 @@ export default function Map({
             />
           </LayersControl.Overlay>
         </LayersControl>
-        {/* {parcelPoly && (
-          <Polygon
-            pathOptions={{ color: "rgb(255, 0, 128)" }}
-            positions={convert(parcelPoly)}
-          />
-        )} */}
         {parcelPoly && convert(parcelPoly)}
-        {coords[0] !== 49.2827 ? (
+        {address ? (
           <Marker position={coords}>
             <Popup>
               Lat: {coords[0]} Long: {coords[1]}
