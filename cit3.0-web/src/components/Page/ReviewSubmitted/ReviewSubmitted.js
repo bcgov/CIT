@@ -8,9 +8,10 @@ import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import { resetOpportunity } from "../../../store/actions/opportunity";
 
 const ReviewSubmitted = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const backToDashboard = () => {
-    useDispatch(resetOpportunity());
+    dispatch(resetOpportunity());
     history.push("/dashboard");
   };
   return (
