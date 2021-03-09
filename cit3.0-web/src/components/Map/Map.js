@@ -7,10 +7,15 @@ import {
   TileLayer,
   MapConsumer,
   LayersControl,
+  WMSTileLayer,
+  Polygon,
 } from "react-leaflet";
+
 import L from "leaflet";
 
 import "./map.css";
+import { useSelector } from "react-redux";
+import proj4 from "proj4";
 import ChangeView from "../ChangeView/ChangeView";
 import AddLocationMarker from "../AddMarker/AddMarker";
 import ResourceMarker from "../AddMarker/ResourceMarker";
@@ -24,51 +29,57 @@ export default function Map({
   setNearbyResources,
   setAddress,
   isInteractive,
+  setError,
 }) {
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
     width: window.innerWidth,
   });
+  const parcelPoly = useSelector(
+    (state) => state.opportunity.siteInfo.geometry.coordinates
+  );
+  const address = useSelector((state) => state.opportunity.address);
 
   let additionalComponents;
   let zoomLevel;
 
   const changeView = (centerCoords) => centerCoords;
-  const [geoData, setGeoData] = useState({});
-  const [bounds, setBounds] = useState("");
 
-  const boundsString =
-    "-123.4468460083008%2C48.56672520488946%2C-123.34384918212892%2C48.62349154574442";
-
-  const str = "1188753.04%2C397932.21%2C1196127.68%2C404508.68";
-  const url2 = `https://openmaps.gov.bc.ca/geo/pub/wms?service=WMS&version=1.1.1&request=GetMap&layers=pub%3AWHSE_IMAGERY_AND_BASE_MAPS.GSR_SCHOOLS_K_TO_12_SVW&bbox=${boundsString}&width=500&height=600&srs=crs%3A84&format=image%2Fjpeg`;
-
-  const url = `https://openmaps.gov.bc.ca/geo/pub/wms?service=WMS&version=1.1.1&request=GetMap&layers=pub%3AWHSE_IMAGERY_AND_BASE_MAPS.GSR_SCHOOLS_K_TO_12_SVW&bbox=${str}&width=500&height=600&srs=EPSG%3A3005&format=image%2Fpng`;
-
-  const wmsLayer = L.tileLayer.wms(
-    "https://openmaps.gov.bc.ca/geo/pub/wms?service=WMS&version=1.1.0&request=GetMap&layers=pub%3AWHSE_IMAGERY_AND_BASE_MAPS.BCNC_BC_NETWORK_COVERAGE_SV&bbox=1188753.04%2C397932.21%2C1196127.68%2C404508.68&width=500&height=600&srs=EPSG%3A3005&format=image%2Fjpeg"
-  );
-
-  const multiPolygon = [
-    [
-      [48.59509, -123.4056],
-      [48.598, -123.41],
-      [48.6, -123.42],
-      [48.6, -123.43],
-    ],
-  ];
+  // convert long/lat in 3005 to lat/long in 4326 to draw polygon
+  const convert = (lngLatAry) => {
+    const defString =
+      "+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
+    proj4.defs("EPSG:3005", defString);
+    const full = lngLatAry.map((poly) =>
+      poly.map((polyCoords) => {
+        const converted = proj4(
+          proj4("EPSG:3005"),
+          proj4("EPSG:4326"),
+          polyCoords
+        );
+        return [converted[1], converted[0]];
+      })
+    );
+    return (
+      <Polygon
+        pathOptions={{ color: "rgb(255, 0, 128)" }}
+        positions={full[0]}
+      />
+    );
+  };
 
   if (isInteractive) {
     // Used in the add opportunity workflow
     additionalComponents = (
       <>
-        <ChangeView center={changeView(coords)} zoom={13} />
+        <ChangeView center={changeView(coords)} zoom={16} />
         <AddLocationMarker
           setCoords={setCoords}
           setAddress={setAddress}
           resourceIds={resourceIds}
           setNearbyResources={setNearbyResources}
           changeView={changeView}
+          setError={setError}
         />
         <LayersControl position="bottomleft">
           <LayersControl.BaseLayer checked name="OpenStreetMap">
@@ -84,9 +95,20 @@ export default function Map({
               url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
             />
           </LayersControl.BaseLayer>
+
+          <LayersControl.Overlay name="Parcels">
+            <WMSTileLayer
+              version="1.3.0"
+              transparent="true"
+              crs={L.CRS.EPSG3857}
+              format="image/png"
+              layers="pub:WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_SVW"
+              url="https://openmaps.gov.bc.ca/geo/pub/WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_SVW/ows"
+            />
+          </LayersControl.Overlay>
         </LayersControl>
-        {/* <Polygon pathOptions={{ color: "purple" }} positions={multiPolygon} /> */}
-        {coords[0] !== 49.2827 ? (
+        {parcelPoly && convert(parcelPoly)}
+        {coords[0] !== 54.1722 ? (
           <Marker position={coords}>
             <Popup>
               Lat: {coords[0]} Long: {coords[1]}
@@ -167,11 +189,6 @@ export default function Map({
               tile.style.height = `${tileSize.y + 1}px`;
             },
           });
-          /* eslint-enable */
-          const bb = localMap.getBounds().toBBoxString();
-          useEffect(() => {
-            setBounds(bb);
-          });
           return null;
         }}
       </MapConsumer>
@@ -187,6 +204,7 @@ Map.defaultProps = {
   setNearbyResources: () => {},
   setCoords: () => {},
   setAddress: () => {},
+  setError: () => {},
 };
 
 Map.propTypes = {
@@ -203,4 +221,5 @@ Map.propTypes = {
   setNearbyResources: PropTypes.func,
   setCoords: PropTypes.func,
   setAddress: PropTypes.func,
+  setError: PropTypes.func,
 };

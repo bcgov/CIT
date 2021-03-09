@@ -19,6 +19,7 @@ export default function MapContainer({
   coords,
   setCoords,
   setAddress,
+  setError,
 }) {
   useEffect(() => {
     const run = async () => {
@@ -43,6 +44,7 @@ export default function MapContainer({
           setCoords={setCoords}
           setAddress={setAddress}
           nearbyResources={nearbyResources}
+          setError={setError}
         />
       </div>
     </div>
@@ -62,4 +64,5 @@ MapContainer.propTypes = {
   setCoords: PropTypes.func.isRequired,
   setNearbyResources: PropTypes.func.isRequired,
   setAddress: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
 };

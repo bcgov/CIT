@@ -3,6 +3,11 @@ import {
   ADD_ALL,
   ADD_ADDRESS,
   ADD_COORDS,
+  ADD_PID,
+  ADD_GEOMETRY,
+  ADD_PARCEL_OWNER,
+  ADD_PARCEL_SIZE,
+  ADD_SITE_ID,
   ADD_BUSINESS_CONTACT,
   ADD_BUSINESS_CONTACT_NAME,
   ADD_BUSINESS_CONTACT_EMAIL,
@@ -53,6 +58,24 @@ export default function opportunity(state = { ...OPPORTUNITY_MODEL }, action) {
       break;
     case ADD_SITE_INFO:
       state.siteInfo = { ...state.siteInfo, ...action.payload };
+      break;
+    case ADD_PID:
+      state.siteInfo.PID.value = action.payload;
+      break;
+    case ADD_GEOMETRY:
+      state.siteInfo.geometry = {
+        ...state.siteInfo.geometry,
+        ...action.payload,
+      };
+      break;
+    case ADD_PARCEL_OWNER:
+      state.siteInfo.parcelOwnership.name = action.payload;
+      break;
+    case ADD_PARCEL_SIZE:
+      state.siteInfo.parcelSize.value = action.payload;
+      break;
+    case ADD_SITE_ID:
+      state.siteInfo.siteId.value = action.payload;
       break;
     case ADD_USER_INFO:
       state.userInfo[action.payload.key].value = action.payload.value;

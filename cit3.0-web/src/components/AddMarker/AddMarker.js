@@ -1,20 +1,51 @@
 import { useMapEvent, Marker, Popup } from "react-leaflet";
 import { useState } from "react";
 import { v4 } from "uuid";
-import { getProximityData } from "../../helpers/resourceCalls";
+import { useDispatch } from "react-redux";
+import {
+  getProximityData,
+  getAddressFromPoint,
+} from "../../helpers/resourceCalls";
+import {
+  setGeometry,
+  setParcelOwner,
+  setParcelSize,
+  setPID,
+  setSiteId,
+} from "../../store/actions/opportunity";
 
 export default function AddLocationMarker(props) {
   const [positions, setPositions] = useState([]);
+  const dispatch = useDispatch();
 
   useMapEvent("click", async (e) => {
-    setPositions([...positions, e.latlng]);
-    props.setAddress(""); // TODO: set address to be the new address of the clicked area
-    props.setCoords([e.latlng.lat, e.latlng.lng]);
-    const proximity = await getProximityData(props.resourceIds, [
-      e.latlng.lat,
-      e.latlng.lng,
-    ]);
-    props.setNearbyResources(proximity);
+    /* set current data to null in case data is not returned for a coord */
+    dispatch(setParcelOwner(""));
+    dispatch(setGeometry(null));
+    dispatch(setParcelSize(""));
+    dispatch(setPID(""));
+    props.setAddress("");
+    /// ///////////////////
+    setPositions([e.latlng]);
+
+    try {
+      const addressDataFromPoint = await getAddressFromPoint([
+        e.latlng.lat,
+        e.latlng.lng,
+      ]);
+      dispatch(setSiteId(addressDataFromPoint.data.properties.siteID));
+      props.setAddress(addressDataFromPoint.data.properties.fullAddress);
+      props.setCoords([e.latlng.lat, e.latlng.lng]);
+      const proximity = await getProximityData(props.resourceIds, [
+        e.latlng.lat,
+        e.latlng.lng,
+      ]);
+      props.setNearbyResources(proximity);
+    } catch (error) {
+      props.setError(
+        "Cannot find address data for this particular geographic point.  Please try again."
+      );
+    }
   });
 
   return positions.map((position) => (

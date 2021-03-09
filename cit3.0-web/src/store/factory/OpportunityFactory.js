@@ -1,5 +1,18 @@
 import _ from "lodash";
+import { geojsonToWKT } from "@terraformer/wkt";
 import { Opportunity } from "../models/opportunity";
+
+const geoJSONToString = (geom) => {
+  if (!geom.coordinates) {
+    return null;
+  }
+  const geoJSON = {
+    type: geom.type,
+    coordinates: geom.coordinates,
+  };
+  return `SRID=3005;${geojsonToWKT(geoJSON)}`;
+};
+
 /**
  * Factory to convert model to request object, reason there is more
  * visual and control data the api needs not know
@@ -25,6 +38,8 @@ export default {
       ...request,
       opportunity_address: state.address,
       geo_position: `SRID=3005;POINT(${state.coords[1]} ${state.coords[0]})`,
+      parcel_geometry: geoJSONToString(state.siteInfo.geometry),
+      parcel_size: state.siteInfo.parcelSize.value,
       approval_status: state.approvalStatus,
       opportunity_name: state.name,
       business_contact_name: state.businessContactName,
