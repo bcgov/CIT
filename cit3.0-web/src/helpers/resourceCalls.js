@@ -1,17 +1,32 @@
 import axios from "axios";
 
 export async function getAddressData(address) {
-  return axios.get(
-    `https://geocoder.api.gov.bc.ca/addresses.json?addressString=${address}&autoComplete=true&maxResults=15`,
-    {
-      headers: {
-        apikey: process.env.REACT_APP_GEOCODER_API_KEY,
-      },
-    }
-  );
+  return axios
+    .get(
+      `https://geocoder.api.gov.bc.ca/addresses.json?addressString=${address}&autoComplete=true&maxResults=15`,
+      {
+        headers: {
+          apikey: process.env.REACT_APP_GEOCODER_API_KEY,
+        },
+      }
+    )
+    .then((data) => data)
+    .catch((err) => null);
 }
 
-// TODO: Get address Data from lat long -> /sites/nearest.{output format} (geocoder)
+export async function getAddressFromPoint(point) {
+  return axios
+    .get(
+      `https://geocoder.api.gov.bc.ca/sites/nearest.json?point=${point[1]},${point[0]}&maxDistance=50`,
+      {
+        headers: {
+          apikey: process.env.REACT_APP_GEOCODER_API_KEY,
+        },
+      }
+    )
+    .then((data) => data)
+    .catch((err) => null);
+}
 
 export async function getResourceData(resourceId) {
   return axios
@@ -85,17 +100,25 @@ function returnResourcesWithinMaxDistance(resources, maxDistance, coords) {
 }
 
 export const getProximityData = async (resources, coords) => {
-  const final = Promise.all(
-    Object.entries(resources).map(async ([resource, resourceId]) => {
-      const resourceData = await getResourceData(resourceId);
-      const resourcesWithinMax = returnResourcesWithinMaxDistance(
-        resourceData,
-        50,
-        coords
-      );
-      return [resource, addDistanceToResourcesMine(resourcesWithinMax, coords)];
-    })
-  );
-  const result = await final;
-  return Object.fromEntries(result);
+  try {
+    const final = Promise.all(
+      Object.entries(resources).map(async ([resource, resourceId]) => {
+        const resourceData = await getResourceData(resourceId);
+        const resourcesWithinMax = returnResourcesWithinMaxDistance(
+          resourceData,
+          50,
+          coords
+        );
+        return [
+          resource,
+          addDistanceToResourcesMine(resourcesWithinMax, coords),
+        ];
+      })
+    );
+    const result = await final;
+    return Object.fromEntries(result);
+  } catch (error) {
+    console.log("Error retrieving proximity data");
+    return null;
+  }
 };

@@ -27,6 +27,7 @@ module.exports = {
     "no-alert": "off",
     "no-restricted-globals": "off",
     "import/no-extraneous-dependencies": "off",
+    "no-unused-vars": "warn",
     "prettier/prettier": ["error"],
   },
   settings: {
