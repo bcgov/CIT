@@ -1,6 +1,9 @@
-/* eslint-disable */
-import React from 'react';
-import { storiesOf } from '@storybook/react';
-import SearchFlyoutContent from './SearchFlyoutContent';
+import React from "react";
+import SearchFlyoutContent from "./SearchFlyoutContent";
 
-storiesOf('SearchFlyoutContent', module).add('default', () => <SearchFlyoutContent />);
+export default {
+  title: "Search Flyout Content",
+  component: "SearchFlyoutContent",
+};
+
+export const SearchContent = () => <SearchFlyoutContent />;
