@@ -9,6 +9,7 @@ export default function AddressSearchBar({
   currentAddress,
   getCoords,
   setError,
+  setBlockContinue,
 }) {
   const [value, setValue] = useState("");
   const [addresses, setAddresses] = useState([]);
@@ -21,6 +22,8 @@ export default function AddressSearchBar({
   const runSearch = async (event) => {
     if (event.target.value) {
       setShow(true);
+    } else {
+      setBlockContinue(true);
     }
     setValue(event.target.value);
     try {
@@ -108,4 +111,5 @@ AddressSearchBar.propTypes = {
   getCoords: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   currentAddress: PropTypes.string,
+  setBlockContinue: PropTypes.func.isRequired,
 };
