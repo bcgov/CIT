@@ -30,6 +30,7 @@ export default function Map({
   setNearbyResources,
   setAddress,
   isInteractive,
+  setError,
 }) {
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
@@ -81,6 +82,7 @@ export default function Map({
           resourceIds={resourceIds}
           setNearbyResources={setNearbyResources}
           changeView={changeView}
+          setError={setError}
         />
         <LayersControl position="bottomleft">
           <LayersControl.BaseLayer checked name="OpenStreetMap">
@@ -107,18 +109,9 @@ export default function Map({
               url="https://openmaps.gov.bc.ca/geo/pub/WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_SVW/ows"
             />
           </LayersControl.Overlay>
-          <LayersControl.Overlay name="Crown Tenures">
-            <WMSTileLayer
-              version="1.3.0"
-              transparent="true"
-              format="image/png"
-              layers="pub:WHSE_TANTALIS.TA_CROWN_TENURES_SVW"
-              url="https://openmaps.gov.bc.ca/geo/pub/WHSE_TANTALIS.TA_CROWN_TENURES_SVW/ows"
-            />
-          </LayersControl.Overlay>
         </LayersControl>
         {parcelPoly && convert(parcelPoly)}
-        {address ? (
+        {coords[0] !== 54.1722 ? (
           <Marker position={coords}>
             <Popup>
               Lat: {coords[0]} Long: {coords[1]}
@@ -214,6 +207,7 @@ Map.defaultProps = {
   setNearbyResources: () => {},
   setCoords: () => {},
   setAddress: () => {},
+  setError: () => {},
 };
 
 Map.propTypes = {
@@ -230,4 +224,5 @@ Map.propTypes = {
   setNearbyResources: PropTypes.func,
   setCoords: PropTypes.func,
   setAddress: PropTypes.func,
+  setError: PropTypes.func,
 };
