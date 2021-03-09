@@ -10,6 +10,8 @@ export default function TextInput({
   handleChange,
   name,
   value,
+  upperLeftLabel,
+  lowerRightLabel,
 }) {
   return (
     <div className="d-flex flex-column w-100">
@@ -19,16 +21,24 @@ export default function TextInput({
       <p className="mb-0" style={{ opacity: "0.5" }}>
         {notes}
       </p>
-      <textarea
-        aria-labelledby={`${name}-label`}
-        type="textarea"
-        className="bcgov-text-input"
-        rows={rows}
-        placeholder={placeholder}
-        disabled={disabled}
-        value={value}
-        onChange={(e) => handleChange(name, e.target.value)}
-      />
+      <div className="text-wrapper">
+        <textarea
+          aria-labelledby={`${name}-label`}
+          type="textarea"
+          className="bcgov-text-input"
+          rows={rows}
+          placeholder={placeholder}
+          disabled={disabled}
+          value={value}
+          onChange={(e) => handleChange(name, e.target.value)}
+        />
+        {upperLeftLabel !== "" && (
+          <span className="upper-left-label">{upperLeftLabel}</span>
+        )}
+        {lowerRightLabel !== "" && (
+          <span className="lower-right-label">{lowerRightLabel}</span>
+        )}
+      </div>
     </div>
   );
 }
@@ -40,6 +50,8 @@ TextInput.defaultProps = {
   rows: 3,
   disabled: false,
   value: "",
+  upperLeftLabel: "",
+  lowerRightLabel: "",
 };
 
 TextInput.propTypes = {
@@ -51,4 +63,6 @@ TextInput.propTypes = {
   handleChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
+  upperLeftLabel: PropTypes.string,
+  lowerRightLabel: PropTypes.string,
 };

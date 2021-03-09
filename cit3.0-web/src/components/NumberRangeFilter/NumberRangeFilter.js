@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import "./NumberRangeFilter.scss";
 import { Button } from "shared-components";
 import { Modal, Row, Container } from "react-bootstrap";
@@ -8,21 +9,21 @@ import Validator from "../FormComponents/Validator";
 import "react-input-range/src/scss/index.scss";
 
 export default function NumberRangeFilter(props) {
+  const { inputRange, units, description, label } = props;
   const [show, setShow] = useState(false);
   const [inputRangeValue, setInputRangeValue] = useState({
-    min: 0,
-    max: 50000,
+    min: inputRange.min,
+    max: inputRange.max,
   });
-  const [minInput, setMinInput] = useState(0);
-  const [maxInput, setMaxInput] = useState(50000);
+  const [minInput, setMinInput] = useState(inputRange.min);
+  const [maxInput, setMaxInput] = useState(inputRange.max);
   const [validMax, setValidMax] = useState(true);
   const [validMin, setValidMin] = useState(true);
   const [displayRange, setDisplayRange] = useState({});
   const [isSelected, setIsSelected] = useState(false);
 
-  const inputRangeMax = 50000;
-  const inputRangeMin = 0;
-  const units = "acres";
+  const inputRangeMax = inputRange.max;
+  const inputRangeMin = inputRange.min;
 
   const minName = "number-range-min";
   const maxName = "number-range-max";
@@ -48,21 +49,28 @@ export default function NumberRangeFilter(props) {
   };
 
   const updateMax = (name, newMax) => {
-    setMaxInput(newMax);
-    if (validate(name, Number(newMax))) {
+    const newMaxSubstring = newMax.substring(0, 8);
+    setMaxInput(newMaxSubstring);
+    if (validate(name, Number(newMaxSubstring))) {
       setValidMax(true);
-      setInputRangeValue({ min: inputRangeValue.min, max: Number(newMax) });
+      setInputRangeValue({
+        min: inputRangeValue.min,
+        max: Number(newMaxSubstring),
+      });
     } else {
       setValidMax(false);
     }
   };
 
   const updateMin = (name, newMin) => {
-    setMinInput(newMin);
-
-    if (validate(name, Number(newMin))) {
+    const newMinSubstring = newMin.substring(0, 8);
+    setMinInput(newMinSubstring);
+    if (validate(name, Number(newMinSubstring))) {
       setValidMin(true);
-      setInputRangeValue({ min: Number(newMin), max: inputRangeValue.max });
+      setInputRangeValue({
+        min: Number(newMinSubstring),
+        max: inputRangeValue.max,
+      });
     } else {
       setValidMin(false);
     }
@@ -111,13 +119,13 @@ export default function NumberRangeFilter(props) {
     <>
       {!isSelected ? (
         <Button
-          label="Parcel Size"
+          label={label}
           styling="bcgov-normal-white filter-button unselected btn"
           onClick={handleShow}
         />
       ) : (
         <Button
-          label={`Parcel Size: ${displayRange.min}-${displayRange.max} ${units}`}
+          label={`${label}: ${displayRange.min}-${displayRange.max} ${units}`}
           styling="bcgov-normal-blue filter-button selected btn"
           onClick={handleShow}
         />
@@ -130,10 +138,10 @@ export default function NumberRangeFilter(props) {
         keyboard={false}
       >
         <Modal.Header>
-          <Modal.Title>Parcel Size</Modal.Title>
+          <Modal.Title>{label}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Size of Property (in square feet)</p>
+          <p>{description}</p>
           <Container fluid>
             <div className="modal-input-range">
               <InputRange
@@ -144,23 +152,25 @@ export default function NumberRangeFilter(props) {
                 onChange={(value) => updateTextFields(value)}
               />
             </div>
-            <Row className="d-flex justify-content-between">
+            <Row className="d-flex flex-nowrap justify-content-between">
               <div className="modal-text-input">
                 <TextInput
-                  aria-labelledby="water-max-cap-label"
                   handleChange={updateMin}
                   name={minName}
                   rows={1}
                   value={String(minInput)}
+                  upperLeftLabel="min"
+                  lowerRightLabel={units}
                 />
               </div>
               <div className="modal-text-input">
                 <TextInput
-                  aria-labelledby="water-max-cap-label"
                   handleChange={updateMax}
                   name={maxName}
                   rows={1}
                   value={String(maxInput)}
+                  upperLeftLabel="max"
+                  lowerRightLabel={units}
                 />
               </div>
             </Row>
@@ -197,3 +207,13 @@ export default function NumberRangeFilter(props) {
     </>
   );
 }
+
+NumberRangeFilter.propTypes = {
+  inputRange: PropTypes.shape({
+    min: PropTypes.number.isRequired,
+    max: PropTypes.number.isRequired,
+  }).isRequired,
+  units: PropTypes.string.isRequired,
+  description: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+};
