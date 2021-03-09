@@ -2,7 +2,7 @@ import _ from "lodash";
 import { geojsonToWKT } from "@terraformer/wkt";
 import { Opportunity } from "../models/opportunity";
 
-export const geoJSONToString = (geom) => {
+const geoJSONToString = (geom) => {
   if (!geom.coordinates) {
     return null;
   }
@@ -10,7 +10,7 @@ export const geoJSONToString = (geom) => {
     type: geom.type,
     coordinates: geom.coordinates,
   };
-  return `SRID=3005;${geoJSONToString(geoJSON)}`;
+  return `SRID=3005;${geojsonToWKT(geoJSON)}`;
 };
 
 /**
