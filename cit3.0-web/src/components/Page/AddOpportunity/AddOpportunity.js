@@ -44,10 +44,17 @@ export default function AddOpportunity() {
   );
 
   const [hasApproval, setHasApproval] = useState(false);
-  const [error, setError] = useState(false);
+  const [blockContinue, setBlockContinue] = useState(true);
+  const [error, setError] = useState(null);
 
   const handleRadioChange = (name, label, value) => {
+    console.log(label, value);
     setHasApproval(label);
+    if (label === "Yes") {
+      setBlockContinue(false);
+    } else {
+      setBlockContinue(true);
+    }
   };
 
   const history = useHistory();
@@ -62,12 +69,11 @@ export default function AddOpportunity() {
     const pid = await getPID(id);
     dispatch(setPID(pid));
     const parcelData = await getParcelData(pid);
-    console.log(parcelData);
     if (
       !pid ||
       parcelData.data.features[0].properties.OWNER_TYPE !== "Private"
     ) {
-      setHasApproval("Yes");
+      setBlockContinue(false);
     }
     if (parcelData.data.features.length) {
       dispatch(setGeometry(parcelData.data.features[0].geometry.coordinates));
@@ -85,18 +91,32 @@ export default function AddOpportunity() {
   };
 
   const getCoords = async (addy) => {
+    dispatch(setParcelOwner(""));
+    dispatch(setGeometry(null));
+    dispatch(setParcelSize(""));
+    dispatch(setPID(""));
+    dispatch(setAddress(""));
+    setError("");
     try {
       const data = await getAddressData(addy);
+      dispatch(setAddress(data.data.features[0].properties.fullAddress));
       dispatch(
         setCoords([
           data.data.features[0].geometry.coordinates[1],
           data.data.features[0].geometry.coordinates[0],
         ])
       );
-      dispatch(setSiteId(data.data.features[0].properties.siteID));
+      if (data.data.features[0].properties.siteID) {
+        dispatch(setSiteId(data.data.features[0].properties.siteID));
+      } else if (data.data.features.length) {
+        dispatch(setSiteId("unknown"));
+      } else {
+        setError("Cannot find address info, please try again.");
+        setBlockContinue(true);
+        return;
+      }
     } catch (err) {
-      console.log("Error retrieving data for address", err);
-      setError(true);
+      setError("Service is not available.  Please try again later");
     }
   };
 
@@ -136,13 +156,15 @@ export default function AddOpportunity() {
                 {error && (
                   <Row>
                     <Col>
-                      <h3>
-                        We are unable to find data for this address. Please try
-                        a different address or try again later.{" "}
-                      </h3>
+                      <h3>{error}</h3>
                     </Col>
                   </Row>
                 )}
+                <Row>
+                  <Col>
+                    <PropertyInfo info={address} tag={false} />
+                  </Col>
+                </Row>
                 {parcelSize ? (
                   <Row>
                     <Col>
@@ -197,12 +219,13 @@ export default function AddOpportunity() {
               setAddress={(a) => dispatch(setAddress(a))}
               setCoords={(c) => dispatch(setCoords(c))}
               setSiteId={(id) => dispatch(setSiteId(id))}
+              setError={setError}
             />
           </Col>
         </Row>
       </Container>
       <ButtonRow
-        noContinue={!address || hasApproval !== ("Yes" || null)}
+        noContinue={!address || blockContinue}
         onClick={goToNextPage}
       />
     </>
