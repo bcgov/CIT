@@ -246,13 +246,13 @@ export const OPPORTUNITY_MODEL = {
     },
     parcelSize: {
       title: "Parcel size",
-      value: "",
+      value: null,
       type: "size",
       suffix: "acres",
     },
     PID: {
       title: "PID",
-      value: "",
+      value: null,
       type: "paragraph",
     },
     geometry: {
