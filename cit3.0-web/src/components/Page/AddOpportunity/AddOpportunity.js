@@ -2,7 +2,6 @@ import { useHistory } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { geojsonToWKT } from "@terraformer/wkt";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MapContainer from "../../MapContainer/MapContainer";
@@ -24,7 +23,6 @@ import {
   setSiteId,
 } from "../../../store/actions/opportunity";
 import Radios from "../../FormComponents/Radios";
-import { geoJSONToString } from "../../../store/factory/OpportunityFactory";
 
 export default function AddOpportunity() {
   document.title = `Investments - Add Opportunity`;
@@ -50,7 +48,6 @@ export default function AddOpportunity() {
   const [error, setError] = useState(null);
 
   const handleRadioChange = (name, label, value) => {
-    console.log(label, value);
     setHasApproval(label);
     if (label === "Yes") {
       setBlockContinue(false);
@@ -71,11 +68,21 @@ export default function AddOpportunity() {
     const pid = await getPID(id);
     dispatch(setPID(pid));
     const parcelData = await getParcelData(pid);
+    // need to clear out previous address info if exists
+    if (!pid || !parcelData.data.features[0].length) {
+      dispatch(setGeometry({ coordinates: null }));
+      dispatch(setParcelOwner(null));
+      dispatch(setParcelSize(null));
+    }
     if (
       !pid ||
       parcelData.data.features[0].properties.OWNER_TYPE !== "Private"
     ) {
       setBlockContinue(false);
+    } else if (
+      parcelData.data.features[0].properties.OWNER_TYPE === "Private"
+    ) {
+      setBlockContinue(true);
     }
     if (parcelData.data.features.length) {
       dispatch(setGeometry(parcelData.data.features[0].geometry));
@@ -85,7 +92,10 @@ export default function AddOpportunity() {
       // convert sqM to acres
       dispatch(
         setParcelSize(
-          parcelData.data.features[0].properties.FEATURE_AREA_SQM * 0.000247105
+          (
+            parcelData.data.features[0].properties.FEATURE_AREA_SQM *
+            0.000247105
+          ).toFixed(3)
         )
       );
     }
@@ -93,11 +103,11 @@ export default function AddOpportunity() {
   };
 
   const getCoords = async (addy) => {
-    dispatch(setParcelOwner(""));
+    dispatch(setParcelOwner(null));
     dispatch(setGeometry(null));
-    dispatch(setParcelSize(""));
-    dispatch(setPID(""));
-    dispatch(setAddress(""));
+    dispatch(setParcelSize(null));
+    dispatch(setPID(null));
+    dispatch(setAddress(null));
     setError("");
     try {
       const data = await getAddressData(addy);
@@ -154,6 +164,7 @@ export default function AddOpportunity() {
                   getCoords={getCoords}
                   setError={setError}
                   currentAddress={address}
+                  setBlockContinue={setBlockContinue}
                 />
                 {error && (
                   <Row>
@@ -177,7 +188,7 @@ export default function AddOpportunity() {
                         Ownership: <b>{parcelOwner}</b>
                       </p>
                       <p className="mb-0 pb-0">
-                        Parcel Size: <b>{parcelSize.toFixed(3)} acres</b>
+                        Parcel Size: <b>{parcelSize} acres</b>
                       </p>
                       <p>
                         PID: <b>{PID}</b>
