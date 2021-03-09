@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { toKebabCase } from "../../helpers/helpers";
 
 /**
@@ -9,13 +10,19 @@ import { toKebabCase } from "../../helpers/helpers";
  * @todo remove/update physical
  * @todo remove/update siteInfo
  */
-export const OPPORTUNITY_MODEL = {
+export const OPPORTUNITY_MODEL = () => ({
   name: "",
   address: "",
   coords: [54.1722, -124.1207],
-  approvalStatus: "NEW",
+  approvalStatus: "",
   businessContactName: "",
   businessContactEmail: "",
+  publicNote: "",
+  privateNote: "",
+  lastAdmin: "",
+  dateCreated: "",
+  dateUpdated: "",
+  datePublished: "",
   resourceIds: {
     Hospitals: "5ff82cf4-0448-4063-804a-7321f0f2b4c6",
     Schools: "5832eff2-3380-435e-911b-5ada41c1d30b",
@@ -296,7 +303,7 @@ export const OPPORTUNITY_MODEL = {
       type: "link",
     },
   },
-};
+});
 
 /**
  * Model used to map visual sections of the screens.
@@ -305,7 +312,7 @@ export const OPPORTUNITY_MODEL = {
  */
 export class Opportunity {
   constructor() {
-    this.state = { ...OPPORTUNITY_MODEL };
+    this.state = _.mergeWith({}, OPPORTUNITY_MODEL());
   }
 
   set id(value) {

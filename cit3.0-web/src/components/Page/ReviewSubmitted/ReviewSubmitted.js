@@ -10,6 +10,7 @@ import { resetOpportunity } from "../../../store/actions/opportunity";
 const ReviewSubmitted = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const dispatch = useDispatch();
   const backToDashboard = () => {
     dispatch(resetOpportunity());
     history.push("/dashboard");

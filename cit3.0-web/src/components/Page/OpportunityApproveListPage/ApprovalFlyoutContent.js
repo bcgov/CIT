@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Proptypes from "prop-types";
 import { Button, Form } from "react-bootstrap";
-import axios from "axios";
 import { v4 } from "uuid";
+import { useDispatch, useSelector } from "react-redux";
+import { getOptions, setOptions } from "../../../store/actions/options";
 
 const FORM_SUB_FROM_INPUT = "submitted_from_date";
 const FORM_SUB_TO_INPUT = "submitted_to_date";
@@ -10,16 +11,20 @@ const FORM_PUB_FROM_INPUT = "published_from_date";
 const FORM_PUB_TO_INPUT = "published_to_date";
 
 const ApprovalFlyoutContent = ({ title, onQuery, resetFiliters, search }) => {
-  const [options, setOptions] = useState(0);
+  const dispatch = useDispatch();
+  const regionalDistricts = useSelector(
+    (state) => state.options.regionalDistricts
+  );
+  const statuses = useSelector((state) => state.options.statuses);
+  if (!statuses || !regionalDistricts) {
+    getOptions().then((response) => {
+      dispatch(setOptions(response.data));
+    });
+  }
   const [subFromValidated, setSubFromvalidated] = useState();
   const [subToValidated, setSubTovalidated] = useState();
   const [pubFromValidated, setPubFromValidated] = useState();
   const [pubToValidated, setPubToValidated] = useState();
-  if (!options) {
-    axios.get("/api/opportunity/options/").then((data) => {
-      setOptions(data.data);
-    });
-  }
 
   const validateInput = (fieldName, value) => {
     switch (fieldName) {
@@ -53,8 +58,8 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFiliters, search }) => {
       <h3>{title}</h3>
       <div className="d-flex flex-column my-3">
         <h4 className="mb-3">Status</h4>
-        {options.statuses &&
-          options.statuses.map((status) => (
+        {statuses &&
+          statuses.map((status) => (
             <Button
               key={v4()}
               className="mb-3"
@@ -158,8 +163,8 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFiliters, search }) => {
             onChange={(e) => onQuery("regional_district", e.target.value)}
           >
             <option value="">All</option>
-            {options.regionalDistricts &&
-              options.regionalDistricts.map((district) => (
+            {regionalDistricts &&
+              regionalDistricts.map((district) => (
                 <option value={district.id}>
                   {district.name}({district.area_id})
                 </option>
