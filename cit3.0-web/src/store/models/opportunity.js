@@ -257,8 +257,8 @@ export const OPPORTUNITY_MODEL = {
     },
     geometry: {
       title: "Polygon",
-      name: "Yes",
-      polygon: null,
+      type: "Polygon",
+      coordinates: null,
     },
     siteId: {
       title: "Site ID",

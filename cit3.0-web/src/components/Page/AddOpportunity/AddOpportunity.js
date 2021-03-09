@@ -2,6 +2,7 @@ import { useHistory } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { geojsonToWKT } from "@terraformer/wkt";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MapContainer from "../../MapContainer/MapContainer";
@@ -23,6 +24,7 @@ import {
   setSiteId,
 } from "../../../store/actions/opportunity";
 import Radios from "../../FormComponents/Radios";
+import { geoJSONToString } from "../../../store/factory/OpportunityFactory";
 
 export default function AddOpportunity() {
   document.title = `Investments - Add Opportunity`;
@@ -76,7 +78,7 @@ export default function AddOpportunity() {
       setBlockContinue(false);
     }
     if (parcelData.data.features.length) {
-      dispatch(setGeometry(parcelData.data.features[0].geometry.coordinates));
+      dispatch(setGeometry(parcelData.data.features[0].geometry));
       dispatch(
         setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE)
       );
@@ -160,11 +162,13 @@ export default function AddOpportunity() {
                     </Col>
                   </Row>
                 )}
-                <Row>
-                  <Col>
-                    <PropertyInfo info={address} tag={false} />
-                  </Col>
-                </Row>
+                {!parcelSize && (
+                  <Row>
+                    <Col>
+                      <PropertyInfo info={address} tag={false} />
+                    </Col>
+                  </Row>
+                )}
                 {parcelSize ? (
                   <Row>
                     <Col>

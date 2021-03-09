@@ -19,7 +19,6 @@ import proj4 from "proj4";
 import ChangeView from "../ChangeView/ChangeView";
 import AddLocationMarker from "../AddMarker/AddMarker";
 import ResourceMarker from "../AddMarker/ResourceMarker";
-import { createMultiPolygonString } from "../../store/factory/OpportunityFactory";
 
 /* eslint-disable no-unused-vars */
 export default function Map({
@@ -37,7 +36,7 @@ export default function Map({
     width: window.innerWidth,
   });
   const parcelPoly = useSelector(
-    (state) => state.opportunity.siteInfo.geometry.polygon
+    (state) => state.opportunity.siteInfo.geometry.coordinates
   );
   const address = useSelector((state) => state.opportunity.address);
 
@@ -48,21 +47,19 @@ export default function Map({
 
   // convert long/lat in 3005 to lat/long in 4326 to draw polygon
   const convert = (lngLatAry) => {
-    // createMultiPolygonString(lngLatAry);
     const defString =
       "+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
     proj4.defs("EPSG:3005", defString);
-    const full = lngLatAry.map((poly) => {
-      console.log(poly);
-      return poly.map((polyCoords) => {
+    const full = lngLatAry.map((poly) =>
+      poly.map((polyCoords) => {
         const converted = proj4(
           proj4("EPSG:3005"),
           proj4("EPSG:4326"),
           polyCoords
         );
         return [converted[1], converted[0]];
-      });
-    });
+      })
+    );
     return (
       <Polygon
         pathOptions={{ color: "rgb(255, 0, 128)" }}

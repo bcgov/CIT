@@ -63,7 +63,10 @@ export default function opportunity(state = { ...OPPORTUNITY_MODEL }, action) {
       state.siteInfo.PID.value = action.payload;
       break;
     case ADD_GEOMETRY:
-      state.siteInfo.geometry.polygon = action.payload;
+      state.siteInfo.geometry = {
+        ...state.siteInfo.geometry,
+        ...action.payload,
+      };
       break;
     case ADD_PARCEL_OWNER:
       state.siteInfo.parcelOwnership.name = action.payload;
