@@ -19,13 +19,13 @@ export default function AddLocationMarker(props) {
   const dispatch = useDispatch();
 
   useMapEvent("click", async (e) => {
-    /* set data to null in case data is not returned for a coord */
+    /* set current data to null in case data is not returned for a coord */
     dispatch(setParcelOwner(""));
     dispatch(setGeometry(null));
     dispatch(setParcelSize(""));
     dispatch(setPID(""));
     props.setAddress("");
-    /* */
+    /// ///////////////////
     setPositions([e.latlng]);
 
     try {
@@ -34,7 +34,7 @@ export default function AddLocationMarker(props) {
         e.latlng.lng,
       ]);
       dispatch(setSiteId(addressDataFromPoint.data.properties.siteID));
-      props.setAddress(addressDataFromPoint.data.properties.fullAddress); 
+      props.setAddress(addressDataFromPoint.data.properties.fullAddress);
       props.setCoords([e.latlng.lat, e.latlng.lng]);
       const proximity = await getProximityData(props.resourceIds, [
         e.latlng.lat,
@@ -42,7 +42,9 @@ export default function AddLocationMarker(props) {
       ]);
       props.setNearbyResources(proximity);
     } catch (error) {
-      console.log("ERRROR WITH FETCHING Parcel and land data etc");
+      props.setError(
+        "Cannot find address data for this particular geographic point.  Please try again."
+      );
     }
   });
 
