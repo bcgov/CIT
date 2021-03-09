@@ -4,7 +4,7 @@ import "./PropertyInfo.css";
 
 export default function PropertyInfo({ info, tag }) {
   return (
-    <Row className="padding">
+    <Row className="no-padding">
       <Col>{tag ? <p>{info}</p> : <h3>{info}</h3>}</Col>
     </Row>
   );
