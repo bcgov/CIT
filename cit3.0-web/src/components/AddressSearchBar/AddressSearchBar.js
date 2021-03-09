@@ -29,7 +29,9 @@ export default function AddressSearchBar({
       return true;
     } catch (error) {
       setShow(false);
-      return setError(true);
+      return setError(
+        "Cannot find address data for this address, please try again."
+      );
     }
   };
 
