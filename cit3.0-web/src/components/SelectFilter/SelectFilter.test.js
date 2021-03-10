@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import SelectFilter from "./SelectFilter";
 
@@ -40,5 +40,23 @@ describe("<SelectFilter />", () => {
     const selectFilter = screen.getByText("Zoning");
 
     expect(selectFilter).toBeInTheDocument();
+  });
+
+  test("it should show a modal when clicked", () => {
+    render(
+      <SelectFilter
+        label="Zoning"
+        filters={zoningFilters}
+        setFilters={setZoningFilters}
+      />
+    );
+
+    const selectFilterButton = screen.getByText("Zoning");
+
+    expect(selectFilterButton).toBeInTheDocument();
+
+    fireEvent.click(selectFilterButton);
+
+    expect(screen.getByText("Save")).toBeInTheDocument();
   });
 });

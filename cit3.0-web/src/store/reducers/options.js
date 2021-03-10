@@ -1,6 +1,5 @@
 import _ from "lodash";
 import OPTIONS_INITIALIZATION from "../models/options";
-
 /**
  * Options get actions
  *

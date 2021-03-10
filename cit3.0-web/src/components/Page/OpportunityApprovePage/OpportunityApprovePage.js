@@ -10,7 +10,6 @@ import {
   setOpportunity,
   getOpportunity,
   updateOpportunity,
-  resetOpportunity,
 } from "../../../store/actions/opportunity";
 import { getOptions, setOptions } from "../../../store/actions/options";
 import OpportunityFactory from "../../../store/factory/OpportunityFactory";
