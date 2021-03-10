@@ -46,6 +46,14 @@ renaming the `acr-publish.yml.disabled` file in `.github/workflows` folder to `a
 NOTE: This action will fail until you have provisioned the ACR as part of the Terraform provisioning
 process.
 
+## Setting up remote backend
+
+```
+az storage account create --resource-group CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01 --name tfstatecit  --sku Standard_LRS --encryption-services blob
+az storage account keys list --resource-group CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01 --account-name tfstatecit
+az storage container create --name tfstate --account-name tfstatecit --account-key $ACCOUNT_KEY
+```
+
 ## Import Existing Resource Group
 
 We have a specific resource group to use with this, so we need to import the instance into our terraform state.
@@ -59,8 +67,9 @@ necessary for deploying the app.
 
 First, change into the `terraform` directory of this repository and then perform these commands.
 
-1. `terraform init`
-2. `terraform import module.webapp.azurerm_resource_group.cit /subscriptions/be5c5c2b-d7e6-4940-ae15-37d7ef061283/resourceGroups/CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01`
+1. `terraform init -backend-config="access_key=$ACCESS_KEY" -backend-config="resource_group_name=CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01"`
+2. Import existing resource group
+`terraform import module.webapp.azurerm_resource_group.cit /subscriptions/be5c5c2b-d7e6-4940-ae15-37d7ef061283/resourceGroups/CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01`
 2. `terraform plan`
 3. `terraform apply`
 
@@ -78,3 +87,5 @@ Once you're finished, you may remove all resources provisioned with the followin
 
 NOTE: This requires a maintained `.tfstate` file that was created in provisioning the resources in
 the first place. Still looking at how to maintain this either via VCS or Terraform Cloud.
+
+

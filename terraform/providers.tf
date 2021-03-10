@@ -14,6 +14,13 @@ terraform {
       version = ">= 4.1"
     }
   }
+  backend "azurerm" {
+    storage_account_name = "tfstatecit"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate"
+    # resource_group_name  = set in init command
+    # access_key           = set in init command
+  }
 }
 
 provider "azurerm" {

@@ -75,7 +75,7 @@ resource "azurerm_app_service" "frontend" {
 
 # Create the Backend App Service
 resource "azurerm_app_service" "backend" {
-  name                = "cit-${var.location}-${var.environment}-${var.app_name}-backend2"
+  name                = "cit-${var.location}-${var.environment}-${var.app_name}-backend"
   location            = azurerm_resource_group.cit.location
   resource_group_name = azurerm_resource_group.cit.name
   app_service_plan_id = azurerm_app_service_plan.webapp.id
