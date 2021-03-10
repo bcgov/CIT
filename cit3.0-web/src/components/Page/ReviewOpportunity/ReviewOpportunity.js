@@ -36,6 +36,7 @@ const ReviewOpportunity = ({ location }) => {
       })
       .catch((e) => {
         dispatch(setNotification(NOTIFICATION_ERROR, e));
+        window.scrollTo(0, 0);
       });
   };
 
