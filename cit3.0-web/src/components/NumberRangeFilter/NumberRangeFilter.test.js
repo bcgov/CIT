@@ -69,6 +69,32 @@ describe("<NumberRangeFilter />", () => {
     ).toBeInTheDocument();
   });
 
+  test("it should display a slightly different label for distance filters", () => {
+    render(
+      <NumberRangeFilter
+        inputRange={inputRange}
+        units={units}
+        description={description}
+        label={label}
+        isDistance
+      />
+    );
+
+    const numberRangeFilterButton = screen.getByText(label);
+    expect(numberRangeFilterButton).toBeInTheDocument();
+
+    fireEvent.click(numberRangeFilterButton);
+
+    const saveButton = screen.getByText("Save");
+    fireEvent.click(saveButton);
+
+    expect(
+      screen.getByText(
+        `${label}: within ${inputRange.min}-${inputRange.max} ${units}`
+      )
+    ).toBeInTheDocument();
+  });
+
   test("it should validate the input", () => {
     render(
       <NumberRangeFilter

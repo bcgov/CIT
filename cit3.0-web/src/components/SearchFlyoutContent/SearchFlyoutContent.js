@@ -140,6 +140,7 @@ export default function SearchFlyoutContent() {
         units="km"
         description="Driving distance to power transmission lines in km"
         label="Power Transmission Lines"
+        isDistance
       />
       <SelectFilter
         label="Connectivity"
@@ -154,18 +155,21 @@ export default function SearchFlyoutContent() {
         units="km"
         description="Driving distance to airport in km"
         label="Air Service"
+        isDistance
       />
       <NumberRangeFilter
         inputRange={{ min: 0, max: 500 }}
         units="km"
         description="Driving distance to rail connections in km"
         label="Rail Connections"
+        isDistance
       />
       <NumberRangeFilter
         inputRange={{ min: 0, max: 500 }}
         units="km"
         description="Driving distance to deep water port in km"
         label="Deep Water Port"
+        isDistance
       />
       <h3>Demographics</h3>
       <h3>Advanced Education &amp; Research</h3>
