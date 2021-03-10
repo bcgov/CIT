@@ -1,4 +1,5 @@
 import { toKebabCase } from "../../helpers/helpers";
+import { convert3005CoordsTo4326 } from "../../helpers/conversions";
 
 /**
  * Initial opportunity model
@@ -318,7 +319,10 @@ export class Opportunity {
 
   set geoPosition(value) {
     const geo = value.match(/\((.*) (.*)\)/);
-    this.state.coords = [parseFloat(geo[2]), parseFloat(geo[1])];
+    this.state.coords = convert3005CoordsTo4326([
+      parseFloat(geo[2]),
+      parseFloat(geo[1]),
+    ]);
   }
 
   set opportunityAddress(value) {
@@ -416,7 +420,7 @@ export class Opportunity {
   }
 
   set geometry(value) {
-    this.state.siteInfo.geometry.polygon = value;
+    this.state.siteInfo.geometry.coordinates = value;
   }
 
   // User Info

@@ -1,17 +1,9 @@
 import _ from "lodash";
-import { geojsonToWKT } from "@terraformer/wkt";
 import { Opportunity } from "../models/opportunity";
-
-const geoJSONToString = (geom) => {
-  if (!geom.coordinates) {
-    return null;
-  }
-  const geoJSON = {
-    type: geom.type,
-    coordinates: geom.coordinates,
-  };
-  return `SRID=3005;${geojsonToWKT(geoJSON)}`;
-};
+import {
+  convert4326CoordsTo3005,
+  geoJSONToString,
+} from "../../helpers/conversions";
 
 /**
  * Factory to convert model to request object, reason there is more
@@ -34,10 +26,11 @@ export default {
         });
       }
     });
+    const coords3005 = convert4326CoordsTo3005(state.coords);
     return {
       ...request,
       opportunity_address: state.address,
-      geo_position: `SRID=3005;POINT(${state.coords[1]} ${state.coords[0]})`,
+      geo_position: `SRID=3005;POINT(${coords3005[0]} ${coords3005[1]})`,
       parcel_geometry: geoJSONToString(state.siteInfo.geometry),
       parcel_size: state.siteInfo.parcelSize.value,
       approval_status: state.approvalStatus,
