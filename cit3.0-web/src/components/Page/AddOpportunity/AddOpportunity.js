@@ -57,10 +57,10 @@ export default function AddOpportunity() {
   };
 
   const history = useHistory();
-  const title1 = "Add an Opportunity";
+  const title1 = "Add a Property";
   const title2 = "Confirm Property";
   const text1 =
-    "Please drop a pin on the map or enter the address of the property you want to list as an opportunity for investors.";
+    'Enter an address or "zoom in" to the map and drop a pin on the land parcel you want to list as an opportunit for investors.';
   const text2 =
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 
@@ -139,7 +139,7 @@ export default function AddOpportunity() {
   }, [siteId]);
 
   const goToNextPage = () => {
-    history.push(`/addOpportunity/siteDetails`);
+    history.push(`/opportunity/site-info`);
   };
 
   return (

@@ -52,13 +52,25 @@ button.a-tag.a-tag:active {
   color: #FFFFFF;
 }
 
-:focus {
-  outline-offset: 1px;
-  outline: 4px solid #3B99FC;
+.filter-button.filter-button {
+  border-radius: 30px;
+  font-weight: 400;
 }
 
 .BC-Gov-SecondaryButton:active {
   opacity: 1;
+}
+
+div.bcgov-error-background {
+  border: 1px solid #d8292f;
+}
+
+div.bcgov-success-background {
+  border: 1px solid #2e8540;
+}
+
+div.bcgov-warning-background {
+  border: 1px solid rgb(252, 186, 25);
 }
 
 .center-spinner {

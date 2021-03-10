@@ -15,7 +15,7 @@ const OpportunityListItem = ({ opportunity }) => {
           <br />
           <a href="/">Edit Listing</a>
           <br />
-          <a href="/">Delete</a>
+          <NavLink to={`/opportunities/delete/${opp.id}/`}>Delete</NavLink>
         </>
       );
     }
@@ -25,7 +25,7 @@ const OpportunityListItem = ({ opportunity }) => {
         <br />
         <a href="/">Edit Listing</a>
         <br />
-        <a href="/">Delete</a>
+        <NavLink to={`/opportunities/delete/${opp.id}`}>Delete</NavLink>
       </>
     );
   };

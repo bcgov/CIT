@@ -7,6 +7,7 @@ import { GrMapLocation } from "react-icons/gr";
 import { Row, Col } from "react-bootstrap";
 import OpportunitiesMap from "../OpportunitiesMap/OpportunitiesMap";
 import "./OpportunityMapContainer.scss";
+import { GET_OPPOTUNITIES_LIST_URL } from "../../../store/constants/api-urls";
 
 export default function OpportunityMapContainer({ totalCount, setTotalCount }) {
   const [opportunities, setOpportunities] = useState(null);
@@ -14,7 +15,7 @@ export default function OpportunityMapContainer({ totalCount, setTotalCount }) {
 
   useEffect(() => {
     axios
-      .get(`/api/opportunity/list`)
+      .get(GET_OPPOTUNITIES_LIST_URL)
       .then((data) => {
         setOpportunities(data.data.results);
         setTotalCount(data.data.count);

@@ -26,6 +26,7 @@ import {
 import {
   POST_OPPOTUNITIES_URL,
   GET_OPPOTUNITIES_URL,
+  PUT_OPPOTUNITIES_URL,
 } from "../constants/api-urls";
 import OpportunityFactory from "../factory/OpportunityFactory";
 
@@ -44,9 +45,22 @@ export function postOpportunity(opportunityModel) {
  * @param {Object} opportunityModel from redux store
  * @return {Promise} of axios api call
  */
+export function deleteOpportunity(opportunityModel) {
+  const opportunity = opportunityModel;
+  opportunity.deleted = true;
+  return axios.put(
+    `${PUT_OPPOTUNITIES_URL + opportunity.id}/`,
+    OpportunityFactory.createRequestFromModel(opportunity)
+  );
+}
+
+/**
+ * @param {Object} opportunityModel from redux store
+ * @return {Promise} of axios api call
+ */
 export function updateOpportunity(opportunityModel) {
   return axios.put(
-    `${POST_OPPOTUNITIES_URL + opportunityModel.id}/`,
+    `${PUT_OPPOTUNITIES_URL + opportunityModel.id}/`,
     OpportunityFactory.createRequestFromModel(opportunityModel)
   );
 }

@@ -9,10 +9,11 @@ import OpportunityListContainer from "../../OpportunitiesListContainer/Opportuni
 import Flyout from "../../Flyout/Flyout";
 import OpportunityApprovalItem from "../../OpportunityApprovalItem/OpportunityApprovalItem";
 import ApprovalFlyoutContent from "./ApprovalFlyoutContent";
+import { GET_OPPOTUNITIES_LIST_URL } from "../../../store/constants/api-urls";
 
 const OpportunityApproveListPage = () => {
   const [totalCount, setTotalCount] = useState(0);
-  axios.get("/api/opportunity/list/").then((data) => {
+  axios.get(GET_OPPOTUNITIES_LIST_URL).then((data) => {
     setTotalCount(data.data.count);
   });
 
@@ -22,19 +23,24 @@ const OpportunityApproveListPage = () => {
 
   return (
     <div data-testid="OpportunityApproveListPage">
-      <PortalHeader title="Investor Portal" text="Description" />
+      <PortalHeader
+        title="Manage Opportunities"
+        text="Approve, Close, or return opportunities for edits"
+      />
       <Flyout
         flyoutComponent={ApprovalFlyoutContent}
         flyoutProps={{
           title: "Filter Opportunities",
           search,
           onQuery: (key, value) => {
-            if (value) {
-              search = querystring.decode(query);
+            search = querystring.decode(query);
+            if (value !== "") {
               search[key] = value;
-              query = querystring.encode(search);
-              history.push({ search: query });
+            } else {
+              delete search[key];
             }
+            query = querystring.encode(search);
+            history.push({ search: query });
           },
           resetFiliters: () => {
             query = "";

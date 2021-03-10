@@ -14,9 +14,9 @@ import {
   setBusinessNameShared,
 } from "../../../store/actions/opportunity";
 import Validator from "../../FormComponents/Validator";
+import "./PropertyDetails2.css";
 
 export default function PropertyDetails2() {
-  document.title = `Investments - Add Opportunity - Additional Information`;
   const dispatch = useDispatch();
   const businessContactEmail = useSelector(
     (state) => state.opportunity.businessContactEmail
@@ -61,9 +61,7 @@ export default function PropertyDetails2() {
   const placeholder = "Enter URL here (eg. realtor.ca/myopportunity)";
 
   const goToNextPage = () => {
-    history.push({
-      pathname: `/addOpportunity/review`,
-    });
+    history.push(`/opportunity/review`);
   };
   const handleContinue = () => {
     goToNextPage();
@@ -187,7 +185,7 @@ export default function PropertyDetails2() {
         </Row>
       </Container>
       <ButtonRow
-        prevRoute="/addOpportunity/propDetails1"
+        prevRoute="/opportunity/property-details"
         onClick={handleContinue}
         noContinue={!validEmail}
       />

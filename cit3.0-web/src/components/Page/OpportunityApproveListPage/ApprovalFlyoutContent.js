@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Proptypes from "prop-types";
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
+import { Button } from "shared-components";
 import { v4 } from "uuid";
 import { useDispatch, useSelector } from "react-redux";
 import { getOptions, setOptions } from "../../../store/actions/options";
@@ -9,6 +10,7 @@ const FORM_SUB_FROM_INPUT = "submitted_from_date";
 const FORM_SUB_TO_INPUT = "submitted_to_date";
 const FORM_PUB_FROM_INPUT = "published_from_date";
 const FORM_PUB_TO_INPUT = "published_to_date";
+let loading = false;
 
 const ApprovalFlyoutContent = ({ title, onQuery, resetFiliters, search }) => {
   const dispatch = useDispatch();
@@ -16,9 +18,11 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFiliters, search }) => {
     (state) => state.options.regionalDistricts
   );
   const statuses = useSelector((state) => state.options.statuses);
-  if (!statuses || !regionalDistricts) {
+  if (!loading && (!statuses.length || !regionalDistricts.length)) {
+    loading = true;
     getOptions().then((response) => {
       dispatch(setOptions(response.data));
+      loading = false;
     });
   }
   const [subFromValidated, setSubFromvalidated] = useState();
@@ -53,6 +57,32 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFiliters, search }) => {
     }
   };
 
+  const [statusCode, setStatusCode] = useState();
+  const [regionalDistrict, setRegionalDistrict] = useState();
+  const handleStatusChange = (nextStatusCode) => {
+    let updateTo = nextStatusCode;
+    if (nextStatusCode === statusCode) {
+      updateTo = "";
+    }
+    setStatusCode(updateTo);
+    onQuery("approval_status_id", updateTo);
+  };
+  const handleRegionalDistrictChange = (nextRDCode) => {
+    setRegionalDistrict(nextRDCode);
+    onQuery("regional_district", nextRDCode);
+  };
+
+  const handleResetFilters = () => {
+    setStatusCode("");
+    setRegionalDistrict("");
+    resetFiliters();
+  };
+
+  useEffect(() => {
+    setStatusCode(search.approval_status_id);
+    setRegionalDistrict(search.regional_district);
+  });
+
   return (
     <div>
       <h3>{title}</h3>
@@ -62,12 +92,15 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFiliters, search }) => {
           statuses.map((status) => (
             <Button
               key={v4()}
-              className="mb-3"
-              onClick={() => onQuery("approval_status_id", status.status_code)}
+              styling={`mb-3 bcgov-button filter-button ${
+                statusCode !== status.status_code
+                  ? "unselected bcgov-normal-white"
+                  : "border-0 bcgov-normal-blue"
+              }`}
+              onClick={() => handleStatusChange(status.status_code)}
+              label={status.status_name}
               title={status.status_description}
-            >
-              {status.status_name}
-            </Button>
+            />
           ))}
       </div>
       <div className="my-3">
@@ -159,8 +192,8 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFiliters, search }) => {
           <Form.Control
             as="select"
             name="regional-district"
-            value={search.regional_district}
-            onChange={(e) => onQuery("regional_district", e.target.value)}
+            value={regionalDistrict}
+            onChange={(e) => handleRegionalDistrictChange(e.target.value)}
           >
             <option value="">All</option>
             {regionalDistricts &&
@@ -175,11 +208,10 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFiliters, search }) => {
       <hr className="hr-bold" />
       <div className="d-flex justify-content-end">
         <Button
-          className="BC-Gov-SecondaryButton"
-          onClick={() => resetFiliters()}
-        >
-          Reset all filters
-        </Button>
+          styling="BC-Gov-SecondaryButton"
+          label="Reset all filters"
+          onClick={() => handleResetFilters()}
+        />
       </div>
     </div>
   );

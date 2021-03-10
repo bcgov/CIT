@@ -3,16 +3,19 @@ import { Button } from "shared-components";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import "./EDODashboard.css";
+import { useDispatch } from "react-redux";
 import OpportunityTable from "../../OpportunityTable/OpportunityTable";
+import { resetOpportunity } from "../../../store/actions/opportunity";
+import { GET_OPPOTUNITIES_LIST_URL } from "../../../store/constants/api-urls";
 
 export default function EDODashboard() {
   const [tableData, setTableData] = useState(null);
   const history = useHistory();
-  document.title = `Investments`;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axios
-      .get("/api/opportunity/list")
+      .get(GET_OPPOTUNITIES_LIST_URL)
       .then((data) => {
         setTableData(data.data.results);
       })
@@ -24,7 +27,8 @@ export default function EDODashboard() {
   }, []);
 
   const goToMap = () => {
-    history.push("/addOpportunity");
+    dispatch(resetOpportunity());
+    history.push("/opportunity");
   };
 
   let dataSection;

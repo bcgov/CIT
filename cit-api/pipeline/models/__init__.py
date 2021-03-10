@@ -3,6 +3,9 @@ from .community import *
 from .general import *
 from .location_assets import *
 from .opportunity import *
+from .land_use_zoning import *
+from .preferred_development import *
+from .property_status import *
 from .census_economic_region import *
 from .health_authority_boundary import *
 from .lake import *

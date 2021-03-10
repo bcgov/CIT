@@ -14,62 +14,32 @@ import {
   setService,
   setServiceCapacity,
 } from "../../../store/actions/opportunity";
-
-const PropStatusOptions = [
-  {
-    value: "sale",
-    label: "For Sale",
-  },
-  {
-    value: "lease",
-    label: "Lease",
-  },
-];
-const zoningOptions = [
-  {
-    value: "commercial",
-    label: "Commercial",
-  },
-  {
-    value: "residential",
-    label: "Residential",
-  },
-  {
-    value: "industrial-light",
-    label: "Industrial (Light)",
-  },
-  {
-    value: "industrial-heavy",
-    label: "Industrial (Heavy)",
-  },
-  {
-    value: "agriculture",
-    label: "Agriculture",
-  },
-];
-const developmentOptions = [
-  {
-    value: "manufacturing",
-    label: "Manufacturing",
-  },
-  {
-    value: "transportation",
-    label: "Transportation and Warehousing",
-  },
-  {
-    value: "residential",
-    label: "Residential",
-  },
-  {
-    value: "agriculture",
-    label: "Agriculture",
-  },
-];
+import { setOptions, getOptions } from "../../../store/actions/options";
 
 export default function PropertyDetails1() {
-  document.title = `Investments - Add Opportunity - Property Details`;
   const dispatch = useDispatch();
 
+  // Get options for store
+  const PropStatusOptions = useSelector(
+    (state) => state.options.propertyStatuses
+  ).map((option) => ({ value: option.code, label: option.name }));
+  const zoningOptions = useSelector(
+    (state) => state.options.landUseZoning
+  ).map((option) => ({ value: option.code, label: option.name }));
+  const developmentOptions = useSelector(
+    (state) => state.options.preferredDevelopment
+  ).map((option) => ({ value: option.code, label: option.name }));
+
+  // Fetch options, if not already stored on client
+  if (
+    !PropStatusOptions.length ||
+    !zoningOptions.length ||
+    !developmentOptions.length
+  ) {
+    getOptions().then((response) => {
+      dispatch(setOptions(response.data));
+    });
+  }
   // Select states
   const preferred = useSelector(
     (state) => state.opportunity.userInfo.preferredDevelopment.value
@@ -160,15 +130,13 @@ export default function PropertyDetails1() {
   const history = useHistory();
 
   const goToNextPage = () => {
-    history.push({
-      pathname: `propDetails2`,
-    });
+    history.push("/opportunity/additional-details");
   };
 
   const radioLabels = ["Yes", "No", "Unknown"];
 
   const handleSelectChange = (selectName, data) => {
-    if (selectName === "preferred") {
+    if (selectName === "preferredDevelopment") {
       dispatch(setUserInfo(selectName, data));
     } else {
       dispatch(setUserInfo(selectName, data.value));
@@ -261,7 +229,9 @@ export default function PropertyDetails1() {
                 isMulti
                 aria-labelledby="preferred-dev-label"
                 value={preferred}
-                onChange={(value) => handleSelectChange("preferred", value)}
+                onChange={(value) =>
+                  handleSelectChange("preferredDevelopment", value)
+                }
                 closeMenuOnSelect={false}
                 className="w-100"
                 options={developmentOptions}
@@ -289,6 +259,7 @@ export default function PropertyDetails1() {
             {waterSupply === "Yes" && (
               <MaxCapRow
                 name="waterSupply"
+                value={waterSupplyCapacity}
                 handleChange={(iName, iValue) =>
                   handleCapacityChange(iName, iValue)
                 }
@@ -316,6 +287,7 @@ export default function PropertyDetails1() {
             {sewer === "Yes" && (
               <MaxCapRow
                 name="sewer"
+                value={sewerCapacity}
                 handleChange={(iName, iValue) =>
                   handleCapacityChange(iName, iValue)
                 }
@@ -404,7 +376,7 @@ export default function PropertyDetails1() {
         </Row>
       </Container>
       <ButtonRow
-        prevRoute="/addOpportunity/siteDetails"
+        prevRoute="/opportunity/site-info"
         onClick={handleContinue}
         noContinue={!isValid}
       />

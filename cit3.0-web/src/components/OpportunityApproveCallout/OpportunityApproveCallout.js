@@ -12,6 +12,7 @@ import {
   setPrivateNote,
   setPublicNote,
 } from "../../store/actions/opportunity";
+import { closeNoficiation } from "../../store/actions/notification";
 
 const OpportunityApproveCallout = ({
   publicNote,
@@ -32,6 +33,7 @@ const OpportunityApproveCallout = ({
 
   const goBackToAdmin = () => {
     dispatch(resetOpportunity());
+    dispatch(closeNoficiation());
     history.goBack();
   };
 
@@ -79,7 +81,10 @@ const OpportunityApproveCallout = ({
       dispatch(setApprovalStatus(nextStatus));
       dispatch(setPublicNote(newPublicNote));
       dispatch(setPrivateNote(newPrivateNote));
-      onStatusChange();
+      const alertStatus = approvalStatuses.find(
+        (s) => nextStatus === s.status_code
+      ).status_name;
+      onStatusChange(alertStatus);
     }
   };
 
