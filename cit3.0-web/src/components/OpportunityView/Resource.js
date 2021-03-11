@@ -3,6 +3,8 @@ import { Row, Col } from "react-bootstrap";
 import { v4 } from "uuid";
 import NumberFormat from "react-number-format";
 import "./Resource.css";
+import { useDispatch, useSelector } from "react-redux";
+import { setOptions, getOptions } from "../../store/actions/options";
 
 /**
  * @param {Object} resources from redux state: opportunity
@@ -10,12 +12,39 @@ import "./Resource.css";
 function displayResources(resources) {
   // toDisplay to control nesting of elements
   const toDisplay = {};
+  const dispatch = useDispatch();
+
+  const PropStatusOptions = useSelector(
+    (state) => state.options.propertyStatuses
+  ).map((option) => ({ value: option.code, label: option.name }));
+  const zoningOptions = useSelector(
+    (state) => state.options.landUseZoning
+  ).map((option) => ({ value: option.code, label: option.name }));
+  const developmentOptions = useSelector(
+    (state) => state.options.preferredDevelopment
+  ).map((option) => ({ value: option.code, label: option.name }));
+
+  // Fetch options, if not already stored on client
+  if (
+    !PropStatusOptions.length ||
+    !zoningOptions.length ||
+    !developmentOptions.length
+  ) {
+    getOptions().then((response) => {
+      dispatch(setOptions(response.data));
+    });
+  }
 
   // Process resource entries
   Object.entries(resources).forEach((resource) => {
     // Datapoint element
     let element = null;
     let multiValues = [];
+    let found;
+
+    if (resource[1].hidden) {
+      return;
+    }
 
     // Insert Category section/datapoint
     if (!toDisplay[resource[1].title]) {
@@ -56,17 +85,58 @@ function displayResources(resources) {
           </div>
         );
         break;
-      case "multi":
-        if (Array.isArray(resource[1].value)) {
-          multiValues = resource[1].value;
+      case "select":
+        switch (resource[0]) {
+          case "saleOrLease":
+            found = PropStatusOptions.find(
+              (option) => resource[1].value === option.value
+            );
+            break;
+          case "futureZone":
+            found = zoningOptions.find(
+              (option) => resource[1].value === option.value
+            );
+            break;
+          case "currentZone":
+            found = zoningOptions.find(
+              (option) => resource[1].value === option.value
+            );
+            break;
+          default:
+            break;
         }
         element = (
           <div className="d-flex flex-column">
             <div className="ml-2">
-              <b>{multiValues.map((v) => `${v.label}`).join(", ")}</b>
+              <b>{found && found.label}</b>
             </div>
           </div>
         );
+        break;
+      case "multi":
+        if (Array.isArray(resource[1].value)) {
+          multiValues = resource[1].value;
+          if (multiValues.length) {
+            element = (
+              <div className="d-flex flex-column">
+                <div className="ml-2">
+                  <b>
+                    {multiValues
+                      .map((v) => {
+                        if (typeof v !== "object") {
+                          return developmentOptions.find(
+                            (option) => v === option.value
+                          ).label;
+                        }
+                        return `${v.label}`;
+                      })
+                      .join(", ")}
+                  </b>
+                </div>
+              </div>
+            );
+          }
+        }
         break;
       default:
         element = (
@@ -103,7 +173,7 @@ export default function Resource({ title, itemsToDisplay }) {
   const resourcesAsView = displayResources(itemsToDisplay);
   const displayItems = (items) =>
     Object.keys(items).map((key) => {
-      if (items[key].$$typeof !== Symbol.for("react.element")) {
+      if (items[key] && items[key].$$typeof !== Symbol.for("react.element")) {
         return (
           <div key={v4()}>
             <Row>{key}: </Row>

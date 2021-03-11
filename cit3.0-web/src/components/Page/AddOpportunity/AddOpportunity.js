@@ -25,7 +25,6 @@ import {
 import Radios from "../../FormComponents/Radios";
 
 export default function AddOpportunity() {
-  document.title = `Investments - Add Opportunity`;
   const dispatch = useDispatch();
   const address = useSelector((state) => state.opportunity.address);
   const coords = useSelector((state) => state.opportunity.coords);
@@ -60,7 +59,7 @@ export default function AddOpportunity() {
   const title1 = "Add an Opportunity";
   const title2 = "Confirm Property";
   const text1 =
-    "Please drop a pin on the map or enter the address of the property you want to list as an opportunity for investors.";
+    'Enter an address or "zoom in" to the map and drop a pin on the land parcel you want to list as an opportunity for investors.';
   const text2 =
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 
@@ -139,7 +138,7 @@ export default function AddOpportunity() {
   }, [siteId]);
 
   const goToNextPage = () => {
-    history.push(`/addOpportunity/siteDetails`);
+    history.push(`/opportunity/site-info`);
   };
 
   return (
