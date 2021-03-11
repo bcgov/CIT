@@ -7,6 +7,8 @@ resource "random_string" "prefix" {
   number  = true
 }
 
+
+
 module "webapp" {
 
   # Going to use local modules for this demo, but if deploying to dev/test/prod environments may be better to deploy into a modules repo
@@ -14,7 +16,7 @@ module "webapp" {
   #source = "git::https://github.com/bashbang/demo-tfmodues.git?ref=dev-0.0.54"
 
   # Azure Specific Configuration
-  source = "./modules/azure/webapp"
+  source = "../modules/azure/webapp"
 
   tenant_id       = var.tenant_id
   subscription_id = var.subscription_id
