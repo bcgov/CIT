@@ -1,0 +1,20 @@
+.OpportunityApproveCallout {
+    padding: 1rem;
+    margin-top: 1rem;
+    border: 2px solid #1d9f05;
+    background: #eaf2ec;
+    font-weight: 500;
+}
+
+@media (min-width: 845px) {
+    .OpportunityApproveCallout p b {  
+        position: absolute;
+        right: 1rem;
+    }
+}
+
+@media print {
+    .OpportunityApproveCallout {
+        display: none;
+    }
+}

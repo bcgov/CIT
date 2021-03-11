@@ -3,9 +3,17 @@ import {
   ADD_ALL,
   ADD_ADDRESS,
   ADD_COORDS,
+  ADD_PID,
+  ADD_GEOMETRY,
+  ADD_PARCEL_OWNER,
+  ADD_PARCEL_SIZE,
+  ADD_SITE_ID,
   ADD_BUSINESS_CONTACT,
   ADD_BUSINESS_CONTACT_NAME,
   ADD_BUSINESS_CONTACT_EMAIL,
+  ADD_APPROVAL_STATUS,
+  ADD_PUBLIC_NOTE,
+  ADD_PRIVATE_NOTE,
   ADD_RESOUCE_IDS,
   ADD_NEARBY_RESOUCES,
   RESET_OPPORTUNITY,
@@ -33,11 +41,22 @@ export function postOpportunity(opportunityModel) {
 }
 
 /**
+ * @param {Object} opportunityModel from redux store
+ * @return {Promise} of axios api call
+ */
+export function updateOpportunity(opportunityModel) {
+  return axios.put(
+    `${POST_OPPOTUNITIES_URL + opportunityModel.id}/`,
+    OpportunityFactory.createRequestFromModel(opportunityModel)
+  );
+}
+
+/**
  * @param {number} opportunityId
  * @return {Promise} of axios api call
  */
 export function getOpportunity(opportunityId) {
-  return axios.get(GET_OPPOTUNITIES_URL + opportunityId);
+  return axios.get(`${GET_OPPOTUNITIES_URL + opportunityId}/`);
 }
 
 /**
@@ -88,11 +107,75 @@ export function setBusinessContactEmail(bEmail) {
 }
 
 /**
+ * @param {Object} approvalStatus
+ * @return {Object} for redux reducer
+ */
+export function setApprovalStatus(approvalStatus) {
+  return { type: ADD_APPROVAL_STATUS, payload: approvalStatus };
+}
+
+/**
+ * @param {Object} note
+ * @return {Object} for redux reducer
+ */
+export function setPrivateNote(note) {
+  return { type: ADD_PRIVATE_NOTE, payload: note };
+}
+
+/**
+ * @param {Object} note
+ * @return {Object} for redux reducer
+ */
+export function setPublicNote(note) {
+  return { type: ADD_PUBLIC_NOTE, payload: note };
+}
+
+/**
  * @param {Object} sInfo
  * @return {Object} for redux reducer
  */
 export function setSiteInfo(sInfo) {
   return { type: ADD_SITE_INFO, payload: sInfo };
+}
+
+/**
+ * @param {string} pid
+ * @return {Object} for redux reducer
+ */
+export function setPID(pid) {
+  return { type: ADD_PID, payload: pid };
+}
+
+/**
+ * @param {string} siteId
+ * @return {Object} for redux reducer
+ */
+export function setSiteId(id) {
+  return { type: ADD_SITE_ID, payload: id };
+}
+
+/**
+ * @param {Array} geom
+ * @return {Object} for redux reducer
+ */
+export function setGeometry(geom) {
+  return { type: ADD_GEOMETRY, payload: geom };
+}
+
+/**
+ * @param {string} owner
+ * @return {Object} for redux reducer
+ */
+export function setParcelOwner(owner) {
+  return { type: ADD_PARCEL_OWNER, payload: owner };
+}
+
+/**
+ * @param {Number} size
+ * @return {Object} for redux reducer
+ */
+export function setParcelSize(size) {
+  return { type: ADD_PARCEL_SIZE, payload: size };
 }
 
 /**

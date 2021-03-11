@@ -58,17 +58,25 @@ export default function OpportunityView({ view }) {
               <h2 className="mb-4">{name}</h2>
             </Row>
           ) : null}
-          <Resource
-            title="Site Info - General Details"
-            itemsToDisplay={overallInfo}
-          />
-          <Resource title="Physical" itemsToDisplay={physical} />
-          <Resource title="Transportation" itemsToDisplay={transportation} />
-          <Resource title="Services" itemsToDisplay={services} />
+          {overallInfo && (
+            <Resource
+              title="Site Info - General Details"
+              itemsToDisplay={overallInfo}
+            />
+          )}
+          {physical && <Resource title="Physical" itemsToDisplay={physical} />}
+          {transportation && (
+            <Resource title="Transportation" itemsToDisplay={transportation} />
+          )}
+          {services && <Resource title="Services" itemsToDisplay={services} />}
         </Col>
         <Col xs lg="5" className="leaflet-border pr-0">
-          <div className="full-border" style={{ height: "100%" }}>
+          <div
+            className="full-border"
+            style={{ height: "100%", width: "100%" }}
+          >
             <Map
+              isSearchMode={false}
               setNearbyResources={(r) => dispatch(setNearbyResources(r))}
               coords={coords}
               setCoords={(c) => dispatch(setCoords(c))}

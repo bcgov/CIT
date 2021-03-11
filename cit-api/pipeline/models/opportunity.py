@@ -16,6 +16,10 @@ class Opportunity(models.Model):
                                         on_delete=models.PROTECT)
     date_created = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(auto_now=True)
+    date_published = models.DateTimeField(auto_now=False, blank=True, null=True)
+    private_note  = models.TextField(blank=True, null=True)
+    public_note  = models.TextField(blank=True, null=True)
+    last_admin  = models.TextField(blank=True, null=True)
     # Site Info
     opportunity_address = models.CharField(max_length=255, null=False)
     opportunity_name = models.TextField(blank=False, null=True)
@@ -34,6 +38,7 @@ class Opportunity(models.Model):
     parcel_ownership = models.TextField(blank=True, null=True)
     parcel_size = models.DecimalField(max_digits=7, decimal_places=3, blank=True, null=True)
     pid = models.TextField(blank=True, null=True)
+    parcel_geometry = models.PolygonField(srid=BC_ALBERS_SRID, null=True)
     # Physical
     geo_position = models.PointField(srid=BC_ALBERS_SRID, null=False, blank=False)
     elevation_at_location = models.DecimalField(max_digits=7,

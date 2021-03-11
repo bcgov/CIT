@@ -31,3 +31,30 @@ export function toKebabCase(str = "") {
       .join("-")
   );
 }
+
+export function determineStatusTextColour(approvalStatus) {
+  if (approvalStatus === "NEW") {
+    return <div className="status-text-green">New</div>;
+  }
+  if (approvalStatus === "PEND") {
+    return <div className="status-text-orange">Pending Review</div>;
+  }
+  if (approvalStatus === "PUBL") {
+    return <div className="status-text-green">Published</div>;
+  }
+  if (approvalStatus === "NCOM") {
+    return <div className="status-text-red">Not completed</div>;
+  }
+  if (approvalStatus === "NWED") {
+    return <div className="status-text-orange">New - Edited</div>;
+  }
+  if (approvalStatus === "CLOS") {
+    return <div className="status-text-orange">Closed/Won</div>;
+  }
+  return approvalStatus;
+}
+
+export function formatDate(ISODate) {
+  const dateString = ISODate.substring(0, 10);
+  return dateString;
+}
