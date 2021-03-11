@@ -35,7 +35,7 @@ const Header = () => {
         </Navbar.Brand>
         <Nav className="title mr-auto">
           <Nav.Item>
-            <div className="title longAppName">Community Information Tool</div>
+            <div className="title longAppName">Community Investment Tool</div>
             <div className="title shortAppName">CIT</div>
           </Nav.Item>
         </Nav>
