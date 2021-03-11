@@ -21,7 +21,6 @@ import {
 import { setNotification } from "../../../store/actions/notification";
 
 const OpportunityApprovePage = ({ id }) => {
-  // const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
   const [alertStatus, setAlertStatus] = useState();
