@@ -133,7 +133,7 @@ export default function Map({
           : null}
       </>
     );
-    zoomLevel = 2;
+    zoomLevel = 5; // do not change!
   } else {
     // Used in the list view of opportunities
     additionalComponents = (
