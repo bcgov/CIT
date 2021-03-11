@@ -4,7 +4,6 @@ import { Col, Container, Row } from "react-bootstrap";
 import "./OpportunityApproveListPage.css";
 import { useHistory } from "react-router-dom";
 import querystring from "querystring";
-import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import OpportunityListContainer from "../../OpportunitiesListContainer/OpportunitiesListContainer";
 import Flyout from "../../Flyout/Flyout";
 import OpportunityApprovalItem from "../../OpportunityApprovalItem/OpportunityApprovalItem";
@@ -22,7 +21,6 @@ const OpportunityApproveListPage = () => {
 
   return (
     <div data-testid="OpportunityApproveListPage">
-      <PortalHeader title="Investor Portal" text="Description" />
       <Flyout
         flyoutComponent={ApprovalFlyoutContent}
         flyoutProps={{

@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import PageTitleHeader from "../../Headers/PageTitleHeader/PageTitleHeader";
 import ButtonRow from "../../ButtonRow/ButtonRow";
-import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import TextInput from "../../FormComponents/TextInput";
 import {
@@ -74,7 +73,6 @@ export default function PropertyDetails2() {
   };
   return (
     <>
-      <PortalHeader />
       <NavigationHeader currentStep={4} />
       <Container role="form">
         <Row>

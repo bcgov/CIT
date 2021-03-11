@@ -6,7 +6,6 @@ import Select from "react-select";
 import PageTitleHeader from "../../Headers/PageTitleHeader/PageTitleHeader";
 import ButtonRow from "../../ButtonRow/ButtonRow";
 import Radios from "../../FormComponents/Radios";
-import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MaxCapRow from "../../FormComponents/MaxCapRow";
 import {
@@ -199,7 +198,6 @@ export default function PropertyDetails1() {
 
   return (
     <>
-      <PortalHeader />
       <NavigationHeader currentStep={3} />
       <Container role="form">
         <Row>

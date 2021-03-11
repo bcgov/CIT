@@ -6,7 +6,6 @@ import { MdError } from "react-icons/md";
 import { Alert } from "shared-components";
 import { Container } from "react-bootstrap";
 import OpportunityView from "../../OpportunityView/OpportunityView";
-import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import ReviewAndSubmitCallout from "../../ReviewAndSubmitCallout/ReviewAndSubmitCallout";
 import {
@@ -50,7 +49,6 @@ const ReviewOpportunity = ({ location }) => {
 
   return (
     <div data-testid="ReviewOpportunity">
-      <PortalHeader />
       <NavigationHeader currentStep={5} />
       {error.name === "Error" ? (
         <Container className="p-0 mt-3">

@@ -2,7 +2,6 @@ import { useHistory } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MapContainer from "../../MapContainer/MapContainer";
 import AddressSearchBar from "../../AddressSearchBar/AddressSearchBar";
@@ -144,7 +143,6 @@ export default function AddOpportunity() {
 
   return (
     <>
-      <PortalHeader />
       <NavigationHeader currentStep={1} />
 
       <Container>

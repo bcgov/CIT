@@ -11,7 +11,6 @@ import {
 } from "../../../store/actions/opportunity";
 import OpportunityFactory from "../../../store/factory/OpportunityFactory";
 import styles from "./OpportunityPage.module.css";
-import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 
 const OpportunityPage = ({ id }) => {
   const history = useHistory();
@@ -42,7 +41,6 @@ const OpportunityPage = ({ id }) => {
 
   return (
     <div className={styles.OpportunityPage} data-testid="OpportunityPage">
-      <PortalHeader />
       <Container className="p-0">
         <Button
           className="a-tag mt-2 p-0"
