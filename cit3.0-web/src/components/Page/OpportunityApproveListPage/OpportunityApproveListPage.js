@@ -31,7 +31,6 @@ const OpportunityApproveListPage = () => {
       .then((data) => {
         setOpportunities(data.data.results);
         setTotalCount(data.data.count);
-        console.log(totalCount, opportunities, currentPage, query, search);
       })
       .catch(() => {
         setOpportunities([]);
