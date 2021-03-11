@@ -25,32 +25,34 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
       loading = false;
     });
   }
-  const [subFromValidated, setSubFromvalidated] = useState();
-  const [subToValidated, setSubTovalidated] = useState();
+  const [subFromValidated, setSubFromValidated] = useState();
+  const [subToValidated, setSubToValidated] = useState();
   const [pubFromValidated, setPubFromValidated] = useState();
   const [pubToValidated, setPubToValidated] = useState();
 
+  const [subFrom, setSubFrom] = useState(search[FORM_SUB_FROM_INPUT]);
+  const [subTo, setSubTo] = useState(search[FORM_SUB_TO_INPUT]);
+  const [pubFrom, setPubFrom] = useState(search[FORM_PUB_FROM_INPUT]);
+  const [pubTo, setPubTo] = useState(search[FORM_PUB_TO_INPUT]);
+
   const validateInput = (fieldName, value) => {
+    let otherValue;
     switch (fieldName) {
       case FORM_SUB_FROM_INPUT:
-        setSubFromvalidated(
-          value >= document.querySelector(`#${FORM_SUB_TO_INPUT}`).value
-        );
+        otherValue = document.querySelector(`#${FORM_SUB_TO_INPUT}`).value;
+        setSubFromValidated(otherValue !== "" && value >= otherValue);
         break;
       case FORM_SUB_TO_INPUT:
-        setSubTovalidated(
-          value <= document.querySelector(`#${FORM_SUB_FROM_INPUT}`).value
-        );
+        otherValue = document.querySelector(`#${FORM_SUB_FROM_INPUT}`).value;
+        setSubToValidated(otherValue !== "" && value <= otherValue);
         break;
       case FORM_PUB_FROM_INPUT:
-        setPubFromValidated(
-          value >= document.querySelector(`#${FORM_PUB_TO_INPUT}`).value
-        );
+        otherValue = document.querySelector(`#${FORM_PUB_TO_INPUT}`).value;
+        setPubFromValidated(otherValue !== "" && value >= otherValue);
         break;
       case FORM_PUB_TO_INPUT:
-        setPubToValidated(
-          value <= document.querySelector(`#${FORM_PUB_FROM_INPUT}`).value
-        );
+        otherValue = document.querySelector(`#${FORM_PUB_FROM_INPUT}`).value;
+        setPubToValidated(otherValue !== "" && value <= otherValue);
         break;
       default:
         break;
@@ -75,6 +77,10 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
   const handleResetFilters = () => {
     setStatusCode("");
     setRegionalDistrict("");
+    setSubFrom("");
+    setSubTo("");
+    setPubFrom("");
+    setPubTo("");
     resetFilters();
   };
 
@@ -111,7 +117,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
             <Form.Control
               type="date"
               name="submitted-from-date"
-              value={search[FORM_SUB_FROM_INPUT]}
+              value={subFrom}
               onInput={(e) =>
                 validateInput(FORM_SUB_FROM_INPUT, e.target.value)
               }
@@ -130,7 +136,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
             <Form.Control
               type="date"
               name={FORM_SUB_TO_INPUT}
-              value={search[FORM_SUB_TO_INPUT]}
+              value={subTo}
               onInput={(e) => validateInput(FORM_SUB_TO_INPUT, e.target.value)}
               onChange={(e) => onQuery(FORM_SUB_TO_INPUT, e.target.value)}
               placeholder="Choose a date"
@@ -152,7 +158,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
             <Form.Control
               type="date"
               name="published-from-date"
-              value={search[FORM_PUB_FROM_INPUT]}
+              value={pubFrom}
               onInput={(e) =>
                 validateInput(FORM_PUB_FROM_INPUT, e.target.value)
               }
@@ -171,7 +177,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
             <Form.Control
               type="date"
               name={FORM_PUB_TO_INPUT}
-              value={search[FORM_PUB_TO_INPUT]}
+              value={pubTo}
               onInput={(e) => validateInput(FORM_PUB_TO_INPUT, e.target.value)}
               onChange={(e) => onQuery(FORM_PUB_TO_INPUT, e.target.value)}
               placeholder="Choose a date"
@@ -198,7 +204,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
             <option value="">All</option>
             {regionalDistricts &&
               regionalDistricts.map((district) => (
-                <option value={district.id}>
+                <option key={district.id} value={district.id}>
                   {district.name}({district.area_id})
                 </option>
               ))}

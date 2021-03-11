@@ -139,7 +139,7 @@ function App() {
               />
               <AppRoute
                 protected
-                path="/opportunity/delete/*:path"
+                path="/delete/opportunity/*:path"
                 layout={AuthLayout}
                 component={OpportunityDeletePage}
               />

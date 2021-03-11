@@ -63,8 +63,8 @@ const OpportunityDeletePage = ({ id }) => {
           rows={1}
         />
         <ButtonRow
-          prevRoute="/dashboard"
           onClick={(e) => handleDeleteOpportunity(e)}
+          continueLabel="Delete"
           noContinue={confirmName !== opportunity.name}
         />
       </Container>

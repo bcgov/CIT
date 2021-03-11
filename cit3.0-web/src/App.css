@@ -55,6 +55,7 @@ button.a-tag.a-tag:active {
 .filter-button.filter-button {
   border-radius: 30px;
   font-weight: 400;
+  border-width: 2px;
 }
 
 .BC-Gov-SecondaryButton:active {

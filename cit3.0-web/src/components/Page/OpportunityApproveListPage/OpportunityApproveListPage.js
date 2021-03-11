@@ -1,25 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Col, Container, Row } from "react-bootstrap";
 import "./OpportunityApproveListPage.css";
 import { useHistory } from "react-router-dom";
 import querystring from "querystring";
 import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
-import OpportunityListContainer from "../../OpportunitiesListContainer/OpportunitiesListContainer";
 import Flyout from "../../Flyout/Flyout";
 import OpportunityApprovalItem from "../../OpportunityApprovalItem/OpportunityApprovalItem";
 import ApprovalFlyoutContent from "./ApprovalFlyoutContent";
 import { GET_OPPORTUNITIES_LIST_URL } from "../../../store/constants/api-urls";
+import OpportunityList from "../../OpportunityList/OpportunityList";
+import Paginator from "../../Paginator/Paginator";
 
 const OpportunityApproveListPage = () => {
   const [totalCount, setTotalCount] = useState(0);
-  axios.get(GET_OPPORTUNITIES_LIST_URL).then((data) => {
-    setTotalCount(data.data.count);
-  });
-
+  const [opportunities, setOpportunities] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [query, setQuery] = useState("");
+  const pageSize = 10;
   const history = useHistory();
-  let query = window.location.search.split("?")[1];
-  let search = querystring.decode(query);
+  let search = querystring.decode(window.location.search.split("?")[1]);
+
+  useEffect(() => {
+    axios
+      .get(
+        `${GET_OPPORTUNITIES_LIST_URL}?${
+          query ? `${query}&` : ""
+        }page=${currentPage}&page_size=${pageSize}`
+      )
+      .then((data) => {
+        setOpportunities(data.data.results);
+        setTotalCount(data.data.count);
+        console.log(totalCount, opportunities, currentPage, query, search);
+      })
+      .catch(() => {
+        setOpportunities([]);
+        setTotalCount(0);
+      });
+  }, [currentPage, query]);
+
+  useEffect(() => {
+    setQuery(window.location.search.split("?")[1]);
+    search = querystring.decode(query);
+  }, []);
 
   return (
     <div data-testid="OpportunityApproveListPage">
@@ -39,11 +62,11 @@ const OpportunityApproveListPage = () => {
             } else {
               delete search[key];
             }
-            query = querystring.encode(search);
+            setQuery(querystring.encode(search));
             history.push({ search: query });
           },
           resetFilters: () => {
-            query = "";
+            setQuery("");
             search = querystring.decode(query);
             history.push({ search: query });
           },
@@ -71,20 +94,36 @@ const OpportunityApproveListPage = () => {
             </Col>
           </Row>
           {totalCount ? (
-            <OpportunityListContainer
-              query={query}
-              totalCount={totalCount}
-              component={() => OpportunityApprovalItem}
-            />
-          ) : (
             <>
-              <h1 className="dashboard-header">
-                Community Promoted Opportunities
-              </h1>
-              <p className="dashboard-text">
-                There are no opportunities that match your search.
-              </p>
+              <Row>
+                {opportunities.length ? (
+                  <OpportunityList
+                    component={() => OpportunityApprovalItem}
+                    opportunities={opportunities}
+                  />
+                ) : null}
+              </Row>
+              <Row className="d-flex flex-column align-items-center justify-content-center p-2">
+                <Paginator
+                  count={totalCount}
+                  setCurrentPage={setCurrentPage}
+                  currentPage={currentPage}
+                  pageSize={pageSize}
+                />
+                <p>
+                  Showing {opportunities.length} of {totalCount} properties
+                </p>
+              </Row>
             </>
+          ) : (
+            <Row>
+              <h3 className="dashboard-header my-4 w-100">No results</h3>
+              <div>
+                <p className="dashboard-text">
+                  There are no opportunities that match your search.
+                </p>
+              </div>
+            </Row>
           )}
         </Container>
       </Flyout>
