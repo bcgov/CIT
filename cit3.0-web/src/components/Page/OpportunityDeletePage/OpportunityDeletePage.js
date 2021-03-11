@@ -24,11 +24,9 @@ const OpportunityDeletePage = ({ id }) => {
 
   useEffect(() => {
     let opId = id;
-    console.log(opId);
     if (!id) {
       const found = location.pathname.match(/(\d+)+\/?$/);
       opId = found && parseInt(found[0], 10);
-      console.log(opId);
     }
     if (opId !== opportunity.id) {
       getOpportunity(opId).then((response) => {
@@ -40,7 +38,6 @@ const OpportunityDeletePage = ({ id }) => {
 
   const handleDeleteOpportunity = (e) => {
     deleteOpportunity(opportunity).then(() => {
-      dispatch(resetOpportunity());
       dispatch(resetOpportunity());
       history.goBack();
     });

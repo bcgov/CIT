@@ -24,9 +24,9 @@ import {
   ADD_SERVICE_CAPACITY,
 } from "../constants/action-types";
 import {
-  POST_OPPOTUNITIES_URL,
-  GET_OPPOTUNITIES_URL,
-  PUT_OPPOTUNITIES_URL,
+  POST_OPPORTUNITIES_URL,
+  GET_OPPORTUNITIES_URL,
+  PUT_OPPORTUNITIES_URL,
 } from "../constants/api-urls";
 import OpportunityFactory from "../factory/OpportunityFactory";
 
@@ -36,7 +36,7 @@ import OpportunityFactory from "../factory/OpportunityFactory";
  */
 export function postOpportunity(opportunityModel) {
   return axios.post(
-    POST_OPPOTUNITIES_URL,
+    POST_OPPORTUNITIES_URL,
     OpportunityFactory.createRequestFromModel(opportunityModel)
   );
 }
@@ -49,7 +49,7 @@ export function deleteOpportunity(opportunityModel) {
   const opportunity = opportunityModel;
   opportunity.deleted = true;
   return axios.put(
-    `${PUT_OPPOTUNITIES_URL + opportunity.id}/`,
+    `${PUT_OPPORTUNITIES_URL + opportunity.id}/`,
     OpportunityFactory.createRequestFromModel(opportunity)
   );
 }
@@ -60,7 +60,7 @@ export function deleteOpportunity(opportunityModel) {
  */
 export function updateOpportunity(opportunityModel) {
   return axios.put(
-    `${PUT_OPPOTUNITIES_URL + opportunityModel.id}/`,
+    `${PUT_OPPORTUNITIES_URL + opportunityModel.id}/`,
     OpportunityFactory.createRequestFromModel(opportunityModel)
   );
 }
@@ -70,7 +70,7 @@ export function updateOpportunity(opportunityModel) {
  * @return {Promise} of axios api call
  */
 export function getOpportunity(opportunityId) {
-  return axios.get(`${GET_OPPOTUNITIES_URL + opportunityId}/`);
+  return axios.get(`${GET_OPPORTUNITIES_URL + opportunityId}/`);
 }
 
 /**

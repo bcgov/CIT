@@ -1,14 +1,16 @@
 import { NOTIFICATION_CLOSE } from "../constants/notification";
 
 /**
- *
- * @param {string} type Notification Action
+ * @return {string} type Notification Action
  * @param {Object} payload response object
  */
 export function setNotification(type, payload) {
   return { type, payload };
 }
 
-export function closeNoficiation() {
+/**
+ * @return {Object} type response object
+ */
+export function closeNotification() {
   return { type: NOTIFICATION_CLOSE };
 }

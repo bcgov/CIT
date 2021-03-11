@@ -6,7 +6,7 @@ import "./EDODashboard.css";
 import { useDispatch } from "react-redux";
 import OpportunityTable from "../../OpportunityTable/OpportunityTable";
 import { resetOpportunity } from "../../../store/actions/opportunity";
-import { GET_OPPOTUNITIES_LIST_URL } from "../../../store/constants/api-urls";
+import { GET_OPPORTUNITIES_LIST_URL } from "../../../store/constants/api-urls";
 
 export default function EDODashboard() {
   const [tableData, setTableData] = useState(null);
@@ -15,7 +15,7 @@ export default function EDODashboard() {
 
   useEffect(() => {
     axios
-      .get(GET_OPPOTUNITIES_LIST_URL)
+      .get(GET_OPPORTUNITIES_LIST_URL)
       .then((data) => {
         setTableData(data.data.results);
       })

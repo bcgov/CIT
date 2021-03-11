@@ -12,7 +12,7 @@ import {
   setPrivateNote,
   setPublicNote,
 } from "../../store/actions/opportunity";
-import { closeNoficiation } from "../../store/actions/notification";
+import { closeNotification } from "../../store/actions/notification";
 
 const OpportunityApproveCallout = ({
   publicNote,
@@ -33,7 +33,7 @@ const OpportunityApproveCallout = ({
 
   const goBackToAdmin = () => {
     dispatch(resetOpportunity());
-    dispatch(closeNoficiation());
+    dispatch(closeNotification());
     history.goBack();
   };
 

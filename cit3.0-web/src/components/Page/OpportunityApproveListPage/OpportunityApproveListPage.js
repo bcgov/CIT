@@ -9,11 +9,11 @@ import OpportunityListContainer from "../../OpportunitiesListContainer/Opportuni
 import Flyout from "../../Flyout/Flyout";
 import OpportunityApprovalItem from "../../OpportunityApprovalItem/OpportunityApprovalItem";
 import ApprovalFlyoutContent from "./ApprovalFlyoutContent";
-import { GET_OPPOTUNITIES_LIST_URL } from "../../../store/constants/api-urls";
+import { GET_OPPORTUNITIES_LIST_URL } from "../../../store/constants/api-urls";
 
 const OpportunityApproveListPage = () => {
   const [totalCount, setTotalCount] = useState(0);
-  axios.get(GET_OPPOTUNITIES_LIST_URL).then((data) => {
+  axios.get(GET_OPPORTUNITIES_LIST_URL).then((data) => {
     setTotalCount(data.data.count);
   });
 
@@ -42,7 +42,7 @@ const OpportunityApproveListPage = () => {
             query = querystring.encode(search);
             history.push({ search: query });
           },
-          resetFiliters: () => {
+          resetFilters: () => {
             query = "";
             search = querystring.decode(query);
             history.push({ search: query });

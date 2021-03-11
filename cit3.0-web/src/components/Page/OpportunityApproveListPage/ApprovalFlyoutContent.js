@@ -12,7 +12,7 @@ const FORM_PUB_FROM_INPUT = "published_from_date";
 const FORM_PUB_TO_INPUT = "published_to_date";
 let loading = false;
 
-const ApprovalFlyoutContent = ({ title, onQuery, resetFiliters, search }) => {
+const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
   const dispatch = useDispatch();
   const regionalDistricts = useSelector(
     (state) => state.options.regionalDistricts
@@ -75,7 +75,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFiliters, search }) => {
   const handleResetFilters = () => {
     setStatusCode("");
     setRegionalDistrict("");
-    resetFiliters();
+    resetFilters();
   };
 
   useEffect(() => {
@@ -224,7 +224,7 @@ ApprovalFlyoutContent.defaultProps = {
 ApprovalFlyoutContent.propTypes = {
   title: Proptypes.string.isRequired,
   onQuery: Proptypes.func.isRequired,
-  resetFiliters: Proptypes.func.isRequired,
+  resetFilters: Proptypes.func.isRequired,
   search: Proptypes.shape(),
 };
 

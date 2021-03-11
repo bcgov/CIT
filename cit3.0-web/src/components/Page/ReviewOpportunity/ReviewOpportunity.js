@@ -15,7 +15,7 @@ import {
 } from "../../../store/actions/opportunity";
 import {
   setNotification,
-  closeNoficiation,
+  closeNotification,
 } from "../../../store/actions/notification";
 import { NOTIFICATION_ERROR } from "../../../store/constants/notification";
 
@@ -30,7 +30,7 @@ const ReviewOpportunity = () => {
     postOpportunity(opportunityModel)
       .then(() => {
         dispatch(resetOpportunity());
-        dispatch(closeNoficiation());
+        dispatch(closeNotification());
         history.push("/opportunity/success");
       })
       .catch((e) => {
@@ -40,7 +40,7 @@ const ReviewOpportunity = () => {
 
   const confirmCancel = () => {
     if (confirm("Are you sure you want discard this opportunity?")) {
-      history.push("/");
+      history.push("/dashboard");
     }
   };
 
@@ -67,9 +67,5 @@ const ReviewOpportunity = () => {
     </div>
   );
 };
-
-ReviewOpportunity.propTypes = {};
-
-ReviewOpportunity.defaultProps = {};
 
 export default ReviewOpportunity;

@@ -5,7 +5,7 @@ import axios from "axios";
 import OpportunityList from "../OpportunityList/OpportunityList";
 import Paginator from "../Paginator/Paginator";
 import OpportunityListItem from "../OpportunityListItem/OpportunityListItem";
-import { GET_OPPOTUNITIES_LIST_URL } from "../../store/constants/api-urls";
+import { GET_OPPORTUNITIES_LIST_URL } from "../../store/constants/api-urls";
 
 export default function OpportunityListContainer({
   totalCount,
@@ -18,7 +18,7 @@ export default function OpportunityListContainer({
   useEffect(() => {
     axios
       .get(
-        `${GET_OPPOTUNITIES_LIST_URL}?${
+        `${GET_OPPORTUNITIES_LIST_URL}?${
           query ? `${query}&` : ""
         }page=${currentPage}&page_size=${pageSize}`
       )

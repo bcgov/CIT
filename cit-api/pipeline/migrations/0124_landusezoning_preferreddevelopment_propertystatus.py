@@ -27,7 +27,7 @@ def populate_statuses(apps, schema_editor):
         ["Residential", "", "RESD"],
         ["Agriculture", "", "ARGI"]
     ]
-    # Add new zone
+    # Add new developments
     for developmentInfo in preferred_development:
         development = PreferredDevelopment()
         development.name = developmentInfo[0]
@@ -41,7 +41,7 @@ def populate_statuses(apps, schema_editor):
         ["Lease", "", "LEAS"],
         ["Both", "", "BOTH"]
     ]
-    # Add new zone
+    # Add new property statuses
     for statusInfo in property_status:
         status = PropertyStatus()
         status.name = statusInfo[0]

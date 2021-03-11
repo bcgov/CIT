@@ -25,7 +25,6 @@ import {
 import Radios from "../../FormComponents/Radios";
 
 export default function AddOpportunity() {
-  document.title = `Investments - Add Opportunity`;
   const dispatch = useDispatch();
   const address = useSelector((state) => state.opportunity.address);
   const coords = useSelector((state) => state.opportunity.coords);
@@ -57,7 +56,7 @@ export default function AddOpportunity() {
   };
 
   const history = useHistory();
-  const title1 = "Add a Property";
+  const title1 = "Add an Opportunity";
   const title2 = "Confirm Property";
   const text1 =
     'Enter an address or "zoom in" to the map and drop a pin on the land parcel you want to list as an opportunit for investors.';
