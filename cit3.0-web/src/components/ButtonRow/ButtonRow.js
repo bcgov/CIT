@@ -6,7 +6,13 @@ import "./ButtonRow.css";
 import { useDispatch } from "react-redux";
 import { resetOpportunity } from "../../store/actions/opportunity";
 
-export default function ButtonRow({ onClick, prevRoute, noContinue }) {
+export default function ButtonRow({
+  onClick,
+  prevRoute,
+  noContinue,
+  cancelLabel,
+  continueLabel,
+}) {
   const history = useHistory();
   const dispatch = useDispatch();
   return (
@@ -27,7 +33,7 @@ export default function ButtonRow({ onClick, prevRoute, noContinue }) {
               dispatch(resetOpportunity());
               history.push("/dashboard");
             }}
-            label="Cancel & Return to Dashboard"
+            label={cancelLabel}
             styling=" BC-Gov-SecondaryButton bc-gov-btn"
           />
         </Col>
@@ -35,7 +41,7 @@ export default function ButtonRow({ onClick, prevRoute, noContinue }) {
           <Button
             disabled={noContinue}
             onClick={onClick}
-            label="Continue"
+            label={continueLabel}
             styling="bcgov-normal-blue btn primary"
           />
         </Col>
@@ -47,10 +53,14 @@ export default function ButtonRow({ onClick, prevRoute, noContinue }) {
 ButtonRow.defaultProps = {
   prevRoute: null,
   noContinue: false,
+  continueLabel: "Continue",
+  cancelLabel: "Cancel & Return to Dashboard",
 };
 
 ButtonRow.propTypes = {
   onClick: PropTypes.func.isRequired,
   prevRoute: PropTypes.string,
   noContinue: PropTypes.bool,
+  continueLabel: PropTypes.string,
+  cancelLabel: PropTypes.string,
 };

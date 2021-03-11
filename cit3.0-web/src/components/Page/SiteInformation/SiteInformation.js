@@ -7,16 +7,12 @@ import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import OpportunityView from "../../OpportunityView/OpportunityView";
 import ButtonRow from "../../ButtonRow/ButtonRow";
-import "./SiteInformation.css";
 
 export default function SiteInformation({ location }) {
   document.title = `Investments - Add Opportunity - Site Information`;
   const history = useHistory();
   const goToNextPage = () => {
-    history.push({
-      pathname: `/addOpportunity/propDetails1`,
-      state: { stuff: "stuff" },
-    });
+    history.push(`/opportunity/property-details`);
   };
 
   // this page will run the searches and pass the data to opportunity view and map
@@ -34,11 +30,7 @@ export default function SiteInformation({ location }) {
         />
       </Container>
       <OpportunityView data={location.state} />
-      <ButtonRow
-        showPrevious
-        prevRoute="/addOpportunity"
-        onClick={goToNextPage}
-      />
+      <ButtonRow showPrevious prevRoute="/opportunity" onClick={goToNextPage} />
     </>
   );
 }
