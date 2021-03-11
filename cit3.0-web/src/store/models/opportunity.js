@@ -22,7 +22,7 @@ export const OPPORTUNITY_MODEL = () => ({
   lastAdmin: "",
   dateCreated: "",
   dateUpdated: "",
-  datePublished: "",
+  datePublished: null,
   resourceIds: {
     Hospitals: "5ff82cf4-0448-4063-804a-7321f0f2b4c6",
     Schools: "5832eff2-3380-435e-911b-5ada41c1d30b",
@@ -83,38 +83,38 @@ export const OPPORTUNITY_MODEL = () => ({
     roadAccess: {
       title: "Site servicing",
       subtitle: "- Road Access",
-      name: "Yes",
+      name: "Unknown",
       type: "text",
     },
     waterSupply: {
       title: "Site servicing",
       subtitle: "- Water",
-      name: "Yes",
-      value: 3003,
+      name: "Unknown",
+      value: 0,
       type: "capacity",
       suffix: "m³/hour",
     },
     naturalGas: {
       title: "Site servicing",
       subtitle: "- Natural Gas",
-      name: "No",
-      value: 10,
+      name: "Unknown",
+      value: 0,
       type: "pressure",
       suffix: "MMBTU/hour",
     },
     sewer: {
       title: "Site servicing",
       subtitle: "- Sewer",
-      name: "Yes",
-      value: 1,
+      name: "Unknown",
+      value: 0,
       type: "capacity",
       suffix: "m³/hour",
     },
     electrical: {
       title: "Site servicing",
       subtitle: "- Electrical",
-      name: "Yes",
-      value: 1,
+      name: "Unknown",
+      value: 0,
       type: "capacity",
       suffix: "MW",
     },
@@ -266,17 +266,19 @@ export const OPPORTUNITY_MODEL = () => ({
       title: "Polygon",
       type: "Polygon",
       coordinates: null,
+      hidden: true,
     },
     siteId: {
       title: "Site ID",
       value: null,
       type: "text",
+      hidden: true,
     },
   },
   userInfo: {
-    saleOrLease: { title: "Sale or Lease", value: "", type: "text" },
-    currentZone: { title: "Current Zoning", value: "", type: "text" },
-    futureZone: { title: "Future Zoning", value: "", type: "text" },
+    saleOrLease: { title: "Sale or Lease", value: "", type: "select" },
+    currentZone: { title: "Current Zoning", value: "", type: "select" },
+    futureZone: { title: "Future Zoning", value: "", type: "select" },
     preferredDevelopment: {
       title: "Preferred Development",
       value: "",
@@ -315,6 +317,10 @@ export class Opportunity {
     this.state = _.mergeWith({}, OPPORTUNITY_MODEL());
   }
 
+  set deleted(value) {
+    this.state.deleted = value;
+  }
+
   set id(value) {
     this.state.id = value;
   }
@@ -333,7 +339,7 @@ export class Opportunity {
   }
 
   createLink() {
-    this.state.link = `/investment/${toKebabCase(this.state.name)}-${
+    this.state.link = `/opportunity/${toKebabCase(this.state.name)}-${
       this.state.id
     }`;
   }
@@ -411,7 +417,11 @@ export class Opportunity {
 
   // Site Info
   set parcelOwnership(value) {
-    this.state.siteInfo.parcelOwnership.value = value;
+    this.state.siteInfo.parcelOwnership.name = value;
+  }
+
+  get parcelOwnership() {
+    return this.state.siteInfo.parcelOwnership.name;
   }
 
   set parcelSize(value) {
@@ -422,24 +432,28 @@ export class Opportunity {
     this.state.siteInfo.PID.value = value;
   }
 
+  set parcelGeometry(value) {
+    this.state.siteInfo.geometry.coordinates = value;
+  }
+
   set geometry(value) {
     this.state.siteInfo.geometry.polygon = value;
   }
 
   // User Info
-  set saleOrLease(value) {
-    this.state.siteInfo.saleOrLease.value = value;
+  set opportunityPropertyStatus(value) {
+    this.state.userInfo.saleOrLease.value = value;
   }
 
-  set futureZone(value) {
+  set ocpZoningCode(value) {
     this.state.userInfo.futureZone.value = value;
   }
 
-  set currentZone(value) {
+  set landUseZoning(value) {
     this.state.userInfo.currentZone.value = value;
   }
 
-  set preferredDevelopment(value) {
+  set opportunityPreferredDevelopment(value) {
     this.state.userInfo.preferredDevelopment.value = value;
   }
 

@@ -17,10 +17,7 @@ const ReviewAndSubmitCallout = ({
   const dispatch = useDispatch();
   const name = useSelector((state) => state.opportunity.name);
   const goToPrevPage = () => {
-    history.push({
-      pathname: `propDetails2`,
-      state: { stuff: "stuff" },
-    });
+    history.push("/opportunity/additional-details");
   };
   return (
     <Container
