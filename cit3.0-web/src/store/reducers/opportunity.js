@@ -16,6 +16,7 @@ import {
   RESET_OPPORTUNITY,
   ADD_SITE_INFO,
   ADD_USER_INFO,
+  ADD_PRICE,
   ADD_NAME,
   ADD_SERVICE,
   ADD_SERVICE_CAPACITY,
@@ -94,6 +95,9 @@ export default function opportunity(
       break;
     case ADD_USER_INFO:
       state.userInfo[action.payload.key].value = action.payload.value;
+      break;
+    case ADD_PRICE:
+      state.userInfo.saleOrLease.price = action.payload;
       break;
     case ADD_SERVICE:
       state.services[action.payload.key].name = action.payload.value;

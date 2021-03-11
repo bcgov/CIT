@@ -12,7 +12,9 @@ import {
   setUserInfo,
   setService,
   setServiceCapacity,
+  setPrice,
 } from "../../../store/actions/opportunity";
+import "./PropertyDetails1.scss";
 
 const PropStatusOptions = [
   {
@@ -68,6 +70,10 @@ const developmentOptions = [
 export default function PropertyDetails1() {
   document.title = `Investments - Add Opportunity - Property Details`;
   const dispatch = useDispatch();
+
+  const price = useSelector(
+    (state) => state.opportunity.userInfo.saleOrLease.price
+  );
 
   // Select states
   const preferred = useSelector(
@@ -192,12 +198,16 @@ export default function PropertyDetails1() {
     }
   };
 
+  // const handlePriceInputChange = (value) => {
+  //   console.log(value);
+  // };
+
   const handleContinue = () => {
     goToNextPage();
   };
 
   return (
-    <>
+    <p>
       <NavigationHeader currentStep={3} />
       <Container role="form">
         <Row>
@@ -226,6 +236,55 @@ export default function PropertyDetails1() {
             </Row>
           </Col>
           <Col>
+            <Row>
+              {saleOrLease.value === "sale" && (
+                <Col className="mr-5">
+                  <Row id="asking-price">Asking Price</Row>
+                  <Row>
+                    <div
+                      id="rental-div"
+                      className="d-flex align-items-center px-1 price-div"
+                    >
+                      <span className="mr-2">$</span>
+                      <input
+                        type="text"
+                        className="price-input w-100"
+                        aria-labelledby="asking-price"
+                        value={price}
+                        onChange={(e) => dispatch(setPrice(e.target.value))}
+                      />
+                    </div>
+                  </Row>
+                </Col>
+              )}
+              {saleOrLease.value === "lease" && (
+                <Col className="mr-5">
+                  <Row id="rental-price">Rental Price</Row>
+                  <Row>
+                    <div
+                      id="rental-div"
+                      className="d-flex align-items-center px-1 price-div"
+                    >
+                      <span className="mr-2">$</span>
+                      <input
+                        type="text"
+                        id="rental-input"
+                        aria-labelledby="rental-price"
+                        value={price}
+                        placeholder="/month"
+                        onChange={(e) => dispatch(setPrice(e.target.value))}
+                        className="price-input w-100"
+                      />
+                    </div>
+                  </Row>
+                </Col>
+              )}
+              <Col />
+            </Row>
+          </Col>
+        </Row>
+        <Row className="mb-3">
+          <Col className="mr-5">
             <Row id="current-zone-label">Current Zoning</Row>
             <Row>
               <Select
@@ -237,9 +296,7 @@ export default function PropertyDetails1() {
               />
             </Row>
           </Col>
-        </Row>
-        <Row className="mb-5">
-          <Col className="mr-5">
+          <Col>
             <Row id="future-zone-label">Future Zoning</Row>
             <Row>
               <Select
@@ -251,8 +308,9 @@ export default function PropertyDetails1() {
               />
             </Row>
           </Col>
-
-          <Col>
+        </Row>
+        <Row className="mb-3">
+          <Col className="mr-5">
             <Row id="preferred-dev-label">Preferred Development</Row>
             <Row>
               <Select
@@ -266,8 +324,8 @@ export default function PropertyDetails1() {
               />
             </Row>
           </Col>
+          <Col />
         </Row>
-
         <Row className="mb-3">
           <h4>Site Servicing</h4>
         </Row>
@@ -406,6 +464,6 @@ export default function PropertyDetails1() {
         onClick={handleContinue}
         noContinue={!isValid}
       />
-    </>
+    </p>
   );
 }

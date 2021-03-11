@@ -19,6 +19,7 @@ import {
   RESET_OPPORTUNITY,
   ADD_SITE_INFO,
   ADD_USER_INFO,
+  ADD_PRICE,
   ADD_NAME,
   ADD_SERVICE,
   ADD_SERVICE_CAPACITY,
@@ -184,6 +185,14 @@ export function setParcelSize(size) {
  */
 export function setUserInfo(key, sInfo) {
   return { type: ADD_USER_INFO, payload: { key, value: sInfo } };
+}
+
+/**
+ * @param {Number} price
+ * @return {Object} for redux reducer
+ */
+export function setPrice(price) {
+  return { type: ADD_PRICE, payload: price };
 }
 
 /**

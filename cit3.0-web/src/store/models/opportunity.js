@@ -274,7 +274,7 @@ export const OPPORTUNITY_MODEL = () => ({
     },
   },
   userInfo: {
-    saleOrLease: { title: "Sale or Lease", value: "", type: "text" },
+    saleOrLease: { title: "Sale or Lease", value: "", type: "text", price: "" },
     currentZone: { title: "Current Zoning", value: "", type: "text" },
     futureZone: { title: "Future Zoning", value: "", type: "text" },
     preferredDevelopment: {
@@ -428,7 +428,11 @@ export class Opportunity {
 
   // User Info
   set saleOrLease(value) {
-    this.state.siteInfo.saleOrLease.value = value;
+    this.state.userInfo.saleOrLease.value = value;
+  }
+
+  set price(value) {
+    this.state.userInfo.saleOrLease.price = value;
   }
 
   set futureZone(value) {
