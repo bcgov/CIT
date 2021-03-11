@@ -825,3 +825,16 @@ class EmergencySocialServiceFacility(Location):
 
     class Meta:
         ordering = ("id", )
+
+
+class CustomsPortOfEntry(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'CUSTOMS_PORT_NAME'
+
+    customs_port_street_address = models.CharField(null=True, blank=True, max_length=255)
+    customs_port_type = models.CharField(null=True, blank=True, max_length=255)
+    customs_port_municipality = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id", )
