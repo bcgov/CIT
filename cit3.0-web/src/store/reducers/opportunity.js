@@ -19,6 +19,9 @@ import {
   ADD_NAME,
   ADD_SERVICE,
   ADD_SERVICE_CAPACITY,
+  ADD_APPROVAL_STATUS,
+  ADD_PUBLIC_NOTE,
+  ADD_PRIVATE_NOTE,
 } from "../constants/action-types";
 
 import { OPPORTUNITY_MODEL } from "../models/opportunity";
@@ -30,15 +33,18 @@ import { OPPORTUNITY_MODEL } from "../models/opportunity";
  * @param {String} action.type incoming action type
  * @param {String} action.payload incoming action payload, varying on opportunity field
  */
-export default function opportunity(state = { ...OPPORTUNITY_MODEL }, action) {
+export default function opportunity(
+  state = { ...OPPORTUNITY_MODEL() },
+  action
+) {
   /* eslint-disable no-param-reassign */
   switch (action.type) {
     case ADD_ALL:
-      state = { ...OPPORTUNITY_MODEL };
+      state = { ...OPPORTUNITY_MODEL() };
       state = _.mergeWith(state, action.payload);
       break;
     case RESET_OPPORTUNITY:
-      state = { ...OPPORTUNITY_MODEL };
+      state = OPPORTUNITY_MODEL();
       break;
     case ADD_ADDRESS:
       state.address = action.payload;
@@ -51,6 +57,15 @@ export default function opportunity(state = { ...OPPORTUNITY_MODEL }, action) {
       break;
     case ADD_BUSINESS_CONTACT_EMAIL:
       state.businessContactEmail = action.payload;
+      break;
+    case ADD_APPROVAL_STATUS:
+      state.approvalStatus = action.payload;
+      break;
+    case ADD_PUBLIC_NOTE:
+      state.publicNote = action.payload;
+      break;
+    case ADD_PRIVATE_NOTE:
+      state.privateNote = action.payload;
       break;
     case ADD_BUSINESS_CONTACT:
       state.businessContactName = action.payload.name;

@@ -20,7 +20,7 @@ const OpportunityPage = ({ id }) => {
   let opId = id;
   if (!id) {
     const found = location.pathname.match(/(\d+)+$/);
-    opId = found && found[0];
+    opId = found && parseInt(found[0], 10);
   }
   if (opId) {
     getOpportunity(opId).then((response) => {
@@ -28,7 +28,6 @@ const OpportunityPage = ({ id }) => {
         response.data
       );
       dispatch(setOpportunity(opportunity));
-      document.title = `Investment - ${opportunity.name}`;
     });
   } else {
     // @todo: Make opportunity 404 page

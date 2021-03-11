@@ -1,5 +1,22 @@
+.unselected {
+  color: #313132;
+  border-color: #707070;
+  border-width: 2p
+}
+
+.selected {
+}
+
+.filter-button {
+  border-radius: 30px;
+  font-weight: 400;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
 .search-flyout-content {
-  h2, h3 {
-      padding-bottom: 20px;
+  h3 {
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 }

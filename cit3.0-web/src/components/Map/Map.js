@@ -29,6 +29,7 @@ export default function Map({
   setNearbyResources,
   setAddress,
   isInteractive,
+  isSearchMode,
   setError,
 }) {
   const [dimensions, setDimensions] = useState({
@@ -41,6 +42,7 @@ export default function Map({
   const address = useSelector((state) => state.opportunity.address);
 
   let additionalComponents;
+  let searchComponents;
   let zoomLevel;
 
   const changeView = (centerCoords) => centerCoords;
@@ -68,19 +70,24 @@ export default function Map({
     );
   };
 
+  if (isSearchMode) {
+    searchComponents = (
+      <AddLocationMarker
+        setCoords={setCoords}
+        setAddress={setAddress}
+        resourceIds={resourceIds}
+        setNearbyResources={setNearbyResources}
+        changeView={changeView}
+        setError={setError}
+      />
+    );
+  }
+
   if (isInteractive) {
     // Used in the add opportunity workflow
     additionalComponents = (
       <>
         <ChangeView center={changeView(coords)} zoom={16} />
-        <AddLocationMarker
-          setCoords={setCoords}
-          setAddress={setAddress}
-          resourceIds={resourceIds}
-          setNearbyResources={setNearbyResources}
-          changeView={changeView}
-          setError={setError}
-        />
         <LayersControl position="bottomleft">
           <LayersControl.BaseLayer checked name="OpenStreetMap">
             <TileLayer
@@ -192,6 +199,7 @@ export default function Map({
           return null;
         }}
       </MapConsumer>
+      {searchComponents}
       {additionalComponents}
     </MapContainer>
   );
@@ -199,6 +207,7 @@ export default function Map({
 
 Map.defaultProps = {
   isInteractive: true,
+  isSearchMode: true,
   nearbyResources: null,
   resourceIds: {},
   setNearbyResources: () => {},
@@ -210,6 +219,7 @@ Map.defaultProps = {
 Map.propTypes = {
   coords: PropTypes.arrayOf(PropTypes.number).isRequired,
   isInteractive: PropTypes.bool,
+  isSearchMode: PropTypes.bool,
   nearbyResources: PropTypes.shape({
     resource: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.shape),

@@ -9,7 +9,7 @@ import Validator from "../FormComponents/Validator";
 import "react-input-range/src/scss/index.scss";
 
 export default function NumberRangeFilter(props) {
-  const { inputRange, units, description, label } = props;
+  const { inputRange, units, description, label, isDistance } = props;
   const [show, setShow] = useState(false);
   const [inputRangeValue, setInputRangeValue] = useState({
     min: inputRange.min,
@@ -125,7 +125,9 @@ export default function NumberRangeFilter(props) {
         />
       ) : (
         <Button
-          label={`${label}: ${displayRange.min}-${displayRange.max} ${units}`}
+          label={`${label}: ${isDistance ? "within" : ""} ${displayRange.min}-${
+            displayRange.max
+          } ${units}`}
           styling="bcgov-normal-blue filter-button selected btn"
           onClick={handleShow}
         />
@@ -208,6 +210,10 @@ export default function NumberRangeFilter(props) {
   );
 }
 
+NumberRangeFilter.defaultProps = {
+  isDistance: false,
+};
+
 NumberRangeFilter.propTypes = {
   inputRange: PropTypes.shape({
     min: PropTypes.number.isRequired,
@@ -216,4 +222,5 @@ NumberRangeFilter.propTypes = {
   units: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  isDistance: PropTypes.bool,
 };

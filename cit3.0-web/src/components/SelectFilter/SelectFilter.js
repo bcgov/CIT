@@ -101,9 +101,7 @@ export default function SelectFilter(props) {
         </Modal.Header>
         <Modal.Body>
           <Container fluid>
-            <Row className="d-flex justify-content-between">
-              {mapFiltersToButtons()}
-            </Row>
+            <Row className="d-flex">{mapFiltersToButtons()}</Row>
           </Container>
         </Modal.Body>
         <Modal.Footer>

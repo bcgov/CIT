@@ -1,7 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { Container, Col, Row } from "react-bootstrap";
-// import Switch from "react-switch";
 import { Button } from "shared-components";
 import "./Flyout.scss";
 
@@ -10,15 +9,9 @@ export default function Flyout(props) {
 
   const { children, flyoutComponent: FlyoutComponent, flyoutProps } = props;
 
-  // let waterSwitchValue = false;
-
   const toggleSidebar = () => {
     setLeftOpenState(!leftOpenState);
   };
-
-  // const updateWaterSwitchValue = (value) => {
-  //   waterSwitchValue = value;
-  // };
 
   const leftOpen = leftOpenState ? "open" : "closed";
   return (
