@@ -71,6 +71,8 @@ export default function PropertyDetails1() {
   document.title = `Investments - Add Opportunity - Property Details`;
   const dispatch = useDispatch();
 
+  const [Nan, setNan] = useState(false);
+
   const price = useSelector(
     (state) => state.opportunity.userInfo.saleOrLease.price
   );
@@ -198,9 +200,15 @@ export default function PropertyDetails1() {
     }
   };
 
-  // const handlePriceInputChange = (value) => {
-  //   console.log(value);
-  // };
+  const handlePriceInputChange = (value) => {
+    console.log(value);
+    dispatch(setPrice(value));
+    if (Number.isNaN(Number(value))) {
+      setNan(true);
+    } else {
+      setNan(false);
+    }
+  };
 
   const handleContinue = () => {
     goToNextPage();
@@ -251,9 +259,10 @@ export default function PropertyDetails1() {
                         className="price-input w-100"
                         aria-labelledby="asking-price"
                         value={price}
-                        onChange={(e) => dispatch(setPrice(e.target.value))}
+                        onChange={(e) => handlePriceInputChange(e.target.value)}
                       />
                     </div>
+                    {Nan && <p className="text-red">Invalid</p>}
                   </Row>
                 </Col>
               )}
@@ -272,10 +281,13 @@ export default function PropertyDetails1() {
                         aria-labelledby="rental-price"
                         value={price}
                         placeholder="/month"
-                        onChange={(e) => dispatch(setPrice(e.target.value))}
+                        onChange={(e) => handlePriceInputChange(e.target.value)}
                         className="price-input w-100"
                       />
                     </div>
+                    {Nan && (
+                      <p className="text-red">Price must be a valid number</p>
+                    )}
                   </Row>
                 </Col>
               )}
@@ -462,7 +474,7 @@ export default function PropertyDetails1() {
       <ButtonRow
         prevRoute="/addOpportunity/siteDetails"
         onClick={handleContinue}
-        noContinue={!isValid}
+        noContinue={!isValid || Nan}
       />
     </p>
   );
