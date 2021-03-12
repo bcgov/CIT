@@ -2,11 +2,9 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import "./NumberRangeFilter.scss";
 import { Button } from "shared-components";
-import { Modal, Row, Container } from "react-bootstrap";
-import InputRange from "react-input-range";
-import TextInput from "../FormComponents/TextInput";
-import Validator from "../FormComponents/Validator";
+import { Modal } from "react-bootstrap";
 import "react-input-range/src/scss/index.scss";
+import InputRangeWithTextboxes from "../InputRangeWithTextboxes/InputRangeWithTextboxes";
 
 export default function NumberRangeFilter(props) {
   const { inputRange, units, description, label, isDistance } = props;
@@ -24,75 +22,6 @@ export default function NumberRangeFilter(props) {
 
   const inputRangeMax = inputRange.max;
   const inputRangeMin = inputRange.min;
-
-  const minName = "number-range-min";
-  const maxName = "number-range-max";
-
-  const validate = (name, value) => {
-    if (Number.isNaN(value)) {
-      return false;
-    }
-
-    if (value < inputRangeMin || value > inputRangeMax) {
-      return false;
-    }
-
-    if (name === maxName && value < inputRangeValue.min) {
-      return false;
-    }
-
-    if (name === minName && value > inputRangeValue.max) {
-      return false;
-    }
-
-    return true;
-  };
-
-  const updateMax = (name, newMax) => {
-    const newMaxSubstring = newMax.substring(0, 8);
-    setMaxInput(newMaxSubstring);
-    if (validate(name, Number(newMaxSubstring))) {
-      setValidMax(true);
-      setInputRangeValue({
-        min: inputRangeValue.min,
-        max: Number(newMaxSubstring),
-      });
-    } else {
-      setValidMax(false);
-    }
-  };
-
-  const updateMin = (name, newMin) => {
-    const newMinSubstring = newMin.substring(0, 8);
-    setMinInput(newMinSubstring);
-    if (validate(name, Number(newMinSubstring))) {
-      setValidMin(true);
-      setInputRangeValue({
-        min: Number(newMinSubstring),
-        max: inputRangeValue.max,
-      });
-    } else {
-      setValidMin(false);
-    }
-  };
-
-  const updateTextFields = (value) => {
-    const updatedValue = { ...value };
-
-    // Fix component allowing you select values beyond min/max range by clicking the edges of the input range
-    if (updatedValue.min < inputRangeMin) {
-      updatedValue.min = inputRangeMin;
-    }
-    if (updatedValue.max > inputRangeMax) {
-      updatedValue.max = inputRangeMax;
-    }
-
-    setInputRangeValue(updatedValue);
-    setMinInput(updatedValue.min);
-    setMaxInput(updatedValue.max);
-    setValidMin(true);
-    setValidMax(true);
-  };
 
   const handleSave = () => {
     setIsSelected(true);
@@ -144,53 +73,16 @@ export default function NumberRangeFilter(props) {
         </Modal.Header>
         <Modal.Body>
           <p>{description}</p>
-          <Container fluid>
-            <div className="modal-input-range">
-              <InputRange
-                maxValue={inputRangeMax}
-                minValue={inputRangeMin}
-                value={inputRangeValue}
-                formatLabel={() => {}}
-                onChange={(value) => updateTextFields(value)}
-              />
-            </div>
-            <Row className="d-flex flex-nowrap justify-content-between">
-              <div className="modal-text-input">
-                <TextInput
-                  handleChange={updateMin}
-                  name={minName}
-                  rows={1}
-                  value={String(minInput)}
-                  upperLeftLabel="min"
-                  lowerRightLabel={units}
-                />
-              </div>
-              <div className="modal-text-input">
-                <TextInput
-                  handleChange={updateMax}
-                  name={maxName}
-                  rows={1}
-                  value={String(maxInput)}
-                  upperLeftLabel="max"
-                  lowerRightLabel={units}
-                />
-              </div>
-            </Row>
-            {(!validMax || !validMin) && (
-              <Row className="d-flex justify-content-between">
-                {!validMin ? (
-                  <Validator message="Invalid min number" />
-                ) : (
-                  <div />
-                )}
-                {!validMax ? (
-                  <Validator message="Invalid max number" />
-                ) : (
-                  <div />
-                )}
-              </Row>
-            )}
-          </Container>
+          <InputRangeWithTextboxes
+            inputRange={inputRange}
+            units={units}
+            minInput={minInput}
+            setMinInput={setMinInput}
+            maxInput={maxInput}
+            setMaxInput={setMaxInput}
+            inputRangeValue={inputRangeValue}
+            setInputRangeValue={setInputRangeValue}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button

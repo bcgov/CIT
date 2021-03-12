@@ -1,8 +1,10 @@
 import { useState } from "react";
 import Switch from "react-switch";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Tooltip, OverlayTrigger } from "react-bootstrap";
+import { MdHelp } from "react-icons/md";
 import NumberRangeFilter from "../NumberRangeFilter/NumberRangeFilter";
 import SelectFilter from "../SelectFilter/SelectFilter";
+import CommunityOrPopulationProximityFilter from "../CommunityOrPopulationProximityFilter/CommunityOrPopulationProximityFilter";
 import "./SearchFlyoutContent.scss";
 
 export default function SearchFlyoutContent() {
@@ -57,6 +59,7 @@ export default function SearchFlyoutContent() {
   ] = useState(false);
   const [naturalGasSwitchValue, setNaturalGasSwitchValue] = useState(false);
 
+  const [excludeUnknowns, setExcludeUnknowns] = useState(false);
   const switchFilters = [
     {
       label: "Road access:",
@@ -86,7 +89,7 @@ export default function SearchFlyoutContent() {
   ];
 
   const siteServicingSection = switchFilters.map((switchFilter) => (
-    <Row className="flex-nowrap">
+    <Row className="flex-nowrap" key={switchFilter.label}>
       <Col xs={7}>
         <p>{switchFilter.label}</p>
       </Col>
@@ -113,6 +116,13 @@ export default function SearchFlyoutContent() {
       </Col>
     </Row>
   ));
+
+  const renderTooltip = (props) => (
+    // TODO: get text for this, currently placeholder
+    <Tooltip id="button-tooltip" {...props}>
+      Choose whether to exclude or include values that are not set to Yes or No.
+    </Tooltip>
+  );
 
   return (
     <div className="search-flyout-content">
@@ -147,7 +157,32 @@ export default function SearchFlyoutContent() {
         filters={connectivityFilters}
         setFilters={setConnectivityFilters}
       />
-      <h3>Site Servicing</h3>
+      <Row className="flex-nowrap">
+        <Col xs="6">
+          <h3>Site Servicing</h3>
+        </Col>
+        <Col xs="auto" className="exclude-unknown-section">
+          <input
+            type="checkbox"
+            value={excludeUnknowns}
+            onChange={() => setExcludeUnknowns(!excludeUnknowns)}
+          />
+        </Col>
+        <Col xs="auto" className="exclude-unknown-section">
+          <span>
+            Exclude Unknown{" "}
+            <span>
+              <OverlayTrigger
+                placement="right"
+                delay={{ show: 100, hide: 100 }}
+                overlay={renderTooltip}
+              >
+                <MdHelp color="#2693e6" size="1.3em" />
+              </OverlayTrigger>
+            </span>
+          </span>
+        </Col>
+      </Row>
       {siteServicingSection}
       <h3>Transportation</h3>
       <NumberRangeFilter
@@ -172,6 +207,7 @@ export default function SearchFlyoutContent() {
         isDistance
       />
       <h3>Demographics</h3>
+      <CommunityOrPopulationProximityFilter />
       <h3>Advanced Education &amp; Research</h3>
     </div>
   );

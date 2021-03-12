@@ -3,7 +3,7 @@ import SearchFlyoutContent from "./SearchFlyoutContent";
 
 export default {
   title: "Search Flyout Content",
-  component: "SearchFlyoutContent",
+  component: SearchFlyoutContent,
 };
 
 export const SearchContent = () => <SearchFlyoutContent />;
