@@ -1,12 +1,18 @@
 from rest_framework import generics
 from rest_framework import pagination
-from django.db.models import Q
+from django.db.models import Q, F
+from django.contrib.gis.measure import D
 import operator
 
 from pipeline.models.opportunity import Opportunity
 from pipeline.models.general import RegionalDistrict
+from pipeline.models.community import Community
 from pipeline.serializers.opportunity import OpportunitySerializer
 
+MIN_TABLE_ID = 1
+MIN_DISTANCE = 0
+MIN_SIZE = 0
+INVALID_INT = -1
 
 class LargeResultsSetPagination(pagination.PageNumberPagination):
     page_size = 10
@@ -51,6 +57,27 @@ class OpportunitiesList(generics.ListAPIView):
         queryset = self.service_queryset(queryset, connected_unknown, 'opportunity_water_connected')
         queryset = self.service_queryset(queryset, connected_unknown, 'opportunity_sewer_connected')
         queryset = self.service_queryset(queryset, connected_unknown, 'opportunity_electrical_connected')
+
+        # TODO Figure out distance calulation issues
+        community_id = int(self.request.query_params.get('community_id', INVALID_INT))
+        community_distance = float(self.request.query_params.get('community_distance', INVALID_INT))
+        if(community_distance >= MIN_DISTANCE and community_id >= MIN_TABLE_ID):
+            community_model = Community.objects.get(id=community_id)
+            if(community_model is not None):
+                queryset = queryset.filter(geo_position__distance_lte=(community_model.point,
+                                                                       D(km=community_distance)))
+        
+        parcel_size_min = float(self.request.query_params.get('parcel_size_min', INVALID_INT))
+        parcel_size_max = float(self.request.query_params.get('parcel_size_max', INVALID_INT))
+        if(parcel_size_min >= MIN_SIZE):
+            queryset = queryset.filter(parcel_size__gte=parcel_size_min)
+        if(parcel_size_max >= MIN_SIZE):
+            queryset = queryset.filter(parcel_size__lte=parcel_size_max)
+
+        zoning = self.request.query_params.get('zoning', None)
+        zonings = zoning.split(',')
+        if(zoning is not None):
+            queryset = queryset.filter(Q(land_use_zoning__in=zonings) | Q(ocp_zoning_code__in=zonings))
 
         return queryset
 
