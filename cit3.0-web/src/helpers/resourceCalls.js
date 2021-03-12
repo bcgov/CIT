@@ -1,4 +1,5 @@
 import axios from "axios";
+import querystring from "querystring";
 
 export async function getAddressData(address) {
   return axios
@@ -100,25 +101,32 @@ function returnResourcesWithinMaxDistance(resources, maxDistance, coords) {
 }
 
 export const getProximityData = async (resources, coords) => {
-  try {
-    const final = Promise.all(
-      Object.entries(resources).map(async ([resource, resourceId]) => {
-        const resourceData = await getResourceData(resourceId);
-        const resourcesWithinMax = returnResourcesWithinMaxDistance(
-          resourceData,
-          50,
-          coords
-        );
-        return [
-          resource,
-          addDistanceToResourcesMine(resourcesWithinMax, coords),
-        ];
-      })
-    );
-    const result = await final;
-    return Object.fromEntries(result);
-  } catch (error) {
-    console.log("Error retrieving proximity data");
-    return null;
-  }
+  const result = await axios.get(
+    `/api/opportunity/proximity/?${querystring.encode({
+      lat: coords[0],
+      lng: coords[1],
+    })}`
+  );
+  return result;
 };
+// try {
+//   const final = Promise.all(
+//     Object.entries(resources).map(async ([resource, resourceId]) => {
+//       const resourceData = await getResourceData(resourceId);
+//       const resourcesWithinMax = returnResourcesWithinMaxDistance(
+//         resourceData,
+//         50,
+//         coords
+//       );
+//       return [
+//         resource,
+//         addDistanceToResourcesMine(resourcesWithinMax, coords),
+//       ];
+//     })
+//   );
+//   const result = await final;
+//   return Object.fromEntries(result);
+// } catch (error) {
+//   console.log("Error retrieving proximity data");
+//   return null;
+// }

@@ -24,7 +24,7 @@ export default function MapContainer({
   useEffect(() => {
     const run = async () => {
       const proximity = await getProximityData(resourceIds, coords);
-      setNearbyResources(proximity);
+      setNearbyResources(proximity.data);
     };
     if (coords[0] !== 54.1722) {
       run();
