@@ -82,6 +82,10 @@ export default function NumberRangeFilter(props) {
             setMaxInput={setMaxInput}
             inputRangeValue={inputRangeValue}
             setInputRangeValue={setInputRangeValue}
+            validMax={validMax}
+            validMin={validMin}
+            setValidMax={setValidMax}
+            setValidMin={setValidMin}
           />
         </Modal.Body>
         <Modal.Footer>

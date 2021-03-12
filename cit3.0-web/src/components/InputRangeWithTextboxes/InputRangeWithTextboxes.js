@@ -1,4 +1,3 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
 import { Row, Container } from "react-bootstrap";
 import InputRange from "react-input-range";
@@ -17,9 +16,11 @@ export default function InputRangeWithTextboxes(props) {
     setMaxInput,
     inputRangeValue,
     setInputRangeValue,
+    validMax,
+    validMin,
+    setValidMax,
+    setValidMin,
   } = props;
-  const [validMax, setValidMax] = useState(true);
-  const [validMin, setValidMin] = useState(true);
 
   const inputRangeMax = inputRange.max;
   const inputRangeMin = inputRange.min;
@@ -151,4 +152,8 @@ InputRangeWithTextboxes.propTypes = {
     max: PropTypes.number.isRequired,
   }).isRequired,
   setInputRangeValue: PropTypes.func.isRequired,
+  validMax: PropTypes.bool.isRequired,
+  validMin: PropTypes.bool.isRequired,
+  setValidMax: PropTypes.func.isRequired,
+  setValidMin: PropTypes.func.isRequired,
 };

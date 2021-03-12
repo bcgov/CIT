@@ -20,7 +20,7 @@ class OptionsView(APIView):
         preferred_development = PreferredDevelopment.objects.all().values()
         property_statuses = PropertyStatus.objects.all().values()
         land_use_zoning = LandUseZoning.objects.all().values()
-        communities = Community.objects.all().values()
+        communities = Community.objects.all().values("id", "place_name")
         return Response(dict(
             statuses=statuses,
             regionalDistricts=regional_districts,

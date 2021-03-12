@@ -207,7 +207,11 @@ export default function SearchFlyoutContent() {
         isDistance
       />
       <h3>Demographics</h3>
-      <CommunityOrPopulationProximityFilter />
+      <CommunityOrPopulationProximityFilter
+        inputRange={{ min: 0, max: 500 }}
+        units="km"
+        label="Proximity to community/population"
+      />
       <h3>Advanced Education &amp; Research</h3>
     </div>
   );
