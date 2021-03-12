@@ -22,6 +22,7 @@ import {
   setSiteId,
 } from "../../../store/actions/opportunity";
 import Radios from "../../FormComponents/Radios";
+import Terms from "../../Terms/Terms";
 
 export default function AddOpportunity() {
   document.title = `Investments - Add Opportunity`;
@@ -45,6 +46,7 @@ export default function AddOpportunity() {
   const [hasApproval, setHasApproval] = useState(false);
   const [blockContinue, setBlockContinue] = useState(true);
   const [error, setError] = useState(null);
+  const [agreed, setAgreed] = useState(false);
 
   const handleRadioChange = (name, label, value) => {
     setHasApproval(label);
@@ -206,7 +208,7 @@ export default function AddOpportunity() {
                           </Col>
                           {hasApproval !== "Yes" && (
                             <Row className="mt-2">
-                              <Col style={{ color: "red" }}>
+                              <Col className="text-red">
                                 <p>
                                   You must have the approval of the land owner
                                   to promote this opportunity. Please get the
@@ -236,9 +238,12 @@ export default function AddOpportunity() {
             />
           </Col>
         </Row>
+        <Row>
+          <Terms agreed={agreed} setAgreed={setAgreed} />
+        </Row>
       </Container>
       <ButtonRow
-        noContinue={!address || blockContinue}
+        noContinue={!address || blockContinue || !agreed}
         onClick={goToNextPage}
       />
     </>
