@@ -17,12 +17,12 @@ export default function Terms({ agreed, setAgreed }) {
         others) and/or any personally identifiable information in the open text
         fields; only business related information should be supplied.
         <br />
-        <p>
-          Should you have any questions about the collection of this business
-          information please{" "}
-          {/* TODO Make sure we have the proper email here!!! */}
-          <a href="mailto:somegovinbox@gov.bc.ca">contact us.</a>
-        </p>
+      </p>
+      <p>
+        Should you have any questions about the collection of this business
+        information please{" "}
+        {/* TODO Make sure we have the proper email here!!! */}
+        <a href="mailto:somegovinbox@gov.bc.ca">contact us.</a>
       </p>
       <input
         className="mr-2"
@@ -37,7 +37,12 @@ export default function Terms({ agreed, setAgreed }) {
     </div>
   );
   return (
-    <Alert type="warning" styling="bcgov-warning-background" element={input} />
+    <Alert
+      icon={<></>}
+      type="warning"
+      styling="bcgov-warning-background"
+      element={input}
+    />
   );
 }
 
