@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { Button } from "shared-components";
 import { Modal, Container, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import Select from "react-select";
+import Select, { createFilter } from "react-select";
 import InputRangeWithTextboxes from "../InputRangeWithTextboxes/InputRangeWithTextboxes";
 import { setOptions, getOptions } from "../../store/actions/options";
 import "./CommunityOrPopulationProximityFilter.scss";
@@ -42,9 +42,6 @@ export default function CommunityOrPopulationProximityFilter(props) {
       dispatch(setOptions(response.data));
     });
   }
-
-  console.log(validMin);
-  console.log(validMax);
 
   const populationOptions = [
     {
@@ -168,6 +165,7 @@ export default function CommunityOrPopulationProximityFilter(props) {
                 value={currentCommunity}
                 onChange={(value) => handleCommunityChange(value)}
                 className="w-100"
+                filterOption={createFilter({ ignoreAccents: false })}
               />
             </Row>
             <Row id="population-label">OR population of at least</Row>
