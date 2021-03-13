@@ -25,6 +25,7 @@ export default function Terms({ agreed, setAgreed }) {
         <a href="mailto:somegovinbox@gov.bc.ca">contact us.</a>
       </p>
       <input
+        aria-labelledby="agree-label"
         className="mr-2"
         name="agree-check"
         value="agree-check"
@@ -32,7 +33,7 @@ export default function Terms({ agreed, setAgreed }) {
         onChange={(e) => setAgreed(e.target.checked)}
         checked={agreed}
       />
-      <label htmlFor="agree-check">
+      <label id="agree-label" htmlFor="agree-check">
         <b>I agree to the Terms of Use</b>
       </label>
     </div>
