@@ -1,5 +1,5 @@
-import React from "react";
-import { action } from "@storybook/addon-actions";
+import React, { useState } from "react";
+// import { action } from "@storybook/addon-actions";
 import Radios from "./Radios";
 
 export default {
@@ -7,10 +7,17 @@ export default {
   component: Radios,
 };
 
-export const Radio = () => (
-  <Radios
-    labels={["Yes", "No", "Unknown"]}
-    handleRadioChange={action("change handled")}
-    name="Radios"
-  />
-);
+export const Radio = () => {
+  const [value, setValue] = useState("Yes");
+  const handleRadioChange = (name, label, v) => {
+    setValue(label);
+  };
+  return (
+    <Radios
+      labels={["Yes", "No", "Unknown"]}
+      handleRadioChange={handleRadioChange}
+      name="Radios"
+      value={value}
+    />
+  );
+};
