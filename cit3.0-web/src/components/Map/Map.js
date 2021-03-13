@@ -63,10 +63,7 @@ export default function Map({
       })
     );
     return (
-      <Polygon
-        pathOptions={{ color: "rgb(255, 0, 128)" }}
-        positions={full[0]}
-      />
+      <Polygon pathOptions={{ color: "rgb(255, 0, 128)" }} positions={full} />
     );
   };
 

@@ -38,7 +38,7 @@ export default {
       ...request,
       opportunity_address: state.address,
       geo_position: `SRID=3005;POINT(${state.coords[1]} ${state.coords[0]})`,
-      parcel_geometry: geoJSONToString(state.siteInfo.geometry),
+      // parcel_geometry: geoJSONToString(state.siteInfo.geometry),
       parcel_size: state.siteInfo.parcelSize.value,
       approval_status: state.approvalStatus,
       opportunity_name: state.name,

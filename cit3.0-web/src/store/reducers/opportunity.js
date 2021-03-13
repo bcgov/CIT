@@ -79,16 +79,39 @@ export default function opportunity(
       state.siteInfo.PID.value = action.payload;
       break;
     case ADD_GEOMETRY:
-      state.siteInfo.geometry = {
-        ...state.siteInfo.geometry,
-        ...action.payload,
-      };
+      console.log(state.siteInfo.geometry);
+      if (!action.payload) {
+        state.siteInfo.geometry.coordinates = null;
+      } else if (!state.siteInfo.geometry.coordinates) {
+        state.siteInfo.geometry = {
+          ...state.siteInfo.geometry,
+          ...action.payload,
+        };
+      } else {
+        state.siteInfo.geometry.coordinates = [
+          ...state.siteInfo.geometry.coordinates,
+          ...action.payload.coordinates,
+        ];
+      }
       break;
     case ADD_PARCEL_OWNER:
-      state.siteInfo.parcelOwnership.name = action.payload;
+      if (
+        state.siteInfo.parcelOwnership.name &&
+        state.siteInfo.parcelOwnership.name !== action.payload &&
+        action.payload
+      ) {
+        state.siteInfo.parcelOwnership.name = `/${action.payload}`;
+      } else {
+        state.siteInfo.parcelOwnership.name = action.payload;
+      }
+
       break;
     case ADD_PARCEL_SIZE:
-      state.siteInfo.parcelSize.value = action.payload;
+      if (state.siteInfo.parcelSize.value && action.payload) {
+        state.siteInfo.parcelSize.value += action.payload;
+      } else {
+        state.siteInfo.parcelSize.value = action.payload;
+      }
       break;
     case ADD_SITE_ID:
       state.siteInfo.siteId.value = action.payload;
