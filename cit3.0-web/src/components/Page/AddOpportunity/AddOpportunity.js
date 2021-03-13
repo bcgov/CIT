@@ -97,6 +97,7 @@ export default function AddOpportunity() {
       dispatch(setGeometry({ coordinates: null }));
       dispatch(setParcelOwner(null));
       dispatch(setParcelSize(null));
+      setBlockContinue(false);
     }
     setError(false);
   };
