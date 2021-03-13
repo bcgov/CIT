@@ -15,6 +15,7 @@ import {
   setPrice,
 } from "../../../store/actions/opportunity";
 import { setOptions, getOptions } from "../../../store/actions/options";
+import "./PropertyDetails1.scss";
 
 export default function PropertyDetails1() {
   const dispatch = useDispatch();
@@ -168,7 +169,6 @@ export default function PropertyDetails1() {
   };
 
   const handlePriceInputChange = (value) => {
-    console.log(value);
     dispatch(setPrice(value));
     if (Number.isNaN(Number(value))) {
       setNan(true);
@@ -182,7 +182,7 @@ export default function PropertyDetails1() {
   };
 
   return (
-    <p>
+    <div>
       <NavigationHeader currentStep={3} />
       <Container role="form">
         <Row>
@@ -212,7 +212,8 @@ export default function PropertyDetails1() {
           </Col>
           <Col>
             <Row>
-              {saleOrLease.value === "sale" && (
+              {console.log(saleOrLease)}
+              {saleOrLease.value === "SALE" && (
                 <Col className="mr-5">
                   <Row id="asking-price">Asking Price</Row>
                   <Row>
@@ -233,7 +234,7 @@ export default function PropertyDetails1() {
                   </Row>
                 </Col>
               )}
-              {saleOrLease.value === "lease" && (
+              {saleOrLease.value === "LEAS" && (
                 <Col className="mr-5">
                   <Row id="rental-price">Rental Price</Row>
                   <Row>
@@ -447,6 +448,6 @@ export default function PropertyDetails1() {
         onClick={handleContinue}
         noContinue={!isValid || Nan}
       />
-    </p>
+    </div>
   );
 }
