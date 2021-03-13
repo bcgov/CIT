@@ -27,6 +27,7 @@ export default function Terms({ agreed, setAgreed }) {
       <input
         className="mr-2"
         name="agree-check"
+        value="agree-check"
         type="checkbox"
         onChange={(e) => setAgreed(e.target.checked)}
         checked={agreed}
