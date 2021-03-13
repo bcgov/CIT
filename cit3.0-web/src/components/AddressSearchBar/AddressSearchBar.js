@@ -78,7 +78,7 @@ export default function AddressSearchBar({
         autoComplete="off"
         className=" bcgov-text-input"
         id="addressSearch"
-        value={value}
+        value={value || ""}
         onChange={(e) => runSearch(e)}
       />
       {show ? (
