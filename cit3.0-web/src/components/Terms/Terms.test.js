@@ -12,7 +12,6 @@ describe("Terms of Use", () => {
     const TermsText = screen.getByText(/Terms of Use/i);
 
     expect(TermsText).toBeInTheDocument();
-    // expect(TermsText.textContent);
   });
   it("should have a checked checkbox if agreed=true", () => {
     render(<Terms setAgreed={setAgreed} agreed />);
