@@ -2,6 +2,9 @@ from django.contrib.gis.db import models
 from django.utils import timezone
 
 from .approval_status import ApprovalStatus
+from .land_use_zoning import LandUseZoning
+from .preferred_development import PreferredDevelopment
+from .property_status import PropertyStatus
 from pipeline.constants import BC_ALBERS_SRID
 
 # Choices used for parcel infrastructure connections
@@ -17,9 +20,13 @@ class Opportunity(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
     date_updated = models.DateTimeField(auto_now=True)
     date_published = models.DateTimeField(auto_now=False, blank=True, null=True)
-    private_note  = models.TextField(blank=True, null=True)
-    public_note  = models.TextField(blank=True, null=True)
-    last_admin  = models.TextField(blank=True, null=True)
+    private_note = models.TextField(blank=True, null=True)
+    public_note = models.TextField(blank=True, null=True)
+    last_admin = models.TextField(blank=True, null=True)
+    deleted = models.BooleanField(
+        default=False,
+        help_text="This is for soft deletes",
+    )
     # Site Info
     opportunity_address = models.CharField(max_length=255, null=False)
     opportunity_name = models.TextField(blank=True, null=True)
@@ -29,11 +36,12 @@ class Opportunity(models.Model):
     environmental_information = models.TextField(blank=True, null=True)
     opportunity_link = models.TextField(blank=True, null=True)
     community_link = models.TextField(blank=True, null=True)
-    # TODO: More tables needed
-    # land_use_zoning = models.TextField(blank=True, null=True) -- needs to be FK
-    # ocp_zoning_code = models.TextField(blank=True, null=True) -- needs to be FK
-    # opportunity_preferred_development = models.TextField(blank=True, null=True) -- needs to be FK
-    # opportunity_land_status = models.TextField(blank=True, null=True) -- needs to be FK
+
+    land_use_zoning = models.ForeignKey(LandUseZoning, related_name="current", on_delete=models.SET_NULL, db_column="land_use_zoning", null=True)
+    ocp_zoning_code = models.ForeignKey(LandUseZoning, related_name="future",  on_delete=models.SET_NULL, db_column="ocp_zoning_code", null=True)
+    opportunity_preferred_development = models.ManyToManyField(PreferredDevelopment, db_column="opportunity_preferred_development", null=True)
+    opportunity_property_status = models.ForeignKey(PropertyStatus, on_delete=models.SET_NULL, db_column="opportunity_property_status", null=True)
+    
     # Parcel
     parcel_ownership = models.TextField(blank=True, null=True)
     parcel_size = models.DecimalField(max_digits=7, decimal_places=3, blank=True, null=True)

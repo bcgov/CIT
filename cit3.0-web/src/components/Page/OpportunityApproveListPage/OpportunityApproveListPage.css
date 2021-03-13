@@ -9,3 +9,7 @@
 .light-input.light-input .form-control.form-control {
     width: 90%;
 }
+
+.nav-link.nav-link:focus {
+    color: #0631f3 !important;
+}

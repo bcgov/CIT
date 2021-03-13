@@ -1,5 +1,5 @@
 import _ from "lodash";
-
+import OPTIONS_INITIALIZATION from "../models/options";
 /**
  * Options get actions
  *
@@ -7,7 +7,7 @@ import _ from "lodash";
  * @param {String} action.type incoming action type
  * @param {String} action.payload incoming action payload, varying options
  */
-export default function options(state = {}, action) {
+export default function options(state = OPTIONS_INITIALIZATION(), action) {
   /* eslint-disable no-param-reassign */
   switch (action.type) {
     case "options":
