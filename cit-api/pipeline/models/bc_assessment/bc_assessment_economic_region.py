@@ -20,7 +20,7 @@ class BCAssessmentEconomicRegion(models.Model):
     average_land_area_hectares = models.CharField(max_length=128, null=True, blank=True)
     average_land_value = models.CharField(max_length=128, null=True, blank=True)
     bca_sberu_sysid = models.CharField(max_length=128, null=True, blank=True)
-    census_economic_region = models.ForeignKey('CensusEconomicRegion', on_delete=models.DO_NOTHING)
+    economic_region = models.ForeignKey('CensusEconomicRegion', on_delete=models.DO_NOTHING)
     median_improvement_value = models.CharField(max_length=128, null=True, blank=True)
     median_land_value = models.CharField(max_length=128, null=True, blank=True)
     median_storeys_commercial = models.CharField(max_length=128, null=True, blank=True)

@@ -398,6 +398,7 @@ def import_bc_assessment_data(file_path, Model, resource_type):
             instance = None
             #need to match the truncated csduid to the first 4 digits of the census subdivision.
             if resource_type == 'bc_assessment_regional_district':
+
                 try:
                     instance = Model.objects.get(bca_sbcdu_sysid=id_field)
                 except Model.DoesNotExist:
@@ -405,26 +406,26 @@ def import_bc_assessment_data(file_path, Model, resource_type):
                 regional_district_id = Community.objects.raw(
                     'select id, regional_district_id from pipeline_community where CAST(census_subdivision_id AS TEXT) LIKE %s limit 1',
                     [str(row[link_field]) + '%'])[0].regional_district_id
-                print(regional_district_id)
-                print(row)
                 regional_district = RegionalDistrict.objects.get(id=regional_district_id)
-
                 instance.regional_district = regional_district
+
             elif resource_type == 'bc_assessment_census_subdivision':
+
                 try:
                     instance = Model.objects.get(bca_sbcsdu_sysid=id_field)
                 except Model.DoesNotExist:
                     instance = Model(bca_sbcsdu_sysid=id_field)
-                census_subdiv = CensusSubdivision.objects.get(id=row[link_field])
+                census_subdiv = CensusSubdivision.objects.get(id=int(row[link_field]))
                 instance.census_subdivision = census_subdiv
+
             elif resource_type == 'bc_assessment_economic_region':
                 try:
                     instance = Model.objects.get(bca_sberu_sysid=id_field)
                 except Model.DoesNotExist:
                     instance = Model(bca_sberu_sysid=id_field)
                 census_economic_reg = CensusEconomicRegion.objects.get(
-                    economic_region_id=row[link_field])
-                instance.census_economic_region = census_economic_reg
+                    economic_region_id=int(row[link_field]))
+                instance.economic_region = census_economic_reg
 
             import_variable_fields(instance, row, Model)
             print(instance.__dict__)

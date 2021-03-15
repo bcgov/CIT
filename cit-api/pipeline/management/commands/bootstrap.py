@@ -22,7 +22,7 @@ class Command(BaseCommand):
         resources = DataSource.objects.order_by('import_order')
 
         for resource in resources:
-            if resource.import_order > 20:
+            if resource.name in ['bc_assessment_economic_region']:
                 if resource.source_type == "wms":
                     print(f'Importing {resource.display_name}...')
                     import_wms_resource(resource)
