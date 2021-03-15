@@ -4,13 +4,15 @@ import { act } from "react-dom/test-utils";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
+import { waitFor } from "@testing-library/react";
 import AppRoute from "./AppRoute";
 import { store } from "../../store";
 
 const history = createMemoryHistory();
+global.scrollTo = jest.fn();
 
 describe("App Route", () => {
-  it("Document title is updated", () => {
+  it("Document title is updated", async () => {
     const title = "Test Title";
     const container = document.createElement("div");
     document.body.appendChild(container);
@@ -24,7 +26,6 @@ describe("App Route", () => {
         container
       );
     });
-
-    expect(document.title).toBe("Test Title");
+    waitFor(() => expect(document.title).toBe("Test Title"));
   });
 });
