@@ -6,18 +6,25 @@ import Select from "react-select";
 import PageTitleHeader from "../../Headers/PageTitleHeader/PageTitleHeader";
 import ButtonRow from "../../ButtonRow/ButtonRow";
 import Radios from "../../FormComponents/Radios";
-import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MaxCapRow from "../../FormComponents/MaxCapRow";
 import {
   setUserInfo,
   setService,
   setServiceCapacity,
+  setPrice,
 } from "../../../store/actions/opportunity";
 import { setOptions, getOptions } from "../../../store/actions/options";
+import "./PropertyDetails1.scss";
 
 export default function PropertyDetails1() {
   const dispatch = useDispatch();
+
+  const [Nan, setNan] = useState(false);
+
+  const price = useSelector(
+    (state) => state.opportunity.userInfo.saleOrLease.price
+  );
 
   // Get options for store
   const PropStatusOptions = useSelector(
@@ -161,13 +168,21 @@ export default function PropertyDetails1() {
     }
   };
 
+  const handlePriceInputChange = (value) => {
+    dispatch(setPrice(value));
+    if (Number.isNaN(Number(value))) {
+      setNan(true);
+    } else {
+      setNan(false);
+    }
+  };
+
   const handleContinue = () => {
     goToNextPage();
   };
 
   return (
-    <>
-      <PortalHeader />
+    <div>
       <NavigationHeader currentStep={3} />
       <Container role="form">
         <Row>
@@ -196,6 +211,60 @@ export default function PropertyDetails1() {
             </Row>
           </Col>
           <Col>
+            <Row>
+              {console.log(saleOrLease)}
+              {saleOrLease.value === "SALE" && (
+                <Col className="mr-5">
+                  <Row id="asking-price">Asking Price</Row>
+                  <Row>
+                    <div
+                      id="rental-div"
+                      className="d-flex align-items-center px-1 price-div"
+                    >
+                      <span className="mr-2">$</span>
+                      <input
+                        type="text"
+                        className="price-input w-100"
+                        aria-labelledby="asking-price"
+                        value={price}
+                        onChange={(e) => handlePriceInputChange(e.target.value)}
+                      />
+                    </div>
+                    {Nan && <p className="text-red">Invalid</p>}
+                  </Row>
+                </Col>
+              )}
+              {saleOrLease.value === "LEAS" && (
+                <Col className="mr-5">
+                  <Row id="rental-price">Rental Price</Row>
+                  <Row>
+                    <div
+                      id="rental-div"
+                      className="d-flex align-items-center px-1 price-div"
+                    >
+                      <span className="mr-2">$</span>
+                      <input
+                        type="text"
+                        id="rental-input"
+                        aria-labelledby="rental-price"
+                        value={price}
+                        placeholder="/month"
+                        onChange={(e) => handlePriceInputChange(e.target.value)}
+                        className="price-input w-100"
+                      />
+                    </div>
+                    {Nan && (
+                      <p className="text-red">Price must be a valid number</p>
+                    )}
+                  </Row>
+                </Col>
+              )}
+              <Col />
+            </Row>
+          </Col>
+        </Row>
+        <Row className="mb-3">
+          <Col className="mr-5">
             <Row id="current-zone-label">Current Zoning</Row>
             <Row>
               <Select
@@ -207,9 +276,7 @@ export default function PropertyDetails1() {
               />
             </Row>
           </Col>
-        </Row>
-        <Row className="mb-5">
-          <Col className="mr-5">
+          <Col>
             <Row id="future-zone-label">Future Zoning</Row>
             <Row>
               <Select
@@ -221,8 +288,9 @@ export default function PropertyDetails1() {
               />
             </Row>
           </Col>
-
-          <Col>
+        </Row>
+        <Row className="mb-3">
+          <Col className="mr-5">
             <Row id="preferred-dev-label">Preferred Development</Row>
             <Row>
               <Select
@@ -238,8 +306,8 @@ export default function PropertyDetails1() {
               />
             </Row>
           </Col>
+          <Col />
         </Row>
-
         <Row className="mb-3">
           <h4>Site Servicing</h4>
         </Row>
@@ -378,8 +446,8 @@ export default function PropertyDetails1() {
       <ButtonRow
         prevRoute="/opportunity/site-info"
         onClick={handleContinue}
-        noContinue={!isValid}
+        noContinue={!isValid || Nan}
       />
-    </>
+    </div>
   );
 }

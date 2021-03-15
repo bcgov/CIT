@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import styles from "./ReviewSubmitted.module.css";
-import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import { resetOpportunity } from "../../../store/actions/opportunity";
 
 const ReviewSubmitted = () => {
@@ -16,7 +15,6 @@ const ReviewSubmitted = () => {
   };
   return (
     <div className={styles.ReviewSubmitted} data-testid="ReviewSubmitted">
-      <PortalHeader />
       <Container className="success-contianer">
         <h2>Your Investment Opportunity has been successfully submitted.</h2>
         <p>
