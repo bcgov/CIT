@@ -63,10 +63,7 @@ export default function Map({
       })
     );
     return (
-      <Polygon
-        pathOptions={{ color: "rgb(255, 0, 128)" }}
-        positions={full[0]}
-      />
+      <Polygon pathOptions={{ color: "rgb(255, 0, 128)" }} positions={full} />
     );
   };
 
@@ -133,7 +130,7 @@ export default function Map({
           : null}
       </>
     );
-    zoomLevel = 2;
+    zoomLevel = 5; // do not change!
   } else {
     // Used in the list view of opportunities
     additionalComponents = (

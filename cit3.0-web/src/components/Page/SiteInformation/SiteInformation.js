@@ -3,7 +3,6 @@ import { useHistory } from "react-router-dom";
 import { Alert } from "shared-components";
 import { MdError } from "react-icons/md";
 import { Container } from "react-bootstrap";
-import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import OpportunityView from "../../OpportunityView/OpportunityView";
 import ButtonRow from "../../ButtonRow/ButtonRow";
@@ -18,7 +17,6 @@ export default function SiteInformation({ location }) {
   // this page will run the searches and pass the data to opportunity view and map
   return (
     <>
-      <PortalHeader />
       <NavigationHeader currentStep={2} />
       <Container className="p-0 mt-3">
         <Alert
