@@ -30,11 +30,6 @@ import OpportunityApproveListPage from "./components/Page/OpportunityApproveList
 function App() {
   const getTitle = (page) => `Investments${` - ${page}`}`;
 
-  // const header = {
-  //   name: "Community Information Tool",
-  //   history: {},
-  // };
-
   return (
     <AuthStateContext.Consumer>
       {() => (
