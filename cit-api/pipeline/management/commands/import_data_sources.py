@@ -6,5 +6,4 @@ from pipeline.models.bc_assessment.bc_assessment_regional_district import BCAsse
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-
         import_data_sources()
