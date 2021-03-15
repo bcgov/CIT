@@ -406,6 +406,7 @@ def import_bc_assessment_data(file_path, Model, resource_type):
                 regional_district_id = Community.objects.raw(
                     'select id, regional_district_id from pipeline_community where CAST(census_subdivision_id AS TEXT) LIKE %s limit 1',
                     [str(row[link_field]) + '%'])[0].regional_district_id
+                print(row[link_field])
                 regional_district = RegionalDistrict.objects.get(id=regional_district_id)
                 instance.regional_district = regional_district
 
