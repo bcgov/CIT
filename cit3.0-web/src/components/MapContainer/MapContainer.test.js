@@ -1,11 +1,14 @@
 import { render, cleanup } from "@testing-library/react";
+import { Provider } from "react-redux";
 import MapContainer from "./MapContainer";
+import { store } from "../../store";
 
 afterEach(cleanup);
 
 const coords = [54.1722, -124.1207];
 
 const genericFunc = () => null;
+const setError = jest.fn();
 
 const nearbyResources = {
   Hospitals: [
@@ -60,13 +63,16 @@ describe("MapContainer", () => {
   describe("Layout", () => {
     it("renders a map", () => {
       const { getByText } = render(
-        <MapContainer
-          coords={coords}
-          setCoords={genericFunc}
-          setAddress={genericFunc}
-          nearbyResources={nearbyResources}
-          setNearbyResources={genericFunc}
-        />
+        <Provider store={store}>
+          <MapContainer
+            coords={coords}
+            setCoords={genericFunc}
+            setAddress={genericFunc}
+            nearbyResources={nearbyResources}
+            setNearbyResources={genericFunc}
+            setError={setError}
+          />
+        </Provider>
       );
       expect(getByText(/leaflet/i).textContent).toBe("Leaflet");
     });

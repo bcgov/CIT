@@ -7,25 +7,42 @@ afterEach(cleanup);
 
 const setAddress = jest.fn();
 const getCoords = jest.fn();
+const setError = jest.fn();
+const setBlockContinue = jest.fn();
 
 describe("AddressSearchBar", () => {
   it("renders the label", () => {
     const { container } = render(
-      <AddressSearchBar setAddress={setAddress} getCoords={getCoords} />
+      <AddressSearchBar
+        setAddress={setAddress}
+        setError={setError}
+        getCoords={getCoords}
+        setBlockContinue={setBlockContinue}
+      />
     );
     const label = container.querySelector("label");
     expect(label).toBeInTheDocument();
   });
   it("renders the label text", () => {
     const { getByText } = render(
-      <AddressSearchBar setAddress={setAddress} getCoords={getCoords} />
+      <AddressSearchBar
+        setAddress={setAddress}
+        setError={setError}
+        getCoords={getCoords}
+        setBlockContinue={setBlockContinue}
+      />
     );
     const label = getByText(/Enter/i);
     expect(label).toHaveTextContent("Enter Address");
   });
   it("renders the input element", () => {
     const { container } = render(
-      <AddressSearchBar setAddress={setAddress} getCoords={getCoords} />
+      <AddressSearchBar
+        setAddress={setAddress}
+        setError={setError}
+        getCoords={getCoords}
+        setBlockContinue={setBlockContinue}
+      />
     );
     const input = container.querySelector("input");
     expect(input).toBeInTheDocument();
@@ -37,7 +54,12 @@ describe("AddressSearchBar", () => {
       },
     });
     const { container } = render(
-      <AddressSearchBar setAddress={setAddress} getCoords={getCoords} />
+      <AddressSearchBar
+        setAddress={setAddress}
+        setError={setError}
+        getCoords={getCoords}
+        setBlockContinue={setBlockContinue}
+      />
     );
     const input = container.querySelector("input");
     fireEvent.change(input, { target: { value: "305 Belleville St" } });
@@ -51,7 +73,12 @@ describe("AddressSearchBar", () => {
       },
     });
     const { container } = render(
-      <AddressSearchBar setAddress={setAddress} getCoords={getCoords} />
+      <AddressSearchBar
+        setAddress={setAddress}
+        setError={setError}
+        getCoords={getCoords}
+        setBlockContinue={setBlockContinue}
+      />
     );
     const input = container.querySelector("input");
     fireEvent.change(input, { target: { value: "305 Belleville St" } });
@@ -62,7 +89,12 @@ describe("AddressSearchBar", () => {
   });
   it("does not render dropdown when input is empty", () => {
     const { container } = render(
-      <AddressSearchBar setAddress={setAddress} getCoords={getCoords} />
+      <AddressSearchBar
+        setAddress={setAddress}
+        setError={setError}
+        getCoords={getCoords}
+        setBlockContinue={setBlockContinue}
+      />
     );
     const list = container.querySelector("ul");
     expect(list).not.toBeInTheDocument();
@@ -74,7 +106,12 @@ describe("AddressSearchBar", () => {
       },
     });
     const { container } = render(
-      <AddressSearchBar setAddress={setAddress} getCoords={getCoords} />
+      <AddressSearchBar
+        setAddress={setAddress}
+        setError={setError}
+        getCoords={getCoords}
+        setBlockContinue={setBlockContinue}
+      />
     );
     const input = container.querySelector("input");
     fireEvent.change(input, { target: { value: "305 Belleville St" } });
