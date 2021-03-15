@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useLayoutEffect } from "react";
 import Proptypes from "prop-types";
 import { useLocation, Route } from "react-router-dom";
 
@@ -36,9 +36,7 @@ const AppRoute = ({
   const Layout =
     layout === undefined ? (props) => <>{props.children}</> : layout;
 
-  useEffect(() => {
-    document.title = title;
-  }, []);
+  document.title = title;
 
   if (usePrivateRoute) {
     return (
