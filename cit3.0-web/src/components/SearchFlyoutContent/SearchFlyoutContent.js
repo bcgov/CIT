@@ -60,6 +60,10 @@ export default function SearchFlyoutContent() {
   const [naturalGasSwitchValue, setNaturalGasSwitchValue] = useState(false);
 
   const [excludeUnknowns, setExcludeUnknowns] = useState(false);
+
+  const [postSecondarySwitchValue, setPostSecondarySwitchValue] = useState(
+    false
+  );
   const switchFilters = [
     {
       label: "Road access:",
@@ -213,6 +217,39 @@ export default function SearchFlyoutContent() {
         label="Proximity to community/population"
       />
       <h3>Advanced Education &amp; Research</h3>
+      <Row className="flex-nowrap">
+        <Col xs={7}>
+          <p>Post-secondary Institute within 100km?:</p>
+        </Col>
+        <Col xs="auto" className="no-padding">
+          <p>No</p>
+        </Col>
+        <Col xs="auto">
+          <Switch
+            checked={postSecondarySwitchValue}
+            onChange={setPostSecondarySwitchValue}
+            onColor="#aad3df"
+            onHandleColor="#2693e6"
+            handleDiameter={30}
+            uncheckedIcon={false}
+            checkedIcon={false}
+            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+            height={20}
+            width={48}
+          />
+        </Col>
+        <Col xs="auto" className="no-padding">
+          <p>Yes</p>
+        </Col>
+      </Row>
+      <NumberRangeFilter
+        inputRange={{ min: 0, max: 500 }}
+        units="km"
+        description="Driving distance to R&amp;D in km"
+        label="R &amp; D Center nearby"
+        isDistance
+      />
     </div>
   );
 }
