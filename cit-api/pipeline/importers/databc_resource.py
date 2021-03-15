@@ -66,6 +66,7 @@ def import_wms_resource(resource):
     ds = bcdata.get_data(resource.dataset, as_gdf=True, query=query)
 
     for index, row in ds.iterrows():
+        print(row)
         model_class = apps.get_model("pipeline", resource.model_name)
         print(resource.name)
         if resource.name in LOCATION_RESOURCES:

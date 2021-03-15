@@ -24,18 +24,19 @@ class Command(BaseCommand):
         resources = DataSource.objects.order_by('import_order')
 
         for resource in resources:
-            if resource.source_type == "wms":
-                print(f'Importing {resource.display_name}...')
-                import_wms_resource(resource)
-            if resource.source_type == "csv":
-                print(f'Importing {resource.display_name}...')
-                import_csv_resources(resource.name)
-            if resource.source_type == "shp":
-                print(f'Importing {resource.display_name}...')
-                import_shp_resources(resource.name)
-            if resource.source_type == "api":
-                print(f'Importing {resource.display_name}...')
-                import_databc_resources(resource.name)
+            if resource.import_order > 20:
+                if resource.source_type == "wms":
+                    print(f'Importing {resource.display_name}...')
+                    import_wms_resource(resource)
+                if resource.source_type == "csv":
+                    print(f'Importing {resource.display_name}...')
+                    import_csv_resources(resource.name)
+                if resource.source_type == "shp":
+                    print(f'Importing {resource.display_name}...')
+                    import_shp_resources(resource.name)
+                if resource.source_type == "api":
+                    print(f'Importing {resource.display_name}...')
+                    import_databc_resources(resource.name)
 
         # calculate_nearest_location_types_outside_50k()
 
