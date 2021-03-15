@@ -149,6 +149,7 @@ function displayResources(resources) {
                   displayType="text"
                   value={resource[1].value}
                   suffix={resource[1].suffix}
+                  decimalScale={2}
                   thousandSeparator={isNaN(resource[1].value) ? false : ","}
                 />
               ) : null}

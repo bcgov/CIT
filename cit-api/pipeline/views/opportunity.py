@@ -75,8 +75,8 @@ class OpportunitiesList(generics.ListAPIView):
             queryset = queryset.filter(parcel_size__lte=parcel_size_max)
 
         zoning = self.request.query_params.get('zoning', None)
-        zonings = zoning.split(',')
         if(zoning is not None):
+            zonings = zoning.split(',')
             queryset = queryset.filter(Q(land_use_zoning__in=zonings) | Q(ocp_zoning_code__in=zonings))
 
         return queryset
@@ -111,6 +111,7 @@ class OpportunitiesList(generics.ListAPIView):
         return queryset
 
 class OpportunityCreateView(generics.CreateAPIView):
+    model=Opportunity
     serializer_class = OpportunitySerializer
 
 class OpportunityView(generics.RetrieveUpdateDestroyAPIView):
