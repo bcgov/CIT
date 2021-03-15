@@ -24,7 +24,7 @@ import {
   ADD_PRIVATE_NOTE,
 } from "../constants/action-types";
 
-import { OPPORTUNITY_MODEL, Opportunity } from "../models/opportunity";
+import { OPPORTUNITY_MODEL } from "../models/opportunity";
 import OpportunityFactory from "../factory/OpportunityFactory";
 
 /**

@@ -18,6 +18,10 @@ from pipeline.constants import BC_ALBERS_SRID
 # Choices used for parcel infrastructure connections
 ACCESS_CHOICES = (("Y", "Yes"), ("N", "No"), ("U", "Unknown"))
 
+class PostSecondaryDistance(models.Model):
+    location_id = models.ForeignKey(Location, on_delete=models.SET_NULL, db_column="location_id", null=True)
+    location_distance = models.DecimalField(max_digits=16, decimal_places=4, blank=False, null=False)
+
 class CommunityDistance(models.Model):
     community_id = models.ForeignKey(Community, on_delete=models.SET_NULL, db_column="community_id", null=True)
     community_distance = models.DecimalField(max_digits=16, decimal_places=4, blank=False, null=False)
@@ -104,29 +108,29 @@ class Opportunity(models.Model):
     
     # Proximity Relationships
     # - Community
-    regional_district_id = models.ForeignKey(RegionalDistrict, on_delete=models.SET_NULL, db_column="regional_district_id", null=True)
-    community_id = models.ForeignKey(CommunityDistance, on_delete=models.SET_NULL, db_column="community_id", null=True)
-    nearest_municipalities = models.ManyToManyField(MunicipalityDistance, db_column="nearest_municipalities", null=True)
-    nearest_first_nations = models.ManyToManyField(IndianReserveBandDistance, db_column="nearest_first_nations", null=True)
+    regional_district_id = models.ForeignKey(RegionalDistrict, on_delete=models.SET_NULL, db_column="regional_district_id", blank=True, null=True)
+    community_id = models.ForeignKey(CommunityDistance, on_delete=models.SET_NULL, db_column="community_id", blank=True, null=True)
+    nearest_municipalities = models.ManyToManyField(MunicipalityDistance, db_column="nearest_municipalities", blank=True, null=True)
+    nearest_first_nations = models.ManyToManyField(IndianReserveBandDistance, db_column="nearest_first_nations", blank=True, null=True)
 
     # - Water
-    nearest_lake = models.ForeignKey(LakeDistance, on_delete=models.SET_NULL, db_column="nearest_lake", null=True)
-    nearest_river = models.ForeignKey(RiverDistance, on_delete=models.SET_NULL, db_column="nearest_river", null=True)
+    nearest_lake = models.ForeignKey(LakeDistance, on_delete=models.SET_NULL, db_column="nearest_lake", blank=True, null=True)
+    nearest_river = models.ForeignKey(RiverDistance, on_delete=models.SET_NULL, db_column="nearest_river", blank=True, null=True)
     
     # - Assets
-    nearest_highway = models.ForeignKey(RoadsAndHighwaysDistance, on_delete=models.SET_NULL, db_column="nearest_highway", null=True)
-    nearest_airport = models.ForeignKey(AirportDistance, on_delete=models.SET_NULL, db_column="nearest_airport", null=True)
-    nearest_railway = models.ForeignKey(RailwayDistance, on_delete=models.SET_NULL, db_column="nearest_railway", null=True)
-    nearest_port = models.ForeignKey(PortAndTerminalDistance, on_delete=models.SET_NULL, db_column="nearest_port", null=True)
-    nearest_customs_port_of_entry = models.ForeignKey(CustomsPortOfEntryDistance, on_delete=models.SET_NULL, db_column="nearest_customs_port_of_entry", null=True)
-    nearest_research_center = models.ForeignKey(ResearchCentreDistance, related_name="research_center", on_delete=models.SET_NULL, db_column="nearest_research_center", null=True)
-    nearest_health_center = models.ForeignKey(HospitalDistance, on_delete=models.SET_NULL, db_column="nearest_health_center", null=True)
+    nearest_highway = models.ForeignKey(RoadsAndHighwaysDistance, on_delete=models.SET_NULL, db_column="nearest_highway", blank=True, null=True)
+    nearest_airport = models.ForeignKey(AirportDistance, on_delete=models.SET_NULL, db_column="nearest_airport", blank=True, null=True)
+    nearest_railway = models.ForeignKey(RailwayDistance, on_delete=models.SET_NULL, db_column="nearest_railway", blank=True, null=True)
+    nearest_port = models.ForeignKey(PortAndTerminalDistance, on_delete=models.SET_NULL, db_column="nearest_port", blank=True, null=True)
+    nearest_customs_port_of_entry = models.ForeignKey(CustomsPortOfEntryDistance, on_delete=models.SET_NULL, db_column="nearest_customs_port_of_entry", blank=True, null=True)
+    nearest_research_center = models.ForeignKey(ResearchCentreDistance, related_name="research_center", on_delete=models.SET_NULL, db_column="nearest_research_center", blank=True, null=True)
+    nearest_health_center = models.ForeignKey(HospitalDistance, on_delete=models.SET_NULL, db_column="nearest_health_center", blank=True, null=True)
     nearest_transmission_line = models.DecimalField(max_digits=16, decimal_places=4, blank=False, null=True)
-    nearest_fire_station = models.ForeignKey(FirstResponderDistance, related_name="fire_station", on_delete=models.SET_NULL, db_column="nearest_fire_station", null=True)
-    nearest_police_station = models.ForeignKey(FirstResponderDistance, related_name="police_station", on_delete=models.SET_NULL, db_column="nearest_police_station", null=True)
-    nearest_ambulance_station = models.ForeignKey(FirstResponderDistance, related_name="ambulance_station", on_delete=models.SET_NULL, db_column="nearest_ambulance_station", null=True)
-    nearest_coast_guard_station = models.ForeignKey(FirstResponderDistance, related_name="coast_guard_station", on_delete=models.SET_NULL, db_column="nearest_coast_guard_station", null=True)
-    nearest_post_secondary = models.ForeignKey(ResearchCentreDistance, related_name="post_secondary", on_delete=models.SET_NULL, db_column="nearest_post_secondary", null=True)
+    nearest_fire_station = models.ForeignKey(FirstResponderDistance, related_name="fire_station", on_delete=models.SET_NULL, db_column="nearest_fire_station", blank=True, null=True)
+    nearest_police_station = models.ForeignKey(FirstResponderDistance, related_name="police_station", on_delete=models.SET_NULL, db_column="nearest_police_station", blank=True, null=True)
+    nearest_ambulance_station = models.ForeignKey(FirstResponderDistance, related_name="ambulance_station", on_delete=models.SET_NULL, db_column="nearest_ambulance_station", blank=True, null=True)
+    nearest_coast_guard_station = models.ForeignKey(FirstResponderDistance, related_name="coast_guard_station", on_delete=models.SET_NULL, db_column="nearest_coast_guard_station", blank=True, null=True)
+    nearest_post_secondary = models.ForeignKey(ResearchCentreDistance, related_name="post_secondary", on_delete=models.SET_NULL, db_column="nearest_post_secondary", blank=True, null=True)
 
     # Parcel
     parcel_ownership = models.TextField(blank=True, null=True)

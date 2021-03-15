@@ -72,27 +72,75 @@ function createRequestFromModel(state) {
     opportunity_electrical_capacity: parseFloat(
       state.services.electrical.value
     ),
-    regional_district_id: state.regionalDistrict.id,
-    community_id: state.community.id,
-    nearest_municipalities: state.municipalities.map((m) => m.pk),
-    nearest_first_nations: state.firstNationCommunities.map((f) => f.pk),
-    nearest_lake: state.physical.nearLake.pk,
-    nearest_river: state.physical.nearRiver.pk,
-    nearest_highway: state.transportation.nearHighway.pk,
-    nearest_airport: state.transportation.nearAirport.pk,
-    nearest_railway: state.transportation.nearRailway.pk,
-    nearest_port: state.transportation.nearPort.pk,
-    nearest_customs_port_of_entry: state.transportation.nearCustomsPort.pk,
-    nearest_research_center: state.services.nearResearchCenter.pk,
-    nearest_health_center: state.services.nearHealth.pk,
+    regional_district_id: parseInt(state.regionalDistrict.id, 10),
+    nearest_community: {
+      community_id: parseInt(state.community.id, 10),
+      community_distance: state.community.distance.toFixed(2),
+    },
+    nearest_municipalities: state.municipalities.map((m) => parseInt(m.pk, 10)),
+    nearest_first_nations: state.firstNationCommunities.map((f) =>
+      parseInt(f.pk, 10)
+    ),
+    nearest_lake: {
+      lake_id: state.physical.nearLake.pk,
+      lake_distance: state.physical.nearLake.value.toFixed(2),
+    },
+    nearest_river: {
+      river_id: state.physical.nearRiver.pk,
+      river_distance: state.physical.nearRiver.value.toFixed(2),
+    },
+    nearest_highway: {
+      highway_id: state.transportation.nearHighway.pk,
+      highway_distance: state.transportation.nearHighway.value.toFixed(2),
+    },
+    nearest_airport: {
+      airport_id: state.transportation.nearAirport.pk,
+      airport_distance: state.transportation.nearAirport.value.toFixed(2),
+    },
+    nearest_railway: {
+      railway_id: state.transportation.nearRailway.pk,
+      railway_distance: state.transportation.nearRailway.value.toFixed(2),
+    },
+    nearest_port: {
+      port_id: state.transportation.nearPort.pk,
+      port_distance: state.transportation.nearPort.value.toFixed(2),
+    },
+    nearest_customs_port_of_entry: {
+      customs_port_id: state.transportation.nearCustomsPort.pk,
+      customs_port_distance: state.transportation.nearCustomsPort.value.toFixed(
+        2
+      ),
+    },
+    nearest_research_centre: {
+      research_centre_id: state.services.nearResearchCenter.pk,
+      research_centre_distance: state.services.nearResearchCenter.value.toFixed(
+        2
+      ),
+    },
+    nearest_health_center: {
+      hospital_id: state.services.nearHealth.pk,
+      hospital_distance: state.services.nearHealth.value.toFixed(2),
+    },
     nearest_transmission_line: state.services.transmission.value.toFixed(2),
-    nearest_fire_station: state.services.nearFire.pk,
-    nearest_police_station: state.services.nearPolice.pk,
-    nearest_ambulance_station: state.services.nearAmbulance.pk,
-    nearest_coast_guard_station: state.services.nearCoastGuard.pk,
+    nearest_fire_station: {
+      first_responder_id: state.services.nearFire.pk,
+      first_responder_distance: state.services.nearFire.value.toFixed(2),
+    },
+    nearest_police_station: {
+      first_responder_id: state.services.nearPolice.pk,
+      first_responder_distance: state.services.nearPolice.value.toFixed(2),
+    },
+    nearest_ambulance_station: {
+      first_responder_id: state.services.nearAmbulance.pk,
+      first_responder_distance: state.services.nearAmbulance.value.toFixed(2),
+    },
+    nearest_coast_guard_station: {
+      first_responder_id: state.services.nearCoastGuard.pk,
+      first_responder_distance: state.services.nearCoastGuard.value.toFixed(2),
+    },
     nearest_post_secondary: {
-      research_centre_id: state.services.nearSecondarySchool.pk,
-      research_centre_distance: state.services.nearSecondarySchool.value,
+      location_id: state.services.nearSecondarySchool.pk,
+      location_distance: state.services.nearSecondarySchool.value.toFixed(2),
     },
   };
 }

@@ -208,7 +208,7 @@ export const OPPORTUNITY_MODEL = () => ({
     },
     nearRiver: {
       title: "Nearest river",
-      name: "Forest River",
+      name: "",
       value: 0,
       type: "distance",
       suffix: "km",
@@ -320,6 +320,7 @@ export class Opportunity {
       link: feature.properties.link,
       distance: feature.properties.distance,
       population: feature.properties.population,
+      pk: feature.properties.pk,
     }));
   }
 
@@ -329,6 +330,7 @@ export class Opportunity {
       link: feature.properties.link,
       distance: feature.properties.distance,
       population: feature.properties.population,
+      pk: feature.properties.pk,
     }));
   }
 
@@ -376,29 +378,35 @@ export class Opportunity {
     this.state.transportation.nearHighway.name =
       value.features[0].properties.name;
     this.state.transportation.nearHighway.value = value.distance;
+    this.state.transportation.nearHighway.pk = value.features[0].properties.pk;
   }
 
   set nearestAirport(value) {
     this.state.transportation.nearAirport.name =
       value.features[0].properties.name;
     this.state.transportation.nearAirport.value = value.distance;
+    this.state.transportation.nearAirport.pk = value.features[0].properties.pk;
   }
 
   set nearestRailway(value) {
     this.state.transportation.nearRailway.name =
       value.features[0].properties.name;
     this.state.transportation.nearRailway.value = value.distance;
+    this.state.transportation.nearRailway.pk = value.features[0].properties.pk;
   }
 
   set nearestPort(value) {
     this.state.transportation.nearPort.name = value.features[0].properties.name;
     this.state.transportation.nearPort.value = value.distance;
+    this.state.transportation.nearPort.pk = value.features[0].properties.pk;
   }
 
   set nearestCustomsPort(value) {
     this.state.transportation.nearCustomsPort.name =
       value.features[0].properties.name;
     this.state.transportation.nearCustomsPort.value = value.distance;
+    this.state.transportation.nearCustomsPort.pk =
+      value.features[0].properties.pk;
   }
 
   // Physical Info
@@ -415,6 +423,7 @@ export class Opportunity {
       this.state.physical.nearLake.name = "Yes";
     }
     this.state.physical.nearLake.value = value.distance;
+    this.state.physical.nearLake.pk = value.features[0].properties.pk;
   }
 
   set nearestRiver(value) {
@@ -422,6 +431,7 @@ export class Opportunity {
       this.state.physical.nearRiver.name = "Yes";
     }
     this.state.physical.nearRiver.value = value.distance;
+    this.state.physical.nearRiver.pk = value.features[0].properties.pk;
   }
 
   // Services
@@ -445,6 +455,7 @@ export class Opportunity {
       this.state.services.nearResearchCenter.name = "Yes";
     }
     this.state.services.nearResearchCenter.value = value.distance;
+    this.state.services.nearResearchCenter.pk = value.features[0].properties.pk;
   }
 
   set nearestHealthCenter(value) {
@@ -452,6 +463,7 @@ export class Opportunity {
       this.state.services.nearHealth.name = "Yes";
     }
     this.state.services.nearHealth.value = value.distance;
+    this.state.services.nearHealth.pk = value.features[0].properties.pk;
   }
 
   set nearestFireStation(value) {
@@ -459,6 +471,7 @@ export class Opportunity {
       this.state.services.nearFire.name = "Yes";
     }
     this.state.services.nearFire.value = value.distance;
+    this.state.services.nearFire.pk = value.features[0].properties.pk;
   }
 
   set nearestAmbulanceStation(value) {
@@ -466,6 +479,7 @@ export class Opportunity {
       this.state.services.nearAmbulance.name = "Yes";
     }
     this.state.services.nearAmbulance.value = value.distance;
+    this.state.services.nearAmbulance.pk = value.features[0].properties.pk;
   }
 
   set nearestPoliceStation(value) {
@@ -473,6 +487,7 @@ export class Opportunity {
       this.state.services.nearPolice.name = "Yes";
     }
     this.state.services.nearPolice.value = value.distance;
+    this.state.services.nearPolice.pk = value.features[0].properties.pk;
   }
 
   set nearestCoastGuardStation(value) {
@@ -480,6 +495,7 @@ export class Opportunity {
       this.state.services.nearCoastGuard.name = "Yes";
     }
     this.state.services.nearCoastGuard.value = value.distance;
+    this.state.services.nearCoastGuard.pk = value.features[0].properties.pk;
   }
 
   set nearestPostSecondary(value) {
@@ -487,6 +503,8 @@ export class Opportunity {
       this.state.services.nearSecondarySchool.name = "Yes";
     }
     this.state.services.nearSecondarySchool.value = value.distance;
+    this.state.services.nearSecondarySchool.pk =
+      value.features[0].properties.pk;
   }
 
   // Site Info
@@ -545,6 +563,7 @@ export class Opportunity {
 
   set community(value) {
     this.state.community.id = value.features[0].properties.pk;
+    this.state.community.distance = value.distance;
   }
 
   set opportunityLink(value) {
