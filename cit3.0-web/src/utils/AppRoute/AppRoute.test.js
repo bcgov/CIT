@@ -3,7 +3,9 @@ import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
+import { Provider } from "react-redux";
 import AppRoute from "./AppRoute";
+import { store } from "../../store";
 
 const history = createMemoryHistory();
 
@@ -14,9 +16,11 @@ describe("App Route", () => {
     document.body.appendChild(container);
     act(() => {
       ReactDOM.render(
-        <Router history={history}>
-          <AppRoute component={() => <p>Title Test Page</p>} title={title} />
-        </Router>,
+        <Provider store={store}>
+          <Router history={history}>
+            <AppRoute component={() => <p>Title Test Page</p>} title={title} />
+          </Router>
+        </Provider>,
         container
       );
     });
