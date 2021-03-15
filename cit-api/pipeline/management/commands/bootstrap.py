@@ -19,8 +19,6 @@ class Command(BaseCommand):
         # print("Importing list of data sources...")
         # import_data_sources()
 
-        # import remaining resources
-
         resources = DataSource.objects.order_by('import_order')
 
         for resource in resources:
