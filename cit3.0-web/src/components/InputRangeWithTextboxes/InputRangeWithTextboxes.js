@@ -50,29 +50,33 @@ export default function InputRangeWithTextboxes(props) {
 
   const updateMax = (name, newMax) => {
     const newMaxSubstring = newMax.substring(0, 8);
-    setMaxInput(newMaxSubstring);
-    if (validate(name, Number(newMaxSubstring))) {
-      setValidMax(true);
-      setInputRangeValue({
-        min: inputRangeValue.min,
-        max: Number(newMaxSubstring),
-      });
-    } else {
-      setValidMax(false);
+    if (!Number.isNaN(Number(newMaxSubstring))) {
+      setMaxInput(Number(newMaxSubstring));
+      if (validate(name, Number(newMaxSubstring))) {
+        setValidMax(true);
+        setInputRangeValue({
+          min: inputRangeValue.min,
+          max: Number(newMaxSubstring),
+        });
+      } else {
+        setValidMax(false);
+      }
     }
   };
 
   const updateMin = (name, newMin) => {
     const newMinSubstring = newMin.substring(0, 8);
-    setMinInput(newMinSubstring);
-    if (validate(name, Number(newMinSubstring))) {
-      setValidMin(true);
-      setInputRangeValue({
-        min: Number(newMinSubstring),
-        max: inputRangeValue.max,
-      });
-    } else {
-      setValidMin(false);
+    if (!Number.isNaN(Number(newMinSubstring))) {
+      setMinInput(Number(newMinSubstring));
+      if (validate(name, Number(newMinSubstring))) {
+        setValidMin(true);
+        setInputRangeValue({
+          min: Number(newMinSubstring),
+          max: inputRangeValue.max,
+        });
+      } else {
+        setValidMin(false);
+      }
     }
   };
 
