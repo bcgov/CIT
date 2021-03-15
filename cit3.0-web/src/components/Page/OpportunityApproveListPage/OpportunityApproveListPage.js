@@ -21,22 +21,24 @@ const OpportunityApproveListPage = () => {
   const history = useHistory();
   let search = querystring.decode(window.location.search.split("?")[1]);
 
-  useEffect(() => {
-    axios
-      .get(
-        `${GET_OPPORTUNITIES_LIST_URL}?${
-          query ? `${query}&` : ""
-        }page=${currentPage}&page_size=${pageSize}`
-      )
-      .then((data) => {
-        setOpportunities(data.data.results);
-        setTotalCount(data.data.count);
-      })
-      .catch(() => {
-        setOpportunities([]);
-        setTotalCount(0);
-      });
-  }, [currentPage, query]);
+  useEffect(
+    () =>
+      axios
+        .get(
+          `${GET_OPPORTUNITIES_LIST_URL}?${
+            query ? `${query}&` : ""
+          }page=${currentPage}&page_size=${pageSize}`
+        )
+        .then((data) => {
+          setOpportunities(data.data.results);
+          setTotalCount(data.data.count);
+        })
+        .catch(() => {
+          setOpportunities([]);
+          setTotalCount(0);
+        }),
+    [currentPage, query]
+  );
 
   useEffect(() => {
     setQuery(window.location.search.split("?")[1]);

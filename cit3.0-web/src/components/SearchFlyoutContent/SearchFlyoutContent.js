@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Switch from "react-switch";
 import { Row, Col } from "react-bootstrap";
+import { v4 } from "uuid";
 import NumberRangeFilter from "../NumberRangeFilter/NumberRangeFilter";
 import SelectFilter from "../SelectFilter/SelectFilter";
 import "./SearchFlyoutContent.scss";
@@ -86,7 +87,7 @@ export default function SearchFlyoutContent() {
   ];
 
   const siteServicingSection = switchFilters.map((switchFilter) => (
-    <Row className="flex-nowrap">
+    <Row className="flex-nowrap" key={v4()}>
       <Col xs={7}>
         <p>{switchFilter.label}</p>
       </Col>
