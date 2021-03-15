@@ -15,3 +15,5 @@ from .provincial_electoral_district import *
 from .railway import *
 from .river import *
 from .bc_floodplain import *
+from .indian_reserve_band_name import *
+from .roads_and_highways import *

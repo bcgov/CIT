@@ -5,21 +5,20 @@ from django.contrib.gis.geos import Point
 from pipeline.constants import BC_ALBERS_SRID
 
 
-class Railway(models.Model):
-    ID_FIELD = 'RAILWAY_TRACK_ID'
-    NAME_FIELD = 'TRACK_NAME'
+class RoadsAndHighways(models.Model):
+    ID_FIELD = 'DIGITAL_ROAD_ATLAS_LINE_ID'
+    NAME_FIELD = 'ROAD_NAME_FULL'
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
-    track_classification = models.CharField(max_length=32)
-    use_type = models.CharField(max_length=32)
-    number_of_tracks = models.IntegerField(null=True)
-    electrification = models.CharField(max_length=32)
-    status = models.CharField(max_length=32)
+    feature_type = models.CharField(max_length=32)
+    road_surface = models.CharField(max_length=32)
+    road_class = models.CharField(max_length=32)
     name = models.CharField(max_length=127)
+    road_name_alias1 = models.CharField(null=True, max_length=32)
+    road_name_alias2 = models.CharField(null=True, max_length=32)
     geom = models.MultiLineStringField(srid=BC_ALBERS_SRID, null=True)
     geom_simplified = models.MultiLineStringField(srid=BC_ALBERS_SRID, null=True)
-    operator_english_name = models.CharField(max_length=64)
-    owner_name = models.CharField(max_length=32)
+    number_of_lanes = models.IntegerField(null=True)
 
     class Meta:
         ordering = ("id", )

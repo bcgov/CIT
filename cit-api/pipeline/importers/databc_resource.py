@@ -12,9 +12,19 @@ from pipeline.importers.utils import (import_data_into_point_model, import_data_
 
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}&limit=10000"
 LOCATION_RESOURCES = [
-    'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities',
-    'closed_mills', 'airports', 'port_and_terminal', 'eao_projects', 'laboratory_service',
-    'local_govt_offices', 'emergency_social_service_facilities', 'natural_resource_projects'
+    'first_responders',
+    'diagnostic_facilities',
+    'timber_facilities',
+    'civic_facilities',
+    'closed_mills',
+    'airports',
+    'port_and_terminal',
+    'eao_projects',
+    'laboratory_service',
+    'local_govt_offices',
+    'emergency_social_service_facilities',
+    'natural_resource_projects',
+    'customs_ports_of_entry',
 ]
 
 
@@ -62,6 +72,8 @@ def import_wms_resource(resource):
     query = None
     if resource.name == 'lakes':
         query = "FEATURE_AREA_SQM >= 1000000"
+    if resource.name == 'road_and_highways':
+        query = "ROAD_CLASS in ('highway','freeway','ramp', 'arterial')"
 
     ds = bcdata.get_data(resource.dataset, as_gdf=True, query=query)
 
