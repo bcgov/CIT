@@ -21,8 +21,7 @@ export default function Terms({ agreed, setAgreed }) {
       <p>
         Should you have any questions about the collection of this business
         information please{" "}
-        {/* TODO Make sure we have the proper email here!!! */}
-        <a href="mailto:somegovinbox@gov.bc.ca">contact us.</a>
+        <a href="mailto:citinfo@gov.bc.ca">contact us.</a>
       </p>
       <input
         aria-labelledby="agree-label"
