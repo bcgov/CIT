@@ -281,7 +281,7 @@ export const OPPORTUNITY_MODEL = () => ({
     futureZone: { title: "Future Zoning", value: "", type: "text" },
     preferredDevelopment: {
       title: "Preferred Development",
-      value: "",
+      value: [],
       type: "multi",
     },
     opportunityDescription: {
@@ -459,6 +459,10 @@ export class Opportunity {
 
   set opportunityPreferredDevelopment(value) {
     this.state.userInfo.preferredDevelopment.value = value;
+  }
+
+  set opportunityPropertyStatus(value) {
+    this.state.userInfo.saleOrLease.value = value;
   }
 
   set opportunityDescription(value) {
