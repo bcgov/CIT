@@ -157,3 +157,81 @@ class OpportunitySerializer(serializers.ModelSerializer):
             "nearest_municipalities",
             "nearest_community"
         )
+    
+    def create(self, validated_data):
+        community = validated_data.pop('nearest_community')
+        if community.get('community_id') is not None:
+            nearest_community = CommunityDistance.objects.create(**community)
+            validated_data['nearest_community'] = nearest_community
+        
+        post_secondary = validated_data.pop('nearest_post_secondary')
+        if post_secondary.get('research_centre_id') is not None:
+            nearest_post_secondary = PostSecondaryDistance.objects.create(**post_secondary)
+            validated_data['nearest_post_secondary'] = nearest_post_secondary
+        
+        coast_guard_station = validated_data.pop('nearest_coast_guard_station')
+        if coast_guard_station.get('first_responder_id') is not None:
+            nearest_coast_guard_station = FirstResponderDistance.objects.create(**coast_guard_station)
+            validated_data['nearest_coast_guard_station'] = nearest_coast_guard_station
+        
+        ambulance_station = validated_data.pop('nearest_ambulance_station')
+        if ambulance_station.get('first_responder_id') is not None:
+            nearest_ambulance_station = FirstResponderDistance.objects.create(**ambulance_station) 
+            validated_data['nearest_ambulance_station'] = nearest_ambulance_station
+        
+        police_station = validated_data.pop('nearest_police_station')
+        if police_station.get('first_responder_id') is not None:
+            nearest_police_station = FirstResponderDistance.objects.create(**police_station)
+            validated_data['nearest_police_station'] = nearest_police_station
+        
+        fire_station = validated_data.pop('nearest_fire_station')
+        if fire_station.get('first_responder_id') is not None:
+            nearest_fire_station = FirstResponderDistance.objects.create(**fire_station)
+            validated_data['nearest_fire_station'] = nearest_fire_station
+        
+        health_center = validated_data.pop('nearest_health_center')
+        if health_center.get('hospital_id') is not None:
+            nearest_health_center = HospitalDistance.objects.create(**health_center)
+            validated_data['nearest_health_center'] = nearest_health_center
+        
+        research_centre = validated_data.pop('nearest_research_centre')
+        if research_centre.get('research_centre_id') is not None:
+            nearest_research_centre = ResearchCentreDistance.objects.create(**research_centre)
+            validated_data['nearest_research_centre'] = nearest_research_centre
+        
+        customs_port_of_entry = validated_data.pop('nearest_customs_port_of_entry')
+        if customs_port_of_entry.get('customs_port_of_entry_id') is not None:
+            nearest_customs_port_of_entry = CustomsPortOfEntryDistance.objects.create(**customs_port_of_entry)
+            validated_data['nearest_customs_port_of_entry'] = nearest_customs_port_of_entry
+        
+        port = validated_data.pop('nearest_port')
+        if port.get('port_id') is not None:
+            nearest_port = PortAndTerminalDistance.objects.create(**port)
+            validated_data['nearest_port'] = nearest_port
+       
+        railway = validated_data.pop('nearest_railway')
+        if railway.get('railway_id') is not None:
+            nearest_railway = RailwayDistance.objects.create(**railway)
+            validated_data['nearest_railway'] = nearest_railway
+
+        airport = validated_data.pop('nearest_airport')
+        if airport.get('airport_id') is not None:
+            nearest_airport = AirportDistance.objects.create(**airport)
+            validated_data['nearest_airport'] = nearest_airport
+
+        highway = validated_data.pop('nearest_highway')
+        if highway.get('highway_id') is not None:
+            nearest_highway = RoadsAndHighwaysDistance.objects.create(**highway)
+            validated_data['nearest_highway'] = nearest_highway
+        
+        river = validated_data.pop('nearest_river')
+        if river.get('river_id') is not None:
+            nearest_river = RiverDistance.objects.create(**river)
+            validated_data['nearest_river'] = nearest_river
+        
+        lake = validated_data.pop('nearest_lake')
+        if lake.get('lake_id') is not None:
+            nearest_lake = LakeDistance.objects.create(**lake)
+            validated_data['nearest_lake'] = nearest_lake
+        Opportunity.objects.create(**validated_data)
+        return instance
