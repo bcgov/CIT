@@ -20,15 +20,32 @@ export default function SelectFilter(props) {
     const allSelectedFilters = filters.filter(
       (filter) => filter.isSelected === true
     );
-    if (allSelectedFilters.length === 0) {
-      return ["Any"];
+
+    const allSelectedFilterLabels = allSelectedFilters.map(
+      (filter) => filter.label
+    );
+
+    return allSelectedFilterLabels.join(", ");
+  };
+
+  const isModified = () => {
+    console.log(filters);
+    for (let i = 0; i < filters.length; i++) {
+      if (filters[i].isSelected === true) {
+        return true;
+      }
     }
-    return allSelectedFilters.map((filter) => filter.label);
+
+    return false;
   };
 
   const handleSave = () => {
-    setIsSelected(true);
-    setDisplaySelected(createLabel());
+    if (isModified()) {
+      setIsSelected(true);
+      setDisplaySelected(createLabel());
+    } else {
+      setIsSelected(false);
+    }
     setShow(false);
   };
   const handleClear = () => {

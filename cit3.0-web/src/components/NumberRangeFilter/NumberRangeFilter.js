@@ -19,17 +19,23 @@ export default function NumberRangeFilter(props) {
   const [validMin, setValidMin] = useState(true);
   const [displayRange, setDisplayRange] = useState({});
   const [isSelected, setIsSelected] = useState(false);
+  const [isModified, setIsModified] = useState(false);
 
   const inputRangeMax = inputRange.max;
   const inputRangeMin = inputRange.min;
 
   const handleSave = () => {
-    setIsSelected(true);
+    if (isModified) {
+      setIsSelected(true);
+      setShow(false);
+      setDisplayRange({
+        min: inputRangeValue.min,
+        max: inputRangeValue.max,
+      });
+    } else {
+      setIsSelected(false);
+    }
     setShow(false);
-    setDisplayRange({
-      min: inputRangeValue.min,
-      max: inputRangeValue.max,
-    });
   };
   const handleClear = () => {
     setInputRangeValue({ min: inputRangeMin, max: inputRangeMax });
@@ -37,11 +43,19 @@ export default function NumberRangeFilter(props) {
     setMinInput(inputRangeMin);
     setValidMin(true);
     setValidMax(true);
+    setIsModified(false);
   };
   const handleShow = () => setShow(true);
   const handleClose = () => {
     setIsSelected(true);
     setShow(false);
+  };
+
+  const handleModified = (value, setStateFunction) => {
+    console.log(isModified);
+    console.log(value);
+    setIsModified(true);
+    setStateFunction(value);
   };
 
   return (
@@ -77,11 +91,13 @@ export default function NumberRangeFilter(props) {
             inputRange={inputRange}
             units={units}
             minInput={minInput}
-            setMinInput={setMinInput}
+            setMinInput={(value) => handleModified(value, setMinInput)}
             maxInput={maxInput}
-            setMaxInput={setMaxInput}
+            setMaxInput={(value) => handleModified(value, setMaxInput)}
             inputRangeValue={inputRangeValue}
-            setInputRangeValue={setInputRangeValue}
+            setInputRangeValue={(value) =>
+              handleModified(value, setInputRangeValue)
+            }
             validMax={validMax}
             validMin={validMin}
             setValidMax={setValidMax}
