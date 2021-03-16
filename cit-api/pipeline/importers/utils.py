@@ -84,10 +84,18 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
     return instance
 
 
-def import_data_into_area_model(resource_type, Model, row):
+def import_data_into_area_model(resource_type, Model, row, index=None):
 
     name_fields = Model.NAME_FIELD.split(",")
     name = ", ".join([str(row[name_field]) for name_field in name_fields])
+
+    if name == 'None':
+        if hasattr(Model, 'ID_FIELD'):
+            name = f'Unnamed {resource_type} {row[Model.ID_FIELD]}'
+            print("Name", name)
+        else:
+            name = f'Unnamed {resource_type} {index}'
+            print("Name", name)
 
     instance, created = Model.objects.get_or_create(name=name)
 
@@ -154,7 +162,7 @@ def calculate_communities_for_schools():
 
 def calculate_distances(location, dry_run=False):
     communities_within_50k = (Community.objects.filter(
-        point__distance_lte=(location.point, D(m=50000))).annotate(
+        point__distance_lte=(location.point, 0.5)).annotate(
             distance=Distance("point", location.point)).order_by("distance"))
 
     for community in communities_within_50k:
@@ -270,7 +278,7 @@ def get_route_planner_distance(origin, destination):
     travel_time = None
     travel_time_display = None
 
-    if route["time"] != -1:
+    if route["routeFound"] == 'true':
         distance = route["distance"]
         travel_time = route["time"]
         travel_time_display = route["timeText"]
@@ -557,9 +565,9 @@ def _generate_geom(feat, srid=None):
     # Convert MultiPolygons to plain Polygons,
     # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
     geos_geom_out = _coerce_to_multipolygon(geos_geom, srid)
-    geos_geom.transform(WGS84_SRID)
+    # geos_geom.transform(WGS84_SRID)
     geos_geom_simplified = copy.deepcopy(geos_geom)
-    geos_geom_simplified.transform(WGS84_SRID)
+    # geos_geom_simplified.transform(WGS84_SRID)
     geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
 
     geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, srid)
@@ -572,22 +580,22 @@ def _generate_bcdata_geom(feat, srid=None):
     Generate a clean geometry, and simplified snapshot for PostGIS insertion
     """
     # Source data tends to be in BC Alberts. #TODO: detect this instead?
-    geos_geom = GEOSGeometry(str(feat.geometry), srid=srid or feat.geom.srid)
+    geos_geom = GEOSGeometry(str(feat.geometry), srid=srid or feat.geometry.srid)
     # Convert MultiPolygons to plain Polygons,
     # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
     if isinstance(geos_geom, MultiPolygon) or isinstance(geos_geom, Polygon):
         geos_geom_out = _coerce_to_multipolygon(geos_geom, srid)
-        geos_geom.transform(WGS84_SRID)
+        # geos_geom.transform(WGS84_SRID)
         geos_geom_simplified = copy.deepcopy(geos_geom)
-        geos_geom_simplified.transform(WGS84_SRID)
+        # geos_geom_simplified.transform(WGS84_SRID)
         geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
         geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, srid)
 
     elif isinstance(geos_geom, LineString) or isinstance(geos_geom, MultiLineString):
         geos_geom_out = _coerce_to_multilinestring(geos_geom, srid)
-        geos_geom.transform(WGS84_SRID)
+        # geos_geom.transform(WGS84_SRID)
         geos_geom_simplified = copy.deepcopy(geos_geom)
-        geos_geom_simplified.transform(WGS84_SRID)
+        # geos_geom_simplified.transform(WGS84_SRID)
         geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
         geos_geom_simplified = _coerce_to_multilinestring(geos_geom_simplified, srid)
 

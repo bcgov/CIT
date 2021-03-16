@@ -9,7 +9,7 @@ class Railway(models.Model):
     ID_FIELD = 'RAILWAY_TRACK_ID'
     NAME_FIELD = 'TRACK_NAME'
 
-    railway_id = models.IntegerField(null=True, help_text="Original ID of data point")
+    area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     track_classification = models.CharField(max_length=32)
     use_type = models.CharField(max_length=32)
     number_of_tracks = models.IntegerField(null=True)

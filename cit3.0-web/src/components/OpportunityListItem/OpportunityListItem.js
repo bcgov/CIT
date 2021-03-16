@@ -2,24 +2,9 @@ import { Row, Col } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { Link, NavLink } from "react-router-dom";
 import Map from "../Map/Map";
+import { determineStatusTextColour, formatDate } from "../../helpers/helpers";
 
 const OpportunityListItem = ({ opportunity }) => {
-  const determineTextColour = (approvalStatus) => {
-    if (approvalStatus === "PEND") {
-      return <div className="status-text-orange">Pending Review</div>;
-    }
-    if (approvalStatus === "PUBL") {
-      return <div className="status-text-green">Published</div>;
-    }
-    if (approvalStatus === "EDIT") {
-      return <div className="status-text-red">Needs to be edited</div>;
-    }
-    if (approvalStatus === "NCOM") {
-      return <div className="status-text-red">Not completed</div>;
-    }
-    return approvalStatus;
-  };
-
   const determineActions = (opp) => {
     if (opp.approvalStatus === "PUBL") {
       return (
@@ -30,7 +15,7 @@ const OpportunityListItem = ({ opportunity }) => {
           <br />
           <a href="/">Edit Listing</a>
           <br />
-          <a href="/">Delete</a>
+          <NavLink to={`/delete/opportunity/${opp.id}/`}>Delete</NavLink>
         </>
       );
     }
@@ -40,14 +25,9 @@ const OpportunityListItem = ({ opportunity }) => {
         <br />
         <a href="/">Edit Listing</a>
         <br />
-        <a href="/">Delete</a>
+        <NavLink to={`/delete/opportunity/${opp.id}`}>Delete</NavLink>
       </>
     );
-  };
-
-  const formatDate = (ISODate) => {
-    const dateString = ISODate.substring(0, 10);
-    return dateString;
   };
 
   return (
@@ -58,14 +38,18 @@ const OpportunityListItem = ({ opportunity }) => {
             style={{ borderRight: "2px solid #606060" }}
             className="opportunity-table-map-container"
           >
-            <Map coords={opportunity.coords} isInteractive={false} />
+            <Map
+              coords={opportunity.coords}
+              isInteractive={false}
+              isSearchMode={false}
+            />
           </div>
         </Col>
         <Col>{opportunity.address}</Col>
         {!opportunity.public ? (
           <>
             <Col>{formatDate(opportunity.dateCreated)}</Col>
-            <Col>{determineTextColour(opportunity.approvalStatus)}</Col>
+            <Col>{determineStatusTextColour(opportunity.approvalStatus)}</Col>
             <Col>{determineActions(opportunity)}</Col>
           </>
         ) : (

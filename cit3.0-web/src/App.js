@@ -14,6 +14,7 @@ import SiteInfomation from "./components/Page/SiteInformation/SiteInformation";
 import PropertyDetails1 from "./components/Page/PropertyDetails1/PropertyDetails1";
 import PropertyDetails2 from "./components/Page/PropertyDetails2/PropertyDetails2";
 import ReviewOpportunity from "./components/Page/ReviewOpportunity/ReviewOpportunity";
+import OpportunityDeletePage from "./components/Page/OpportunityDeletePage/OpportunityDeletePage";
 import { AuthStateContext } from "./contexts/authStateContext";
 import Login from "./components/Page/account/Login";
 import Logout from "./components/Page/account/Logout";
@@ -24,14 +25,10 @@ import OpportunityPage from "./components/Page/OpportunityPage/OpportunityPage";
 import AppRoute from "./utils/AppRoute/AppRoute";
 import AuthLayout from "./layouts/AuthLayout";
 import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainView";
+import OpportunityApproveListPage from "./components/Page/OpportunityApproveListPage/OpportunityApproveListPage";
 
 function App() {
   const getTitle = (page) => `Investments${` - ${page}`}`;
-
-  const header = {
-    name: "Community Information Tool",
-    history: {},
-  };
 
   return (
     <AuthStateContext.Consumer>
@@ -45,7 +42,7 @@ function App() {
             }}
           />
           <Router>
-            <Header header={header} />
+            <Header />
             <Switch>
               <Redirect exact from="/" to="/search" />
               <AppRoute
@@ -73,23 +70,23 @@ function App() {
               <AppRoute
                 protected
                 exact
-                path="/addOpportunity"
-                title={getTitle("Add Opportunity Parcel")}
+                path="/opportunity"
+                title={getTitle("Add Property")}
                 layout={AuthLayout}
                 component={AddOpportunity}
               />
               <AppRoute
                 protected
                 exact
-                path="/addOpportunity/siteDetails"
-                title={getTitle("Opportunity Site Information")}
+                path="/opportunity/site-info"
+                title={getTitle("Site Information")}
                 layout={AuthLayout}
                 component={SiteInfomation}
               />
               <AppRoute
                 protected
                 exact
-                path="/addOpportunity/propDetails1"
+                path="/opportunity/property-details"
                 title={getTitle("Add Property Details")}
                 layout={AuthLayout}
                 component={PropertyDetails1}
@@ -97,7 +94,7 @@ function App() {
               <AppRoute
                 protected
                 exact
-                path="/addOpportunity/propDetails2"
+                path="/opportunity/additional-details"
                 title={getTitle("Add Additional Details")}
                 layout={AuthLayout}
                 component={PropertyDetails2}
@@ -105,7 +102,7 @@ function App() {
               <AppRoute
                 protected
                 exact
-                path="/addOpportunity/review"
+                path="/opportunity/review"
                 title={getTitle("Opportunity Review & Submit")}
                 layout={AuthLayout}
                 component={ReviewOpportunity}
@@ -113,17 +110,33 @@ function App() {
               <AppRoute
                 protected
                 exact
-                path="/addOpportunity/success"
+                path="/opportunity/success"
                 title={getTitle("Opportunity Submitted!")}
                 layout={AuthLayout}
                 component={ReviewSubmitted}
               />
-              <AppRoute path="/investment/*:path" component={OpportunityPage} />
               <AppRoute
                 protected
-                path="/investment/*:path/approve"
+                exact
+                path="/manage/opportunities"
+                layout={AuthLayout}
+                component={OpportunityApproveListPage}
+              />
+              <AppRoute
+                path="/opportunity/*:path"
+                component={OpportunityPage}
+              />
+              <AppRoute
+                protected
+                path="/manage/opportunity/*:path"
                 layout={AuthLayout}
                 component={OpportunityApprovePage}
+              />
+              <AppRoute
+                protected
+                path="/delete/opportunity/*:path"
+                layout={AuthLayout}
+                component={OpportunityDeletePage}
               />
               <AppRoute path="/search" component={InvestorMainView} />
             </Switch>

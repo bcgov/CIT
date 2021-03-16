@@ -4,27 +4,40 @@ import { Row } from "react-bootstrap";
 import axios from "axios";
 import OpportunityList from "../OpportunityList/OpportunityList";
 import Paginator from "../Paginator/Paginator";
+import OpportunityListItem from "../OpportunityListItem/OpportunityListItem";
+import { GET_OPPORTUNITIES_LIST_URL } from "../../store/constants/api-urls";
 
-export default function OpportunityListContainer({ totalCount }) {
+export default function OpportunityListContainer({
+  totalCount,
+  component: Component,
+  query,
+}) {
   const [opportunities, setOpportunities] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize] = useState(4);
   //   const [pageSize, setPageSize] = useState(4);
   useEffect(() => {
     axios
-      .get(`/api/opportunity/list?page=${currentPage}&page_size=${pageSize}`)
+      .get(
+        `${GET_OPPORTUNITIES_LIST_URL}?${
+          query ? `${query}&` : ""
+        }page=${currentPage}&page_size=${pageSize}`
+      )
       .then((data) => {
         setOpportunities(data.data.results);
       })
       .catch(() => {
         setOpportunities(null);
       });
-  }, [currentPage]);
+  }, [currentPage, query]);
   return (
     opportunities && (
       <>
         <Row>
-          <OpportunityList opportunities={opportunities} />
+          <OpportunityList
+            component={Component}
+            opportunities={opportunities}
+          />
         </Row>
 
         {totalCount ? (
@@ -33,10 +46,10 @@ export default function OpportunityListContainer({ totalCount }) {
               count={totalCount}
               setCurrentPage={setCurrentPage}
               currentPage={currentPage}
-              pageSize={4}
+              pageSize={pageSize}
             />
             <p>
-              Showing {pageSize} of {totalCount} properties
+              Showing {opportunities.length} of {totalCount} properties
             </p>
           </Row>
         ) : null}
@@ -47,8 +60,12 @@ export default function OpportunityListContainer({ totalCount }) {
 
 OpportunityListContainer.defaultProps = {
   totalCount: 0,
+  component: () => OpportunityListItem,
+  query: "",
 };
 
 OpportunityListContainer.propTypes = {
   totalCount: PropTypes.number,
+  component: PropTypes.func,
+  query: PropTypes.string,
 };

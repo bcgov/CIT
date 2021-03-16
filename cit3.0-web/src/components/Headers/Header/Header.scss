@@ -4,10 +4,10 @@
   color: #ffffff;
 
   .longAppName {
-    display: none;
+    display: block;
   }
   .shortAppName {
-    display: block;
+    display: none;
   }
   
   .longIcon {
@@ -47,6 +47,10 @@
     background-color: transparent;
     border-top: 2px solid transparent;
   }
+}
+
+.nav-link.nav-link:focus{
+  color: #fff;
 }
 
 .avatar {

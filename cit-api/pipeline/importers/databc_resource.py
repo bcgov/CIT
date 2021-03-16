@@ -12,9 +12,19 @@ from pipeline.importers.utils import (import_data_into_point_model, import_data_
 
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}&limit=10000"
 LOCATION_RESOURCES = [
-    'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities',
-    'closed_mills', 'airports', 'port_and_terminal', 'eao_projects', 'laboratory_service',
-    'local_govt_offices', 'emergency_social_service_facilities', 'natural_resource_projects'
+    'first_responders',
+    'diagnostic_facilities',
+    'timber_facilities',
+    'civic_facilities',
+    'closed_mills',
+    'airports',
+    'port_and_terminal',
+    'eao_projects',
+    'laboratory_service',
+    'local_govt_offices',
+    'emergency_social_service_facilities',
+    'natural_resource_projects',
+    'customs_ports_of_entry',
 ]
 
 
@@ -59,8 +69,13 @@ def import_resource(resource_type):
 
 
 def import_wms_resource(resource):
+    query = None
+    if resource.name == 'lakes':
+        query = "FEATURE_AREA_SQM >= 1000000"
+    if resource.name == 'road_and_highways':
+        query = "ROAD_CLASS in ('highway','freeway','ramp', 'arterial')"
 
-    ds = bcdata.get_data(resource.dataset, as_gdf=True)
+    ds = bcdata.get_data(resource.dataset, as_gdf=True, query=query)
 
     for index, row in ds.iterrows():
         model_class = apps.get_model("pipeline", resource.model_name)
@@ -68,7 +83,7 @@ def import_wms_resource(resource):
         if resource.name in LOCATION_RESOURCES:
             instance = import_data_into_point_model(resource.name, model_class, row)
         else:
-            instance = import_data_into_area_model(resource.name, model_class, row)
+            instance = import_data_into_area_model(resource.display_name, model_class, row, index)
             geos_geom_out, geos_geom_simplified = _generate_bcdata_geom(row, srid=BC_ALBERS_SRID)
             instance.geom = geos_geom_out
             instance.geom_simplified = geos_geom_simplified

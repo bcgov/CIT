@@ -18,7 +18,7 @@ export default function Paginator({
     const end = currentPage < totalPages - 2 ? currentPage + 2 : totalPages;
     const items = [];
     // eslint-disable-next-line no-plusplus
-    for (let i = start; i <= (end < 5 ? 5 : end); i++) {
+    for (let i = start; i <= (end < 5 ? end : 5); i++) {
       items.push(
         <Pagination.Item
           key={i}

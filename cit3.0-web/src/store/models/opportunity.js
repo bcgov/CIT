@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { toKebabCase } from "../../helpers/helpers";
 
 /**
@@ -9,13 +10,19 @@ import { toKebabCase } from "../../helpers/helpers";
  * @todo remove/update physical
  * @todo remove/update siteInfo
  */
-export const OPPORTUNITY_MODEL = {
+export const OPPORTUNITY_MODEL = () => ({
   name: "",
   address: "",
   coords: [54.1722, -124.1207],
-  approvalStatus: "PEND",
+  approvalStatus: "",
   businessContactName: "",
   businessContactEmail: "",
+  publicNote: "",
+  privateNote: "",
+  lastAdmin: "",
+  dateCreated: "",
+  dateUpdated: "",
+  datePublished: null,
   resourceIds: {
     Hospitals: "5ff82cf4-0448-4063-804a-7321f0f2b4c6",
     Schools: "5832eff2-3380-435e-911b-5ada41c1d30b",
@@ -76,38 +83,38 @@ export const OPPORTUNITY_MODEL = {
     roadAccess: {
       title: "Site servicing",
       subtitle: "- Road Access",
-      name: "Yes",
+      name: "Unknown",
       type: "text",
     },
     waterSupply: {
       title: "Site servicing",
       subtitle: "- Water",
-      name: "Yes",
-      value: 3003,
+      name: "Unknown",
+      value: 0,
       type: "capacity",
       suffix: "m³/hour",
     },
     naturalGas: {
       title: "Site servicing",
       subtitle: "- Natural Gas",
-      name: "No",
-      value: 10,
+      name: "Unknown",
+      value: 0,
       type: "pressure",
       suffix: "MMBTU/hour",
     },
     sewer: {
       title: "Site servicing",
       subtitle: "- Sewer",
-      name: "Yes",
-      value: 1,
+      name: "Unknown",
+      value: 0,
       type: "capacity",
       suffix: "m³/hour",
     },
     electrical: {
       title: "Site servicing",
       subtitle: "- Electrical",
-      name: "Yes",
-      value: 1,
+      name: "Unknown",
+      value: 0,
       type: "capacity",
       suffix: "MW",
     },
@@ -133,7 +140,7 @@ export const OPPORTUNITY_MODEL = {
       suffix: "km",
     },
     nearFire: {
-      title: "Nearest First Responders within 100km",
+      title: "First Responders within 100km",
       subtitle: "- Fire",
       name: "Yes",
       value: 1,
@@ -141,7 +148,7 @@ export const OPPORTUNITY_MODEL = {
       suffix: "km",
     },
     nearAmbulance: {
-      title: "Nearest First Responders within 100km",
+      title: "First Responders within 100km",
       subtitle: "- Ambulance",
       name: "Yes",
       value: 6,
@@ -149,7 +156,7 @@ export const OPPORTUNITY_MODEL = {
       suffix: "km",
     },
     nearPolice: {
-      title: "Nearest First Responders within 100km",
+      title: "First Responders within 100km",
       subtitle: "- Police",
       name: "No",
       value: 0,
@@ -241,23 +248,35 @@ export const OPPORTUNITY_MODEL = {
   siteInfo: {
     parcelOwnership: {
       title: "Ownership",
-      name: "Crown",
+      name: "",
       type: "text",
     },
     parcelSize: {
       title: "Parcel size",
-      value: "5",
+      value: null,
       type: "size",
-      suffix: "ha",
+      suffix: "acres",
     },
     PID: {
       title: "PID",
-      value: "456-234-456",
+      value: null,
+      type: "paragraph",
+    },
+    geometry: {
+      title: "Polygon",
+      type: "Polygon",
+      coordinates: null,
+      hidden: true,
+    },
+    siteId: {
+      title: "Site ID",
+      value: null,
       type: "text",
+      hidden: true,
     },
   },
   userInfo: {
-    saleOrLease: { title: "Sale or Lease", value: "", type: "text" },
+    saleOrLease: { title: "Sale or Lease", value: "", type: "text", price: "" },
     currentZone: { title: "Current Zoning", value: "", type: "text" },
     futureZone: { title: "Future Zoning", value: "", type: "text" },
     preferredDevelopment: {
@@ -286,7 +305,7 @@ export const OPPORTUNITY_MODEL = {
       type: "link",
     },
   },
-};
+});
 
 /**
  * Model used to map visual sections of the screens.
@@ -295,7 +314,11 @@ export const OPPORTUNITY_MODEL = {
  */
 export class Opportunity {
   constructor() {
-    this.state = OPPORTUNITY_MODEL;
+    this.state = _.mergeWith({}, OPPORTUNITY_MODEL());
+  }
+
+  set deleted(value) {
+    this.state.deleted = value;
   }
 
   set id(value) {
@@ -316,7 +339,7 @@ export class Opportunity {
   }
 
   createLink() {
-    this.state.link = `/investment/${toKebabCase(this.state.name)}-${
+    this.state.link = `/opportunity/${toKebabCase(this.state.name)}-${
       this.state.id
     }`;
   }
@@ -331,6 +354,18 @@ export class Opportunity {
 
   set dateUpdated(value) {
     this.state.dateUpdated = value;
+  }
+
+  set publicNote(value) {
+    this.state.publicNote = value;
+  }
+
+  set privateNote(value) {
+    this.state.privateNote = value;
+  }
+
+  set lastAdmin(value) {
+    this.state.lastAdmin = value;
   }
 
   // Business Contact
@@ -382,7 +417,11 @@ export class Opportunity {
 
   // Site Info
   set parcelOwnership(value) {
-    this.state.siteInfo.parcelOwnership.value = value;
+    this.state.siteInfo.parcelOwnership.name = value;
+  }
+
+  get parcelOwnership() {
+    return this.state.siteInfo.parcelOwnership.name;
   }
 
   set parcelSize(value) {
@@ -393,20 +432,32 @@ export class Opportunity {
     this.state.siteInfo.PID.value = value;
   }
 
-  // User Info
-  set saleOrLease(value) {
-    this.state.siteInfo.saleOrLease.value = value;
+  set parcelGeometry(value) {
+    this.state.siteInfo.geometry.coordinates = value;
   }
 
-  set futureZone(value) {
+  set geometry(value) {
+    this.state.siteInfo.geometry.polygon = value;
+  }
+
+  // User Info
+  set saleOrLease(value) {
+    this.state.userInfo.saleOrLease.value = value;
+  }
+
+  set price(value) {
+    this.state.userInfo.saleOrLease.price = value;
+  }
+
+  set ocpZoningCode(value) {
     this.state.userInfo.futureZone.value = value;
   }
 
-  set currentZone(value) {
+  set landUseZoning(value) {
     this.state.userInfo.currentZone.value = value;
   }
 
-  set preferredDevelopment(value) {
+  set opportunityPreferredDevelopment(value) {
     this.state.userInfo.preferredDevelopment.value = value;
   }
 

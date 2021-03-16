@@ -3,9 +3,18 @@ import PropTypes from "prop-types";
 import { Button } from "shared-components";
 import { useHistory, NavLink } from "react-router-dom";
 import "./ButtonRow.css";
+import { useDispatch } from "react-redux";
+import { resetOpportunity } from "../../store/actions/opportunity";
 
-export default function ButtonRow({ onClick, prevRoute, noContinue }) {
+export default function ButtonRow({
+  onClick,
+  prevRoute,
+  noContinue,
+  cancelLabel,
+  continueLabel,
+}) {
   const history = useHistory();
+  const dispatch = useDispatch();
   return (
     <Container className="bottom">
       {prevRoute && (
@@ -20,8 +29,11 @@ export default function ButtonRow({ onClick, prevRoute, noContinue }) {
       <Row>
         <Col>
           <Button
-            onClick={() => history.push("/")}
-            label="Cancel & Return to Dashboard"
+            onClick={() => {
+              dispatch(resetOpportunity());
+              history.push("/dashboard");
+            }}
+            label={cancelLabel}
             styling=" BC-Gov-SecondaryButton bc-gov-btn"
           />
         </Col>
@@ -29,7 +41,7 @@ export default function ButtonRow({ onClick, prevRoute, noContinue }) {
           <Button
             disabled={noContinue}
             onClick={onClick}
-            label="Continue"
+            label={continueLabel}
             styling="bcgov-normal-blue btn primary"
           />
         </Col>
@@ -41,10 +53,14 @@ export default function ButtonRow({ onClick, prevRoute, noContinue }) {
 ButtonRow.defaultProps = {
   prevRoute: null,
   noContinue: false,
+  continueLabel: "Continue",
+  cancelLabel: "Cancel & Return to Dashboard",
 };
 
 ButtonRow.propTypes = {
   onClick: PropTypes.func.isRequired,
   prevRoute: PropTypes.string,
   noContinue: PropTypes.bool,
+  continueLabel: PropTypes.string,
+  cancelLabel: PropTypes.string,
 };
