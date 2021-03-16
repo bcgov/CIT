@@ -233,5 +233,9 @@ class OpportunitySerializer(serializers.ModelSerializer):
         if lake.get('lake_id') is not None:
             nearest_lake = LakeDistance.objects.create(**lake)
             validated_data['nearest_lake'] = nearest_lake
-        Opportunity.objects.create(**validated_data)
+        
+        pre = validated_data.pop('opportunity_preferred_development')
+        devs = PreferredDevelopment.objects.filter(code__in=pre)
+        instance = Opportunity.objects.create(**validated_data)
+        instance.opportunity_preferred_development.set(devs)
         return instance
