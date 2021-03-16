@@ -31,7 +31,7 @@ module "webapp" {
 
   rg_name = "cit"
   acr_name = "acr${random_string.prefix.id}"
-  psql_name = "psql-${random_string.prefix.id}"
+  psql_name = "cit-test-psql-${random_string.prefix.id}"
   akv_name = "akv-${random_string.prefix.id}"
 
 
