@@ -29,7 +29,6 @@ export default function SelectFilter(props) {
   };
 
   const isModified = () => {
-    console.log(filters);
     for (let i = 0; i < filters.length; i++) {
       if (filters[i].isSelected === true) {
         return true;
