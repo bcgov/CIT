@@ -3,7 +3,8 @@
 on:
   push:
     branches:
-      - cit-13
+      - develop
+      - feature/deploy
 
 name: Linux_Container_Workflow
 
