@@ -92,7 +92,7 @@ class Opportunity(models.Model):
     )
     # Site Info
     opportunity_address = models.CharField(max_length=255, null=False)
-    opportunity_name = models.TextField(blank=False, null=True)
+    opportunity_name = models.TextField(blank=True, null=True)
     business_contact_name = models.TextField(blank=True, null=True)
     business_contact_email = models.TextField(blank=True, null=True)
     opportunity_description = models.TextField(blank=True, null=True)

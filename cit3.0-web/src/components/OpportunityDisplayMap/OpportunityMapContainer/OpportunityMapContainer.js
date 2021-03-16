@@ -1,17 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
-import $ from "jquery";
 import { CgCloseR } from "react-icons/cg";
 import { GrMapLocation } from "react-icons/gr";
 import { Row, Col } from "react-bootstrap";
 import OpportunitiesMap from "../OpportunitiesMap/OpportunitiesMap";
 import "./OpportunityMapContainer.scss";
+import { fadeIn, fadeOut } from "../../../helpers/fade";
 import { GET_OPPORTUNITIES_LIST_URL } from "../../../store/constants/api-urls";
 
 export default function OpportunityMapContainer({ totalCount, setTotalCount }) {
   const [opportunities, setOpportunities] = useState(null);
   const [showMap, setShowMap] = useState(true);
+  const map = useRef(null);
 
   useEffect(() => {
     axios
@@ -26,7 +27,11 @@ export default function OpportunityMapContainer({ totalCount, setTotalCount }) {
   }, []);
 
   const toggleMap = () => {
-    $("#myMap").fadeToggle("300");
+    if (showMap) {
+      fadeOut(map.current);
+    } else {
+      fadeIn(map.current);
+    }
     setShowMap(!showMap);
   };
 
@@ -54,7 +59,7 @@ export default function OpportunityMapContainer({ totalCount, setTotalCount }) {
         )}
       </div>
 
-      <div className="w-100" id="myMap">
+      <div className="w-100" id="myMap" ref={map}>
         <OpportunitiesMap className="map" opportunities={opportunities} />
       </div>
 

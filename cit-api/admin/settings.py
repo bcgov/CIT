@@ -86,7 +86,7 @@ DATABASES = {
                                'postgres'),  # default user for dev environments
         'PASSWORD': os.environ.get("POSTGRES_DJANGO_PASSWORD",
                                    'postgres'),  # default password for dev environments
-        'HOST': 'db',
+        'HOST': os.environ.get("POSTGRES_HOST", 'db'),
         'PORT': 5432,
     }
 }

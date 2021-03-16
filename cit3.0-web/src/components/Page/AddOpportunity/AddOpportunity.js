@@ -2,7 +2,6 @@ import { useHistory } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import PortalHeader from "../../Headers/PortalHeader/PortalHeader";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MapContainer from "../../MapContainer/MapContainer";
 import AddressSearchBar from "../../AddressSearchBar/AddressSearchBar";
@@ -23,6 +22,7 @@ import {
   setSiteId,
 } from "../../../store/actions/opportunity";
 import Radios from "../../FormComponents/Radios";
+import Terms from "../../Terms/Terms";
 
 export default function AddOpportunity() {
   const dispatch = useDispatch();
@@ -45,6 +45,7 @@ export default function AddOpportunity() {
   const [hasApproval, setHasApproval] = useState(false);
   const [blockContinue, setBlockContinue] = useState(true);
   const [error, setError] = useState(null);
+  const [agreed, setAgreed] = useState(false);
 
   const handleRadioChange = (name, label, value) => {
     setHasApproval(label);
@@ -66,37 +67,37 @@ export default function AddOpportunity() {
   const setParcelData = async (id) => {
     const pid = await getPID(id);
     dispatch(setPID(pid));
-    const parcelData = await getParcelData(pid);
-    // need to clear out previous address info if exists
-    if (!pid || !parcelData.data.features[0].length) {
+    if (pid) {
+      pid.forEach(async (_pid) => {
+        const parcelData = await getParcelData(_pid);
+        if (parcelData) {
+          dispatch(
+            setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE)
+          );
+          if (parcelData.data.features[0].properties.OWNER_TYPE !== "Private") {
+            setBlockContinue(false);
+          } else {
+            setBlockContinue(true);
+          }
+          dispatch(
+            setParcelSize(
+              Number(
+                // convert sqM to Acres
+                (
+                  parcelData.data.features[0].properties.FEATURE_AREA_SQM *
+                  0.000247105
+                ).toFixed(3)
+              )
+            )
+          );
+          dispatch(setGeometry(parcelData.data.features[0].geometry));
+        }
+      });
+    } else {
       dispatch(setGeometry({ coordinates: null }));
       dispatch(setParcelOwner(null));
       dispatch(setParcelSize(null));
-    }
-    if (
-      !pid ||
-      parcelData.data.features[0].properties.OWNER_TYPE !== "Private"
-    ) {
       setBlockContinue(false);
-    } else if (
-      parcelData.data.features[0].properties.OWNER_TYPE === "Private"
-    ) {
-      setBlockContinue(true);
-    }
-    if (parcelData.data.features.length) {
-      dispatch(setGeometry(parcelData.data.features[0].geometry));
-      dispatch(
-        setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE)
-      );
-      // convert sqM to acres
-      dispatch(
-        setParcelSize(
-          (
-            parcelData.data.features[0].properties.FEATURE_AREA_SQM *
-            0.000247105
-          ).toFixed(3)
-        )
-      );
     }
     setError(false);
   };
@@ -143,7 +144,6 @@ export default function AddOpportunity() {
 
   return (
     <>
-      <PortalHeader />
       <NavigationHeader currentStep={1} />
 
       <Container>
@@ -172,14 +172,14 @@ export default function AddOpportunity() {
                     </Col>
                   </Row>
                 )}
-                {!parcelSize && (
+                {address && !parcelSize && (
                   <Row>
                     <Col>
                       <PropertyInfo info={address} tag={false} />
                     </Col>
                   </Row>
                 )}
-                {parcelSize ? (
+                {address && parcelSize ? (
                   <Row>
                     <Col>
                       <PropertyInfo info={address} tag={false} />
@@ -187,10 +187,10 @@ export default function AddOpportunity() {
                         Ownership: <b>{parcelOwner}</b>
                       </p>
                       <p className="mb-0 pb-0">
-                        Parcel Size: <b>{parcelSize} acres</b>
+                        Parcel Size: <b>{parcelSize.toFixed(3)} acres</b>
                       </p>
                       <p>
-                        PID: <b>{PID}</b>
+                        PID: <b>{PID.join(", ")}</b>
                       </p>
                       {parcelOwner === "Private" && (
                         <>
@@ -207,7 +207,7 @@ export default function AddOpportunity() {
                           </Col>
                           {hasApproval !== "Yes" && (
                             <Row className="mt-2">
-                              <Col style={{ color: "red" }}>
+                              <Col className="text-red">
                                 <p>
                                   You must have the approval of the land owner
                                   to promote this opportunity. Please get the
@@ -237,9 +237,12 @@ export default function AddOpportunity() {
             />
           </Col>
         </Row>
+        <Row>
+          <Terms agreed={agreed} setAgreed={setAgreed} />
+        </Row>
       </Container>
       <ButtonRow
-        noContinue={!address || blockContinue}
+        noContinue={!address || blockContinue || !agreed}
         onClick={goToNextPage}
       />
     </>
