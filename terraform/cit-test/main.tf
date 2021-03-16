@@ -28,6 +28,7 @@ module "webapp" {
   app_name        = "CIT3"
   owner           = "CITZ"
   description     = "Community Information Toolkit"
+  environment     = "test"
 
   rg_name = "cit"
   acr_name = "acr${random_string.prefix.id}"
