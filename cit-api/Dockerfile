@@ -11,7 +11,5 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requir
 
 COPY . .
 
-RUN python3 manage.py collectstatic --noinput
-
 CMD ./entrypoint.prod.sh
 
