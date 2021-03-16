@@ -14,3 +14,4 @@ msal==1.5.1
 python-dateutil==2.8.1
 Pillow==8.0.1
 bcdata==0.4.3
+whitenoise==5.2.0
