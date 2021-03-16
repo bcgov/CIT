@@ -10,7 +10,9 @@ services:
     ports:
       - "80:80"
   cit-api:
-    build: ./cit-api
+    build: 
+      context: ./cit-api
+      dockerfile: Dockerfile
     image: countable/cit
     volumes:
       - ./cit-api:/code
@@ -20,6 +22,8 @@ services:
       - cit-api/.env
     ports:
       - 8000:8000
+    depends_on: 
+      - db
   db:
     image: mdillon/postgis
     env_file:
