@@ -4,5 +4,6 @@ const OPTIONS_INITIALIZATION = () => ({
   landUseZoning: [],
   preferredDevelopment: [],
   propertyStatuses: [],
+  communities: [],
 });
 export default OPTIONS_INITIALIZATION;
