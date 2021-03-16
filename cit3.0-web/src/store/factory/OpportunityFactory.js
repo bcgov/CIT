@@ -47,7 +47,7 @@ export default {
       parcel_geometry: geoJSONToString(state.siteInfo.geometry),
       parcel_size: state.siteInfo.parcelSize.value,
       parcel_ownership: state.siteInfo.parcelOwnership.name,
-      pid: request.pid.join(","),
+      pid: Array.isArray(request.pid) ? request.pid.join(",") : "",
       approval_status: state.approvalStatus,
       opportunity_name: state.name,
       business_contact_name: state.businessContactName,
