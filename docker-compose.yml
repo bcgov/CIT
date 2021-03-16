@@ -10,7 +10,9 @@ services:
     ports:
       - "80:80"
   cit-api:
-    build: ./cit-api
+    build: 
+      context: ./cit-api
+      dockerfile: Dockerfile.dev
     image: countable/cit
     volumes:
       - ./cit-api:/code
