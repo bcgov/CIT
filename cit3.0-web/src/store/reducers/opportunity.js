@@ -16,7 +16,8 @@ import {
   RESET_OPPORTUNITY,
   ADD_SITE_INFO,
   ADD_USER_INFO,
-  ADD_PRICE,
+  ADD_RENTAL_PRICE,
+  ADD_SALE_PRICE,
   ADD_NAME,
   ADD_SERVICE,
   ADD_SERVICE_CAPACITY,
@@ -79,7 +80,6 @@ export default function opportunity(
       state.siteInfo.PID.value = action.payload;
       break;
     case ADD_GEOMETRY:
-      console.log(state.siteInfo.geometry);
       if (!action.payload) {
         state.siteInfo.geometry.coordinates = null;
       } else if (!state.siteInfo.geometry.coordinates) {
@@ -119,8 +119,11 @@ export default function opportunity(
     case ADD_USER_INFO:
       state.userInfo[action.payload.key].value = action.payload.value;
       break;
-    case ADD_PRICE:
-      state.userInfo.saleOrLease.price = action.payload;
+    case ADD_RENTAL_PRICE:
+      state.userInfo.saleOrLease.rentalPrice = action.payload;
+      break;
+    case ADD_SALE_PRICE:
+      state.userInfo.saleOrLease.salePrice = action.payload;
       break;
     case ADD_SERVICE:
       state.services[action.payload.key].name = action.payload.value;

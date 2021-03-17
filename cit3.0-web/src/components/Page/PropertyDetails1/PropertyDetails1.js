@@ -12,7 +12,8 @@ import {
   setUserInfo,
   setService,
   setServiceCapacity,
-  setPrice,
+  setRentalPrice,
+  setSalePrice,
 } from "../../../store/actions/opportunity";
 import { setOptions, getOptions } from "../../../store/actions/options";
 import "./PropertyDetails1.scss";
@@ -22,8 +23,12 @@ export default function PropertyDetails1() {
 
   const [Nan, setNan] = useState(false);
 
-  const price = useSelector(
-    (state) => state.opportunity.userInfo.saleOrLease.price
+  const rentalPrice = useSelector(
+    (state) => state.opportunity.userInfo.saleOrLease.rentalPrice
+  );
+
+  const salePrice = useSelector(
+    (state) => state.opportunity.userInfo.saleOrLease.salePrice
   );
 
   // Get options for store
@@ -168,8 +173,14 @@ export default function PropertyDetails1() {
     }
   };
 
-  const handlePriceInputChange = (value) => {
-    dispatch(setPrice(value));
+  const handlePriceInputChange = (value, id) => {
+    if (id === "rental-input") {
+      dispatch(setRentalPrice(value));
+    }
+    if (id === "asking-input") {
+      dispatch(setSalePrice(value));
+    }
+
     if (Number.isNaN(Number(value))) {
       setNan(true);
     } else {
@@ -212,8 +223,8 @@ export default function PropertyDetails1() {
           </Col>
           <Col>
             <Row>
-              {console.log(saleOrLease)}
-              {saleOrLease.value === "SALE" && (
+              {(saleOrLease.value === "SALE" ||
+                saleOrLease.value === "BOTH") && (
                 <Col className="mr-5">
                   <Row id="asking-price">Asking Price</Row>
                   <Row>
@@ -224,17 +235,24 @@ export default function PropertyDetails1() {
                       <span className="mr-2">$</span>
                       <input
                         type="text"
+                        id="asking-input"
                         className="price-input w-100"
                         aria-labelledby="asking-price"
-                        value={price}
-                        onChange={(e) => handlePriceInputChange(e.target.value)}
+                        value={salePrice}
+                        onChange={(e) =>
+                          handlePriceInputChange(e.target.value, e.target.id)
+                        }
                       />
                     </div>
-                    {Nan && <p className="text-red">Invalid</p>}
+                    {Nan && (
+                      <p className="text-red">Price must be a valid number</p>
+                    )}
                   </Row>
                 </Col>
               )}
-              {saleOrLease.value === "LEAS" && (
+              {console.log(saleOrLease.value)}
+              {(saleOrLease.value === "LEAS" ||
+                saleOrLease.value === "BOTH") && (
                 <Col className="mr-5">
                   <Row id="rental-price">Rental Price</Row>
                   <Row>
@@ -247,9 +265,11 @@ export default function PropertyDetails1() {
                         type="text"
                         id="rental-input"
                         aria-labelledby="rental-price"
-                        value={price}
+                        value={rentalPrice}
                         placeholder="/month"
-                        onChange={(e) => handlePriceInputChange(e.target.value)}
+                        onChange={(e) =>
+                          handlePriceInputChange(e.target.value, e.target.id)
+                        }
                         className="price-input w-100"
                       />
                     </div>

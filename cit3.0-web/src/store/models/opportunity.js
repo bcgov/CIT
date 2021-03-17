@@ -276,7 +276,13 @@ export const OPPORTUNITY_MODEL = () => ({
     },
   },
   userInfo: {
-    saleOrLease: { title: "Sale or Lease", value: "", type: "text", price: "" },
+    saleOrLease: {
+      title: "Sale or Lease",
+      value: "",
+      type: "text",
+      rentalPrice: "",
+      salePrice: "",
+    },
     currentZone: { title: "Current Zoning", value: "", type: "text" },
     futureZone: { title: "Future Zoning", value: "", type: "text" },
     preferredDevelopment: {
@@ -445,8 +451,12 @@ export class Opportunity {
     this.state.userInfo.saleOrLease.value = value;
   }
 
-  set price(value) {
-    this.state.userInfo.saleOrLease.price = value;
+  set rentalPrice(value) {
+    this.state.userInfo.saleOrLease.rentalPrice = value;
+  }
+
+  set salePrice(value) {
+    this.state.userInfo.saleOrLease.salePrice = value;
   }
 
   set ocpZoningCode(value) {
