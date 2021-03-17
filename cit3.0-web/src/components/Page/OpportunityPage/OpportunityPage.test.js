@@ -17,12 +17,16 @@ describe("<OpportunityPage />", () => {
     const route = "/place-name-1";
     history.push(route);
 
-    axios.get.mockResolvedValueOnce({
-      id: 1,
-      opportunity_address: "1234 Test Pl.",
-      point: "SRID=4326;POINT (-123.8687427 48.4774108)",
-      approval_status: "PEND",
-      date_created: "2021-02-16T17:34:38.184663Z",
+    axios.get.mockResolvedValue({
+      data: {
+        results: {
+          id: 1,
+          opportunity_address: "1234 Test Pl.",
+          point: "SRID=4326;POINT (-123.8687427 48.4774108)",
+          approval_status: "PEND",
+          date_created: "2021-02-16T17:34:38.184663Z",
+        },
+      },
     });
 
     render(
@@ -35,7 +39,7 @@ describe("<OpportunityPage />", () => {
 
     const opportunityPage = screen.getByTestId("OpportunityPage");
 
-    expect(axios.get).toHaveBeenCalledTimes(1);
+    expect(axios.get).toHaveBeenCalledTimes(5); // from Resource component
     expect(opportunityPage).toBeInTheDocument();
   });
 });

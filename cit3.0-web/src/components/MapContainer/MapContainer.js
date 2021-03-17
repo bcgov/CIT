@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Map from "../Map/Map";
 import { getProximityData } from "../../helpers/resourceCalls";
@@ -21,12 +21,15 @@ export default function MapContainer({
   setAddress,
   setError,
 }) {
+  const [lastCoords, setLastCoords] = useState([]);
+
+  const run = async () => {
+    const proximity = await getProximityData(coords);
+    setNearbyResources(proximity.data);
+  };
   useEffect(() => {
-    const run = async () => {
-      const proximity = await getProximityData(resourceIds, coords);
-      setNearbyResources(proximity);
-    };
-    if (coords[0] !== 54.1722) {
+    if (coords[0] !== 54.1722 && coords[0] !== lastCoords[0]) {
+      setLastCoords(coords);
       run();
     }
   }, [coords]);

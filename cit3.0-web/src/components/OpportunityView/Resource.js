@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Row, Col } from "react-bootstrap";
 import { v4 } from "uuid";
@@ -24,16 +25,21 @@ function displayResources(resources) {
     (state) => state.options.preferredDevelopment
   ).map((option) => ({ value: option.code, label: option.name }));
 
-  // Fetch options, if not already stored on client
-  if (
-    !PropStatusOptions.length ||
-    !zoningOptions.length ||
-    !developmentOptions.length
-  ) {
-    getOptions().then((response) => {
-      dispatch(setOptions(response.data));
-    });
-  }
+  const getTheOptions = async () => {
+    // Fetch options, if not already stored on client
+    if (
+      !PropStatusOptions.length ||
+      !zoningOptions.length ||
+      !developmentOptions.length
+    ) {
+      const options = await getOptions();
+      dispatch(setOptions(options.data));
+    }
+  };
+
+  useEffect(() => {
+    getTheOptions();
+  }, []);
 
   // Process resource entries
   Object.entries(resources).forEach((resource) => {
@@ -149,6 +155,7 @@ function displayResources(resources) {
                   displayType="text"
                   value={resource[1].value}
                   suffix={resource[1].suffix}
+                  decimalScale={2}
                   thousandSeparator={isNaN(resource[1].value) ? false : ","}
                 />
               ) : null}

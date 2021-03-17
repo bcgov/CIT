@@ -27,6 +27,7 @@ import {
 } from "../constants/action-types";
 
 import { OPPORTUNITY_MODEL } from "../models/opportunity";
+import OpportunityFactory from "../factory/OpportunityFactory";
 
 /**
  * Opportunity get/reset actions get processed
@@ -138,7 +139,10 @@ export default function opportunity(
       state.resourceIds = action.payload;
       break;
     case ADD_NEARBY_RESOUCES:
-      state.nearbyResources = action.payload;
+      state = OpportunityFactory.mergeProximityState(
+        state,
+        action.payload
+      ).asState();
       break;
     default:
       break;
