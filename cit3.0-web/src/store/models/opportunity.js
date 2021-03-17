@@ -321,23 +321,27 @@ export class Opportunity {
   }
 
   set nearestMunicipalities(value) {
-    this.state.municipalities = value.features.map((feature) => ({
-      name: feature.properties.name,
-      link: feature.properties.link,
-      distance: feature.properties.distance,
-      population: feature.properties.population,
-      pk: feature.properties.pk,
-    }));
+    if (value && value.features) {
+      this.state.municipalities = value.features.map((feature) => ({
+        name: feature.properties.name,
+        link: feature.properties.link,
+        distance: feature.properties.distance,
+        population: feature.properties.population,
+        pk: feature.properties.pk,
+      }));
+    }
   }
 
   set nearestFirstNations(value) {
-    this.state.firstNationCommunities = value.features.map((feature) => ({
-      name: feature.properties.name,
-      link: feature.properties.link,
-      distance: feature.properties.distance,
-      population: feature.properties.population,
-      pk: feature.properties.pk,
-    }));
+    if (value && value.features) {
+      this.state.firstNationCommunities = value.features.map((feature) => ({
+        name: feature.properties.name,
+        link: feature.properties.link,
+        distance: feature.properties.distance,
+        population: feature.properties.population,
+        pk: feature.properties.pk,
+      }));
+    }
   }
 
   createLink() {
