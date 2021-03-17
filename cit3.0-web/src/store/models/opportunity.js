@@ -33,51 +33,20 @@ export const OPPORTUNITY_MODEL = () => ({
     "Economic Projects": "b12cd4cc-b58b-4079-b630-a20b6df58e8d",
   },
   nearbyResources: {},
-  municipalities: [
-    {
-      name: "Comox",
-      link: "http://www.example.com",
-      distance: 1,
-      population: 10900,
-    },
-    {
-      name: "Courtney & Surrounding",
-      link: "http://www.example.com",
-      distance: 3.5,
-      population: 190,
-    },
-    {
-      name: "Victoria",
-      link: "http://www.example.com",
-      distance: 177.89,
-      population: 109000,
-    },
-  ],
-  firstNationCommunities: [
-    {
-      name: "Lyackson First Nation",
-      link: "http://lyackson.bc.ca/",
-      distance: 20,
-      population: 200,
-    },
-    {
-      name: "Lyackson First Nation",
-      link: "http://lyackson.bc.ca/",
-      distance: 20,
-      population: 200,
-    },
-  ],
+  community: {},
+  municipalities: [],
+  firstNationCommunities: [],
   services: {
     networkAvg: {
       title: "Network Connectivity",
       subtitle: "- Speed average",
-      value: "20 Mbps",
+      value: "",
       type: "paragraph",
     },
     networkAtRoad: {
       title: "Network Connectivity",
       subtitle: "- Speed at nearest road",
-      value: "25 Mbps",
+      value: "",
       type: "paragraph",
     },
     roadAccess: {
@@ -120,38 +89,38 @@ export const OPPORTUNITY_MODEL = () => ({
     },
     transmission: {
       title: "Power Transmission Lines",
-      name: "Yes",
-      value: 34,
+      name: "No",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
     nearResearchCenter: {
       title: "Research Center within 100km",
-      name: "Yes",
-      value: 10,
+      name: "No",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
     nearHealth: {
       title: "Health Care Facility within 100km",
-      name: "Yes",
-      value: 11,
+      name: "No",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
     nearFire: {
       title: "First Responders within 100km",
       subtitle: "- Fire",
-      name: "Yes",
-      value: 1,
+      name: "No",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
     nearAmbulance: {
       title: "First Responders within 100km",
       subtitle: "- Ambulance",
-      name: "Yes",
-      value: 6,
+      name: "No",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
@@ -166,15 +135,15 @@ export const OPPORTUNITY_MODEL = () => ({
     nearCoastGuard: {
       title: "First Responders within 100km",
       subtitle: "- Coast Guard",
-      name: "Yes",
-      value: 35,
+      name: "No",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
     nearSecondarySchool: {
       title: "Post-Secondary Education Facility within 100km",
-      name: "Yes",
-      value: 10,
+      name: "No",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
@@ -182,36 +151,36 @@ export const OPPORTUNITY_MODEL = () => ({
   transportation: {
     nearHighway: {
       title: "Nearest Highway",
-      name: "Highway 1",
-      value: 0.5,
+      name: "",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
     nearAirport: {
       title: "Nearest Airport",
-      name: "Comox Airport",
-      value: 0.1,
+      name: "",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
     nearRailway: {
       title: "Nearest Railway",
-      name: "CN Rail",
-      value: 15,
+      name: "",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
     nearPort: {
       title: "Nearest Port",
-      name: "Boat Dock",
-      value: 47,
+      name: "",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
     nearCustomsPort: {
       title: "Nearest Canada Customs Port of Entry",
-      name: "Intl. Port",
-      value: 35,
+      name: "",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
@@ -220,27 +189,27 @@ export const OPPORTUNITY_MODEL = () => ({
     nearElevation: {
       title: "Elevation at location",
       name: null,
-      value: 100,
+      value: 0,
       type: "height",
       suffix: "m",
     },
     nearGround: {
       title: "Soil Name, Texture, Drainage",
       name: null,
-      value: "Info here",
+      value: "",
       type: "text",
     },
     nearLake: {
       title: "Nearest lake",
-      name: "Local Lake",
-      value: 3,
+      name: "",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
     nearRiver: {
       title: "Nearest river",
-      name: "Forest River",
-      value: 5,
+      name: "",
+      value: 0,
       type: "distance",
       suffix: "km",
     },
@@ -309,12 +278,15 @@ export const OPPORTUNITY_MODEL = () => ({
 
 /**
  * Model used to map visual sections of the screens.
- *
- * TODO: Municipal, First Nation Community, Services, Transporation, Physical mappings
  */
 export class Opportunity {
-  constructor() {
-    this.state = _.mergeWith({}, OPPORTUNITY_MODEL());
+  constructor(state) {
+    if (state) {
+      console.log(state);
+      this.state = _.mergeWith({}, state);
+    } else {
+      this.state = _.mergeWith({}, OPPORTUNITY_MODEL());
+    }
   }
 
   set deleted(value) {
@@ -336,6 +308,30 @@ export class Opportunity {
 
   set opportunityAddress(value) {
     this.state.address = value;
+  }
+
+  set regionalDistrict(value) {
+    this.state.regionalDistrict = value.id;
+  }
+
+  set nearestMunicipalities(value) {
+    this.state.municipalities = value.features.map((feature) => ({
+      name: feature.properties.name,
+      link: feature.properties.link,
+      distance: feature.properties.distance,
+      population: feature.properties.population,
+      pk: feature.properties.pk,
+    }));
+  }
+
+  set nearestFirstNations(value) {
+    this.state.firstNationCommunities = value.features.map((feature) => ({
+      name: feature.properties.name,
+      link: feature.properties.link,
+      distance: feature.properties.distance,
+      population: feature.properties.population,
+      pk: feature.properties.pk,
+    }));
   }
 
   createLink() {
@@ -378,24 +374,39 @@ export class Opportunity {
   }
 
   // Transportation Info
-  set nearHighway(value) {
-    this.state.transportation.nearHighway.value = value;
+  set nearestHighway(value) {
+    this.state.transportation.nearHighway.name =
+      value.features[0].properties.name;
+    this.state.transportation.nearHighway.value = value.distance;
+    this.state.transportation.nearHighway.pk = value.features[0].properties.pk;
   }
 
-  set nearAirport(value) {
-    this.state.transportation.nearAirport.value = value;
+  set nearestAirport(value) {
+    this.state.transportation.nearAirport.name =
+      value.features[0].properties.name;
+    this.state.transportation.nearAirport.value = value.distance;
+    this.state.transportation.nearAirport.pk = value.features[0].properties.pk;
   }
 
-  set nearRailway(value) {
-    this.state.transportation.nearRailway.value = value;
+  set nearestRailway(value) {
+    this.state.transportation.nearRailway.name =
+      value.features[0].properties.name;
+    this.state.transportation.nearRailway.value = value.distance;
+    this.state.transportation.nearRailway.pk = value.features[0].properties.pk;
   }
 
-  set nearPort(value) {
-    this.state.transportation.nearPort.value = value;
+  set nearestPort(value) {
+    this.state.transportation.nearPort.name = value.features[0].properties.name;
+    this.state.transportation.nearPort.value = value.distance;
+    this.state.transportation.nearPort.pk = value.features[0].properties.pk;
   }
 
-  set nearCustomsPort(value) {
-    this.state.transportation.nearCustomsPort.value = value;
+  set nearestCustomsPort(value) {
+    this.state.transportation.nearCustomsPort.name =
+      value.features[0].properties.name;
+    this.state.transportation.nearCustomsPort.value = value.distance;
+    this.state.transportation.nearCustomsPort.pk =
+      value.features[0].properties.pk;
   }
 
   // Physical Info
@@ -407,12 +418,93 @@ export class Opportunity {
     this.state.physical.nearGround.value = value;
   }
 
-  set nearLake(value) {
-    this.state.physical.nearLake.value = value;
+  set nearestLake(value) {
+    if (value) {
+      this.state.physical.nearLake.name = "Yes";
+    }
+    this.state.physical.nearLake.value = value.distance;
+    this.state.physical.nearLake.pk = value.features[0].properties.pk;
   }
 
-  set nearRiver(value) {
-    this.state.physical.nearRiver.value = value;
+  set nearestRiver(value) {
+    if (value) {
+      this.state.physical.nearRiver.name = "Yes";
+    }
+    this.state.physical.nearRiver.value = value.distance;
+    this.state.physical.nearRiver.pk = value.features[0].properties.pk;
+  }
+
+  // Services
+  networkAvg(value) {
+    this.state.services.networkAvg.value = value.speed;
+  }
+
+  networkAtRoad(value) {
+    this.state.services.networkAtRoad.value = value.speed;
+  }
+
+  set nearestTransmission(value) {
+    if (value) {
+      this.state.services.transmission.name = "Yes";
+    }
+    this.state.services.transmission.value = value.distance;
+  }
+
+  set nearestResearchCenter(value) {
+    if (value) {
+      this.state.services.nearResearchCenter.name = "Yes";
+    }
+    this.state.services.nearResearchCenter.value = value.distance;
+    this.state.services.nearResearchCenter.pk = value.features[0].properties.pk;
+  }
+
+  set nearestHealthCenter(value) {
+    if (value) {
+      this.state.services.nearHealth.name = "Yes";
+    }
+    this.state.services.nearHealth.value = value.distance;
+    this.state.services.nearHealth.pk = value.features[0].properties.pk;
+  }
+
+  set nearestFireStation(value) {
+    if (value) {
+      this.state.services.nearFire.name = "Yes";
+    }
+    this.state.services.nearFire.value = value.distance;
+    this.state.services.nearFire.pk = value.features[0].properties.pk;
+  }
+
+  set nearestAmbulanceStation(value) {
+    if (value) {
+      this.state.services.nearAmbulance.name = "Yes";
+    }
+    this.state.services.nearAmbulance.value = value.distance;
+    this.state.services.nearAmbulance.pk = value.features[0].properties.pk;
+  }
+
+  set nearestPoliceStation(value) {
+    if (value) {
+      this.state.services.nearPolice.name = "Yes";
+    }
+    this.state.services.nearPolice.value = value.distance;
+    this.state.services.nearPolice.pk = value.features[0].properties.pk;
+  }
+
+  set nearestCoastGuardStation(value) {
+    if (value) {
+      this.state.services.nearCoastGuard.name = "Yes";
+    }
+    this.state.services.nearCoastGuard.value = value.distance;
+    this.state.services.nearCoastGuard.pk = value.features[0].properties.pk;
+  }
+
+  set nearestPostSecondary(value) {
+    if (value) {
+      this.state.services.nearSecondarySchool.name = "Yes";
+    }
+    this.state.services.nearSecondarySchool.value = value.distance;
+    this.state.services.nearSecondarySchool.pk =
+      value.features[0].properties.pk;
   }
 
   // Site Info
@@ -475,6 +567,11 @@ export class Opportunity {
 
   set communityLink(value) {
     this.state.userInfo.communityLink.value = value;
+  }
+
+  set community(value) {
+    this.state.community.id = value.features[0].properties.pk;
+    this.state.community.distance = value.distance;
   }
 
   set opportunityLink(value) {
