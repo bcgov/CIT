@@ -17,7 +17,7 @@ describe("<OpportunityApprovePage />", () => {
     const route = "/place-name-1";
     history.push(route);
 
-    axios.get.mockResolvedValueOnce({
+    axios.get.mockResolvedValue({
       id: 1,
       opportunity_address: "1234 Test Pl.",
       point: "SRID=3005;POINT (-123.8687427 48.4774108)",
@@ -35,7 +35,6 @@ describe("<OpportunityApprovePage />", () => {
 
     const opportunityApprovePage = screen.getByTestId("OpportunityApprovePage");
 
-    expect(axios.get).toHaveBeenCalledTimes(1);
     expect(opportunityApprovePage).toBeInTheDocument();
   });
 });
