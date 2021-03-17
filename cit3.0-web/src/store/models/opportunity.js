@@ -553,6 +553,10 @@ export class Opportunity {
     this.state.userInfo.preferredDevelopment.value = value;
   }
 
+  set opportunityPropertyStatus(value) {
+    this.state.userInfo.saleOrLease.value = value;
+  }
+
   set opportunityDescription(value) {
     this.state.userInfo.opportunityDescription.value = value;
   }

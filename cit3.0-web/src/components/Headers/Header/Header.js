@@ -9,7 +9,7 @@ const Header = () => {
   const keycloak = useKeycloakWrapper();
 
   return (
-    <header className="bcgov-header">
+    <header className="bcgov-header" data-testid="Header">
       <Navbar expand className="App-header">
         <Navbar.Brand>
           <a
