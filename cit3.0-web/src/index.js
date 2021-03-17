@@ -11,7 +11,7 @@ import { store } from "./store";
 import AuthStateContextProvider from "./contexts/authStateContext";
 import keycloakConfig from "./keycloak.json";
 
-axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
+axios.defaults.baseURL = window.env.apiUrl || "/";
 
 const keycloak = new Keycloak(keycloakConfig);
 
