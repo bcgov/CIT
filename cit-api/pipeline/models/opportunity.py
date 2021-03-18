@@ -5,7 +5,7 @@ from .approval_status import ApprovalStatus
 from .land_use_zoning import LandUseZoning
 from .preferred_development import PreferredDevelopment
 from .property_status import PropertyStatus
-from pipeline.constants import BC_ALBERS_SRID
+from pipeline.constants import WGS84_SRID
 
 # Choices used for parcel infrastructure connections
 ACCESS_CHOICES = (("Y", "Yes"), ("N", "No"), ("U", "Unknown"))
@@ -37,18 +37,30 @@ class Opportunity(models.Model):
     opportunity_link = models.TextField(blank=True, null=True)
     community_link = models.TextField(blank=True, null=True)
 
-    land_use_zoning = models.ForeignKey(LandUseZoning, related_name="current", on_delete=models.SET_NULL, db_column="land_use_zoning", null=True)
-    ocp_zoning_code = models.ForeignKey(LandUseZoning, related_name="future",  on_delete=models.SET_NULL, db_column="ocp_zoning_code", null=True)
-    opportunity_preferred_development = models.ManyToManyField(PreferredDevelopment, db_column="opportunity_preferred_development", null=True)
-    opportunity_property_status = models.ForeignKey(PropertyStatus, on_delete=models.SET_NULL, db_column="opportunity_property_status", null=True)
-    
+    land_use_zoning = models.ForeignKey(LandUseZoning,
+                                        related_name="current",
+                                        on_delete=models.SET_NULL,
+                                        db_column="land_use_zoning",
+                                        null=True)
+    ocp_zoning_code = models.ForeignKey(LandUseZoning,
+                                        related_name="future",
+                                        on_delete=models.SET_NULL,
+                                        db_column="ocp_zoning_code",
+                                        null=True)
+    opportunity_preferred_development = models.ManyToManyField(
+        PreferredDevelopment, db_column="opportunity_preferred_development", null=True)
+    opportunity_property_status = models.ForeignKey(PropertyStatus,
+                                                    on_delete=models.SET_NULL,
+                                                    db_column="opportunity_property_status",
+                                                    null=True)
+
     # Parcel
     parcel_ownership = models.TextField(blank=True, null=True)
     parcel_size = models.DecimalField(max_digits=7, decimal_places=3, blank=True, null=True)
     pid = models.TextField(blank=True, null=True)
-    parcel_geometry = models.PolygonField(srid=BC_ALBERS_SRID, null=True)
+    parcel_geometry = models.PolygonField(srid=WGS84_SRID, null=True)
     # Physical
-    geo_position = models.PointField(srid=BC_ALBERS_SRID, null=False, blank=False)
+    geo_position = models.PointField(srid=WGS84_SRID, null=False, blank=False)
     elevation_at_location = models.DecimalField(max_digits=7,
                                                 decimal_places=3,
                                                 blank=True,

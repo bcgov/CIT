@@ -3,12 +3,12 @@ from django.contrib.gis.db.models import PointField
 from django.contrib.gis.geos import Point
 
 from pipeline.utils import get_quarterly_date_str_as_date
-from pipeline.constants import BC_ALBERS_SRID
+from pipeline.constants import WGS84_SRID
 
 
 class Location(models.Model):
     name = models.CharField(null=True, blank=True, max_length=255)
-    point = PointField(null=True, blank=True, srid=BC_ALBERS_SRID)
+    point = PointField(null=True, blank=True, srid=WGS84_SRID)
     location_fuzzy = models.BooleanField(
         default=False,
         help_text=

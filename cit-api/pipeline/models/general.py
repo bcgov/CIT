@@ -1,7 +1,7 @@
 from django.contrib.gis.db import models
 
 from pipeline.utils import serialize_regional_district_fields
-from pipeline.constants import BC_ALBERS_SRID
+from pipeline.constants import WGS84_SRID
 
 
 class DataSource(models.Model):
@@ -58,7 +58,7 @@ class Service(models.Model):
 
 
 class Road(models.Model):
-    geom = models.MultiLineStringField(srid=BC_ALBERS_SRID, null=True)
+    geom = models.MultiLineStringField(srid=WGS84_SRID, null=True)
     best_broadband = models.CharField(max_length=5)
 
 
@@ -68,8 +68,8 @@ class Municipality(models.Model):
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     oc_m_yr = models.CharField(
         max_length=4,
         help_text=
@@ -112,8 +112,8 @@ class SchoolDistrict(models.Model):
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     sd_num = models.CharField(max_length=5, )
     community = models.ManyToManyField('Community')
 
@@ -134,8 +134,8 @@ class RegionalDistrict(models.Model):
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     oc_m_yr = models.CharField(
         null=True,
         max_length=4,
@@ -203,8 +203,8 @@ class WildfireZone(models.Model):
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     risk_class = models.CharField(
         max_length=1,
         help_text=
@@ -221,8 +221,8 @@ class TsunamiZone(models.Model):
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     zone_class = models.CharField(
         max_length=1,
         help_text=

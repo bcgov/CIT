@@ -13,7 +13,7 @@ from django.utils.dateparse import parse_datetime
 from django.utils.timezone import make_aware
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 
-from pipeline.constants import BC_ALBERS_SRID, WGS84_SRID
+from pipeline.constants import WGS84_SRID
 from pipeline.models.community import Community
 from pipeline.models.census import CensusSubdivision
 from pipeline.models.census_economic_region import CensusEconomicRegion
@@ -36,9 +36,9 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
         if Model.LONGITUDE_FIELD and Model.LATITUDE_FIELD:
             point = Point(float(row[Model.LONGITUDE_FIELD]),
                           float(row[Model.LATITUDE_FIELD]),
-                          srid=BC_ALBERS_SRID)
+                          srid=WGS84_SRID)
         else:
-            point = Point(row.geometry.x, row.geometry.y, srid=BC_ALBERS_SRID)
+            point = Point(row.geometry.x, row.geometry.y, srid=WGS84_SRID)
         print(point)
         closest_community = (Community.objects.annotate(
             distance=Distance('point', point)).order_by('distance').first())
@@ -611,13 +611,12 @@ def _generate_geom(feat, srid=None):
     geos_geom = GEOSGeometry(feat.geom.wkt, srid=srid or feat.geom.srid)
     # Convert MultiPolygons to plain Polygons,
     # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
-    geos_geom_out = _coerce_to_multipolygon(geos_geom, srid)
-    # geos_geom.transform(WGS84_SRID)
+    geos_geom.transform(WGS84_SRID)
+    geos_geom_out = _coerce_to_multipolygon(geos_geom)
     geos_geom_simplified = copy.deepcopy(geos_geom)
-    # geos_geom_simplified.transform(WGS84_SRID)
     geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
 
-    geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, srid)
+    geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified)
 
     return geos_geom_out, geos_geom_simplified
 
@@ -627,22 +626,20 @@ def _generate_bcdata_geom(feat, srid=None):
     Generate a clean geometry, and simplified snapshot for PostGIS insertion
     """
     # Source data tends to be in BC Alberts. #TODO: detect this instead?
-    geos_geom = GEOSGeometry(str(feat.geometry), srid=srid or feat.geometry.srid)
+    geos_geom = GEOSGeometry(feat.geometry.wkt, srid=srid or feat.geometry.srid)
     # Convert MultiPolygons to plain Polygons,
     # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
     if isinstance(geos_geom, MultiPolygon) or isinstance(geos_geom, Polygon):
+        geos_geom.transform(WGS84_SRID)
         geos_geom_out = _coerce_to_multipolygon(geos_geom, srid)
-        # geos_geom.transform(WGS84_SRID)
         geos_geom_simplified = copy.deepcopy(geos_geom)
-        # geos_geom_simplified.transform(WGS84_SRID)
         geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
         geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, srid)
 
     elif isinstance(geos_geom, LineString) or isinstance(geos_geom, MultiLineString):
+        geos_geom.transform(WGS84_SRID)
         geos_geom_out = _coerce_to_multilinestring(geos_geom, srid)
-        # geos_geom.transform(WGS84_SRID)
         geos_geom_simplified = copy.deepcopy(geos_geom)
-        # geos_geom_simplified.transform(WGS84_SRID)
         geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
         geos_geom_simplified = _coerce_to_multilinestring(geos_geom_simplified, srid)
 

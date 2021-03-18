@@ -8,7 +8,7 @@ from pipeline.models.community import Community
 from pipeline.models.general import WildfireZone, TsunamiZone, Road, Municipality
 from pipeline.models.census import CensusSubdivision
 
-from pipeline.constants import BC_ALBERS_SRID
+from pipeline.constants import WGS84_SRID
 
 
 def import_communities_from_csv(communities_file_path):
@@ -29,7 +29,7 @@ def import_communities_from_csv(communities_file_path):
 
             community.point = Point(float(row["Longitude"]),
                                     float(row["Latitude"]),
-                                    srid=BC_ALBERS_SRID)
+                                    srid=WGS84_SRID)
 
             # TODO: spatial query?
             try:

@@ -109,7 +109,7 @@ def import_resource(resource_type):
         model_class = apps.get_model("pipeline", data_source.model_name)
         instance = import_data_into_area_model(resource_type, model_class, row)
 
-        geos_geom_out, geos_geom_simplified = _generate_geom(feat, srid=BC_ALBERS_SRID)
+        geos_geom_out, geos_geom_simplified = _generate_geom(feat, srid=WGS84_SRID)
         instance.geom = geos_geom_out
         instance.geom_simplified = geos_geom_simplified
 
@@ -148,7 +148,7 @@ def import_northern_rockies_census_division(data_source):
         print("instance", instance)
         instance.area_id = row["OBJECTID"]
 
-        geos_geom_out, geos_geom_simplified = _generate_geom(feat, srid=BC_ALBERS_SRID)
+        geos_geom_out, geos_geom_simplified = _generate_geom(feat, srid=WGS84_SRID)
         instance.geom = geos_geom_out
         instance.geom_simplified = geos_geom_simplified
 
@@ -275,7 +275,7 @@ def _save_subdiv(feat):
     if "British Columbia" not in feat.get('PRNAME'):
         return
 
-    geos_geom_out, geos_geom_simplified = _generate_geom(feat, BC_ALBERS_SRID)
+    geos_geom_out, geos_geom_simplified = _generate_geom(feat, WGS84_SRID)
     subdiv = CensusSubdivision.objects.get_or_create(id=int(feat.get('CSDUID')),
                                                      name=feat.get('CSDNAME'))[0]
 
