@@ -1,0 +1,8 @@
+subscription_id   = "<secret>"
+tenant_id         = "<secret>"
+resource_group    = "<secret>"
+arm_access_key    = "<secret>"
+
+github_token      = "<secret>"     # Github PAT with repo write access
+github_repository = "CIT"     # Github project repository name
+github_owner      = "bcgov"     # Github project repository owner (group)

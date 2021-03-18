@@ -1,10 +1,15 @@
-FROM python:3.6
-ENV PYTHONUNBUFFERED 1
+FROM python:3.6-slim-buster as compile
 
-RUN apt-get update && apt-get install -y libproj-dev gdal-bin libpq-dev libpython3-dev build-essential
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends libproj-dev gdal-bin libpq-dev libpython3-dev build-essential gcc
 
-RUN mkdir /code
-WORKDIR /code
-COPY requirements.txt /code/
+WORKDIR /app
+COPY requirements.txt .
 RUN pip install -r requirements.txt
-CMD ./command.sh
+
+COPY . .
+
+RUN python manage.py collectstatic --noinput
+
+CMD ./entrypoint.prod.sh
+
