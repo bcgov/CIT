@@ -1,14 +1,14 @@
 from django.contrib.gis.db import models
 
 from pipeline.utils import serialize_census_subdivision_groups, get_pct_field_as_decimal
-from pipeline.constants import BC_ALBERS_SRID
+from pipeline.constants import WGS84_SRID
 
 
 class CensusSubdivision(models.Model):
     # CSUID is used as primary key, just 'id' in Django.
     name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
 
     # "1.1.1", "Population, 2016"
     population = models.IntegerField(null=True)

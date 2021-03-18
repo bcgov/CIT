@@ -2,7 +2,7 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models import MultiPolygonField
 from django.contrib.gis.geos import Point
 
-from pipeline.constants import BC_ALBERS_SRID
+from pipeline.constants import WGS84_SRID
 
 
 class IndianReserveBandName(models.Model):
@@ -14,8 +14,8 @@ class IndianReserveBandName(models.Model):
     band_number = models.IntegerField(null=True)
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     feature_area_sqm = models.IntegerField(null=True)
-    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
 
     class Meta:
         ordering = ("id", )
