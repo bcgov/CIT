@@ -12,7 +12,7 @@ services:
   cit-api:
     build: 
       context: ./cit-api
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     image: countable/cit
     volumes:
       - ./cit-api:/code
