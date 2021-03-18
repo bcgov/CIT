@@ -3,7 +3,7 @@ from django.contrib.gis.db.models import PointField
 
 from pipeline.utils import (serialize_community_detail_fields, get_community_type_display_name,
                             serialize_location_assets)
-from pipeline.constants import BC_ALBERS_SRID
+from pipeline.constants import WGS84_SRID
 
 
 class Community(models.Model):
@@ -13,7 +13,7 @@ class Community(models.Model):
                                          null=True,
                                          related_name='child_communities',
                                          on_delete=models.SET_NULL)
-    point = PointField(null=True, blank=True, srid=BC_ALBERS_SRID)
+    point = PointField(null=True, blank=True, srid=WGS84_SRID)
     description = models.TextField(null=True, blank=True)
     header_image = models.ImageField(null=True, blank=True, upload_to="community_images/")
     # TODO SY - make this into a choice field tuple

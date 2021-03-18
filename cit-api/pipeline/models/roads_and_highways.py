@@ -2,7 +2,7 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models import MultiLineStringField
 from django.contrib.gis.geos import Point
 
-from pipeline.constants import BC_ALBERS_SRID
+from pipeline.constants import WGS84_SRID
 
 
 class RoadsAndHighways(models.Model):
@@ -16,8 +16,8 @@ class RoadsAndHighways(models.Model):
     name = models.CharField(max_length=127)
     road_name_alias1 = models.CharField(null=True, max_length=32)
     road_name_alias2 = models.CharField(null=True, max_length=32)
-    geom = models.MultiLineStringField(srid=BC_ALBERS_SRID, null=True)
-    geom_simplified = models.MultiLineStringField(srid=BC_ALBERS_SRID, null=True)
+    geom = models.MultiLineStringField(srid=WGS84_SRID, null=True)
+    geom_simplified = models.MultiLineStringField(srid=WGS84_SRID, null=True)
     number_of_lanes = models.IntegerField(null=True)
 
     class Meta:

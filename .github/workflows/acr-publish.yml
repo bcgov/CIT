@@ -6,7 +6,7 @@ on:
       - develop
       - feature/deploy
 
-name: Linux_Container_Workflow
+name: Build and Push (Test)
 
 jobs:
   build-and-deploy:

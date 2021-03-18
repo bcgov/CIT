@@ -13,7 +13,7 @@ from .property_status import PropertyStatus
 from .railway import Railway
 from .river import River
 from .roads_and_highways import RoadsAndHighways
-from pipeline.constants import BC_ALBERS_SRID
+from pipeline.constants import WGS84_SRID
 
 # Choices used for parcel infrastructure connections
 ACCESS_CHOICES = (("Y", "Yes"), ("N", "No"), ("U", "Unknown"))
@@ -132,13 +132,14 @@ class Opportunity(models.Model):
     nearest_coast_guard_station = models.ForeignKey(FirstResponderDistance, related_name="coast_guard_station", on_delete=models.SET_NULL, db_column="nearest_coast_guard_station", blank=True, null=True)
     nearest_post_secondary = models.ForeignKey(ResearchCentreDistance, related_name="post_secondary", on_delete=models.SET_NULL, db_column="nearest_post_secondary", blank=True, null=True)
 
+
     # Parcel
     parcel_ownership = models.TextField(blank=True, null=True)
     parcel_size = models.DecimalField(max_digits=7, decimal_places=3, blank=True, null=True)
     pid = models.TextField(blank=True, null=True)
-    parcel_geometry = models.PolygonField(srid=BC_ALBERS_SRID, null=True)
+    parcel_geometry = models.PolygonField(srid=WGS84_SRID, null=True)
     # Physical
-    geo_position = models.PointField(srid=BC_ALBERS_SRID, null=False, blank=False)
+    geo_position = models.PointField(srid=WGS84_SRID, null=False, blank=False)
     elevation_at_location = models.DecimalField(max_digits=7,
                                                 decimal_places=3,
                                                 blank=True,

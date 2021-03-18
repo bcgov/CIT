@@ -19,9 +19,12 @@ class Command(BaseCommand):
         # print("Importing list of data sources...")
         # import_data_sources()
 
-        resources = DataSource.objects.order_by('import_order')
+        non_bca_resources = DataSource.objects.exclude(name__in=[
+            'bc_assessment_economic_region', 'bc_assessment_census_subdivision',
+            'bc_assessment_regional_district'
+        ]).order_by('import_order')
 
-        for resource in resources:
+        for resource in non_bca_resources:
             if resource.source_type == "wms":
                 print(f'Importing {resource.display_name}...')
                 import_wms_resource(resource)
@@ -40,6 +43,16 @@ class Command(BaseCommand):
         # calculate foreign keys
         calculate_communities_for_schools()
         calculate_regional_districts_for_communities()
+
+        #have to import BCA resources after this mapping is done for regional districts.
+        bca_resources = DataSource.objects.filter(name__in=[
+            'bc_assessment_economic_region', 'bc_assessment_census_subdivision',
+            'bc_assessment_regional_district'
+        ]).order_by('import_order')
+
+        for resource in bca_resources:
+            print(f'Importing {resource.display_name}...')
+            import_csv_resources(resource.name)
 
         # TODO SY - is this still needed
         # calculate cached fields
