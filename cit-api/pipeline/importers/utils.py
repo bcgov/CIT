@@ -15,8 +15,10 @@ from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineStr
 
 from pipeline.constants import WGS84_SRID
 from pipeline.models.community import Community
+from pipeline.models.census import CensusSubdivision
+from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.general import (DataSource, LocationDistance, SchoolDistrict, Municipality,
-                                     CivicLeader, Hex, Service, ISP)
+                                     CivicLeader, Hex, Service, ISP, RegionalDistrict)
 from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES
 
@@ -384,6 +386,51 @@ def calculate_communities_served_for_hospitals():
             distances__distance__lte=50).distinct().count()
         hospital.num_communities_within_50km = num_communities_within_50km
         hospital.save()
+
+
+def import_bc_assessment_data(file_path, Model, resource_type):
+    with open(file_path) as csv_file:
+        csv_reader = csv.DictReader(csv_file, delimiter=',')
+        link_field = Model.LINK_FIELD
+
+        for row in csv_reader:
+            id_field = row[Model.ID_FIELD]
+            instance = None
+            #need to match the truncated csduid to the first 4 digits of the census subdivision.
+            if resource_type == 'bc_assessment_regional_district':
+
+                try:
+                    instance = Model.objects.get(bca_sbcdu_sysid=id_field)
+                except Model.DoesNotExist:
+                    instance = Model(bca_sbcdu_sysid=id_field)
+                regional_district_id = Community.objects.raw(
+                    'select id, regional_district_id from pipeline_community where CAST(census_subdivision_id AS TEXT) LIKE %s limit 1',
+                    [str(row[link_field]) + '%'])[0].regional_district_id
+                print(row[link_field])
+                regional_district = RegionalDistrict.objects.get(id=regional_district_id)
+                instance.regional_district = regional_district
+
+            elif resource_type == 'bc_assessment_census_subdivision':
+
+                try:
+                    instance = Model.objects.get(bca_sbcsdu_sysid=id_field)
+                except Model.DoesNotExist:
+                    instance = Model(bca_sbcsdu_sysid=id_field)
+                census_subdiv = CensusSubdivision.objects.get(id=int(row[link_field]))
+                instance.census_subdivision = census_subdiv
+
+            elif resource_type == 'bc_assessment_economic_region':
+                try:
+                    instance = Model.objects.get(bca_sberu_sysid=id_field)
+                except Model.DoesNotExist:
+                    instance = Model(bca_sberu_sysid=id_field)
+                census_economic_reg = CensusEconomicRegion.objects.get(
+                    economic_region_id=int(row[link_field]))
+                instance.economic_region = census_economic_reg
+
+            import_variable_fields(instance, row, Model)
+            print(instance.__dict__)
+            instance.save()
 
 
 def import_civic_leaders_from_csv(file_path):

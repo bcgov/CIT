@@ -2,28 +2,28 @@ version: "3.3"
 
 services:
   cit-web:
-    image: "node:14"
-    volumes:
-      - ./cit-web:/code
-    working_dir: /code/
-    networks:
-      - back-tier
+    container_name: cit-web
+    build: ./cit3.0-web
+    env_file:
+      - cit3.0-web/.env
+    restart: always
+    ports:
+      - "80:80"
   cit-api:
-    build: ./cit-api
+    build: 
+      context: ./cit-api
+      dockerfile: Dockerfile
     image: countable/cit
     volumes:
       - ./cit-api:/code
       - static:/static
       - media:/media
-    networks:
-      - back-tier
     env_file:
-      - .env
-    environment:
-      - AUTHORITY=https://login.microsoftonline.com/
-      - SCOPE=https://analysis.windows.net/powerbi/api/.default
+      - cit-api/.env
     ports:
       - 8000:8000
+    depends_on: 
+      - db
   db:
     image: mdillon/postgis
     env_file:
@@ -31,19 +31,8 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql/data
       - ./db:/code
-    networks:
-      - back-tier
     ports:
       - 5432:5432
-
-  nginx:
-    image: nginx:1.18
-    volumes:
-      - ./nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
-      - static:/static
-      - media:/media
-    networks:
-      - back-tier
 
   kcpostgres:
     image: postgres
@@ -80,7 +69,3 @@ volumes:
     driver: local
   media:
     driver: local
-
-networks:
-  back-tier:
-    driver: bridge
