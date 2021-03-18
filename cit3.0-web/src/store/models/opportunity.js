@@ -34,6 +34,7 @@ export const OPPORTUNITY_MODEL = () => ({
   },
   nearbyResources: {},
   community: {},
+  regionalDistrict: {},
   municipalities: [],
   firstNationCommunities: [],
   services: {
@@ -288,7 +289,6 @@ export const OPPORTUNITY_MODEL = () => ({
 export class Opportunity {
   constructor(state) {
     if (state) {
-      console.log(state);
       this.state = _.mergeWith({}, state);
     } else {
       this.state = _.mergeWith({}, OPPORTUNITY_MODEL());
@@ -317,7 +317,7 @@ export class Opportunity {
   }
 
   set regionalDistrict(value) {
-    this.state.regionalDistrict = value.id;
+    this.state.regionalDistrict.id = value.id;
   }
 
   set nearestMunicipalities(value) {
