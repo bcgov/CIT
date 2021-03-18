@@ -10,14 +10,7 @@ from .location_assets import Location, Airport, PortAndTerminal, CustomsPortOfEn
 from .general import Municipality, RegionalDistrict
 from .preferred_development import PreferredDevelopment
 from .property_status import PropertyStatus
-<<<<<<< HEAD
-from .railway import Railway
-from .river import River
-from .roads_and_highways import RoadsAndHighways
-from pipeline.constants import BC_ALBERS_SRID
-=======
 from pipeline.constants import WGS84_SRID
->>>>>>> develop
 
 # Choices used for parcel infrastructure connections
 ACCESS_CHOICES = (("Y", "Yes"), ("N", "No"), ("U", "Unknown"))
