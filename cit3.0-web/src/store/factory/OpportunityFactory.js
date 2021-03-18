@@ -60,7 +60,7 @@ function createRequestFromModel(state) {
     opportunity_preferred_development: state.userInfo.preferredDevelopment.value.map(
       (option) => option.value || option
     ),
-    opportunity_road_connected: parseFloat(state.services.roadAccess.name[0]),
+    opportunity_road_connected: state.services.roadAccess.name[0],
     opportunity_water_connected: state.services.waterSupply.name[0],
     opportunity_water_capacity: parseFloat(state.services.waterSupply.value),
     opportunity_sewer_connected: state.services.sewer.name[0],
