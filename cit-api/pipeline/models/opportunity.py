@@ -149,13 +149,15 @@ class Opportunity(models.Model):
     soil_drainage = models.TextField(blank=True, null=True)
     # Services
     # Road
-    opportunity_road_connected = models.CharField(blank=True,
-                                                  null=True,
+    opportunity_road_connected = models.CharField(blank=False,
+                                                  null=False,
+                                                  default="U",
                                                   max_length=1,
                                                   choices=ACCESS_CHOICES)
     # Water
-    opportunity_water_connected = models.CharField(blank=True,
-                                                   null=True,
+    opportunity_water_connected = models.CharField(blank=False,
+                                                   null=False,
+                                                   default="U",
                                                    max_length=1,
                                                    choices=ACCESS_CHOICES)
     opportunity_water_capacity = models.DecimalField(max_digits=7,
@@ -163,8 +165,9 @@ class Opportunity(models.Model):
                                                      blank=True,
                                                      null=True)
     # Sewer
-    opportunity_sewer_connected = models.CharField(blank=True,
-                                                   null=True,
+    opportunity_sewer_connected = models.CharField(blank=False,
+                                                   null=False,
+                                                   default="U",
                                                    max_length=1,
                                                    choices=ACCESS_CHOICES)
     opportunity_sewer_capacity = models.DecimalField(max_digits=7,
@@ -172,8 +175,9 @@ class Opportunity(models.Model):
                                                      blank=True,
                                                      null=True)
     # Natural Gase
-    opportunity_natual_gas_connected = models.CharField(blank=True,
-                                                        null=True,
+    opportunity_natual_gas_connected = models.CharField(blank=False,
+                                                        null=False,
+                                                        default="U",
                                                         max_length=1,
                                                         choices=ACCESS_CHOICES)
     opportunity_natual_gas_capacity = models.DecimalField(max_digits=7,
@@ -181,8 +185,9 @@ class Opportunity(models.Model):
                                                           blank=True,
                                                           null=True)
     # Electric
-    opportunity_electrical_connected = models.CharField(blank=True,
-                                                        null=True,
+    opportunity_electrical_connected = models.CharField(blank=False,
+                                                        null=False,
+                                                        default="U",
                                                         max_length=1,
                                                         choices=ACCESS_CHOICES)
     opportunity_electrical_capacity = models.DecimalField(max_digits=7,
