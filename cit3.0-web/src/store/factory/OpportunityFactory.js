@@ -38,6 +38,118 @@ function createRequestFromModel(state) {
       }
     }
   });
+  const nearestLocations = {};
+  if (state.regionalDistrict.id) {
+    nearestLocations.regional_district_id = parseInt(
+      state.regionalDistrict.id,
+      10
+    );
+  }
+  if (state.community.distance) {
+    nearestLocations.nearest_community = {
+      community_id: parseInt(state.community.id, 10),
+      community_distance: state.community.distance.toFixed(2),
+    };
+  }
+  nearestLocations.nearest_municipalities = state.municipalities.map((m) =>
+    parseInt(m.pk, 10)
+  );
+  nearestLocations.nearest_first_nations = state.firstNationCommunities.map(
+    (f) => parseInt(f.pk, 10)
+  );
+  if (state.physical.nearLake.value) {
+    nearestLocations.nearest_lake = {
+      lake_id: state.physical.nearLake.pk,
+      lake_distance: state.physical.nearLake.value.toFixed(2),
+    };
+  }
+  if (state.physical.nearRiver.value) {
+    nearestLocations.nearest_river = {
+      river_id: state.physical.nearRiver.pk,
+      river_distance: state.physical.nearRiver.value.toFixed(2),
+    };
+  }
+  if (state.transportation.nearHighway.value) {
+    nearestLocations.nearest_highway = {
+      highway_id: state.transportation.nearHighway.pk,
+      highway_distance: state.transportation.nearHighway.value.toFixed(2),
+    };
+  }
+  if (state.transportation.nearAirport.value) {
+    nearestLocations.nearest_airport = {
+      airport_id: state.transportation.nearAirport.pk,
+      airport_distance: state.transportation.nearAirport.value.toFixed(2),
+    };
+  }
+  if (state.transportation.nearRailway.value) {
+    nearestLocations.nearest_railway = {
+      railway_id: state.transportation.nearRailway.pk,
+      railway_distance: state.transportation.nearRailway.value.toFixed(2),
+    };
+  }
+  if (state.transportation.nearPort.value) {
+    nearestLocations.nearest_port = {
+      port_id: state.transportation.nearPort.pk,
+      port_distance: state.transportation.nearPort.value.toFixed(2),
+    };
+  }
+  if (state.transportation.nearCustomsPort.value) {
+    nearestLocations.nearest_customs_port_of_entry = {
+      customs_port_id: state.transportation.nearCustomsPort.pk,
+      customs_port_distance: state.transportation.nearCustomsPort.value.toFixed(
+        2
+      ),
+    };
+  }
+  if (state.services.nearResearchCenter.value) {
+    nearestLocations.nearest_research_centre = {
+      research_centre_id: state.services.nearResearchCenter.pk,
+      research_centre_distance: state.services.nearResearchCenter.value.toFixed(
+        2
+      ),
+    };
+  }
+  if (state.services.nearHealth.value) {
+    nearestLocations.nearest_health_center = {
+      hospital_id: state.services.nearHealth.pk,
+      hospital_distance: state.services.nearHealth.value.toFixed(2),
+    };
+  }
+  if (state.services.transmission.value) {
+    nearestLocations.nearest_transmission_line = state.services.transmission.value.toFixed(
+      2
+    );
+  }
+  if (state.services.nearFire.value) {
+    nearestLocations.nearest_fire_station = {
+      first_responder_id: state.services.nearFire.pk,
+      first_responder_distance: state.services.nearFire.value.toFixed(2),
+    };
+  }
+  if (state.services.nearPolice.value) {
+    nearestLocations.nearest_police_station = {
+      first_responder_id: state.services.nearPolice.pk,
+      first_responder_distance: state.services.nearPolice.value.toFixed(2),
+    };
+  }
+  if (state.services.nearAmbulance.value) {
+    nearestLocations.nearest_ambulance_station = {
+      first_responder_id: state.services.nearAmbulance.pk,
+      first_responder_distance: state.services.nearAmbulance.value.toFixed(2),
+    };
+  }
+  if (state.services.nearCoastGuard.value) {
+    nearestLocations.nearest_coast_guard_station = {
+      first_responder_id: state.services.nearCoastGuard.pk,
+      first_responder_distance: state.services.nearCoastGuard.value.toFixed(2),
+    };
+  }
+  if (state.services.nearSecondarySchool.value) {
+    nearestLocations.nearest_post_secondary = {
+      location_id: state.services.nearSecondarySchool.pk,
+      location_distance: state.services.nearSecondarySchool.value.toFixed(2),
+    };
+  }
   return {
     ...request,
     deleted: state.deleted,
@@ -73,76 +185,7 @@ function createRequestFromModel(state) {
     opportunity_electrical_capacity: parseFloat(
       state.services.electrical.value
     ),
-    regional_district_id: parseInt(state.regionalDistrict.id, 10),
-    nearest_community: {
-      community_id: parseInt(state.community.id, 10),
-      community_distance: state.community.distance.toFixed(2),
-    },
-    nearest_municipalities: state.municipalities.map((m) => parseInt(m.pk, 10)),
-    nearest_first_nations: state.firstNationCommunities.map((f) =>
-      parseInt(f.pk, 10)
-    ),
-    nearest_lake: {
-      lake_id: state.physical.nearLake.pk,
-      lake_distance: state.physical.nearLake.value.toFixed(2),
-    },
-    nearest_river: {
-      river_id: state.physical.nearRiver.pk,
-      river_distance: state.physical.nearRiver.value.toFixed(2),
-    },
-    nearest_highway: {
-      highway_id: state.transportation.nearHighway.pk,
-      highway_distance: state.transportation.nearHighway.value.toFixed(2),
-    },
-    nearest_airport: {
-      airport_id: state.transportation.nearAirport.pk,
-      airport_distance: state.transportation.nearAirport.value.toFixed(2),
-    },
-    nearest_railway: {
-      railway_id: state.transportation.nearRailway.pk,
-      railway_distance: state.transportation.nearRailway.value.toFixed(2),
-    },
-    nearest_port: {
-      port_id: state.transportation.nearPort.pk,
-      port_distance: state.transportation.nearPort.value.toFixed(2),
-    },
-    nearest_customs_port_of_entry: {
-      customs_port_id: state.transportation.nearCustomsPort.pk,
-      customs_port_distance: state.transportation.nearCustomsPort.value.toFixed(
-        2
-      ),
-    },
-    nearest_research_centre: {
-      research_centre_id: state.services.nearResearchCenter.pk,
-      research_centre_distance: state.services.nearResearchCenter.value.toFixed(
-        2
-      ),
-    },
-    nearest_health_center: {
-      hospital_id: state.services.nearHealth.pk,
-      hospital_distance: state.services.nearHealth.value.toFixed(2),
-    },
-    nearest_transmission_line: state.services.transmission.value.toFixed(2),
-    nearest_fire_station: {
-      first_responder_id: state.services.nearFire.pk,
-      first_responder_distance: state.services.nearFire.value.toFixed(2),
-    },
-    nearest_police_station: {
-      first_responder_id: state.services.nearPolice.pk,
-      first_responder_distance: state.services.nearPolice.value.toFixed(2),
-    },
-    nearest_ambulance_station: {
-      first_responder_id: state.services.nearAmbulance.pk,
-      first_responder_distance: state.services.nearAmbulance.value.toFixed(2),
-    },
-    nearest_coast_guard_station: {
-      first_responder_id: state.services.nearCoastGuard.pk,
-      first_responder_distance: state.services.nearCoastGuard.value.toFixed(2),
-    },
-    nearest_post_secondary: {
-      location_id: state.services.nearSecondarySchool.pk,
-      location_distance: state.services.nearSecondarySchool.value.toFixed(2),
-    },
+    ...nearestLocations,
   };
 }
 
