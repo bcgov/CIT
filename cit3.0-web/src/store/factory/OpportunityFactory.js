@@ -178,7 +178,7 @@ function createRequestFromModel(state) {
     opportunity_address: state.address,
     geo_position: `SRID=4326;POINT(${state.coords[1]} ${state.coords[0]})`,
     parcel_geometry: geoJSONToString(state.siteInfo.geometry),
-    parcel_size: state.siteInfo.parcelSize.value,
+    parcel_size: parseFloat(state.siteInfo.parcelSize.value.toFixed(3)),
     parcel_ownership: state.siteInfo.parcelOwnership.name,
     pid: Array.isArray(request.pid) ? request.pid.join(",") : "",
     approval_status: state.approvalStatus,
@@ -192,9 +192,11 @@ function createRequestFromModel(state) {
     ocp_zoning_code: state.userInfo.futureZone.value,
     opportunity_property_status: state.userInfo.saleOrLease.value,
     opportunity_rental_price: parseFloat(
-      state.userInfo.saleOrLease.rentalPrice
+      Number(state.userInfo.saleOrLease.rentalPrice).toFixed(2)
     ),
-    opportunity_sale_price: parseFloat(state.userInfo.saleOrLease.salePrice),
+    opportunity_sale_price: parseFloat(
+      Number(state.userInfo.saleOrLease.salePrice).toFixed(2)
+    ),
     opportunity_preferred_development: state.userInfo.preferredDevelopment.value.map(
       (option) => option.value || option
     ),
