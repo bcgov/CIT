@@ -143,7 +143,6 @@ export default function PropertyDetails1() {
     return value;
   });
 
-
   const history = useHistory();
 
   const goToNextPage = () => {
