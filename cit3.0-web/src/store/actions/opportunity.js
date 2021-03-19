@@ -19,7 +19,8 @@ import {
   RESET_OPPORTUNITY,
   ADD_SITE_INFO,
   ADD_USER_INFO,
-  ADD_PRICE,
+  ADD_RENTAL_PRICE,
+  ADD_SALE_PRICE,
   ADD_NAME,
   ADD_SERVICE,
   ADD_SERVICE_CAPACITY,
@@ -202,11 +203,19 @@ export function setUserInfo(key, sInfo) {
 }
 
 /**
- * @param {Number} price
+ * @param {Number} rentalPrice
  * @return {Object} for redux reducer
  */
-export function setPrice(price) {
-  return { type: ADD_PRICE, payload: price };
+export function setRentalPrice(price) {
+  return { type: ADD_RENTAL_PRICE, payload: price };
+}
+
+/**
+ * @param {Number} salePrice
+ * @return {Object} for redux reducer
+ */
+export function setSalePrice(price) {
+  return { type: ADD_SALE_PRICE, payload: price };
 }
 
 /**

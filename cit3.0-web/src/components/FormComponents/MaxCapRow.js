@@ -60,5 +60,5 @@ MaxCapRow.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   unitString: PropTypes.string,
-  valid: PropTypes.number,
+  valid: PropTypes.bool,
 };

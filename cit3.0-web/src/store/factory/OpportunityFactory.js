@@ -191,6 +191,10 @@ function createRequestFromModel(state) {
     land_use_zoning: state.userInfo.currentZone.value,
     ocp_zoning_code: state.userInfo.futureZone.value,
     opportunity_property_status: state.userInfo.saleOrLease.value,
+    opportunity_rental_price: parseFloat(
+      state.userInfo.saleOrLease.rentalPrice
+    ),
+    opportunity_sale_price: parseFloat(state.userInfo.saleOrLease.salePrice),
     opportunity_preferred_development: state.userInfo.preferredDevelopment.value.map(
       (option) => option.value || option
     ),
