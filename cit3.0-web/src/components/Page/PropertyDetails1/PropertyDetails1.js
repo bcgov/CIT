@@ -143,7 +143,6 @@ export default function PropertyDetails1() {
     return value;
   });
 
-  // const [isValid, setIsValid] = useState(true);
 
   const history = useHistory();
 
