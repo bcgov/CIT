@@ -39,6 +39,8 @@ const ReviewAndSubmitCallout = ({
           </p>
           <div role="form">
             <TextInput
+              name="opportunity-name"
+              aria-label="set opportunity name"
               heading="Name this Opportunity"
               notes="This field is optional and will only be seen by you on your
               dashboard"

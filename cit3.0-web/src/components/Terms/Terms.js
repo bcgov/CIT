@@ -19,8 +19,8 @@ export default function Terms({ agreed, setAgreed }) {
         <br />
       </p>
       <p>
-        Should you have any questions about the collection of this business
-        information please
+        {`Should you have any questions about the collection of this business
+        information please `}
         <a href="mailto:citinfo@gov.bc.ca">contact us</a>.
       </p>
       <input
