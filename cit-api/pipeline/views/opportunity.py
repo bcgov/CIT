@@ -135,20 +135,16 @@ class IsAuthenticated(BasePermission):
             # Get Userinfo
             userinfo = keycloak_openid.userinfo(request.headers['Authorization'][7:])
 
-            # TODO: Make permission constants for different functions
+            # Use Userinfo to validate permissions
             return any(i in ["IDIR", "BCeID"] for i in userinfo['roles'])
         except KeycloakConnectionError as e:
-            self.message = str(os.environ.get('KEY_CLOAK_URL'))
-            # self.message = 'Cannot connect to authorization server'
+            self.message = 'Cannot connect to authorization server'
         except AttributeError as e:
-            self.message = str(e)
-            # self.message = 'Authorization response in bad format'
+            self.message = 'Authorization response in bad format'
         except KeyError as e:
-            self.message = str(userinfo)
-            # self.message = 'Must supply an Authorization token'
+            self.message = 'Must supply an Authorization token'
         except KeycloakGetError as e:
-            self.message = request.headers['Authorization']
-            
+            self.message = 'Failed to recieve userinfo'
 
         return False
 
