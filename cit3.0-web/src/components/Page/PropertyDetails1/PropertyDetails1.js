@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Container, Col, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,18 +12,30 @@ import {
   setUserInfo,
   setService,
   setServiceCapacity,
-  setPrice,
+  setRentalPrice,
+  setSalePrice,
 } from "../../../store/actions/opportunity";
 import { setOptions, getOptions } from "../../../store/actions/options";
 import "./PropertyDetails1.scss";
+import Validator from "../../FormComponents/Validator";
 
 export default function PropertyDetails1() {
   const dispatch = useDispatch();
 
-  const [Nan, setNan] = useState(false);
+  // const [Nan, setNan] = useState(false);
+  const [rentalError, setRentalError] = useState(false);
+  const [saleError, setSaleError] = useState(false);
+  const [waterSupplyError, setWaterSupplyError] = useState(false);
+  const [sewerError, setSewerError] = useState(false);
+  const [naturalGasError, setNaturalGasError] = useState(false);
+  const [electricalError, setElectricalError] = useState(false);
 
-  const price = useSelector(
-    (state) => state.opportunity.userInfo.saleOrLease.price
+  const rentalPrice = useSelector(
+    (state) => state.opportunity.userInfo.saleOrLease.rentalPrice
+  );
+
+  const salePrice = useSelector(
+    (state) => state.opportunity.userInfo.saleOrLease.salePrice
   );
 
   // Get options for store
@@ -132,7 +144,7 @@ export default function PropertyDetails1() {
     return value;
   });
 
-  const [isValid, setIsValid] = useState(true);
+  // const [isValid, setIsValid] = useState(true);
 
   const history = useHistory();
 
@@ -159,21 +171,39 @@ export default function PropertyDetails1() {
     }
   };
 
+  // map error functions to names
+  const funcs = {
+    waterSupply: setWaterSupplyError,
+    electrical: setElectricalError,
+    naturalGas: setNaturalGasError,
+    sewer: setSewerError,
+  };
+
   const handleCapacityChange = (name, value) => {
     dispatch(setServiceCapacity(name, value));
-    if (value !== "" && Number.isNaN(value)) {
-      setIsValid(false);
-    } else if (value === "") {
-      setIsValid(true);
+    if (value && isNaN(Number(value))) {
+      funcs[name](true);
+    } else {
+      funcs[name](false);
     }
   };
 
-  const handlePriceInputChange = (value) => {
-    dispatch(setPrice(value));
-    if (Number.isNaN(Number(value))) {
-      setNan(true);
-    } else {
-      setNan(false);
+  const handlePriceInputChange = (value, id) => {
+    if (id === "rental-input") {
+      dispatch(setRentalPrice(value));
+      if (isNaN(Number(value))) {
+        setRentalError(true);
+      } else {
+        setRentalError(false);
+      }
+    }
+    if (id === "asking-input") {
+      dispatch(setSalePrice(value));
+      if (isNaN(Number(value))) {
+        setSaleError(true);
+      } else {
+        setSaleError(false);
+      }
     }
   };
 
@@ -212,8 +242,8 @@ export default function PropertyDetails1() {
           </Col>
           <Col>
             <Row>
-              {console.log(saleOrLease)}
-              {saleOrLease.value === "SALE" && (
+              {(saleOrLease.value === "SALE" ||
+                saleOrLease.value === "BOTH") && (
                 <Col className="mr-5">
                   <Row id="asking-price">Asking Price</Row>
                   <Row>
@@ -224,17 +254,24 @@ export default function PropertyDetails1() {
                       <span className="mr-2">$</span>
                       <input
                         type="text"
+                        id="asking-input"
                         className="price-input w-100"
                         aria-labelledby="asking-price"
-                        value={price}
-                        onChange={(e) => handlePriceInputChange(e.target.value)}
+                        value={salePrice}
+                        onChange={(e) =>
+                          handlePriceInputChange(e.target.value, e.target.id)
+                        }
                       />
                     </div>
-                    {Nan && <p className="text-red">Invalid</p>}
+
+                    {saleError && (
+                      <Validator message="Price must be a valid number" />
+                    )}
                   </Row>
                 </Col>
               )}
-              {saleOrLease.value === "LEAS" && (
+              {(saleOrLease.value === "LEAS" ||
+                saleOrLease.value === "BOTH") && (
                 <Col className="mr-5">
                   <Row id="rental-price">Rental Price</Row>
                   <Row>
@@ -247,14 +284,16 @@ export default function PropertyDetails1() {
                         type="text"
                         id="rental-input"
                         aria-labelledby="rental-price"
-                        value={price}
+                        value={rentalPrice}
                         placeholder="/month"
-                        onChange={(e) => handlePriceInputChange(e.target.value)}
+                        onChange={(e) =>
+                          handlePriceInputChange(e.target.value, e.target.id)
+                        }
                         className="price-input w-100"
                       />
                     </div>
-                    {Nan && (
-                      <p className="text-red">Price must be a valid number</p>
+                    {rentalError && (
+                      <Validator message="Price must be a valid number" />
                     )}
                   </Row>
                 </Col>
@@ -446,7 +485,14 @@ export default function PropertyDetails1() {
       <ButtonRow
         prevRoute="/opportunity/site-info"
         onClick={handleContinue}
-        noContinue={!isValid || Nan}
+        noContinue={
+          rentalError ||
+          saleError ||
+          waterSupplyError ||
+          electricalError ||
+          sewerError ||
+          naturalGasError
+        }
       />
     </div>
   );

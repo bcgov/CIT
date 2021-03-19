@@ -93,6 +93,8 @@ class Opportunity(models.Model):
     # Site Info
     opportunity_address = models.CharField(max_length=255, null=False)
     opportunity_name = models.TextField(blank=True, null=True)
+    opportunity_rental_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    opportunity_sale_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     business_contact_name = models.TextField(blank=True, null=True)
     business_contact_email = models.TextField(blank=True, null=True)
     opportunity_description = models.TextField(blank=True, null=True)
