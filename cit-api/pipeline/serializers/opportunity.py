@@ -179,43 +179,35 @@ class OpportunitySerializer(serializers.ModelSerializer):
         nearest_community = None
         if community.get('nearest_community') is not None:
             nearest_community = CommunityDistance.objects.create(**community)
-            #validated_data['nearest_community'] = nearest_community
         
         post_secondary = validated_data.pop('nearest_post_secondary')
         nearest_post_secondary= None
         if post_secondary.get('research_centre_id') is not None:
             nearest_post_secondary = PostSecondaryDistance.objects.create(**post_secondary)
-            #validated_data['nearest_post_secondary'] = nearest_post_secondary
         
         coast_guard_station = validated_data.pop('nearest_coast_guard_station')
         if coast_guard_station.get('first_responder_id') is not None:
             nearest_coast_guard_station = FirstResponderDistance.objects.create(**coast_guard_station)
-            #validated_data['nearest_coast_guard_station'] = nearest_coast_guard_station
         
         ambulance_station = validated_data.pop('nearest_ambulance_station')
         if ambulance_station.get('first_responder_id') is not None:
             nearest_ambulance_station = FirstResponderDistance.objects.create(**ambulance_station) 
-            #validated_data['nearest_ambulance_station'] = nearest_ambulance_station
         
         police_station = validated_data.pop('nearest_police_station')
         if police_station.get('first_responder_id') is not None:
             nearest_police_station = FirstResponderDistance.objects.create(**police_station)
-            #validated_data['nearest_police_station'] = nearest_police_station
         
         fire_station = validated_data.pop('nearest_fire_station')
         if fire_station.get('first_responder_id') is not None:
             nearest_fire_station = FirstResponderDistance.objects.create(**fire_station)
-            #validated_data['nearest_fire_station'] = nearest_fire_station
         
         health_center = validated_data.pop('nearest_health_center')
         if health_center.get('hospital_id') is not None:
             nearest_health_center = HospitalDistance.objects.create(**health_center)
-            #validated_data['nearest_health_center'] = nearest_health_center
         
         research_centre = validated_data.pop('nearest_research_centre')
         if research_centre.get('research_centre_id') is not None:
             nearest_research_centre = ResearchCentreDistance.objects.create(**research_centre)
-            #validated_data['nearest_research_centre'] = nearest_research_centre
         
         customs_port_of_entry = validated_data.pop('nearest_customs_port_of_entry')
         if customs_port_of_entry.get('customs_port_of_entry_id') is not None:
