@@ -22,7 +22,6 @@ import Validator from "../../FormComponents/Validator";
 export default function PropertyDetails1() {
   const dispatch = useDispatch();
 
-  // const [Nan, setNan] = useState(false);
   const [rentalError, setRentalError] = useState(false);
   const [saleError, setSaleError] = useState(false);
   const [waterSupplyError, setWaterSupplyError] = useState(false);
@@ -144,7 +143,6 @@ export default function PropertyDetails1() {
     return value;
   });
 
-  // const [isValid, setIsValid] = useState(true);
 
   const history = useHistory();
 
