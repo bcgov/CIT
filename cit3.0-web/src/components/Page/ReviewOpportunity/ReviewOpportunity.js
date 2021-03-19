@@ -17,16 +17,18 @@ import {
   closeNotification,
 } from "../../../store/actions/notification";
 import { NOTIFICATION_ERROR } from "../../../store/constants/notification";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 
 const ReviewOpportunity = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const error = useSelector((state) => state.notification.data);
   const opportunityModel = useSelector((state) => state.opportunity);
+  const keycloak = useKeycloakWrapper();
 
   const handleSubmitOpportunity = () => {
     dispatch(setApprovalStatus("NEW"));
-    postOpportunity(opportunityModel)
+    postOpportunity(opportunityModel, keycloak.obj.token)
       .then(() => {
         dispatch(resetOpportunity());
         dispatch(closeNotification());

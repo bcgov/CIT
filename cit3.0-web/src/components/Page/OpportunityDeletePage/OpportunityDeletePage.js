@@ -14,6 +14,7 @@ import {
 } from "../../../store/actions/opportunity";
 import ButtonRow from "../../ButtonRow/ButtonRow";
 import TextInput from "../../FormComponents/TextInput";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 
 const OpportunityDeletePage = ({ id }) => {
   const history = useHistory();
@@ -21,6 +22,7 @@ const OpportunityDeletePage = ({ id }) => {
   const dispatch = useDispatch();
   const [confirmName, setConfirmName] = useState();
   const opportunity = useSelector((state) => state.opportunity);
+  const keycloak = useKeycloakWrapper();
 
   useEffect(() => {
     let opId = id;
@@ -37,7 +39,7 @@ const OpportunityDeletePage = ({ id }) => {
   }, []);
 
   const handleDeleteOpportunity = (e) => {
-    deleteOpportunity(opportunity).then(() => {
+    deleteOpportunity(opportunity, keycloak.obj.token).then(() => {
       dispatch(resetOpportunity());
       history.goBack();
     });

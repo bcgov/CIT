@@ -35,10 +35,13 @@ import OpportunityFactory from "../factory/OpportunityFactory";
  * @param {Object} opportunityModel from redux store
  * @return {Promise} of axios api call
  */
-export function postOpportunity(opportunityModel) {
+export function postOpportunity(opportunityModel, token) {
   return axios.post(
     POST_OPPORTUNITIES_URL,
-    OpportunityFactory.createRequestFromModel(opportunityModel)
+    OpportunityFactory.createRequestFromModel(opportunityModel),
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
   );
 }
 
@@ -46,12 +49,15 @@ export function postOpportunity(opportunityModel) {
  * @param {Object} opportunityModel from redux store
  * @return {Promise} of axios api call
  */
-export function deleteOpportunity(opportunityModel) {
+export function deleteOpportunity(opportunityModel, token) {
   const opportunity = opportunityModel;
   opportunity.deleted = true;
   return axios.put(
     `${PUT_OPPORTUNITIES_URL + opportunity.id}/`,
-    OpportunityFactory.createRequestFromModel(opportunity)
+    OpportunityFactory.createRequestFromModel(opportunity),
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
   );
 }
 
@@ -59,10 +65,13 @@ export function deleteOpportunity(opportunityModel) {
  * @param {Object} opportunityModel from redux store
  * @return {Promise} of axios api call
  */
-export function updateOpportunity(opportunityModel) {
+export function updateOpportunity(opportunityModel, token) {
   return axios.put(
     `${PUT_OPPORTUNITIES_URL + opportunityModel.id}/`,
-    OpportunityFactory.createRequestFromModel(opportunityModel)
+    OpportunityFactory.createRequestFromModel(opportunityModel),
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
   );
 }
 

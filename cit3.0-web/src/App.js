@@ -27,6 +27,8 @@ import AuthLayout from "./layouts/AuthLayout";
 import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainView";
 import OpportunityApproveListPage from "./components/Page/OpportunityApproveListPage/OpportunityApproveListPage";
 
+import Roles from "./constants/roles";
+
 function App() {
   const getTitle = (page) => `Investments${` - ${page}`}`;
 
@@ -64,6 +66,7 @@ function App() {
                 protected
                 title={getTitle("Opportunity Dashboard")}
                 path="/dashboard"
+                roles={[Roles.ECONOMIC_DEVELOPMENT_OFFICER]}
                 layout={AuthLayout}
                 component={EDODashboard}
               />
@@ -72,6 +75,11 @@ function App() {
                 exact
                 path="/opportunity"
                 title={getTitle("Add Property")}
+                roles={[
+                  Roles.SUPER_ADMINISTRATOR,
+                  Roles.SYSTEM_ADMINISTRATOR,
+                  Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                ]}
                 layout={AuthLayout}
                 component={AddOpportunity}
               />
@@ -80,6 +88,11 @@ function App() {
                 exact
                 path="/opportunity/site-info"
                 title={getTitle("Site Information")}
+                roles={[
+                  Roles.SUPER_ADMINISTRATOR,
+                  Roles.SYSTEM_ADMINISTRATOR,
+                  Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                ]}
                 layout={AuthLayout}
                 component={SiteInfomation}
               />
@@ -88,6 +101,11 @@ function App() {
                 exact
                 path="/opportunity/property-details"
                 title={getTitle("Add Property Details")}
+                roles={[
+                  Roles.SUPER_ADMINISTRATOR,
+                  Roles.SYSTEM_ADMINISTRATOR,
+                  Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                ]}
                 layout={AuthLayout}
                 component={PropertyDetails1}
               />
@@ -95,6 +113,11 @@ function App() {
                 protected
                 exact
                 path="/opportunity/additional-details"
+                roles={[
+                  Roles.SUPER_ADMINISTRATOR,
+                  Roles.SYSTEM_ADMINISTRATOR,
+                  Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                ]}
                 title={getTitle("Add Additional Details")}
                 layout={AuthLayout}
                 component={PropertyDetails2}
@@ -103,6 +126,11 @@ function App() {
                 protected
                 exact
                 path="/opportunity/review"
+                roles={[
+                  Roles.SUPER_ADMINISTRATOR,
+                  Roles.SYSTEM_ADMINISTRATOR,
+                  Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                ]}
                 title={getTitle("Opportunity Review & Submit")}
                 layout={AuthLayout}
                 component={ReviewOpportunity}
@@ -111,6 +139,11 @@ function App() {
                 protected
                 exact
                 path="/opportunity/success"
+                roles={[
+                  Roles.SUPER_ADMINISTRATOR,
+                  Roles.SYSTEM_ADMINISTRATOR,
+                  Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                ]}
                 title={getTitle("Opportunity Submitted!")}
                 layout={AuthLayout}
                 component={ReviewSubmitted}
@@ -119,6 +152,7 @@ function App() {
                 protected
                 exact
                 path="/manage/opportunities"
+                roles={[Roles.SUPER_ADMINISTRATOR, Roles.SYSTEM_ADMINISTRATOR]}
                 layout={AuthLayout}
                 component={OpportunityApproveListPage}
               />
@@ -129,12 +163,18 @@ function App() {
               <AppRoute
                 protected
                 path="/manage/opportunity/*:path"
+                roles={[Roles.SUPER_ADMINISTRATOR, Roles.SYSTEM_ADMINISTRATOR]}
                 layout={AuthLayout}
                 component={OpportunityApprovePage}
               />
               <AppRoute
                 protected
                 path="/delete/opportunity/*:path"
+                roles={[
+                  Roles.SUPER_ADMINISTRATOR,
+                  Roles.SYSTEM_ADMINISTRATOR,
+                  Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                ]}
                 layout={AuthLayout}
                 component={OpportunityDeletePage}
               />

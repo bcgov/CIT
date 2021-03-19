@@ -1,5 +1,5 @@
 {
-    "url": "http://localhost:8080/auth",
-    "realm": "cit-dev-realm",
-    "clientId": "cit-dev"
+    "url": "https://test.oidc.gov.bc.ca/auth",
+    "realm": "fyof530u",
+    "clientId": "cit-local"
 }
