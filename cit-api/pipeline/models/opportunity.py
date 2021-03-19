@@ -86,6 +86,7 @@ class Opportunity(models.Model):
     private_note = models.TextField(blank=True, null=True)
     public_note = models.TextField(blank=True, null=True)
     last_admin = models.TextField(blank=True, null=True)
+    # owner_email = models.CharField(max_length=255, blank=False, null=False)
     deleted = models.BooleanField(
         default=False,
         help_text="This is for soft deletes",
@@ -108,7 +109,8 @@ class Opportunity(models.Model):
     
     # Proximity Relationships
     # - Community
-    regional_district_id = models.ForeignKey(RegionalDistrict, on_delete=models.SET_NULL, db_column="regional_district_id", blank=True, null=True)
+    regional_district = models.ForeignKey('RegionalDistrict', on_delete=models.SET_NULL, blank=True, null=True)
+    municipality = models.ForeignKey('Municipality', on_delete=models.SET_NULL, blank=True, null=True)
     community_id = models.ForeignKey(CommunityDistance, on_delete=models.SET_NULL, db_column="community_id", blank=True, null=True)
     nearest_municipalities = models.ManyToManyField(MunicipalityDistance, db_column="nearest_municipalities", blank=True, null=True)
     nearest_first_nations = models.ManyToManyField(IndianReserveBandDistance, db_column="nearest_first_nations", blank=True, null=True)
