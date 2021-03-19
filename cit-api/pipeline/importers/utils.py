@@ -13,10 +13,12 @@ from django.utils.dateparse import parse_datetime
 from django.utils.timezone import make_aware
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 
-from pipeline.constants import BC_ALBERS_SRID, WGS84_SRID
+from pipeline.constants import WGS84_SRID
 from pipeline.models.community import Community
+from pipeline.models.census import CensusSubdivision
+from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.general import (DataSource, LocationDistance, SchoolDistrict, Municipality,
-                                     CivicLeader, Hex, Service, ISP)
+                                     CivicLeader, Hex, Service, ISP, RegionalDistrict)
 from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES
 
@@ -34,9 +36,9 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
         if Model.LONGITUDE_FIELD and Model.LATITUDE_FIELD:
             point = Point(float(row[Model.LONGITUDE_FIELD]),
                           float(row[Model.LATITUDE_FIELD]),
-                          srid=BC_ALBERS_SRID)
+                          srid=WGS84_SRID)
         else:
-            point = Point(row.geometry.x, row.geometry.y, srid=BC_ALBERS_SRID)
+            point = Point(row.geometry.x, row.geometry.y, srid=WGS84_SRID)
         print(point)
         closest_community = (Community.objects.annotate(
             distance=Distance('point', point)).order_by('distance').first())
@@ -386,6 +388,51 @@ def calculate_communities_served_for_hospitals():
         hospital.save()
 
 
+def import_bc_assessment_data(file_path, Model, resource_type):
+    with open(file_path) as csv_file:
+        csv_reader = csv.DictReader(csv_file, delimiter=',')
+        link_field = Model.LINK_FIELD
+
+        for row in csv_reader:
+            id_field = row[Model.ID_FIELD]
+            instance = None
+            #need to match the truncated csduid to the first 4 digits of the census subdivision.
+            if resource_type == 'bc_assessment_regional_district':
+
+                try:
+                    instance = Model.objects.get(bca_sbcdu_sysid=id_field)
+                except Model.DoesNotExist:
+                    instance = Model(bca_sbcdu_sysid=id_field)
+                regional_district_id = Community.objects.raw(
+                    'select id, regional_district_id from pipeline_community where CAST(census_subdivision_id AS TEXT) LIKE %s limit 1',
+                    [str(row[link_field]) + '%'])[0].regional_district_id
+                print(row[link_field])
+                regional_district = RegionalDistrict.objects.get(id=regional_district_id)
+                instance.regional_district = regional_district
+
+            elif resource_type == 'bc_assessment_census_subdivision':
+
+                try:
+                    instance = Model.objects.get(bca_sbcsdu_sysid=id_field)
+                except Model.DoesNotExist:
+                    instance = Model(bca_sbcsdu_sysid=id_field)
+                census_subdiv = CensusSubdivision.objects.get(id=int(row[link_field]))
+                instance.census_subdivision = census_subdiv
+
+            elif resource_type == 'bc_assessment_economic_region':
+                try:
+                    instance = Model.objects.get(bca_sberu_sysid=id_field)
+                except Model.DoesNotExist:
+                    instance = Model(bca_sberu_sysid=id_field)
+                census_economic_reg = CensusEconomicRegion.objects.get(
+                    economic_region_id=int(row[link_field]))
+                instance.economic_region = census_economic_reg
+
+            import_variable_fields(instance, row, Model)
+            print(instance.__dict__)
+            instance.save()
+
+
 def import_civic_leaders_from_csv(file_path):
     with open(file_path) as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=',')
@@ -564,13 +611,12 @@ def _generate_geom(feat, srid=None):
     geos_geom = GEOSGeometry(feat.geom.wkt, srid=srid or feat.geom.srid)
     # Convert MultiPolygons to plain Polygons,
     # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
-    geos_geom_out = _coerce_to_multipolygon(geos_geom, srid)
-    # geos_geom.transform(WGS84_SRID)
+    geos_geom.transform(WGS84_SRID)
+    geos_geom_out = _coerce_to_multipolygon(geos_geom)
     geos_geom_simplified = copy.deepcopy(geos_geom)
-    # geos_geom_simplified.transform(WGS84_SRID)
     geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
 
-    geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, srid)
+    geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified)
 
     return geos_geom_out, geos_geom_simplified
 
@@ -580,22 +626,20 @@ def _generate_bcdata_geom(feat, srid=None):
     Generate a clean geometry, and simplified snapshot for PostGIS insertion
     """
     # Source data tends to be in BC Alberts. #TODO: detect this instead?
-    geos_geom = GEOSGeometry(str(feat.geometry), srid=srid or feat.geometry.srid)
+    geos_geom = GEOSGeometry(feat.geometry.wkt, srid=srid or feat.geometry.srid)
     # Convert MultiPolygons to plain Polygons,
     # We assume the largest one is the one we want to keep, and the rest are artifacts/junk.
     if isinstance(geos_geom, MultiPolygon) or isinstance(geos_geom, Polygon):
+        geos_geom.transform(WGS84_SRID)
         geos_geom_out = _coerce_to_multipolygon(geos_geom, srid)
-        # geos_geom.transform(WGS84_SRID)
         geos_geom_simplified = copy.deepcopy(geos_geom)
-        # geos_geom_simplified.transform(WGS84_SRID)
         geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
         geos_geom_simplified = _coerce_to_multipolygon(geos_geom_simplified, srid)
 
     elif isinstance(geos_geom, LineString) or isinstance(geos_geom, MultiLineString):
+        geos_geom.transform(WGS84_SRID)
         geos_geom_out = _coerce_to_multilinestring(geos_geom, srid)
-        # geos_geom.transform(WGS84_SRID)
         geos_geom_simplified = copy.deepcopy(geos_geom)
-        # geos_geom_simplified.transform(WGS84_SRID)
         geos_geom_simplified = geos_geom_simplified.simplify(0.0005, preserve_topology=True)
         geos_geom_simplified = _coerce_to_multilinestring(geos_geom_simplified, srid)
 

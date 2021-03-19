@@ -55,6 +55,7 @@ resource "azurerm_app_service" "frontend" {
 
   site_config {
     linux_fx_version = "DOCKER|${var.acr_name}.azurecr.io/cit-frontend:latest"
+    always_on = true
     # http2_enabled = true
   }
 
@@ -82,6 +83,7 @@ resource "azurerm_app_service" "backend" {
 
   site_config {
     linux_fx_version = "DOCKER|${var.acr_name}.azurecr.io/cit-webapi:latest"
+    always_on = true
     cors {
       allowed_origins = ["https://cit-${var.location}-${var.environment}-${var.app_name}-frontend"]
     }
@@ -89,6 +91,7 @@ resource "azurerm_app_service" "backend" {
 
   # TODO: Get connection secrets from AKV
   app_settings = {
+    WEBSITES_PORT                   = 8000
     DOCKER_REGISTRY_SERVER_URL      = "https://${var.acr_name}.azurecr.io"
     DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.acr.admin_password

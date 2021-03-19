@@ -2,7 +2,7 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models import MultiPolygonField
 from django.contrib.gis.geos import Point
 
-from pipeline.constants import BC_ALBERS_SRID
+from pipeline.constants import WGS84_SRID
 
 
 class PermittedMajorMines(models.Model):
@@ -14,8 +14,8 @@ class PermittedMajorMines(models.Model):
     op_status_code = models.CharField(max_length=128, null=True)
     permit_no = models.CharField(max_length=128, null=True)
     permitee_name = models.CharField(max_length=128, null=True)
-    geom = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=BC_ALBERS_SRID, null=True)
+    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
 
     class Meta:
         ordering = ("id", )

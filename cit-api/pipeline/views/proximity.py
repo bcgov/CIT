@@ -224,7 +224,11 @@ class ProximityView(APIView):
             municipalities = json.loads(serializers.serialize('geojson',
                                                               municipalities_check,
                                                               geometry_field=point))
-            municipalities['distance'] = municipalities_check.first().distance.km
+            # Add the missing annotated distance value to each geojson feature
+            index = 0
+            while index < len(municipalities_check):
+                municipalities['features'][index]['properties']['distance'] = municipalities_check[index].distance.km
+                index += 1
 
 
         # TODO: Join on community, join on census for population
@@ -236,7 +240,11 @@ class ProximityView(APIView):
             first_nation_communities = json.loads(serializers.serialize('geojson',
                                                               first_nation_community_check,
                                                               geometry_field=point))
-            first_nation_communities['distance'] = first_nation_community_check.first().distance.km
+            # Add the missing annotated distance value to each geojson feature
+            index = 0
+            while index < len(first_nation_community_check):
+                first_nation_communities['features'][index]['properties']['distance'] = first_nation_community_check[index].distance.km
+                index += 1
 
         return Response(dict(regionalDistrict=regional_district,
                              nearestAirport=airport,
