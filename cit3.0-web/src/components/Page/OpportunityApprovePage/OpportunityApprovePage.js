@@ -20,6 +20,7 @@ import {
 } from "../../../store/constants/notification";
 import { setNotification } from "../../../store/actions/notification";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import { getUser } from "../../../store/actions/user";
 
 const OpportunityApprovePage = ({ id }) => {
   const location = useLocation();
@@ -40,6 +41,16 @@ const OpportunityApprovePage = ({ id }) => {
       getOpportunity(opId).then((response) => {
         const opp = OpportunityFactory.createStateFromResponse(response.data);
         dispatch(setOpportunity(opp));
+        getUser({ id: opp.userId }).then((response) => {
+          const { data: users } = response;
+          if (users.length) {
+            const appUser = users[0];
+            const places = [];
+            appUser.municipalities.forEach((m) => places.push(m.name));
+            appUser.regional_districts.forEach((r) => places.push(r.name));
+            setCommunities(places.join(", "));
+          }
+        });
       });
     }
   }, []);

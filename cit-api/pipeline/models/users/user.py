@@ -19,4 +19,5 @@ class User(models.Model):
     """
     name = models.CharField(max_length=255, blank=False, null=False)
     email = models.CharField(max_length=255, blank=False, null=False)
+    role = models.CharField(max_length=255, blank=False, null=False)
     date_created = models.DateTimeField(auto_now=True)

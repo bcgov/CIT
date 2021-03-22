@@ -86,7 +86,7 @@ class Opportunity(models.Model):
     private_note = models.TextField(blank=True, null=True)
     public_note = models.TextField(blank=True, null=True)
     last_admin = models.TextField(blank=True, null=True)
-    # owner_email = models.CharField(max_length=255, blank=False, null=False)
+    user = models.ForeignKey('User', on_delete=models.PROTECT, blank=False, null=False)
     deleted = models.BooleanField(
         default=False,
         help_text="This is for soft deletes",

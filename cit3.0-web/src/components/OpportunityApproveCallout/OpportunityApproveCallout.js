@@ -13,6 +13,7 @@ import {
   setPublicNote,
 } from "../../store/actions/opportunity";
 import { closeNotification } from "../../store/actions/notification";
+import Radios from "../FormComponents/Radios";
 
 const OpportunityApproveCallout = ({
   publicNote,
@@ -28,8 +29,16 @@ const OpportunityApproveCallout = ({
   const [newPrivateNote, setNewPrivateNote] = useState(privateNote);
   const [publicValidated, setPublicValidated] = useState(true);
   const [privateValidated, setPrivateValidated] = useState(true);
+  const [approveUser, setApproveUser] = useState(false);
+  const user = useSelector((state) => state.user);
   const listingLink = useSelector((state) => state.opportunity.link);
   const opportunityName = useSelector((state) => state.opportunity.name);
+  const opportunityMunicipality = useSelector(
+    (state) => state.opportunity.municipality.name
+  );
+  const opportunityRegionalDistrict = useSelector(
+    (state) => state.opportunity.regionalDistrict.name
+  );
 
   const goBackToAdmin = () => {
     dispatch(resetOpportunity());
@@ -126,6 +135,17 @@ const OpportunityApproveCallout = ({
             <p>
               <b>Current Status - {currentStatusName}</b>
             </p>
+            <p>{`Do you approve ${user.name}, ${user.role}, ${
+              user.email
+            } to submit on behalf of ${
+              opportunityMunicipality || opportunityRegionalDistrict
+            }`}</p>
+            <Radios
+              name="ApproveUser"
+              value={approveUser}
+              labels={["Yes", "No"]}
+              handleRadioChange={(e) => setApproveUser(e)}
+            />
             <TextInput
               heading="Internal Note"
               notes="This note will only be visible to administrators."

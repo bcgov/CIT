@@ -107,6 +107,9 @@ class OpportunitySerializer(serializers.ModelSerializer):
     nearest_highway = OpportunityRoadsAndHighwaysSerializer(required=False)
     nearest_river = OpportunityRiverSerializer(required=False)
     nearest_lake = OpportunityLakeSerializer(required=False)
+    user_id = serializers.IntegerField()
+    municipality_id = serializers.IntegerField()
+    regional_district_id = serializers.IntegerField()
 
     class Meta:
         model = Opportunity
@@ -171,7 +174,10 @@ class OpportunitySerializer(serializers.ModelSerializer):
             "nearest_post_secondary",
             "nearest_first_nations_object",
             "nearest_municipalities_object",
-            "nearest_community"
+            "nearest_community",
+            "user_id",
+            "municipality_id",
+            "regional_district_id"
         )
     
     def create(self, validated_data):

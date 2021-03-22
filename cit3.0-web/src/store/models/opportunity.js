@@ -20,6 +20,7 @@ export const OPPORTUNITY_MODEL = () => ({
   publicNote: "",
   privateNote: "",
   lastAdmin: "",
+  user: 1,
   dateCreated: "",
   dateUpdated: "",
   datePublished: null,

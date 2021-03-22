@@ -1,7 +1,9 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Proptypes from "prop-types";
 import { useKeycloakWrapper } from "../hooks/useKeycloakWrapper";
+import { getUser, setUser } from "../store/actions/user";
+import UserFactory from "../store/factory/UserFactory";
 
 export const AuthStateContext = React.createContext({
   ready: false,
@@ -11,6 +13,7 @@ const AuthStateContextProvider = ({ children }) => {
   const keycloak = useKeycloakWrapper();
   const [userInfo, setUserInfo] = React.useState(null);
   const keycloakReady = useSelector((state) => state.keycloakReady);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     if (keycloak.obj && keycloak.obj.authenticated) {
@@ -37,7 +40,7 @@ const AuthStateContextProvider = ({ children }) => {
           keycloakReady &&
           keycloak.obj &&
           (!keycloak.obj.authenticated ||
-            (keycloak.obj.authenticated && !!keycloak.obj.userInfo)),
+            (keycloak.obj.authenticated && !!userInfo)),
       }}
     >
       {children}

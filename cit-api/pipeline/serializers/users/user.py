@@ -12,7 +12,7 @@ class UserGetSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = User
-        fields = ('name', 'email', 'date_created', 'assignments')
+        fields = ('id', 'name', 'email', 'role', 'date_created', 'assignments')
 
 
 class UserPostSerializer(serializers.ModelSerializer):
@@ -24,4 +24,4 @@ class UserPostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('name', 'email', 'municipality', 'regional_district')
+        fields = ('name', 'email', 'role', 'municipality', 'regional_district')

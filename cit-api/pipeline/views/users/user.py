@@ -3,7 +3,9 @@ from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import action
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 from pipeline.models.users.user import User, Assignments
 from pipeline.models.general import Municipality, RegionalDistrict
@@ -19,18 +21,25 @@ def get_row(user):
     response = dict()
     response['municipalities'] = []
     response['regional_districts'] = []
+    response['id'] = user.id
     response['name'] = user.name
     response['email'] = user.email
     response['date_created'] = user.date_created.strftime("%Y-%b-%d")
     for assignment in user.assignments_set.all():
-        municipality = Municipality.objects.get(id=assignment.municipality_id)
-        reg = RegionalDistrict.objects.get(id=assignment.municipality_id)
-        if municipality:
+        try:
+            municipality = Municipality.objects.get(
+                id=assignment.municipality_id)
             response['municipalities'].append(
                 {'id': municipality.id, 'name': municipality.name})
-        if reg:
+        except Municipality.DoesNotExist:
+            pass
+        try:
+            reg = RegionalDistrict.objects.get(
+                id=assignment.regional_district_id)
             response['regional_districts'].append(
                 {'id': reg.id, 'name': reg.name})
+        except RegionalDistrict.DoesNotExist:
+            pass
 
     return response
 
@@ -41,12 +50,23 @@ class UserListView(GenericAPIView):
     """
     serializer_class = UserGetSerializer(many=True)
 
+    user_email_param = openapi.Parameter('email', in_=openapi.IN_QUERY,
+                                         description='User Email',
+                                         type=openapi.TYPE_STRING, required=False)
+
+    @swagger_auto_schema(manual_parameters=[user_email_param], method='GET',
+                         responses={status.HTTP_200_OK: UserGetSerializer(many=True)})
+    @action(detail=False, methods=['get'])
     def get(self, request, format=None):
         """
         Get override
         """
         response = []
-        users = User.objects.all()
+        user_email = request.query_params.get('email')
+        if user_email is not None:
+            users = User.objects.filter(email=user_email)
+        else:
+            users = User.objects.all()
         for user in users:
             response.append(get_row(user))
         return Response(response)
@@ -58,30 +78,46 @@ class UserAddView(GenericAPIView):
     """
     serializer_class = UserPostSerializer
 
+    @swagger_auto_schema(request_body=UserPostSerializer, method='POST',
+                         responses={status.HTTP_200_OK: UserGetSerializer(many=True)})
+    @action(detail=False, methods=['post'])
     def post(self, request, format=None):
         """
         Post override
         """
         user_name = request.data.get('name', None)
         user_email = request.data.get('email', None)
-        assignment_municipality = request.data.get('municipality', 0)
-        assignment_regional_district = request.data.get(
-            'regional_district', 0)
+        user_role = request.data.get('role', None)
+        assignment_municipality = int(request.data.get('municipality', 0))
+        assignment_regional_district = int(request.data.get(
+            'regional_district', 0))
 
-        user = User.objects.get(email=user_email)
-        if user is None:
-            user = User.objects.create(name=user_name, email=user_email)
+        try:
+            user = User.objects.get(email=user_email)
+        except User.DoesNotExist:
+            user = User.objects.create(
+                name=user_name, email=user_email, role=user_role)
 
-        if assignment_municipality != 0:
-            municipality = Municipality.objects.get(id=assignment_municipality)
-            user.assignments_set.add(Assignments.objects.create(
-                user=user, municipality=municipality))
+        if assignment_municipality != 0 and len(user.assignments_set.filter(municipality_id=assignment_municipality)) == 0:
+            print(assignment_municipality)
+            print(assignment_municipality != 0)
+            try:
+                municipality = Municipality.objects.get(
+                    id=assignment_municipality)
+                user.assignments_set.add(Assignments.objects.create(
+                    user=user, municipality=municipality))
+            except Municipality.DoesNotExist:
+                return Response({'message': 'The assigned Municipality does not exist'}, status=status.HTTP_400_BAD_REQUEST)
+
         # Only assign regional District if not assign municipality
         # TODO: Evaluate this use case with client
-        if assignment_regional_district != 0 and assignment_municipality == 0:
-            regional_district = RegionalDistrict.objects.get(
-                id=assignment_regional_district)
-            user.assignments_set.add(Assignments.objects.create(
-                user=user, regional_district=regional_district))
+        if assignment_regional_district != 0 and assignment_municipality == 0 and len(user.assignments_set.filter(regional_district_id=assignment_regional_district)) == 0:
+            try:
+                regional_district = RegionalDistrict.objects.get(
+                    id=assignment_regional_district)
+                user.assignments_set.add(Assignments.objects.create(
+                    user=user, regional_district=regional_district))
+            except RegionalDistrict.DoesNotExist:
+                return Response({'message': 'The assigned Regional District does not exist'}, status=status.HTTP_400_BAD_REQUEST)
         response = get_row(user)
         return Response(response)

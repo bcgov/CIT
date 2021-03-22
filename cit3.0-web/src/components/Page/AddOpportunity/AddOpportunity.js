@@ -20,6 +20,7 @@ import {
   setParcelOwner,
   setParcelSize,
   setSiteId,
+  setOpportunityUser,
 } from "../../../store/actions/opportunity";
 import Radios from "../../FormComponents/Radios";
 import Terms from "../../Terms/Terms";

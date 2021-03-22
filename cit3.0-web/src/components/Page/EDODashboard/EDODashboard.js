@@ -3,15 +3,21 @@ import { Button } from "shared-components";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import "./EDODashboard.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import OpportunityTable from "../../OpportunityTable/OpportunityTable";
 import { resetOpportunity } from "../../../store/actions/opportunity";
 import { GET_OPPORTUNITIES_LIST_URL } from "../../../store/constants/api-urls";
+import { getUser, setUser } from "../../../store/actions/user";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import UserFactory from "../../../store/factory/UserFactory";
 
 export default function EDODashboard() {
   const [tableData, setTableData] = useState(null);
+  const [communities, setCommunities] = useState("");
   const history = useHistory();
   const dispatch = useDispatch();
+  const keycloak = useKeycloakWrapper();
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     axios
@@ -24,6 +30,16 @@ export default function EDODashboard() {
         console.error(err);
         setTableData([]);
       });
+    getUser({ email: keycloak.email }).then((response) => {
+      const { data: users } = response;
+      if (users.length) {
+        const appUser = users[0];
+        const places = [];
+        appUser.municipalities.forEach((m) => places.push(m.name));
+        appUser.regional_districts.forEach((r) => places.push(r.name));
+        setCommunities(places.join(", "));
+      }
+    });
   }, []);
 
   const goToMap = () => {
@@ -60,7 +76,7 @@ export default function EDODashboard() {
     dataSection = (
       <>
         <h1 className="dashboard-header">
-          {"Your Promoted Opportunities in <community_name>"}
+          {`Your Promoted Opportunities in ${communities}`}
         </h1>
         <OpportunityTable tableData={tableData} />
       </>
