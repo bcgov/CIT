@@ -36,6 +36,7 @@ export const OPPORTUNITY_MODEL = () => ({
   nearbyResources: {},
   community: {},
   regionalDistrict: {},
+  municipality: {},
   municipalities: [],
   firstNationCommunities: [],
   services: {
@@ -312,7 +313,11 @@ export class Opportunity {
   }
 
   set regionalDistrict(value) {
-    this.state.regionalDistrict.id = value.id;
+    this.state.regionalDistrict = value;
+  }
+
+  set municipality(value) {
+    this.state.municipality = value;
   }
 
   set nearestMunicipalities(value) {
@@ -367,6 +372,10 @@ export class Opportunity {
 
   set lastAdmin(value) {
     this.state.lastAdmin = value;
+  }
+
+  set userId(value) {
+    this.state.user = value;
   }
 
   // Business Contact

@@ -217,6 +217,7 @@ class ProximityView(APIView):
             network_at_road['speed'] = network_at_road_check.first().best_broadband
 
         # TODO: Join on community, join on census for population
+        municipality = None
         municipalities = None
         municipalities_check = Municipality.objects.annotate(
             distance=Distance("geom", point)).filter(geom__distance_lte=(point, D(km=100))).order_by('distance')[:5]
@@ -227,6 +228,8 @@ class ProximityView(APIView):
             # Add the missing annotated distance value to each geojson feature
             index = 0
             while index < len(municipalities_check):
+                if index == 0:
+                    municipality = {'id': municipalities['features'][index]['properties']['pk'], 'name': municipalities['features'][index]['properties']['name']}
                 municipalities['features'][index]['properties']['distance'] = municipalities_check[index].distance.km
                 index += 1
 
@@ -246,7 +249,8 @@ class ProximityView(APIView):
                 first_nation_communities['features'][index]['properties']['distance'] = first_nation_community_check[index].distance.km
                 index += 1
 
-        return Response(dict(regionalDistrict=regional_district,
+        return Response(dict(municipality=municipality,
+                             regionalDistrict=regional_district,
                              nearestAirport=airport,
                              nearestPort=deep_port,
                              nearestCustomsPort=customs_port,

@@ -12,6 +12,7 @@ from pipeline.models.general import Municipality, RegionalDistrict
 
 
 from pipeline.serializers.users.user import UserGetSerializer, UserPostSerializer
+from pipeline.permissions.IsAuthenticated import IsAdminAuthenticated
 
 
 def get_row(user):
@@ -49,6 +50,7 @@ class UserListView(GenericAPIView):
     View to retrieve a list of users
     """
     serializer_class = UserGetSerializer(many=True)
+    permission_classes = [IsAdminAuthenticated]
 
     user_email_param = openapi.Parameter('email', in_=openapi.IN_QUERY,
                                          description='User Email',
@@ -62,9 +64,12 @@ class UserListView(GenericAPIView):
         Get override
         """
         response = []
+        user_id = request.query_params.get('id')
         user_email = request.query_params.get('email')
         if user_email is not None:
             users = User.objects.filter(email=user_email)
+        elif user_id is not None:
+            users = User.objects.filter(id=user_id)
         else:
             users = User.objects.all()
         for user in users:
@@ -77,6 +82,7 @@ class UserAddView(GenericAPIView):
     View to save details of a single user
     """
     serializer_class = UserPostSerializer
+    permission_classes = [IsAdminAuthenticated]
 
     @swagger_auto_schema(request_body=UserPostSerializer, method='POST',
                          responses={status.HTTP_200_OK: UserGetSerializer(many=True)})
@@ -99,8 +105,6 @@ class UserAddView(GenericAPIView):
                 name=user_name, email=user_email, role=user_role)
 
         if assignment_municipality != 0 and len(user.assignments_set.filter(municipality_id=assignment_municipality)) == 0:
-            print(assignment_municipality)
-            print(assignment_municipality != 0)
             try:
                 municipality = Municipality.objects.get(
                     id=assignment_municipality)

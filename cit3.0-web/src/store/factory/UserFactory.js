@@ -31,14 +31,12 @@ function createStateFromKeyCloak(keycloak) {
  * @returns {Object} state for redux store
  */
 function createRequestFromState(userModel, opportunityModel) {
-  const municipality =
-    opportunityModel.municipalities &&
-    opportunityModel.municipalities.find((muni) => muni.distance === 0);
   return {
     name: userModel.name,
     email: userModel.email,
     role: userModel.role,
-    municipality: (municipality && municipality.id) || 0,
+    municipality:
+      opportunityModel.municipality && opportunityModel.municipality.id,
     regional_district:
       opportunityModel.regionalDistrict && opportunityModel.regionalDistrict.id,
   };
