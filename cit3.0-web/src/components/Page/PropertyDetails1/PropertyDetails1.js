@@ -295,7 +295,6 @@ export default function PropertyDetails1() {
                   </Row>
                 </Col>
               )}
-              <Col />
             </Row>
           </Col>
         </Row>
