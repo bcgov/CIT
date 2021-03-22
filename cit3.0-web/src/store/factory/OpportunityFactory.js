@@ -210,8 +210,8 @@ function createRequestFromModel(state) {
     opportunity_water_capacity: parseFloat(state.services.waterSupply.value),
     opportunity_sewer_connected: state.services.sewer.name[0],
     opportunity_sewer_capacity: parseFloat(state.services.sewer.value),
-    opportunity_natual_gas_connected: state.services.naturalGas.name[0],
-    opportunity_natual_gas_capacity: parseFloat(
+    opportunity_natural_gas_connected: state.services.naturalGas.name[0],
+    opportunity_natural_gas_capacity: parseFloat(
       state.services.naturalGas.value
     ),
     opportunity_electrical_connected: state.services.electrical.name[0],
