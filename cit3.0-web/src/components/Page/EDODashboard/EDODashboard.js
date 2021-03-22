@@ -20,16 +20,6 @@ export default function EDODashboard() {
   const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    axios
-      .get(GET_OPPORTUNITIES_LIST_URL)
-      .then((data) => {
-        setTableData(data.data.results);
-      })
-      .catch((err) => {
-        /* eslint-disable-next-line */
-        console.error(err);
-        setTableData([]);
-      });
     getUser({ email: keycloak.email }).then((response) => {
       const { data: users } = response;
       if (users.length) {
@@ -38,6 +28,16 @@ export default function EDODashboard() {
         appUser.municipalities.forEach((m) => places.push(m.name));
         appUser.regional_districts.forEach((r) => places.push(r.name));
         setCommunities(places.join(", "));
+        axios
+          .get(`${GET_OPPORTUNITIES_LIST_URL}?user_id=${appUser.id}`)
+          .then((data) => {
+            setTableData(data.data.results);
+          })
+          .catch((err) => {
+            /* eslint-disable-next-line */
+            console.error(err);
+            setTableData([]);
+          });
       }
     });
   }, []);

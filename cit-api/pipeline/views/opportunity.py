@@ -28,6 +28,10 @@ class OpportunitiesList(generics.ListAPIView):
     def get_queryset(self):
         queryset = Opportunity.objects.all()
         queryset = queryset.filter(deleted=False)
+        
+        user_id = self.request.query_params.get('user_id', None)
+        if(user_id is not None):
+            queryset = queryset.filter(user_id=user_id)
 
         submitted_from_date = self.request.query_params.get('submitted_from_date', None)
         submitted_to_date = self.request.query_params.get('submitted_to_date', None)
