@@ -111,7 +111,7 @@ class Opportunity(models.Model):
     # Proximity Relationships
     # - Community
     regional_district_id = models.ForeignKey(RegionalDistrict, on_delete=models.SET_NULL, db_column="regional_district_id", blank=True, null=True)
-    community_id = models.ForeignKey(CommunityDistance, on_delete=models.SET_NULL, db_column="community_id", blank=True, null=True)
+    nearest_community = models.ForeignKey(CommunityDistance, on_delete=models.SET_NULL, db_column="nearest_community", blank=True, null=True)
     nearest_municipalities = models.ManyToManyField(MunicipalityDistance, db_column="nearest_municipalities", blank=True, null=True)
     nearest_first_nations = models.ManyToManyField(IndianReserveBandDistance, db_column="nearest_first_nations", blank=True, null=True)
 
@@ -132,7 +132,7 @@ class Opportunity(models.Model):
     nearest_police_station = models.ForeignKey(FirstResponderDistance, related_name="police_station", on_delete=models.SET_NULL, db_column="nearest_police_station", blank=True, null=True)
     nearest_ambulance_station = models.ForeignKey(FirstResponderDistance, related_name="ambulance_station", on_delete=models.SET_NULL, db_column="nearest_ambulance_station", blank=True, null=True)
     nearest_coast_guard_station = models.ForeignKey(FirstResponderDistance, related_name="coast_guard_station", on_delete=models.SET_NULL, db_column="nearest_coast_guard_station", blank=True, null=True)
-    nearest_post_secondary = models.ForeignKey(ResearchCentreDistance, related_name="post_secondary", on_delete=models.SET_NULL, db_column="nearest_post_secondary", blank=True, null=True)
+    nearest_post_secondary = models.ForeignKey(PostSecondaryDistance, related_name="post_secondary", on_delete=models.SET_NULL, db_column="nearest_post_secondary", blank=True, null=True)
 
 
     # Parcel
