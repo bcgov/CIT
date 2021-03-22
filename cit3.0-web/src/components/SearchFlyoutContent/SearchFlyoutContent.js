@@ -123,7 +123,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         <p>{switchFilter.label}</p>
       </Col>
       <Col xs="auto" className="no-padding">
-        <p>No</p>
+        <p>Off</p>
       </Col>
       <Col xs="auto">
         <Switch
@@ -141,7 +141,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         />
       </Col>
       <Col xs="auto" className="no-padding">
-        <p>Yes</p>
+        <p>On</p>
       </Col>
     </Row>
   ));
@@ -149,7 +149,8 @@ export default function SearchFlyoutContent({ setQuery }) {
   const renderTooltip = (props) => (
     // TODO: get text for this, currently placeholder
     <Tooltip id="button-tooltip" {...props}>
-      Choose whether to exclude or include values that are not set to Yes or No.
+      Choose whether to exclude or include opportunities with site servicing
+      values that are not set to Yes or No.
     </Tooltip>
   );
 
@@ -247,7 +248,7 @@ export default function SearchFlyoutContent({ setQuery }) {
           <p>Post-secondary Institute within 100km?:</p>
         </Col>
         <Col xs="auto" className="no-padding">
-          <p>No</p>
+          <p>Off</p>
         </Col>
         <Col xs="auto">
           <Switch
@@ -265,7 +266,7 @@ export default function SearchFlyoutContent({ setQuery }) {
           />
         </Col>
         <Col xs="auto" className="no-padding">
-          <p>Yes</p>
+          <p>On</p>
         </Col>
       </Row>
       <NumberRangeFilter
