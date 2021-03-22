@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import Switch from "react-switch";
 import { Row, Col, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { MdHelp } from "react-icons/md";
@@ -7,7 +8,7 @@ import SelectFilter from "../SelectFilter/SelectFilter";
 import CommunityOrPopulationProximityFilter from "../CommunityOrPopulationProximityFilter/CommunityOrPopulationProximityFilter";
 import "./SearchFlyoutContent.scss";
 
-export default function SearchFlyoutContent() {
+export default function SearchFlyoutContent({ setQuery }) {
   const [zoningFilters, setZoningFilters] = useState([
     {
       label: "Commercial",
@@ -69,28 +70,52 @@ export default function SearchFlyoutContent() {
       label: "Road access:",
       checked: roadAccessSwitchValue,
       onChange: setRoadAccessSwitchValue,
+      queryKey: "opportunity_road_connected",
     },
     {
       label: "Water:",
       checked: waterSwitchValue,
       onChange: setWaterSwitchValue,
+      queryKey: "opportunity_water_connected",
     },
     {
       label: "Sewer:",
       checked: sewerSwitchValue,
       onChange: setSewerSwitchValue,
+      queryKey: "opportunity_sewer_connected",
     },
     {
       label: "Electrical Infrastructure:",
       checked: electricalInfrastructureSwitchValue,
       onChange: setElectricalInfrastructureSwitchValue,
+      queryKey: "opportunity_electrical_connected",
     },
     {
       label: "Natural Gas:",
       checked: naturalGasSwitchValue,
       onChange: setNaturalGasSwitchValue,
+      queryKey: "opportunity_natural_gas_connected",
     },
   ];
+
+  useEffect(() => {
+    const query = new URLSearchParams();
+    switchFilters.forEach((filter) => {
+      query.append(filter.queryKey, filter.checked === true ? "Y" : "N");
+    });
+
+    query.append("exclude_unknowns", excludeUnknowns ? "Y" : "N");
+
+    console.log(query.toString());
+    setQuery(query.toString());
+  }, [
+    roadAccessSwitchValue,
+    waterSwitchValue,
+    sewerSwitchValue,
+    electricalInfrastructureSwitchValue,
+    naturalGasSwitchValue,
+    excludeUnknowns,
+  ]);
 
   const siteServicingSection = switchFilters.map((switchFilter) => (
     <Row className="flex-nowrap" key={switchFilter.label}>
@@ -253,3 +278,7 @@ export default function SearchFlyoutContent() {
     </div>
   );
 }
+
+SearchFlyoutContent.propTypes = {
+  setQuery: PropTypes.func.isRequired,
+};
