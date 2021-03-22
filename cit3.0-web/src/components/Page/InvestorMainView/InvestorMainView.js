@@ -16,31 +16,35 @@ export default function InvestorMainView() {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    setCurrentPage(1);
-    axios
-      .get(`${GET_OPPORTUNITIES_LIST_URL}?${query ? `${query}&` : ""}`)
-      .then((data) => {
-        setOpportunities(data.data.results);
-        setTotalCount(data.data.count);
-      })
-      .catch(() => {
-        setOpportunities(null);
-      });
+    if (query.length > 0) {
+      setCurrentPage(1);
+      axios
+        .get(`${GET_OPPORTUNITIES_LIST_URL}?${query ? `${query}&` : ""}`)
+        .then((data) => {
+          setOpportunities(data.data.results);
+          setTotalCount(data.data.count);
+        })
+        .catch(() => {
+          setOpportunities(null);
+        });
+    }
   }, [query]);
 
   useEffect(() => {
-    axios
-      .get(
-        `${GET_OPPORTUNITIES_LIST_URL}?${
-          query ? `${query}&` : ""
-        }page=${currentPage}&page_size=${pageSize}`
-      )
-      .then((data) => {
-        setPaginatedOpportunities(data.data.results);
-      })
-      .catch(() => {
-        setPaginatedOpportunities(null);
-      });
+    if (query.length > 0) {
+      axios
+        .get(
+          `${GET_OPPORTUNITIES_LIST_URL}?${
+            query ? `${query}&` : ""
+          }page=${currentPage}&page_size=${pageSize}`
+        )
+        .then((data) => {
+          setPaginatedOpportunities(data.data.results);
+        })
+        .catch(() => {
+          setPaginatedOpportunities(null);
+        });
+    }
   }, [currentPage, query]);
 
   return (
