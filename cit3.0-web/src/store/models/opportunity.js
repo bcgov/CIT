@@ -95,8 +95,8 @@ export const OPPORTUNITY_MODEL = () => ({
       type: "distance",
       suffix: "km",
     },
-    nearResearchCenter: {
-      title: "Research Center within 100km",
+    nearResearchCentre: {
+      title: "Research Centre within 100km",
       name: "No",
       value: 0,
       type: "distance",
@@ -261,7 +261,7 @@ export const OPPORTUNITY_MODEL = () => ({
       type: "multi",
     },
     opportunityDescription: {
-      title: "Oppotunity Description",
+      title: "Opportunity Description",
       value: "",
       type: "paragraph",
     },
@@ -282,6 +282,8 @@ export const OPPORTUNITY_MODEL = () => ({
     },
   },
 });
+
+const STATUS_CODES = { Y: "Yes", N: "No", U: "Uknown" };
 
 /**
  * Model used to map visual sections of the screens.
@@ -387,23 +389,29 @@ export class Opportunity {
   set nearestHighway(value) {
     this.state.transportation.nearHighway.name =
       value.features && value.features[0].properties.name;
-    this.state.transportation.nearHighway.value = value.distance;
+    this.state.transportation.nearHighway.value = value.highway_distance;
     this.state.transportation.nearHighway.pk =
       value.features && value.features[0].properties.pk;
   }
 
   set nearestAirport(value) {
-    this.state.transportation.nearAirport.name =
-      value.features && value.features[0].properties.name;
-    this.state.transportation.nearAirport.value = value.distance;
-    this.state.transportation.nearAirport.pk =
-      value.features && value.features[0].properties.pk;
+    if (value.features) {
+      this.state.transportation.nearAirport.name =
+        value.features[0].properties.name;
+      this.state.transportation.nearAirport.value = value.airport_distance;
+      this.state.transportation.nearAirport.pk =
+        value.features[0].properties.pk;
+    } else {
+      this.state.transportation.nearAirport.name = value.name;
+      this.state.transportation.nearAirport.value = value.airport_distance;
+      this.state.transportation.nearAirport.pk = value.airport_id;
+    }
   }
 
   set nearestRailway(value) {
     this.state.transportation.nearRailway.name =
       value.features && value.features[0].properties.name;
-    this.state.transportation.nearRailway.value = value.distance;
+    this.state.transportation.nearRailway.value = value.railway_distance;
     this.state.transportation.nearRailway.pk =
       value.features && value.features[0].properties.pk;
   }
@@ -411,7 +419,7 @@ export class Opportunity {
   set nearestPort(value) {
     this.state.transportation.nearPort.name =
       value.features && value.features[0].properties.name;
-    this.state.transportation.nearPort.value = value.distance;
+    this.state.transportation.nearPort.value = value.port_distance;
     this.state.transportation.nearPort.pk =
       value.features && value.features[0].properties.pk;
   }
@@ -419,7 +427,8 @@ export class Opportunity {
   set nearestCustomsPort(value) {
     this.state.transportation.nearCustomsPort.name =
       value.features && value.features[0].properties.name;
-    this.state.transportation.nearCustomsPort.value = value.distance;
+    this.state.transportation.nearCustomsPort.value =
+      value.customs_port_distance;
     this.state.transportation.nearCustomsPort.pk =
       value.features && value.features[0].properties.pk;
   }
@@ -437,7 +446,7 @@ export class Opportunity {
     if (value) {
       this.state.physical.nearLake.name = "Yes";
     }
-    this.state.physical.nearLake.value = value.distance;
+    this.state.physical.nearLake.value = value.lake_distance;
     this.state.physical.nearLake.pk =
       value.features && value.features[0].properties.pk;
   }
@@ -446,17 +455,60 @@ export class Opportunity {
     if (value) {
       this.state.physical.nearRiver.name = "Yes";
     }
-    this.state.physical.nearRiver.value = value.distance;
+    this.state.physical.nearRiver.value = value.river_distance;
     this.state.physical.nearRiver.pk =
       value.features && value.features[0].properties.pk;
   }
 
   // Services
-  networkAvg(value) {
+  set opportunityRoadConnected(name) {
+    this.state.services.roadAccess.name = STATUS_CODES[name];
+  }
+
+  set opportunityWaterConnected(name) {
+    this.state.services.waterSupply.name = STATUS_CODES[name];
+  }
+
+  set opportunityWaterCapacity(value) {
+    this.state.services.waterSupply.value = value;
+  }
+
+  set opportunitySewerConnected(name) {
+    this.state.services.sewer.name = STATUS_CODES[name];
+  }
+
+  set opportunitySewerCapacity(value) {
+    this.state.services.sewer.value = value;
+  }
+
+  set opportunityNaturalGasConnected(name) {
+    this.state.services.naturalGas.name = STATUS_CODES[name];
+  }
+
+  set opportunityNaturalGasCapacity(value) {
+    this.state.services.naturalGas.value = value;
+  }
+
+  set opportunityElectricalConnected(name) {
+    this.state.services.electrical.name = STATUS_CODES[name];
+  }
+
+  set opportunityElectricalCapacity(value) {
+    this.state.services.electrical.value = value;
+  }
+
+  set nearestTransmissionLine(value) {
+    if (value) {
+      this.state.services.transmission.name = "Yes";
+    }
+    this.state.services.transmission.value = value;
+  }
+
+  set networkAvg(value) {
     this.state.services.networkAvg.value = value.speed;
   }
 
-  networkAtRoad(value) {
+  set networkAtRoad(value) {
     this.state.services.networkAtRoad.value = value.speed;
   }
 
@@ -467,12 +519,12 @@ export class Opportunity {
     this.state.services.transmission.value = value.distance;
   }
 
-  set nearestResearchCenter(value) {
+  set nearestResearchCentre(value) {
     if (value) {
-      this.state.services.nearResearchCenter.name = "Yes";
+      this.state.services.nearResearchCentre.name = "Yes";
     }
-    this.state.services.nearResearchCenter.value = value.distance;
-    this.state.services.nearResearchCenter.pk =
+    this.state.services.nearResearchCentre.value = value.distance;
+    this.state.services.nearResearchCentre.pk =
       value.features && value.features[0].properties.pk;
   }
 
@@ -525,7 +577,8 @@ export class Opportunity {
     if (value) {
       this.state.services.nearSecondarySchool.name = "Yes";
     }
-    this.state.services.nearSecondarySchool.value = value.distance;
+    this.state.services.nearSecondarySchool.value =
+      value.post_secondary_distance;
     this.state.services.nearSecondarySchool.pk =
       value.features && value.features[0].properties.pk;
   }

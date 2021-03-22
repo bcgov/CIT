@@ -18,7 +18,9 @@ const LocationsPanel = ({
           <h3>Location</h3>
         </div>
         <span className="flex-shrink-0">
-          {coords.length ? `${coords[0]}, ${coords[1]}` : "No Coordinates"}
+          {coords.length
+            ? `${coords[0].toFixed(4)}, ${coords[1].toFixed(4)}`
+            : "No Coordinates"}
         </span>
       </div>
       <h4 className="h4">{address || "No Address"}</h4>

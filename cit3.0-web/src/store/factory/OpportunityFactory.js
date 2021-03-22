@@ -226,7 +226,7 @@ function createStateFromResponse(response) {
   /* eslint prefer-destructuring: "off" */
   const model = new Opportunity();
 
-  // Remap sligified names to camelCase names
+  // Remap slugified names to camelCase names
   Object.entries(response).forEach((field) => {
     const newKey = _.camelCase(field[0]);
 
@@ -250,7 +250,7 @@ function createModelFromState(state) {
 function mergeProximityState(state, proximity) {
   const model = createModelFromState(state);
 
-  // Remap sligified names to camelCase names
+  // Remap slugified names to camelCase names
   Object.entries(proximity).forEach((field) => {
     const newKey = _.camelCase(field[0]);
 
