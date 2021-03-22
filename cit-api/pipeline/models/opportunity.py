@@ -177,12 +177,12 @@ class Opportunity(models.Model):
                                                      blank=True,
                                                      null=True)
     # Natural Gase
-    opportunity_natual_gas_connected = models.CharField(blank=False,
+    opportunity_natural_gas_connected = models.CharField(blank=False,
                                                         null=False,
                                                         default="U",
                                                         max_length=1,
                                                         choices=ACCESS_CHOICES)
-    opportunity_natual_gas_capacity = models.DecimalField(max_digits=7,
+    opportunity_natural_gas_capacity = models.DecimalField(max_digits=7,
                                                           decimal_places=3,
                                                           blank=True,
                                                           null=True)
