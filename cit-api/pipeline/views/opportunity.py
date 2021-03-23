@@ -1,8 +1,13 @@
+import os
 from rest_framework import generics
 from rest_framework import pagination
+from rest_framework.permissions import BasePermission, SAFE_METHODS
 from django.db.models import Q, F
 from django.contrib.gis.measure import D
-import operator
+import json
+
+from keycloak import KeycloakOpenID
+from keycloak.exceptions import KeycloakConnectionError, KeycloakGetError
 
 from pipeline.models.opportunity import Opportunity
 from pipeline.models.general import RegionalDistrict
@@ -137,9 +142,45 @@ class OpportunityCreateView(generics.CreateAPIView):
     model=Opportunity
     serializer_class = OpportunitySerializer
 
+class IsAuthenticated(BasePermission):
+    message = 'Insufficent user permission.'
+
+    def valid_user(self, request):
+        try:
+            # Configure client
+            keycloak_openid = KeycloakOpenID(server_url=os.environ.get('KEY_CLOAK_URL'),
+                                             client_id=os.environ.get('KEY_CLOAK_CLIENT'),
+                                             realm_name=os.environ.get('KEY_CLOAK_REALM'))
+ 
+            # Get WellKnow
+            config_well_know = keycloak_openid.well_know()
+
+            # Get Userinfo
+            userinfo = keycloak_openid.userinfo(request.headers['Authorization'][7:])
+
+            # Use Userinfo to validate permissions
+            return any(i in ["IDIR", "BCeID"] for i in userinfo['roles'])
+        except KeycloakConnectionError as e:
+            self.message = 'Cannot connect to authorization server'
+        except AttributeError as e:
+            self.message = 'Authorization response in bad format'
+        except KeyError as e:
+            self.message = 'Must supply an Authorization token'
+        except KeycloakGetError as e:
+            self.message = 'Failed to recieve userinfo'
+
+        return False
+
+    def has_permission(self, request, view):
+        return request.method == "GET" or (request.method not in SAFE_METHODS and self.valid_user(request))
+
+
 class OpportunityView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OpportunitySerializer
     lookup_field = 'id'
+    permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
         return Opportunity.objects.filter(id=self.kwargs['id'])
+
 

@@ -19,6 +19,7 @@ import {
   NOTIFICATION_ERROR,
 } from "../../../store/constants/notification";
 import { setNotification } from "../../../store/actions/notification";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 
 const OpportunityApprovePage = ({ id }) => {
   const location = useLocation();
@@ -27,6 +28,7 @@ const OpportunityApprovePage = ({ id }) => {
   const opportunity = useSelector((state) => state.opportunity);
   const notificationShow = useSelector((state) => state.notification.show);
   const notificationType = useSelector((state) => state.notification.type);
+  const keycloak = useKeycloakWrapper();
 
   useEffect(() => {
     let opId = id;
@@ -51,7 +53,7 @@ const OpportunityApprovePage = ({ id }) => {
 
   const handleUpdateOpportunity = (newStatus) => {
     setAlertStatus(newStatus);
-    updateOpportunity(opportunity)
+    updateOpportunity(opportunity, keycloak.obj.token)
       .then(() => {
         dispatch(setNotification(NOTIFICATION_SUCCESS));
       })

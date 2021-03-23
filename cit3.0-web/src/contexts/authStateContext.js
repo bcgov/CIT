@@ -13,8 +13,8 @@ const AuthStateContextProvider = ({ children }) => {
   const keycloakReady = useSelector((state) => state.keycloakReady);
 
   React.useEffect(() => {
-    const loadUserInfo = () => {
-      if (keycloak.obj && keycloak.obj.authenticated) {
+    if (keycloak.obj && keycloak.obj.authenticated) {
+      const loadUserInfo = () => {
         keycloak.obj
           .loadUserInfo()
           .then((user) => {
@@ -24,11 +24,10 @@ const AuthStateContextProvider = ({ children }) => {
             // eslint-disable-next-line
             console.error(e);
           });
-      }
-    };
-
-    loadUserInfo();
-  }, [keycloak.obj]);
+      };
+      loadUserInfo();
+    }
+  }, [keycloakReady]);
 
   return (
     <AuthStateContext.Provider
@@ -38,7 +37,7 @@ const AuthStateContextProvider = ({ children }) => {
           keycloakReady &&
           keycloak.obj &&
           (!keycloak.obj.authenticated ||
-            (keycloak.obj.authenticated && !!userInfo)),
+            (keycloak.obj.authenticated && !!keycloak.obj.userInfo)),
       }}
     >
       {children}
