@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   ADD_ALL,
+  ADD_USER,
   ADD_ADDRESS,
   ADD_COORDS,
   ADD_PID,
@@ -90,6 +91,14 @@ export function getOpportunity(opportunityId) {
  */
 export function setOpportunity(opportunity) {
   return { type: ADD_ALL, payload: opportunity };
+}
+
+/**
+ * @param {Number} userId
+ * @return {Object} for redux reducer
+ */
+export function setOpportunityUser(userId) {
+  return { type: ADD_USER, payload: userId };
 }
 
 /**

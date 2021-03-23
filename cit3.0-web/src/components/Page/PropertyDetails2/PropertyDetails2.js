@@ -10,19 +10,33 @@ import {
   setBusinessContactName,
   setBusinessContactEmail,
   setUserInfo,
-  setBusinessNameShared,
 } from "../../../store/actions/opportunity";
+import {
+  setUserInfoName,
+  setUserInfoEmail,
+  setUserInfoRole,
+  getUser,
+  setUser,
+  resetUser,
+} from "../../../store/actions/user";
 import Validator from "../../FormComponents/Validator";
 import "./PropertyDetails2.css";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import UserFactory from "../../../store/factory/UserFactory";
 
 export default function PropertyDetails2() {
   const dispatch = useDispatch();
+  const [businessContactSync, setBusinessContactSync] = useState(false);
+  const [userInfoSync, setUserInfoSync] = useState(false);
   const businessContactEmail = useSelector(
     (state) => state.opportunity.businessContactEmail
   );
   const businessContactName = useSelector(
     (state) => state.opportunity.businessContactName
   );
+  const userInfoEmail = useSelector((state) => state.user.email);
+  const userInfoName = useSelector((state) => state.user.name);
+  const userInfoRole = useSelector((state) => state.user.role);
   const commLink = useSelector(
     (state) => state.opportunity.userInfo.communityLink.value
   );
@@ -35,6 +49,7 @@ export default function PropertyDetails2() {
   const envInfo = useSelector(
     (state) => state.opportunity.userInfo.environmentalInformation.value
   );
+  const keycloak = useKeycloakWrapper();
 
   const [validEmail, setValidEmail] = useState(true);
 
@@ -67,7 +82,25 @@ export default function PropertyDetails2() {
   };
 
   const handleCheck = (isChecked) => {
-    dispatch(setBusinessNameShared(isChecked));
+    setBusinessContactSync(isChecked);
+    dispatch(setBusinessContactName(isChecked ? keycloak.displayName : ""));
+    dispatch(setBusinessContactEmail(isChecked ? keycloak.email : ""));
+  };
+
+  const handleYourInfoCheck = (isChecked) => {
+    setUserInfoSync(isChecked);
+    if (isChecked) {
+      dispatch(setUser(UserFactory.createStateFromKeyCloak(keycloak)));
+      getUser({ email: keycloak.email }).then((response) => {
+        const { data: users } = response;
+        if (users.length) {
+          const appUser = users[0];
+          dispatch(setUser(UserFactory.createStateFromResponse(appUser)));
+        }
+      });
+    } else {
+      dispatch(resetUser());
+    }
   };
   return (
     <>
@@ -135,11 +168,18 @@ export default function PropertyDetails2() {
             name="opportunityLink"
           />
         </Row>
-        <Row className="mb-3">
-          <h4>Business Contract</h4>
+        <Row>
+          <div className="d-flex flex-column">
+            <h4>Business Contact</h4>
+            <span style={{ opacity: "0.7" }} className="my-1">
+              This will be the contact information displayed on the public
+              listing of this opportunity.
+            </span>
+          </div>
         </Row>
         <Row className="mb-3">
           <Form.Check
+            checked={businessContactSync}
             onClick={(e) => handleCheck(e.target.checked)}
             type="checkbox"
             label="Use the Contact Name/Email associated with the BCeID logged in."
@@ -162,22 +202,90 @@ export default function PropertyDetails2() {
             <p id="email-label" className="mb-0">
               Business Contact Email
             </p>
-            <input
-              autoComplete="off"
-              aria-labelledby="email-label"
-              className="bcgov-text-input mb-1 w-100"
-              type="email"
-              name="busEmail"
-              pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g"
-              onChange={(e) => {
-                dispatch(setBusinessContactEmail(e.target.value));
-                validateEmail(e.target.value);
-              }}
-              value={businessContactEmail}
-            />
+            <div className="pb-3">
+              <input
+                autoComplete="off"
+                aria-labelledby="email-label"
+                className="bcgov-text-input mb-1 w-100"
+                type="email"
+                name="busEmail"
+                pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g"
+                onChange={(e) => {
+                  dispatch(setBusinessContactEmail(e.target.value));
+                  validateEmail(e.target.value);
+                }}
+                value={businessContactEmail}
+              />
+            </div>
             {!validEmail && (
               <Validator message="Please enter a valid email address" />
             )}
+          </Col>
+          <Col />
+        </Row>
+        <Row>
+          <div className="d-flex flex-column">
+            <h4>Your Information</h4>
+            <span style={{ opacity: "0.7" }} className="my-1">
+              This will be for our records, and won&apos;t be shown to the
+              public.
+            </span>
+          </div>
+        </Row>
+        <Row className="mb-3">
+          <Form.Check
+            checked={userInfoSync}
+            onClick={(e) => handleYourInfoCheck(e.target.checked)}
+            type="checkbox"
+            label="Use the Contact Name/Email associated with the BCeID logged in."
+            aria-label="Use the Contact Name/Email associated with the BCeID logged in."
+          />
+        </Row>
+        <Row className="mb-4">
+          <Col className="pl-0">
+            <TextInput
+              required={false}
+              heading="Your Full Name"
+              notes=""
+              rows={1}
+              value={userInfoName}
+              handleChange={(name, value) => dispatch(setUserInfoName(value))}
+              name="userInfoName"
+            />
+            <p id="email-label" className="mb-0">
+              Email
+            </p>
+
+            <div className="pb-3">
+              <input
+                autoComplete="off"
+                aria-labelledby="email-label"
+                className="bcgov-text-input mb-1 w-100"
+                type="email"
+                name="userInfoEmail"
+                pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g"
+                onChange={(e) => {
+                  dispatch(setUserInfoEmail(e.target.value));
+                  validateEmail(e.target.value);
+                }}
+                value={userInfoEmail}
+              />
+            </div>
+            {!validEmail && (
+              <Validator message="Please enter a valid email address" />
+            )}
+            <TextInput
+              required={false}
+              heading="Your Title/Role"
+              notes=""
+              rows={1}
+              value={userInfoRole}
+              handleChange={(name, value) => {
+                console.log(name, value);
+                dispatch(setUserInfoRole(value));
+              }}
+              name="userInfoRole"
+            />
           </Col>
           <Col />
         </Row>

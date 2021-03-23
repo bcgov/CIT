@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from pipeline.models.preferred_development import PreferredDevelopment
-from pipeline.models.general import Municipality
+from pipeline.models.general import Municipality, RegionalDistrict
 from pipeline.models.indian_reserve_band_name import IndianReserveBandName
 import datetime
 
@@ -18,8 +18,14 @@ class OpportunityCommunitySerializer(serializers.ModelSerializer):
 
 class OpportunityMunicipalitySerializer(serializers.ModelSerializer):
     class Meta:
-        model=MunicipalityDistance
-        fields=('municipality_id', 'municipality_distance')
+        model=Municipality
+        fields=('id', 'name')
+
+class OpportunityRegionalDistrictSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=RegionalDistrict
+        fields=('id', 'name')
+
 class OpportunityIndianReserveBandSerializer(serializers.ModelSerializer):
     class Meta:
         model=IndianReserveBandDistance
@@ -108,6 +114,11 @@ class OpportunitySerializer(serializers.ModelSerializer):
     nearest_highway = OpportunityRoadsAndHighwaysSerializer(required=False)
     nearest_river = OpportunityRiverSerializer(required=False)
     nearest_lake = OpportunityLakeSerializer(required=False)
+    user_id = serializers.IntegerField()
+    municipality = OpportunityMunicipalitySerializer(required=False)
+    municipality_id = serializers.IntegerField()
+    regional_district = OpportunityRegionalDistrictSerializer(required=False)
+    regional_district_id = serializers.IntegerField()
 
     class Meta:
         model = Opportunity
@@ -173,7 +184,12 @@ class OpportunitySerializer(serializers.ModelSerializer):
             "nearest_post_secondary",
             "nearest_first_nations_object",
             "nearest_municipalities_object",
-            "nearest_community"
+            "nearest_community",
+            "user_id",
+            "municipality",
+            "municipality_id",
+            "regional_district",
+            "regional_district_id"
         )
     
     def create(self, validated_data):
