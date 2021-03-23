@@ -170,10 +170,10 @@ export default function PropertyDetails2() {
         </Row>
         <Row>
           <div className="d-flex flex-column">
-            <h4>Business Contract</h4>
+            <h4>Business Contact</h4>
             <span style={{ opacity: "0.7" }} className="my-1">
-              This will the contact information displayed on the public listing
-              of this opportunity.
+              This will be the contact information displayed on the public
+              listing of this opportunity.
             </span>
           </div>
         </Row>
