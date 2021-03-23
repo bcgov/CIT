@@ -12,33 +12,29 @@ import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
  */
 const PrivateRoute = (props) => {
   const keycloak = useKeycloakWrapper();
-  const { component: Component, layout: Layout, ...rest } = props;
+  const { component: Component, layout: Layout, roles, ...rest } = props;
   /* eslint consistent-return: "off" */
   return (
     <Route
       {...rest}
       render={(subprops) => {
         if (keycloak.obj && !!keycloak.obj.authenticated) {
-          // if (
-          //   (!rest.role && !rest.claim) ||
-          //   keycloak.hasRole(rest.role) ||
-          //   keycloak.hasClaim(rest.claim)
-          // ) {
+          if (keycloak.hasRole(roles)) {
+            return (
+              <Layout>
+                <Component {...subprops} {...rest.componentProps} />
+              </Layout>
+            );
+          }
           return (
-            <Layout>
-              <Component {...subprops} {...rest.componentProps} />
-            </Layout>
+            <Redirect
+              to={{
+                pathname: "/forbidden",
+                state: { referer: subprops.location },
+              }}
+            />
           );
         }
-        // return (
-        //   <Redirect
-        //     to={{
-        //       pathname: "/forbidden",
-        //       state: { referer: subprops.location },
-        //     }}
-        //   />
-        // );
-        // }
         if (subprops.location.pathname !== "/login") {
           const redirectTo = encodeURI(
             `${location.pathname}${location.search}`
@@ -51,7 +47,6 @@ const PrivateRoute = (props) => {
 };
 
 PrivateRoute.defaultProps = {
-  role: {},
   claim: {},
   componentProps: {},
 };
@@ -60,7 +55,7 @@ PrivateRoute.propTypes = {
   component: Proptypes.func.isRequired,
   layout: Proptypes.func.isRequired,
   location: Proptypes.shape().isRequired,
-  role: Proptypes.shape(),
+  roles: Proptypes.arrayOf(Proptypes.string).isRequired,
   claim: Proptypes.shape(),
   componentProps: Proptypes.shape(),
 };
