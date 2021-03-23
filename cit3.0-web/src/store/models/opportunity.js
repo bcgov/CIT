@@ -449,11 +449,11 @@ export class Opportunity {
 
   // Physical Info
   set nearElevation(value) {
-    this.state.physical.nearElevation.value = parseFloat(value, 10);
+    this.state.physical.nearElevation.value = parseFloat(value);
   }
 
   set nearGround(value) {
-    this.state.physical.nearGround.value = parseFloat(value, 10);
+    this.state.physical.nearGround.value = parseFloat(value);
   }
 
   set nearestLake(value) {
