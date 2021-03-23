@@ -173,7 +173,9 @@ class OpportunitySerializer(serializers.ModelSerializer):
             "nearest_post_secondary",
             "nearest_first_nations_object",
             "nearest_municipalities_object",
-            "nearest_community"
+            "nearest_community",
+            "network_at_road",
+            "network_avg"
         )
     
     def create(self, validated_data):

@@ -113,11 +113,11 @@ function createRequestFromModel(state) {
       ),
     };
   }
-  if (state.services.nearResearchCenter.value) {
+  if (state.services.nearResearchCentre.value) {
     nearestLocations.nearest_research_centre = {
-      research_centre_id: parseInt(state.services.nearResearchCenter.pk, 10),
+      research_centre_id: parseInt(state.services.nearResearchCentre.pk, 10),
       research_centre_distance: parseFloat(
-        state.services.nearResearchCenter.value.toFixed(2)
+        state.services.nearResearchCentre.value.toFixed(2)
       ),
     };
   }

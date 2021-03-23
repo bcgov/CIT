@@ -3,12 +3,6 @@ import { toKebabCase } from "../../helpers/helpers";
 
 /**
  * Initial opportunity model
- * @todo remove/update initial coords
- * @todo remove initial municipalities
- * @todo remove/update services
- * @todo remove/update transportation
- * @todo remove/update physical
- * @todo remove/update siteInfo
  */
 export const OPPORTUNITY_MODEL = () => ({
   name: "",
@@ -249,12 +243,12 @@ export const OPPORTUNITY_MODEL = () => ({
     saleOrLease: {
       title: "Sale or Lease",
       value: "",
-      type: "text",
+      type: "select",
       rentalPrice: "",
       salePrice: "",
     },
-    currentZone: { title: "Current Zoning", value: "", type: "text" },
-    futureZone: { title: "Future Zoning", value: "", type: "text" },
+    currentZone: { title: "Current Zoning", value: "", type: "select" },
+    futureZone: { title: "Future Zoning", value: "", type: "select" },
     preferredDevelopment: {
       title: "Preferred Development",
       value: [],
@@ -387,77 +381,105 @@ export class Opportunity {
 
   // Transportation Info
   set nearestHighway(value) {
-    this.state.transportation.nearHighway.name =
-      value.features && value.features[0].properties.name;
+    if (value.features) {
+      this.state.transportation.nearHighway.name =
+        value.features && value.features[0].properties.name;
+      this.state.transportation.nearHighway.pk =
+        value.features && value.features[0].properties.pk;
+    } else {
+      this.state.transportation.nearHighway.name = value.name;
+      this.state.transportation.nearHighway.value = value.highway_id;
+    }
     this.state.transportation.nearHighway.value = value.highway_distance;
-    this.state.transportation.nearHighway.pk =
-      value.features && value.features[0].properties.pk;
   }
 
   set nearestAirport(value) {
     if (value.features) {
       this.state.transportation.nearAirport.name =
         value.features[0].properties.name;
-      this.state.transportation.nearAirport.value = value.airport_distance;
       this.state.transportation.nearAirport.pk =
         value.features[0].properties.pk;
     } else {
       this.state.transportation.nearAirport.name = value.name;
-      this.state.transportation.nearAirport.value = value.airport_distance;
       this.state.transportation.nearAirport.pk = value.airport_id;
     }
+    this.state.transportation.nearAirport.value = value.airport_distance;
   }
 
   set nearestRailway(value) {
-    this.state.transportation.nearRailway.name =
-      value.features && value.features[0].properties.name;
+    if (value.features) {
+      this.state.transportation.nearRailway.name =
+        value.features && value.features[0].properties.name;
+      this.state.transportation.nearRailway.value = value.railway_distance;
+      this.state.transportation.nearRailway.pk =
+        value.features && value.features[0].properties.pk;
+    } else {
+      this.state.transportation.nearRailway.name = value.name;
+      this.state.transportation.nearRailway.pk = value.railway_id;
+    }
     this.state.transportation.nearRailway.value = value.railway_distance;
-    this.state.transportation.nearRailway.pk =
-      value.features && value.features[0].properties.pk;
   }
 
   set nearestPort(value) {
-    this.state.transportation.nearPort.name =
-      value.features && value.features[0].properties.name;
+    if (value.features) {
+      this.state.transportation.nearPort.name =
+        value.features && value.features[0].properties.name;
+      this.state.transportation.nearPort.pk =
+        value.features && value.features[0].properties.pk;
+    } else {
+      this.state.transportation.nearPort.name = value.name;
+      this.state.transportation.nearPort.pk = value.railway_id;
+    }
     this.state.transportation.nearPort.value = value.port_distance;
-    this.state.transportation.nearPort.pk =
-      value.features && value.features[0].properties.pk;
   }
 
-  set nearestCustomsPort(value) {
-    this.state.transportation.nearCustomsPort.name =
-      value.features && value.features[0].properties.name;
+  set nearestCustomsPortOfEntry(value) {
+    if (value.features) {
+      this.state.transportation.nearCustomsPort.name =
+        value.features && value.features[0].properties.name;
+      this.state.transportation.nearCustomsPort.pk =
+        value.features && value.features[0].properties.pk;
+    } else {
+      this.state.transportation.nearCustomsPort.name = value.name;
+      this.state.transportation.nearCustomsPort.pk = value.railway_id;
+    }
     this.state.transportation.nearCustomsPort.value =
       value.customs_port_distance;
-    this.state.transportation.nearCustomsPort.pk =
-      value.features && value.features[0].properties.pk;
   }
 
   // Physical Info
   set nearElevation(value) {
-    this.state.physical.nearElevation.value = value;
+    this.state.physical.nearElevation.value = parseFloat(value, 10);
   }
 
   set nearGround(value) {
-    this.state.physical.nearGround.value = value;
+    this.state.physical.nearGround.value = parseFloat(value, 10);
   }
 
   set nearestLake(value) {
     if (value) {
       this.state.physical.nearLake.name = "Yes";
     }
+    if (value.features) {
+      this.state.physical.nearLake.pk =
+        value.features && value.features[0].properties.pk;
+    } else {
+      this.state.physical.nearLake.pk = value.features && value.lake_id;
+    }
     this.state.physical.nearLake.value = value.lake_distance;
-    this.state.physical.nearLake.pk =
-      value.features && value.features[0].properties.pk;
   }
 
   set nearestRiver(value) {
     if (value) {
       this.state.physical.nearRiver.name = "Yes";
     }
+    if (value.features) {
+      this.state.physical.nearRiver.pk =
+        value.features && value.features[0].properties.pk;
+    } else {
+      this.state.physical.nearRiver.pk = value.river_id;
+    }
     this.state.physical.nearRiver.value = value.river_distance;
-    this.state.physical.nearRiver.pk =
-      value.features && value.features[0].properties.pk;
   }
 
   // Services
@@ -505,11 +527,11 @@ export class Opportunity {
   }
 
   set networkAvg(value) {
-    this.state.services.networkAvg.value = value.speed;
+    this.state.services.networkAvg.value = value;
   }
 
   set networkAtRoad(value) {
-    this.state.services.networkAtRoad.value = value.speed;
+    this.state.services.networkAtRoad.value = value;
   }
 
   set nearestTransmission(value) {
@@ -523,64 +545,100 @@ export class Opportunity {
     if (value) {
       this.state.services.nearResearchCentre.name = "Yes";
     }
-    this.state.services.nearResearchCentre.value = value.distance;
-    this.state.services.nearResearchCentre.pk =
-      value.features && value.features[0].properties.pk;
+    if (value.features) {
+      this.state.services.nearResearchCentre.value = value.distance;
+      this.state.services.nearResearchCentre.pk =
+        value.features && value.features[0].properties.pk;
+    } else {
+      this.state.services.nearResearchCentre.value =
+        value.research_centre_distance;
+      this.state.services.nearResearchCentre.pk = value.research_centre_id;
+    }
   }
 
   set nearestHealthCenter(value) {
     if (value) {
       this.state.services.nearHealth.name = "Yes";
     }
-    this.state.services.nearHealth.value = value.distance;
-    this.state.services.nearHealth.pk =
-      value.features && value.features[0].properties.pk;
+    if (value.features) {
+      this.state.services.nearHealth.value = value.distance;
+      this.state.services.nearHealth.pk =
+        value.features && value.features[0].properties.pk;
+    } else {
+      this.state.services.nearHealth.value = value.hospital_distance;
+      this.state.services.nearHealth.pk = value.hospital_id;
+    }
   }
 
   set nearestFireStation(value) {
     if (value) {
       this.state.services.nearFire.name = "Yes";
     }
-    this.state.services.nearFire.value = value.distance;
-    this.state.services.nearFire.pk =
-      value.features && value.features[0].properties.pk;
+    if (value.features) {
+      this.state.services.nearFire.value = value.distance;
+      this.state.services.nearFire.pk =
+        value.features && value.features[0].properties.pk;
+    } else {
+      this.state.services.nearFire.value = value.first_responder_distance;
+      this.state.services.nearFire.pk = value.first_responder_id;
+    }
   }
 
   set nearestAmbulanceStation(value) {
     if (value) {
       this.state.services.nearAmbulance.name = "Yes";
     }
-    this.state.services.nearAmbulance.value = value.distance;
-    this.state.services.nearAmbulance.pk =
-      value.features && value.features[0].properties.pk;
+    if (value.features) {
+      this.state.services.nearAmbulance.value = value.distance;
+      this.state.services.nearAmbulance.pk =
+        value.features && value.features[0].properties.pk;
+    } else {
+      this.state.services.nearAmbulance.value = value.first_responder_distance;
+      this.state.services.nearAmbulance.pk = value.first_responder_id;
+    }
   }
 
   set nearestPoliceStation(value) {
     if (value) {
       this.state.services.nearPolice.name = "Yes";
     }
-    this.state.services.nearPolice.value = value.distance;
-    this.state.services.nearPolice.pk =
-      value.features && value.features[0].properties.pk;
+    if (value.features) {
+      this.state.services.nearPolice.value = value.distance;
+      this.state.services.nearPolice.pk =
+        value.features && value.features[0].properties.pk;
+    } else {
+      this.state.services.nearPolice.value = value.first_responder_distance;
+      this.state.services.nearPolice.pk = value.first_responder_id;
+    }
   }
 
   set nearestCoastGuardStation(value) {
     if (value) {
       this.state.services.nearCoastGuard.name = "Yes";
     }
-    this.state.services.nearCoastGuard.value = value.distance;
-    this.state.services.nearCoastGuard.pk =
-      value.features && value.features[0].properties.pk;
+    if (value.features) {
+      this.state.services.nearCoastGuard.value = value.distance;
+      this.state.services.nearCoastGuard.pk =
+        value.features && value.features[0].properties.pk;
+    } else {
+      this.state.services.nearCoastGuard.value = value.first_responder_distance;
+      this.state.services.nearCoastGuard.pk = value.first_responder_id;
+    }
   }
 
   set nearestPostSecondary(value) {
     if (value) {
       this.state.services.nearSecondarySchool.name = "Yes";
     }
-    this.state.services.nearSecondarySchool.value =
-      value.post_secondary_distance;
-    this.state.services.nearSecondarySchool.pk =
-      value.features && value.features[0].properties.pk;
+    if (value.features) {
+      this.state.services.nearSecondarySchool.value =
+        value.post_secondary_distance;
+      this.state.services.nearSecondarySchool.pk =
+        value.features && value.features[0].properties.pk;
+    } else {
+      this.state.services.nearSecondarySchool.value = value.location_distance;
+      this.state.services.nearSecondarySchool.pk = value.location_id;
+    }
   }
 
   // Site Info

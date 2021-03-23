@@ -169,11 +169,11 @@ class ProximityView(APIView):
                                 properties['percent_25_5'], properties['percent_50_10']]
             # scan for network_avg speed category
             last_network = properties['percent_5_1']
-            network_avg['speed'] = NETWORK_CODES[0]
+            network_avg = NETWORK_CODES[0]
             index = 0
             for network in network_percents:
                 if abs(last_network - network) < 0.1:
-                    network_avg['speed'] = NETWORK_CODES[index]
+                    network_avg = NETWORK_CODES[index]
                 last_network = network
                 index += 1
 
@@ -238,7 +238,7 @@ class ProximityView(APIView):
             distance=Distance("geom", network_point)).filter(geom__distance_lte=(network_point, D(km=100))).order_by('distance')[:1]
         if network_at_road_check:
             network_at_road = dict()
-            network_at_road['speed'] = network_at_road_check.first(
+            network_at_road = network_at_road_check.first(
             ).best_broadband
 
         # TODO: Join on community, join on census for population
@@ -274,7 +274,7 @@ class ProximityView(APIView):
         return Response(dict(regionalDistrict=regional_district,
                              nearestAirport=airport,
                              nearestPort=deep_port,
-                             nearestCustomsPort=customs_port,
+                             nearestCustomsPortOfEntry=customs_port,
                              nearestPostSecondary=post_secondary,
                              nearestHighway=highway,
                              nearestRailway=railway,
