@@ -2,7 +2,7 @@ import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Proptypes from "prop-types";
 import { useKeycloakWrapper } from "../hooks/useKeycloakWrapper";
-import { getUser, setUser } from "../store/actions/user";
+import { getUser, postUser, setUser } from "../store/actions/user";
 import UserFactory from "../store/factory/UserFactory";
 
 export const AuthStateContext = React.createContext({
@@ -22,6 +22,12 @@ const AuthStateContextProvider = ({ children }) => {
           .loadUserInfo()
           .then((user) => {
             setUserInfo(user);
+            postUser(
+              UserFactory.createStateFromKeyCloak(user),
+              keycloak.obj.token
+            ).then((response) => {
+              dispatch(setUser(response.data));
+            });
           })
           .catch((e) => {
             // eslint-disable-next-line

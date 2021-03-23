@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import OpportunityTable from "../../OpportunityTable/OpportunityTable";
 import { resetOpportunity } from "../../../store/actions/opportunity";
 import { GET_OPPORTUNITIES_LIST_URL } from "../../../store/constants/api-urls";
-import { getUser, setUser } from "../../../store/actions/user";
+import { getUser, resetUser, setUser } from "../../../store/actions/user";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import UserFactory from "../../../store/factory/UserFactory";
 
@@ -18,8 +18,7 @@ export default function EDODashboard() {
   const dispatch = useDispatch();
   const keycloak = useKeycloakWrapper();
   const user = useSelector((state) => state.user);
-
-  useEffect(() => {
+  const getUserOpportunities = () => {
     getUser({ email: keycloak.email }).then((response) => {
       const { data: users } = response;
       if (users.length) {
@@ -40,10 +39,19 @@ export default function EDODashboard() {
           });
       }
     });
+  };
+  useEffect(() => {
+    getUserOpportunities();
   }, []);
+
+  // Capture first login
+  useEffect(() => {
+    getUserOpportunities();
+  }, [user]);
 
   const goToMap = () => {
     dispatch(resetOpportunity());
+    dispatch(resetUser());
     history.push("/opportunity");
   };
 

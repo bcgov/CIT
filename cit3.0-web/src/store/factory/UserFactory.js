@@ -18,7 +18,7 @@ function createStateFromResponse(response) {
  */
 function createStateFromKeyCloak(keycloak) {
   return {
-    name: keycloak.displayName,
+    name: keycloak.displayName || keycloak.name,
     email: keycloak.email,
     role: "",
     municipalities: [],
