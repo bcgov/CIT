@@ -62,7 +62,7 @@ export const OPPORTUNITY_MODEL = () => ({
       title: "Site servicing",
       subtitle: "- Water",
       name: "Unknown",
-      value: 0,
+      value: "",
       type: "capacity",
       suffix: "m³/hour",
     },
@@ -70,7 +70,7 @@ export const OPPORTUNITY_MODEL = () => ({
       title: "Site servicing",
       subtitle: "- Natural Gas",
       name: "Unknown",
-      value: 0,
+      value: "",
       type: "pressure",
       suffix: "MMBTU/hour",
     },
@@ -78,7 +78,7 @@ export const OPPORTUNITY_MODEL = () => ({
       title: "Site servicing",
       subtitle: "- Sewer",
       name: "Unknown",
-      value: 0,
+      value: "",
       type: "capacity",
       suffix: "m³/hour",
     },
@@ -86,7 +86,7 @@ export const OPPORTUNITY_MODEL = () => ({
       title: "Site servicing",
       subtitle: "- Electrical",
       name: "Unknown",
-      value: 0,
+      value: "",
       type: "capacity",
       suffix: "MW",
     },
@@ -248,7 +248,13 @@ export const OPPORTUNITY_MODEL = () => ({
     },
   },
   userInfo: {
-    saleOrLease: { title: "Sale or Lease", value: "", type: "text", price: "" },
+    saleOrLease: {
+      title: "Sale or Lease",
+      value: "",
+      type: "text",
+      rentalPrice: "",
+      salePrice: "",
+    },
     currentZone: { title: "Current Zoning", value: "", type: "text" },
     futureZone: { title: "Future Zoning", value: "", type: "text" },
     preferredDevelopment: {
@@ -564,8 +570,12 @@ export class Opportunity {
     this.state.userInfo.saleOrLease.value = value;
   }
 
-  set price(value) {
-    this.state.userInfo.saleOrLease.price = value;
+  set rentalPrice(value) {
+    this.state.userInfo.saleOrLease.rentalPrice = value;
+  }
+
+  set salePrice(value) {
+    this.state.userInfo.saleOrLease.salePrice = value;
   }
 
   set ocpZoningCode(value) {
