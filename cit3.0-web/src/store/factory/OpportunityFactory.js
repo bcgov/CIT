@@ -200,6 +200,9 @@ function createRequestFromModel(state) {
   return {
     ...request,
     deleted: state.deleted,
+    user_id: state.user,
+    municipality_id: state.municipality.id,
+    regional_district_id: state.regionalDistrict.id,
     opportunity_address: state.address,
     geo_position: `SRID=4326;POINT(${state.coords[1]} ${state.coords[0]})`,
     parcel_geometry: geoJSONToString(state.siteInfo.geometry),

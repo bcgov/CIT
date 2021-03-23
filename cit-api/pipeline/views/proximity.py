@@ -243,6 +243,7 @@ class ProximityView(APIView):
             network_at_road = network_at_road_check.first(
             ).best_broadband
 
+        municipality = None
         municipalities = None
         municipalities_check = Municipality.objects.annotate(
             distance=Distance("geom", point)).filter(geom__distance_lte=(point, D(km=100))).order_by('distance')[:5]
@@ -255,6 +256,9 @@ class ProximityView(APIView):
             while index < len(municipalities_check):
                 municipality_id = int(
                     municipalities['features'][index]['properties']['pk'])
+
+                if index == 0:
+                    municipality = {'id': municipalities['features'][index]['properties']['pk'], 'name': municipalities['features'][index]['properties']['name']}
                 municipalities['features'][index]['properties']['distance'] = municipalities_check[index].distance.km
                 municipalities['features'][index]['properties']['population'] = Community.objects.filter(municipality_id=municipality_id).annotate(count=Sum(F(
                     'census_subdivision__pop_count_total_f') + F('census_subdivision__pop_count_total_m'))).values()[0]['count']
@@ -276,7 +280,8 @@ class ProximityView(APIView):
                     'distance'] = first_nation_community_check[index].distance.km
                 index += 1
 
-        return Response(dict(regionalDistrict=regional_district,
+        return Response(dict(municipality=municipality,
+                             regionalDistrict=regional_district,
                              nearestAirport=airport,
                              nearestPort=deep_port,
                              nearestCustomsPortOfEntry=customs_port,

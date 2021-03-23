@@ -76,6 +76,7 @@ div.bcgov-warning-background {
 
 .center-spinner {
   position: relative;
+  height: 100vh;
 }
 
 .center-spinner .spinner-border {

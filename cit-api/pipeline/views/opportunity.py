@@ -1,18 +1,14 @@
-import os
 from rest_framework import generics
 from rest_framework import pagination
-from rest_framework.permissions import BasePermission, SAFE_METHODS
 from django.db.models import Q, F
 from django.contrib.gis.measure import D
 import json
-
-from keycloak import KeycloakOpenID
-from keycloak.exceptions import KeycloakConnectionError, KeycloakGetError
 
 from pipeline.models.opportunity import Opportunity
 from pipeline.models.general import RegionalDistrict
 from pipeline.models.community import Community
 from pipeline.serializers.opportunity import OpportunitySerializer
+from pipeline.permissions.IsAuthenticated import IsAuthenticated
 
 MIN_TABLE_ID = 1
 MIN_DISTANCE = 0
@@ -32,6 +28,10 @@ class OpportunitiesList(generics.ListAPIView):
     def get_queryset(self):
         queryset = Opportunity.objects.all()
         queryset = queryset.filter(deleted=False)
+        
+        user_id = self.request.query_params.get('user_id', None)
+        if(user_id is not None):
+            queryset = queryset.filter(user_id=user_id)
 
         submitted_from_date = self.request.query_params.get('submitted_from_date', None)
         submitted_to_date = self.request.query_params.get('submitted_to_date', None)
@@ -141,38 +141,6 @@ class OpportunitiesList(generics.ListAPIView):
 class OpportunityCreateView(generics.CreateAPIView):
     model=Opportunity
     serializer_class = OpportunitySerializer
-
-class IsAuthenticated(BasePermission):
-    message = 'Insufficent user permission.'
-
-    def valid_user(self, request):
-        try:
-            # Configure client
-            keycloak_openid = KeycloakOpenID(server_url=os.environ.get('KEY_CLOAK_URL'),
-                                             client_id=os.environ.get('KEY_CLOAK_CLIENT'),
-                                             realm_name=os.environ.get('KEY_CLOAK_REALM'))
- 
-            # Get WellKnow
-            config_well_know = keycloak_openid.well_know()
-
-            # Get Userinfo
-            userinfo = keycloak_openid.userinfo(request.headers['Authorization'][7:])
-
-            # Use Userinfo to validate permissions
-            return any(i in ["IDIR", "BCeID"] for i in userinfo['roles'])
-        except KeycloakConnectionError as e:
-            self.message = 'Cannot connect to authorization server'
-        except AttributeError as e:
-            self.message = 'Authorization response in bad format'
-        except KeyError as e:
-            self.message = 'Must supply an Authorization token'
-        except KeycloakGetError as e:
-            self.message = 'Failed to recieve userinfo'
-
-        return False
-
-    def has_permission(self, request, view):
-        return request.method == "GET" or (request.method not in SAFE_METHODS and self.valid_user(request))
 
 
 class OpportunityView(generics.RetrieveUpdateDestroyAPIView):
