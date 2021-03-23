@@ -228,6 +228,22 @@ export default function SearchFlyoutContent({ setQuery }) {
         max: "air_service_max",
       },
     },
+    {
+      selected: railConnectionsIsSelected,
+      value: railConnectionsDisplayRange,
+      queryKey: {
+        min: "rail_connections_min",
+        max: "rail_connections_max",
+      },
+    },
+    {
+      selected: deepWaterPortIsSelected,
+      value: deepWaterPortDisplayRange,
+      queryKey: {
+        min: "deep_water_port_min",
+        max: "deep_water_port_max",
+      },
+    },
   ];
 
   useEffect(() => {
@@ -259,6 +275,8 @@ export default function SearchFlyoutContent({ setQuery }) {
     grossFloorAreaDisplayRange,
     powerTransmissionLinesDisplayRange,
     airServiceDisplayRange,
+    railConnectionsDisplayRange,
+    deepWaterPortDisplayRange,
   ]);
 
   const siteServicingSection = switchFilters.map((switchFilter) => (

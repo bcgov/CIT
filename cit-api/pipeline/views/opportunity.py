@@ -97,6 +97,20 @@ class OpportunitiesList(generics.ListAPIView):
         if(air_service_max >= MIN_SIZE):
             queryset = queryset.filter(nearest_airport__airport_distance__lte=air_service_max) 
 
+        rail_connections_min = float(self.request.query_params.get('rail_connections_min', INVALID_INT))
+        rail_connections_max = float(self.request.query_params.get('rail_connections_max', INVALID_INT))
+        if(rail_connections_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_railway__railway_distance__gte=rail_connections_min)
+        if(rail_connections_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_railway__railway_distance__lte=rail_connections_max) 
+
+        deep_water_port_min = float(self.request.query_params.get('deep_water_port_min', INVALID_INT))
+        deep_water_port_max = float(self.request.query_params.get('deep_water_port_max', INVALID_INT))
+        if(deep_water_port_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_port__port_distance__gte=deep_water_port_min)
+        if(deep_water_port_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_port__port_distance__lte=deep_water_port_max) 
+
         zoning = self.request.query_params.get('zoning', None)
         if(zoning is not None):
             zonings = zoning.split(',')
@@ -106,10 +120,6 @@ class OpportunitiesList(generics.ListAPIView):
 
     def service_queryset(self, queryset, exclude_unknowns, service_name):
         service_connected = self.request.query_params.get(service_name, None)
-        print("----------")
-        print(service_name)
-        print(service_connected)
-        print(exclude_unknowns)
     
         if(service_name == 'opportunity_road_connected'):
             if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns is 'N') and service_connected is 'Y'):
