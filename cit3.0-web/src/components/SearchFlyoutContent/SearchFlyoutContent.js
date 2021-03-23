@@ -9,6 +9,103 @@ import CommunityOrPopulationProximityFilter from "../CommunityOrPopulationProxim
 import "./SearchFlyoutContent.scss";
 
 export default function SearchFlyoutContent({ setQuery }) {
+  const parcelSizeInitial = {
+    max: 250000,
+    min: 0,
+  };
+  const grossFloorAreaInitial = {
+    max: 50000,
+    min: 0,
+  };
+  const powerTransmissionLinesInitial = {
+    max: 100,
+    min: 0,
+  };
+  const airServiceInitial = {
+    max: 500,
+    min: 0,
+  };
+  const railConnectionsInitial = {
+    max: 500,
+    min: 0,
+  };
+  const deepWaterPortInitial = {
+    max: 500,
+    min: 0,
+  };
+  const proximityToCommunityOrPopulationInitial = {
+    max: 500,
+    min: 0,
+  };
+  const rAndDInitial = {
+    max: 500,
+    min: 0,
+  };
+
+  const [parcelSizeIsSelected, setParcelSizeIsSelected] = useState(false);
+  const [parcelSizeInputRange, setParcelSizeInputRange] = useState(
+    parcelSizeInitial
+  );
+  const [parcelSizeDisplayRange, setParcelSizeDisplayRange] = useState({});
+  const [grossFloorAreaIsSelected, setGrossFloorAreaIsSelected] = useState(
+    false
+  );
+  const [grossFloorAreaInputRange, setGrossFloorAreaInputRange] = useState(
+    grossFloorAreaInitial
+  );
+  const [grossFloorAreaDisplayRange, setGrossFloorAreaDisplayRange] = useState(
+    {}
+  );
+  const [
+    powerTransmissionLinesIsSelected,
+    setPowerTransmissionLinesIsSelected,
+  ] = useState(false);
+  const [
+    powerTransmissionLinesInputRange,
+    setPowerTransmissionLinesInputRange,
+  ] = useState(powerTransmissionLinesInitial);
+  const [
+    powerTransmissionLinesDisplayRange,
+    setPowerTransmissionLinesDisplayRange,
+  ] = useState({});
+  const [airServiceIsSelected, setAirServiceIsSelected] = useState(false);
+  const [airServiceInputRange, setAirServiceInputRange] = useState(
+    airServiceInitial
+  );
+  const [airServiceDisplayRange, setAirServiceDisplayRange] = useState({});
+  const [deepWaterPortIsSelected, setDeepWaterPortIsSelected] = useState(false);
+  const [deepWaterPortInputRange, setDeepWaterPortInputRange] = useState(
+    deepWaterPortInitial
+  );
+  const [deepWaterPortDisplayRange, setDeepWaterPortDisplayRange] = useState(
+    {}
+  );
+
+  const [railConnectionsIsSelected, setRailConnectionsIsSelected] = useState(
+    false
+  );
+  const [railConnectionsInputRange, setRailConnectionsInputRange] = useState(
+    railConnectionsInitial
+  );
+  const [
+    railConnectionsDisplayRange,
+    setRailConnectionsDisplayRange,
+  ] = useState({});
+  const [
+    proximityToCommunityOrPopulationIsSelected,
+    setProximityToCommunityOrPopulationIsSelected,
+  ] = useState(false);
+  const [
+    proximityToCommunityOrPopulationInputRange,
+    setProximityToCommunityOrPopulationInputRange,
+  ] = useState(proximityToCommunityOrPopulationInitial);
+  const [
+    proximityToCommunityOrPopulationDisplayRange,
+    setproximityToCommunityOrPopulationDisplayRange,
+  ] = useState({});
+  const [rAndDIsSelected, setRAndDIsSelected] = useState(false);
+  const [rAndDInputRange, setRAndDInputRange] = useState(rAndDInitial);
+  const [rAndDDisplayRange, setRAndDDisplayRange] = useState({});
   const [zoningFilters, setZoningFilters] = useState([
     {
       label: "Commercial",
@@ -98,6 +195,41 @@ export default function SearchFlyoutContent({ setQuery }) {
     },
   ];
 
+  const numberRangeFilters = [
+    {
+      selected: parcelSizeIsSelected,
+      value: parcelSizeDisplayRange,
+      queryKey: {
+        min: "parcel_size_min",
+        max: "parcel_size_max",
+      },
+    },
+    {
+      selected: grossFloorAreaIsSelected,
+      value: grossFloorAreaDisplayRange,
+      queryKey: {
+        min: "gross_floor_area_min",
+        max: "gross_floor_area_max",
+      },
+    },
+    {
+      selected: powerTransmissionLinesIsSelected,
+      value: powerTransmissionLinesDisplayRange,
+      queryKey: {
+        min: "power_transmission_lines_min",
+        max: "power_transmission_lines_max",
+      },
+    },
+    {
+      selected: airServiceIsSelected,
+      value: airServiceDisplayRange,
+      queryKey: {
+        min: "air_service_min",
+        max: "air_service_max",
+      },
+    },
+  ];
+
   useEffect(() => {
     const query = new URLSearchParams();
     switchFilters.forEach((filter) => {
@@ -106,7 +238,15 @@ export default function SearchFlyoutContent({ setQuery }) {
 
     query.append("exclude_unknowns", excludeUnknowns ? "Y" : "N");
 
-    console.log(query.toString());
+    const activeNumberRangeFilters = numberRangeFilters.filter(
+      (filter) => filter.selected === true
+    );
+
+    activeNumberRangeFilters.forEach((filter) => {
+      query.append(filter.queryKey.max, filter.value.max);
+      query.append(filter.queryKey.min, filter.value.min);
+    });
+
     setQuery(query.toString());
   }, [
     roadAccessSwitchValue,
@@ -115,6 +255,10 @@ export default function SearchFlyoutContent({ setQuery }) {
     electricalInfrastructureSwitchValue,
     naturalGasSwitchValue,
     excludeUnknowns,
+    parcelSizeDisplayRange,
+    grossFloorAreaDisplayRange,
+    powerTransmissionLinesDisplayRange,
+    airServiceDisplayRange,
   ]);
 
   const siteServicingSection = switchFilters.map((switchFilter) => (
@@ -163,12 +307,26 @@ export default function SearchFlyoutContent({ setQuery }) {
         units="acres"
         description="Size of Property (in acres)"
         label="Parcel Size"
+        isSelected={parcelSizeIsSelected}
+        setIsSelected={setParcelSizeIsSelected}
+        inputRangeValue={parcelSizeInputRange}
+        setInputRangeValue={setParcelSizeInputRange}
+        initialInputRangeValues={parcelSizeInitial}
+        displayRange={parcelSizeDisplayRange}
+        setDisplayRange={setParcelSizeDisplayRange}
       />
       <NumberRangeFilter
         inputRange={{ min: 0, max: 50000 }}
         units="ft²"
         description="Size of Property (in ft²)"
         label="Gross Floor Area"
+        isSelected={grossFloorAreaIsSelected}
+        setIsSelected={setGrossFloorAreaIsSelected}
+        inputRangeValue={grossFloorAreaInputRange}
+        setInputRangeValue={setGrossFloorAreaInputRange}
+        initialInputRangeValues={grossFloorAreaInitial}
+        displayRange={grossFloorAreaDisplayRange}
+        setDisplayRange={setGrossFloorAreaDisplayRange}
       />
       <SelectFilter
         label="Zoning"
@@ -181,6 +339,13 @@ export default function SearchFlyoutContent({ setQuery }) {
         description="Driving distance to power transmission lines in km"
         label="Power Transmission Lines"
         isDistance
+        isSelected={powerTransmissionLinesIsSelected}
+        setIsSelected={setPowerTransmissionLinesIsSelected}
+        inputRangeValue={powerTransmissionLinesInputRange}
+        setInputRangeValue={setPowerTransmissionLinesInputRange}
+        initialInputRangeValues={powerTransmissionLinesInitial}
+        displayRange={powerTransmissionLinesDisplayRange}
+        setDisplayRange={setPowerTransmissionLinesDisplayRange}
       />
       <SelectFilter
         label="Connectivity"
@@ -221,6 +386,13 @@ export default function SearchFlyoutContent({ setQuery }) {
         description="Driving distance to airport in km"
         label="Air Service"
         isDistance
+        isSelected={airServiceIsSelected}
+        setIsSelected={setAirServiceIsSelected}
+        inputRangeValue={airServiceInputRange}
+        setInputRangeValue={setAirServiceInputRange}
+        initialInputRangeValues={airServiceInitial}
+        displayRange={airServiceDisplayRange}
+        setDisplayRange={setAirServiceDisplayRange}
       />
       <NumberRangeFilter
         inputRange={{ min: 0, max: 500 }}
@@ -228,6 +400,13 @@ export default function SearchFlyoutContent({ setQuery }) {
         description="Driving distance to rail connections in km"
         label="Rail Connections"
         isDistance
+        isSelected={railConnectionsIsSelected}
+        setIsSelected={setRailConnectionsIsSelected}
+        inputRangeValue={railConnectionsInputRange}
+        setInputRangeValue={setRailConnectionsInputRange}
+        initialInputRangeValues={railConnectionsInitial}
+        displayRange={railConnectionsDisplayRange}
+        setDisplayRange={setRailConnectionsDisplayRange}
       />
       <NumberRangeFilter
         inputRange={{ min: 0, max: 500 }}
@@ -235,12 +414,26 @@ export default function SearchFlyoutContent({ setQuery }) {
         description="Driving distance to deep water port in km"
         label="Deep Water Port"
         isDistance
+        isSelected={deepWaterPortIsSelected}
+        setIsSelected={setDeepWaterPortIsSelected}
+        inputRangeValue={deepWaterPortInputRange}
+        setInputRangeValue={setDeepWaterPortInputRange}
+        initialInputRangeValues={deepWaterPortInitial}
+        displayRange={deepWaterPortDisplayRange}
+        setDisplayRange={setDeepWaterPortDisplayRange}
       />
       <h3>Demographics</h3>
       <CommunityOrPopulationProximityFilter
         inputRange={{ min: 0, max: 500 }}
         units="km"
         label="Proximity to community/population"
+        isSelected={proximityToCommunityOrPopulationIsSelected}
+        setIsSelected={setProximityToCommunityOrPopulationIsSelected}
+        inputRangeValue={proximityToCommunityOrPopulationInputRange}
+        setInputRangeValue={setProximityToCommunityOrPopulationInputRange}
+        initialInputRangeValues={proximityToCommunityOrPopulationInitial}
+        displayRange={proximityToCommunityOrPopulationDisplayRange}
+        setDisplayRange={setproximityToCommunityOrPopulationDisplayRange}
       />
       <h3>Advanced Education &amp; Research</h3>
       <Row className="flex-nowrap">
@@ -275,6 +468,13 @@ export default function SearchFlyoutContent({ setQuery }) {
         description="Driving distance to R&amp;D in km"
         label="R &amp; D Center nearby"
         isDistance
+        isSelected={rAndDIsSelected}
+        setIsSelected={setRAndDIsSelected}
+        inputRangeValue={rAndDInputRange}
+        setInputRangeValue={setRAndDInputRange}
+        initialInputRangeValues={rAndDInitial}
+        displayRange={rAndDDisplayRange}
+        setDisplayRange={setRAndDDisplayRange}
       />
     </div>
   );

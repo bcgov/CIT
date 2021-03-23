@@ -10,7 +10,15 @@ import "./CommunityOrPopulationProximityFilter.scss";
 
 export default function CommunityOrPopulationProximityFilter(props) {
   const dispatch = useDispatch();
-  const { inputRange, units, label } = props;
+  const {
+    inputRange,
+    units,
+    label,
+    isSelected,
+    setIsSelected,
+    displayRange,
+    setDisplayRange,
+  } = props;
   const [show, setShow] = useState(false);
   const [inputRangeValue, setInputRangeValue] = useState({
     min: inputRange.min,
@@ -22,12 +30,10 @@ export default function CommunityOrPopulationProximityFilter(props) {
   const [validMin, setValidMin] = useState(true);
   const [currentCommunity, setCurrentCommunity] = useState(null);
   const [currentPopulation, setCurrentPopulation] = useState(null);
-  const [displayRange, setDisplayRange] = useState({});
   const [
     displayCommunityOrPopulation,
     setDisplayCommunityOrPopulation,
   ] = useState(null);
-  const [isSelected, setIsSelected] = useState(false);
 
   const inputRangeMax = inputRange.max;
   const inputRangeMin = inputRange.min;
@@ -209,4 +215,11 @@ CommunityOrPopulationProximityFilter.propTypes = {
   }).isRequired,
   units: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+  setIsSelected: PropTypes.func.isRequired,
+  displayRange: PropTypes.shape({
+    max: PropTypes.number.isRequired,
+    min: PropTypes.number.isRequired,
+  }).isRequired,
+  setDisplayRange: PropTypes.func.isRequired,
 };

@@ -75,6 +75,28 @@ class OpportunitiesList(generics.ListAPIView):
         if(parcel_size_max >= MIN_SIZE):
             queryset = queryset.filter(parcel_size__lte=parcel_size_max)
 
+        gross_floor_area_max = float(self.request.query_params.get('gross_floor_area_max', INVALID_INT))
+        gross_floor_area_min = float(self.request.query_params.get('gross_floor_area_min', INVALID_INT))
+        # Commented out as we don't have this column in the database yet
+        # if(gross_floor_area_min >= MIN_SIZE):
+        #     queryset = queryset.filter(gross_floor_area__gte=gross_floor_area_min)
+        # if(gross_floor_area_max >= MIN_SIZE):
+        #     queryset = queryset.filter(gross_floor_area__lte=gross_floor_area_max)
+
+        power_transmission_lines_min = float(self.request.query_params.get('power_transmission_lines_min', INVALID_INT))
+        power_transmission_lines_max = float(self.request.query_params.get('power_transmission_lines_max', INVALID_INT))
+        if(power_transmission_lines_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_transmission_line__gte=power_transmission_lines_min)
+        if(power_transmission_lines_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_transmission_line__lte=power_transmission_lines_max)
+
+        air_service_min = float(self.request.query_params.get('air_service_min', INVALID_INT))
+        air_service_max = float(self.request.query_params.get('air_service_max', INVALID_INT))
+        if(air_service_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_airport__airport_distance__gte=air_service_min)
+        if(air_service_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_airport__airport_distance__lte=air_service_max) 
+
         zoning = self.request.query_params.get('zoning', None)
         if(zoning is not None):
             zonings = zoning.split(',')
