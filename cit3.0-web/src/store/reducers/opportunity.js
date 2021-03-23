@@ -13,6 +13,8 @@ import {
   ADD_BUSINESS_CONTACT_EMAIL,
   ADD_RESOUCE_IDS,
   ADD_NEARBY_RESOUCES,
+  ADD_ELEVATION,
+  ADD_SOIL,
   RESET_OPPORTUNITY,
   ADD_SITE_INFO,
   ADD_USER_INFO,
@@ -137,6 +139,13 @@ export default function opportunity(
       break;
     case ADD_RESOUCE_IDS:
       state.resourceIds = action.payload;
+      break;
+    case ADD_SOIL:
+      state.physical.nearGround.name = action.payload;
+      break;
+    case ADD_ELEVATION:
+      state.physical.nearElevation.name = "Average Elevation: ";
+      state.physical.nearElevation.value = action.payload;
       break;
     case ADD_NEARBY_RESOUCES:
       state = OpportunityFactory.mergeProximityState(
