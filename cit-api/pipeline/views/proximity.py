@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.core import serializers
+from django.db.models import Sum, F
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.measure import D
@@ -90,6 +91,9 @@ class ProximityView(APIView):
                                                             geometry_field=point))
             customs_port['customs_port_distance'] = customs_port_check.first(
             ).distance.km
+            location_id = int(customs_port['features'][0]['properties']['pk'])
+            customs_port['features'][0]['properties']['name'] = Location.objects.get(
+                id=location_id).name
 
         post_secondary = None
         post_secondary_check = Location.objects.annotate(
@@ -232,16 +236,13 @@ class ProximityView(APIView):
             ).distance.km
 
         network_at_road = None
-        # TODO: Remove this SRID once all point/geom fields are normalized
-        network_point = Point(float(lng), float(lat), srid=4326)
         network_at_road_check = Road.objects.annotate(
-            distance=Distance("geom", network_point)).filter(geom__distance_lte=(network_point, D(km=100))).order_by('distance')[:1]
+            distance=Distance("geom", point)).filter(geom__distance_lte=(point, D(km=100))).order_by('distance')[:1]
         if network_at_road_check:
             network_at_road = dict()
             network_at_road = network_at_road_check.first(
             ).best_broadband
 
-        # TODO: Join on community, join on census for population
         municipalities = None
         municipalities_check = Municipality.objects.annotate(
             distance=Distance("geom", point)).filter(geom__distance_lte=(point, D(km=100))).order_by('distance')[:5]
@@ -252,7 +253,11 @@ class ProximityView(APIView):
             # Add the missing annotated distance value to each geojson feature
             index = 0
             while index < len(municipalities_check):
+                municipality_id = int(
+                    municipalities['features'][index]['properties']['pk'])
                 municipalities['features'][index]['properties']['distance'] = municipalities_check[index].distance.km
+                municipalities['features'][index]['properties']['population'] = Community.objects.filter(municipality_id=municipality_id).annotate(count=Sum(F(
+                    'census_subdivision__pop_count_total_f') + F('census_subdivision__pop_count_total_m'))).values()[0]['count']
                 index += 1
 
         # TODO: Join on community, join on census for population

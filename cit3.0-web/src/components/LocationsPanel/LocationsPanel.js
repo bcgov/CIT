@@ -42,11 +42,11 @@ const LocationsPanel = ({
                   href={`${muni.link}`}
                   onClick={() => window.open(muni.link, "_blank")}
                 >
-                  {muni.name} - {muni.distance}km
+                  {muni.name} - {muni.distance.toFixed(2)}km
                 </a>
               </Col>
               <Col className="d-flex justify-content-end pr-0" md="auto">
-                {"Pop. "}
+                {muni.population ? "Pop. " : ""}
               </Col>
               <Col className="d-flex justify-content-end px-0" md={2}>
                 <span>
@@ -78,12 +78,13 @@ const LocationsPanel = ({
                     window.open(firstNationCommunity.link, "_blank")
                   }
                 >
-                  {firstNationCommunity.name} - {firstNationCommunity.distance}
+                  {firstNationCommunity.name} -{" "}
+                  {firstNationCommunity.distance.toFixed(2)}
                   km
                 </a>
               </Col>
               <Col className="d-flex justify-content-end pr-0" md="auto">
-                {"Pop. "}
+                {firstNationCommunity.population ? "Pop. " : ""}
               </Col>
               <Col className="d-flex justify-content-end px-0" md={2}>
                 <span>
