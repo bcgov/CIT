@@ -18,6 +18,25 @@ const geoJSONToString = (geom) => {
  * visual and control data the api needs not know
  * @param {Object} model from redux opportunity model
  */
+function createPatchFromModel(state) {
+  const date = new Date();
+  return {
+    public_note: state.publicNote,
+    private_note: state.privateNote,
+    approval_status: state.approvalStatus,
+    last_admin: state.lastAdmin,
+    date_published:
+      state.approvalStatus === "PUBL"
+        ? `${date.toISOString()}`
+        : state.datePublished,
+  };
+}
+
+/**
+ * Factory to convert model to request object, reason there is more
+ * visual and control data the api needs not know
+ * @param {Object} model from redux opportunity model
+ */
 function createRequestFromModel(state) {
   const request = {};
   // Remap camelCase names to sligified names
@@ -263,6 +282,7 @@ function mergeProximityState(state, proximity) {
 }
 export default {
   createRequestFromModel,
+  createPatchFromModel,
   createStateFromResponse,
   createModelFromState,
   mergeProximityState,
