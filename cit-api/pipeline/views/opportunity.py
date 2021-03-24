@@ -2,12 +2,13 @@ from rest_framework import generics
 from rest_framework import pagination
 from django.db.models import Q, F
 from django.contrib.gis.measure import D
-import operator
+import json
 
 from pipeline.models.opportunity import Opportunity
 from pipeline.models.general import RegionalDistrict
 from pipeline.models.community import Community
 from pipeline.serializers.opportunity import OpportunitySerializer
+from pipeline.permissions.IsAuthenticated import IsAuthenticated
 
 MIN_TABLE_ID = 1
 MIN_DISTANCE = 0
@@ -27,6 +28,10 @@ class OpportunitiesList(generics.ListAPIView):
     def get_queryset(self):
         queryset = Opportunity.objects.all()
         queryset = queryset.filter(deleted=False)
+        
+        user_id = self.request.query_params.get('user_id', None)
+        if(user_id is not None):
+            queryset = queryset.filter(user_id=user_id)
 
         submitted_from_date = self.request.query_params.get('submitted_from_date', None)
         submitted_to_date = self.request.query_params.get('submitted_to_date', None)
@@ -183,9 +188,13 @@ class OpportunityCreateView(generics.CreateAPIView):
     model=Opportunity
     serializer_class = OpportunitySerializer
 
+
 class OpportunityView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = OpportunitySerializer
     lookup_field = 'id'
+    permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
         return Opportunity.objects.filter(id=self.kwargs['id'])
+
 

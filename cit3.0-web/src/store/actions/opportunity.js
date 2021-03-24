@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   ADD_ALL,
+  ADD_USER,
   ADD_ADDRESS,
   ADD_COORDS,
   ADD_PID,
@@ -16,6 +17,8 @@ import {
   ADD_PRIVATE_NOTE,
   ADD_RESOUCE_IDS,
   ADD_NEARBY_RESOUCES,
+  ADD_ELEVATION,
+  ADD_SOIL,
   RESET_OPPORTUNITY,
   ADD_SITE_INFO,
   ADD_USER_INFO,
@@ -36,10 +39,13 @@ import OpportunityFactory from "../factory/OpportunityFactory";
  * @param {Object} opportunityModel from redux store
  * @return {Promise} of axios api call
  */
-export function postOpportunity(opportunityModel) {
+export function postOpportunity(opportunityModel, token) {
   return axios.post(
     POST_OPPORTUNITIES_URL,
-    OpportunityFactory.createRequestFromModel(opportunityModel)
+    OpportunityFactory.createRequestFromModel(opportunityModel),
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
   );
 }
 
@@ -47,12 +53,15 @@ export function postOpportunity(opportunityModel) {
  * @param {Object} opportunityModel from redux store
  * @return {Promise} of axios api call
  */
-export function deleteOpportunity(opportunityModel) {
+export function deleteOpportunity(opportunityModel, token) {
   const opportunity = opportunityModel;
   opportunity.deleted = true;
   return axios.put(
     `${PUT_OPPORTUNITIES_URL + opportunity.id}/`,
-    OpportunityFactory.createRequestFromModel(opportunity)
+    OpportunityFactory.createRequestFromModel(opportunity),
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
   );
 }
 
@@ -60,10 +69,13 @@ export function deleteOpportunity(opportunityModel) {
  * @param {Object} opportunityModel from redux store
  * @return {Promise} of axios api call
  */
-export function updateOpportunity(opportunityModel) {
-  return axios.put(
+export function updateOpportunity(opportunityModel, token) {
+  return axios.patch(
     `${PUT_OPPORTUNITIES_URL + opportunityModel.id}/`,
-    OpportunityFactory.createRequestFromModel(opportunityModel)
+    OpportunityFactory.createPatchFromModel(opportunityModel),
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
   );
 }
 
@@ -81,6 +93,14 @@ export function getOpportunity(opportunityId) {
  */
 export function setOpportunity(opportunity) {
   return { type: ADD_ALL, payload: opportunity };
+}
+
+/**
+ * @param {Number} userId
+ * @return {Object} for redux reducer
+ */
+export function setOpportunityUser(userId) {
+  return { type: ADD_USER, payload: userId };
 }
 
 /**
@@ -248,6 +268,22 @@ export function setResourceIds(rIds) {
  */
 export function setNearbyResources(resourses) {
   return { type: ADD_NEARBY_RESOUCES, payload: resourses };
+}
+
+/**
+ * @param {string} soil
+ * @return {Object} for redux reducer
+ */
+export function setSoil(soil) {
+  return { type: ADD_SOIL, payload: soil };
+}
+
+/**
+ * @param {Number} elevation
+ * @return {Object} for redux reducer
+ */
+export function setElevation(avgElevation) {
+  return { type: ADD_ELEVATION, payload: avgElevation };
 }
 
 /**

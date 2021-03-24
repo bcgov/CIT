@@ -2,6 +2,10 @@
 
 from django.db import migrations
 
+def unpopulate_statuses(apps, schema_editor):
+    ApprovalStatus = apps.get_model("pipeline", "ApprovalStatus")
+    ApprovalStatus.objects().all().delete()
+
 def populate_statuses(apps, schema_editor):
     ApprovalStatus = apps.get_model("pipeline", "ApprovalStatus")
     statuses = [
@@ -25,5 +29,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(populate_statuses)
+        migrations.RunPython(populate_statuses, unpopulate_statuses)
     ]

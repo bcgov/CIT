@@ -6,14 +6,13 @@ import Keycloak from "keycloak-js";
 import { ReactKeycloakProvider } from "@react-keycloak/web";
 import getKeycloakEventHandler from "./utils/KeycloakEventHandler";
 import App from "./App";
+import Config from "./Config";
 import "./index.css";
 import { store } from "./store";
 import AuthStateContextProvider from "./contexts/authStateContext";
-import keycloakConfig from "./keycloak.json";
 
-axios.defaults.baseURL = window.env.apiUrl || "/";
-
-const keycloak = new Keycloak(keycloakConfig);
+axios.defaults.baseURL = Config.apiUrl;
+const keycloak = new Keycloak(Config.keycloakConfig);
 
 const Index = () => (
   <ReactKeycloakProvider

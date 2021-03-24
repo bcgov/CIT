@@ -13,6 +13,8 @@ import {
   ADD_BUSINESS_CONTACT_EMAIL,
   ADD_RESOUCE_IDS,
   ADD_NEARBY_RESOUCES,
+  ADD_ELEVATION,
+  ADD_SOIL,
   RESET_OPPORTUNITY,
   ADD_SITE_INFO,
   ADD_USER_INFO,
@@ -24,6 +26,7 @@ import {
   ADD_APPROVAL_STATUS,
   ADD_PUBLIC_NOTE,
   ADD_PRIVATE_NOTE,
+  ADD_USER,
 } from "../constants/action-types";
 
 import { OPPORTUNITY_MODEL } from "../models/opportunity";
@@ -48,6 +51,9 @@ export default function opportunity(
       break;
     case RESET_OPPORTUNITY:
       state = OPPORTUNITY_MODEL();
+      break;
+    case ADD_USER:
+      state.user = action.payload;
       break;
     case ADD_ADDRESS:
       state.address = action.payload;
@@ -138,11 +144,19 @@ export default function opportunity(
     case ADD_RESOUCE_IDS:
       state.resourceIds = action.payload;
       break;
+    case ADD_SOIL:
+      state.physical.nearGround.name = action.payload;
+      break;
+    case ADD_ELEVATION:
+      state.physical.nearElevation.name = "Average Elevation ";
+      state.physical.nearElevation.value = action.payload;
+      break;
     case ADD_NEARBY_RESOUCES:
       state = OpportunityFactory.mergeProximityState(
         state,
         action.payload
       ).asState();
+      state.nearbyResources = action.payload;
       break;
     default:
       break;

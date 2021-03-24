@@ -11,22 +11,33 @@ import {
   postOpportunity,
   resetOpportunity,
   setApprovalStatus,
+  setOpportunityUser,
 } from "../../../store/actions/opportunity";
 import {
   setNotification,
   closeNotification,
 } from "../../../store/actions/notification";
 import { NOTIFICATION_ERROR } from "../../../store/constants/notification";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import { postUser } from "../../../store/actions/user";
+import UserFactory from "../../../store/factory/UserFactory";
 
 const ReviewOpportunity = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const error = useSelector((state) => state.notification.data);
   const opportunityModel = useSelector((state) => state.opportunity);
+  const userModel = useSelector((state) => state.user);
+  const keycloak = useKeycloakWrapper();
 
-  const handleSubmitOpportunity = () => {
+  const handleSubmitOpportunity = async () => {
+    const { data: user } = await postUser(
+      UserFactory.createRequestFromState(userModel, {}),
+      keycloak.obj.token
+    );
+    dispatch(setOpportunityUser(user.id));
     dispatch(setApprovalStatus("NEW"));
-    postOpportunity(opportunityModel)
+    await postOpportunity(opportunityModel, keycloak.obj.token)
       .then(() => {
         dispatch(resetOpportunity());
         dispatch(closeNotification());

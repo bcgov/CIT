@@ -86,7 +86,18 @@ function displayResources(resources) {
           <div className="d-flex flex-column">
             <div className="mr-2">{resource[1].name}</div>
             <div className="ml-2">
-              <b>{resource[1].value}</b>
+              {Array.isArray(resource[1].value) ? (
+                <>
+                  {resource[1].value.map((value, index) => (
+                    <>
+                      {index !== 0 ? ", " : ""}
+                      <b>{value}</b>
+                    </>
+                  ))}
+                </>
+              ) : (
+                <b>{resource[1].value}</b>
+              )}
             </div>
           </div>
         );
@@ -154,7 +165,7 @@ function displayResources(resources) {
                 <NumberFormat
                   displayType="text"
                   value={resource[1].value}
-                  suffix={resource[1].suffix}
+                  suffix={` ${resource[1].suffix}`}
                   decimalScale={2}
                   thousandSeparator={isNaN(resource[1].value) ? false : ","}
                 />

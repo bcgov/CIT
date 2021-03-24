@@ -33,19 +33,22 @@ export default function AddLocationMarker(props) {
         e.latlng.lat,
         e.latlng.lng,
       ]);
-      dispatch(setSiteId(addressDataFromPoint.data.properties.siteID));
-      props.setAddress(addressDataFromPoint.data.properties.fullAddress);
-      props.setCoords([e.latlng.lat, e.latlng.lng]);
-      const proximity = await getProximityData(props.resourceIds, [
-        e.latlng.lat,
-        e.latlng.lng,
-      ]);
-      props.setNearbyResources(proximity);
+      if (addressDataFromPoint.data.properties.siteID) {
+        dispatch(setSiteId(addressDataFromPoint.data.properties.siteID));
+        props.setAddress(addressDataFromPoint.data.properties.fullAddress);
+      }
     } catch (error) {
       props.setError(
         "Cannot find address data for this particular geographic point.  Please try again."
       );
     }
+
+    props.setCoords([e.latlng.lat, e.latlng.lng]);
+    const proximity = await getProximityData(props.resourceIds, [
+      e.latlng.lat,
+      e.latlng.lng,
+    ]);
+    props.setNearbyResources(proximity);
   });
 
   return positions.map((position) => (

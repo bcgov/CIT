@@ -1,4 +1,5 @@
 export const ADD_ALL = "ADD_ALL";
+export const ADD_USER = "ADD_USER";
 export const ADD_ADDRESS = "ADD_ADDRESS";
 export const ADD_COORDS = "ADD_COORDS";
 export const ADD_PID = "ADD_PID";
@@ -14,6 +15,8 @@ export const ADD_PRIVATE_NOTE = "ADD_PRIVATE_NOTE";
 export const ADD_PUBLIC_NOTE = "ADD_PUBLIC_NOTE";
 export const ADD_RESOUCE_IDS = "ADD_RESOUCE_IDS";
 export const ADD_NEARBY_RESOUCES = "ADD_NEARBY_RESOUCES";
+export const ADD_SOIL = "ADD_SOIL";
+export const ADD_ELEVATION = "ADD_ELEVATION";
 export const RESET_OPPORTUNITY = "RESET_OPPORTUNITY";
 export const ADD_SITE_INFO = "ADD_SITE_INFO";
 export const ADD_USER_INFO = "ADD_USER_INFO";
