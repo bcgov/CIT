@@ -3,10 +3,10 @@ import thunk from "redux-thunk";
 import { createLogger } from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import { loadingBarMiddleware } from "react-redux-loading-bar";
-import createHistory from "history/createBrowserHistory";
+import { createBrowserHistory } from "history";
 import reducer from "./reducer";
 
-export const history = createHistory();
+export const history = createBrowserHistory();
 
 const getMiddleware = () => {
   if (process.env.NODE_ENV === "production") {

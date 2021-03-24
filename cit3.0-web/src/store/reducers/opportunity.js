@@ -13,19 +13,24 @@ import {
   ADD_BUSINESS_CONTACT_EMAIL,
   ADD_RESOUCE_IDS,
   ADD_NEARBY_RESOUCES,
+  ADD_ELEVATION,
+  ADD_SOIL,
   RESET_OPPORTUNITY,
   ADD_SITE_INFO,
   ADD_USER_INFO,
-  ADD_PRICE,
+  ADD_RENTAL_PRICE,
+  ADD_SALE_PRICE,
   ADD_NAME,
   ADD_SERVICE,
   ADD_SERVICE_CAPACITY,
   ADD_APPROVAL_STATUS,
   ADD_PUBLIC_NOTE,
   ADD_PRIVATE_NOTE,
+  ADD_USER,
 } from "../constants/action-types";
 
 import { OPPORTUNITY_MODEL } from "../models/opportunity";
+import OpportunityFactory from "../factory/OpportunityFactory";
 
 /**
  * Opportunity get/reset actions get processed
@@ -46,6 +51,9 @@ export default function opportunity(
       break;
     case RESET_OPPORTUNITY:
       state = OPPORTUNITY_MODEL();
+      break;
+    case ADD_USER:
+      state.user = action.payload;
       break;
     case ADD_ADDRESS:
       state.address = action.payload;
@@ -79,7 +87,6 @@ export default function opportunity(
       state.siteInfo.PID.value = action.payload;
       break;
     case ADD_GEOMETRY:
-      console.log(state.siteInfo.geometry);
       if (!action.payload) {
         state.siteInfo.geometry.coordinates = null;
       } else if (!state.siteInfo.geometry.coordinates) {
@@ -119,8 +126,11 @@ export default function opportunity(
     case ADD_USER_INFO:
       state.userInfo[action.payload.key].value = action.payload.value;
       break;
-    case ADD_PRICE:
-      state.userInfo.saleOrLease.price = action.payload;
+    case ADD_RENTAL_PRICE:
+      state.userInfo.saleOrLease.rentalPrice = action.payload;
+      break;
+    case ADD_SALE_PRICE:
+      state.userInfo.saleOrLease.salePrice = action.payload;
       break;
     case ADD_SERVICE:
       state.services[action.payload.key].name = action.payload.value;
@@ -134,8 +144,18 @@ export default function opportunity(
     case ADD_RESOUCE_IDS:
       state.resourceIds = action.payload;
       break;
+    case ADD_SOIL:
+      state.physical.nearGround.name = action.payload;
+      break;
+    case ADD_ELEVATION:
+      state.physical.nearElevation.name = "Average Elevation ";
+      state.physical.nearElevation.value = action.payload;
+      break;
     case ADD_NEARBY_RESOUCES:
-      state.nearbyResources = action.payload;
+      state = OpportunityFactory.mergeProximityState(
+        state,
+        action.payload
+      ).asState();
       break;
     default:
       break;

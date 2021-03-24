@@ -1,7 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import Map from "../Map/Map";
 import { getProximityData } from "../../helpers/resourceCalls";
+import { getSoilAndElevationData, buildSoilString } from "../../helpers/soil";
+import { setSoil, setElevation } from "../../store/actions/opportunity";
 
 const resourceIds = {
   Hospitals: "5ff82cf4-0448-4063-804a-7321f0f2b4c6",
@@ -21,12 +24,20 @@ export default function MapContainer({
   setAddress,
   setError,
 }) {
+  const [lastCoords, setLastCoords] = useState([]);
+  const dispatch = useDispatch();
+
+  const run = async () => {
+    const soilData = await getSoilAndElevationData(coords);
+    const soilStr = buildSoilString(soilData);
+    dispatch(setSoil(soilStr));
+    dispatch(setElevation(soilData.AVG_ELEV));
+    const proximity = await getProximityData(coords);
+    setNearbyResources(proximity.data);
+  };
   useEffect(() => {
-    const run = async () => {
-      const proximity = await getProximityData(resourceIds, coords);
-      setNearbyResources(proximity);
-    };
-    if (coords[0] !== 54.1722) {
+    if (coords[0] !== 54.1722 && coords[0] !== lastCoords[0]) {
+      setLastCoords(coords);
       run();
     }
   }, [coords]);

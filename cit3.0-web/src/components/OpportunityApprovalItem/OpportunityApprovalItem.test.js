@@ -1,7 +1,9 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
+import { Provider } from "react-redux";
 import OpportunityApprovalItem from "./OpportunityApprovalItem";
+import { store } from "../../store";
 
 const opportunity = {
   id: 4,
@@ -13,7 +15,11 @@ const opportunity = {
 
 describe("<OpportunityApprovalItem />", () => {
   test("it should mount", () => {
-    render(<OpportunityApprovalItem opportunity={opportunity} />);
+    render(
+      <Provider store={store}>
+        <OpportunityApprovalItem opportunity={opportunity} />
+      </Provider>
+    );
 
     const opportunityApprovalItem = screen.getByTestId(
       "OpportunityApprovalItem"

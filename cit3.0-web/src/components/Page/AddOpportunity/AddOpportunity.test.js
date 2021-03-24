@@ -33,16 +33,6 @@ describe("AddOpportunity", () => {
     const addressInput = container.querySelector("input");
     expect(addressInput).toBeInTheDocument();
   });
-
-  it("renders the Portal Header", () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <AddOpportunity match={{}} />
-      </Provider>
-    );
-    const headerText = getByText(/Portal/i);
-    expect(headerText.textContent).toBe("Opportunity Portal");
-  });
   it("renders the navigation header", () => {
     const { getByText } = render(
       <Provider store={store}>

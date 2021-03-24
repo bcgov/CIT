@@ -1,7 +1,5 @@
 import { useKeycloak } from "@react-keycloak/web";
-import _ from "lodash";
 import Roles from "../constants/roles";
-import Claims from "../constants/claims";
 
 /**
  * Provides extension methods to interact with the `keycloak` object.
@@ -11,19 +9,6 @@ export function useKeycloakWrapper() {
   const userInfo = keycloak && keycloak.userInfo;
 
   /**
-   * Determine if the user has the specified 'claim'
-   * @param claim - The name of the claim
-   */
-  const hasClaim = (claim) =>
-    claim !== undefined &&
-    claim !== null &&
-    userInfo &&
-    userInfo.roles &&
-    (typeof claim === "string"
-      ? userInfo.roles.includes(claim)
-      : claim.some((c) => userInfo.roles.includes(c)));
-
-  /**
    * Determine if the user belongs to the specified 'role'
    * @param role - The role name or an array of role name
    */
@@ -31,26 +16,15 @@ export function useKeycloakWrapper() {
     role !== undefined &&
     role !== null &&
     userInfo &&
-    userInfo.groups &&
+    userInfo.roles &&
     (typeof role === "string"
-      ? userInfo.groups.includes(role)
-      : role.some((r) => userInfo.groups.includes(r)));
-
-  /**
-   * Determine if the user belongs to the specified 'agency'
-   * @param agency - The agency name
-   */
-  const hasAgency = (agency) =>
-    agency !== undefined &&
-    agency !== null &&
-    userInfo &&
-    userInfo.agencies &&
-    userInfo.agencies.includes(agency);
+      ? userInfo.roles.includes(role)
+      : role.some((r) => userInfo.roles.includes(r)));
 
   /**
    * Return an array of roles the user belongs to
    */
-  const roles = () => (userInfo && userInfo.groups ? [...userInfo.groups] : []);
+  const roles = () => (userInfo && userInfo.roles ? [...userInfo.roles] : []);
 
   /**
    * Return the user's username
@@ -83,40 +57,22 @@ export function useKeycloakWrapper() {
   /**
    * Return true if the user has permissions to edit this opportunity
    */
-  const canUserEditOpportunity = (property) =>
-    !!property &&
-    (hasClaim(Claims.ADMIN_PROPERTIES) ||
-      (hasClaim(Claims.PROPERTY_EDIT) &&
-        !!property.agencyId &&
-        hasAgency(property.agencyId) &&
-        !_.some(
-          property.projectNumbers ? property.projectNumbers : "",
-          _.method("includes", "SPP")
-        )));
+  const canUserEditOpportunity = (opportunity, edoId) =>
+    !!opportunity &&
+    (hasRole(Roles.SYSTEM_ADMINISTRATOR) ||
+      hasRole(Roles.SUPER_ADMINISTRATOR) ||
+      (hasRole(Roles.ECONOMIC_DEVELOPMENT_OFFICER) &&
+        !opportunity.edoId === edoId));
 
   /**
    * Return true if the user has permissions to delete this property
    */
-  const canUserDeleteOpportunity = (property) =>
-    !!property &&
-    (hasClaim(Claims.ADMIN_PROPERTIES) ||
-      (hasClaim(Claims.PROPERTY_EDIT) &&
-        !!property.agencyId &&
-        hasAgency(property.agencyId) &&
-        !_.some(
-          property.projectNumbers ? property.projectNumbers : "",
-          _.method("includes", "SPP")
-        )));
-
-  /**
-   * Return true if the user has permissions to edit this property
-   */
-  const canUserViewOpportunity = (property) =>
-    !!property &&
-    (hasClaim(Claims.ADMIN_PROPERTIES) ||
-      (hasClaim(Claims.PROPERTY_VIEW) &&
-        !!property.agencyId &&
-        hasAgency(property.agencyId)));
+  const canUserDeleteOpportunity = (opportunity, edoId) =>
+    !!opportunity &&
+    (hasRole(Roles.SYSTEM_ADMINISTRATOR) ||
+      hasRole(Roles.SUPER_ADMINISTRATOR) ||
+      (hasRole(Roles.ECONOMIC_DEVELOPMENT_OFFICER) &&
+        !opportunity.edoId === edoId));
 
   return {
     obj: keycloak,
@@ -126,17 +82,12 @@ export function useKeycloakWrapper() {
     lastName: lastName(),
     email: email(),
     isAdmin:
-      hasRole(Roles.SYSTEM_ADMINISTRATOR) ||
-      hasRole(Roles.AGENCY_ADMINISTRATOR),
+      hasRole(Roles.SYSTEM_ADMINISTRATOR) || hasRole(Roles.SUPER_ADMINISTRATOR),
+    isEdo: hasRole(Roles.SYSTEM_ADMINISTRATOR),
     roles: roles(),
-    agencyId: userInfo && userInfo.agencies && userInfo.agencies.find((x) => x),
     hasRole,
-    hasClaim,
-    hasAgency,
-    agencyIds: userInfo && userInfo.agencies,
-    canUserEditOpportunity,
-    canUserDeleteOpportunity,
-    canUserViewOpportunity,
+    canEdit: canUserEditOpportunity(),
+    canDelete: canUserDeleteOpportunity(),
   };
 }
 
