@@ -46,16 +46,20 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [parcelSizeInputRange, setParcelSizeInputRange] = useState(
     parcelSizeInitial
   );
-  const [parcelSizeDisplayRange, setParcelSizeDisplayRange] = useState({});
+  const [parcelSizeDisplayRange, setParcelSizeDisplayRange] = useState({
+    min: 0,
+    max: 0,
+  });
   const [grossFloorAreaIsSelected, setGrossFloorAreaIsSelected] = useState(
     false
   );
   const [grossFloorAreaInputRange, setGrossFloorAreaInputRange] = useState(
     grossFloorAreaInitial
   );
-  const [grossFloorAreaDisplayRange, setGrossFloorAreaDisplayRange] = useState(
-    {}
-  );
+  const [grossFloorAreaDisplayRange, setGrossFloorAreaDisplayRange] = useState({
+    min: 0,
+    max: 0,
+  });
   const [
     powerTransmissionLinesIsSelected,
     setPowerTransmissionLinesIsSelected,
@@ -67,19 +71,23 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [
     powerTransmissionLinesDisplayRange,
     setPowerTransmissionLinesDisplayRange,
-  ] = useState({});
+  ] = useState({ min: 0, max: 0 });
   const [airServiceIsSelected, setAirServiceIsSelected] = useState(false);
   const [airServiceInputRange, setAirServiceInputRange] = useState(
     airServiceInitial
   );
-  const [airServiceDisplayRange, setAirServiceDisplayRange] = useState({});
+  const [airServiceDisplayRange, setAirServiceDisplayRange] = useState({
+    min: 0,
+    max: 0,
+  });
   const [deepWaterPortIsSelected, setDeepWaterPortIsSelected] = useState(false);
   const [deepWaterPortInputRange, setDeepWaterPortInputRange] = useState(
     deepWaterPortInitial
   );
-  const [deepWaterPortDisplayRange, setDeepWaterPortDisplayRange] = useState(
-    {}
-  );
+  const [deepWaterPortDisplayRange, setDeepWaterPortDisplayRange] = useState({
+    min: 0,
+    max: 0,
+  });
 
   const [railConnectionsIsSelected, setRailConnectionsIsSelected] = useState(
     false
@@ -90,7 +98,7 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [
     railConnectionsDisplayRange,
     setRailConnectionsDisplayRange,
-  ] = useState({});
+  ] = useState({ min: 0, max: 0 });
   const [
     proximityToCommunityOrPopulationIsSelected,
     setProximityToCommunityOrPopulationIsSelected,
@@ -102,10 +110,13 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [
     proximityToCommunityOrPopulationDisplayRange,
     setproximityToCommunityOrPopulationDisplayRange,
-  ] = useState({});
+  ] = useState({ min: 0, max: 0 });
   const [rAndDIsSelected, setRAndDIsSelected] = useState(false);
   const [rAndDInputRange, setRAndDInputRange] = useState(rAndDInitial);
-  const [rAndDDisplayRange, setRAndDDisplayRange] = useState({});
+  const [rAndDDisplayRange, setRAndDDisplayRange] = useState({
+    min: 0,
+    max: 0,
+  });
   const [zoningFilters, setZoningFilters] = useState([
     {
       label: "Commercial",
