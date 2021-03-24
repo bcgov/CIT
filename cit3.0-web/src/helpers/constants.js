@@ -43,3 +43,39 @@ export const ECONOMIC_PROJECTS = {
   iconUrl:
     "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png",
 };
+export const AIRPORT = {
+  colourName: "violet",
+  colourHex: "#9C2BCB",
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png",
+};
+export const FIRE = {
+  colourName: "red",
+  colourHex: "#CB2B3E",
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",
+};
+export const POLICE = {
+  colourName: "blue",
+  colourHex: "#CB2B3E",
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+};
+export const AMBULANCE = {
+  colourName: "green",
+  colourHex: "#2AAD27",
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
+};
+export const COAST_GUARD = {
+  colourName: "yellow",
+  colourHex: "#CAC428",
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-yellow.png",
+};
+export const CUSTOMS_PORT = {
+  colourName: "black",
+  colourHex: "#ffffff",
+  iconUrl:
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png",
+};

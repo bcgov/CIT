@@ -556,12 +556,14 @@ export class Opportunity {
       this.state.services.nearResearchCentre.name = "Yes";
     }
     if (value.features) {
-      this.state.services.nearResearchCentre.value = value.distance;
+      this.state.services.nearResearchCentre.value =
+        value.research_centre_distance;
       this.state.services.nearResearchCentre.pk =
         value.features && value.features[0].properties.pk;
     } else {
-      this.state.services.nearResearchCentre.value =
-        value.research_centre_distance;
+      this.state.services.nearResearchCentre.value = parseFloat(
+        value.research_centre_distance
+      );
       this.state.services.nearResearchCentre.pk = value.research_centre_id;
     }
   }
