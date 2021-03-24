@@ -281,7 +281,6 @@ export default function PropertyDetails2() {
               rows={1}
               value={userInfoRole}
               handleChange={(name, value) => {
-                console.log(name, value);
                 dispatch(setUserInfoRole(value));
               }}
               name="userInfoRole"

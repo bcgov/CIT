@@ -2,6 +2,7 @@ from rest_framework import serializers
 from pipeline.models.preferred_development import PreferredDevelopment
 from pipeline.models.general import Municipality, RegionalDistrict
 from pipeline.models.indian_reserve_band_name import IndianReserveBandName
+from pipeline.models.users.user import User
 import datetime
 
 from pipeline.models.opportunity import Opportunity, PostSecondaryDistance, CommunityDistance, MunicipalityDistance, IndianReserveBandDistance, LakeDistance, RiverDistance, RoadsAndHighwaysDistance, AirportDistance, RailwayDistance, PortAndTerminalDistance, CustomsPortOfEntryDistance, ResearchCentreDistance, FirstResponderDistance, HospitalDistance
@@ -17,12 +18,6 @@ class OpportunityCommunitySerializer(serializers.ModelSerializer):
     class Meta:
         model = CommunityDistance
         fields = ('community_id', 'community_distance')
-
-
-class OpportunityMunicipalitySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = MunicipalityDistance
-        fields = ('municipality_id', 'municipality_distance')
 
 class OpportunityRegionalDistrictSerializer(serializers.ModelSerializer):
     class Meta:
@@ -141,9 +136,7 @@ class OpportunitySerializer(serializers.ModelSerializer):
     nearest_river = OpportunityRiverSerializer(required=False)
     nearest_lake = OpportunityLakeSerializer(required=False)
     user_id = serializers.IntegerField()
-    municipality = OpportunityMunicipalitySerializer(required=False)
     municipality_id = serializers.IntegerField()
-    regional_district = OpportunityRegionalDistrictSerializer(required=False)
     regional_district_id = serializers.IntegerField()
 
     class Meta:
@@ -212,15 +205,18 @@ class OpportunitySerializer(serializers.ModelSerializer):
             "nearest_municipalities_object",
             "nearest_community",
             "network_at_road",
-            "network_avg"
+            "network_avg",
             "user_id",
-            "municipality",
             "municipality_id",
-            "regional_district",
             "regional_district_id"
         )
 
     def create(self, validated_data):
+        if validated_data.get('user_id'):
+            user_id = validated_data.pop('user_id')
+            user = User.objects.get(id=user_id)
+            validated_data['user'] = user
+
         nearest_community = None
         if validated_data.get('nearest_community'):
             community = validated_data.pop('nearest_community')
