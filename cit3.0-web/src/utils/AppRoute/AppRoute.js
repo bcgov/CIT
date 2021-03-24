@@ -11,8 +11,7 @@ const AppRoute = ({
   component: Component,
   layout,
   protected: usePrivateRoute,
-  role,
-  claim,
+  roles,
   title,
   ...rest
 }) => {
@@ -44,8 +43,7 @@ const AppRoute = ({
         {...rest}
         component={Component}
         layout={Layout}
-        role={role}
-        claim={claim}
+        roles={roles}
       />
     );
   }
@@ -65,8 +63,7 @@ const AppRoute = ({
 AppRoute.defaultProps = {
   layout: () => <PublicLayout />,
   protected: false,
-  role: {},
-  claim: {},
+  roles: [],
   title: "Community Information Tool",
 };
 
@@ -74,8 +71,7 @@ AppRoute.propTypes = {
   component: Proptypes.func.isRequired,
   layout: Proptypes.func,
   protected: Proptypes.bool,
-  role: Proptypes.shape(),
-  claim: Proptypes.shape(),
+  roles: Proptypes.arrayOf(Proptypes.string),
   title: Proptypes.string,
 };
 

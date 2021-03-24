@@ -26,6 +26,7 @@ import {
   ADD_APPROVAL_STATUS,
   ADD_PUBLIC_NOTE,
   ADD_PRIVATE_NOTE,
+  ADD_USER,
 } from "../constants/action-types";
 
 import { OPPORTUNITY_MODEL } from "../models/opportunity";
@@ -50,6 +51,9 @@ export default function opportunity(
       break;
     case RESET_OPPORTUNITY:
       state = OPPORTUNITY_MODEL();
+      break;
+    case ADD_USER:
+      state.user = action.payload;
       break;
     case ADD_ADDRESS:
       state.address = action.payload;

@@ -18,6 +18,25 @@ const geoJSONToString = (geom) => {
  * visual and control data the api needs not know
  * @param {Object} model from redux opportunity model
  */
+function createPatchFromModel(state) {
+  const date = new Date();
+  return {
+    public_note: state.publicNote,
+    private_note: state.privateNote,
+    approval_status: state.approvalStatus,
+    last_admin: state.lastAdmin,
+    date_published:
+      state.approvalStatus === "PUBL"
+        ? `${date.toISOString()}`
+        : state.datePublished,
+  };
+}
+
+/**
+ * Factory to convert model to request object, reason there is more
+ * visual and control data the api needs not know
+ * @param {Object} model from redux opportunity model
+ */
 function createRequestFromModel(state) {
   const request = {};
   // Remap camelCase names to sligified names
@@ -125,11 +144,11 @@ function createRequestFromModel(state) {
       ),
     };
   }
-  if (state.services.nearResearchCenter.value) {
+  if (state.services.nearResearchCentre.value) {
     nearestLocations.nearest_research_centre = {
-      research_centre_id: parseInt(state.services.nearResearchCenter.pk, 10),
+      research_centre_id: parseInt(state.services.nearResearchCentre.pk, 10),
       research_centre_distance: parseFloat(
-        state.services.nearResearchCenter.value.toFixed(2)
+        state.services.nearResearchCentre.value.toFixed(2)
       ),
     };
   }
@@ -192,6 +211,9 @@ function createRequestFromModel(state) {
   return {
     ...request,
     deleted: state.deleted,
+    user_id: state.user,
+    municipality_id: state.municipality.id,
+    regional_district_id: state.regionalDistrict.id,
     opportunity_address: state.address,
     geo_position: `SRID=4326;POINT(${state.coords[1]} ${state.coords[0]})`,
     parcel_geometry: geoJSONToString(state.siteInfo.geometry),
@@ -221,8 +243,8 @@ function createRequestFromModel(state) {
     opportunity_water_capacity: parseFloat(state.services.waterSupply.value),
     opportunity_sewer_connected: state.services.sewer.name[0],
     opportunity_sewer_capacity: parseFloat(state.services.sewer.value),
-    opportunity_natual_gas_connected: state.services.naturalGas.name[0],
-    opportunity_natual_gas_capacity: parseFloat(
+    opportunity_natural_gas_connected: state.services.naturalGas.name[0],
+    opportunity_natural_gas_capacity: parseFloat(
       state.services.naturalGas.value
     ),
     opportunity_electrical_connected: state.services.electrical.name[0],
@@ -237,7 +259,7 @@ function createStateFromResponse(response) {
   /* eslint prefer-destructuring: "off" */
   const model = new Opportunity();
 
-  // Remap sligified names to camelCase names
+  // Remap slugified names to camelCase names
   Object.entries(response).forEach((field) => {
     const newKey = _.camelCase(field[0]);
 
@@ -261,7 +283,7 @@ function createModelFromState(state) {
 function mergeProximityState(state, proximity) {
   const model = createModelFromState(state);
 
-  // Remap sligified names to camelCase names
+  // Remap slugified names to camelCase names
   Object.entries(proximity).forEach((field) => {
     const newKey = _.camelCase(field[0]);
 
@@ -274,6 +296,7 @@ function mergeProximityState(state, proximity) {
 }
 export default {
   createRequestFromModel,
+  createPatchFromModel,
   createStateFromResponse,
   createModelFromState,
   mergeProximityState,

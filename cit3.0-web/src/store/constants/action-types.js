@@ -1,4 +1,5 @@
 export const ADD_ALL = "ADD_ALL";
+export const ADD_USER = "ADD_USER";
 export const ADD_ADDRESS = "ADD_ADDRESS";
 export const ADD_COORDS = "ADD_COORDS";
 export const ADD_PID = "ADD_PID";

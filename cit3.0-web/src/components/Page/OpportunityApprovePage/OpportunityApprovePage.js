@@ -19,14 +19,22 @@ import {
   NOTIFICATION_ERROR,
 } from "../../../store/constants/notification";
 import { setNotification } from "../../../store/actions/notification";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import { getUser, postUser } from "../../../store/actions/user";
+import UserFactory from "../../../store/factory/UserFactory";
 
 const OpportunityApprovePage = ({ id }) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [alertStatus, setAlertStatus] = useState();
+  const [user, setUser] = useState({});
+  const [validUser, setValidUser] = useState(true);
+  const [userStatement, setUserStatement] = useState("");
+  const [userQuestion, setUserQuestion] = useState("");
   const opportunity = useSelector((state) => state.opportunity);
   const notificationShow = useSelector((state) => state.notification.show);
   const notificationType = useSelector((state) => state.notification.type);
+  const keycloak = useKeycloakWrapper();
 
   useEffect(() => {
     let opId = id;
@@ -38,6 +46,35 @@ const OpportunityApprovePage = ({ id }) => {
       getOpportunity(opId).then((response) => {
         const opp = OpportunityFactory.createStateFromResponse(response.data);
         dispatch(setOpportunity(opp));
+        getUser({ id: opp.user }).then((userResponse) => {
+          const { data: users } = userResponse;
+          if (users.length) {
+            const appUser = users[0];
+            setUser(appUser);
+            setValidUser(
+              typeof appUser.municipalities.find(
+                (m) => m.id === opp.municipality.id
+              ) !== "undefined" ||
+                typeof appUser.regional_districts.find(
+                  (r) => r.id === opp.regionalDistrict.id
+                ) !== "undefined"
+            );
+            setUserQuestion(
+              `Do you approve ${appUser.name}, ${
+                appUser.role ? `${appUser.role}, ` : ""
+              }${appUser.email} to submit on behalf of ${
+                opp.municipality.name || opp.regionalDistrict.name
+              }?`
+            );
+            setUserStatement(
+              `This Profile was submitted by ${appUser.name}, ${
+                appUser.role ? `${appUser.role}, ` : ""
+              }${appUser.email} to submit on behalf of ${
+                opp.municipality.name || opp.regionalDistrict.name
+              }`
+            );
+          }
+        });
       });
     }
   }, []);
@@ -49,9 +86,17 @@ const OpportunityApprovePage = ({ id }) => {
     });
   }
 
-  const handleUpdateOpportunity = (newStatus) => {
+  const handleUpdateOpportunity = (newStatus, approval) => {
+    if (approval === "Yes") {
+      postUser(
+        UserFactory.createRequestFromState(user, opportunity),
+        keycloak.obj.token
+      ).then(() => {
+        setValidUser(true);
+      });
+    }
     setAlertStatus(newStatus);
-    updateOpportunity(opportunity)
+    updateOpportunity(opportunity, keycloak.obj.token)
       .then(() => {
         dispatch(setNotification(NOTIFICATION_SUCCESS));
       })
@@ -84,9 +129,16 @@ const OpportunityApprovePage = ({ id }) => {
           publicNote={opportunity.publicNote}
           privateNote={opportunity.privateNote}
           currentStatus={opportunity.approvalStatus}
+          userQuestion={userQuestion}
+          validUser={validUser}
           approvalStatuses={statuses}
-          onStatusChange={(newStatus) => handleUpdateOpportunity(newStatus)}
+          onStatusChange={(newStatus, approval) =>
+            handleUpdateOpportunity(newStatus, approval)
+          }
         />
+        <p className="my-3">
+          <b>{userStatement}</b>
+        </p>
       </Container>
       <OpportunityView view="all" />
     </div>

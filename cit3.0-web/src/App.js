@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
 import "./App.css";
 import { Footer } from "shared-components";
 import LoadingBar from "react-redux-loading-bar";
+import { Spinner } from "react-bootstrap";
 import Header from "./components/Headers/Header/Header";
 
 import OpportunityApprovePage from "./components/Page/OpportunityApprovePage/OpportunityApprovePage";
@@ -27,125 +28,183 @@ import AuthLayout from "./layouts/AuthLayout";
 import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainView";
 import OpportunityApproveListPage from "./components/Page/OpportunityApproveListPage/OpportunityApproveListPage";
 
+import Roles from "./constants/roles";
+import PublicLayout from "./layouts/PublicLayout";
+
 function App() {
   const getTitle = (page) => `Investments${` - ${page}`}`;
 
   return (
     <AuthStateContext.Consumer>
-      {() => (
-        <div className="app-container">
-          <LoadingBar
-            style={{
-              zIndex: 9999,
-              backgroundColor: "#fcba19",
-              height: "3px",
-            }}
-          />
-          <Router>
-            <Header />
-            <Switch>
-              <Redirect exact from="/" to="/search" />
-              <AppRoute
-                title={getTitle("Login")}
-                path="/login"
-                component={Login}
-              />
-              <AppRoute
-                title={getTitle("Logout")}
-                path="/logout"
-                component={Logout}
-              />
-              <AppRoute
-                title={getTitle("Access Denied - Login to continue")}
-                path="/forbidden"
-                component={AccessDenied}
-              />
-              <AppRoute
-                protected
-                title={getTitle("Opportunity Dashboard")}
-                path="/dashboard"
-                layout={AuthLayout}
-                component={EDODashboard}
-              />
-              <AppRoute
-                protected
-                exact
-                path="/opportunity"
-                title={getTitle("Add Property")}
-                layout={AuthLayout}
-                component={AddOpportunity}
-              />
-              <AppRoute
-                protected
-                exact
-                path="/opportunity/site-info"
-                title={getTitle("Site Information")}
-                layout={AuthLayout}
-                component={SiteInfomation}
-              />
-              <AppRoute
-                protected
-                exact
-                path="/opportunity/property-details"
-                title={getTitle("Add Property Details")}
-                layout={AuthLayout}
-                component={PropertyDetails1}
-              />
-              <AppRoute
-                protected
-                exact
-                path="/opportunity/additional-details"
-                title={getTitle("Add Additional Details")}
-                layout={AuthLayout}
-                component={PropertyDetails2}
-              />
-              <AppRoute
-                protected
-                exact
-                path="/opportunity/review"
-                title={getTitle("Opportunity Review & Submit")}
-                layout={AuthLayout}
-                component={ReviewOpportunity}
-              />
-              <AppRoute
-                protected
-                exact
-                path="/opportunity/success"
-                title={getTitle("Opportunity Submitted!")}
-                layout={AuthLayout}
-                component={ReviewSubmitted}
-              />
-              <AppRoute
-                protected
-                exact
-                path="/manage/opportunities"
-                layout={AuthLayout}
-                component={OpportunityApproveListPage}
-              />
-              <AppRoute
-                path="/opportunity/*:path"
-                component={OpportunityPage}
-              />
-              <AppRoute
-                protected
-                path="/manage/opportunity/*:path"
-                layout={AuthLayout}
-                component={OpportunityApprovePage}
-              />
-              <AppRoute
-                protected
-                path="/delete/opportunity/*:path"
-                layout={AuthLayout}
-                component={OpportunityDeletePage}
-              />
-              <AppRoute path="/search" component={InvestorMainView} />
-            </Switch>
-            <div className="footer">
-              <Footer />
-            </div>
-          </Router>
-        </div>
-      )}
+      {(context) => {
+        if (!context.ready) {
+          return (
+            <PublicLayout>
+              <main className="center-spinner">
+                <Spinner animation="border" />
+              </main>
+            </PublicLayout>
+          );
+        }
+        return (
+          <div className="app-container">
+            <LoadingBar
+              style={{
+                zIndex: 9999,
+                backgroundColor: "#fcba19",
+                height: "3px",
+              }}
+            />
+            <Router>
+              <Header />
+              <Switch>
+                <Redirect exact from="/" to="/search" />
+                <AppRoute
+                  title={getTitle("Login")}
+                  path="/login"
+                  component={Login}
+                />
+                <AppRoute
+                  title={getTitle("Logout")}
+                  path="/logout"
+                  component={Logout}
+                />
+                <AppRoute
+                  title={getTitle("Access Denied - Login to continue")}
+                  path="/forbidden"
+                  component={AccessDenied}
+                />
+                <AppRoute
+                  protected
+                  title={getTitle("Opportunity Dashboard")}
+                  path="/dashboard"
+                  roles={[Roles.ECONOMIC_DEVELOPMENT_OFFICER]}
+                  layout={AuthLayout}
+                  component={EDODashboard}
+                />
+                <AppRoute
+                  protected
+                  exact
+                  path="/opportunity"
+                  title={getTitle("Add Property")}
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                  ]}
+                  layout={AuthLayout}
+                  component={AddOpportunity}
+                />
+                <AppRoute
+                  protected
+                  exact
+                  path="/opportunity/site-info"
+                  title={getTitle("Site Information")}
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                  ]}
+                  layout={AuthLayout}
+                  component={SiteInfomation}
+                />
+                <AppRoute
+                  protected
+                  exact
+                  path="/opportunity/property-details"
+                  title={getTitle("Add Property Details")}
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                  ]}
+                  layout={AuthLayout}
+                  component={PropertyDetails1}
+                />
+                <AppRoute
+                  protected
+                  exact
+                  path="/opportunity/additional-details"
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                  ]}
+                  title={getTitle("Add Additional Details")}
+                  layout={AuthLayout}
+                  component={PropertyDetails2}
+                />
+                <AppRoute
+                  protected
+                  exact
+                  path="/opportunity/review"
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                  ]}
+                  title={getTitle("Opportunity Review & Submit")}
+                  layout={AuthLayout}
+                  component={ReviewOpportunity}
+                />
+                <AppRoute
+                  protected
+                  exact
+                  path="/opportunity/success"
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                  ]}
+                  title={getTitle("Opportunity Submitted!")}
+                  layout={AuthLayout}
+                  component={ReviewSubmitted}
+                />
+                <AppRoute
+                  protected
+                  exact
+                  path="/manage/opportunities"
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                  ]}
+                  layout={AuthLayout}
+                  component={OpportunityApproveListPage}
+                />
+                <AppRoute
+                  path="/opportunity/*:path"
+                  component={OpportunityPage}
+                />
+                <AppRoute
+                  protected
+                  path="/manage/opportunity/*:path"
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                  ]}
+                  layout={AuthLayout}
+                  component={OpportunityApprovePage}
+                />
+                <AppRoute
+                  protected
+                  path="/delete/opportunity/*:path"
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
+                  ]}
+                  layout={AuthLayout}
+                  component={OpportunityDeletePage}
+                />
+                <AppRoute path="/search" component={InvestorMainView} />
+              </Switch>
+              <div className="footer">
+                <Footer />
+              </div>
+            </Router>
+          </div>
+        );
+      }}
     </AuthStateContext.Consumer>
   );
 }

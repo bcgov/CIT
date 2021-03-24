@@ -13,11 +13,14 @@ import {
   setPublicNote,
 } from "../../store/actions/opportunity";
 import { closeNotification } from "../../store/actions/notification";
+import Radios from "../FormComponents/Radios";
 
 const OpportunityApproveCallout = ({
   publicNote,
   privateNote,
   currentStatus,
+  userQuestion,
+  validUser,
   approvalStatuses,
   onStatusChange,
 }) => {
@@ -28,6 +31,7 @@ const OpportunityApproveCallout = ({
   const [newPrivateNote, setNewPrivateNote] = useState(privateNote);
   const [publicValidated, setPublicValidated] = useState(true);
   const [privateValidated, setPrivateValidated] = useState(true);
+  const [approveUser, setApproveUser] = useState("No");
   const listingLink = useSelector((state) => state.opportunity.link);
   const opportunityName = useSelector((state) => state.opportunity.name);
 
@@ -84,7 +88,7 @@ const OpportunityApproveCallout = ({
       const alertStatus = approvalStatuses.find(
         (s) => nextStatus === s.status_code
       ).status_name;
-      onStatusChange(alertStatus);
+      onStatusChange(alertStatus, approveUser);
     }
   };
 
@@ -123,9 +127,36 @@ const OpportunityApproveCallout = ({
       <Row>
         <Col>
           <div role="form">
-            <p>
+            <p className="m-0">
               <b>Current Status - {currentStatusName}</b>
             </p>
+            {!validUser ? (
+              <>
+                <p className="pt-4">{userQuestion}</p>
+                <div className="ml-3 mb-3">
+                  <Radios
+                    name="ApproveUser"
+                    value={approveUser}
+                    labels={["Yes", "No"]}
+                    handleRadioChange={(key, value) => {
+                      setApproveUser(value);
+                    }}
+                  />
+                </div>
+                <Form.Control.Feedback
+                  className="mt-0 mb-3"
+                  type="invalid"
+                  style={{
+                    display:
+                      approveUser === "No" && nextStatus === "PUBL"
+                        ? "block"
+                        : "none",
+                  }}
+                >
+                  User must approved to publish an Opportunity
+                </Form.Control.Feedback>
+              </>
+            ) : null}
             <TextInput
               heading="Internal Note"
               notes="This note will only be visible to administrators."
@@ -219,6 +250,9 @@ const OpportunityApproveCallout = ({
         </Col>
         <Col className="d-flex justify-content-end">
           <Button
+            disabled={
+              !validUser && approveUser === "No" && nextStatus === "PUBL"
+            }
             id="submit"
             onClick={submitStatusChange}
             label="Change Opportunity Status"
@@ -234,6 +268,8 @@ OpportunityApproveCallout.propTypes = {
   publicNote: PropTypes.string,
   privateNote: PropTypes.string,
   currentStatus: PropTypes.string,
+  userQuestion: PropTypes.string,
+  validUser: PropTypes.bool,
   approvalStatuses: PropTypes.arrayOf(PropTypes.shape()),
   onStatusChange: PropTypes.func.isRequired,
 };
@@ -242,6 +278,8 @@ OpportunityApproveCallout.defaultProps = {
   publicNote: "",
   privateNote: "",
   currentStatus: "",
+  userQuestion: "",
+  validUser: true,
   approvalStatuses: [],
 };
 

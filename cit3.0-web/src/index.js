@@ -9,11 +9,14 @@ import App from "./App";
 import "./index.css";
 import { store } from "./store";
 import AuthStateContextProvider from "./contexts/authStateContext";
-import keycloakConfig from "./keycloak.json";
 
 axios.defaults.baseURL = window.env.apiUrl || "/";
 
-const keycloak = new Keycloak(keycloakConfig);
+const keycloak = new Keycloak({
+  url: process.env.REACT_APP_KEY_CLOAK_URL,
+  realm: process.env.REACT_APP_KEY_CLOAK_REALM,
+  clientId: process.env.REACT_APP_KEY_CLOAK_CLIENT,
+});
 
 const Index = () => (
   <ReactKeycloakProvider

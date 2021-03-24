@@ -52,8 +52,6 @@ export default function NumberRangeFilter(props) {
   };
 
   const handleModified = (value, setStateFunction) => {
-    console.log(isModified);
-    console.log(value);
     setIsModified(true);
     setStateFunction(value);
   };

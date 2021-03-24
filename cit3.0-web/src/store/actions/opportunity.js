@@ -1,6 +1,7 @@
 import axios from "axios";
 import {
   ADD_ALL,
+  ADD_USER,
   ADD_ADDRESS,
   ADD_COORDS,
   ADD_PID,
@@ -38,10 +39,13 @@ import OpportunityFactory from "../factory/OpportunityFactory";
  * @param {Object} opportunityModel from redux store
  * @return {Promise} of axios api call
  */
-export function postOpportunity(opportunityModel) {
+export function postOpportunity(opportunityModel, token) {
   return axios.post(
     POST_OPPORTUNITIES_URL,
-    OpportunityFactory.createRequestFromModel(opportunityModel)
+    OpportunityFactory.createRequestFromModel(opportunityModel),
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
   );
 }
 
@@ -49,12 +53,15 @@ export function postOpportunity(opportunityModel) {
  * @param {Object} opportunityModel from redux store
  * @return {Promise} of axios api call
  */
-export function deleteOpportunity(opportunityModel) {
+export function deleteOpportunity(opportunityModel, token) {
   const opportunity = opportunityModel;
   opportunity.deleted = true;
   return axios.put(
     `${PUT_OPPORTUNITIES_URL + opportunity.id}/`,
-    OpportunityFactory.createRequestFromModel(opportunity)
+    OpportunityFactory.createRequestFromModel(opportunity),
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
   );
 }
 
@@ -62,10 +69,13 @@ export function deleteOpportunity(opportunityModel) {
  * @param {Object} opportunityModel from redux store
  * @return {Promise} of axios api call
  */
-export function updateOpportunity(opportunityModel) {
-  return axios.put(
+export function updateOpportunity(opportunityModel, token) {
+  return axios.patch(
     `${PUT_OPPORTUNITIES_URL + opportunityModel.id}/`,
-    OpportunityFactory.createRequestFromModel(opportunityModel)
+    OpportunityFactory.createPatchFromModel(opportunityModel),
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
   );
 }
 
@@ -83,6 +93,14 @@ export function getOpportunity(opportunityId) {
  */
 export function setOpportunity(opportunity) {
   return { type: ADD_ALL, payload: opportunity };
+}
+
+/**
+ * @param {Number} userId
+ * @return {Object} for redux reducer
+ */
+export function setOpportunityUser(userId) {
+  return { type: ADD_USER, payload: userId };
 }
 
 /**
