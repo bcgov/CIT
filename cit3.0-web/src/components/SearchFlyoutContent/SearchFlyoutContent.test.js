@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
 import axios from "axios";
@@ -51,5 +51,110 @@ describe("<SearchFlyoutContent />", () => {
     const searchFlyoutContent = screen.getByText("General site details");
 
     expect(searchFlyoutContent).toBeInTheDocument();
+  });
+
+  test("it should validate the input in one of the number range filters", () => {
+    const label = "Parcel Size";
+    const inputRange = {
+      max: 250000,
+      min: 0,
+    };
+
+    render(
+      <Provider store={store}>
+        <SearchFlyoutContent setQuery={setQuery} />
+      </Provider>
+    );
+
+    const numberRangeFilterButton = screen.getByText(label);
+    expect(numberRangeFilterButton).toBeInTheDocument();
+
+    fireEvent.click(numberRangeFilterButton);
+
+    const maxInputBox = screen.getByText(String(inputRange.max));
+    const minInputBox = screen.getByText(String(inputRange.min));
+    const clearButton = screen.getByText("Clear");
+
+    // Min > Max validation
+    fireEvent.change(maxInputBox, { target: { value: 3000 } });
+    fireEvent.change(minInputBox, { target: { value: 4000 } });
+    expect(screen.getByText("Invalid min number")).toBeInTheDocument();
+    fireEvent.click(clearButton);
+
+    // Max < Min validation
+    fireEvent.change(minInputBox, { target: { value: 2000 } });
+    fireEvent.change(maxInputBox, { target: { value: 1000 } });
+    expect(screen.getByText("Invalid max number")).toBeInTheDocument();
+    fireEvent.click(clearButton);
+
+    // input Max > Max value of input range
+    fireEvent.change(minInputBox, { target: { value: -5 } });
+    expect(screen.getByText("Invalid min number")).toBeInTheDocument();
+    fireEvent.click(clearButton);
+
+    // input Min < Min value of input range
+    fireEvent.change(maxInputBox, { target: { value: 5000000 } });
+    expect(screen.getByText("Invalid max number")).toBeInTheDocument();
+    fireEvent.click(clearButton);
+  });
+
+  test("it should display selected values correctly", () => {
+    const label = "Parcel Size";
+    const inputRange = {
+      max: 250000,
+      min: 0,
+    };
+    const units = "acres";
+
+    render(
+      <Provider store={store}>
+        <SearchFlyoutContent setQuery={setQuery} />
+      </Provider>
+    );
+
+    const numberRangeFilterButton = screen.getByText(label);
+    expect(numberRangeFilterButton).toBeInTheDocument();
+
+    fireEvent.click(numberRangeFilterButton);
+
+    const maxInputBox = screen.getByText(String(inputRange.max));
+    fireEvent.change(maxInputBox, { target: { value: 5000 } });
+
+    const saveButton = screen.getByText("Save");
+    fireEvent.click(saveButton);
+
+    expect(
+      screen.getByText(`${label}: ${inputRange.min}-${"5000"} ${units}`)
+    ).toBeInTheDocument();
+  });
+
+  test("it should display a slightly different label for distance number range filters", () => {
+    const label = "Air Service";
+    const inputRange = {
+      max: 500,
+      min: 0,
+    };
+    const units = "km";
+
+    render(
+      <Provider store={store}>
+        <SearchFlyoutContent setQuery={setQuery} />
+      </Provider>
+    );
+
+    const numberRangeFilterButton = screen.getByText(label);
+    expect(numberRangeFilterButton).toBeInTheDocument();
+
+    fireEvent.click(numberRangeFilterButton);
+
+    const maxInputBox = screen.getByText(String(inputRange.max));
+    fireEvent.change(maxInputBox, { target: { value: 300 } });
+
+    const saveButton = screen.getByText("Save");
+    fireEvent.click(saveButton);
+
+    expect(
+      screen.getByText(`${label}: within ${inputRange.min}-${"300"} ${units}`)
+    ).toBeInTheDocument();
   });
 });
