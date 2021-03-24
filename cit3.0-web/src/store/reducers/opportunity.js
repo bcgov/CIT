@@ -144,7 +144,7 @@ export default function opportunity(
       state.physical.nearGround.name = action.payload;
       break;
     case ADD_ELEVATION:
-      state.physical.nearElevation.name = "Average Elevation: ";
+      state.physical.nearElevation.name = "Average Elevation ";
       state.physical.nearElevation.value = action.payload;
       break;
     case ADD_NEARBY_RESOUCES:
