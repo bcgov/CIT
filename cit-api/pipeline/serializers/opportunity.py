@@ -330,7 +330,6 @@ class OpportunitySerializer(serializers.ModelSerializer):
         if validated_data.get('opportunity_preferred_development'):
             preferred_developments = validated_data.pop(
                 'opportunity_preferred_development')
-            print(preferred_developments)
 
         # get reserves
         filtered_first_nations_distances = []

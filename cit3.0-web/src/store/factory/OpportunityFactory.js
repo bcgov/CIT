@@ -82,6 +82,18 @@ function createRequestFromModel(state) {
       reserve_distance: parseFloat(f.distance.toFixed(2)),
     })
   );
+  if (state.physical.nearElevation.value) {
+    nearestLocations.elevation_at_location = parseFloat(
+      state.physical.nearElevation.value.toFixed(3)
+    );
+  }
+
+  if (state.physical.nearGround.name) {
+    const soil = state.physical.nearGround.name.split(", ");
+    nearestLocations.soil_name = soil[0];
+    nearestLocations.soil_texture = soil[1];
+    nearestLocations.soil_drainage = soil[2];
+  }
   if (state.physical.nearLake.value) {
     nearestLocations.nearest_lake = {
       lake_id: parseInt(state.physical.nearLake.pk, 10),
@@ -184,7 +196,6 @@ function createRequestFromModel(state) {
     };
   }
   if (state.services.nearSecondarySchool.value) {
-    console.log("post secondary school: ", state.services.nearSecondarySchool);
     nearestLocations.nearest_post_secondary = {
       location_id: parseInt(state.services.nearSecondarySchool.pk, 10),
       location_distance: parseFloat(

@@ -17,6 +17,8 @@ import {
   ADD_PRIVATE_NOTE,
   ADD_RESOUCE_IDS,
   ADD_NEARBY_RESOUCES,
+  ADD_ELEVATION,
+  ADD_SOIL,
   RESET_OPPORTUNITY,
   ADD_SITE_INFO,
   ADD_USER_INFO,
@@ -266,6 +268,22 @@ export function setResourceIds(rIds) {
  */
 export function setNearbyResources(resourses) {
   return { type: ADD_NEARBY_RESOUCES, payload: resourses };
+}
+
+/**
+ * @param {string} soil
+ * @return {Object} for redux reducer
+ */
+export function setSoil(soil) {
+  return { type: ADD_SOIL, payload: soil };
+}
+
+/**
+ * @param {Number} elevation
+ * @return {Object} for redux reducer
+ */
+export function setElevation(avgElevation) {
+  return { type: ADD_ELEVATION, payload: avgElevation };
 }
 
 /**
