@@ -90,6 +90,16 @@ class OpportunityHospitalSerializer(serializers.ModelSerializer):
         fields = ('hospital_id', 'hospital_distance')
 
 
+class OpportunityMunicipalitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Municipality
+        fields = ('name', 'id')
+
+class OpportunityRegionalDistrictSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RegionalDistrict
+        fields = ('name', 'id')
+
 class MunicipalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = MunicipalityDistance
@@ -136,7 +146,9 @@ class OpportunitySerializer(serializers.ModelSerializer):
     nearest_river = OpportunityRiverSerializer(required=False)
     nearest_lake = OpportunityLakeSerializer(required=False)
     user_id = serializers.IntegerField()
+    municipality = OpportunityMunicipalitySerializer(read_only=True)
     municipality_id = serializers.IntegerField()
+    regional_district = OpportunityRegionalDistrictSerializer(read_only=True)
     regional_district_id = serializers.IntegerField()
 
     class Meta:
@@ -207,7 +219,9 @@ class OpportunitySerializer(serializers.ModelSerializer):
             "network_at_road",
             "network_avg",
             "user_id",
+            "municipality",
             "municipality_id",
+            "regional_district",
             "regional_district_id"
         )
 
