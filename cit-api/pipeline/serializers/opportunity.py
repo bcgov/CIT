@@ -359,12 +359,10 @@ class OpportunitySerializer(serializers.ModelSerializer):
                 filtered_first_nations_distances.append(
                     filtered_first_nations_distance.pk)
 
-        # get nearest municipalities
         filtered_municipality_distances = []
         if validated_data.get('nearest_municipalities_object'):
             municipalities = validated_data.pop(
                 'nearest_municipalities_object')
-            # filtered_municipalities = Municipality.objects.filter(name__in=municipalities)
 
             for muni in municipalities:
                 municipalities_distance = MunicipalityDistance.objects.create(
