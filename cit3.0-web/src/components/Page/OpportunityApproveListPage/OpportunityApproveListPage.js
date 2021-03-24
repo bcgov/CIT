@@ -52,7 +52,7 @@ const OpportunityApproveListPage = () => {
           setTotalCount(0);
         }
       });
-    return function () {
+    return () => {
       source.cancel("Cancelling in cleanup");
     };
   }, [currentPage, query]);
@@ -77,12 +77,12 @@ const OpportunityApproveListPage = () => {
               delete search[key];
             }
             setQuery(querystring.encode(search));
-            history.push({ search: query });
+            history.push({ search: querystring.encode(search) });
           },
           resetFilters: () => {
             setQuery("");
             search = querystring.decode(query);
-            history.push({ search: query });
+            history.push({ search: "" });
           },
         }}
       >

@@ -87,16 +87,15 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
     setPubFromValidated(false);
     setPubToValidated(false);
     resetFilters();
+    resetFilters();
   };
 
   const handleSubFrom = (value) => {
-    console.log(value);
     setSubFrom(value);
     onQuery(FORM_SUB_FROM_INPUT, value);
   };
 
   const handleSubTo = (value) => {
-    console.log(value);
     setSubTo(value);
     onQuery(FORM_SUB_TO_INPUT, value);
   };
