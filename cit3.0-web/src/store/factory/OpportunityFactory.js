@@ -18,6 +18,25 @@ const geoJSONToString = (geom) => {
  * visual and control data the api needs not know
  * @param {Object} model from redux opportunity model
  */
+function createPatchFromModel(state) {
+  const date = new Date();
+  return {
+    public_note: state.publicNote,
+    private_note: state.privateNote,
+    approval_status: state.approvalStatus,
+    last_admin: state.lastAdmin,
+    date_published:
+      state.approvalStatus === "PUBL"
+        ? `${date.toISOString()}`
+        : state.datePublished,
+  };
+}
+
+/**
+ * Factory to convert model to request object, reason there is more
+ * visual and control data the api needs not know
+ * @param {Object} model from redux opportunity model
+ */
 function createRequestFromModel(state) {
   const request = {};
   // Remap camelCase names to sligified names
@@ -113,11 +132,11 @@ function createRequestFromModel(state) {
       ),
     };
   }
-  if (state.services.nearResearchCenter.value) {
+  if (state.services.nearResearchCentre.value) {
     nearestLocations.nearest_research_centre = {
-      research_centre_id: parseInt(state.services.nearResearchCenter.pk, 10),
+      research_centre_id: parseInt(state.services.nearResearchCentre.pk, 10),
       research_centre_distance: parseFloat(
-        state.services.nearResearchCenter.value.toFixed(2)
+        state.services.nearResearchCentre.value.toFixed(2)
       ),
     };
   }
@@ -229,7 +248,7 @@ function createStateFromResponse(response) {
   /* eslint prefer-destructuring: "off" */
   const model = new Opportunity();
 
-  // Remap sligified names to camelCase names
+  // Remap slugified names to camelCase names
   Object.entries(response).forEach((field) => {
     const newKey = _.camelCase(field[0]);
 
@@ -253,7 +272,7 @@ function createModelFromState(state) {
 function mergeProximityState(state, proximity) {
   const model = createModelFromState(state);
 
-  // Remap sligified names to camelCase names
+  // Remap slugified names to camelCase names
   Object.entries(proximity).forEach((field) => {
     const newKey = _.camelCase(field[0]);
 
@@ -266,6 +285,7 @@ function mergeProximityState(state, proximity) {
 }
 export default {
   createRequestFromModel,
+  createPatchFromModel,
   createStateFromResponse,
   createModelFromState,
   mergeProximityState,

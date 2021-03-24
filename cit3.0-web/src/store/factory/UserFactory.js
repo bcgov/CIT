@@ -36,9 +36,11 @@ function createRequestFromState(userModel, opportunityModel) {
     email: userModel.email,
     role: userModel.role,
     municipality:
-      opportunityModel.municipality && opportunityModel.municipality.id,
+      opportunityModel.municipality &&
+      parseInt(opportunityModel.municipality.id, 10),
     regional_district:
-      opportunityModel.regionalDistrict && opportunityModel.regionalDistrict.id,
+      opportunityModel.regionalDistrict &&
+      parseInt(opportunityModel.regionalDistrict.id, 10),
   };
 }
 

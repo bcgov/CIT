@@ -149,6 +149,8 @@ class Opportunity(models.Model):
     environmental_information = models.TextField(blank=True, null=True)
     opportunity_link = models.TextField(blank=True, null=True)
     community_link = models.TextField(blank=True, null=True)
+    network_at_road = models.CharField(max_length=32, blank=True, null=True)
+    network_avg = models.CharField(max_length=32, blank=True, null=True)
 
     # Site Info Relationships
     land_use_zoning = models.ForeignKey(

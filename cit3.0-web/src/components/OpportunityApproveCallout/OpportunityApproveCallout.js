@@ -250,7 +250,9 @@ const OpportunityApproveCallout = ({
         </Col>
         <Col className="d-flex justify-content-end">
           <Button
-            disabled={approveUser === "No" && nextStatus === "PUBL"}
+            disabled={
+              !validUser && approveUser === "No" && nextStatus === "PUBL"
+            }
             id="submit"
             onClick={submitStatusChange}
             label="Change Opportunity Status"
