@@ -1,9 +1,9 @@
 const Config = {
   apiUrl: window.env.apiUrl,
   keycloakConfig: {
-    url: window.env.apiUrl,
-    realm: window.env.apiUrl,
-    clientId: window.env.apiUrl,
+    url: window.env.keycloakUrl,
+    realm: window.env.keycloakRealm,
+    clientId: window.env.keycloakClient,
   },
 };
 
