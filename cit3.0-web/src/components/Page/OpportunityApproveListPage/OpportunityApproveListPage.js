@@ -4,7 +4,6 @@ import { Col, Container, Row } from "react-bootstrap";
 import "./OpportunityApproveListPage.css";
 import { useHistory } from "react-router-dom";
 import querystring from "querystring";
-import OpportunityListContainer from "../../OpportunitiesListContainer/OpportunitiesListContainer";
 import Flyout from "../../Flyout/Flyout";
 import OpportunityApprovalItem from "../../OpportunityApprovalItem/OpportunityApprovalItem";
 import ApprovalFlyoutContent from "./ApprovalFlyoutContent";
@@ -21,24 +20,42 @@ const OpportunityApproveListPage = () => {
   const history = useHistory();
   let search = querystring.decode(window.location.search.split("?")[1]);
 
-  useEffect(
-    () =>
-      axios
-        .get(
-          `${GET_OPPORTUNITIES_LIST_URL}?${
-            query ? `${query}&` : ""
-          }page=${currentPage}&page_size=${pageSize}`
-        )
-        .then((data) => {
+  const { CancelToken } = axios;
+  let source;
+
+  useEffect(() => {
+    if (source) {
+      source.cancel("newer search");
+    }
+    source = CancelToken.source();
+    axios
+      .get(
+        `${GET_OPPORTUNITIES_LIST_URL}?${
+          query ? `${query}&` : ""
+        }page=${currentPage}&page_size=${pageSize}`,
+        {
+          cancelToken: source.token,
+        }
+      )
+      .then((data) => {
+        if (data.data.results.length) {
           setOpportunities(data.data.results);
           setTotalCount(data.data.count);
-        })
-        .catch(() => {
+        } else {
           setOpportunities([]);
           setTotalCount(0);
-        }),
-    [currentPage, query]
-  );
+        }
+      })
+      .catch((thrown) => {
+        if (!axios.isCancel(thrown)) {
+          setOpportunities([]);
+          setTotalCount(0);
+        }
+      });
+    return function () {
+      source.cancel("Cancelling in cleanup");
+    };
+  }, [currentPage, query]);
 
   useEffect(() => {
     setQuery(window.location.search.split("?")[1]);
@@ -90,38 +107,26 @@ const OpportunityApproveListPage = () => {
               <b>Action(s)</b>
             </Col>
           </Row>
-          {totalCount ? (
-            <>
-              <Row>
-                {opportunities.length ? (
-                  <OpportunityList
-                    component={() => OpportunityApprovalItem}
-                    opportunities={opportunities}
-                  />
-                ) : null}
-              </Row>
-              <Row className="d-flex flex-column align-items-center justify-content-center p-2">
-                <Paginator
-                  count={totalCount}
-                  setCurrentPage={setCurrentPage}
-                  currentPage={currentPage}
-                  pageSize={pageSize}
-                />
-                <p>
-                  Showing {opportunities.length} of {totalCount} properties
-                </p>
-              </Row>
-            </>
-          ) : (
-            <Row>
-              <h3 className="dashboard-header my-4 w-100">No results</h3>
-              <div>
-                <p className="dashboard-text">
-                  There are no opportunities that match your search.
-                </p>
-              </div>
-            </Row>
-          )}
+          <Row>
+            {opportunities && opportunities.length ? (
+              <OpportunityList
+                component={() => OpportunityApprovalItem}
+                opportunities={opportunities}
+              />
+            ) : null}
+          </Row>
+          <Row className="d-flex flex-column align-items-center justify-content-center p-2">
+            <Paginator
+              count={totalCount}
+              setCurrentPage={setCurrentPage}
+              currentPage={currentPage}
+              pageSize={pageSize}
+            />
+            <p>
+              Showing {opportunities ? opportunities.length : 0} of {totalCount}{" "}
+              properties
+            </p>
+          </Row>
         </Container>
       </Flyout>
     </div>
