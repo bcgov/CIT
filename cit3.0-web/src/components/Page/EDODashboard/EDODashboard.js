@@ -84,7 +84,9 @@ export default function EDODashboard() {
     dataSection = (
       <>
         <h1 className="dashboard-header">
-          {`Your Promoted Opportunities in ${communities}`}
+          {`Your Promoted Opportunities${
+            communities ? ` in ${communities}` : ""
+          }`}
         </h1>
         <OpportunityTable tableData={tableData} />
       </>

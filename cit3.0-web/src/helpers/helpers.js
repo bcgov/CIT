@@ -2,11 +2,27 @@ import * as Constants from "./constants";
 
 export function setColour(name, type) {
   switch (name) {
-    case "Hospitals":
+    case "nearestAirport":
+      return Constants.AIRPORT[type];
+    case "nearestPort":
+      return Constants.AIRPORT[type];
+    case "nearestCustomsPortOfEntry":
+      return Constants.CUSTOMS_PORT[type];
+    case "nearestResearchCentre":
+      return Constants.AIRPORT[type];
+    case "nearestFireStation":
+      return Constants.FIRE[type];
+    case "nearestPoliceStation":
+      return Constants.POLICE[type];
+    case "nearestAmbulanceStation":
+      return Constants.AMBULANCE[type];
+    case "nearestCoastGuardStation":
+      return Constants.COAST_GUARD[type];
+    case "nearestHealthCenter":
       return Constants.HOSPITALS[type];
     case "Schools":
       return Constants.SCHOOLS[type];
-    case "Post Secondary Schools":
+    case "nearestPostSecondary":
       return Constants.POST_SECONDARY[type];
     case "Courts":
       return Constants.COURTS[type];
