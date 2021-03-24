@@ -33,7 +33,7 @@ export default function MapContainer({
     dispatch(setSoil(soilStr));
     dispatch(setElevation(soilData.AVG_ELEV));
     const proximity = await getProximityData(coords);
-    setNearbyResources(proximity.data);
+    dispatch(setNearbyResources(proximity.data));
   };
   useEffect(() => {
     if (coords[0] !== 54.1722 && coords[0] !== lastCoords[0]) {

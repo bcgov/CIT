@@ -156,6 +156,7 @@ export default function opportunity(
         state,
         action.payload
       ).asState();
+      state.nearbyResources = action.payload;
       break;
     default:
       break;

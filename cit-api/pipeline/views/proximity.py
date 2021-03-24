@@ -69,7 +69,10 @@ class ProximityView(APIView):
             airport = json.loads(serializers.serialize('geojson',
                                                        airport_check,
                                                        geometry_field=point))
+            location_id = int(airport['features'][0]['properties']['pk'])
             airport['airport_distance'] = airport_check.first().distance.km
+            airport['features'][0]['properties']['name'] = Location.objects.get(
+                id=location_id).name
 
         deep_port = None
         deep_port_check = Location.objects.annotate(
@@ -79,7 +82,10 @@ class ProximityView(APIView):
             deep_port = json.loads(serializers.serialize('geojson',
                                                          deep_port_check,
                                                          geometry_field=point))
+            location_id = int(deep_port['features'][0]['properties']['pk'])
             deep_port['port_distance'] = deep_port_check.first().distance.km
+            deep_port['features'][0]['properties']['name'] = Location.objects.get(
+                id=location_id).name
 
         # TODO: join Location to get name field
         customs_port = None
@@ -182,9 +188,9 @@ class ProximityView(APIView):
                 index += 1
 
         nearest_fire_station = None
-        nearest_fire_station_check = FirstResponder.objects.annotate(
+        nearest_fire_station_check = Location.objects.annotate(
             distance=Distance("point", point)).filter(point__distance_lte=(point, D(km=100)),
-                                                      keywords__contains="fire").order_by('distance')[:1]
+                                                      firstresponder__keywords__contains="fire").order_by('distance')[:1]
         if nearest_fire_station_check:
             nearest_fire_station = json.loads(serializers.serialize('geojson',
                                                                     nearest_fire_station_check,
@@ -193,9 +199,9 @@ class ProximityView(APIView):
             ).distance.km
 
         nearest_police_station = None
-        nearest_police_station_check = FirstResponder.objects.annotate(
+        nearest_police_station_check = Location.objects.annotate(
             distance=Distance("point", point)).filter(point__distance_lte=(point, D(km=100)),
-                                                      keywords__contains="police").order_by('distance')[:1]
+                                                      firstresponder__keywords__contains="police").order_by('distance')[:1]
         if nearest_police_station_check:
             nearest_police_station = json.loads(serializers.serialize('geojson',
                                                                       nearest_police_station_check,
@@ -204,9 +210,9 @@ class ProximityView(APIView):
             ).distance.km
 
         nearest_ambulance_station = None
-        nearest_ambulance_station_check = FirstResponder.objects.annotate(
+        nearest_ambulance_station_check = Location.objects.annotate(
             distance=Distance("point", point)).filter(point__distance_lte=(point, D(km=100)),
-                                                      keywords__contains="ambulance").order_by('distance')[:1]
+                                                      firstresponder__keywords__contains="ambulance").order_by('distance')[:1]
         if nearest_ambulance_station_check:
             nearest_ambulance_station = json.loads(serializers.serialize('geojson',
                                                                          nearest_ambulance_station_check,
@@ -215,9 +221,9 @@ class ProximityView(APIView):
             ).distance.km
 
         nearest_coast_guard_station = None
-        nearest_coast_guard_station_check = FirstResponder.objects.annotate(
+        nearest_coast_guard_station_check = Location.objects.annotate(
             distance=Distance("point", point)).filter(point__distance_lte=(point, D(km=100)),
-                                                      keywords__contains="coastguard").order_by('distance')[:1]
+                                                      firstresponder__keywords__contains="coastguard").order_by('distance')[:1]
         if nearest_coast_guard_station_check:
             nearest_coast_guard_station = json.loads(serializers.serialize('geojson',
                                                                            nearest_coast_guard_station_check,
@@ -226,8 +232,8 @@ class ProximityView(APIView):
             ).distance.km
 
         nearest_health_center = None
-        nearest_health_center_check = Hospital.objects.annotate(
-            distance=Distance("point", point)).filter(point__distance_lte=(point, D(km=100))).order_by('distance')[:1]
+        nearest_health_center_check = Location.objects.annotate(
+            distance=Distance("point", point)).filter(point__distance_lte=(point, D(km=100)), location_type='hospitals').order_by('distance')[:1]
         if nearest_health_center_check:
             nearest_health_center = json.loads(serializers.serialize('geojson',
                                                                      nearest_health_center_check,
