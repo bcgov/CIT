@@ -354,7 +354,6 @@ class OpportunitySerializer(serializers.ModelSerializer):
             # create distances
 
             for nation in first_nations:
-                # create and append
                 filtered_first_nations_distance = IndianReserveBandDistance.objects.create(
                     **nation)
                 filtered_first_nations_distances.append(
