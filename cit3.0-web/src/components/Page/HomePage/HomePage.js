@@ -1,8 +1,10 @@
 import { Container, Row, Col } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import "./HomePage.scss";
 import { Button } from "shared-components";
 
 export default function HomePage() {
+  const history = useHistory();
   return (
     <>
       <div className="w-100 header-div">
@@ -25,7 +27,7 @@ export default function HomePage() {
         </div>
       </div>
       <Container>
-        <Row className="my-3 w-100 box">
+        <Row className="mb-5 mt-3 w-100 box">
           <Col sm={3} className="svg-box">
             <img
               style={{ padding: "3%" }}
@@ -51,7 +53,7 @@ export default function HomePage() {
                 </Row>
                 <Row className="d-flex justify-content-end w-100">
                   <Button
-                    onClick={() => alert("hey")}
+                    onClick={() => history.push(`/search`)}
                     styling="home-buttons"
                     label="Search Properties"
                   />
@@ -78,7 +80,7 @@ export default function HomePage() {
                 </Row>
                 <Row className="d-flex justify-content-start w-100">
                   <Button
-                    onClick={() => alert("hey")}
+                    onClick={() => history.push(`/dashboard`)}
                     styling="home-buttons"
                     label="List Properties"
                   />
