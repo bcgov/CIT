@@ -13,10 +13,6 @@ export default function SearchFlyoutContent({ setQuery }) {
     max: 250000,
     min: 0,
   };
-  const grossFloorAreaInitial = {
-    max: 50000,
-    min: 0,
-  };
   const powerTransmissionLinesInitial = {
     max: 100,
     min: 0,
@@ -47,16 +43,6 @@ export default function SearchFlyoutContent({ setQuery }) {
     parcelSizeInitial
   );
   const [parcelSizeDisplayRange, setParcelSizeDisplayRange] = useState({
-    min: 0,
-    max: 0,
-  });
-  const [grossFloorAreaIsSelected, setGrossFloorAreaIsSelected] = useState(
-    false
-  );
-  const [grossFloorAreaInputRange, setGrossFloorAreaInputRange] = useState(
-    grossFloorAreaInitial
-  );
-  const [grossFloorAreaDisplayRange, setGrossFloorAreaDisplayRange] = useState({
     min: 0,
     max: 0,
   });
@@ -216,14 +202,6 @@ export default function SearchFlyoutContent({ setQuery }) {
       },
     },
     {
-      selected: grossFloorAreaIsSelected,
-      value: grossFloorAreaDisplayRange,
-      queryKey: {
-        min: "gross_floor_area_min",
-        max: "gross_floor_area_max",
-      },
-    },
-    {
       selected: powerTransmissionLinesIsSelected,
       value: powerTransmissionLinesDisplayRange,
       queryKey: {
@@ -283,7 +261,6 @@ export default function SearchFlyoutContent({ setQuery }) {
     naturalGasSwitchValue,
     excludeUnknowns,
     parcelSizeDisplayRange,
-    grossFloorAreaDisplayRange,
     powerTransmissionLinesDisplayRange,
     airServiceDisplayRange,
     railConnectionsDisplayRange,
@@ -343,19 +320,6 @@ export default function SearchFlyoutContent({ setQuery }) {
         initialInputRangeValues={parcelSizeInitial}
         displayRange={parcelSizeDisplayRange}
         setDisplayRange={setParcelSizeDisplayRange}
-      />
-      <NumberRangeFilter
-        inputRange={{ min: 0, max: 50000 }}
-        units="ft²"
-        description="Size of Property (in ft²)"
-        label="Gross Floor Area"
-        isSelected={grossFloorAreaIsSelected}
-        setIsSelected={setGrossFloorAreaIsSelected}
-        inputRangeValue={grossFloorAreaInputRange}
-        setInputRangeValue={setGrossFloorAreaInputRange}
-        initialInputRangeValues={grossFloorAreaInitial}
-        displayRange={grossFloorAreaDisplayRange}
-        setDisplayRange={setGrossFloorAreaDisplayRange}
       />
       <SelectFilter
         label="Zoning"
