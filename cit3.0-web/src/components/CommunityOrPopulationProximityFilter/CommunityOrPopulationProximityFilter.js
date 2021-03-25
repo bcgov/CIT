@@ -34,6 +34,7 @@ export default function CommunityOrPopulationProximityFilter(props) {
     displayCommunityOrPopulation,
     setDisplayCommunityOrPopulation,
   ] = useState(null);
+  const [isModified, setIsModified] = useState(false);
 
   const inputRangeMax = inputRange.max;
   const inputRangeMin = inputRange.min;
@@ -91,7 +92,7 @@ export default function CommunityOrPopulationProximityFilter(props) {
   };
 
   const handleSave = () => {
-    setIsSelected(true);
+    setIsSelected(isModified);
     setShow(false);
     setDisplayRange({
       min: inputRangeValue.min,
@@ -99,7 +100,7 @@ export default function CommunityOrPopulationProximityFilter(props) {
     });
     if (currentCommunity !== null) {
       setDisplayCommunityOrPopulation(currentCommunity.label);
-    } else {
+    } else if (currentPopulation !== null) {
       setDisplayCommunityOrPopulation(
         `population of at least ${currentPopulation.label}`
       );
@@ -114,11 +115,17 @@ export default function CommunityOrPopulationProximityFilter(props) {
     setValidMax(true);
     setCurrentCommunity(null);
     setCurrentPopulation(null);
+    setIsModified(false);
   };
   const handleShow = () => setShow(true);
   const handleClose = () => {
     setIsSelected(true);
     setShow(false);
+  };
+
+  const handleModified = (value, setStateFunction) => {
+    setIsModified(true);
+    setStateFunction(value);
   };
 
   return (
@@ -152,11 +159,13 @@ export default function CommunityOrPopulationProximityFilter(props) {
             inputRange={inputRange}
             units={units}
             minInput={minInput}
-            setMinInput={setMinInput}
+            setMinInput={(value) => handleModified(value, setMinInput)}
             maxInput={maxInput}
-            setMaxInput={setMaxInput}
+            setMaxInput={(value) => handleModified(value, setMaxInput)}
             inputRangeValue={inputRangeValue}
-            setInputRangeValue={setInputRangeValue}
+            setInputRangeValue={(value) =>
+              handleModified(value, setInputRangeValue)
+            }
             validMax={validMax}
             validMin={validMin}
             setValidMax={setValidMax}
@@ -169,7 +178,9 @@ export default function CommunityOrPopulationProximityFilter(props) {
                 aria-labelledby="community-label"
                 options={communityOptions}
                 value={currentCommunity}
-                onChange={(value) => handleCommunityChange(value)}
+                onChange={(value) =>
+                  handleModified(value, handleCommunityChange)
+                }
                 className="w-100"
                 filterOption={createFilter({ ignoreAccents: false })}
               />
@@ -180,7 +191,9 @@ export default function CommunityOrPopulationProximityFilter(props) {
                 aria-labelledby="population-label"
                 options={populationOptions}
                 value={currentPopulation}
-                onChange={(value) => handlePopulationChange(value)}
+                onChange={(value) =>
+                  handleModified(value, handlePopulationChange)
+                }
                 className="w-100"
               />
             </Row>
@@ -199,7 +212,9 @@ export default function CommunityOrPopulationProximityFilter(props) {
             disabled={
               validMin === false ||
               validMax === false ||
-              (currentCommunity === null && currentPopulation === null)
+              (currentCommunity === null &&
+                currentPopulation === null &&
+                isModified)
             }
           />
         </Modal.Footer>
