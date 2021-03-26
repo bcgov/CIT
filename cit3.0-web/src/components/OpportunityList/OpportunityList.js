@@ -8,12 +8,13 @@ export default function OpportunityList({
 }) {
   return (
     <>
-      {opportunities.length &&
-        opportunities.map((opp) => {
-          const opportunity = OpportunityFactory.createStateFromResponse(opp);
-          const ListItem = Component();
-          return <ListItem key={v4()} opportunity={opportunity} />;
-        })}
+      {opportunities.length
+        ? opportunities.map((opp) => {
+            const opportunity = OpportunityFactory.createStateFromResponse(opp);
+            const ListItem = Component();
+            return <ListItem key={v4()} opportunity={opportunity} />;
+          })
+        : null}
     </>
   );
 }

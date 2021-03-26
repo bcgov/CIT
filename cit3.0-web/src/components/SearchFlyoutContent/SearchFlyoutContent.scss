@@ -1,7 +1,11 @@
 .unselected {
   color: #313132;
   border-color: #707070;
-  border-width: 2p
+  border-width: 2px;
+}
+
+.unselected:hover {
+  border-width: 2px;
 }
 
 .selected {
@@ -14,9 +18,17 @@
   margin-bottom: 5px;
 }
 
+.exclude-unknown-section {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 0;
+  padding-right: 5px;
+}
+
 .search-flyout-content {
   h3 {
     padding-top: 10px;
     padding-bottom: 10px;
   }
+
 }
