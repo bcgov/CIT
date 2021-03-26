@@ -8,7 +8,7 @@ import { setColour } from "../../helpers/helpers";
 export default function ResourceMarker({ resourceName, resources }) {
   const colour = setColour(resourceName, "colourName");
 
-  if (resources.features) {
+  if (resources && resources.features) {
     const { point, name } = resources.features[0].properties;
     if (point) {
       const geo = point.match(/\((.*) (.*)\)/);
