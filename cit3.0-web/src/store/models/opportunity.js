@@ -683,6 +683,14 @@ export class Opportunity {
     this.state.userInfo.saleOrLease.value = value;
   }
 
+  set opportunitySalePrice(value) {
+    this.state.userInfo.saleOrLease.salePrice = value;
+  }
+
+  set opportunityRentalPrice(value) {
+    this.state.userInfo.saleOrLease.rentalPrice = value;
+  }
+
   set rentalPrice(value) {
     this.state.userInfo.saleOrLease.rentalPrice = value;
   }

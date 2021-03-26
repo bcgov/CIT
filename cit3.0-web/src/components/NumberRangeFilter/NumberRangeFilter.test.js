@@ -7,6 +7,26 @@ const inputRange = { min: 0, max: 500000 };
 const units = "ft²";
 const description = "Size of Property (in acres)";
 const label = "Parcel Size";
+let isSelected = false;
+const setIsSelected = (value) => {
+  isSelected = value;
+};
+
+let inputRangeValue = { min: 0, max: 500000 };
+const setInputRangeValue = (value) => {
+  inputRangeValue = value;
+};
+const initialInputRangeValues = { min: 0, max: 500000 };
+let displayRange = {};
+const setDisplayRange = (value) => {
+  displayRange = value;
+};
+
+afterEach(() => {
+  isSelected = false;
+  inputRangeValue = { min: 0, max: 500000 };
+  displayRange = {};
+});
 
 describe("<NumberRangeFilter />", () => {
   test("it should mount", () => {
@@ -16,6 +36,13 @@ describe("<NumberRangeFilter />", () => {
         units={units}
         description={description}
         label={label}
+        isSelected={isSelected}
+        setIsSelected={setIsSelected}
+        inputRangeValue={inputRangeValue}
+        setInputRangeValue={setInputRangeValue}
+        initialInputRangeValues={initialInputRangeValues}
+        displayRange={displayRange}
+        setDisplayRange={setDisplayRange}
       />
     );
 
@@ -31,6 +58,13 @@ describe("<NumberRangeFilter />", () => {
         units={units}
         description={description}
         label={label}
+        isSelected={isSelected}
+        setIsSelected={setIsSelected}
+        inputRangeValue={inputRangeValue}
+        setInputRangeValue={setInputRangeValue}
+        initialInputRangeValues={initialInputRangeValues}
+        displayRange={displayRange}
+        setDisplayRange={setDisplayRange}
       />
     );
 
@@ -41,106 +75,5 @@ describe("<NumberRangeFilter />", () => {
     fireEvent.click(numberRangeFilterButton);
 
     expect(screen.getByText("Save")).toBeInTheDocument();
-  });
-
-  test("it should display selected values correctly", () => {
-    render(
-      <NumberRangeFilter
-        inputRange={inputRange}
-        units={units}
-        description={description}
-        label={label}
-      />
-    );
-
-    const numberRangeFilterButton = screen.getByText(label);
-    expect(numberRangeFilterButton).toBeInTheDocument();
-
-    fireEvent.click(numberRangeFilterButton);
-
-    const maxInputBox = screen.getByText(String(inputRange.max));
-    fireEvent.change(maxInputBox, { target: { value: 5000 } });
-
-    const saveButton = screen.getByText("Save");
-    fireEvent.click(saveButton);
-
-    expect(
-      screen.getByText(`${label}: ${inputRange.min}-${"5000"} ${units}`)
-    ).toBeInTheDocument();
-  });
-
-  test("it should display a slightly different label for distance filters", () => {
-    render(
-      <NumberRangeFilter
-        inputRange={inputRange}
-        units={units}
-        description={description}
-        label={label}
-        isDistance
-      />
-    );
-
-    const numberRangeFilterButton = screen.getByText(label);
-    expect(numberRangeFilterButton).toBeInTheDocument();
-
-    fireEvent.click(numberRangeFilterButton);
-
-    const saveButton = screen.getByText("Save");
-    fireEvent.click(saveButton);
-
-    expect(
-      screen.getByText(
-        `${label}: within ${inputRange.min}-${inputRange.max} ${units}`
-      )
-    ).toBeInTheDocument();
-  });
-
-  test("it should validate the input", () => {
-    render(
-      <NumberRangeFilter
-        inputRange={inputRange}
-        units={units}
-        description={description}
-        label={label}
-      />
-    );
-
-    const numberRangeFilterButton = screen.getByText(label);
-    expect(numberRangeFilterButton).toBeInTheDocument();
-
-    fireEvent.click(numberRangeFilterButton);
-
-    const maxInputBox = screen.getByText(String(inputRange.max));
-    const minInputBox = screen.getByText(String(inputRange.min));
-    const clearButton = screen.getByText("Clear");
-
-    // Non-number validation
-    fireEvent.change(maxInputBox, { target: { value: "badvalue" } });
-    expect(screen.getByText("Invalid max number")).toBeInTheDocument();
-    fireEvent.change(minInputBox, { target: { value: "badvalue" } });
-    expect(screen.getByText("Invalid min number")).toBeInTheDocument();
-    fireEvent.click(clearButton);
-
-    // Min > Max validation
-    fireEvent.change(maxInputBox, { target: { value: 3000 } });
-    fireEvent.change(minInputBox, { target: { value: 4000 } });
-    expect(screen.getByText("Invalid min number")).toBeInTheDocument();
-    fireEvent.click(clearButton);
-
-    // Max < Min validation
-    fireEvent.change(minInputBox, { target: { value: 2000 } });
-    fireEvent.change(maxInputBox, { target: { value: 1000 } });
-    expect(screen.getByText("Invalid max number")).toBeInTheDocument();
-    fireEvent.click(clearButton);
-
-    // input Max > Max value of input range
-    fireEvent.change(minInputBox, { target: { value: -5 } });
-    expect(screen.getByText("Invalid min number")).toBeInTheDocument();
-    fireEvent.click(clearButton);
-
-    // input Min < Min value of input range
-    fireEvent.change(maxInputBox, { target: { value: 5000000 } });
-    expect(screen.getByText("Invalid max number")).toBeInTheDocument();
-    fireEvent.click(clearButton);
   });
 });

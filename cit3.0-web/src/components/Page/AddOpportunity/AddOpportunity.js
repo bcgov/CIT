@@ -46,6 +46,9 @@ export default function AddOpportunity() {
   const nearbyResources = useSelector(
     (state) => state.opportunity.nearbyResources
   );
+  const municipality = useSelector(
+    (state) => state.opportunity.municipality.name
+  );
 
   const [hasApproval, setHasApproval] = useState(false);
   const [blockContinue, setBlockContinue] = useState(true);
@@ -244,7 +247,11 @@ export default function AddOpportunity() {
                       {parcelOwner === "Private" && (
                         <>
                           <PropertyInfo info="This land parcel or development opportunity resides on private land." />
-                          <PropertyInfo info="As a rep from <INSERT COMMUNITY HERE> do you have the approval from the land owner to promote this investment opportunity?" />
+                          <PropertyInfo
+                            info={`As a rep from ${
+                              municipality || "Your Community"
+                            } do you have the approval from the land owner to promote this investment opportunity?`}
+                          />
                           <Col>
                             <Radios
                               aria-label="approval to sell"

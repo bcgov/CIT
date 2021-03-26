@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Map from "../Map/Map";
 import { getProximityData } from "../../helpers/resourceCalls";
 import { getSoilAndElevationData, buildSoilString } from "../../helpers/soil";
@@ -30,9 +30,11 @@ export default function MapContainer({
 
   const run = async () => {
     const soilData = await getSoilAndElevationData(coords);
-    const soilStr = buildSoilString(soilData);
-    dispatch(setSoil(soilStr));
-    dispatch(setElevation(soilData.AVG_ELEV));
+    if (soilData) {
+      const soilStr = buildSoilString(soilData);
+      dispatch(setSoil(soilStr));
+      dispatch(setElevation(soilData.AVG_ELEV));
+    }
     const proximity = await getProximityData(coords);
     dispatch(setNearbyResources(proximity.data));
   };
