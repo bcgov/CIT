@@ -219,7 +219,7 @@ export default function HomePage() {
               developments. The Province of British Columbia disclaims any
               liability for unauthorized use or reproduction of any information
               contained in this document and is not responsible for any direct,
-              indirect, special or consequential damanges or any other damanges
+              indirect, special or consequential damages or any other damages
               caused, arising out of or in connection with use of this
               information. The Province of British Columbia is not acting as a
               real estate broker or agent for any party in connection with any
