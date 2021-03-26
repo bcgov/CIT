@@ -196,7 +196,7 @@ export default function HomePage() {
           <Col xs={11} className="disclaimer-text">
             <h5>Disclaimer</h5>
             <p>
-              Property listings on this site include information provide by
+              Property listings on this site include information provided by
               authorized community representatives and obtained from open data
               sources. The Province of British Columbia has not verified the
               information and prospective purchasers, lessors, and others should
