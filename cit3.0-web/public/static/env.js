@@ -5,4 +5,5 @@
   window.env.keycloakUrl = "https://test.oidc.gov.bc.ca/auth/";
   window.env.keycloakRealm = "fyof530u";
   window.env.keycloakClient = "cit-local";
+  window.env.snowplowUrl = "";
 })(this);
