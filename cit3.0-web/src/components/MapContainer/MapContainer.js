@@ -23,6 +23,7 @@ export default function MapContainer({
   setCoords,
   setAddress,
   setError,
+  setNoAddressFlag,
 }) {
   const [lastCoords, setLastCoords] = useState([]);
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ export default function MapContainer({
           setAddress={setAddress}
           nearbyResources={nearbyResources}
           setError={setError}
+          setNoAddressFlag={setNoAddressFlag}
         />
       </div>
     </div>
@@ -76,4 +78,5 @@ MapContainer.propTypes = {
   setNearbyResources: PropTypes.func.isRequired,
   setAddress: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
+  setNoAddressFlag: PropTypes.func.isRequired,
 };

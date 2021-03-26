@@ -39,8 +39,9 @@ export async function getParcelData(pid) {
     .catch(() => null);
 }
 
-export async function getParcelDataNoAddress(coords) {
-  const convertedCoords = convertCoords(coords);
+export async function getParcelDataNoAddress(coords4326) {
+  const convertedCoords = convertCoords(coords4326);
+  console.log(`${convertCoords[0]} ${convertCoords[1]}`);
   const url = `https://openmaps.gov.bc.ca/geo/pub/WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_SVW/wfs?service=wfs&version=2.0.0&request=GetFeature&outputFormat=application%2Fjson&TypeNames=pub:WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_SVW&srsName=EPSG%3A4326&cql_filter=INTERSECTS(SHAPE,POINT(${convertedCoords[0]} ${convertedCoords[1]}))`;
   return axios
     .get(url)

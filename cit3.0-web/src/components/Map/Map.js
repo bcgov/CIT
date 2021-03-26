@@ -31,6 +31,7 @@ export default function Map({
   isInteractive,
   isSearchMode,
   setError,
+  setNoAddressFlag,
 }) {
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
@@ -76,6 +77,7 @@ export default function Map({
         setNearbyResources={setNearbyResources}
         changeView={changeView}
         setError={setError}
+        setNoAddressFlag={setNoAddressFlag}
       />
     );
   }
@@ -209,6 +211,7 @@ Map.defaultProps = {
   setCoords: () => {},
   setAddress: () => {},
   setError: () => {},
+  setNoAddressFlag: () => {},
 };
 
 Map.propTypes = {
@@ -227,4 +230,5 @@ Map.propTypes = {
   setCoords: PropTypes.func,
   setAddress: PropTypes.func,
   setError: PropTypes.func,
+  setNoAddressFlag: PropTypes.func,
 };

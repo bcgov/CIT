@@ -9,7 +9,11 @@ import { getAddressData } from "../../../helpers/resourceCalls";
 import PropertyInfo from "../../PropertyInfo/PropertyInfo";
 import PageTitleHeader from "../../Headers/PageTitleHeader/PageTitleHeader";
 import ButtonRow from "../../ButtonRow/ButtonRow";
-import { getParcelData, getPID } from "../../../helpers/parcelData";
+import {
+  getParcelData,
+  getPID,
+  getParcelDataNoAddress,
+} from "../../../helpers/parcelData";
 import {
   setAddress,
   setCoords,
@@ -47,6 +51,7 @@ export default function AddOpportunity() {
   const [blockContinue, setBlockContinue] = useState(true);
   const [error, setError] = useState(null);
   const [agreed, setAgreed] = useState(false);
+  const [noAddressFlag, setNoAddressFlag] = useState(false);
 
   const handleRadioChange = (name, label, value) => {
     setHasApproval(label);
@@ -66,6 +71,7 @@ export default function AddOpportunity() {
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 
   const setParcelData = async (id) => {
+    console.log("wrong function");
     const pid = await getPID(id);
     dispatch(setPID(pid));
     if (pid) {
@@ -94,6 +100,42 @@ export default function AddOpportunity() {
           dispatch(setGeometry(parcelData.data.features[0].geometry));
         }
       });
+    } else {
+      dispatch(setGeometry({ coordinates: null }));
+      dispatch(setParcelOwner(null));
+      dispatch(setParcelSize(null));
+      setBlockContinue(false);
+    }
+    setError(false);
+  };
+
+  const setParcelDataNoAddress = async (noAddrCoords) => {
+    const parcelData = await getParcelDataNoAddress(noAddrCoords);
+    if (noAddressFlag) {
+      console.log(parcelData);
+      if (parcelData) {
+        dispatch(setPID(parcelData.data.features[0].properties.PID));
+        dispatch(
+          setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE)
+        );
+        if (parcelData.data.features[0].properties.OWNER_TYPE !== "Private") {
+          setBlockContinue(false);
+        } else {
+          setBlockContinue(true);
+        }
+        dispatch(
+          setParcelSize(
+            Number(
+              // convert sqM to Acres
+              (
+                parcelData.data.features[0].properties.FEATURE_AREA_SQM *
+                0.000247105
+              ).toFixed(3)
+            )
+          )
+        );
+        dispatch(setGeometry(parcelData.data.features[0].geometry));
+      }
     } else {
       dispatch(setGeometry({ coordinates: null }));
       dispatch(setParcelOwner(null));
@@ -139,6 +181,12 @@ export default function AddOpportunity() {
     }
   }, [siteId]);
 
+  useEffect(() => {
+    if (noAddressFlag) {
+      setParcelDataNoAddress(coords);
+    }
+  }, [noAddressFlag]);
+
   const goToNextPage = () => {
     history.push(`/opportunity/site-info`);
   };
@@ -180,7 +228,7 @@ export default function AddOpportunity() {
                     </Col>
                   </Row>
                 )}
-                {address && parcelSize ? (
+                {parcelSize ? (
                   <Row>
                     <Col>
                       <PropertyInfo info={address} tag={false} />
@@ -191,7 +239,7 @@ export default function AddOpportunity() {
                         Parcel Size: <b>{parcelSize.toFixed(3)} acres</b>
                       </p>
                       <p>
-                        PID: <b>{PID.join(", ")}</b>
+                        PID: <b>{PID.length > 1 ? PID.join(", ") : PID}</b>
                       </p>
                       {parcelOwner === "Private" && (
                         <>
@@ -235,6 +283,7 @@ export default function AddOpportunity() {
               setCoords={(c) => dispatch(setCoords(c))}
               setSiteId={(id) => dispatch(setSiteId(id))}
               setError={setError}
+              setNoAddressFlag={setNoAddressFlag}
             />
           </Col>
         </Row>
@@ -243,7 +292,7 @@ export default function AddOpportunity() {
         </Row>
       </Container>
       <ButtonRow
-        noContinue={!address || blockContinue || !agreed}
+        noContinue={!PID || blockContinue || !agreed}
         onClick={goToNextPage}
       />
     </>
