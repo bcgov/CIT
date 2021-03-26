@@ -28,6 +28,8 @@ import AuthLayout from "./layouts/AuthLayout";
 import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainView";
 import OpportunityApproveListPage from "./components/Page/OpportunityApproveListPage/OpportunityApproveListPage";
 
+import PowerBi from "./components/Page/PowerBi/PowerBi";
+
 import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
 
@@ -196,6 +198,7 @@ function App() {
                   layout={AuthLayout}
                   component={OpportunityDeletePage}
                 />
+                <AppRoute path="/communityInsights" component={PowerBi} />
                 <AppRoute path="/search" component={InvestorMainView} />
               </Switch>
               <div className="footer">

@@ -15,7 +15,6 @@ export default function PowerBi(props) {
     axios
       .get("/api/token")
       .then((res) => {
-        console.log(res.data);
         setToken(res.data.access_token);
       })
       .catch((err) => console.error(err));
