@@ -122,7 +122,7 @@ storiesOf("OpportunityDeletePage", module).add("default", () => {
           type: "distance",
           suffix: "km",
         },
-        nearResearchCenter: {
+        nearResearchCentre: {
           title: "Research Center within 100km",
           name: "Yes",
           value: 10,

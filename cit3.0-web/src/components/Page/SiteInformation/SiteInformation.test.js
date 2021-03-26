@@ -13,17 +13,6 @@ const location = {
 };
 
 describe("SiteInformation", () => {
-  it("renders the portal header", () => {
-    const { getByText } = render(
-      <Provider store={store}>
-        <BrowserRouter>
-          <SiteInformation location={location} />
-        </BrowserRouter>
-      </Provider>
-    );
-    const headerTitle = getByText(/Portal/i);
-    expect(headerTitle.textContent).toBe("Opportunity Portal");
-  });
   it("renders the navigation header", () => {
     const { getByText } = render(
       <Provider store={store}>

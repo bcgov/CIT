@@ -114,9 +114,7 @@ export default function Map({
         {parcelPoly && convert(parcelPoly)}
         {coords[0] !== 54.1722 ? (
           <Marker position={coords}>
-            <Popup>
-              Lat: {coords[0]} Long: {coords[1]}
-            </Popup>
+            <Popup>{address || null}</Popup>
           </Marker>
         ) : null}
         {JSON.stringify(nearbyResources) !== "{}"

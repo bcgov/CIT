@@ -35,6 +35,9 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
   const [pubFrom, setPubFrom] = useState(search[FORM_PUB_FROM_INPUT]);
   const [pubTo, setPubTo] = useState(search[FORM_PUB_TO_INPUT]);
 
+  const [statusCode, setStatusCode] = useState();
+  const [regionalDistrict, setRegionalDistrict] = useState();
+
   const validateInput = (fieldName, value) => {
     let otherValue;
     switch (fieldName) {
@@ -59,8 +62,6 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
     }
   };
 
-  const [statusCode, setStatusCode] = useState();
-  const [regionalDistrict, setRegionalDistrict] = useState();
   const handleStatusChange = (nextStatusCode) => {
     let updateTo = nextStatusCode;
     if (nextStatusCode === statusCode) {
@@ -81,13 +82,42 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
     setSubTo("");
     setPubFrom("");
     setPubTo("");
+    setSubFromValidated(false);
+    setSubToValidated(false);
+    setPubFromValidated(false);
+    setPubToValidated(false);
+    resetFilters();
     resetFilters();
   };
 
+  const handleSubFrom = (value) => {
+    setSubFrom(value);
+    onQuery(FORM_SUB_FROM_INPUT, value);
+  };
+
+  const handleSubTo = (value) => {
+    setSubTo(value);
+    onQuery(FORM_SUB_TO_INPUT, value);
+  };
+
+  const handlePubFrom = (value) => {
+    setSubFrom(value);
+    onQuery(FORM_PUB_FROM_INPUT, value);
+  };
+  const handlePubTo = (value) => {
+    setPubTo(value);
+    onQuery(FORM_PUB_TO_INPUT, value);
+  };
+
+  // Initialization
   useEffect(() => {
     setStatusCode(search.approval_status_id);
     setRegionalDistrict(search.regional_district);
-  });
+    setSubFrom(search[FORM_SUB_FROM_INPUT]);
+    setSubTo(search[FORM_SUB_TO_INPUT]);
+    setPubFrom(search[FORM_PUB_FROM_INPUT]);
+    setPubTo(search[FORM_PUB_TO_INPUT]);
+  }, []);
 
   return (
     <div>
@@ -121,7 +151,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
               onInput={(e) =>
                 validateInput(FORM_SUB_FROM_INPUT, e.target.value)
               }
-              onChange={(e) => onQuery(FORM_SUB_FROM_INPUT, e.target.value)}
+              onChange={(e) => handleSubFrom(e.target.value)}
               placeholder="Choose a date"
             />
             <Form.Control.Feedback
@@ -138,7 +168,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
               name={FORM_SUB_TO_INPUT}
               value={subTo}
               onInput={(e) => validateInput(FORM_SUB_TO_INPUT, e.target.value)}
-              onChange={(e) => onQuery(FORM_SUB_TO_INPUT, e.target.value)}
+              onChange={(e) => handleSubTo(e.target.value)}
               placeholder="Choose a date"
             />
             <Form.Control.Feedback
@@ -162,7 +192,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
               onInput={(e) =>
                 validateInput(FORM_PUB_FROM_INPUT, e.target.value)
               }
-              onChange={(e) => onQuery(FORM_PUB_FROM_INPUT, e.target.value)}
+              onChange={(e) => handlePubFrom(e.target.value)}
               placeholder="Choose a date"
             />
             <Form.Control.Feedback
@@ -179,7 +209,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
               name={FORM_PUB_TO_INPUT}
               value={pubTo}
               onInput={(e) => validateInput(FORM_PUB_TO_INPUT, e.target.value)}
-              onChange={(e) => onQuery(FORM_PUB_TO_INPUT, e.target.value)}
+              onChange={(e) => handlePubTo(e.target.value)}
               placeholder="Choose a date"
             />
             <Form.Control.Feedback

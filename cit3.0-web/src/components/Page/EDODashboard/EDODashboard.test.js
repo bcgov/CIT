@@ -2,7 +2,9 @@ import { render, cleanup, waitFor } from "@testing-library/react";
 import axios from "axios";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
+import { Provider } from "react-redux";
 import EDODashboard from "./EDODashboard";
+import { store } from "../../../store";
 
 afterEach(cleanup);
 const history = createMemoryHistory();
@@ -15,9 +17,11 @@ describe("EDODashboard", () => {
     });
 
     const { getByText } = render(
-      <Router history={history}>
-        <EDODashboard />
-      </Router>
+      <Provider store={store}>
+        <Router history={history}>
+          <EDODashboard />
+        </Router>
+      </Provider>
     );
     expect(axios.get).toHaveBeenCalledTimes(1);
     await waitFor(() => {
@@ -35,9 +39,11 @@ describe("EDODashboard", () => {
     });
 
     const { getByText } = render(
-      <Router history={history}>
-        <EDODashboard />
-      </Router>
+      <Provider store={store}>
+        <Router history={history}>
+          <EDODashboard />
+        </Router>
+      </Provider>
     );
     expect(getByText(/How it /i).textContent).toBe("How it works");
     expect(getByText(/We invite you to/i).textContent).toContain(
@@ -53,9 +59,11 @@ describe("EDODashboard", () => {
     });
 
     const { getByText } = render(
-      <Router history={history}>
-        <EDODashboard />
-      </Router>
+      <Provider store={store}>
+        <Router history={history}>
+          <EDODashboard />
+        </Router>
+      </Provider>
     );
     await waitFor(() => {
       expect(getByText(/As soon as you add/i).textContent).toContain(
@@ -101,9 +109,11 @@ describe("EDODashboard", () => {
     });
 
     const { getByText } = render(
-      <Router history={history}>
-        <EDODashboard />
-      </Router>
+      <Provider store={store}>
+        <Router history={history}>
+          <EDODashboard />
+        </Router>
+      </Provider>
     );
     expect(axios.get).toHaveBeenCalledTimes(1);
     await waitFor(() => {

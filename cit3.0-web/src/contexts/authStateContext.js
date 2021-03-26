@@ -1,7 +1,9 @@
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Proptypes from "prop-types";
 import { useKeycloakWrapper } from "../hooks/useKeycloakWrapper";
+import { getUser, postUser, setUser } from "../store/actions/user";
+import UserFactory from "../store/factory/UserFactory";
 
 export const AuthStateContext = React.createContext({
   ready: false,
@@ -11,24 +13,30 @@ const AuthStateContextProvider = ({ children }) => {
   const keycloak = useKeycloakWrapper();
   const [userInfo, setUserInfo] = React.useState(null);
   const keycloakReady = useSelector((state) => state.keycloakReady);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-    const loadUserInfo = () => {
-      if (keycloak.obj && keycloak.obj.authenticated) {
+    if (keycloak.obj && keycloak.obj.authenticated) {
+      const loadUserInfo = () => {
         keycloak.obj
           .loadUserInfo()
           .then((user) => {
             setUserInfo(user);
+            postUser(
+              UserFactory.createStateFromKeyCloak(user),
+              keycloak.obj.token
+            ).then((response) => {
+              dispatch(setUser(response.data));
+            });
           })
           .catch((e) => {
             // eslint-disable-next-line
             console.error(e);
           });
-      }
-    };
-
-    loadUserInfo();
-  }, [keycloak.obj]);
+      };
+      loadUserInfo();
+    }
+  }, [keycloakReady]);
 
   return (
     <AuthStateContext.Provider
