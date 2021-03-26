@@ -123,7 +123,7 @@ export default function HomePage() {
               <li>Land must be available for sale or lease.</li>
               <li>
                 Land may be publicly or privately owned but may only be listed
-                with the writeen permission of the landowner.
+                with the written permission of the landowner.
               </li>
               <li>
                 Land must be free of constraints that could impact the
