@@ -182,6 +182,33 @@ function displayResources(resources) {
     }
     // Otherwise it is a datapoint
     toDisplay[resource[1].title] = element;
+    //
+    if (resource[1].salePrice || resource[1].rentalPrice) {
+      toDisplay[` Asking Price/Rental Rate`] = (
+        <div className="d-flex flex-column">
+          <div className="ml-2">
+            <b>
+              <NumberFormat
+                displayType="text"
+                prefix="$"
+                value={resource[1].salePrice}
+                decimalScale={2}
+                thousandSeparator=","
+              />
+              {resource[1].salePrice || resource[1].rentalPrice ? " or " : ""}
+              <NumberFormat
+                displayType="text"
+                value={resource[1].rentalPrice}
+                prefix="$"
+                suffix="/month"
+                decimalScale={2}
+                thousandSeparator=","
+              />
+            </b>
+          </div>
+        </div>
+      );
+    }
   });
   return toDisplay;
 }
