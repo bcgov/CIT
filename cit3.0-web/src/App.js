@@ -27,7 +27,6 @@ import AppRoute from "./utils/AppRoute/AppRoute";
 import AuthLayout from "./layouts/AuthLayout";
 import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainView";
 import OpportunityApproveListPage from "./components/Page/OpportunityApproveListPage/OpportunityApproveListPage";
-import PowerBi from "./components/PowerBI/Power";
 
 import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
