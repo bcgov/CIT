@@ -43,11 +43,12 @@ export default function OpportunityListContainer({
 OpportunityListContainer.defaultProps = {
   totalCount: 0,
   component: () => OpportunityListItem,
+  opportunities: null,
 };
 
 OpportunityListContainer.propTypes = {
   totalCount: PropTypes.number,
-  opportunities: PropTypes.shape().isRequired,
+  opportunities: PropTypes.arrayOf(PropTypes.shape()),
   currentPage: PropTypes.number.isRequired,
   setCurrentPage: PropTypes.func.isRequired,
   pageSize: PropTypes.number.isRequired,

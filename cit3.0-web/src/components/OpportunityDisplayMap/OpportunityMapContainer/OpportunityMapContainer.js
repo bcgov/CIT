@@ -76,7 +76,11 @@ export default function OpportunityMapContainer({ totalCount, opportunities }) {
   );
 }
 
+OpportunityMapContainer.defaultProps = {
+  opportunities: null,
+};
+
 OpportunityMapContainer.propTypes = {
   totalCount: PropTypes.number.isRequired,
-  opportunities: PropTypes.shape().isRequired,
+  opportunities: PropTypes.arrayOf(PropTypes.shape()),
 };

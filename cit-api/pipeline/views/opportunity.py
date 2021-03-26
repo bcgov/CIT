@@ -80,6 +80,34 @@ class OpportunitiesList(generics.ListAPIView):
         if(parcel_size_max >= MIN_SIZE):
             queryset = queryset.filter(parcel_size__lte=parcel_size_max)
 
+        power_transmission_lines_min = float(self.request.query_params.get('power_transmission_lines_min', INVALID_INT))
+        power_transmission_lines_max = float(self.request.query_params.get('power_transmission_lines_max', INVALID_INT))
+        if(power_transmission_lines_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_transmission_line__gte=power_transmission_lines_min)
+        if(power_transmission_lines_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_transmission_line__lte=power_transmission_lines_max)
+
+        air_service_min = float(self.request.query_params.get('air_service_min', INVALID_INT))
+        air_service_max = float(self.request.query_params.get('air_service_max', INVALID_INT))
+        if(air_service_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_airport__airport_distance__gte=air_service_min)
+        if(air_service_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_airport__airport_distance__lte=air_service_max) 
+
+        rail_connections_min = float(self.request.query_params.get('rail_connections_min', INVALID_INT))
+        rail_connections_max = float(self.request.query_params.get('rail_connections_max', INVALID_INT))
+        if(rail_connections_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_railway__railway_distance__gte=rail_connections_min)
+        if(rail_connections_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_railway__railway_distance__lte=rail_connections_max) 
+
+        deep_water_port_min = float(self.request.query_params.get('deep_water_port_min', INVALID_INT))
+        deep_water_port_max = float(self.request.query_params.get('deep_water_port_max', INVALID_INT))
+        if(deep_water_port_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_port__port_distance__gte=deep_water_port_min)
+        if(deep_water_port_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_port__port_distance__lte=deep_water_port_max) 
+
         zoning = self.request.query_params.get('zoning', None)
         if(zoning is not None):
             zonings = zoning.split(',')
@@ -89,52 +117,47 @@ class OpportunitiesList(generics.ListAPIView):
 
     def service_queryset(self, queryset, exclude_unknowns, service_name):
         service_connected = self.request.query_params.get(service_name, None)
-        print("----------")
-        print(service_name)
-        print(service_connected)
-        print(exclude_unknowns)
     
         if(service_name == 'opportunity_road_connected'):
-            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns is 'N')):
-                print("path 1")
+            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns is 'N') and service_connected is 'Y'):
                 queryset = queryset.filter(Q(opportunity_road_connected=service_connected) |
                                            Q(opportunity_road_connected='U'))
-            elif(service_connected is not None and exclude_unknowns is 'Y'):
-                print("path 2")
+            elif(service_connected is not None and exclude_unknowns is 'Y' and service_connected is 'Y'):
                 queryset = queryset.filter(opportunity_road_connected=service_connected)
+            elif(service_connected is not None and exclude_unknowns is 'Y' and service_connected is 'N'):
+                queryset = queryset.filter(~Q(opportunity_road_connected='U'))
         elif(service_name == 'opportunity_water_connected'):
-            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns is 'N')):
-                print("path 1")
+            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns is 'N') and service_connected is 'Y'):
                 queryset = queryset.filter(Q(opportunity_water_connected=service_connected) |
                                            Q(opportunity_water_connected='U'))
-            elif(service_connected is not None and exclude_unknowns is 'Y'):
-                print("path 2")
+            elif(service_connected is not None and exclude_unknowns is 'Y' and service_connected is 'Y'):
                 queryset = queryset.filter(opportunity_water_connected=service_connected)
+            elif(service_connected is not None and exclude_unknowns is 'Y' and service_connected is 'N'):
+                queryset = queryset.filter(~Q(opportunity_water_connected='U'))
         elif(service_name == 'opportunity_sewer_connected'):
-            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns is 'N')):
-                print("path 1")
+            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns is 'N') and service_connected is 'Y'):
                 queryset = queryset.filter(Q(opportunity_sewer_connected=service_connected) |
                                            Q(opportunity_sewer_connected='U'))
-            elif(service_connected is not None and exclude_unknowns is 'Y'):
-                print("path 2")
+            elif(service_connected is not None and exclude_unknowns is 'Y' and service_connected is 'Y'):
                 queryset = queryset.filter(opportunity_sewer_connected=service_connected)
+            elif(service_connected is not None and exclude_unknowns is 'Y' and service_connected is 'N'):
+                queryset = queryset.filter(~Q(opportunity_sewer_connected='U'))
         elif(service_name == 'opportunity_electrical_connected'):
-            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns is 'N')):
-                print("path 1")
+            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns is 'N') and service_connected is 'Y'):
                 queryset = queryset.filter(Q(opportunity_electrical_connected=service_connected) |
                                            Q(opportunity_electrical_connected='U'))
-            elif(service_connected is not None and exclude_unknowns is 'Y'):
-                print("path 2")
+            elif(service_connected is not None and exclude_unknowns is 'Y' and service_connected is 'Y'):
                 queryset = queryset.filter(opportunity_electrical_connected=service_connected)
+            elif(service_connected is not None and exclude_unknowns is 'Y' and service_connected is 'N'):
+                queryset = queryset.filter(~Q(opportunity_electrical_connected='U'))
         elif(service_name == 'opportunity_natural_gas_connected'):
-            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns is 'N')):
-                print("path 1")
+            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns is 'N') and service_connected is 'Y'):
                 queryset = queryset.filter(Q(opportunity_natural_gas_connected=service_connected) |
                                            Q(opportunity_natural_gas_connected='U'))
-            elif(service_connected is not None and exclude_unknowns is 'Y'):
-                print("path 2")
+            elif(service_connected is not None and exclude_unknowns is 'Y' and service_connected is 'Y'):
                 queryset = queryset.filter(opportunity_natural_gas_connected=service_connected)
-
+            elif(service_connected is not None and exclude_unknowns is 'Y' and service_connected is 'N'):
+                queryset = queryset.filter(~Q(opportunity_natural_gas_connected='U'))
 
         return queryset
 

@@ -7,35 +7,37 @@ import "react-input-range/src/scss/index.scss";
 import InputRangeWithTextboxes from "../InputRangeWithTextboxes/InputRangeWithTextboxes";
 
 export default function NumberRangeFilter(props) {
-  const { inputRange, units, description, label, isDistance } = props;
+  const {
+    inputRange,
+    units,
+    description,
+    label,
+    isDistance,
+    isSelected,
+    setIsSelected,
+    inputRangeValue,
+    setInputRangeValue,
+    initialInputRangeValues,
+    displayRange,
+    setDisplayRange,
+  } = props;
   const [show, setShow] = useState(false);
-  const [inputRangeValue, setInputRangeValue] = useState({
-    min: inputRange.min,
-    max: inputRange.max,
-  });
   const [minInput, setMinInput] = useState(inputRange.min);
   const [maxInput, setMaxInput] = useState(inputRange.max);
   const [validMax, setValidMax] = useState(true);
   const [validMin, setValidMin] = useState(true);
-  const [displayRange, setDisplayRange] = useState({});
-  const [isSelected, setIsSelected] = useState(false);
   const [isModified, setIsModified] = useState(false);
 
-  const inputRangeMax = inputRange.max;
-  const inputRangeMin = inputRange.min;
+  const inputRangeMax = initialInputRangeValues.max;
+  const inputRangeMin = initialInputRangeValues.min;
 
   const handleSave = () => {
-    if (isModified) {
-      setIsSelected(true);
-      setShow(false);
-      setDisplayRange({
-        min: inputRangeValue.min,
-        max: inputRangeValue.max,
-      });
-    } else {
-      setIsSelected(false);
-    }
+    setIsSelected(isModified);
     setShow(false);
+    setDisplayRange({
+      min: inputRangeValue.min,
+      max: inputRangeValue.max,
+    });
   };
   const handleClear = () => {
     setInputRangeValue({ min: inputRangeMin, max: inputRangeMax });
@@ -133,4 +135,20 @@ NumberRangeFilter.propTypes = {
   description: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
   isDistance: PropTypes.bool,
+  isSelected: PropTypes.bool.isRequired,
+  setIsSelected: PropTypes.func.isRequired,
+  inputRangeValue: PropTypes.shape({
+    max: PropTypes.number.isRequired,
+    min: PropTypes.number.isRequired,
+  }).isRequired,
+  setInputRangeValue: PropTypes.func.isRequired,
+  initialInputRangeValues: PropTypes.shape({
+    max: PropTypes.number.isRequired,
+    min: PropTypes.number.isRequired,
+  }).isRequired,
+  displayRange: PropTypes.shape({
+    max: PropTypes.number.isRequired,
+    min: PropTypes.number.isRequired,
+  }).isRequired,
+  setDisplayRange: PropTypes.func.isRequired,
 };
