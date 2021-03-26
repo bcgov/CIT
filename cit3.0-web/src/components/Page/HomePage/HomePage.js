@@ -123,7 +123,7 @@ export default function HomePage() {
               <li>Land must be available for sale or lease.</li>
               <li>
                 Land may be publicly or privately owned but may only be listed
-                with the writeen permission of the landowner.
+                with the written permission of the landowner.
               </li>
               <li>
                 Land must be free of constraints that could impact the
@@ -181,7 +181,7 @@ export default function HomePage() {
                     required to log-in with a BCEID. A one-time verification
                     process will confirm your status as an authorized community
                     representative community representative when you create your
-                    first listing. All listing will be reviewed prior to
+                    first listing. All listings will be reviewed prior to
                     publication and will go live within 3-5 business days.
                   </p>
                 </Row>
@@ -196,7 +196,7 @@ export default function HomePage() {
           <Col xs={11} className="disclaimer-text">
             <h5>Disclaimer</h5>
             <p>
-              Property listings on this site include information provide by
+              Property listings on this site include information provided by
               authorized community representatives and obtained from open data
               sources. The Province of British Columbia has not verified the
               information and prospective purchasers, lessors, and others should
@@ -219,7 +219,7 @@ export default function HomePage() {
               developments. The Province of British Columbia disclaims any
               liability for unauthorized use or reproduction of any information
               contained in this document and is not responsible for any direct,
-              indirect, special or consequential damanges or any other damanges
+              indirect, special or consequential damages or any other damages
               caused, arising out of or in connection with use of this
               information. The Province of British Columbia is not acting as a
               real estate broker or agent for any party in connection with any

@@ -233,6 +233,14 @@ export default function SearchFlyoutContent({ setQuery }) {
         max: "deep_water_port_max",
       },
     },
+    {
+      selected: rAndDIsSelected,
+      value: rAndDDisplayRange,
+      queryKey: {
+        min: "research_centre_min",
+        max: "research_centre_max",
+      },
+    },
   ];
 
   useEffect(() => {
@@ -242,6 +250,11 @@ export default function SearchFlyoutContent({ setQuery }) {
     });
 
     query.append("exclude_unknowns", excludeUnknowns ? "Y" : "N");
+
+    query.append(
+      "post_secondary_within_100km",
+      postSecondarySwitchValue ? "Y" : "N"
+    );
 
     const activeNumberRangeFilters = numberRangeFilters.filter(
       (filter) => filter.selected === true
@@ -265,6 +278,8 @@ export default function SearchFlyoutContent({ setQuery }) {
     airServiceDisplayRange,
     railConnectionsDisplayRange,
     deepWaterPortDisplayRange,
+    rAndDDisplayRange,
+    postSecondarySwitchValue,
   ]);
 
   const siteServicingSection = switchFilters.map((switchFilter) => (

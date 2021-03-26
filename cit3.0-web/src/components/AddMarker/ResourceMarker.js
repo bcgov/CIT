@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { Marker, Popup } from "react-leaflet";
 import { v4 } from "uuid";
-import proj4 from "proj4";
 import newIcon from "./markers";
 import { setColour } from "../../helpers/helpers";
 
