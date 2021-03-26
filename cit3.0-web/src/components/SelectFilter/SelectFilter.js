@@ -4,9 +4,15 @@ import { Button } from "shared-components";
 import { Modal, Row, Container } from "react-bootstrap";
 
 export default function SelectFilter(props) {
-  const { label, filters, setFilters } = props;
+  const {
+    label,
+    filters,
+    setFilters,
+    isSelected,
+    setIsSelected,
+    setQueryFilters,
+  } = props;
 
-  const [isSelected, setIsSelected] = useState(false);
   const [show, setShow] = useState(false);
   const [displaySelected, setDisplaySelected] = useState({});
 
@@ -28,6 +34,18 @@ export default function SelectFilter(props) {
     return allSelectedFilterLabels.join(", ");
   };
 
+  const createFilterString = () => {
+    const allSelectedFilters = filters.filter(
+      (filter) => filter.isSelected === true
+    );
+
+    const allSelectedFilterLabels = allSelectedFilters.map(
+      (filter) => filter.code
+    );
+
+    return allSelectedFilterLabels.toString();
+  };
+
   const isModified = () => {
     for (let i = 0; i < filters.length; i++) {
       if (filters[i].isSelected === true) {
@@ -45,11 +63,12 @@ export default function SelectFilter(props) {
     } else {
       setIsSelected(false);
     }
+    setQueryFilters(createFilterString());
     setShow(false);
   };
   const handleClear = () => {
     const clearedFilters = filters.map((filter) => ({
-      label: filter.label,
+      ...filter,
       isSelected: false,
     }));
 
@@ -146,4 +165,7 @@ SelectFilter.propTypes = {
     }).isRequired
   ).isRequired,
   setFilters: PropTypes.func.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+  setIsSelected: PropTypes.func.isRequired,
+  setQueryFilters: PropTypes.func.isRequired,
 };
