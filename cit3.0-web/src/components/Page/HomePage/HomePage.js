@@ -181,7 +181,7 @@ export default function HomePage() {
                     required to log-in with a BCEID. A one-time verification
                     process will confirm your status as an authorized community
                     representative community representative when you create your
-                    first listing. All listing will be reviewed prior to
+                    first listing. All listings will be reviewed prior to
                     publication and will go live within 3-5 business days.
                   </p>
                 </Row>
