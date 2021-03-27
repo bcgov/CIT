@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
-import { Spinner, Container, Row, Col } from "react-bootstrap";
+import { Spinner, Container, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { Alert } from "shared-components";
 import { MdError } from "react-icons/md";
@@ -18,7 +18,6 @@ export default function SiteInformation({ location }) {
   };
 
   const municipality = useSelector((state) => state.opportunity.municipality);
-  console.log(municipality);
 
   // this page will run the searches and pass the data to opportunity view and map
   return (
@@ -54,7 +53,6 @@ export default function SiteInformation({ location }) {
             <h2>Please wait as this may take several moments</h2>
           </Col>
         </Container>
-        //
       )}
     </>
   );
