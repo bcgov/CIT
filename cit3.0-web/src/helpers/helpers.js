@@ -1,3 +1,6 @@
+import proj4 from "proj4";
+import { SRID_DEF_3005 } from "./constants";
+
 import * as Constants from "./constants";
 
 export function setColour(name, type) {
@@ -73,4 +76,9 @@ export function determineStatusTextColour(approvalStatus) {
 export function formatDate(ISODate) {
   const dateString = ISODate.substring(0, 10);
   return dateString;
+}
+
+export function convertCoords(coords) {
+  proj4.defs("EPSG:3005", SRID_DEF_3005);
+  return proj4(proj4("EPSG:4326"), proj4("EPSG:3005"), [coords[1], coords[0]]);
 }

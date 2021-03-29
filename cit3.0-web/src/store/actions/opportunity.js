@@ -56,9 +56,9 @@ export function postOpportunity(opportunityModel, token) {
 export function deleteOpportunity(opportunityModel, token) {
   const opportunity = opportunityModel;
   opportunity.deleted = true;
-  return axios.put(
+  return axios.patch(
     `${PUT_OPPORTUNITIES_URL + opportunity.id}/`,
-    OpportunityFactory.createRequestFromModel(opportunity),
+    OpportunityFactory.createDeleteFromModel(opportunity),
     {
       headers: { Authorization: `Bearer ${token}` },
     }
