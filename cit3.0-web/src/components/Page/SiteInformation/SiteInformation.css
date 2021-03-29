@@ -1,3 +1,12 @@
 .bcgov-warning-background {
     border: 1px solid rgb(252, 186, 25);
 }
+
+.spinner-container {
+    height: 50vh; 
+    color: #494949;
+}
+
+.bc-spinner {
+    color: #244278;
+}
