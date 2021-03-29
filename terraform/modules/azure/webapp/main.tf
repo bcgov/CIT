@@ -101,6 +101,9 @@ resource "azurerm_app_service" "backend" {
     POSTGRES_HOST                   = azurerm_postgresql_server.postgres.fqdn
     AUTHORITY                       = "https://login.microsoftonline.com/"
     SCOPE                           = "https://analysis.windows.net/powerbi/api/.default"
+    KEY_CLOAK_URL                   = "https://test.oidc.gov.bc.ca/auth/"
+    KEY_CLOAK_REALM                 = "fyof530u"
+    KEY_CLOAK_CLIENT                = "cit-test"
     DOCKER_ENABLE_CI                = true
   }
 
