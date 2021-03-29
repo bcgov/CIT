@@ -164,7 +164,7 @@ class Opportunity(models.Model):
         help_text="This is for soft deletes",
     )
     # Site Info
-    opportunity_address = models.CharField(max_length=255, null=True)
+    opportunity_address = models.CharField(max_length=255, null=True, blank=True)
     opportunity_name = models.TextField(blank=True, null=True)
     opportunity_rental_price = models.DecimalField(max_digits=15,
                                                    decimal_places=2,
