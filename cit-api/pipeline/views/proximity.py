@@ -263,7 +263,6 @@ class ProximityView(APIView):
                 municipality_id = int(
                     municipalities['features'][index]['properties']['pk'])
 
-                print(municipality_id)
                 if index == 0:
                     municipality = {'id': municipalities['features'][index]['properties']['pk'], 'name': municipalities['features'][index]['properties']['name']}
                 municipalities['features'][index]['properties']['distance'] = municipalities_check[index].distance.km
