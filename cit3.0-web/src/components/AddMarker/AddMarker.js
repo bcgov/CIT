@@ -25,6 +25,7 @@ export default function AddLocationMarker(props) {
     dispatch(setParcelSize(""));
     dispatch(setPID(""));
     props.setAddress("");
+    props.setNoAddressFlag(false);
     /// ///////////////////
     setPositions([e.latlng]);
 
@@ -38,9 +39,7 @@ export default function AddLocationMarker(props) {
         props.setAddress(addressDataFromPoint.data.properties.fullAddress);
       }
     } catch (error) {
-      props.setError(
-        "Cannot find address data for this particular geographic point.  Please try again."
-      );
+      props.setNoAddressFlag(true);
     }
 
     props.setCoords([e.latlng.lat, e.latlng.lng]);
