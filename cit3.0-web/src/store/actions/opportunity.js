@@ -210,8 +210,8 @@ export function setParcelOwner(owner) {
  * @param {Number} size
  * @return {Object} for redux reducer
  */
-export function setParcelSize(size) {
-  return { type: ADD_PARCEL_SIZE, payload: size };
+export function setParcelSize(size, increment) {
+  return { type: ADD_PARCEL_SIZE, payload: { size, increment } };
 }
 
 /**

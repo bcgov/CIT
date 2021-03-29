@@ -72,7 +72,7 @@ export default function AddOpportunity() {
     const pid = await getPID(id);
     dispatch(setPID(pid));
     if (pid) {
-      pid.forEach(async (_pid) => {
+      await pid.forEach(async (_pid) => {
         const parcelData = await getParcelData(_pid);
         if (parcelData) {
           dispatch(
@@ -91,7 +91,8 @@ export default function AddOpportunity() {
                   parcelData.data.features[0].properties.FEATURE_AREA_SQM *
                   0.000247105
                 ).toFixed(3)
-              )
+              ),
+              true
             )
           );
           dispatch(setGeometry(parcelData.data.features[0].geometry));
@@ -194,7 +195,7 @@ export default function AddOpportunity() {
                         Parcel Size: <b>{parcelSize.toFixed(3)} acres</b>
                       </p>
                       <p>
-                        PID: <b>{PID.join(", ")}</b>
+                        PID: <b>{PID.length > 1 ? PID.join(", ") : PID}</b>
                       </p>
                       {parcelOwner === "Private" && (
                         <>
