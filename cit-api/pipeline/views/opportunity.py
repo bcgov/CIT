@@ -124,6 +124,11 @@ class OpportunitiesList(generics.ListAPIView):
             zonings = zoning.split(',')
             queryset = queryset.filter(Q(land_use_zoning__in=zonings) | Q(ocp_zoning_code__in=zonings))
 
+        connectivity = self.request.query_params.get('connectivity', None)
+        if(connectivity is not None):
+            connectivities = connectivity.split(',')
+            queryset = queryset.filter(Q(network_avg__in=connectivities) | Q(network_at_road__in=connectivities))
+
         return queryset
 
     def service_queryset(self, queryset, exclude_unknowns, service_name):

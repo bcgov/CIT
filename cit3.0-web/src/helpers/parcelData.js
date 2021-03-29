@@ -1,11 +1,12 @@
 import axios from "axios";
 import { convertCoords } from "./helpers";
+import Config from "../Config";
 
 export const getPID = async (siteId) =>
   axios
     .get(`https://geocoder.api.gov.bc.ca/parcels/pids/${siteId}.json`, {
       headers: {
-        apikey: process.env.REACT_APP_PROD_KEY,
+        apikey: Config.geocoderKey,
       },
     })
     .then((data) => {
