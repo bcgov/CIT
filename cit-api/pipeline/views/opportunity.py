@@ -64,6 +64,10 @@ class OpportunitiesList(generics.ListAPIView):
         queryset = self.service_queryset(queryset, exclude_unknowns, 'opportunity_electrical_connected')
         queryset = self.service_queryset(queryset, exclude_unknowns, 'opportunity_natural_gas_connected')
 
+        post_secondary_within_100km = self.request.query_params.get('post_secondary_within_100km', None)
+        if(post_secondary_within_100km == 'Y'):
+            queryset = queryset.filter(nearest_post_secondary__location_distance__lte=100)
+
         # TODO Figure out distance calulation issues
         community_id = int(self.request.query_params.get('community_id', INVALID_INT))
         community_distance = float(self.request.query_params.get('community_distance', INVALID_INT))
@@ -107,6 +111,13 @@ class OpportunitiesList(generics.ListAPIView):
             queryset = queryset.filter(nearest_port__port_distance__gte=deep_water_port_min)
         if(deep_water_port_max >= MIN_SIZE):
             queryset = queryset.filter(nearest_port__port_distance__lte=deep_water_port_max) 
+
+        research_centre_min = float(self.request.query_params.get('research_centre_min', INVALID_INT))
+        research_centre_max = float(self.request.query_params.get('research_centre_max', INVALID_INT))
+        if(research_centre_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_research_center__research_centre_distance__gte=research_centre_min)
+        if(research_centre_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_research_center__research_centre_distance__lte=research_centre_max) 
 
         zoning = self.request.query_params.get('zoning', None)
         if(zoning is not None):
