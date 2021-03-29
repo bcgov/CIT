@@ -69,10 +69,11 @@ export default function AddOpportunity() {
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 
   const setParcelData = async (id) => {
+    dispatch(setParcelSize(0));
     const pid = await getPID(id);
     dispatch(setPID(pid));
     if (pid) {
-      await pid.forEach(async (_pid) => {
+      pid.forEach(async (_pid) => {
         const parcelData = await getParcelData(_pid);
         if (parcelData) {
           dispatch(
@@ -83,7 +84,7 @@ export default function AddOpportunity() {
           } else {
             setBlockContinue(true);
           }
-          dispatch(
+          await dispatch(
             setParcelSize(
               Number(
                 // convert sqM to Acres
@@ -91,8 +92,7 @@ export default function AddOpportunity() {
                   parcelData.data.features[0].properties.FEATURE_AREA_SQM *
                   0.000247105
                 ).toFixed(3)
-              ),
-              true
+              )
             )
           );
           dispatch(setGeometry(parcelData.data.features[0].geometry));
@@ -104,6 +104,7 @@ export default function AddOpportunity() {
       dispatch(setParcelSize(null));
       setBlockContinue(false);
     }
+
     setError(false);
   };
 

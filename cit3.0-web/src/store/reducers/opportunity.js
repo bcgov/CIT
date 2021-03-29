@@ -114,10 +114,10 @@ export default function opportunity(
 
       break;
     case ADD_PARCEL_SIZE:
-      if (state.siteInfo.parcelSize.value && action.payload.increment) {
-        state.siteInfo.parcelSize.value += action.payload.size;
+      if (state.siteInfo.parcelSize.value && action.payload) {
+        state.siteInfo.parcelSize.value += action.payload;
       } else {
-        state.siteInfo.parcelSize.value = action.payload.size;
+        state.siteInfo.parcelSize.value = action.payload;
       }
       break;
     case ADD_SITE_ID:
