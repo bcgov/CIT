@@ -6,4 +6,5 @@
   window.env.keycloakRealm = "fyof530u";
   window.env.keycloakClient = "cit-local";
   window.env.snowplowUrl = "";
+  window.env.geocoderKey = "";
 })(this);

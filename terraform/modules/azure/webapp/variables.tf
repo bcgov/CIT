@@ -99,3 +99,8 @@ variable akv_name {
   type        = string
   description = "The name of the Azure Key Vault"
 }
+
+variable geocoder_key {
+  type        = string
+  description = "The geocoder API key"
+}
