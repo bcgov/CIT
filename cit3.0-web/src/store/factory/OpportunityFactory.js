@@ -37,6 +37,17 @@ function createPatchFromModel(state) {
  * visual and control data the api needs not know
  * @param {Object} model from redux opportunity model
  */
+function createDeleteFromModel(state) {
+  return {
+    deleted: state.deleted,
+  };
+}
+
+/**
+ * Factory to convert model to request object, reason there is more
+ * visual and control data the api needs not know
+ * @param {Object} model from redux opportunity model
+ */
 function createRequestFromModel(state) {
   const request = {};
   // Remap camelCase names to sligified names
@@ -297,6 +308,7 @@ function mergeProximityState(state, proximity) {
 export default {
   createRequestFromModel,
   createPatchFromModel,
+  createDeleteFromModel,
   createStateFromResponse,
   createModelFromState,
   mergeProximityState,
