@@ -1,12 +1,5 @@
 import axios from "axios";
-import proj4 from "proj4";
-import { SRID_DEF_3005 } from "./constants";
-
-const convertCoords = (coords) => {
-  console.log(coords);
-  proj4.defs("EPSG:3005", SRID_DEF_3005);
-  return proj4(proj4("EPSG:4326"), proj4("EPSG:3005"), [coords[1], coords[0]]);
-};
+import { convertCoords } from "./helpers";
 
 export const getPID = async (siteId) =>
   axios
@@ -41,7 +34,6 @@ export async function getParcelData(pid) {
 
 export async function getParcelDataNoAddress(coords4326) {
   const convertedCoords = convertCoords(coords4326);
-  console.log(`${convertedCoords[0]} ${convertedCoords[1]}`);
   const url = `https://openmaps.gov.bc.ca/geo/pub/WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_SVW/wfs?service=wfs&version=2.0.0&request=GetFeature&outputFormat=application%2Fjson&TypeNames=pub:WHSE_CADASTRE.PMBC_PARCEL_FABRIC_POLY_SVW&srsName=EPSG%3A4326&cql_filter=INTERSECTS(SHAPE,POINT(${convertedCoords[0]} ${convertedCoords[1]}))`;
   return axios
     .get(url)

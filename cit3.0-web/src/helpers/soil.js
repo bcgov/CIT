@@ -1,12 +1,5 @@
 import axios from "axios";
-import proj4 from "proj4";
-import { SRID_DEF_3005 } from "./constants";
-
-const convertCoords = (coords) => {
-  console.log(coords);
-  proj4.defs("EPSG:3005", SRID_DEF_3005);
-  return proj4(proj4("EPSG:4326"), proj4("EPSG:3005"), [coords[1], coords[0]]);
-};
+import { convertCoords } from "./helpers";
 
 export const buildSoilString = (properties) => {
   const name = properties.SOILNAME_1;
