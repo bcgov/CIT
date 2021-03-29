@@ -75,10 +75,12 @@ function createRequestFromModel(state) {
       10
     );
   }
-  if (state.community.distance) {
+  if (state.community.community_distance) {
     nearestLocations.nearest_community = {
       community_id: parseInt(state.community.id, 10),
-      community_distance: parseFloat(state.community.distance.toFixed(2)),
+      community_distance: parseFloat(
+        state.community.community_distance.toFixed(2)
+      ),
     };
   }
   nearestLocations.nearest_municipalities_object = state.municipalities.map(
