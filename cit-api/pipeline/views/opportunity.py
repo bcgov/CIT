@@ -1,3 +1,5 @@
+from django.contrib.gis.geos.point import Point
+from django.contrib.gis.db.models.functions import Distance
 from rest_framework import generics
 from rest_framework import pagination
 from django.db.models import Q, F
@@ -129,6 +131,26 @@ class OpportunitiesList(generics.ListAPIView):
             connectivities = connectivity.split(',')
             queryset = queryset.filter(Q(network_avg__in=connectivities) | Q(network_at_road__in=connectivities))
 
+        community_population_distance_min = float(self.request.query_params.get('community_population_distance_min', INVALID_INT))
+        community_population_distance_max = float(self.request.query_params.get('community_population_distance_max', INVALID_INT))
+        proximity_community_population = float(self.request.query_params.get('proximity_community_population', INVALID_INT))
+        proximity_community_id = float(self.request.query_params.get('proximity_community_id', INVALID_INT))
+        if(proximity_community_id >= MIN_SIZE and (community_population_distance_min >= MIN_SIZE or community_population_distance_max >= MIN_SIZE)):
+            queryset = self.filter_opportunities_by_distance_from_community(queryset, community_population_distance_min, community_population_distance_max, proximity_community_id)
+
+        #if(proximity_community_population >= MIN_SIZE):
+            
+
+        return queryset
+
+
+
+    def filter_opportunities_by_distance_from_community(self, queryset, community_distance_min, community_distance_max, proximity_community_id):
+        community = Community.objects.get(pk=proximity_community_id)
+        if(community_distance_min >= MIN_SIZE):
+            queryset = queryset.filter(geo_position__distance_gte=(community.point, D(km=community_distance_min)))
+        if(community_distance_max >= MIN_SIZE):
+            queryset = queryset.filter(geo_position__distance_lte=(community.point, D(km=community_distance_max)))
         return queryset
 
     def service_queryset(self, queryset, exclude_unknowns, service_name):
