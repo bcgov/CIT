@@ -263,11 +263,15 @@ class ProximityView(APIView):
                 municipality_id = int(
                     municipalities['features'][index]['properties']['pk'])
 
+                print(municipality_id)
                 if index == 0:
                     municipality = {'id': municipalities['features'][index]['properties']['pk'], 'name': municipalities['features'][index]['properties']['name']}
                 municipalities['features'][index]['properties']['distance'] = municipalities_check[index].distance.km
-                municipalities['features'][index]['properties']['population'] = Community.objects.filter(municipality_id=municipality_id).annotate(count=Sum(F(
-                    'census_subdivision__pop_count_total_f') + F('census_subdivision__pop_count_total_m'))).values()[0]['count']
+                municipalities['features'][index]['properties']['population'] = 0
+                community_queryset = Community.objects.filter(municipality_id=municipality_id).annotate(count=Sum(F(
+                    'census_subdivision__pop_count_total_f') + F('census_subdivision__pop_count_total_m')))
+                if len(community_queryset):
+                    municipalities['features'][index]['properties']['population'] = community_queryset.values()[0]['count']
                 index += 1
 
         # TODO: Join on community, join on census for population
