@@ -32,6 +32,7 @@ import PowerBi from "./components/Page/PowerBi/PowerBi";
 
 import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
+import HomePage from "./components/Page/HomePage/HomePage";
 
 function App() {
   const getTitle = (page) => `Investments${` - ${page}`}`;
@@ -60,7 +61,7 @@ function App() {
             <Router>
               <Header />
               <Switch>
-                <Redirect exact from="/" to="/search" />
+                <Redirect exact from="/" to="/home" />
                 <AppRoute
                   title={getTitle("Login")}
                   path="/login"
@@ -200,6 +201,7 @@ function App() {
                 />
                 <AppRoute path="/communityInsights" component={PowerBi} />
                 <AppRoute path="/search" component={InvestorMainView} />
+                <AppRoute path="/home" component={HomePage} />
               </Switch>
               <div className="footer">
                 <Footer />

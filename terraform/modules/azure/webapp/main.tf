@@ -47,7 +47,7 @@ resource "azurerm_app_service_plan" "webapp" {
 
 # Create the Front-end App Service
 resource "azurerm_app_service" "frontend" {
-  name                = "cit-${var.location}-${var.environment}-${var.app_name}-frontend"
+  name                = "communityinformationtool-test"
   location            = azurerm_resource_group.cit.location
   resource_group_name = azurerm_resource_group.cit.name
   app_service_plan_id = azurerm_app_service_plan.webapp.id
@@ -64,7 +64,12 @@ resource "azurerm_app_service" "frontend" {
     DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.acr.admin_username
     DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.acr.admin_password
     REACT_APP_API_BASE_URL          = "https://${azurerm_app_service.backend.default_site_hostname}"
+    KC_AUTH_URL                     = "https://test.oidc.gov.bc.ca/auth/"
+    KC_CLIENT_ID                    = "cit-test"
+    KC_REALM                        = "fyof530u"
     DOCKER_ENABLE_CI                = true
+    REACT_APP_PROD_KEY              = var.geocoder_key
+    REACT_APP_SNOWPLOW_COLLECTOR    = "spt.apps.gov.bc.ca"
   }
 
   tags = {
@@ -85,7 +90,7 @@ resource "azurerm_app_service" "backend" {
     linux_fx_version = "DOCKER|${var.acr_name}.azurecr.io/cit-webapi:latest"
     always_on = true
     cors {
-      allowed_origins = ["https://cit-${var.location}-${var.environment}-${var.app_name}-frontend"]
+      allowed_origins = ["https://communityinformationtool-test.azurewebsites.net"]
     }
   }
 
@@ -101,6 +106,9 @@ resource "azurerm_app_service" "backend" {
     POSTGRES_HOST                   = azurerm_postgresql_server.postgres.fqdn
     AUTHORITY                       = "https://login.microsoftonline.com/"
     SCOPE                           = "https://analysis.windows.net/powerbi/api/.default"
+    KEY_CLOAK_URL                   = "https://test.oidc.gov.bc.ca/auth/"
+    KEY_CLOAK_REALM                 = "fyof530u"
+    KEY_CLOAK_CLIENT                = "cit-test"
     DOCKER_ENABLE_CI                = true
   }
 

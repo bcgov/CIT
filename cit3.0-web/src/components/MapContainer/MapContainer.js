@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Map from "../Map/Map";
 import { getProximityData } from "../../helpers/resourceCalls";
 import { getSoilAndElevationData, buildSoilString } from "../../helpers/soil";
@@ -23,15 +23,18 @@ export default function MapContainer({
   setCoords,
   setAddress,
   setError,
+  setNoAddressFlag,
 }) {
   const [lastCoords, setLastCoords] = useState([]);
   const dispatch = useDispatch();
 
   const run = async () => {
     const soilData = await getSoilAndElevationData(coords);
-    const soilStr = buildSoilString(soilData);
-    dispatch(setSoil(soilStr));
-    dispatch(setElevation(soilData.AVG_ELEV));
+    if (soilData) {
+      const soilStr = buildSoilString(soilData);
+      dispatch(setSoil(soilStr));
+      dispatch(setElevation(soilData.AVG_ELEV));
+    }
     const proximity = await getProximityData(coords);
     dispatch(setNearbyResources(proximity.data));
   };
@@ -56,6 +59,7 @@ export default function MapContainer({
           setAddress={setAddress}
           nearbyResources={nearbyResources}
           setError={setError}
+          setNoAddressFlag={setNoAddressFlag}
         />
       </div>
     </div>
@@ -76,4 +80,5 @@ MapContainer.propTypes = {
   setNearbyResources: PropTypes.func.isRequired,
   setAddress: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
+  setNoAddressFlag: PropTypes.func.isRequired,
 };
