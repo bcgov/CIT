@@ -183,12 +183,6 @@ export default function AddOpportunity() {
     }
   };
 
-  // useEffect(() => {
-  //   if (noAddressFlag) {
-  //     setParcelDataNoAddress(coords);
-  //   }
-  // }, [noAddressFlag]);
-
   useEffect(() => {
     if (siteId && !noAddressFlag) {
       setParcelData(siteId);
