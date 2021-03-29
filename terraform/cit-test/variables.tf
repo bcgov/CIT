@@ -26,3 +26,8 @@ variable "tenant_id" {
   type        = string
   description = "The Azure 'tenant id'"
 }
+
+variable "geocoder_key" {
+  type        = string
+  description = "The geocoder API key"
+}
