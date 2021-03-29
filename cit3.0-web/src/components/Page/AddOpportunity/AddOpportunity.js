@@ -114,6 +114,12 @@ export default function AddOpportunity() {
   };
 
   const setParcelDataNoAddress = async (noAddrCoords) => {
+    dispatch(setSiteId(null));
+    dispatch(setParcelSize(null));
+    dispatch(setParcelOwner(null));
+    dispatch(setPID(null));
+    dispatch(setGeometry({ coordinates: null }));
+    console.log(noAddrCoords);
     const parcelData = await getParcelDataNoAddress(noAddrCoords);
     if (noAddressFlag && parcelData) {
       dispatch(setPID([parcelData.data.features[0].properties.PID]));
@@ -147,6 +153,7 @@ export default function AddOpportunity() {
   };
 
   const getCoords = async (addy) => {
+    dispatch(setSiteId(null));
     dispatch(setParcelOwner(null));
     dispatch(setGeometry(null));
     dispatch(setParcelSize(null));
@@ -176,17 +183,21 @@ export default function AddOpportunity() {
     }
   };
 
-  useEffect(() => {
-    if (siteId) {
-      setParcelData(siteId);
-    }
-  }, [siteId]);
+  // useEffect(() => {
+  //   if (noAddressFlag) {
+  //     setParcelDataNoAddress(coords);
+  //   }
+  // }, [noAddressFlag]);
 
   useEffect(() => {
+    if (siteId && !noAddressFlag) {
+      setParcelData(siteId);
+    }
     if (noAddressFlag) {
+      dispatch(setSiteId(null));
       setParcelDataNoAddress(coords);
     }
-  }, [noAddressFlag]);
+  }, [siteId, noAddressFlag]);
 
   const goToNextPage = () => {
     history.push(`/opportunity/site-info`);
