@@ -116,7 +116,7 @@ export default function EDODashboard() {
         Before you add a listing, review the eligibility criteria to ensure the
         property meets the eligibility criteria.
       </p>
-      <ul>
+      <ul className="dashed">
         <li>
           Properties must be zoned for industrial, commercial, or agricultural
           use. Industrial properties of any size may be listed. Commercial and
@@ -132,7 +132,7 @@ export default function EDODashboard() {
           area or range of land uses permitted on the property.
           <br />
           Potential constraints could include, but are not limited to:
-          <ul>
+          <ul className="dashed">
             <li>Restrictions on title</li>
             <li>Future planned roads or existing rights-of-way</li>
             <li>dentified flood zone</li>
