@@ -10,3 +10,14 @@
     text-align: right;
 }
 
+ul.dashed {
+    list-style-type: none;
+}
+
+ul.dashed > li {
+    text-indent: -9px;
+}
+
+ul.dashed > li:before {
+    content: "- ";
+}
