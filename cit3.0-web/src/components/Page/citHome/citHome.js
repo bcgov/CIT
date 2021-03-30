@@ -13,6 +13,7 @@ import { Button as SharedButton } from "shared-components";
 import { BsSearch } from "react-icons/bs";
 
 export default function citHome() {
+  const history = useHistory();
   return (
     <Container className="py-5 px-2">
       <Row>
