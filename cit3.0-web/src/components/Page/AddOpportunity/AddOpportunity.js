@@ -74,6 +74,7 @@ export default function AddOpportunity() {
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 
   const setParcelData = async (id) => {
+    dispatch(setParcelSize(0));
     const pid = await getPID(id);
     dispatch(setPID(pid));
     if (pid) {
@@ -88,7 +89,7 @@ export default function AddOpportunity() {
           } else {
             setBlockContinue(true);
           }
-          dispatch(
+          await dispatch(
             setParcelSize(
               Number(
                 // convert sqM to Acres
@@ -108,10 +109,17 @@ export default function AddOpportunity() {
       dispatch(setParcelSize(null));
       setBlockContinue(false);
     }
+
     setError(false);
   };
 
   const setParcelDataNoAddress = async (noAddrCoords) => {
+    dispatch(setSiteId(null));
+    dispatch(setParcelSize(null));
+    dispatch(setParcelOwner(null));
+    dispatch(setPID(null));
+    dispatch(setGeometry({ coordinates: null }));
+    console.log(noAddrCoords);
     const parcelData = await getParcelDataNoAddress(noAddrCoords);
     if (noAddressFlag && parcelData) {
       dispatch(setPID([parcelData.data.features[0].properties.PID]));
@@ -145,6 +153,7 @@ export default function AddOpportunity() {
   };
 
   const getCoords = async (addy) => {
+    dispatch(setSiteId(null));
     dispatch(setParcelOwner(null));
     dispatch(setGeometry(null));
     dispatch(setParcelSize(null));
@@ -175,16 +184,14 @@ export default function AddOpportunity() {
   };
 
   useEffect(() => {
-    if (siteId) {
+    if (siteId && !noAddressFlag) {
       setParcelData(siteId);
     }
-  }, [siteId]);
-
-  useEffect(() => {
     if (noAddressFlag) {
+      dispatch(setSiteId(null));
       setParcelDataNoAddress(coords);
     }
-  }, [noAddressFlag]);
+  }, [siteId, noAddressFlag]);
 
   const goToNextPage = () => {
     history.push(`/opportunity/site-info`);

@@ -12,7 +12,7 @@ import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import UserFactory from "../../../store/factory/UserFactory";
 
 export default function EDODashboard() {
-  const [tableData, setTableData] = useState(null);
+  const [tableData, setTableData] = useState([]);
   const [communities, setCommunities] = useState("");
   const history = useHistory();
   const dispatch = useDispatch();

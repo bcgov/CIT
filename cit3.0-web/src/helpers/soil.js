@@ -16,7 +16,6 @@ export async function getSoilAndElevationData(coords4326) {
     .get(url)
     .then((data) => {
       if (data.data.features.length) {
-        console.log("soil: ", data.data.features[0].properties);
         return data.data.features[0].properties;
       }
       return null;
