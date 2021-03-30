@@ -133,12 +133,12 @@ class OpportunitiesList(generics.ListAPIView):
 
         community_population_distance_min = float(self.request.query_params.get('community_population_distance_min', INVALID_INT))
         community_population_distance_max = float(self.request.query_params.get('community_population_distance_max', INVALID_INT))
-        proximity_community_population = float(self.request.query_params.get('proximity_community_population', INVALID_INT))
+        proximity_population = float(self.request.query_params.get('proximity_population', INVALID_INT))
         proximity_community_id = float(self.request.query_params.get('proximity_community_id', INVALID_INT))
         if(proximity_community_id >= MIN_TABLE_ID and (community_population_distance_min >= MIN_SIZE or community_population_distance_max >= MIN_SIZE)):
             queryset = self.filter_opportunities_by_distance_from_community(queryset, community_population_distance_min, community_population_distance_max, proximity_community_id)
-        if(proximity_community_population >= MIN_TABLE_ID and (community_population_distance_min >= MIN_SIZE or community_population_distance_max >= MIN_SIZE)):
-            queryset = self.filter_opportunities_by_distance_from_population(queryset, community_population_distance_min, community_population_distance_max, proximity_community_population)
+        if(proximity_population >= MIN_TABLE_ID and (community_population_distance_min >= MIN_SIZE or community_population_distance_max >= MIN_SIZE)):
+            queryset = self.filter_opportunities_by_distance_from_population(queryset, community_population_distance_min, community_population_distance_max, proximity_population)
         
         return queryset
 
