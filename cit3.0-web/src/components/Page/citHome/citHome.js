@@ -11,9 +11,15 @@ import { useHistory } from "react-router-dom";
 import "../HomePage/HomePage.scss";
 import { Button as SharedButton } from "shared-components";
 import { BsSearch } from "react-icons/bs";
+import { useState } from "react";
 
 export default function citHome() {
+  const [communityToSearch, setCommunityToSearch] = useState("");
   const history = useHistory();
+  const handleInput = (value) => {
+    setCommunityToSearch(value);
+  };
+
   return (
     <Container className="py-5 px-2">
       <Row>
@@ -59,6 +65,8 @@ export default function citHome() {
                   aria-label="community search box"
                   aria-describedby="basic-addon1"
                   className="input-border"
+                  value={communityToSearch}
+                  onChange={(e) => handleInput(e.target.value)}
                 />
                 <InputGroup.Append>
                   <Button className="no-outline" variant="outline-secondary">
