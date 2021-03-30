@@ -158,6 +158,10 @@ class OpportunitiesList(generics.ListAPIView):
             query = Q()
             for subdivision in population_geometry:
                 query |= Q(geo_position__distance_gte=(subdivision.geom, D(km=population_distance_min)))
+            if(len(query) > 0):
+                queryset = queryset.filter(query)
+            else:
+                queryset = Opportunity.objects.none()
 
         if population_distance_max >= MIN_SIZE:
             query = Q()
