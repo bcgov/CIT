@@ -1,0 +1,26 @@
+.no-outline {
+    border: 1px solid #606060;
+    border-left: none;
+
+}
+.input-border {
+    border: 1px solid #606060;
+    border-right: none;
+}
+
+.cit-box {
+    padding: 1em 1em 0px 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.explore-button {
+    padding-left: 1.5em;
+    padding-right: 1.5em;
+}
+
+.explore-box {
+    border-radius: 10px 10px 0px 10px;
+    padding-right: 15px;
+}
