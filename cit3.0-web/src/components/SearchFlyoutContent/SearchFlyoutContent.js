@@ -97,6 +97,12 @@ export default function SearchFlyoutContent({ setQuery }) {
     proximityToCommunityOrPopulationDisplayRange,
     setproximityToCommunityOrPopulationDisplayRange,
   ] = useState({ min: 0, max: 0 });
+  const [proximityCurrentCommunity, setProximityCurrentCommunity] = useState(
+    null
+  );
+  const [proximityCurrentPopulation, setProximityCurrentPopulation] = useState(
+    null
+  );
   const [rAndDIsSelected, setRAndDIsSelected] = useState(false);
   const [rAndDInputRange, setRAndDInputRange] = useState(rAndDInitial);
   const [rAndDDisplayRange, setRAndDDisplayRange] = useState({
@@ -286,6 +292,25 @@ export default function SearchFlyoutContent({ setQuery }) {
       query.append("connectivity", connectivityQueryFilters);
     }
 
+    if (proximityToCommunityOrPopulationIsSelected) {
+      query.append(
+        "community_population_distance_max",
+        proximityToCommunityOrPopulationDisplayRange.max
+      );
+      query.append(
+        "community_population_distance_min",
+        proximityToCommunityOrPopulationDisplayRange.min
+      );
+
+      if (proximityCurrentCommunity !== null) {
+        query.append("proximity_community_id", proximityCurrentCommunity.value);
+      }
+
+      if (proximityCurrentPopulation !== null) {
+        query.append("proximity_community", proximityCurrentPopulation);
+      }
+    }
+
     setQuery(query.toString());
   }, [
     roadAccessSwitchValue,
@@ -303,6 +328,7 @@ export default function SearchFlyoutContent({ setQuery }) {
     postSecondarySwitchValue,
     zoningQueryFilters,
     connectivityQueryFilters,
+    proximityToCommunityOrPopulationDisplayRange,
   ]);
 
   const siteServicingSection = siteServicingFilters.map((switchFilter) => (
@@ -471,6 +497,10 @@ export default function SearchFlyoutContent({ setQuery }) {
         initialInputRangeValues={proximityToCommunityOrPopulationInitial}
         displayRange={proximityToCommunityOrPopulationDisplayRange}
         setDisplayRange={setproximityToCommunityOrPopulationDisplayRange}
+        currentCommunity={proximityCurrentCommunity}
+        setCurrentCommunity={setProximityCurrentCommunity}
+        currentPopulation={proximityCurrentPopulation}
+        setCurrentPopulation={setProximityCurrentPopulation}
       />
       <h3>Advanced Education &amp; Research</h3>
       <Row className="flex-nowrap">
