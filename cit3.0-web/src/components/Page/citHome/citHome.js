@@ -11,14 +11,29 @@ import { useHistory } from "react-router-dom";
 import "../HomePage/HomePage.scss";
 import { Button as SharedButton } from "shared-components";
 import { BsSearch } from "react-icons/bs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Typeahead } from "react-bootstrap-typeahead";
 
 export default function citHome() {
-  const [communityToSearch, setCommunityToSearch] = useState("");
+  const [selectedPlace, setSelectedPlace] = useState(null);
+  const [places, setPlaces] = useState(null);
   const history = useHistory();
-  const handleInput = (value) => {
-    setCommunityToSearch(value);
-  };
+
+  useEffect(() => {
+    axios.get("/api/opportunity/options").then((data) => {
+      console.log(data.data);
+      const commNames = data.data.communities.map((comm) => comm.place_name);
+      const regNames = data.data.regionalDistricts.map((dist) => dist.name);
+      setPlaces([...commNames, ...regNames]);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (selectedPlace) {
+      history.push(`/communities/${selectedPlace}`);
+    }
+  }, [selectedPlace]);
 
   return (
     <Container className="py-5 px-2">
@@ -59,21 +74,24 @@ export default function citHome() {
                 infrastructure and community assets to provide a sense of what a
                 community is like – and how it is changing.{" "}
               </p>
-              <InputGroup className="my-3">
-                <FormControl
-                  placeholder=""
-                  aria-label="community search box"
-                  aria-describedby="basic-addon1"
-                  className="input-border"
-                  value={communityToSearch}
-                  onChange={(e) => handleInput(e.target.value)}
-                />
-                <InputGroup.Append>
-                  <Button className="no-outline" variant="outline-secondary">
-                    <BsSearch />
-                  </Button>
-                </InputGroup.Append>
-              </InputGroup>
+              <>
+                {places ? (
+                  <InputGroup className="my-3">
+                    <Typeahead
+                      onChange={(selected) => setSelectedPlace(selected)}
+                      options={places}
+                    />
+                    <InputGroup.Append>
+                      <Button
+                        className="no-outline"
+                        variant="outline-secondary"
+                      >
+                        <BsSearch />
+                      </Button>
+                    </InputGroup.Append>
+                  </InputGroup>
+                ) : null}
+              </>
             </Col>
           </Row>
           <Row className="pb-0 d-flex justify-content-end">
