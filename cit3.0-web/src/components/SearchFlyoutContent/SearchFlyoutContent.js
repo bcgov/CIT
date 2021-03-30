@@ -307,7 +307,7 @@ export default function SearchFlyoutContent({ setQuery }) {
       }
 
       if (proximityCurrentPopulation !== null) {
-        query.append("proximity_community", proximityCurrentPopulation);
+        query.append("proximity_population", proximityCurrentPopulation.value);
       }
     }
 
