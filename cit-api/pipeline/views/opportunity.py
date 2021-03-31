@@ -1,3 +1,5 @@
+from django.contrib.gis.geos.point import Point
+from django.contrib.gis.db.models.functions import Distance
 from rest_framework import generics
 from rest_framework import pagination
 from django.db.models import Q, F
@@ -9,6 +11,7 @@ from pipeline.models.general import RegionalDistrict
 from pipeline.models.community import Community
 from pipeline.serializers.opportunity import OpportunitySerializer
 from pipeline.permissions.IsAuthenticated import IsAuthenticated
+from pipeline.models.census import CensusSubdivision
 
 MIN_TABLE_ID = 1
 MIN_DISTANCE = 0
@@ -129,6 +132,43 @@ class OpportunitiesList(generics.ListAPIView):
             connectivities = connectivity.split(',')
             queryset = queryset.filter(Q(network_avg__in=connectivities) | Q(network_at_road__in=connectivities))
 
+        community_population_distance_min = float(self.request.query_params.get('community_population_distance_min', INVALID_INT))
+        community_population_distance_max = float(self.request.query_params.get('community_population_distance_max', INVALID_INT))
+        proximity_population = float(self.request.query_params.get('proximity_population', INVALID_INT))
+        proximity_community_id = float(self.request.query_params.get('proximity_community_id', INVALID_INT))
+        if(proximity_community_id >= MIN_TABLE_ID and (community_population_distance_min >= MIN_SIZE or community_population_distance_max >= MIN_SIZE)):
+            queryset = self.filter_opportunities_by_distance_from_community(queryset, community_population_distance_min, community_population_distance_max, proximity_community_id)
+        if(proximity_population >= MIN_TABLE_ID and (community_population_distance_min >= MIN_SIZE or community_population_distance_max >= MIN_SIZE)):
+            queryset = self.filter_opportunities_by_distance_from_population(queryset, community_population_distance_min, community_population_distance_max, proximity_population)
+        
+        return queryset
+
+    def filter_opportunities_by_distance_from_community(self, queryset, community_distance_min, community_distance_max, proximity_community_id):
+        community = Community.objects.get(pk=proximity_community_id)
+        if(community_distance_min >= MIN_SIZE):
+            queryset = queryset.filter(geo_position__distance_gte=(community.point, D(km=community_distance_min)))
+        if(community_distance_max >= MIN_SIZE):
+            queryset = queryset.filter(geo_position__distance_lte=(community.point, D(km=community_distance_max)))
+        return queryset
+
+    def filter_opportunities_by_distance_from_population(self, queryset, population_distance_min, population_distance_max, population):
+        population_geometry = CensusSubdivision.objects.filter(population__gte=population)
+        if population_distance_min >= MIN_SIZE:
+            min_query = Q()
+            max_query = Q()
+            for subdivision in population_geometry:
+                min_query |= Q(geo_position__distance_gte=(subdivision.geom, D(km=population_distance_min)))
+                max_query |= Q(geo_position__distance_lte=(subdivision.geom, D(km=population_distance_max)))
+            
+            if(len(min_query) > 0 and len(max_query) > 0):
+                queryset = queryset.filter(min_query & max_query)
+            elif(len(min_query) > 0):
+                queryset = queryset.filter(min_query)
+            elif(len(max_query) > 0):
+                queryset = queryset.filter(max_query)
+            else:
+                queryset = Opportunity.objects.none()
+        
         return queryset
 
     def service_queryset(self, queryset, exclude_unknowns, service_name):

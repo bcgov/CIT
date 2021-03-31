@@ -18,6 +18,10 @@ export default function CommunityOrPopulationProximityFilter(props) {
     setIsSelected,
     displayRange,
     setDisplayRange,
+    currentCommunity,
+    setCurrentCommunity,
+    currentPopulation,
+    setCurrentPopulation,
   } = props;
   const [show, setShow] = useState(false);
   const [inputRangeValue, setInputRangeValue] = useState({
@@ -28,8 +32,6 @@ export default function CommunityOrPopulationProximityFilter(props) {
   const [maxInput, setMaxInput] = useState(inputRange.max);
   const [validMax, setValidMax] = useState(true);
   const [validMin, setValidMin] = useState(true);
-  const [currentCommunity, setCurrentCommunity] = useState(null);
-  const [currentPopulation, setCurrentPopulation] = useState(null);
   const [
     displayCommunityOrPopulation,
     setDisplayCommunityOrPopulation,
@@ -237,4 +239,11 @@ CommunityOrPopulationProximityFilter.propTypes = {
     min: PropTypes.number.isRequired,
   }).isRequired,
   setDisplayRange: PropTypes.func.isRequired,
+  currentCommunity: PropTypes.shape({
+    value: PropTypes.number.isRequired,
+    label: PropTypes.string.isRequired,
+  }).isRequired,
+  setCurrentCommunity: PropTypes.func.isRequired,
+  currentPopulation: PropTypes.number.isRequired,
+  setCurrentPopulation: PropTypes.func.isRequired,
 };

@@ -729,7 +729,7 @@ export class Opportunity {
 
   set community(value) {
     this.state.community.id = value.features && value.features[0].properties.pk;
-    this.state.community.distance = value.distance;
+    this.state.community.community_distance = value.community_distance;
   }
 
   set opportunityLink(value) {

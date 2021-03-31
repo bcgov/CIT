@@ -24,6 +24,7 @@ def get_row(user):
     response['id'] = user.id
     response['name'] = user.name
     response['email'] = user.email
+    response['role'] = user.role
     response['date_created'] = user.date_created.strftime("%Y-%b-%d")
     for assignment in user.assignments_set.all():
         try:
@@ -98,6 +99,9 @@ class UserAddView(GenericAPIView):
 
         try:
             user = User.objects.get(email=user_email)
+            user.name = user_name
+            user.role = user_role
+            user.save()
         except User.DoesNotExist:
             user = User.objects.create(name=user_name, email=user_email, role=user_role)
 

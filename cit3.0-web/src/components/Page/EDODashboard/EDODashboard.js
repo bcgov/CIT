@@ -12,7 +12,7 @@ import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import UserFactory from "../../../store/factory/UserFactory";
 
 export default function EDODashboard() {
-  const [tableData, setTableData] = useState(null);
+  const [tableData, setTableData] = useState([]);
   const [communities, setCommunities] = useState("");
   const history = useHistory();
   const dispatch = useDispatch();
@@ -104,12 +104,50 @@ export default function EDODashboard() {
     <div className="dashboard-container">
       <h1 className="dashboard-header">How it works</h1>
       <p className="dashboard-text">
-        We invite you to promote up to 5 opportunities for investment in your
-        community. We will guide you through this simple 3 step process. Once
-        your opportunity is added, you will get to review it before submitting
-        it for review. It usually takes about 3-5 business days to get your
-        opportunity reviewed and live on our Investor Portal. You can view your
-        opportunities and update them on your dashboard below.
+        Community representatives can add up to five properties per community to
+        be featured on the tool. To create a new listing, follow a simple
+        process to add some key information about the property. The tool will
+        automatically provide additional location information to help investors
+        and site selectors quickly evaluate whether the site meets their
+        specific needs. All listings will be reviewed prior to publication and
+        will go live within 3-5 business days.
+      </p>
+      <p className="dashboard-text">
+        Before you add a listing, review the eligibility criteria to ensure the
+        property meets the eligibility criteria.
+      </p>
+      <ul className="dashed">
+        <li>
+          Properties must be zoned for industrial, commercial, or agricultural
+          use. Industrial properties of any size may be listed. Commercial and
+          agricultural
+        </li>
+        <li>Land must be available for sale or lease.</li>
+        <li>
+          Land may be publicly or privately owned but may only be listed with
+          the written permission of the landowner.
+        </li>
+        <li>
+          Land must be free of constraints that could impact the developable
+          area or range of land uses permitted on the property.
+          <br />
+          Potential constraints could include, but are not limited to:
+          <ul className="dashed">
+            <li>Restrictions on title</li>
+            <li>Future planned roads or existing rights-of-way</li>
+            <li>dentified flood zone</li>
+            <li>
+              Presence of provincially significant cultural or natural heritage
+              features
+            </li>
+          </ul>
+        </li>
+      </ul>
+      <p className="dashboard-text mb-4">
+        Listings must be approved by either a municipality, regional district,
+        electoral area, province, First Nation or a regional economic
+        development organization, and from the Chief Administrative Officer or
+        their delegate.
       </p>
       <div className="add-opportunity-button">{addOpportunityButton}</div>
       <hr />
