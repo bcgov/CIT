@@ -25,7 +25,7 @@ export default function AddLocationMarker(props) {
     dispatch(setParcelSize(""));
     dispatch(setPID(""));
     props.setAddress("");
-    props.setNoAddressFlag(false);
+    // props.setNoAddressFlag(false);
     /// ///////////////////
     setPositions([e.latlng]);
 

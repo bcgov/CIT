@@ -104,7 +104,7 @@ export default function AddOpportunity() {
         }
       });
     } else {
-      dispatch(setGeometry({ coordinates: null }));
+      dispatch(setGeometry(null));
       dispatch(setParcelOwner(null));
       dispatch(setParcelSize(null));
       setBlockContinue(false);
@@ -115,10 +115,10 @@ export default function AddOpportunity() {
 
   const setParcelDataNoAddress = async (noAddrCoords) => {
     dispatch(setSiteId(null));
-    dispatch(setParcelSize(null));
+    dispatch(setParcelSize(0));
     dispatch(setParcelOwner(null));
     dispatch(setPID(null));
-    dispatch(setGeometry({ coordinates: null }));
+    dispatch(setGeometry(null));
     console.log(noAddrCoords);
     const parcelData = await getParcelDataNoAddress(noAddrCoords);
     if (noAddressFlag && parcelData) {
@@ -144,7 +144,7 @@ export default function AddOpportunity() {
       );
       dispatch(setGeometry(parcelData.data.features[0].geometry));
     } else {
-      dispatch(setGeometry({ coordinates: null }));
+      dispatch(setGeometry(null));
       dispatch(setParcelOwner(null));
       dispatch(setParcelSize(null));
       setBlockContinue(false);
@@ -172,7 +172,8 @@ export default function AddOpportunity() {
       if (data.data.features[0].properties.siteID) {
         dispatch(setSiteId(data.data.features[0].properties.siteID));
       } else if (data.data.features.length) {
-        dispatch(setSiteId("unknown"));
+        console.log("NO SITE ID");
+        dispatch(setSiteId("")); // was "unknown"
       } else {
         setError("Cannot find address info, please try again.");
         setBlockContinue(true);
@@ -184,10 +185,13 @@ export default function AddOpportunity() {
   };
 
   useEffect(() => {
+    console.log("useEffect");
     if (siteId && !noAddressFlag) {
+      console.log("use effect with siteId and !noAddressFlag");
       setParcelData(siteId);
     }
     if (noAddressFlag) {
+      console.log("use effect with noAddressFlag");
       dispatch(setSiteId(null));
       setParcelDataNoAddress(coords);
     }
