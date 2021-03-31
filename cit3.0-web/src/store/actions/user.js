@@ -22,6 +22,12 @@ export function getUser({ id, email }) {
   query = id ? `id=${id}` : query;
   return axios.get(`${GET_USERS_URL}?${query}`);
 }
+/**
+ * @return {Promise} of axios api call
+ */
+export async function getUsers() {
+  return axios.get(`${GET_USERS_URL}`);
+}
 
 /**
  * @param {String} email

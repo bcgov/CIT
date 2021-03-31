@@ -6,6 +6,7 @@ import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
+import Roles from "../../../constants/roles";
 
 /** Component that allows the user to logout, and gives information on current user's agency/roles */
 const UserProfile = () => {
@@ -39,6 +40,14 @@ const UserProfile = () => {
           <NavDropdown.Item>
             <NavLink to="/dashboard">Dashboard</NavLink>
           </NavDropdown.Item>
+          {keycloak.hasRole([
+            Roles.SUPER_ADMINISTRATOR,
+            Roles.SYSTEM_ADMINISTRATOR,
+          ]) && (
+            <NavDropdown.Item>
+              <NavLink to="/manage/users">Manage Users</NavLink>
+            </NavDropdown.Item>
+          )}
           <NavDropdown.Item>
             {keycloak.obj.authenticated ? (
               <Button
