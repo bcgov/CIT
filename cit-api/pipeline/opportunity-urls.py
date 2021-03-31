@@ -18,5 +18,5 @@ urlpatterns = [
     url(r"^options/$", pipeline.views.options.OptionsView.as_view()),
     url(r"^proximity/$", pipeline.views.proximity.ProximityView.as_view()),
     url(r"^users/$", pipeline.views.users.user.UserListView.as_view()),
-    url(r"^user/add/$", pipeline.views.users.user.UserAddView.as_view()),
+    url(r"^user/$", pipeline.views.users.user.UserView.as_view()),
 ]

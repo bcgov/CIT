@@ -30,6 +30,7 @@ module.exports = {
     "no-unused-vars": "warn",
     "no-plusplus": ["error", { allowForLoopAfterthoughts: true }],
     "prettier/prettier": ["error"],
+    "react/no-array-index-key": "off",
   },
   settings: {
     "import/resolver": {

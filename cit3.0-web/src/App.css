@@ -74,6 +74,13 @@ div.bcgov-warning-background {
   border: 1px solid rgb(252, 186, 25);
 }
 
+div.bordered {
+  border: 2px solid #606060;
+}
+
+div.bordered-light {
+  border: 2px solid #EEE;
+}
 .center-spinner {
   position: relative;
   height: 100vh;

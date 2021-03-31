@@ -66,17 +66,17 @@ class UserListView(GenericAPIView):
         user_id = request.query_params.get('id')
         user_email = request.query_params.get('email')
         if user_email is not None:
-            users = User.objects.filter(email=user_email)
+            users = User.objects.filter(email=user_email, deleted=False)
         elif user_id is not None:
-            users = User.objects.filter(id=user_id)
+            users = User.objects.filter(id=user_id, deleted=False)
         else:
-            users = User.objects.all()
+            users = User.objects.filter(deleted=False)
         for user in users:
             response.append(get_row(user))
         return Response(response)
 
 
-class UserAddView(GenericAPIView):
+class UserView(GenericAPIView):
     """
     View to save details of a single user
     """
@@ -115,7 +115,7 @@ class UserAddView(GenericAPIView):
                 return Response({'message': 'The assigned Municipality does not exist'},
                                 status=status.HTTP_400_BAD_REQUEST)
 
-        # Only assign regional District if not assign municipality
+        # Only assign regional District if not assigning a municipality
         # TODO: Evaluate this use case with client
         if assignment_regional_district != 0 and assignment_municipality == 0 and len(
                 user.assignments_set.filter(
@@ -129,3 +129,46 @@ class UserAddView(GenericAPIView):
                                 status=status.HTTP_400_BAD_REQUEST)
         response = get_row(user)
         return Response(response)
+    
+    def put(self, request, format=None):
+        user_id = request.data.get('id', None)
+        assignment_municipalities = [x['id'] for x in request.data.get('municipalities', [])]
+        assignment_regional_districts = [x['id'] for x in request.data.get('regionalDistricts', [])]
+
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return Response({'message': 'User does not exist'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        assignments = user.assignments_set.all()
+        for assignment in assignments:
+            if assignment.municipality is not None and assignment.municipality.id not in assignment_municipalities:
+                assignment.delete()
+
+        # Only assign Regional District if not assigning a municipality
+        # TODO: Evaluate this use case with client
+        assignments = user.assignments_set.all()
+        for assignment in assignments:
+            if assignment.regional_district is not None and assignment.regional_district.id not in assignment_regional_districts:
+                assignment.delete()
+        
+        return Response({'message' :'ok'}, status.HTTP_202_ACCEPTED)
+
+
+    def delete(self, request, format=None):
+        """
+        Post override
+        """
+        user_id = request.query_params.get('id', None)
+
+        try:
+            user = User.objects.get(id=user_id)
+            user.deleted = True
+            user.save()
+        except User.DoesNotExist:
+            return Response({'message': 'User does not exist'},
+                            status=status.HTTP_400_BAD_REQUEST)
+    
+        return Response({'message' :'ok'}, status.HTTP_202_ACCEPTED)
+
