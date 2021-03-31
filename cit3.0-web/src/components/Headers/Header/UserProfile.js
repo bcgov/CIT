@@ -6,7 +6,6 @@ import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
-import Roles from "../../../constants/roles";
 
 /** Component that allows the user to logout, and gives information on current user's agency/roles */
 const UserProfile = () => {
@@ -33,55 +32,37 @@ const UserProfile = () => {
         title={displayName}
         id="user-dropdown"
       >
-        <NavDropdown alignRight title="Actions">
-          <NavDropdown.Item>
-            <NavLink to="/manage/opportunities">Manage Opportunites</NavLink>
-          </NavDropdown.Item>
-          <NavDropdown.Item>
-            <NavLink to="/dashboard">Dashboard</NavLink>
-          </NavDropdown.Item>
-          {keycloak.hasRole([
-            Roles.SUPER_ADMINISTRATOR,
-            Roles.SYSTEM_ADMINISTRATOR,
-          ]) && (
-            <NavDropdown.Item>
-              <NavLink to="/manage/users">Manage Users</NavLink>
-            </NavDropdown.Item>
-          )}
-          <NavDropdown.Item>
-            {keycloak.obj.authenticated ? (
-              <Button
-                label={
-                  <>
-                    {"Logout "}
-                    <FaSignOutAlt />
-                  </>
-                }
-                onClick={() => {
-                  keycloak.obj.logout({
-                    redirectUri: `${configuration.baseUrl}`,
-                  });
-                }}
-                styling="btn bcgov-button bcgov-normal-white"
-              />
-            ) : (
-              <Button
-                label={
-                  <>
-                    {"Login "}
-                    <FaSignInAlt />
-                  </>
-                }
-                onClick={() => {
-                  keycloak.obj.login({
-                    redirectUri: `${configuration.baseUrl}${window.location.pathname}`,
-                  });
-                }}
-                styling="btn bcgov-button bcgov-normal-white"
-              />
-            )}
-          </NavDropdown.Item>
-        </NavDropdown>
+        {keycloak.obj.authenticated ? (
+          <Button
+            label={
+              <>
+                {"Logout "}
+                <FaSignOutAlt />
+              </>
+            }
+            onClick={() => {
+              keycloak.obj.logout({
+                redirectUri: `${configuration.baseUrl}`,
+              });
+            }}
+            styling="btn bcgov-button bcgov-normal-white"
+          />
+        ) : (
+          <Button
+            label={
+              <>
+                {"Login "}
+                <FaSignInAlt />
+              </>
+            }
+            onClick={() => {
+              keycloak.obj.login({
+                redirectUri: `${configuration.baseUrl}${window.location.pathname}`,
+              });
+            }}
+            styling="btn bcgov-button bcgov-normal-white"
+          />
+        )}
       </div>
     </>
   );
