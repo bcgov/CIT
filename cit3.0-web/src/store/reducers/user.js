@@ -34,7 +34,7 @@ export default function user(state = USER_INITIALIZATION(), action) {
       state.email = action.payload;
       break;
     case SET_USER_INFO_ROLE:
-      state.roles = action.payload;
+      state.role = action.payload;
       break;
     case SET_USER_INFO_MUNICIPALITY:
       state.municipality = action.payload;

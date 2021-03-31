@@ -56,9 +56,9 @@ export function postOpportunity(opportunityModel, token) {
 export function deleteOpportunity(opportunityModel, token) {
   const opportunity = opportunityModel;
   opportunity.deleted = true;
-  return axios.put(
+  return axios.patch(
     `${PUT_OPPORTUNITIES_URL + opportunity.id}/`,
-    OpportunityFactory.createRequestFromModel(opportunity),
+    OpportunityFactory.createDeleteFromModel(opportunity),
     {
       headers: { Authorization: `Bearer ${token}` },
     }
@@ -210,7 +210,7 @@ export function setParcelOwner(owner) {
  * @param {Number} size
  * @return {Object} for redux reducer
  */
-export function setParcelSize(size) {
+export function setParcelSize(size, increment) {
   return { type: ADD_PARCEL_SIZE, payload: size };
 }
 

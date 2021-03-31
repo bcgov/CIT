@@ -103,25 +103,34 @@ export default function SearchFlyoutContent({ setQuery }) {
     min: 0,
     max: 0,
   });
+  const [zoningIsSelected, setZoningIsSelected] = useState(false);
+  const [zoningQueryFilters, setZoningQueryFilters] = useState("");
+  const [connectivityIsSelected, setConnectivityIsSelected] = useState(false);
+  const [connectivityQueryFilters, setConnectivityQueryFilters] = useState("");
   const [zoningFilters, setZoningFilters] = useState([
     {
       label: "Commercial",
+      code: "COMM",
       isSelected: false,
     },
     {
       label: "Residential",
+      code: "RESD",
       isSelected: false,
     },
     {
       label: "Agriculture",
+      code: "AGRI",
       isSelected: false,
     },
     {
       label: "Industrial-light",
+      code: "INDL",
       isSelected: false,
     },
     {
       label: "Industrial-heavy",
+      code: "INDH",
       isSelected: false,
     },
   ]);
@@ -129,18 +138,22 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [connectivityFilters, setConnectivityFilters] = useState([
     {
       label: "50/10 mbps",
+      code: "50/10",
       isSelected: false,
     },
     {
       label: "25/5 mbps",
+      code: "25/5",
       isSelected: false,
     },
     {
       label: "10/2 mbps",
+      code: "10/2",
       isSelected: false,
     },
     {
       label: "5/1 mbps",
+      code: "5/1",
       isSelected: false,
     },
   ]);
@@ -159,7 +172,7 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [postSecondarySwitchValue, setPostSecondarySwitchValue] = useState(
     false
   );
-  const switchFilters = [
+  const siteServicingFilters = [
     {
       label: "Road access:",
       checked: roadAccessSwitchValue,
@@ -233,15 +246,28 @@ export default function SearchFlyoutContent({ setQuery }) {
         max: "deep_water_port_max",
       },
     },
+    {
+      selected: rAndDIsSelected,
+      value: rAndDDisplayRange,
+      queryKey: {
+        min: "research_centre_min",
+        max: "research_centre_max",
+      },
+    },
   ];
 
   useEffect(() => {
     const query = new URLSearchParams();
-    switchFilters.forEach((filter) => {
+    siteServicingFilters.forEach((filter) => {
       query.append(filter.queryKey, filter.checked === true ? "Y" : "N");
     });
 
     query.append("exclude_unknowns", excludeUnknowns ? "Y" : "N");
+
+    query.append(
+      "post_secondary_within_100km",
+      postSecondarySwitchValue ? "Y" : "N"
+    );
 
     const activeNumberRangeFilters = numberRangeFilters.filter(
       (filter) => filter.selected === true
@@ -251,6 +277,14 @@ export default function SearchFlyoutContent({ setQuery }) {
       query.append(filter.queryKey.max, filter.value.max);
       query.append(filter.queryKey.min, filter.value.min);
     });
+
+    if (zoningIsSelected) {
+      query.append("zoning", zoningQueryFilters);
+    }
+
+    if (connectivityIsSelected) {
+      query.append("connectivity", connectivityQueryFilters);
+    }
 
     setQuery(query.toString());
   }, [
@@ -265,9 +299,13 @@ export default function SearchFlyoutContent({ setQuery }) {
     airServiceDisplayRange,
     railConnectionsDisplayRange,
     deepWaterPortDisplayRange,
+    rAndDDisplayRange,
+    postSecondarySwitchValue,
+    zoningQueryFilters,
+    connectivityQueryFilters,
   ]);
 
-  const siteServicingSection = switchFilters.map((switchFilter) => (
+  const siteServicingSection = siteServicingFilters.map((switchFilter) => (
     <Row className="flex-nowrap" key={switchFilter.label}>
       <Col xs={7}>
         <p>{switchFilter.label}</p>
@@ -325,6 +363,9 @@ export default function SearchFlyoutContent({ setQuery }) {
         label="Zoning"
         filters={zoningFilters}
         setFilters={setZoningFilters}
+        isSelected={zoningIsSelected}
+        setIsSelected={setZoningIsSelected}
+        setQueryFilters={setZoningQueryFilters}
       />
       <NumberRangeFilter
         inputRange={{ min: 0, max: 100 }}
@@ -344,6 +385,9 @@ export default function SearchFlyoutContent({ setQuery }) {
         label="Connectivity"
         filters={connectivityFilters}
         setFilters={setConnectivityFilters}
+        isSelected={connectivityIsSelected}
+        setIsSelected={setConnectivityIsSelected}
+        setQueryFilters={setConnectivityQueryFilters}
       />
       <Row className="flex-nowrap">
         <Col xs="6">

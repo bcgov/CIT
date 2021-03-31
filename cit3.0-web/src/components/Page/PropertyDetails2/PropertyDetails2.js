@@ -77,6 +77,7 @@ export default function PropertyDetails2() {
   const goToNextPage = () => {
     history.push(`/opportunity/review`);
   };
+
   const handleContinue = () => {
     goToNextPage();
   };
@@ -225,7 +226,9 @@ export default function PropertyDetails2() {
         </Row>
         <Row>
           <div className="d-flex flex-column">
-            <h4>Your Information</h4>
+            <h4>
+              Your Information *<span className="text-red">required</span>
+            </h4>
             <span style={{ opacity: "0.7" }} className="my-1">
               This will be for our records, and won&apos;t be shown to the
               public.
@@ -234,7 +237,8 @@ export default function PropertyDetails2() {
         </Row>
         <Row className="mb-3">
           <Form.Check
-            checked={userInfoSync}
+            // checked={userInfoSync}
+            checked={userInfoEmail}
             onClick={(e) => handleYourInfoCheck(e.target.checked)}
             type="checkbox"
             label="Use the Contact Name/Email associated with the BCeID logged in."
@@ -244,20 +248,25 @@ export default function PropertyDetails2() {
         <Row className="mb-4">
           <Col className="pl-0">
             <TextInput
-              required={false}
-              heading="Your Full Name"
+              required
+              heading="Your Full Name *"
               notes=""
               rows={1}
               value={userInfoName}
-              handleChange={(name, value) => dispatch(setUserInfoName(value))}
+              handleChange={(name, value) => {
+                dispatch(setUserInfoName(value));
+              }}
               name="userInfoName"
             />
+            {!userInfoName && <Validator message="Please enter your name" />}
+
             <p id="email-label" className="mb-0">
-              Email
+              Email *
             </p>
 
             <div className="pb-3">
               <input
+                required
                 autoComplete="off"
                 aria-labelledby="email-label"
                 className="bcgov-text-input mb-1 w-100"
@@ -271,11 +280,12 @@ export default function PropertyDetails2() {
                 value={userInfoEmail}
               />
             </div>
-            {!validEmail && (
-              <Validator message="Please enter a valid email address" />
-            )}
+            {!validEmail ||
+              (!userInfoEmail && (
+                <Validator message="Please enter a valid email address" />
+              ))}
             <TextInput
-              required={false}
+              required
               heading="Your Title/Role"
               notes=""
               rows={1}
@@ -292,7 +302,7 @@ export default function PropertyDetails2() {
       <ButtonRow
         prevRoute="/opportunity/property-details"
         onClick={handleContinue}
-        noContinue={!validEmail}
+        noContinue={!validEmail || !userInfoEmail || !userInfoName}
       />
     </>
   );

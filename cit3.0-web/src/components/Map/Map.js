@@ -15,7 +15,6 @@ import L from "leaflet";
 
 import "./map.css";
 import { useSelector } from "react-redux";
-import proj4 from "proj4";
 import ChangeView from "../ChangeView/ChangeView";
 import AddLocationMarker from "../AddMarker/AddMarker";
 import ResourceMarker from "../AddMarker/ResourceMarker";
@@ -31,6 +30,7 @@ export default function Map({
   isInteractive,
   isSearchMode,
   setError,
+  setNoAddressFlag,
 }) {
   const [dimensions, setDimensions] = useState({
     height: window.innerHeight,
@@ -47,20 +47,9 @@ export default function Map({
 
   const changeView = (centerCoords) => centerCoords;
 
-  // convert long/lat in 3005 to lat/long in 4326 to draw polygon
   const convert = (lngLatAry) => {
-    const defString =
-      "+proj=aea +lat_1=50 +lat_2=58.5 +lat_0=45 +lon_0=-126 +x_0=1000000 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs";
-    proj4.defs("EPSG:3005", defString);
     const full = lngLatAry.map((poly) =>
-      poly.map((polyCoords) => {
-        const converted = proj4(
-          proj4("EPSG:3005"),
-          proj4("EPSG:4326"),
-          polyCoords
-        );
-        return [converted[1], converted[0]];
-      })
+      poly.map((polyCoords) => [polyCoords[1], polyCoords[0]])
     );
     return (
       <Polygon pathOptions={{ color: "rgb(255, 0, 128)" }} positions={full} />
@@ -76,6 +65,7 @@ export default function Map({
         setNearbyResources={setNearbyResources}
         changeView={changeView}
         setError={setError}
+        setNoAddressFlag={setNoAddressFlag}
       />
     );
   }
@@ -209,6 +199,7 @@ Map.defaultProps = {
   setCoords: () => {},
   setAddress: () => {},
   setError: () => {},
+  setNoAddressFlag: () => {},
 };
 
 Map.propTypes = {
@@ -227,4 +218,5 @@ Map.propTypes = {
   setCoords: PropTypes.func,
   setAddress: PropTypes.func,
   setError: PropTypes.func,
+  setNoAddressFlag: PropTypes.func,
 };

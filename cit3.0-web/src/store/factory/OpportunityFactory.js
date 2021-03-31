@@ -37,6 +37,17 @@ function createPatchFromModel(state) {
  * visual and control data the api needs not know
  * @param {Object} model from redux opportunity model
  */
+function createDeleteFromModel(state) {
+  return {
+    deleted: state.deleted,
+  };
+}
+
+/**
+ * Factory to convert model to request object, reason there is more
+ * visual and control data the api needs not know
+ * @param {Object} model from redux opportunity model
+ */
 function createRequestFromModel(state) {
   const request = {};
   // Remap camelCase names to sligified names
@@ -64,10 +75,12 @@ function createRequestFromModel(state) {
       10
     );
   }
-  if (state.community.distance) {
+  if (state.community.community_distance) {
     nearestLocations.nearest_community = {
       community_id: parseInt(state.community.id, 10),
-      community_distance: parseFloat(state.community.distance.toFixed(2)),
+      community_distance: parseFloat(
+        state.community.community_distance.toFixed(2)
+      ),
     };
   }
   nearestLocations.nearest_municipalities_object = state.municipalities.map(
@@ -297,6 +310,7 @@ function mergeProximityState(state, proximity) {
 export default {
   createRequestFromModel,
   createPatchFromModel,
+  createDeleteFromModel,
   createStateFromResponse,
   createModelFromState,
   mergeProximityState,

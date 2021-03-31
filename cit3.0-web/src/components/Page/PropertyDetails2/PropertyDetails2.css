@@ -1,3 +1,7 @@
 .bcgov-text-input {
     width: 100%;
 }
+.text-red {
+    color: red;
+    font-weight: lighter;
+}
