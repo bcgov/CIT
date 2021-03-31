@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Container, Col, Row, Form } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -103,6 +103,13 @@ export default function PropertyDetails2() {
       dispatch(resetUser());
     }
   };
+
+  useEffect(() => {
+    if (userInfoEmail) {
+      setUserInfoSync(true);
+    }
+  }, []);
+
   return (
     <>
       <NavigationHeader currentStep={4} />
@@ -267,6 +274,7 @@ export default function PropertyDetails2() {
             <div className="pb-3">
               <input
                 required
+                disabled={!!userInfoEmail}
                 autoComplete="off"
                 aria-labelledby="email-label"
                 className="bcgov-text-input mb-1 w-100"
