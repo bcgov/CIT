@@ -20,13 +20,16 @@ export default function NumberRangeFilter(props) {
     initialInputRangeValues,
     displayRange,
     setDisplayRange,
+    minInput,
+    setMinInput,
+    maxInput,
+    setMaxInput,
+    isModified,
+    setIsModified,
   } = props;
   const [show, setShow] = useState(false);
-  const [minInput, setMinInput] = useState(inputRange.min);
-  const [maxInput, setMaxInput] = useState(inputRange.max);
   const [validMax, setValidMax] = useState(true);
   const [validMin, setValidMin] = useState(true);
-  const [isModified, setIsModified] = useState(false);
 
   const inputRangeMax = initialInputRangeValues.max;
   const inputRangeMin = initialInputRangeValues.min;
@@ -151,4 +154,10 @@ NumberRangeFilter.propTypes = {
     min: PropTypes.number.isRequired,
   }).isRequired,
   setDisplayRange: PropTypes.func.isRequired,
+  minInput: PropTypes.number.isRequired,
+  setMinInput: PropTypes.func.isRequired,
+  maxInput: PropTypes.number.isRequired,
+  setMaxInput: PropTypes.func.isRequired,
+  isModified: PropTypes.bool.isRequired,
+  setIsModified: PropTypes.func.isRequired,
 };

@@ -49,6 +49,13 @@ export default function SearchFlyoutContent({ setQuery }) {
     min: 0,
     max: 0,
   });
+  const [parcelSizeMinInput, setParcelSizeMinInput] = useState(
+    parcelSizeInitial.min
+  );
+  const [parcelSizeMaxInput, setParcelSizeMaxInput] = useState(
+    parcelSizeInitial.max
+  );
+  const [parcelSizeIsModified, setParcelSizeIsModified] = useState(false);
   const [
     powerTransmissionLinesIsSelected,
     setPowerTransmissionLinesIsSelected,
@@ -457,6 +464,12 @@ export default function SearchFlyoutContent({ setQuery }) {
         initialInputRangeValues={parcelSizeInitial}
         displayRange={parcelSizeDisplayRange}
         setDisplayRange={setParcelSizeDisplayRange}
+        minInput={parcelSizeMinInput}
+        setMinInput={setParcelSizeMinInput}
+        maxInput={parcelSizeMaxInput}
+        setMaxInput={setParcelSizeMaxInput}
+        isModified={parcelSizeIsModified}
+        setIsModified={setParcelSizeIsModified}
       />
       <SelectFilter
         label="Zoning"
