@@ -11,6 +11,7 @@ from pipeline.models.general import RegionalDistrict
 from pipeline.models.community import Community
 from pipeline.serializers.opportunity import OpportunitySerializer
 from pipeline.permissions.IsAuthenticated import IsAuthenticated
+from pipeline.models.census import CensusSubdivision
 
 MIN_TABLE_ID = 1
 MIN_DISTANCE = 0
@@ -151,6 +152,23 @@ class OpportunitiesList(generics.ListAPIView):
         return queryset
 
     def filter_opportunities_by_distance_from_population(self, queryset, population_distance_min, population_distance_max, population):
+        population_geometry = CensusSubdivision.objects.filter(population__gte=population)
+        if population_distance_min >= MIN_SIZE:
+            min_query = Q()
+            max_query = Q()
+            for subdivision in population_geometry:
+                min_query |= Q(geo_position__distance_gte=(subdivision.geom, D(km=population_distance_min)))
+                max_query |= Q(geo_position__distance_lte=(subdivision.geom, D(km=population_distance_max)))
+            
+            if(len(min_query) > 0 and len(max_query) > 0):
+                queryset = queryset.filter(min_query & max_query)
+            elif(len(min_query) > 0):
+                queryset = queryset.filter(min_query)
+            elif(len(max_query) > 0):
+                queryset = queryset.filter(max_query)
+            else:
+                queryset = Opportunity.objects.none()
+        
         return queryset
 
     def service_queryset(self, queryset, exclude_unknowns, service_name):
