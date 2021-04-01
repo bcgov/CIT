@@ -16,7 +16,7 @@ export default function InvestorMainView() {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    if (query.length > 0) {
+    if (query && query.length > 0) {
       setCurrentPage(1);
       axios
         .get(`${GET_OPPORTUNITIES_LIST_URL}?${query ? `${query}&` : ""}`)
@@ -31,7 +31,7 @@ export default function InvestorMainView() {
   }, [query]);
 
   useEffect(() => {
-    if (query.length > 0) {
+    if (query && query.length > 0) {
       axios
         .get(
           `${GET_OPPORTUNITIES_LIST_URL}?${

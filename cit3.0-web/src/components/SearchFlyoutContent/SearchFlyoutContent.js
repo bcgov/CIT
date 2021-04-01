@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import PropTypes from "prop-types";
 import Switch from "react-switch";
 import { Row, Col, Tooltip, OverlayTrigger } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import { MdHelp } from "react-icons/md";
 import NumberRangeFilter from "../NumberRangeFilter/NumberRangeFilter";
 import SelectFilter from "../SelectFilter/SelectFilter";
@@ -9,6 +10,8 @@ import CommunityOrPopulationProximityFilter from "../CommunityOrPopulationProxim
 import "./SearchFlyoutContent.scss";
 
 export default function SearchFlyoutContent({ setQuery }) {
+  const initialLoad = useRef(true);
+  const history = useHistory();
   const parcelSizeInitial = {
     max: 250000,
     min: 0,
@@ -214,7 +217,11 @@ export default function SearchFlyoutContent({ setQuery }) {
   const numberRangeFilters = [
     {
       selected: parcelSizeIsSelected,
-      value: parcelSizeDisplayRange,
+      setIsSelected: setParcelSizeIsSelected,
+      inputRange: parcelSizeInputRange,
+      setInputRange: setParcelSizeInputRange,
+      displayRange: parcelSizeDisplayRange,
+      setDisplayRange: setParcelSizeDisplayRange,
       queryKey: {
         min: "parcel_size_min",
         max: "parcel_size_max",
@@ -222,7 +229,11 @@ export default function SearchFlyoutContent({ setQuery }) {
     },
     {
       selected: powerTransmissionLinesIsSelected,
-      value: powerTransmissionLinesDisplayRange,
+      setIsSelected: setPowerTransmissionLinesIsSelected,
+      inputRange: powerTransmissionLinesInputRange,
+      setInputRange: setPowerTransmissionLinesInputRange,
+      displayRange: powerTransmissionLinesDisplayRange,
+      setDisplayRange: setPowerTransmissionLinesDisplayRange,
       queryKey: {
         min: "power_transmission_lines_min",
         max: "power_transmission_lines_max",
@@ -230,7 +241,11 @@ export default function SearchFlyoutContent({ setQuery }) {
     },
     {
       selected: airServiceIsSelected,
-      value: airServiceDisplayRange,
+      setIsSelected: setAirServiceIsSelected,
+      inputRange: airServiceInputRange,
+      setInputRange: setAirServiceInputRange,
+      displayRange: airServiceDisplayRange,
+      setDisplayRange: setAirServiceDisplayRange,
       queryKey: {
         min: "air_service_min",
         max: "air_service_max",
@@ -238,7 +253,11 @@ export default function SearchFlyoutContent({ setQuery }) {
     },
     {
       selected: railConnectionsIsSelected,
-      value: railConnectionsDisplayRange,
+      setIsSelected: setRailConnectionsIsSelected,
+      inputRange: railConnectionsInputRange,
+      setInputRange: setRailConnectionsInputRange,
+      displayRange: railConnectionsDisplayRange,
+      setDisplayRange: setRailConnectionsDisplayRange,
       queryKey: {
         min: "rail_connections_min",
         max: "rail_connections_max",
@@ -246,7 +265,11 @@ export default function SearchFlyoutContent({ setQuery }) {
     },
     {
       selected: deepWaterPortIsSelected,
-      value: deepWaterPortDisplayRange,
+      setIsSelected: setDeepWaterPortIsSelected,
+      inputRange: deepWaterPortInputRange,
+      setInputRange: setDeepWaterPortInputRange,
+      displayRange: deepWaterPortDisplayRange,
+      setDisplayRange: setDeepWaterPortDisplayRange,
       queryKey: {
         min: "deep_water_port_min",
         max: "deep_water_port_max",
@@ -254,7 +277,11 @@ export default function SearchFlyoutContent({ setQuery }) {
     },
     {
       selected: rAndDIsSelected,
-      value: rAndDDisplayRange,
+      setIsSelected: setRAndDIsSelected,
+      inputRange: rAndDInputRange,
+      setInputRange: setRAndDInputRange,
+      displayRange: rAndDDisplayRange,
+      setDisplayRange: setRAndDDisplayRange,
       queryKey: {
         min: "research_centre_min",
         max: "research_centre_max",
@@ -263,55 +290,101 @@ export default function SearchFlyoutContent({ setQuery }) {
   ];
 
   useEffect(() => {
-    const query = new URLSearchParams();
-    siteServicingFilters.forEach((filter) => {
-      query.append(filter.queryKey, filter.checked === true ? "Y" : "N");
-    });
+    const loadQueryFromUrl = (urlQueryString) => {
+      const query = new URLSearchParams(urlQueryString);
+      setQuery(query.toString());
 
-    query.append("exclude_unknowns", excludeUnknowns ? "Y" : "N");
+      numberRangeFilters.forEach((filter) => {
+        const maxParam = query.get(filter.queryKey.max);
+        const minParam = query.get(filter.queryKey.min);
+        if (maxParam && minParam) {
+          console.log(maxParam);
+          console.log(minParam);
+          filter.setInputRange({
+            max: Number(maxParam),
+            min: Number(minParam),
+          });
+          filter.setDisplayRange({
+            max: Number(maxParam),
+            min: Number(minParam),
+          });
+          filter.setIsSelected(true);
+        }
+      });
+    };
 
-    query.append(
-      "post_secondary_within_100km",
-      postSecondarySwitchValue ? "Y" : "N"
-    );
+    const updateQueryFromFilters = () => {
+      const query = new URLSearchParams();
+      siteServicingFilters.forEach((filter) => {
+        query.append(filter.queryKey, filter.checked === true ? "Y" : "N");
+      });
 
-    const activeNumberRangeFilters = numberRangeFilters.filter(
-      (filter) => filter.selected === true
-    );
+      query.append("exclude_unknowns", excludeUnknowns ? "Y" : "N");
 
-    activeNumberRangeFilters.forEach((filter) => {
-      query.append(filter.queryKey.max, filter.value.max);
-      query.append(filter.queryKey.min, filter.value.min);
-    });
-
-    if (zoningIsSelected) {
-      query.append("zoning", zoningQueryFilters);
-    }
-
-    if (connectivityIsSelected) {
-      query.append("connectivity", connectivityQueryFilters);
-    }
-
-    if (proximityToCommunityOrPopulationIsSelected) {
       query.append(
-        "community_population_distance_max",
-        proximityToCommunityOrPopulationDisplayRange.max
-      );
-      query.append(
-        "community_population_distance_min",
-        proximityToCommunityOrPopulationDisplayRange.min
+        "post_secondary_within_100km",
+        postSecondarySwitchValue ? "Y" : "N"
       );
 
-      if (proximityCurrentCommunity !== null) {
-        query.append("proximity_community_id", proximityCurrentCommunity.value);
+      const activeNumberRangeFilters = numberRangeFilters.filter(
+        (filter) => filter.selected === true
+      );
+
+      activeNumberRangeFilters.forEach((filter) => {
+        query.append(filter.queryKey.max, filter.displayRange.max);
+        query.append(filter.queryKey.min, filter.displayRange.min);
+      });
+
+      if (zoningIsSelected) {
+        query.append("zoning", zoningQueryFilters);
       }
 
-      if (proximityCurrentPopulation !== null) {
-        query.append("proximity_population", proximityCurrentPopulation.value);
+      if (connectivityIsSelected) {
+        query.append("connectivity", connectivityQueryFilters);
       }
+
+      if (proximityToCommunityOrPopulationIsSelected) {
+        query.append(
+          "community_population_distance_max",
+          proximityToCommunityOrPopulationDisplayRange.max
+        );
+        query.append(
+          "community_population_distance_min",
+          proximityToCommunityOrPopulationDisplayRange.min
+        );
+
+        if (proximityCurrentCommunity !== null) {
+          query.append(
+            "proximity_community_id",
+            proximityCurrentCommunity.value
+          );
+        }
+
+        if (proximityCurrentPopulation !== null) {
+          query.append(
+            "proximity_population",
+            proximityCurrentPopulation.value
+          );
+        }
+      }
+
+      console.log(query.toString());
+      setQuery(query.toString());
+
+      if (query && query.toString().length > 0) {
+        history.push({ search: query.toString() });
+      }
+    };
+
+    const urlQueryString = window.location.search.split("?")[1];
+
+    if (initialLoad.current === true && urlQueryString) {
+      loadQueryFromUrl(urlQueryString);
+    } else {
+      updateQueryFromFilters();
     }
 
-    setQuery(query.toString());
+    initialLoad.current = false;
   }, [
     roadAccessSwitchValue,
     waterSwitchValue,
