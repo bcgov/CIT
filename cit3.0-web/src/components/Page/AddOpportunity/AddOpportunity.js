@@ -25,11 +25,13 @@ import {
   setParcelSize,
   setSiteId,
   setOpportunityUser,
+  resetOpportunity,
 } from "../../../store/actions/opportunity";
 import Radios from "../../FormComponents/Radios";
 import Terms from "../../Terms/Terms";
 
 export default function AddOpportunity() {
+  console.log("ADD OPPORTUNITY");
   const dispatch = useDispatch();
   const address = useSelector((state) => state.opportunity.address);
   const coords = useSelector((state) => state.opportunity.coords);
@@ -74,7 +76,8 @@ export default function AddOpportunity() {
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 
   const setParcelData = async (id) => {
-    dispatch(setParcelSize(0));
+    console.log("setParcelData");
+    dispatch(setParcelSize(null));
     const pid = await getPID(id);
     dispatch(setPID(pid));
     if (pid) {
@@ -104,6 +107,7 @@ export default function AddOpportunity() {
         }
       });
     } else {
+      console.log("resetting geom to null in else for getParcelData");
       dispatch(setGeometry(null));
       dispatch(setParcelOwner(null));
       dispatch(setParcelSize(null));
@@ -114,11 +118,14 @@ export default function AddOpportunity() {
   };
 
   const setParcelDataNoAddress = async (noAddrCoords) => {
-    dispatch(setSiteId(null));
-    dispatch(setParcelSize(0));
-    dispatch(setParcelOwner(null));
-    dispatch(setPID(null));
-    dispatch(setGeometry(null));
+    // THIS IS BEING RUN TWICE
+    console.log("setParcelDataNOADDRESS");
+    // dispatch(setSiteId(null));
+    // dispatch(setParcelSize(null));
+    // dispatch(setParcelOwner(null));
+    // dispatch(setPID(null));
+    // console.log("resetting geometry to null in getPDNOADDRESS");
+    // dispatch(setGeometry(null));
     console.log(noAddrCoords);
     const parcelData = await getParcelDataNoAddress(noAddrCoords);
     if (noAddressFlag && parcelData) {
@@ -144,6 +151,7 @@ export default function AddOpportunity() {
       );
       dispatch(setGeometry(parcelData.data.features[0].geometry));
     } else {
+      console.log("set geom to null in else getPDNO ADDRESS");
       dispatch(setGeometry(null));
       dispatch(setParcelOwner(null));
       dispatch(setParcelSize(null));
@@ -153,15 +161,20 @@ export default function AddOpportunity() {
   };
 
   const getCoords = async (addy) => {
+    console.log("GET COORDS");
+    // dispatch(resetOpportunity());
     dispatch(setSiteId(null));
     dispatch(setParcelOwner(null));
+    console.log("setting geom to null in get coords");
     dispatch(setGeometry(null));
     dispatch(setParcelSize(null));
     dispatch(setPID(null));
     dispatch(setAddress(null));
     setError("");
     try {
+      console.log("adddy");
       const data = await getAddressData(addy);
+      setNoAddressFlag(false);
       dispatch(setAddress(data.data.features[0].properties.fullAddress));
       dispatch(
         setCoords([
@@ -191,8 +204,9 @@ export default function AddOpportunity() {
       setParcelData(siteId);
     }
     if (noAddressFlag) {
+      // if (!address && !siteId && coords[0] !== 54.1722) {
       console.log("use effect with noAddressFlag");
-      dispatch(setSiteId(null));
+      // dispatch(setSiteId(null));
       setParcelDataNoAddress(coords);
     }
   }, [siteId, noAddressFlag]);
@@ -231,6 +245,8 @@ export default function AddOpportunity() {
                     </Col>
                   </Row>
                 )}
+                {console.log("address: ", address)}
+                {console.log("parcelSize: ", parcelSize)}
                 {address && !parcelSize && (
                   <Row>
                     <Col>
@@ -238,7 +254,8 @@ export default function AddOpportunity() {
                     </Col>
                   </Row>
                 )}
-                {!address && coords[0] !== 54.1722 && (
+
+                {!address && coords && coords[0] !== 54.1722 && (
                   <Row>
                     <Col>
                       <h3>Lat: {coords[0]}</h3>
@@ -254,7 +271,8 @@ export default function AddOpportunity() {
                         Ownership: <b>{parcelOwner}</b>
                       </p>
                       <p className="mb-0 pb-0">
-                        Parcel Size: <b>{parcelSize.toFixed(3)} acres</b>
+                        Parcel Size:{" "}
+                        <b>{parcelSize ? parcelSize.toFixed(3) : null} acres</b>
                       </p>
                       <p>
                         PID: <b>{PID.length > 1 ? PID.join(", ") : PID}</b>
