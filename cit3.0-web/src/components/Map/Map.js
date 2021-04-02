@@ -39,6 +39,10 @@ export default function Map({
   const parcelPoly = useSelector(
     (state) => state.opportunity.siteInfo.geometry.coordinates
   );
+
+  const polyType = useSelector(
+    (state) => state.opportunity.siteInfo.geometry.type
+  );
   const address = useSelector((state) => state.opportunity.address);
 
   let additionalComponents;
@@ -48,12 +52,25 @@ export default function Map({
   const changeView = (centerCoords) => centerCoords;
 
   const convert = (lngLatAry) => {
-    const full = lngLatAry.map((poly) =>
-      poly.map((polyCoords) => [polyCoords[1], polyCoords[0]])
-    );
-    return (
-      <Polygon pathOptions={{ color: "rgb(255, 0, 128)" }} positions={full} />
-    );
+    if (polyType === "Polygon") {
+      const full = lngLatAry.map((poly) =>
+        poly.map((polyCoords) => [polyCoords[1], polyCoords[0]])
+      );
+      return (
+        <Polygon pathOptions={{ color: "rgb(255, 0, 128)" }} positions={full} />
+      );
+    }
+    if (polyType === "MultiPolygon") {
+      const fullAry = lngLatAry.map((p) =>
+        p.map((poly) =>
+          poly.map((polyCoords) => [polyCoords[1], polyCoords[0]])
+        )
+      );
+      return fullAry.map((ary) => (
+        <Polygon pathOptions={{ color: "rgb(255, 0, 128)" }} positions={ary} />
+      ));
+    }
+    return null;
   };
 
   if (isSearchMode) {
