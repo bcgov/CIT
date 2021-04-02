@@ -87,14 +87,18 @@ export default function opportunity(
       state.siteInfo.PID.value = action.payload;
       break;
     case ADD_GEOMETRY:
+      console.log("IN GEOM - payload", action.payload);
+      console.log("current geom: ", state.siteInfo.geometry.coordinates);
       if (!action.payload) {
+        console.log("in geom: should set to null");
         state.siteInfo.geometry.coordinates = null;
+        console.log(state.siteInfo.geometry.coordinates);
       } else if (!state.siteInfo.geometry.coordinates) {
-        state.siteInfo.geometry = {
-          ...state.siteInfo.geometry,
-          ...action.payload,
-        };
+        console.log("in GEOM: else if");
+        state.siteInfo.geometry.coordinates = action.payload.coordinates;
+        state.siteInfo.geometry.type = action.payload.type;
       } else {
+        console.log("in geom ELSE");
         state.siteInfo.geometry.coordinates = [
           ...state.siteInfo.geometry.coordinates,
           ...action.payload.coordinates,
@@ -114,9 +118,13 @@ export default function opportunity(
 
       break;
     case ADD_PARCEL_SIZE:
-      if (state.siteInfo.parcelSize.value && action.payload) {
+      console.log("parcelSize: ", action.payload);
+      if (state.siteInfo.parcelSize.value && action.payload !== null) {
+        console.log("add parcel size if");
         state.siteInfo.parcelSize.value += action.payload;
       } else {
+        console.log("add parcel size else");
+
         state.siteInfo.parcelSize.value = action.payload;
       }
       break;
