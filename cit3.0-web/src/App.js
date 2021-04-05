@@ -10,6 +10,7 @@ import Header from "./components/Headers/Header/Header";
 
 import OpportunityApprovePage from "./components/Page/OpportunityApprovePage/OpportunityApprovePage";
 import AddOpportunity from "./components/Page/AddOpportunity/AddOpportunity";
+import Datasources from "./components/Page/Datasources/Datasources";
 import EDODashboard from "./components/Page/EDODashboard/EDODashboard";
 import SiteInfomation from "./components/Page/SiteInformation/SiteInformation";
 import PropertyDetails1 from "./components/Page/PropertyDetails1/PropertyDetails1";
@@ -199,6 +200,7 @@ function App() {
                 />
                 <AppRoute path="/search" component={InvestorMainView} />
                 <AppRoute path="/home" component={HomePage} />
+                <AppRoute path="/datasources" component={Datasources} />
               </Switch>
               <div className="footer">
                 <Footer />
