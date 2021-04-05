@@ -12,7 +12,7 @@ export default function OpportunityList({
         ? opportunities.map((opp) => {
             const opportunity = OpportunityFactory.createStateFromResponse(opp);
             const ListItem = Component();
-            return <ListItem key={v4()} opportunity={opportunity} />;
+            return <ListItem key={v4()} opportunity={opportunity} publicView />;
           })
         : null}
     </>
