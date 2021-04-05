@@ -111,6 +111,7 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
         )
 
     def get_nearest_customs_port_of_entry(self, instance):
+        nearest_customs_port_of_entry = None
         if instance.nearest_customs_port_of_entry:
             nearest_customs_port_of_entry = dict()
             nearest_customs_port_of_entry['customs_port_id'] = instance.nearest_customs_port_of_entry.customs_port_id_id
@@ -119,6 +120,7 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
         return nearest_customs_port_of_entry
     
     def get_nearest_port(self, instance):
+        nearest_port = None
         if instance.nearest_port:
             nearest_port = dict()
             nearest_port['port_id'] = instance.nearest_port.port_id_id
@@ -127,6 +129,7 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
         return nearest_port
     
     def get_nearest_railway(self, instance):
+        nearest_railway = None
         if instance.nearest_railway:
             nearest_railway = dict()
             nearest_railway['railway_id'] = instance.nearest_railway.railway_id_id
@@ -135,6 +138,7 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
         return nearest_railway
     
     def get_nearest_airport(self, instance):
+        nearest_airport = None
         if instance.nearest_airport:
             nearest_airport = dict()
             nearest_airport['airport_id'] = instance.nearest_airport.airport_id_id
@@ -143,6 +147,7 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
         return nearest_airport
 
     def get_nearest_highway(self, instance):
+        nearest_highway = None
         if instance.nearest_highway:
             nearest_highway = dict()
             nearest_highway['highway_id'] = instance.nearest_highway.highway_id_id
