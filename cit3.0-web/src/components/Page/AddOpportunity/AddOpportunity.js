@@ -119,13 +119,15 @@ export default function AddOpportunity() {
 
   const setParcelDataNoAddress = async (noAddrCoords) => {
     // THIS IS BEING RUN TWICE
-    console.log("setParcelDataNOADDRESS");
+    // console.log("setParcelDataNOADDRESS");
     // dispatch(setSiteId(null));
     // dispatch(setParcelSize(null));
     // dispatch(setParcelOwner(null));
     // dispatch(setPID(null));
     // console.log("resetting geometry to null in getPDNOADDRESS");
     // dispatch(setGeometry(null));
+    dispatch(resetOpportunity());
+    dispatch(setCoords(noAddrCoords));
     console.log(noAddrCoords);
     const parcelData = await getParcelDataNoAddress(noAddrCoords);
     if (noAddressFlag && parcelData) {
@@ -162,14 +164,14 @@ export default function AddOpportunity() {
 
   const getCoords = async (addy) => {
     console.log("GET COORDS");
-    // dispatch(resetOpportunity());
-    dispatch(setSiteId(null));
-    dispatch(setParcelOwner(null));
-    console.log("setting geom to null in get coords");
-    dispatch(setGeometry(null));
-    dispatch(setParcelSize(null));
-    dispatch(setPID(null));
-    dispatch(setAddress(null));
+    dispatch(resetOpportunity());
+    // dispatch(setSiteId(null));
+    // dispatch(setParcelOwner(null));
+    // console.log("setting geom to null in get coords");
+    // dispatch(setGeometry(null));
+    // dispatch(setParcelSize(null));
+    // dispatch(setPID(null));
+    // dispatch(setAddress(null));
     setError("");
     try {
       console.log("adddy");

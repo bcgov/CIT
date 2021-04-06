@@ -15,6 +15,7 @@ import L from "leaflet";
 
 import "./map.css";
 import { useSelector } from "react-redux";
+import { v4 } from "uuid";
 import ChangeView from "../ChangeView/ChangeView";
 import AddLocationMarker from "../AddMarker/AddMarker";
 import ResourceMarker from "../AddMarker/ResourceMarker";
@@ -57,7 +58,11 @@ export default function Map({
         poly.map((polyCoords) => [polyCoords[1], polyCoords[0]])
       );
       return (
-        <Polygon pathOptions={{ color: "rgb(255, 0, 128)" }} positions={full} />
+        <Polygon
+          key={v4()}
+          pathOptions={{ color: "rgb(255, 0, 128)" }}
+          positions={full}
+        />
       );
     }
     if (polyType === "MultiPolygon") {
@@ -67,7 +72,11 @@ export default function Map({
         )
       );
       return fullAry.map((ary) => (
-        <Polygon pathOptions={{ color: "rgb(255, 0, 128)" }} positions={ary} />
+        <Polygon
+          key={v4()}
+          pathOptions={{ color: "rgb(255, 0, 128)" }}
+          positions={ary}
+        />
       ));
     }
     return null;
