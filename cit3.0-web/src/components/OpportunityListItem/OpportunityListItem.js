@@ -1,10 +1,29 @@
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Map from "../Map/Map";
 import { determineStatusTextColour, formatDate } from "../../helpers/helpers";
+import {
+  getOpportunity,
+  setOpportunity,
+} from "../../store/actions/opportunity";
+import OpportunityFactory from "../../store/factory/OpportunityFactory";
 
-const OpportunityListItem = ({ opportunity }) => {
+const OpportunityListItem = ({ opportunity, publicView }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const goToEditListing = () => {
+    getOpportunity(opportunity.id).then((response) => {
+      dispatch(
+        setOpportunity({
+          ...OpportunityFactory.createStateFromResponse(response.data),
+          editing: true,
+        })
+      );
+      history.push("/opportunity/");
+    });
+  };
   const determineActions = (opp) => {
     if (opp.approvalStatus === "PUBL") {
       return (
@@ -13,7 +32,13 @@ const OpportunityListItem = ({ opportunity }) => {
           <br />
           <a href="/">Mark as &quot;sold&quot;</a>
           <br />
-          <a href="/">Edit Listing</a>
+          <Button
+            className="p-0"
+            variant="link"
+            onClick={() => goToEditListing()}
+          >
+            Edit Listing
+          </Button>
           <br />
           <NavLink to={`/delete/opportunity/${opp.id}/`}>Delete</NavLink>
         </>
@@ -23,7 +48,14 @@ const OpportunityListItem = ({ opportunity }) => {
       <>
         <NavLink to={opp.link}>View Listing</NavLink>
         <br />
-        <a href="/">Edit Listing</a>
+
+        <Button
+          className="p-0"
+          variant="link"
+          onClick={() => goToEditListing()}
+        >
+          Edit Listing
+        </Button>
         <br />
         <NavLink to={`/delete/opportunity/${opp.id}`}>Delete</NavLink>
       </>
@@ -46,7 +78,7 @@ const OpportunityListItem = ({ opportunity }) => {
           </div>
         </Col>
         <Col>{opportunity.address}</Col>
-        {!opportunity.public ? (
+        {!publicView ? (
           <>
             <Col>{formatDate(opportunity.dateCreated)}</Col>
             <Col>{determineStatusTextColour(opportunity.approvalStatus)}</Col>
@@ -54,7 +86,7 @@ const OpportunityListItem = ({ opportunity }) => {
           </>
         ) : (
           <Col className="d-flex align-items-end justify-content-end mr-1">
-            {opportunity.public && (
+            {publicView && (
               <Link to={opportunity.link}>View property details</Link>
             )}
           </Col>
@@ -66,6 +98,7 @@ const OpportunityListItem = ({ opportunity }) => {
 
 OpportunityListItem.propTypes = {
   opportunity: PropTypes.shape().isRequired,
+  publicView: PropTypes.bool.isRequired,
 };
 
 export default OpportunityListItem;
