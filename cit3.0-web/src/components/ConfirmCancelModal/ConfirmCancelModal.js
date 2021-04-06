@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { Modal } from "react-bootstrap";
 import { Button } from "shared-components";
-import "./ConfirmCancelModal.scss";
 
 const ConfirmCancelModal = ({
   show,

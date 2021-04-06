@@ -12,6 +12,8 @@ const OpportunityListItem = ({ opportunity, handleModalOpen }) => {
         <>
           <NavLink to={opp.link}>View Listing</NavLink>
           <br />
+          <a href="/">Edit Listing</a>
+          <br />
           <Button
             variant="link"
             className="closed-won-button-link"
@@ -19,8 +21,6 @@ const OpportunityListItem = ({ opportunity, handleModalOpen }) => {
           >
             Closed/Won
           </Button>
-          <br />
-          <a href="/">Edit Listing</a>
           <br />
           <NavLink to={`/delete/opportunity/${opp.id}/`}>Delete</NavLink>
         </>
