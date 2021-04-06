@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./UserTable.css";
 import { Button } from "shared-components";
-import { Modal, Button as BTN } from "react-bootstrap";
+import { Modal, Button as Btn } from "react-bootstrap";
 import UserListItem from "../UserListItem/UserListItem";
 import UserFactory from "../../store/factory/UserFactory";
 import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
@@ -63,15 +63,15 @@ const UserTable = () => {
           <Col>
             {userToUpdate.municipalities.length ? (
               userToUpdate.municipalities.map((muni, index) => (
-                <Row>
-                  <Col key={index}>{muni.name}</Col>
+                <Row key={`m${muni.id}`}>
+                  <Col>{muni.name}</Col>
                   <Col>
-                    <BTN
+                    <Btn
                       variant="link"
                       onClick={() => handleRemoveMunicipality(index)}
                     >
                       Remove
-                    </BTN>
+                    </Btn>
                   </Col>
                 </Row>
               ))
@@ -79,16 +79,16 @@ const UserTable = () => {
               <Row />
             )}
             {userToUpdate.regionalDistricts.length ? (
-              userToUpdate.regionalDistricts.map((RD, index) => (
-                <Row>
-                  <Col key={index}>{RD.name}</Col>
+              userToUpdate.regionalDistricts.map((Rd, index) => (
+                <Row key={`r${Rd.id}`}>
+                  <Col>{Rd.name}</Col>
                   <Col>
-                    <BTN
+                    <Btn
                       variant="link"
                       onClick={() => handleRemoveRegional(index)}
                     >
                       Remove
-                    </BTN>
+                    </Btn>
                   </Col>
                 </Row>
               ))

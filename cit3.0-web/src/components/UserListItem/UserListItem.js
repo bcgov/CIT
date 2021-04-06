@@ -9,13 +9,13 @@ const UserListItem = ({ user, handelEditAction, handleDeleteAction }) => (
       <Col>{user.email}</Col>
       <Col>
         {user.municipalities.length
-          ? user.municipalities.map((muni, index) => (
-              <p key={index}>{muni.name}</p>
+          ? user.municipalities.map((muni) => (
+              <p key={`m${muni.id}`}>{muni.name}</p>
             ))
           : null}
         {user.regionalDistricts.length
-          ? user.regionalDistricts.map((RD, index) => (
-              <p key={index}>{RD.name}</p>
+          ? user.regionalDistricts.map((Rd) => (
+              <p key={`r${Rd.id}`}>{Rd.name}</p>
             ))
           : null}
       </Col>
