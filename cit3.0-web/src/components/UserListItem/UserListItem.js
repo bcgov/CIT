@@ -21,22 +21,24 @@ const UserListItem = ({ user, handelEditAction, handleDeleteAction }) => (
       </Col>
       <Col>{formatDate(user.dateCreated)}</Col>
       <Col>
-        <div className="d-flex flex-column">
-          <Button
-            className="text-left"
-            variant="link"
-            onClick={handelEditAction}
-          >
-            Edit
-          </Button>
-          <Button
-            className="text-left"
-            variant="link"
-            onClick={handleDeleteAction}
-          >
-            Delete User
-          </Button>
-        </div>
+        {user.name !== "Unknown" ? (
+          <div className="d-flex flex-column">
+            <Button
+              className="text-left"
+              variant="link"
+              onClick={handelEditAction}
+            >
+              Edit
+            </Button>
+            <Button
+              className="text-left"
+              variant="link"
+              onClick={handleDeleteAction}
+            >
+              Delete User
+            </Button>
+          </div>
+        ) : null}
       </Col>
     </Row>
   </div>
