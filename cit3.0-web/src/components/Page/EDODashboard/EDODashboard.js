@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button, Alert } from "shared-components";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
@@ -22,6 +22,7 @@ export default function EDODashboard() {
   const [showModal, setShowModal] = useState(false);
   const [currentId, setCurrentId] = useState(-1);
   const [markAsSoldStatus, setMarkAsSoldStatus] = useState(null);
+  const resultRef = useRef(null);
   const history = useHistory();
   const dispatch = useDispatch();
   const keycloak = useKeycloakWrapper();
@@ -80,11 +81,13 @@ export default function EDODashboard() {
         setShowModal(false);
         setMarkAsSoldStatus("Success");
         getUserOpportunities();
+        resultRef.current.scrollIntoView();
       })
       .catch((err) => {
         console.log(err);
         setShowModal(false);
         setMarkAsSoldStatus("Error");
+        resultRef.current.scrollIntoView();
       });
   };
 
@@ -199,7 +202,7 @@ export default function EDODashboard() {
         their delegate.
       </p>
       <div className="add-opportunity-button">{addOpportunityButton}</div>
-      <hr />
+      <hr ref={resultRef} />
       {markAsSoldStatus === "Error" ? (
         <Container className="p-0 mt-3">
           <Alert
