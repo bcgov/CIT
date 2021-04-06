@@ -154,7 +154,7 @@ export const OPPORTUNITY_MODEL = () => ({
       suffix: "km",
     },
     nearAirport: {
-      title: "Nearest Airport",
+      title: "Nearest Air Service",
       name: "",
       value: 0,
       type: "distance",
@@ -331,6 +331,14 @@ export class Opportunity {
         population: feature.properties.population,
         pk: feature.properties.pk,
       }));
+    } else {
+      this.state.municipalities = value.map((feature) => ({
+        name: feature.municipality_name,
+        link: feature.municipality_link,
+        distance: feature.municipality_distance,
+        population: feature.municipality_population,
+        pk: feature.municipality_id,
+      }));
     }
   }
 
@@ -342,6 +350,14 @@ export class Opportunity {
         distance: feature.properties.distance,
         population: feature.properties.population,
         pk: feature.properties.pk,
+      }));
+    } else {
+      this.state.firstNationCommunities = value.map((feature) => ({
+        name: feature.reserve_name,
+        link: feature.reserve_link,
+        distance: feature.reserve_distance,
+        population: feature.reserve_population,
+        pk: feature.reserve_id,
       }));
     }
   }
@@ -462,8 +478,12 @@ export class Opportunity {
     this.state.physical.nearElevation.value = parseFloat(value);
   }
 
+  set elevationAtLocation(value) {
+    this.state.physical.nearElevation.value = parseFloat(value);
+  }
+
   set nearGround(value) {
-    this.state.physical.nearGround.value = parseFloat(value);
+    this.state.physical.nearGround.name = value;
   }
 
   set nearestLake(value) {
