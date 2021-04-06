@@ -4,6 +4,7 @@ from keycloak.exceptions import KeycloakConnectionError, KeycloakGetError, Keycl
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
 def valid_user(request, roles):
+    message = ''
     try:
         # Configure client
         keycloak_openid = KeycloakOpenID(server_url=os.environ.get('KEY_CLOAK_URL'),
@@ -19,16 +20,16 @@ def valid_user(request, roles):
         # Use Userinfo to validate permissions
         return any(i in roles for i in userinfo['roles'])
     except KeycloakConnectionError:
-        self.message = 'Cannot connect to authorization server'
+        message = 'Cannot connect to authorization server'
     except AttributeError:
-        self.message = 'Authorization response in bad format'
+        message = 'Authorization response in bad format'
     except KeyError:
-        self.message = 'Must supply an Authorization token'
+        message = 'Must supply an Authorization token'
     except KeycloakGetError:
-        self.message = 'Failed to recieve userinfo'
+        message = 'Failed to recieve userinfo'
     except KeycloakAuthenticationError:
-        self.message = 'Authorization token in not valid'
-    return False
+        message = 'Authorization token in not valid'
+    return message
 
 class IsAuthenticated(BasePermission):
     message = 'Insufficent user permission.'
@@ -37,7 +38,8 @@ class IsAuthenticated(BasePermission):
         return valid_user(request, ["IDIR", "BCeID"])
   
     def has_permission(self, request, view):
-        return request.method == "GET" or (request.method not in SAFE_METHODS and self.valid_user(request))
+        self.message = self.valid_user(request)
+        return request.method == "GET" or (request.method not in SAFE_METHODS and self.message != '')
 
 class IsAdminAuthenticated(BasePermission):
     message = 'Insufficent user permission.'
@@ -46,4 +48,5 @@ class IsAdminAuthenticated(BasePermission):
         return valid_user(request, ["IDIR"])
 
     def has_permission(self, request, view):
-        return request.method == "GET" or (request.method not in SAFE_METHODS and self.valid_user(request))
+        self.message = self.valid_user(request)
+        return request.method == "GET" or (request.method not in SAFE_METHODS and self.message != '')

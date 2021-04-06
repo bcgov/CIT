@@ -10,6 +10,7 @@ import Header from "./components/Headers/Header/Header";
 
 import OpportunityApprovePage from "./components/Page/OpportunityApprovePage/OpportunityApprovePage";
 import AddOpportunity from "./components/Page/AddOpportunity/AddOpportunity";
+import Datasources from "./components/Page/Datasources/Datasources";
 import EDODashboard from "./components/Page/EDODashboard/EDODashboard";
 import SiteInfomation from "./components/Page/SiteInformation/SiteInformation";
 import PropertyDetails1 from "./components/Page/PropertyDetails1/PropertyDetails1";
@@ -27,6 +28,7 @@ import AppRoute from "./utils/AppRoute/AppRoute";
 import AuthLayout from "./layouts/AuthLayout";
 import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainView";
 import OpportunityApproveListPage from "./components/Page/OpportunityApproveListPage/OpportunityApproveListPage";
+import UserManagementDashboard from "./components/Page/UserManagement/UserManagementDashboard";
 
 import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
@@ -197,8 +199,20 @@ function App() {
                   layout={AuthLayout}
                   component={OpportunityDeletePage}
                 />
+                <AppRoute
+                  protected
+                  exact
+                  path="/manage/users"
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                  ]}
+                  layout={AuthLayout}
+                  component={UserManagementDashboard}
+                />
                 <AppRoute path="/search" component={InvestorMainView} />
                 <AppRoute path="/home" component={HomePage} />
+                <AppRoute path="/datasources" component={Datasources} />
               </Switch>
               <div className="footer">
                 <Footer />

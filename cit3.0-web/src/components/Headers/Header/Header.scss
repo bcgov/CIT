@@ -59,6 +59,11 @@
   width: 30px;
 }
 
+.navigation-container {
+  padding: 10px 10vw;
+  background: #38598a;
+}
+
 // show long App Name when space allows
 @media (min-width: 992px) {
   .App-header.navbar {

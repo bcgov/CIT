@@ -1,18 +1,43 @@
-import { Button, Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Map from "../Map/Map";
 import { determineStatusTextColour, formatDate } from "../../helpers/helpers";
+import {
+  getOpportunity,
+  setOpportunity,
+} from "../../store/actions/opportunity";
+import OpportunityFactory from "../../store/factory/OpportunityFactory";
 import "./OpportunityListItem.scss";
 
-const OpportunityListItem = ({ opportunity, handleModalOpen }) => {
+const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const goToEditListing = () => {
+    getOpportunity(opportunity.id).then((response) => {
+      dispatch(
+        setOpportunity({
+          ...OpportunityFactory.createStateFromResponse(response.data),
+          editing: true,
+        })
+      );
+      history.push("/opportunity/");
+    });
+  };
   const determineActions = (opp) => {
     if (opp.approvalStatus === "PUBL") {
       return (
         <>
           <NavLink to={opp.link}>View Listing</NavLink>
           <br />
-          <a href="/">Edit Listing</a>
+          <Button
+            className="p-0"
+            variant="link"
+            onClick={() => goToEditListing()}
+          >
+            Edit Listing
+          </Button>
           <br />
           <Button
             variant="link"
@@ -30,7 +55,14 @@ const OpportunityListItem = ({ opportunity, handleModalOpen }) => {
       <>
         <NavLink to={opp.link}>View Listing</NavLink>
         <br />
-        <a href="/">Edit Listing</a>
+
+        <Button
+          className="p-0"
+          variant="link"
+          onClick={() => goToEditListing()}
+        >
+          Edit Listing
+        </Button>
         <br />
         <NavLink to={`/delete/opportunity/${opp.id}`}>Delete</NavLink>
       </>
@@ -53,7 +85,7 @@ const OpportunityListItem = ({ opportunity, handleModalOpen }) => {
           </div>
         </Col>
         <Col>{opportunity.address}</Col>
-        {!opportunity.public ? (
+        {!publicView ? (
           <>
             <Col>{formatDate(opportunity.dateCreated)}</Col>
             <Col>{determineStatusTextColour(opportunity.approvalStatus)}</Col>
@@ -61,7 +93,7 @@ const OpportunityListItem = ({ opportunity, handleModalOpen }) => {
           </>
         ) : (
           <Col className="d-flex align-items-end justify-content-end mr-1">
-            {opportunity.public && (
+            {publicView && (
               <Link to={opportunity.link}>View property details</Link>
             )}
           </Col>
@@ -78,6 +110,7 @@ OpportunityListItem.defaultProps = {
 OpportunityListItem.propTypes = {
   opportunity: PropTypes.shape().isRequired,
   handleModalOpen: PropTypes.func,
+  publicView: PropTypes.bool.isRequired,
 };
 
 export default OpportunityListItem;

@@ -31,6 +31,7 @@ import Terms from "../../Terms/Terms";
 
 export default function AddOpportunity() {
   const dispatch = useDispatch();
+  const editing = useSelector((state) => state.opportunity.editing);
   const address = useSelector((state) => state.opportunity.address);
   const coords = useSelector((state) => state.opportunity.coords);
   const PID = useSelector((state) => state.opportunity.siteInfo.PID.value);
@@ -196,6 +197,12 @@ export default function AddOpportunity() {
   const goToNextPage = () => {
     history.push(`/opportunity/site-info`);
   };
+
+  useEffect(() => {
+    if (editing) {
+      setBlockContinue(false);
+    }
+  }, []);
 
   return (
     <>

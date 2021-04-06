@@ -69,6 +69,20 @@ export function deleteOpportunity(opportunityModel, token) {
  * @param {Object} opportunityModel from redux store
  * @return {Promise} of axios api call
  */
+export function putOpportunity(opportunityModel, token) {
+  return axios.put(
+    `${PUT_OPPORTUNITIES_URL + opportunityModel.id}/`,
+    OpportunityFactory.createRequestFromModel(opportunityModel),
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+
+/**
+ * @param {Object} opportunityModel from redux store
+ * @return {Promise} of axios api call
+ */
 export function updateOpportunity(opportunityModel, token) {
   return axios.patch(
     `${PUT_OPPORTUNITIES_URL + opportunityModel.id}/`,

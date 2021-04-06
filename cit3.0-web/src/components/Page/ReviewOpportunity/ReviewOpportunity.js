@@ -9,6 +9,7 @@ import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import ReviewAndSubmitCallout from "../../ReviewAndSubmitCallout/ReviewAndSubmitCallout";
 import {
   postOpportunity,
+  putOpportunity,
   resetOpportunity,
   setApprovalStatus,
   setOpportunityUser,
@@ -27,10 +28,11 @@ const ReviewOpportunity = () => {
   const dispatch = useDispatch();
   const error = useSelector((state) => state.notification.data);
   const opportunityModel = useSelector((state) => state.opportunity);
+  const editing = useSelector((state) => state.opportunity.editing);
   const userModel = useSelector((state) => state.user);
   const keycloak = useKeycloakWrapper();
 
-  const handleSubmitOpportunity = async () => {
+  const handlePostOpportunity = async () => {
     const { data: user } = await postUser(
       UserFactory.createRequestFromState(userModel, {}),
       keycloak.obj.token
@@ -47,6 +49,28 @@ const ReviewOpportunity = () => {
         dispatch(setNotification(NOTIFICATION_ERROR, e));
         window.scrollTo(0, 0);
       });
+  };
+
+  const handlePutpportunity = async () => {
+    dispatch(setApprovalStatus("NWED"));
+    await putOpportunity(opportunityModel, keycloak.obj.token)
+      .then(() => {
+        dispatch(resetOpportunity());
+        dispatch(closeNotification());
+        history.push("/opportunity/success");
+      })
+      .catch((e) => {
+        dispatch(setNotification(NOTIFICATION_ERROR, e));
+        window.scrollTo(0, 0);
+      });
+  };
+
+  const handleSubmitOpportunity = () => {
+    if (!editing) {
+      handlePostOpportunity();
+    } else {
+      handlePutpportunity();
+    }
   };
 
   const confirmCancel = () => {
