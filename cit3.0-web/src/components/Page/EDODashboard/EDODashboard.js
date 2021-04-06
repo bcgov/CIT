@@ -84,7 +84,6 @@ export default function EDODashboard() {
         resultRef.current.scrollIntoView();
       })
       .catch((err) => {
-        console.log(err);
         setShowModal(false);
         setMarkAsSoldStatus("Error");
         resultRef.current.scrollIntoView();

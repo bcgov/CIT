@@ -9,7 +9,6 @@ import {
   setOpportunity,
 } from "../../store/actions/opportunity";
 import OpportunityFactory from "../../store/factory/OpportunityFactory";
-import "./OpportunityListItem.scss";
 
 const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
   const history = useHistory();
