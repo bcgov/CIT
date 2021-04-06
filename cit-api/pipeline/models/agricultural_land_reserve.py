@@ -10,9 +10,8 @@ class AgriculturalLandReserve(models.Model):
     NAME_FIELD = "ALR_POLY_ID"
 
     name = models.CharField(max_length=127)
-    feature_area_sqm = models.IntegerField(null=True)
-    status = models.CharField(max_length=127)
-    feature_code = models.CharField(max_length=127)
+    feature_area_sqm = models.BigIntegerField(null=True)
+    status = models.CharField(max_length=127, blank=True, null=True)
     geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
 
