@@ -76,7 +76,7 @@ export default function EDODashboard() {
         },
         { headers: { Authorization: `Bearer ${keycloak.obj.token}` } }
       )
-      .then((response) => {
+      .then(() => {
         setShowModal(false);
         setMarkAsSoldStatus("Success");
         getUserOpportunities();

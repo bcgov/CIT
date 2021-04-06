@@ -1,9 +1,9 @@
-import { Row, Col } from "react-bootstrap";
+import { Button, Row, Col } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { Link, NavLink } from "react-router-dom";
-import { Button } from "shared-components";
 import Map from "../Map/Map";
 import { determineStatusTextColour, formatDate } from "../../helpers/helpers";
+import "./OpportunityListItem.scss";
 
 const OpportunityListItem = ({ opportunity, handleModalOpen }) => {
   const determineActions = (opp) => {
@@ -13,10 +13,12 @@ const OpportunityListItem = ({ opportunity, handleModalOpen }) => {
           <NavLink to={opp.link}>View Listing</NavLink>
           <br />
           <Button
-            label="Closed/Won"
-            styling="bcgov-normal-blue btn"
+            variant="link"
+            className="closed-won-button-link"
             onClick={() => handleModalOpen(opp.id)}
-          />
+          >
+            Closed/Won
+          </Button>
           <br />
           <a href="/">Edit Listing</a>
           <br />
