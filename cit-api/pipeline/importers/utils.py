@@ -76,6 +76,7 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
     print("closest_community", closest_community)
 
     instance.closest_community = closest_community
+    instance.closest_community_distance = closest_community.distance
     instance.location_fuzzy = location_fuzzy
     import_contact_fields(instance, row, Model)
     import_variable_fields(instance, row, Model)

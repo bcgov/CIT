@@ -19,6 +19,7 @@ class Location(models.Model):
     location_type = models.CharField(null=True, blank=True, max_length=255)
 
     closest_community = models.ForeignKey('Community', on_delete=models.CASCADE)
+    closest_community_distance = models.CharField(null=True, blank=True, max_length=64)
 
     location_phone = models.CharField(null=True, blank=True, max_length=255)
     location_email = models.EmailField(null=True, blank=True)
@@ -835,6 +836,25 @@ class CustomsPortOfEntry(Location):
     customs_port_street_address = models.CharField(null=True, blank=True, max_length=255)
     customs_port_type = models.CharField(null=True, blank=True, max_length=255)
     customs_port_municipality = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id", )
+
+
+class Pharmacy(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'SERVICE_NAME'
+    WEBSITE_FIELD = 'WEBSITE_URL'
+    PHONE_FIELD = 'CONTACT_PHONE'
+    EMAIL_FIELD = 'CONTACT_EMAIL'
+
+    wheelchair_accessible_ind = models.CharField(null=True, blank=True, max_length=4)
+    description = models.CharField(null=True, blank=True, max_length=255)
+    postal_code = models.CharField(null=True, blank=True, max_length=255)
+    street_address = models.CharField(null=True, blank=True, max_length=255)
+    keywords = models.CharField(null=True, blank=True, max_length=255)
+    organization_name = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
         ordering = ("id", )
