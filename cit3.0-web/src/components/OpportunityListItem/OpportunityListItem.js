@@ -41,7 +41,7 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
           <br />
           <Button
             variant="link"
-            className="closed-won-button-link"
+            className="p-0"
             onClick={() => handleModalOpen(opp.id)}
           >
             Closed/Won
