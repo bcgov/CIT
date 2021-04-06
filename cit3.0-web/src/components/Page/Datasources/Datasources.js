@@ -103,7 +103,7 @@ const elements = [
       "https://catalogue.data.gov.bc.ca/dataset/0fe8083a-881a-4fa8-8925-3a23b788e1b9",
   },
   {
-    "Data Source": "Major Processing Timber Processing Facilities",
+    "Data Source": "Major Timber Processing Facilities",
     "Metadata URL":
       "https://catalogue.data.gov.bc.ca/dataset/67daf53d-e3bb-45ee-9121-8aa1193b7492",
   },
