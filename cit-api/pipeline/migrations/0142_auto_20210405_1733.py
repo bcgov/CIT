@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('pipeline', '0140_merge_20210401_1622'),
+        ('pipeline', '0141_user_deleted'),
     ]
 
     operations = [
