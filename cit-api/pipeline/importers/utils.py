@@ -663,3 +663,14 @@ def _coerce_to_multilinestring(geom, srid=WGS84_SRID):
         return geom
     else:
         raise Exception("Bad geometry type: {}, skipping.".format(geom.__class__))
+
+
+def calculate_muni_or_rd(instance):
+    muni = Municipality.objects.filter(geom__covers=instance.geom).first()
+    rd = RegionalDistrict.objects.filter(geom__covers=instance.geom).first()
+    if muni:
+        instance.municipality = muni
+
+    instance.regional_district = rd
+
+    instance.save()
