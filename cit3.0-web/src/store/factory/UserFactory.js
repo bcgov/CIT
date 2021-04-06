@@ -4,9 +4,11 @@
  */
 function createStateFromResponse(response) {
   return {
+    id: response.id,
     name: response.name,
     email: response.email,
     role: response.role,
+    dateCreated: response.date_created,
     municipalities: response.municipalities,
     regionalDistricts: response.regional_districts,
   };

@@ -27,6 +27,7 @@ import AppRoute from "./utils/AppRoute/AppRoute";
 import AuthLayout from "./layouts/AuthLayout";
 import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainView";
 import OpportunityApproveListPage from "./components/Page/OpportunityApproveListPage/OpportunityApproveListPage";
+import UserManagementDashboard from "./components/Page/UserManagement/UserManagementDashboard";
 
 import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
@@ -196,6 +197,17 @@ function App() {
                   ]}
                   layout={AuthLayout}
                   component={OpportunityDeletePage}
+                />
+                <AppRoute
+                  protected
+                  exact
+                  path="/manage/users"
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                  ]}
+                  layout={AuthLayout}
+                  component={UserManagementDashboard}
                 />
                 <AppRoute path="/search" component={InvestorMainView} />
                 <AppRoute path="/home" component={HomePage} />

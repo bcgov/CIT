@@ -10,7 +10,7 @@ import {
 } from "../constants/user";
 import USER_INITIALIZATION from "../models/user";
 
-import { GET_USERS_URL, POST_USERS_URL } from "../constants/api-urls";
+import { GET_USERS_URL, USER_URL } from "../constants/api-urls";
 import UserFactory from "../factory/UserFactory";
 
 /**
@@ -22,13 +22,42 @@ export function getUser({ id, email }) {
   query = id ? `id=${id}` : query;
   return axios.get(`${GET_USERS_URL}?${query}`);
 }
+/**
+ * @return {Promise} of axios api call
+ */
+export async function getUsers() {
+  return axios.get(`${GET_USERS_URL}`);
+}
 
 /**
- * @param {String} email
+ * @param {object} user
+ * @param {string} token
  * @return {Promise} of axios api call
  */
 export function postUser(user, token) {
-  return axios.post(POST_USERS_URL, user, {
+  return axios.post(USER_URL, user, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+/**
+ * @param {object} user
+ * @param {string} token
+ * @return {Promise} of axios api call
+ */
+export function deleteUser(user, token) {
+  return axios.delete(`${USER_URL}?id=${user.id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+/**
+ * @param {object} user
+ * @param {string} token
+ * @return {Promise} of axios api call
+ */
+export function updateUserAssignments(user, token) {
+  return axios.put(USER_URL, user, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }
