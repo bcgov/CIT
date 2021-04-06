@@ -43,7 +43,7 @@ const UserTable = () => {
     setUserToUpdate({ ...userToUpdate });
   };
 
-  const handelEditAction = (user) => {
+  const handleEditAction = (user) => {
     setUserToUpdate(user);
   };
 
@@ -171,7 +171,7 @@ const UserTable = () => {
               <UserListItem
                 key={v4()}
                 user={user}
-                handelEditAction={() => handelEditAction(user)}
+                handleEditAction={() => handleEditAction(user)}
                 handleDeleteAction={() => handleDeleteAction(user)}
               />
             );

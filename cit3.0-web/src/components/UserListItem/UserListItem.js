@@ -2,7 +2,7 @@ import { Row, Col, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { formatDate } from "../../helpers/helpers";
 
-const UserListItem = ({ user, handelEditAction, handleDeleteAction }) => (
+const UserListItem = ({ user, handleEditAction, handleDeleteAction }) => (
   <div key={user.id} className="user-table-row w-100 p-2">
     <Row>
       <Col>{user.name}</Col>
@@ -26,7 +26,7 @@ const UserListItem = ({ user, handelEditAction, handleDeleteAction }) => (
             <Button
               className="text-left"
               variant="link"
-              onClick={handelEditAction}
+              onClick={handleEditAction}
             >
               Edit
             </Button>
@@ -46,7 +46,7 @@ const UserListItem = ({ user, handelEditAction, handleDeleteAction }) => (
 
 UserListItem.propTypes = {
   user: PropTypes.shape().isRequired,
-  handelEditAction: PropTypes.func.isRequired,
+  handleEditAction: PropTypes.func.isRequired,
   handleDeleteAction: PropTypes.func.isRequired,
 };
 
