@@ -4,7 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import Map from "../Map/Map";
 import { determineStatusTextColour, formatDate } from "../../helpers/helpers";
 
-const OpportunityListItem = ({ opportunity }) => {
+const OpportunityListItem = ({ opportunity, publicView }) => {
   const determineActions = (opp) => {
     if (opp.approvalStatus === "PUBL") {
       return (
@@ -46,7 +46,7 @@ const OpportunityListItem = ({ opportunity }) => {
           </div>
         </Col>
         <Col>{opportunity.address}</Col>
-        {!opportunity.public ? (
+        {!publicView ? (
           <>
             <Col>{formatDate(opportunity.dateCreated)}</Col>
             <Col>{determineStatusTextColour(opportunity.approvalStatus)}</Col>
@@ -54,7 +54,7 @@ const OpportunityListItem = ({ opportunity }) => {
           </>
         ) : (
           <Col className="d-flex align-items-end justify-content-end mr-1">
-            {opportunity.public && (
+            {publicView && (
               <Link to={opportunity.link}>View property details</Link>
             )}
           </Col>
@@ -66,6 +66,7 @@ const OpportunityListItem = ({ opportunity }) => {
 
 OpportunityListItem.propTypes = {
   opportunity: PropTypes.shape().isRequired,
+  publicView: PropTypes.bool.isRequired,
 };
 
 export default OpportunityListItem;
