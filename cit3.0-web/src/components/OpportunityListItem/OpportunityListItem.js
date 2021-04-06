@@ -10,7 +10,7 @@ import {
 } from "../../store/actions/opportunity";
 import OpportunityFactory from "../../store/factory/OpportunityFactory";
 
-const OpportunityListItem = ({ opportunity }) => {
+const OpportunityListItem = ({ opportunity, publicView }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const goToEditListing = () => {
@@ -78,7 +78,7 @@ const OpportunityListItem = ({ opportunity }) => {
           </div>
         </Col>
         <Col>{opportunity.address}</Col>
-        {!opportunity.public ? (
+        {!publicView ? (
           <>
             <Col>{formatDate(opportunity.dateCreated)}</Col>
             <Col>{determineStatusTextColour(opportunity.approvalStatus)}</Col>
@@ -86,7 +86,7 @@ const OpportunityListItem = ({ opportunity }) => {
           </>
         ) : (
           <Col className="d-flex align-items-end justify-content-end mr-1">
-            {opportunity.public && (
+            {publicView && (
               <Link to={opportunity.link}>View property details</Link>
             )}
           </Col>
@@ -98,6 +98,7 @@ const OpportunityListItem = ({ opportunity }) => {
 
 OpportunityListItem.propTypes = {
   opportunity: PropTypes.shape().isRequired,
+  publicView: PropTypes.bool.isRequired,
 };
 
 export default OpportunityListItem;
