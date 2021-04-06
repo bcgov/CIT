@@ -309,3 +309,54 @@ class OpportunitySerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+
+    def update(self, instance, validated_data):
+
+        instance.approval_status = validated_data.get('approval_status', instance.approval_status)
+        instance.business_contact_email = validated_data.get('business_contact_email', instance.business_contact_email)
+        instance.business_contact_name = validated_data.get('business_contact_name', instance.business_contact_name)
+        instance.community_link = validated_data.get('community_link', instance.community_link)
+        instance.elevation_at_location = validated_data.get('elevation_at_location', instance.elevation_at_location)
+        instance.environmental_information = validated_data.get('environmental_information', instance.environmental_information)
+        instance.geo_position = validated_data.get('geo_position', instance.geo_position)
+        instance.land_use_zoning = validated_data.get('land_use_zoning', instance.land_use_zoning)
+        instance.municipality_id = validated_data.get('municipality_id', instance.municipality_id)
+        instance.nearest_transmission_line = validated_data.get('nearest_transmission_line', instance.nearest_transmission_line)
+        instance.network_at_road = validated_data.get('network_at_road', instance.network_at_road)
+        instance.network_avg = validated_data.get('network_avg', instance.network_avg)
+        instance.ocp_zoning_code = validated_data.get('ocp_zoning_code', instance.ocp_zoning_code)
+        instance.opportunity_address = validated_data.get('opportunity_address', instance.opportunity_address)
+        instance.opportunity_description = validated_data.get('opportunity_description', instance.opportunity_description)
+        instance.opportunity_electrical_capacity = validated_data.get('opportunity_electrical_capacity', instance.opportunity_electrical_capacity)
+        instance.opportunity_electrical_connected = validated_data.get('opportunity_electrical_connected', instance.opportunity_electrical_connected)
+        instance.opportunity_link = validated_data.get('opportunity_link', instance.opportunity_link)
+        instance.opportunity_name = validated_data.get('opportunity_name', instance.opportunity_name)
+        instance.opportunity_natural_gas_capacity = validated_data.get('opportunity_natural_gas_capacity', instance.opportunity_natural_gas_capacity)
+        instance.opportunity_natural_gas_connected = validated_data.get('opportunity_natural_gas_connected', instance.opportunity_natural_gas_connected)
+        instance.opportunity_property_status = validated_data.get('opportunity_property_status', instance.opportunity_property_status)
+        instance.opportunity_rental_price = validated_data.get('opportunity_rental_price', instance.opportunity_rental_price)
+        instance.opportunity_road_connected = validated_data.get('opportunity_road_connected', instance.opportunity_road_connected)
+        instance.opportunity_sale_price = validated_data.get('opportunity_sale_price', instance.opportunity_sale_price)
+        instance.opportunity_sewer_capacity = validated_data.get('opportunity_sewer_capacity', instance.opportunity_sewer_capacity)
+        instance.opportunity_sewer_connected = validated_data.get('opportunity_sewer_connected', instance.opportunity_sewer_connected)
+        instance.opportunity_water_capacity = validated_data.get('opportunity_water_capacity', instance.opportunity_water_capacity)
+        instance.opportunity_water_connected = validated_data.get('opportunity_water_connected', instance.opportunity_water_connected)
+        instance.parcel_geometry = validated_data.get('parcel_geometry', instance.parcel_geometry)
+        instance.parcel_ownership = validated_data.get('parcel_ownership', instance.parcel_ownership)
+        instance.parcel_size = validated_data.get('parcel_size', instance.parcel_size)
+        instance.pid = validated_data.get('pid', instance.pid)
+        instance.private_note = validated_data.get('private_note', instance.private_note)
+        instance.public_note = validated_data.get('public_note', instance.public_note)
+        instance.regional_district_id = validated_data.get('regional_district_id', instance.regional_district_id)
+        instance.soil_drainage = validated_data.get('soil_drainage', instance.soil_drainage)
+        instance.soil_name = validated_data.get('soil_name', instance.soil_name)
+        instance.soil_texture = validated_data.get('soil_texture', instance.soil_texture)
+
+        preferred_developments = []
+        if validated_data.get('opportunity_preferred_development'):
+            preferred_developments = validated_data.pop(
+                'opportunity_preferred_development')
+        instance.opportunity_preferred_development.set(preferred_developments)
+        
+        instance.save()
+        return instance
