@@ -1,10 +1,29 @@
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import Map from "../Map/Map";
 import { determineStatusTextColour, formatDate } from "../../helpers/helpers";
+import {
+  getOpportunity,
+  setOpportunity,
+} from "../../store/actions/opportunity";
+import OpportunityFactory from "../../store/factory/OpportunityFactory";
 
 const OpportunityListItem = ({ opportunity, publicView }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const goToEditListing = () => {
+    getOpportunity(opportunity.id).then((response) => {
+      dispatch(
+        setOpportunity({
+          ...OpportunityFactory.createStateFromResponse(response.data),
+          editing: true,
+        })
+      );
+      history.push("/opportunity/");
+    });
+  };
   const determineActions = (opp) => {
     if (opp.approvalStatus === "PUBL") {
       return (
@@ -13,7 +32,13 @@ const OpportunityListItem = ({ opportunity, publicView }) => {
           <br />
           <a href="/">Mark as &quot;sold&quot;</a>
           <br />
-          <a href="/">Edit Listing</a>
+          <Button
+            className="p-0"
+            variant="link"
+            onClick={() => goToEditListing()}
+          >
+            Edit Listing
+          </Button>
           <br />
           <NavLink to={`/delete/opportunity/${opp.id}/`}>Delete</NavLink>
         </>
@@ -23,7 +48,14 @@ const OpportunityListItem = ({ opportunity, publicView }) => {
       <>
         <NavLink to={opp.link}>View Listing</NavLink>
         <br />
-        <a href="/">Edit Listing</a>
+
+        <Button
+          className="p-0"
+          variant="link"
+          onClick={() => goToEditListing()}
+        >
+          Edit Listing
+        </Button>
         <br />
         <NavLink to={`/delete/opportunity/${opp.id}`}>Delete</NavLink>
       </>

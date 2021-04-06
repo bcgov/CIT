@@ -276,6 +276,7 @@ export const OPPORTUNITY_MODEL = () => ({
       value: "",
       type: "link",
     },
+    editing: false,
   },
 });
 
@@ -295,6 +296,10 @@ export class Opportunity {
 
   set deleted(value) {
     this.state.deleted = value;
+  }
+
+  set editing(value) {
+    this.state.editing = value;
   }
 
   set id(value) {
@@ -683,11 +688,11 @@ export class Opportunity {
   }
 
   set parcelSize(value) {
-    this.state.siteInfo.parcelSize.value = value;
+    this.state.siteInfo.parcelSize.value = parseFloat(value);
   }
 
   set PID(value) {
-    this.state.siteInfo.PID.value = value;
+    this.state.siteInfo.PID.value = [value];
   }
 
   set parcelGeometry(value) {
