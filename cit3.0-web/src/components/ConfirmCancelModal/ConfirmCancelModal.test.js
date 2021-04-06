@@ -3,12 +3,22 @@ import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import ConfirmCancelModal from "./ConfirmCancelModal";
 
-describe("<MarkAsSoldModal />", () => {
+describe("<ConfirmCancelModal />", () => {
   test("it should mount", () => {
-    render(<ConfirmCancelModal />);
+    render(
+      <ConfirmCancelModal
+        show
+        handleClose={jest.fn()}
+        handleSubmit={jest.fn()}
+        body="Body text"
+        label="Label text"
+      />
+    );
 
-    const markAsSoldModal = screen.getByText("Yes");
+    const markAsSoldModalBody = screen.getByText("Body text");
+    const markAsSoldModalLabel = screen.getByText("Label text");
 
-    expect(markAsSoldModal).toBeInTheDocument();
+    expect(markAsSoldModalBody).toBeInTheDocument();
+    expect(markAsSoldModalLabel).toBeInTheDocument();
   });
 });

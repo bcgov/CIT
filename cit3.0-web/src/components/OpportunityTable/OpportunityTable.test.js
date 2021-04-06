@@ -68,7 +68,7 @@ describe("OpportunityTable", () => {
     expect(getByText(/Not completed/i)).toHaveClass("status-text-red");
   });
 
-  it('displays the option to mark as "sold" for published opportunities', () => {
+  it("displays the option to mark as closed/won for published opportunities", () => {
     const { getByText } = render(
       <Provider store={store}>
         <Router history={history}>
@@ -77,6 +77,6 @@ describe("OpportunityTable", () => {
       </Provider>
     );
 
-    expect(getByText(/sold/i).textContent).toBe('Mark as "sold"');
+    expect(getByText(/Closed/i).textContent).toBe("Closed/Won");
   });
 });
