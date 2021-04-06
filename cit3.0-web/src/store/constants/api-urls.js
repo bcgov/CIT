@@ -4,4 +4,4 @@ export const PUT_OPPORTUNITIES_URL = "/api/opportunity/single/edit/";
 export const GET_OPPORTUNITIES_LIST_URL = "/api/opportunity/list/";
 export const GET_OPTIONS_URL = "/api/opportunity/options/";
 export const GET_USERS_URL = "/api/opportunity/users/";
-export const POST_USERS_URL = "/api/opportunity/user/add/";
+export const USER_URL = "/api/opportunity/user/";
