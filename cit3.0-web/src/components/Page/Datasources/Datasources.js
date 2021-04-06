@@ -167,7 +167,7 @@ const elements = [
       "https://catalogue.data.gov.bc.ca/dataset/7859ae46-2aa1-47ee-a05b-7d0daa472678",
   },
   {
-    "Data Source": "Roads(national boradband data)",
+    "Data Source": "Roads(national broadband data)",
     "Metadata URL":
       "https://open.canada.ca/data/en/dataset/00a331db-121b-445d-b119-35dbbe3eedd9",
   },
