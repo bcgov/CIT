@@ -24,3 +24,16 @@
     border-radius: 10px 10px 0px 10px;
     padding-right: 15px;
 }
+
+.comm-search-div {
+    position: relative;
+}
+
+.search-glass-box {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    border: none;
+}

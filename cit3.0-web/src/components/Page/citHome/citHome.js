@@ -1,12 +1,5 @@
 import "./citHome.css";
-import {
-  Container,
-  Row,
-  Col,
-  InputGroup,
-  FormControl,
-  Button,
-} from "react-bootstrap";
+import { Container, Row, Col, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import "../HomePage/HomePage.scss";
 import { Button as SharedButton } from "shared-components";
@@ -22,7 +15,6 @@ export default function citHome() {
 
   useEffect(() => {
     axios.get("/api/opportunity/options").then((data) => {
-      console.log(data.data);
       const commNames = data.data.communities.map((comm) => comm.place_name);
       const regNames = data.data.regionalDistricts.map((dist) => dist.name);
       setPlaces([...commNames, ...regNames]);
@@ -76,20 +68,19 @@ export default function citHome() {
               </p>
               <>
                 {places ? (
-                  <InputGroup className="my-3">
+                  <div className="w-100 mt-4 comm-search-div">
                     <Typeahead
+                      size="large"
                       onChange={(selected) => setSelectedPlace(selected)}
                       options={places}
                     />
-                    <InputGroup.Append>
-                      <Button
-                        className="no-outline"
-                        variant="outline-secondary"
-                      >
-                        <BsSearch />
-                      </Button>
-                    </InputGroup.Append>
-                  </InputGroup>
+                    <Button
+                      className="search-glass-box"
+                      variant="outline-secondary"
+                    >
+                      <BsSearch />
+                    </Button>
+                  </div>
                 ) : null}
               </>
             </Col>
