@@ -24,14 +24,12 @@ import {
   setParcelOwner,
   setParcelSize,
   setSiteId,
-  setOpportunityUser,
   resetOpportunity,
 } from "../../../store/actions/opportunity";
 import Radios from "../../FormComponents/Radios";
 import Terms from "../../Terms/Terms";
 
 export default function AddOpportunity() {
-  console.log("ADD OPPORTUNITY");
   const dispatch = useDispatch();
   const address = useSelector((state) => state.opportunity.address);
   const coords = useSelector((state) => state.opportunity.coords);
@@ -76,8 +74,13 @@ export default function AddOpportunity() {
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 
   const setParcelData = async (id) => {
-    console.log("setParcelData");
+    // ensure previous parcel data is cleared, but keeps address, coords intact
     dispatch(setParcelSize(null));
+    dispatch(setParcelOwner(null));
+    dispatch(setGeometry(null));
+    // ensure hasApproval is false
+    setHasApproval(false);
+    /// //////////////////////////
     const pid = await getPID(id);
     dispatch(setPID(pid));
     if (pid) {
@@ -107,28 +110,19 @@ export default function AddOpportunity() {
         }
       });
     } else {
-      console.log("resetting geom to null in else for getParcelData");
-      dispatch(setGeometry(null));
-      dispatch(setParcelOwner(null));
-      dispatch(setParcelSize(null));
       setBlockContinue(false);
     }
-
     setError(false);
   };
 
   const setParcelDataNoAddress = async (noAddrCoords) => {
-    // THIS IS BEING RUN TWICE
-    // console.log("setParcelDataNOADDRESS");
-    // dispatch(setSiteId(null));
-    // dispatch(setParcelSize(null));
-    // dispatch(setParcelOwner(null));
-    // dispatch(setPID(null));
-    // console.log("resetting geometry to null in getPDNOADDRESS");
-    // dispatch(setGeometry(null));
+    // ensure previous parcel data is cleared
     dispatch(resetOpportunity());
+    // reset coords with new coords
     dispatch(setCoords(noAddrCoords));
-    console.log(noAddrCoords);
+    // ensure hasApproval is false
+    setHasApproval(false);
+    /// /////////////////////////////
     const parcelData = await getParcelDataNoAddress(noAddrCoords);
     if (noAddressFlag && parcelData) {
       dispatch(setPID([parcelData.data.features[0].properties.PID]));
@@ -153,30 +147,17 @@ export default function AddOpportunity() {
       );
       dispatch(setGeometry(parcelData.data.features[0].geometry));
     } else {
-      console.log("set geom to null in else getPDNO ADDRESS");
-      dispatch(setGeometry(null));
-      dispatch(setParcelOwner(null));
-      dispatch(setParcelSize(null));
       setBlockContinue(false);
     }
     setError(false);
   };
 
   const getCoords = async (addy) => {
-    console.log("GET COORDS");
     dispatch(resetOpportunity());
-    // dispatch(setSiteId(null));
-    // dispatch(setParcelOwner(null));
-    // console.log("setting geom to null in get coords");
-    // dispatch(setGeometry(null));
-    // dispatch(setParcelSize(null));
-    // dispatch(setPID(null));
-    // dispatch(setAddress(null));
     setError("");
     try {
-      console.log("adddy");
       const data = await getAddressData(addy);
-      setNoAddressFlag(false);
+      setNoAddressFlag(false); // does this cause an issue?  Shouldn't as SITEID is null at this point right?
       dispatch(setAddress(data.data.features[0].properties.fullAddress));
       dispatch(
         setCoords([
@@ -187,8 +168,7 @@ export default function AddOpportunity() {
       if (data.data.features[0].properties.siteID) {
         dispatch(setSiteId(data.data.features[0].properties.siteID));
       } else if (data.data.features.length) {
-        console.log("NO SITE ID");
-        dispatch(setSiteId("")); // was "unknown"
+        dispatch(setSiteId(null));
       } else {
         setError("Cannot find address info, please try again.");
         setBlockContinue(true);
@@ -200,15 +180,10 @@ export default function AddOpportunity() {
   };
 
   useEffect(() => {
-    console.log("useEffect");
     if (siteId && !noAddressFlag) {
-      console.log("use effect with siteId and !noAddressFlag");
       setParcelData(siteId);
     }
     if (noAddressFlag) {
-      // if (!address && !siteId && coords[0] !== 54.1722) {
-      console.log("use effect with noAddressFlag");
-      // dispatch(setSiteId(null));
       setParcelDataNoAddress(coords);
     }
   }, [siteId, noAddressFlag]);
@@ -247,8 +222,6 @@ export default function AddOpportunity() {
                     </Col>
                   </Row>
                 )}
-                {console.log("address: ", address)}
-                {console.log("parcelSize: ", parcelSize)}
                 {address && !parcelSize && (
                   <Row>
                     <Col>
@@ -256,7 +229,6 @@ export default function AddOpportunity() {
                     </Col>
                   </Row>
                 )}
-
                 {!address && coords && coords[0] !== 54.1722 && (
                   <Row>
                     <Col>
