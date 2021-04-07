@@ -10,7 +10,7 @@ import {
 } from "../../store/actions/opportunity";
 import OpportunityFactory from "../../store/factory/OpportunityFactory";
 
-const OpportunityListItem = ({ opportunity, publicView }) => {
+const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const goToEditListing = () => {
@@ -30,14 +30,20 @@ const OpportunityListItem = ({ opportunity, publicView }) => {
         <>
           <NavLink to={opp.link}>View Listing</NavLink>
           <br />
-          <a href="/">Mark as &quot;sold&quot;</a>
-          <br />
           <Button
             className="p-0"
             variant="link"
             onClick={() => goToEditListing()}
           >
             Edit Listing
+          </Button>
+          <br />
+          <Button
+            variant="link"
+            className="p-0"
+            onClick={() => handleModalOpen(opp.id)}
+          >
+            Closed/Won
           </Button>
           <br />
           <NavLink to={`/delete/opportunity/${opp.id}/`}>Delete</NavLink>
@@ -96,8 +102,13 @@ const OpportunityListItem = ({ opportunity, publicView }) => {
   );
 };
 
+OpportunityListItem.defaultProps = {
+  handleModalOpen: () => {},
+};
+
 OpportunityListItem.propTypes = {
   opportunity: PropTypes.shape().isRequired,
+  handleModalOpen: PropTypes.func,
   publicView: PropTypes.bool.isRequired,
 };
 

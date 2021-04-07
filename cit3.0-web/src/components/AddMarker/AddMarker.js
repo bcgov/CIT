@@ -6,29 +6,19 @@ import {
   getProximityData,
   getAddressFromPoint,
 } from "../../helpers/resourceCalls";
-import {
-  setGeometry,
-  setParcelOwner,
-  setParcelSize,
-  setPID,
-  setSiteId,
-} from "../../store/actions/opportunity";
+import { setSiteId, resetOpportunity } from "../../store/actions/opportunity";
 
 export default function AddLocationMarker(props) {
   const [positions, setPositions] = useState([]);
   const dispatch = useDispatch();
 
   useMapEvent("click", async (e) => {
-    /* set current data to null in case data is not returned for a coord */
-    dispatch(setParcelOwner(""));
-    dispatch(setGeometry(null));
-    dispatch(setParcelSize(""));
-    dispatch(setPID(""));
-    props.setAddress("");
+    /* reset opportunity data and ensure noAddressFlag is false */
+    dispatch(resetOpportunity());
     props.setNoAddressFlag(false);
     /// ///////////////////
     setPositions([e.latlng]);
-
+    props.setCoords([e.latlng.lat, e.latlng.lng]);
     try {
       const addressDataFromPoint = await getAddressFromPoint([
         e.latlng.lat,
@@ -40,14 +30,13 @@ export default function AddLocationMarker(props) {
       }
     } catch (error) {
       props.setNoAddressFlag(true);
+    } finally {
+      const proximity = await getProximityData(props.resourceIds, [
+        e.latlng.lat,
+        e.latlng.lng,
+      ]);
+      props.setNearbyResources(proximity);
     }
-
-    props.setCoords([e.latlng.lat, e.latlng.lng]);
-    const proximity = await getProximityData(props.resourceIds, [
-      e.latlng.lat,
-      e.latlng.lng,
-    ]);
-    props.setNearbyResources(proximity);
   });
 
   return positions.map((position) => (
