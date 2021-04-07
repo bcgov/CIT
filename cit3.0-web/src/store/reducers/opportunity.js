@@ -112,13 +112,9 @@ export default function opportunity(
 
       break;
     case ADD_PARCEL_SIZE:
-      console.log("parcelSize: ", action.payload);
       if (state.siteInfo.parcelSize.value && action.payload !== null) {
-        console.log("add parcel size if");
         state.siteInfo.parcelSize.value += action.payload;
       } else {
-        console.log("add parcel size else");
-
         state.siteInfo.parcelSize.value = action.payload;
       }
       break;
