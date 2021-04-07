@@ -31,11 +31,8 @@ export default function AddLocationMarker(props) {
     } catch (error) {
       props.setNoAddressFlag(true);
     } finally {
-      const proximity = await getProximityData(props.resourceIds, [
-        e.latlng.lat,
-        e.latlng.lng,
-      ]);
-      props.setNearbyResources(proximity);
+      const proximity = await getProximityData([e.latlng.lat, e.latlng.lng]);
+      props.setNearbyResources(proximity.data);
     }
   });
 

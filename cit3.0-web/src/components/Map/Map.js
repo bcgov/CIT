@@ -25,7 +25,6 @@ export default function Map({
   nearbyResources,
   coords,
   setCoords,
-  resourceIds,
   setNearbyResources,
   setAddress,
   isInteractive,
@@ -87,7 +86,6 @@ export default function Map({
       <AddLocationMarker
         setCoords={setCoords}
         setAddress={setAddress}
-        resourceIds={resourceIds}
         setNearbyResources={setNearbyResources}
         changeView={changeView}
         setError={setError}
@@ -220,7 +218,6 @@ Map.defaultProps = {
   isInteractive: true,
   isSearchMode: true,
   nearbyResources: null,
-  resourceIds: {},
   setNearbyResources: () => {},
   setCoords: () => {},
   setAddress: () => {},
@@ -235,10 +232,6 @@ Map.propTypes = {
   nearbyResources: PropTypes.shape({
     resource: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.shape),
-  }),
-  resourceIds: PropTypes.shape({
-    name: PropTypes.string,
-    id: PropTypes.string,
   }),
   setNearbyResources: PropTypes.func,
   setCoords: PropTypes.func,
