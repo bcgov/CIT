@@ -8,7 +8,7 @@ from pipeline.models.general import DataSource
 from pipeline.importers.utils import (import_data_into_point_model, import_data_into_area_model,
                                       calculate_nearest_location_type_outside_50k,
                                       get_databc_last_modified_date, get_openca_last_modified_date,
-                                      _generate_geom, _generate_bcdata_geom)
+                                      _generate_geom, _generate_bcdata_geom, calculate_muni_or_rd)
 
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}&limit=10000"
 LOCATION_RESOURCES = [
@@ -25,6 +25,7 @@ LOCATION_RESOURCES = [
     'emergency_social_service_facilities',
     'natural_resource_projects',
     'customs_ports_of_entry',
+    'pharmacies',
 ]
 
 
@@ -80,6 +81,7 @@ def import_wms_resource(resource):
     for index, row in ds.iterrows():
         model_class = apps.get_model("pipeline", resource.model_name)
         print(resource.name)
+        print(row)
         if resource.name in LOCATION_RESOURCES:
             instance = import_data_into_point_model(resource.name, model_class, row)
         else:
@@ -87,5 +89,8 @@ def import_wms_resource(resource):
             geos_geom_out, geos_geom_simplified = _generate_bcdata_geom(row, WGS84_SRID)
             instance.geom = geos_geom_out
             instance.geom_simplified = geos_geom_simplified
+
+        if resource.name == 'agricultural_land_reserve':
+            calculate_muni_or_rd(instance)
 
         instance.save()
