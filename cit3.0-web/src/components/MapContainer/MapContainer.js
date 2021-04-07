@@ -4,11 +4,14 @@ import { useDispatch } from "react-redux";
 import Map from "../Map/Map";
 import { getProximityData } from "../../helpers/resourceCalls";
 import { getSoilAndElevationData, buildSoilString } from "../../helpers/soil";
-import { setSoil, setElevation } from "../../store/actions/opportunity";
+import {
+  setSoil,
+  setElevation,
+  setNearbyResources,
+} from "../../store/actions/opportunity";
 
 export default function MapContainer({
   nearbyResources,
-  setNearbyResources,
   coords,
   setCoords,
   setAddress,
@@ -26,7 +29,6 @@ export default function MapContainer({
       dispatch(setElevation(soilData.AVG_ELEV));
     }
     const proximity = await getProximityData(coords);
-    console.log("got proximity data in MapContainer, setting nearby resources");
     dispatch(setNearbyResources(proximity.data));
   };
   useEffect(() => {
@@ -43,7 +45,6 @@ export default function MapContainer({
         style={{ height: "500px", width: "600px" }}
       >
         <Map
-          setNearbyResources={setNearbyResources}
           coords={coords}
           setCoords={setCoords}
           setAddress={setAddress}
@@ -67,7 +68,7 @@ MapContainer.propTypes = {
   }).isRequired,
   coords: PropTypes.arrayOf(PropTypes.number).isRequired,
   setCoords: PropTypes.func.isRequired,
-  setNearbyResources: PropTypes.func.isRequired,
+  // setNearbyResources: PropTypes.func.isRequired,
   setAddress: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   setNoAddressFlag: PropTypes.func.isRequired,

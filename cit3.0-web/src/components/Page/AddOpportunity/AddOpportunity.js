@@ -2,6 +2,7 @@ import { useHistory } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import axios from "axios";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MapContainer from "../../MapContainer/MapContainer";
 import AddressSearchBar from "../../AddressSearchBar/AddressSearchBar";
@@ -17,7 +18,6 @@ import {
 import {
   setAddress,
   setCoords,
-  setNearbyResources,
   setResourceIds,
   setPID,
   setGeometry,
@@ -65,6 +65,8 @@ export default function AddOpportunity() {
       setBlockContinue(true);
     }
   };
+
+  const cancelToken = axios.CancelToken.source();
 
   const history = useHistory();
   const title1 = "Add an Opportunity";
@@ -299,7 +301,6 @@ export default function AddOpportunity() {
               nearbyResources={nearbyResources}
               coords={coords}
               setResourceIds={(r) => dispatch(setResourceIds(r))}
-              setNearbyResources={(r) => dispatch(setNearbyResources(r))}
               setAddress={(a) => dispatch(setAddress(a))}
               setCoords={(c) => dispatch(setCoords(c))}
               setSiteId={(id) => dispatch(setSiteId(id))}
