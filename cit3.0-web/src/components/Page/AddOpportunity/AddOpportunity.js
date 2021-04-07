@@ -158,7 +158,7 @@ export default function AddOpportunity() {
     setError("");
     try {
       const data = await getAddressData(addy);
-      setNoAddressFlag(false); // does this cause an issue?  Shouldn't as SITEID is null at this point right?
+      setNoAddressFlag(false);
       dispatch(setAddress(data.data.features[0].properties.fullAddress));
       dispatch(
         setCoords([
