@@ -90,11 +90,9 @@ export default function opportunity(
       if (!action.payload) {
         state.siteInfo.geometry.coordinates = null;
       } else if (!state.siteInfo.geometry.coordinates) {
-        console.log("in GEOM: else if");
         state.siteInfo.geometry.coordinates = action.payload.coordinates;
         state.siteInfo.geometry.type = action.payload.type;
       } else {
-        console.log("in geom ELSE");
         state.siteInfo.geometry.coordinates = [
           ...state.siteInfo.geometry.coordinates,
           ...action.payload.coordinates,
