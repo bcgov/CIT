@@ -66,8 +66,6 @@ export default function AddOpportunity() {
     }
   };
 
-  const cancelToken = axios.CancelToken.source();
-
   const history = useHistory();
   const title1 = "Add an Opportunity";
   const title2 = "Confirm Property";

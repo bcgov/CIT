@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import axios from "axios";
 import { useDispatch } from "react-redux";
 import Map from "../Map/Map";
 import { getProximityData } from "../../helpers/resourceCalls";
@@ -21,21 +22,36 @@ export default function MapContainer({
   const [lastCoords, setLastCoords] = useState([]);
   const dispatch = useDispatch();
 
-  const run = async () => {
-    const soilData = await getSoilAndElevationData(coords);
+  const { CancelToken } = axios;
+  let source;
+
+  const run = async (sourceToken) => {
+    const [soilData, proximityData] = await axios.all([
+      getSoilAndElevationData(coords, sourceToken),
+      getProximityData(coords, sourceToken),
+    ]);
     if (soilData) {
       const soilStr = buildSoilString(soilData);
       dispatch(setSoil(soilStr));
       dispatch(setElevation(soilData.AVG_ELEV));
     }
-    const proximity = await getProximityData(coords);
-    dispatch(setNearbyResources(proximity.data));
+    if (proximityData) {
+      dispatch(setNearbyResources(proximityData));
+    }
   };
   useEffect(() => {
+    // kill the axios calls if coords change
+    if (source) {
+      source.cancel("newer search");
+    }
+    source = CancelToken.source();
     if (coords[0] !== 54.1722 && coords[0] !== lastCoords[0]) {
       setLastCoords(coords);
-      run();
+      run(source);
     }
+    return () => {
+      source.cancel("Cancelling in cleanup");
+    };
   }, [coords]);
 
   return (
@@ -68,7 +84,6 @@ MapContainer.propTypes = {
   }).isRequired,
   coords: PropTypes.arrayOf(PropTypes.number).isRequired,
   setCoords: PropTypes.func.isRequired,
-  // setNearbyResources: PropTypes.func.isRequired,
   setAddress: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   setNoAddressFlag: PropTypes.func.isRequired,
