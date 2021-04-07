@@ -1,7 +1,7 @@
 resource "azurerm_app_service" "frontend" {
   name                = "communityinformationtool-test"
-  location            = azurerm_resource_group.cit.location
-  resource_group_name = azurerm_resource_group.cit.name
+  location            = var.azure_location
+  resource_group_name = var.azure_resource_group
   app_service_plan_id = azurerm_app_service_plan.webapp.id
   https_only          = true
 

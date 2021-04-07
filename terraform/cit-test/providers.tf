@@ -24,15 +24,10 @@ terraform {
 }
 
 provider "azurerm" {
-  subscription_id = var.subscription_id
-  tenant_id       = var.tenant_id
+  subscription_id = var.azure_subscription_id
+  tenant_id       = var.azure_tenant_id
   skip_provider_registration = true
 
   features {
   }
-}
-
-provider "github" {
-  token = var.github_token
-  owner = var.github_owner
 }

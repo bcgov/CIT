@@ -30,13 +30,10 @@ module "webapp" {
   app_name        = "CIT3"
   owner           = "CITZ"
   description     = "Community Information Toolkit"
-  environment     = "test"
+  environment     = "prod"
 
   rg_name = "cit"
-  acr_name = "acr${random_string.prefix.id}"
-  psql_name = "cit-test-psql-${random_string.prefix.id}"
-  akv_name = "akv-${random_string.prefix.id}"
-
+  psql_name = "cit-prod-psql-${random_string.prefix.id}"
 
   # AWS Specific configuration
   

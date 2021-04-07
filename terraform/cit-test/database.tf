@@ -18,8 +18,8 @@ resource "random_password" "db_password" {
 
 resource "azurerm_postgresql_server" "postgres" {
   name                = var.psql_name
-  location            = azurerm_resource_group.cit.location
-  resource_group_name = azurerm_resource_group.cit.name
+  location            = var.azure_location
+  resource_group_name = var.azure_resource_group
 
   sku_name = "B_Gen5_2"
 
@@ -38,7 +38,7 @@ resource "azurerm_postgresql_server" "postgres" {
 
 resource "azurerm_postgresql_database" "postgres" {
   name                = "cit"
-  resource_group_name = azurerm_resource_group.cit.name
+  resource_group_name = var.azure_resource_group
   server_name         = azurerm_postgresql_server.postgres.name
   charset             = "UTF8"
   collation           = "English_United States.1252"

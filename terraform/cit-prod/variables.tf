@@ -36,3 +36,20 @@ variable "geocoder_key" {
   type        = string
   description = "The geocoder API key"
 }
+
+#############################
+## Shared                  ##
+#############################
+
+variable "acr_url" {
+  type        = string
+  description = "ACR url of repository with app images"
+}
+variable "acr_username" {
+  type        = string
+  description = "Username for ACR authentication"
+}
+variable "acr_password" {
+  type        = string
+  description = "Password for ACR authentication"
+}
