@@ -22,11 +22,17 @@ const AuthStateContextProvider = ({ children }) => {
           .loadUserInfo()
           .then((user) => {
             setUserInfo(user);
-            postUser(
-              UserFactory.createStateFromKeyCloak(user),
-              keycloak.obj.token
-            ).then((response) => {
-              dispatch(setUser(response.data));
+            getUser({ email: user.email }).then((existingUser) => {
+              if (existingUser.data.length) {
+                dispatch(setUser(existingUser.data[0]));
+              } else {
+                postUser(
+                  UserFactory.createStateFromKeyCloak(user),
+                  keycloak.obj.token
+                ).then((newUser) => {
+                  dispatch(setUser(newUser.data));
+                });
+              }
             });
           })
           .catch((e) => {

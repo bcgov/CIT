@@ -90,10 +90,8 @@ export default function opportunity(
       if (!action.payload) {
         state.siteInfo.geometry.coordinates = null;
       } else if (!state.siteInfo.geometry.coordinates) {
-        state.siteInfo.geometry = {
-          ...state.siteInfo.geometry,
-          ...action.payload,
-        };
+        state.siteInfo.geometry.coordinates = action.payload.coordinates;
+        state.siteInfo.geometry.type = action.payload.type;
       } else {
         state.siteInfo.geometry.coordinates = [
           ...state.siteInfo.geometry.coordinates,
@@ -114,7 +112,7 @@ export default function opportunity(
 
       break;
     case ADD_PARCEL_SIZE:
-      if (state.siteInfo.parcelSize.value && action.payload) {
+      if (state.siteInfo.parcelSize.value && action.payload !== null) {
         state.siteInfo.parcelSize.value += action.payload;
       } else {
         state.siteInfo.parcelSize.value = action.payload;

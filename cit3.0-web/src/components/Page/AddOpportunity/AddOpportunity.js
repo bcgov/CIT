@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
@@ -17,20 +17,21 @@ import {
 import {
   setAddress,
   setCoords,
-  setNearbyResources,
   setResourceIds,
   setPID,
   setGeometry,
   setParcelOwner,
   setParcelSize,
   setSiteId,
-  setOpportunityUser,
+  resetOpportunity,
 } from "../../../store/actions/opportunity";
 import Radios from "../../FormComponents/Radios";
 import Terms from "../../Terms/Terms";
+import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 
 export default function AddOpportunity() {
   const dispatch = useDispatch();
+  const editing = useSelector((state) => state.opportunity.editing);
   const address = useSelector((state) => state.opportunity.address);
   const coords = useSelector((state) => state.opportunity.coords);
   const PID = useSelector((state) => state.opportunity.siteInfo.PID.value);
@@ -56,6 +57,29 @@ export default function AddOpportunity() {
   const [agreed, setAgreed] = useState(false);
   const [noAddressFlag, setNoAddressFlag] = useState(false);
 
+  // Handle ProximityData call still running and change of page
+  const [proximityInProgress, setProximityInProgress] = useState(false);
+  const [changePage, setChangePage] = useState(false);
+
+  // Handle Modal if proximity data is still loading
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const history = useHistory();
+
+  useEffect(() => {
+    if (changePage && !proximityInProgress) {
+      handleClose();
+      history.push(`/opportunity/site-info`);
+    }
+  }, [changePage, proximityInProgress]);
+
+  const goToNextPage = () => {
+    handleShow();
+    setChangePage(true);
+  };
+
   const handleRadioChange = (name, label, value) => {
     setHasApproval(label);
     if (label === "Yes") {
@@ -65,7 +89,6 @@ export default function AddOpportunity() {
     }
   };
 
-  const history = useHistory();
   const title1 = "Add an Opportunity";
   const title2 = "Confirm Property";
   const text1 =
@@ -74,7 +97,13 @@ export default function AddOpportunity() {
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 
   const setParcelData = async (id) => {
-    dispatch(setParcelSize(0));
+    // ensure previous parcel data is cleared, but keeps address, coords intact
+    dispatch(setParcelSize(null));
+    dispatch(setParcelOwner(null));
+    dispatch(setGeometry(null));
+    // ensure hasApproval is false
+    setHasApproval(false);
+    /// //////////////////////////
     const pid = await getPID(id);
     dispatch(setPID(pid));
     if (pid) {
@@ -104,22 +133,19 @@ export default function AddOpportunity() {
         }
       });
     } else {
-      dispatch(setGeometry({ coordinates: null }));
-      dispatch(setParcelOwner(null));
-      dispatch(setParcelSize(null));
       setBlockContinue(false);
     }
-
     setError(false);
   };
 
   const setParcelDataNoAddress = async (noAddrCoords) => {
-    dispatch(setSiteId(null));
-    dispatch(setParcelSize(null));
-    dispatch(setParcelOwner(null));
-    dispatch(setPID(null));
-    dispatch(setGeometry({ coordinates: null }));
-    console.log(noAddrCoords);
+    // ensure previous parcel data is cleared
+    dispatch(resetOpportunity());
+    // reset coords with new coords
+    dispatch(setCoords(noAddrCoords));
+    // ensure hasApproval is false
+    setHasApproval(false);
+    /// /////////////////////////////
     const parcelData = await getParcelDataNoAddress(noAddrCoords);
     if (noAddressFlag && parcelData) {
       dispatch(setPID([parcelData.data.features[0].properties.PID]));
@@ -144,24 +170,17 @@ export default function AddOpportunity() {
       );
       dispatch(setGeometry(parcelData.data.features[0].geometry));
     } else {
-      dispatch(setGeometry({ coordinates: null }));
-      dispatch(setParcelOwner(null));
-      dispatch(setParcelSize(null));
       setBlockContinue(false);
     }
     setError(false);
   };
 
   const getCoords = async (addy) => {
-    dispatch(setSiteId(null));
-    dispatch(setParcelOwner(null));
-    dispatch(setGeometry(null));
-    dispatch(setParcelSize(null));
-    dispatch(setPID(null));
-    dispatch(setAddress(null));
+    dispatch(resetOpportunity());
     setError("");
     try {
       const data = await getAddressData(addy);
+      setNoAddressFlag(false);
       dispatch(setAddress(data.data.features[0].properties.fullAddress));
       dispatch(
         setCoords([
@@ -172,7 +191,7 @@ export default function AddOpportunity() {
       if (data.data.features[0].properties.siteID) {
         dispatch(setSiteId(data.data.features[0].properties.siteID));
       } else if (data.data.features.length) {
-        dispatch(setSiteId("unknown"));
+        dispatch(setSiteId(null));
       } else {
         setError("Cannot find address info, please try again.");
         setBlockContinue(true);
@@ -188,19 +207,29 @@ export default function AddOpportunity() {
       setParcelData(siteId);
     }
     if (noAddressFlag) {
-      dispatch(setSiteId(null));
       setParcelDataNoAddress(coords);
     }
   }, [siteId, noAddressFlag]);
 
-  const goToNextPage = () => {
-    history.push(`/opportunity/site-info`);
-  };
+  useEffect(() => {
+    if (editing) {
+      setBlockContinue(false);
+    }
+  }, []);
 
   return (
     <>
       <NavigationHeader currentStep={1} />
-
+      <Modal
+        show={show}
+        onHide={handleClose}
+        keyboard={false}
+        backdrop="static"
+        size="lg"
+        centered
+      >
+        <LoadingScreen />
+      </Modal>
       <Container>
         <Row>
           {!address ? (
@@ -234,7 +263,7 @@ export default function AddOpportunity() {
                     </Col>
                   </Row>
                 )}
-                {!address && coords[0] !== 54.1722 && (
+                {!address && coords && coords[0] !== 54.1722 && (
                   <Row>
                     <Col>
                       <h3>Lat: {coords[0]}</h3>
@@ -250,7 +279,8 @@ export default function AddOpportunity() {
                         Ownership: <b>{parcelOwner}</b>
                       </p>
                       <p className="mb-0 pb-0">
-                        Parcel Size: <b>{parcelSize.toFixed(3)} acres</b>
+                        Parcel Size:{" "}
+                        <b>{parcelSize ? parcelSize.toFixed(3) : null} acres</b>
                       </p>
                       <p>
                         PID: <b>{PID.length > 1 ? PID.join(", ") : PID}</b>
@@ -296,12 +326,12 @@ export default function AddOpportunity() {
               nearbyResources={nearbyResources}
               coords={coords}
               setResourceIds={(r) => dispatch(setResourceIds(r))}
-              setNearbyResources={(r) => dispatch(setNearbyResources(r))}
               setAddress={(a) => dispatch(setAddress(a))}
               setCoords={(c) => dispatch(setCoords(c))}
               setSiteId={(id) => dispatch(setSiteId(id))}
               setError={setError}
               setNoAddressFlag={setNoAddressFlag}
+              setProximityInProgress={setProximityInProgress}
             />
           </Col>
         </Row>

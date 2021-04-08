@@ -74,7 +74,7 @@ export function determineStatusTextColour(approvalStatus) {
 }
 
 export function formatDate(ISODate) {
-  const dateString = ISODate.substring(0, 10);
+  const dateString = ISODate.substring(0, 11);
   return dateString;
 }
 

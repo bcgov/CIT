@@ -36,7 +36,13 @@ export default function OpportunityTable(props) {
             const opportunity = OpportunityFactory.createStateFromResponse(
               oppData
             );
-            return <OpportunityListItem key={v4()} opportunity={opportunity} />;
+            return (
+              <OpportunityListItem
+                key={v4()}
+                opportunity={opportunity}
+                handleModalOpen={props.handleModalOpen}
+              />
+            );
           })}
       </Container>
     </div>
