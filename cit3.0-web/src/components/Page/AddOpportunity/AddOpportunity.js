@@ -1,8 +1,7 @@
 import { useHistory } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MapContainer from "../../MapContainer/MapContainer";
 import AddressSearchBar from "../../AddressSearchBar/AddressSearchBar";
@@ -28,6 +27,7 @@ import {
 } from "../../../store/actions/opportunity";
 import Radios from "../../FormComponents/Radios";
 import Terms from "../../Terms/Terms";
+import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 
 export default function AddOpportunity() {
   const dispatch = useDispatch();
@@ -56,6 +56,27 @@ export default function AddOpportunity() {
   const [error, setError] = useState(null);
   const [agreed, setAgreed] = useState(false);
   const [noAddressFlag, setNoAddressFlag] = useState(false);
+  /// //////////////////////////////////////////////////////
+  const [proximityInProgress, setProximityInProgress] = useState(false);
+  const [changePage, setChangePage] = useState(false);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const history = useHistory();
+
+  useEffect(() => {
+    if (changePage && !proximityInProgress) {
+      handleClose();
+      history.push(`/opportunity/site-info`);
+    }
+  }, [changePage, proximityInProgress]);
+
+  const goToNextPage = () => {
+    handleShow();
+    setChangePage(true);
+  };
 
   const handleRadioChange = (name, label, value) => {
     setHasApproval(label);
@@ -66,7 +87,6 @@ export default function AddOpportunity() {
     }
   };
 
-  const history = useHistory();
   const title1 = "Add an Opportunity";
   const title2 = "Confirm Property";
   const text1 =
@@ -189,10 +209,6 @@ export default function AddOpportunity() {
     }
   }, [siteId, noAddressFlag]);
 
-  const goToNextPage = () => {
-    history.push(`/opportunity/site-info`);
-  };
-
   useEffect(() => {
     if (editing) {
       setBlockContinue(false);
@@ -202,7 +218,16 @@ export default function AddOpportunity() {
   return (
     <>
       <NavigationHeader currentStep={1} />
-
+      <Modal
+        show={show}
+        onHide={handleClose}
+        keyboard={false}
+        backdrop="static"
+        size="lg"
+        centered
+      >
+        <LoadingScreen />
+      </Modal>
       <Container>
         <Row>
           {!address ? (
@@ -304,6 +329,7 @@ export default function AddOpportunity() {
               setSiteId={(id) => dispatch(setSiteId(id))}
               setError={setError}
               setNoAddressFlag={setNoAddressFlag}
+              setProximityInProgress={setProximityInProgress}
             />
           </Col>
         </Row>

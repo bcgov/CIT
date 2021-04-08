@@ -18,14 +18,18 @@ export default function MapContainer({
   setAddress,
   setError,
   setNoAddressFlag,
+  setProximityInProgress,
 }) {
   const [lastCoords, setLastCoords] = useState([]);
   const dispatch = useDispatch();
 
   const { CancelToken } = axios;
-  let source;
+  let source = CancelToken.source();
 
   const run = async (sourceToken) => {
+    // proximity call is running, do not unmount component if user hits continue
+    setProximityInProgress(true);
+    console.log("running");
     const [soilData, proximityData] = await axios.all([
       getSoilAndElevationData(coords, sourceToken),
       getProximityData(coords, sourceToken),
@@ -38,6 +42,8 @@ export default function MapContainer({
     if (proximityData) {
       dispatch(setNearbyResources(proximityData));
     }
+    // Call is finished and we can safely go to next page
+    setProximityInProgress(false);
   };
   useEffect(() => {
     // kill the axios calls if coords change
@@ -50,7 +56,7 @@ export default function MapContainer({
       run(source);
     }
     return () => {
-      source.cancel("Cancelling in cleanup");
+      source.cancel("cancel in clean up");
     };
   }, [coords]);
 
@@ -87,4 +93,5 @@ MapContainer.propTypes = {
   setAddress: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   setNoAddressFlag: PropTypes.func.isRequired,
+  setProximityInProgress: PropTypes.func.isRequired,
 };
