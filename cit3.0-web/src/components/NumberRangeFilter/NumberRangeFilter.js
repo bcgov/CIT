@@ -49,7 +49,12 @@ export default function NumberRangeFilter(props) {
   };
   const handleShow = () => setShow(true);
   const handleClose = () => {
-    setIsSelected(true);
+    // Reset values to previous state
+    setInputRangeValue({ ...displayRange });
+    setMaxInput(displayRange.max);
+    setMinInput(displayRange.min);
+    setValidMin(true);
+    setValidMax(true);
     setShow(false);
   };
 
@@ -82,7 +87,7 @@ export default function NumberRangeFilter(props) {
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header>
+        <Modal.Header closeButton>
           <Modal.Title>{label}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -106,7 +111,7 @@ export default function NumberRangeFilter(props) {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            label="Clear"
+            label="Reset"
             styling="bcgov-normal-white mr-auto modal-reset-button btn"
             onClick={handleClear}
           />
