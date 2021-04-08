@@ -56,11 +56,13 @@ export default function AddOpportunity() {
   const [error, setError] = useState(null);
   const [agreed, setAgreed] = useState(false);
   const [noAddressFlag, setNoAddressFlag] = useState(false);
-  /// //////////////////////////////////////////////////////
+
+  // Handle ProximityData call still running and change of page
   const [proximityInProgress, setProximityInProgress] = useState(false);
   const [changePage, setChangePage] = useState(false);
-  const [show, setShow] = useState(false);
 
+  // Handle Modal if proximity data is still loading
+  const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 

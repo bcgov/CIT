@@ -29,7 +29,6 @@ export default function MapContainer({
   const run = async (sourceToken) => {
     // proximity call is running, do not unmount component if user hits continue
     setProximityInProgress(true);
-    console.log("running");
     const [soilData, proximityData] = await axios.all([
       getSoilAndElevationData(coords, sourceToken),
       getProximityData(coords, sourceToken),
