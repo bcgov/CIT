@@ -1,0 +1,230 @@
+import io
+import csv
+from rest_framework import views
+from django.db.models import Q
+from django.contrib.gis.measure import D
+from rest_framework.response import Response
+
+from pipeline.models.opportunity import Opportunity
+from pipeline.models.general import RegionalDistrict
+from pipeline.models.community import Community
+from pipeline.serializers.opportunity.get import OpportunityGetSerializer
+from pipeline.models.census import CensusSubdivision
+
+MIN_TABLE_ID = 1
+MIN_DISTANCE = 0
+MIN_SIZE = 0
+INVALID_INT = -1
+
+class OpportunitiesListExport(views.APIView):
+    """
+    View to list multi opportunities from the DB
+    """
+    serializer_class = OpportunityGetSerializer
+
+    def get(self, request, format='text/csv'):
+        queryset = Opportunity.objects.all()
+        queryset = queryset.filter(deleted=False)
+
+        user_id = request.query_params.get('user_id', None)
+        if(user_id is not None):
+            queryset = queryset.filter(user_id=user_id)
+
+        submitted_from_date = request.query_params.get('submitted_from_date', None)
+        submitted_to_date = request.query_params.get('submitted_to_date', None)
+        if(submitted_from_date is not None):
+            queryset = queryset.filter(date_created__gte=submitted_from_date)
+        if(submitted_to_date is not None):
+            queryset = queryset.filter(date_created__lte=submitted_to_date)
+
+        published_from_date = request.query_params.get('published_from_date', None)
+        published_to_date = request.query_params.get('published_to_date', None)
+        if(published_from_date is not None):
+            queryset = queryset.filter(date_published__gte=published_from_date)
+        if(published_to_date is not None):
+            queryset = queryset.filter(date_published__lte=published_to_date)
+
+        approval_status_id = request.query_params.get('approval_status_id', None)
+        if(approval_status_id is not None):
+            queryset = queryset.filter(approval_status_id=approval_status_id)
+
+        regional_district = request.query_params.get('regional_district', None)
+        if(regional_district is not None):
+            regional_district_models = RegionalDistrict.objects.get(id=regional_district)
+            if(regional_district_models is not None):
+                queryset = queryset.filter(geo_position__intersects=regional_district_models.geom)
+
+        exclude_unknowns = request.query_params.get('exclude_unknowns', None)
+        queryset = self.service_queryset(request, queryset, exclude_unknowns, 'opportunity_road_connected')
+        queryset = self.service_queryset(request, queryset, exclude_unknowns, 'opportunity_water_connected')
+        queryset = self.service_queryset(request, queryset, exclude_unknowns, 'opportunity_sewer_connected')
+        queryset = self.service_queryset(request, queryset, exclude_unknowns, 'opportunity_electrical_connected')
+        queryset = self.service_queryset(request, queryset, exclude_unknowns, 'opportunity_natural_gas_connected')
+
+        post_secondary_within_100km = request.query_params.get('post_secondary_within_100km', None)
+        if(post_secondary_within_100km == 'Y'):
+            queryset = queryset.filter(nearest_post_secondary__location_distance__lte=100)
+
+        # TODO Figure out distance calulation issues
+        community_id = int(request.query_params.get('community_id', INVALID_INT))
+        community_distance = float(request.query_params.get('community_distance', INVALID_INT))
+        if(community_distance >= MIN_DISTANCE and community_id >= MIN_TABLE_ID):
+            community_model = Community.objects.get(id=community_id)
+            if(community_model is not None):
+                queryset = queryset.filter(geo_position__distance_lte=(community_model.point,
+                                                                       D(km=community_distance)))
+
+        parcel_size_min = float(request.query_params.get('parcel_size_min', INVALID_INT))
+        parcel_size_max = float(request.query_params.get('parcel_size_max', INVALID_INT))
+        if(parcel_size_min >= MIN_SIZE):
+            queryset = queryset.filter(parcel_size__gte=parcel_size_min)
+        if(parcel_size_max >= MIN_SIZE):
+            queryset = queryset.filter(parcel_size__lte=parcel_size_max)
+
+        power_transmission_lines_min = float(request.query_params.get('power_transmission_lines_min', INVALID_INT))
+        power_transmission_lines_max = float(request.query_params.get('power_transmission_lines_max', INVALID_INT))
+        if(power_transmission_lines_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_transmission_line__gte=power_transmission_lines_min)
+        if(power_transmission_lines_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_transmission_line__lte=power_transmission_lines_max)
+
+        air_service_min = float(request.query_params.get('air_service_min', INVALID_INT))
+        air_service_max = float(request.query_params.get('air_service_max', INVALID_INT))
+        if(air_service_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_airport__airport_distance__gte=air_service_min)
+        if(air_service_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_airport__airport_distance__lte=air_service_max)
+
+        rail_connections_min = float(request.query_params.get('rail_connections_min', INVALID_INT))
+        rail_connections_max = float(request.query_params.get('rail_connections_max', INVALID_INT))
+        if(rail_connections_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_railway__railway_distance__gte=rail_connections_min)
+        if(rail_connections_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_railway__railway_distance__lte=rail_connections_max)
+
+        deep_water_port_min = float(request.query_params.get('deep_water_port_min', INVALID_INT))
+        deep_water_port_max = float(request.query_params.get('deep_water_port_max', INVALID_INT))
+        if(deep_water_port_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_port__port_distance__gte=deep_water_port_min)
+        if(deep_water_port_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_port__port_distance__lte=deep_water_port_max)
+
+        research_centre_min = float(request.query_params.get('research_centre_min', INVALID_INT))
+        research_centre_max = float(request.query_params.get('research_centre_max', INVALID_INT))
+        if(research_centre_min >= MIN_SIZE):
+            queryset = queryset.filter(nearest_research_center__research_centre_distance__gte=research_centre_min)
+        if(research_centre_max >= MIN_SIZE):
+            queryset = queryset.filter(nearest_research_center__research_centre_distance__lte=research_centre_max)
+
+        zoning = request.query_params.get('zoning', None)
+        if(zoning is not None):
+            zonings = zoning.split(',')
+            queryset = queryset.filter(Q(land_use_zoning__in=zonings) | Q(ocp_zoning_code__in=zonings))
+
+        connectivity = request.query_params.get('connectivity', None)
+        if(connectivity is not None):
+            connectivities = connectivity.split(',')
+            queryset = queryset.filter(Q(network_avg__in=connectivities) | Q(network_at_road__in=connectivities))
+
+        community_population_distance_min = float(request.query_params.get('community_population_distance_min', INVALID_INT))
+        community_population_distance_max = float(request.query_params.get('community_population_distance_max', INVALID_INT))
+        proximity_population = float(request.query_params.get('proximity_population', INVALID_INT))
+        proximity_community_id = float(request.query_params.get('proximity_community_id', INVALID_INT))
+        if(proximity_community_id >= MIN_TABLE_ID and (community_population_distance_min >= MIN_SIZE or community_population_distance_max >= MIN_SIZE)):
+            queryset = self.filter_opportunities_by_distance_from_community(queryset,
+                                                                            community_population_distance_min,
+                                                                            community_population_distance_max,
+                                                                            proximity_community_id)
+        if(proximity_population >= MIN_TABLE_ID and (community_population_distance_min >= MIN_SIZE or community_population_distance_max >= MIN_SIZE)):
+            queryset = self.filter_opportunities_by_distance_from_population(queryset,
+                                                                             community_population_distance_min,
+                                                                             community_population_distance_max,
+                                                                             proximity_population)
+
+        output = []
+        string = io.StringIO()
+        writer = csv.writer(string)
+
+        all_fields = [f.name for f in Opportunity._meta.fields]
+        writer.writerow(all_fields)
+        queryset[0]._meta.fields
+        for opp in queryset:
+            print(opp.__dict__)
+            output.append([getattr(opp, field) for field in all_fields])
+
+        writer.writerows(output)
+        return Response(data=string.getvalue(), content_type='text/csv')
+
+    def filter_opportunities_by_distance_from_community(self, queryset, community_distance_min, community_distance_max, proximity_community_id):
+        community = Community.objects.get(pk=proximity_community_id)
+        if(community_distance_min >= MIN_SIZE):
+            queryset = queryset.filter(geo_position__distance_gte=(community.point, D(km=community_distance_min)))
+        if(community_distance_max >= MIN_SIZE):
+            queryset = queryset.filter(geo_position__distance_lte=(community.point, D(km=community_distance_max)))
+        return queryset
+
+    def filter_opportunities_by_distance_from_population(self, queryset, population_distance_min, population_distance_max, population):
+        population_geometry = CensusSubdivision.objects.filter(population__gte=population)
+        if population_distance_min >= MIN_SIZE:
+            min_query = Q()
+            max_query = Q()
+            for subdivision in population_geometry:
+                min_query |= Q(geo_position__distance_gte=(subdivision.geom, D(km=population_distance_min)))
+                max_query |= Q(geo_position__distance_lte=(subdivision.geom, D(km=population_distance_max)))
+
+            if(len(min_query) > 0 and len(max_query) > 0):
+                queryset = queryset.filter(min_query & max_query)
+            elif(len(min_query) > 0):
+                queryset = queryset.filter(min_query)
+            elif(len(max_query) > 0):
+                queryset = queryset.filter(max_query)
+            else:
+                queryset = Opportunity.objects.none()
+
+        return queryset
+
+    def service_queryset(self, request, queryset, exclude_unknowns, service_name):
+        service_connected = request.query_params.get(service_name, None)
+
+        if(service_name == 'opportunity_road_connected'):
+            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns == 'N') and service_connected == 'Y'):
+                queryset = queryset.filter(Q(opportunity_road_connected=service_connected) |
+                                           Q(opportunity_road_connected='U'))
+            elif(service_connected is not None and exclude_unknowns == 'Y' and service_connected == 'Y'):
+                queryset = queryset.filter(opportunity_road_connected=service_connected)
+            elif(service_connected is not None and exclude_unknowns == 'Y' and service_connected == 'N'):
+                queryset = queryset.filter(~Q(opportunity_road_connected='U'))
+        elif(service_name == 'opportunity_water_connected'):
+            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns == 'N') and service_connected == 'Y'):
+                queryset = queryset.filter(Q(opportunity_water_connected=service_connected) |
+                                           Q(opportunity_water_connected='U'))
+            elif(service_connected is not None and exclude_unknowns == 'Y' and service_connected == 'Y'):
+                queryset = queryset.filter(opportunity_water_connected=service_connected)
+            elif(service_connected is not None and exclude_unknowns == 'Y' and service_connected == 'N'):
+                queryset = queryset.filter(~Q(opportunity_water_connected='U'))
+        elif(service_name == 'opportunity_sewer_connected'):
+            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns == 'N') and service_connected == 'Y'):
+                queryset = queryset.filter(Q(opportunity_sewer_connected=service_connected) |
+                                           Q(opportunity_sewer_connected='U'))
+            elif(service_connected is not None and exclude_unknowns == 'Y' and service_connected == 'Y'):
+                queryset = queryset.filter(opportunity_sewer_connected=service_connected)
+            elif(service_connected is not None and exclude_unknowns == 'Y' and service_connected == 'N'):
+                queryset = queryset.filter(~Q(opportunity_sewer_connected='U'))
+        elif(service_name == 'opportunity_electrical_connected'):
+            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns == 'N') and service_connected == 'Y'):
+                queryset = queryset.filter(Q(opportunity_electrical_connected=service_connected) |
+                                           Q(opportunity_electrical_connected='U'))
+            elif(service_connected is not None and exclude_unknowns == 'Y' and service_connected == 'Y'):
+                queryset = queryset.filter(opportunity_electrical_connected=service_connected)
+            elif(service_connected is not None and exclude_unknowns == 'Y' and service_connected == 'N'):
+                queryset = queryset.filter(~Q(opportunity_electrical_connected='U'))
+        elif(service_name == 'opportunity_natural_gas_connected'):
+            if(service_connected is not None and (exclude_unknowns is None or exclude_unknowns == 'N') and service_connected == 'Y'):
+                queryset = queryset.filter(Q(opportunity_natural_gas_connected=service_connected) |
+                                           Q(opportunity_natural_gas_connected='U'))
+            elif(service_connected is not None and exclude_unknowns == 'Y' and service_connected == 'Y'):
+                queryset = queryset.filter(opportunity_natural_gas_connected=service_connected)
+            elif(service_connected is not None and exclude_unknowns == 'Y' and service_connected == 'N'):
+                queryset = queryset.filter(~Q(opportunity_natural_gas_connected='U'))
+
+        return queryset
