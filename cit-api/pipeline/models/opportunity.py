@@ -263,10 +263,10 @@ class Opportunity(models.Model):
                                                       db_column="nearest_customs_port_of_entry",
                                                       blank=True,
                                                       null=True)
-    nearest_research_center = models.ForeignKey(ResearchCentreDistance,
-                                                related_name="research_center",
+    nearest_research_centre = models.ForeignKey(ResearchCentreDistance,
+                                                related_name="research_centre",
                                                 on_delete=models.SET_NULL,
-                                                db_column="nearest_research_center",
+                                                db_column="nearest_research_centre",
                                                 blank=True,
                                                 null=True)
     nearest_health_center = models.ForeignKey(HospitalDistance,
