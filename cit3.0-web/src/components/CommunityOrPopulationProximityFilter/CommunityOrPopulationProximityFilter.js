@@ -37,6 +37,8 @@ export default function CommunityOrPopulationProximityFilter(props) {
     setDisplayCommunityOrPopulation,
   ] = useState(null);
   const [isModified, setIsModified] = useState(false);
+  const [currentCommunityOnOpen, setCurrentCommunityOnOpen] = useState({});
+  const [currentPopulationOnOpen, setCurrentPopulationOnOpen] = useState({});
 
   const inputRangeMax = inputRange.max;
   const inputRangeMin = inputRange.min;
@@ -119,10 +121,20 @@ export default function CommunityOrPopulationProximityFilter(props) {
     setCurrentPopulation(null);
     setIsModified(false);
   };
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setShow(true);
+    setCurrentCommunityOnOpen(currentCommunity);
+    setCurrentPopulationOnOpen(currentPopulation);
+  };
   const handleClose = () => {
-    setIsSelected(true);
     setShow(false);
+    setInputRangeValue({ ...displayRange });
+    setMaxInput(displayRange.max);
+    setMinInput(displayRange.min);
+    setValidMin(true);
+    setValidMax(true);
+    setCurrentCommunity(currentCommunityOnOpen);
+    setCurrentPopulation(currentPopulationOnOpen);
   };
 
   const handleModified = (value, setStateFunction) => {
@@ -152,7 +164,7 @@ export default function CommunityOrPopulationProximityFilter(props) {
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header>
+        <Modal.Header closeButton>
           <Modal.Title>{label}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
