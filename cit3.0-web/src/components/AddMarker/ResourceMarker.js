@@ -27,5 +27,6 @@ export default function ResourceMarker({ resourceName, resources }) {
 }
 ResourceMarker.propTypes = {
   resourceName: PropTypes.string.isRequired,
-  resources: PropTypes.arrayOf(PropTypes.shape).isRequired,
+  resources: PropTypes.oneOfType([PropTypes.string, PropTypes.shape()])
+    .isRequired,
 };
