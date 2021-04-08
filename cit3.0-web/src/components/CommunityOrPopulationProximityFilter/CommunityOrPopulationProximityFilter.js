@@ -123,6 +123,7 @@ export default function CommunityOrPopulationProximityFilter(props) {
   };
   const handleShow = () => {
     setShow(true);
+    console.log();
     setCurrentCommunityOnOpen(currentCommunity);
     setCurrentPopulationOnOpen(currentPopulation);
   };
@@ -215,7 +216,7 @@ export default function CommunityOrPopulationProximityFilter(props) {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            label="Clear"
+            label="Reset"
             styling="bcgov-normal-white mr-auto modal-reset-button btn"
             onClick={handleClear}
           />
