@@ -123,6 +123,7 @@ export default function CommunityOrPopulationProximityFilter(props) {
   };
   const handleShow = () => {
     setShow(true);
+    console.log();
     setCurrentCommunityOnOpen(currentCommunity);
     setCurrentPopulationOnOpen(currentPopulation);
   };
