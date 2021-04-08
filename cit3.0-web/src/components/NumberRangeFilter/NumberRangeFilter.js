@@ -49,8 +49,8 @@ export default function NumberRangeFilter(props) {
   };
   const handleShow = () => setShow(true);
   const handleClose = () => {
-    // Reset values to previous state
     setShow(false);
+    // Reset values to previous state
     setInputRangeValue({ ...displayRange });
     setMaxInput(displayRange.max);
     setMinInput(displayRange.min);
