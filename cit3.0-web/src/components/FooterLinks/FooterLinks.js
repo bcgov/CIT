@@ -45,10 +45,3 @@ export default function FooterLinks({ type }) {
 FooterLinks.propTypes = {
   type: PropTypes.string.isRequired,
 };
-
-const searchPage = {
-  heading: "",
-  subText: "",
-  buttonText: "",
-  link: "",
-};
