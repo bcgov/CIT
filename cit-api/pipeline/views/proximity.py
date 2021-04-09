@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,9 +7,12 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.measure import D
 import json
+from rest_framework.decorators import action
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 from pipeline.models.general import RegionalDistrict, Municipality, Road
-from pipeline.models.location_assets import Airport, Location, CustomsPortOfEntry, FirstResponder, Hospital
+from pipeline.models.location_assets import Location, CustomsPortOfEntry
 from pipeline.models.railway import Railway
 from pipeline.models.river import River
 from pipeline.models.lake import Lake
@@ -43,6 +45,45 @@ class ProximityView(APIView):
                 status=status.HTTP_400_BAD_REQUEST))
         return None
 
+    prox_lat_param = openapi.Parameter('lat',
+                                       in_=openapi.IN_QUERY,
+                                       description='Latitude to search from',
+                                       type=openapi.TYPE_STRING,
+                                       required=True)
+    prox_lng_param = openapi.Parameter('lng',
+                                       in_=openapi.IN_QUERY,
+                                       description='Longitude to search from',
+                                       type=openapi.TYPE_STRING,
+                                       required=True)
+
+    prox_response = json.dumps(dict(municipality="...",
+                                    regionalDistrict="...",
+                                    nearestAirport="...",
+                                    nearestPort="...",
+                                    nearestCustomsPortOfEntry="...",
+                                    nearestPostSecondary="...",
+                                    nearestHighway="...",
+                                    nearestRailway="...",
+                                    nearestResearchCentre="...",
+                                    community="...",
+                                    nearestTransmission="...",
+                                    nearestFirstNations="...",
+                                    nearestMunicipalities="...",
+                                    nearestLake="...",
+                                    nearestRiver="...",
+                                    networkAtRoad="...",
+                                    networkAvg="...",
+                                    nearestFireStation="...",
+                                    nearestPoliceStation="...",
+                                    nearestAmbulanceStation="...",
+                                    nearestCoastGuardStation="...",
+                                    nearestHealthCenter="..."
+                                    ))
+
+    @swagger_auto_schema(manual_parameters=[prox_lat_param, prox_lng_param],
+                         method='GET',
+                         responses={status.HTTP_200_OK: prox_response})
+    @action(detail=False, methods=['get'])
     def get(self, request, format=None):
         """
         Points of interests in proximity to opportunity.
