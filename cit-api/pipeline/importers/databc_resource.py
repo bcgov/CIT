@@ -26,6 +26,7 @@ LOCATION_RESOURCES = [
     'natural_resource_projects',
     'customs_ports_of_entry',
     'pharmacies',
+    'public_library',
 ]
 
 

@@ -120,9 +120,9 @@ class OpportunitiesList(generics.ListAPIView):
         research_centre_min = float(self.request.query_params.get('research_centre_min', INVALID_INT))
         research_centre_max = float(self.request.query_params.get('research_centre_max', INVALID_INT))
         if(research_centre_min >= MIN_SIZE):
-            queryset = queryset.filter(nearest_research_center__research_centre_distance__gte=research_centre_min)
+            queryset = queryset.filter(nearest_research_centre__research_centre_distance__gte=research_centre_min)
         if(research_centre_max >= MIN_SIZE):
-            queryset = queryset.filter(nearest_research_center__research_centre_distance__lte=research_centre_max)
+            queryset = queryset.filter(nearest_research_centre__research_centre_distance__lte=research_centre_max)
 
         zoning = self.request.query_params.get('zoning', None)
         if(zoning is not None):
