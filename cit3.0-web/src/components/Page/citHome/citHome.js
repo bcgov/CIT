@@ -17,7 +17,7 @@ export default function citHome() {
   const [regional, setRegional] = useState(null);
   const history = useHistory();
   const keycloak = useKeycloakWrapper();
-  const [loggedIn] = useState(!!keycloak.email);
+  const [loggedIn] = useState(keycloak.obj.authenticated);
   const configuration = useConfiguration();
   const [show, setShow] = useState(false);
 
@@ -36,6 +36,7 @@ export default function citHome() {
       setPlaces([...commNames, ...regNames]);
     });
   }, []);
+  console.log(loggedIn);
 
   const typeOfSelected = (place) => {
     if (communities.find((c) => c === place)) {
