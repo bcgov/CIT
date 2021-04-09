@@ -18,7 +18,7 @@ export default function AddLocationMarker(props) {
     props.setNoAddressFlag(false);
     /// ///////////////////
     setPositions([e.latlng]);
-    props.setCoords([e.latlng.lat, e.latlng.lng]);
+    props.setCoords([e.latlng.lat, e.latlng.lng]); // this will trigger proximity data call in MapContainer
     try {
       const addressDataFromPoint = await getAddressFromPoint([
         e.latlng.lat,
@@ -30,12 +30,6 @@ export default function AddLocationMarker(props) {
       }
     } catch (error) {
       props.setNoAddressFlag(true);
-    } finally {
-      const proximity = await getProximityData(props.resourceIds, [
-        e.latlng.lat,
-        e.latlng.lng,
-      ]);
-      props.setNearbyResources(proximity);
     }
   });
 

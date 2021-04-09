@@ -858,3 +858,23 @@ class Pharmacy(Location):
 
     class Meta:
         ordering = ("id", )
+
+
+class PublicLibrary(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'SERVICE_POINT_NAME'
+    WEBSITE_FIELD = 'WEBSITE_URL'
+
+    service_point_id = models.CharField(null=True, blank=True, max_length=255)
+    library_system_name = models.CharField(null=True, blank=True, max_length=255)
+    locality = models.CharField(null=True, blank=True, max_length=255)
+    wifi_ind = models.CharField(null=True, blank=True, max_length=4)
+    outreach_ind = models.CharField(null=True, blank=True, max_length=4)
+    accessibility_ind = models.CharField(null=True, blank=True, max_length=4)
+    custodian_org_description = models.CharField(null=True, blank=True, max_length=255)
+    postal_code = models.CharField(null=True, blank=True, max_length=255)
+    street_address = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id", )

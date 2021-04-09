@@ -48,7 +48,7 @@ function displayResources(resources) {
     let multiValues = [];
     let found;
 
-    if (resource[1].hidden) {
+    if (resource[1] === false || resource[1].hidden) {
       return;
     }
 

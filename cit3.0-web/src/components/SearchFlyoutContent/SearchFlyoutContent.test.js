@@ -73,7 +73,7 @@ describe("<SearchFlyoutContent />", () => {
 
     const maxInputBox = screen.getByText(String(inputRange.max));
     const minInputBox = screen.getByText(String(inputRange.min));
-    const clearButton = screen.getByText("Clear");
+    const clearButton = screen.getByText("Reset");
 
     // Min > Max validation
     fireEvent.change(maxInputBox, { target: { value: 3000 } });
