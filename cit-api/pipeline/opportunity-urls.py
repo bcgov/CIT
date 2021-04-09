@@ -7,6 +7,7 @@ import pipeline.views.opportunity
 import pipeline.views.options
 import pipeline.views.proximity
 import pipeline.views.users.user
+import pipeline.views.users.tracking
 
 router = DefaultRouter()
 
@@ -21,4 +22,5 @@ urlpatterns = [
     url(r"^proximity/$", pipeline.views.proximity.ProximityView.as_view()),
     url(r"^users/$", pipeline.views.users.user.UserListView.as_view()),
     url(r"^user/add/$", pipeline.views.users.user.UserAddView.as_view()),
+    url(r"^user/tracking/$", pipeline.views.users.tracking.UserTrackingView.as_view()),
 ]
