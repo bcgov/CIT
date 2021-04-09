@@ -35,6 +35,7 @@ import PowerBi from "./components/Page/PowerBi/PowerBi";
 import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
 import HomePage from "./components/Page/HomePage/HomePage";
+import citHome from "./components/Page/citHome/citHome";
 
 function App() {
   const getTitle = (page) => `Investments${` - ${page}`}`;
@@ -214,6 +215,7 @@ function App() {
                 />
                 <AppRoute path="/search" component={InvestorMainView} />
                 <AppRoute path="/home" component={HomePage} />
+                <AppRoute path="/cit-home" component={citHome} />
                 <AppRoute path="/datasources" component={Datasources} />
               </Switch>
               <div className="footer">

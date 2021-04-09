@@ -38,7 +38,7 @@ export default function HomePage() {
             />
           </Col>
           <Col sm={9}>
-            <Container className="cont h-100">
+            <Container className="h-100">
               <Col className="d-flex h-100 flex-column justify-content-around">
                 <Row>
                   <h2>Find investment opportunities in British Columbia</h2>
