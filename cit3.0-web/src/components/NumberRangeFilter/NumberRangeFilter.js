@@ -41,8 +41,8 @@ export default function NumberRangeFilter(props) {
   };
   const handleClear = () => {
     setInputRangeValue({ min: inputRangeMin, max: inputRangeMax });
-    setMaxInput(inputRangeMax);
-    setMinInput(inputRangeMin);
+    setMaxInput(String(inputRangeMax));
+    setMinInput(String(inputRangeMin));
     setValidMin(true);
     setValidMax(true);
     setIsModified(false);
