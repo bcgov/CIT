@@ -42,10 +42,9 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [parcelSizeInputRange, setParcelSizeInputRange] = useState(
     parcelSizeInitial
   );
-  const [parcelSizeDisplayRange, setParcelSizeDisplayRange] = useState({
-    min: 0,
-    max: 0,
-  });
+  const [parcelSizeDisplayRange, setParcelSizeDisplayRange] = useState(
+    parcelSizeInitial
+  );
   const [
     powerTransmissionLinesIsSelected,
     setPowerTransmissionLinesIsSelected,
@@ -57,23 +56,21 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [
     powerTransmissionLinesDisplayRange,
     setPowerTransmissionLinesDisplayRange,
-  ] = useState({ min: 0, max: 0 });
+  ] = useState(powerTransmissionLinesInitial);
   const [airServiceIsSelected, setAirServiceIsSelected] = useState(false);
   const [airServiceInputRange, setAirServiceInputRange] = useState(
     airServiceInitial
   );
-  const [airServiceDisplayRange, setAirServiceDisplayRange] = useState({
-    min: 0,
-    max: 0,
-  });
+  const [airServiceDisplayRange, setAirServiceDisplayRange] = useState(
+    airServiceInitial
+  );
   const [deepWaterPortIsSelected, setDeepWaterPortIsSelected] = useState(false);
   const [deepWaterPortInputRange, setDeepWaterPortInputRange] = useState(
     deepWaterPortInitial
   );
-  const [deepWaterPortDisplayRange, setDeepWaterPortDisplayRange] = useState({
-    min: 0,
-    max: 0,
-  });
+  const [deepWaterPortDisplayRange, setDeepWaterPortDisplayRange] = useState(
+    deepWaterPortInitial
+  );
 
   const [railConnectionsIsSelected, setRailConnectionsIsSelected] = useState(
     false
@@ -84,7 +81,7 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [
     railConnectionsDisplayRange,
     setRailConnectionsDisplayRange,
-  ] = useState({ min: 0, max: 0 });
+  ] = useState(railConnectionsInitial);
   const [
     proximityToCommunityOrPopulationIsSelected,
     setProximityToCommunityOrPopulationIsSelected,
@@ -96,7 +93,7 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [
     proximityToCommunityOrPopulationDisplayRange,
     setproximityToCommunityOrPopulationDisplayRange,
-  ] = useState({ min: 0, max: 0 });
+  ] = useState(proximityToCommunityOrPopulationInitial);
   const [proximityCurrentCommunity, setProximityCurrentCommunity] = useState(
     null
   );
@@ -105,10 +102,7 @@ export default function SearchFlyoutContent({ setQuery }) {
   );
   const [rAndDIsSelected, setRAndDIsSelected] = useState(false);
   const [rAndDInputRange, setRAndDInputRange] = useState(rAndDInitial);
-  const [rAndDDisplayRange, setRAndDDisplayRange] = useState({
-    min: 0,
-    max: 0,
-  });
+  const [rAndDDisplayRange, setRAndDDisplayRange] = useState(rAndDInitial);
   const [zoningIsSelected, setZoningIsSelected] = useState(false);
   const [zoningQueryFilters, setZoningQueryFilters] = useState("");
   const [connectivityIsSelected, setConnectivityIsSelected] = useState(false);
