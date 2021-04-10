@@ -11,9 +11,18 @@ variable "environment" {
 variable "app_name" {
   type        = string
   description = "Environment being deployed"
-  default     = "test"
+  default     = "cit"
 }
 
+variable "owner" {
+  type        = string
+  description = "Specify the owner of the resource"
+}
+
+variable "description" {
+  type        = string
+  description = "Provide a description of the resource"
+}
 
 #############################
 ## Azure Variables         ##
@@ -43,9 +52,9 @@ variable "azure_location" {
 ## Shared Variables        ##
 #############################
         
-variable "acr_url" {
+variable "acr_name" {
   type        = string
-  description = "The url of the Azure Container Registry"
+  description = "The name of the Azure Container Registry"
 }
 variable "acr_admin" {
   type        = string
@@ -63,4 +72,13 @@ variable "acr_password" {
 variable "geocoder_key" {
   type        = string
   description = "The geocoder API key"
+}
+
+
+#############################
+## To be removed           ##
+#############################
+variable psql_name {
+  type        = string
+  description = "The name of the Postgresql database"
 }

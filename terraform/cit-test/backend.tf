@@ -1,5 +1,5 @@
 resource "azurerm_app_service" "backend" {
-  name                = "cit-${var.location}-${var.environment}-${var.app_name}-backend"
+  name                = "cit-${var.azure_location}-${var.environment}-${var.app_name}-backend"
   location            = var.azure_location
   resource_group_name = var.azure_resource_group
   app_service_plan_id = azurerm_app_service_plan.webapp.id
@@ -16,8 +16,8 @@ resource "azurerm_app_service" "backend" {
   app_settings = {
     WEBSITES_PORT                   = 8000
     DOCKER_REGISTRY_SERVER_URL      = "https://${var.acr_name}.azurecr.io"
-    DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.acr.admin_password
+    DOCKER_REGISTRY_SERVER_USERNAME = var.acr_admin
+    DOCKER_REGISTRY_SERVER_PASSWORD = var.acr_password
     POSTGRES_DB                     = azurerm_postgresql_database.postgres.name
     POSTGRES_DJANGO_USER            = "${azurerm_postgresql_server.postgres.administrator_login}@${azurerm_postgresql_server.postgres.fqdn}"
     POSTGRES_DJANGO_PASSWORD        = azurerm_postgresql_server.postgres.administrator_login_password

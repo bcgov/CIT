@@ -13,8 +13,8 @@ resource "azurerm_app_service" "frontend" {
 
   app_settings = {
     DOCKER_REGISTRY_SERVER_URL      = "https://${var.acr_name}.azurecr.io"
-    DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.acr.admin_username
-    DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.acr.admin_password
+    DOCKER_REGISTRY_SERVER_USERNAME = var.acr_admin
+    DOCKER_REGISTRY_SERVER_PASSWORD = var.acr_password
     REACT_APP_API_BASE_URL          = "https://${azurerm_app_service.backend.default_site_hostname}"
     KC_AUTH_URL                     = "https://test.oidc.gov.bc.ca/auth/"
     KC_CLIENT_ID                    = "cit-test"
