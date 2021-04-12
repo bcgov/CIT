@@ -3,9 +3,9 @@
 ##############################
 
 resource "azurerm_container_registry" "default" {
-  name                = var.acr_name
-  resource_group_name = azurerm_resource_group.cit.name
-  location            = azurerm_resource_group.cit.location
+  name                = "acraf6z1jmd"
+  resource_group_name = var.azure_resource_group
+  location            = var.azure_location
   sku                 = "Basic"
   admin_enabled       = true
 
@@ -23,17 +23,17 @@ resource "azurerm_container_registry" "default" {
 resource "github_actions_secret" "registry_username" {
   repository      = var.github_repository
   secret_name     = "REGISTRY_USERNAME"
-  plaintext_value = azurerm_container_registry.acr.admin_username
+  plaintext_value = azurerm_container_registry.default.admin_username
 }
 
 resource "github_actions_secret" "registry_password" {
   repository      = var.github_repository
   secret_name     = "REGISTRY_PASSWORD"
-  plaintext_value = azurerm_container_registry.acr.admin_password
+  plaintext_value = azurerm_container_registry.default.admin_password
 }
 
 resource "github_actions_secret" "registry_login_server" {
   repository      = var.github_repository
   secret_name     = "REGISTRY_LOGIN_SERVER"
-  plaintext_value = azurerm_container_registry.acr.login_server
+  plaintext_value = azurerm_container_registry.default.login_server
 }
