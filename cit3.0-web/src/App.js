@@ -202,7 +202,10 @@ function App() {
                   layout={AuthLayout}
                   component={OpportunityDeletePage}
                 />
-                <AppRoute path="/communityInsights" component={PowerBi} />
+                <AppRoute
+                  path="/community-insights/public"
+                  component={PowerBi}
+                />
                 <AppRoute
                   protected
                   exact

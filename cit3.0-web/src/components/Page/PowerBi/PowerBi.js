@@ -3,6 +3,7 @@ import axios from "axios";
 import "./PowerBi.css";
 import { PowerBIEmbed } from "powerbi-client-react";
 import { models } from "powerbi-client";
+import { useLocation } from "react-router-dom";
 
 export default function PowerBi(props) {
   const [currentPage, setCurrentPage] = useState("");
@@ -13,6 +14,11 @@ export default function PowerBi(props) {
 
   const groupId = process.env.REACT_APP_POWER_BI_GROUP_ID;
   const reportId = process.env.REACT_APP_POWER_BI_REPORT_ID;
+
+  const { search } = useLocation();
+  const [community, setCommunity] = useState(
+    new URLSearchParams(search).get("community")
+  );
 
   useEffect(() => {
     axios
@@ -64,10 +70,11 @@ export default function PowerBi(props) {
           embedUrl: reportConfig.embedUrl,
           accessToken: embedToken,
           tokenType: models.TokenType.Embed,
+          pageName: currentPage,
           settings: {
             panes: {
               filters: {
-                visible: false,
+                visible: true,
               },
               pageNavigation: {
                 visible: true,
@@ -82,6 +89,34 @@ export default function PowerBi(props) {
               "loaded",
               function () {
                 console.log("Report loaded");
+                window.report
+                  .getPages("Communities Overview")
+                  .then((data) => {
+                    const commReport = data.filter(
+                      (report) => report.displayName === "Community Overview"
+                    );
+                    if (commReport[0].name !== currentPage) {
+                      setCurrentPage(commReport[0].name);
+                      window.report
+                        .setPage(commReport[0].name)
+                        .catch((err) => console.log("setpage error:", err));
+                      const filter = {
+                        $schema: "http://powerbi.com/product/schema#basic",
+                        target: {
+                          table: "public pipeline_community",
+                          column: "Community Name",
+                        },
+                        operator: "In",
+                        values: [community],
+                      };
+                      window.report
+                        .setFilters([filter])
+                        .then((data1) => console.log(data1))
+                        .catch((err) => console.log("error: ", err));
+                      window.report.refresh();
+                    }
+                  })
+                  .catch((err) => console.log("error: ", err));
               },
             ],
             [
@@ -99,10 +134,8 @@ export default function PowerBi(props) {
             [
               "pageChanged",
               function (event) {
-                const pageName = event.detail.newPage.displayName;
+                // const pageName = event.detail.newPage.displayName;
                 // console.log(event.detail);
-                // console.log(pageName);
-                setCurrentPage(event.detail.newPage.displayName);
               },
             ],
           ])
@@ -110,6 +143,7 @@ export default function PowerBi(props) {
         // // Add CSS classes to the div element
         cssClassName="report-style-class"
         getEmbeddedComponent={(embeddedReport) => {
+          console.log("getreport");
           window.report = embeddedReport;
         }}
       />
