@@ -206,7 +206,7 @@ export default function citHome() {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            Would you like to log in or continue as public?
+            Would you like to log in or continue as a guest?
           </Modal.Title>
         </Modal.Header>
         <Modal.Footer>
