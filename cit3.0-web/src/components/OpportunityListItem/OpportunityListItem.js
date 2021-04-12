@@ -72,7 +72,7 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
     <div key={opportunity.id} className="opportunity-table-row w-100">
       <Row
         className={publicView ? "nested-link" : ""}
-        onClick={() => history.push(opportunity.link)}
+        onClick={() => !!publicView && history.push(opportunity.link)}
       >
         <Col>
           <div
