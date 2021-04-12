@@ -210,7 +210,6 @@ export default function citHome() {
             Would you like to log in or continue as public?
           </Modal.Title>
         </Modal.Header>
-        {/* <Modal.Body>{body}</Modal.Body> */}
         <Modal.Footer>
           <SharedButton
             label="Continue as Public"
