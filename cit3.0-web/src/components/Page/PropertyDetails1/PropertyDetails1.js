@@ -59,9 +59,23 @@ export default function PropertyDetails1() {
     });
   }
   // Select states
-  const preferred = useSelector(
-    (state) => state.opportunity.userInfo.preferredDevelopment.value
-  );
+  const preferred = useSelector((state) => {
+    let result = state.opportunity.userInfo.preferredDevelopment.value;
+    if (
+      Array.isArray(state.opportunity.userInfo.preferredDevelopment.value) &&
+      typeof state.opportunity.userInfo.preferredDevelopment.value[0] !==
+        "object"
+    ) {
+      result = state.opportunity.userInfo.preferredDevelopment.value.map(
+        (item) => {
+          let found = {};
+          found = developmentOptions.find((dev) => dev.value === item);
+          return found;
+        }
+      );
+    }
+    return result;
+  });
   const saleOrLease = useSelector((state) => {
     const { value } = state.opportunity.userInfo.saleOrLease;
     const index = PropStatusOptions.findIndex(
@@ -330,6 +344,7 @@ export default function PropertyDetails1() {
             <Row>
               <Select
                 isMulti
+                defaultValue={preferred}
                 aria-labelledby="preferred-dev-label"
                 value={preferred}
                 onChange={(value) =>

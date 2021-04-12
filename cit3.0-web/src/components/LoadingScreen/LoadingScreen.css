@@ -1,0 +1,10 @@
+.spinner-container {
+    height: 50vh; 
+    padding: 2em;
+    color: #494949;
+    border: 2px solid #244278;
+}
+
+.bc-spinner {
+    color: #244278;
+}

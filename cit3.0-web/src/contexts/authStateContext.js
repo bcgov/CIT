@@ -23,7 +23,6 @@ const AuthStateContextProvider = ({ children }) => {
           .then((user) => {
             setUserInfo(user);
             getUser({ email: user.email }).then((existingUser) => {
-              console.log(existingUser);
               if (existingUser.data.length) {
                 dispatch(setUser(existingUser.data[0]));
               } else {

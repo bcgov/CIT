@@ -263,10 +263,10 @@ class Opportunity(models.Model):
                                                       db_column="nearest_customs_port_of_entry",
                                                       blank=True,
                                                       null=True)
-    nearest_research_center = models.ForeignKey(ResearchCentreDistance,
-                                                related_name="research_center",
+    nearest_research_centre = models.ForeignKey(ResearchCentreDistance,
+                                                related_name="research_centre",
                                                 on_delete=models.SET_NULL,
-                                                db_column="nearest_research_center",
+                                                db_column="nearest_research_centre",
                                                 blank=True,
                                                 null=True)
     nearest_health_center = models.ForeignKey(HospitalDistance,
@@ -313,7 +313,7 @@ class Opportunity(models.Model):
     parcel_ownership = models.TextField(blank=True, null=True)
     parcel_size = models.DecimalField(max_digits=15, decimal_places=3, blank=True, null=True)
     pid = models.TextField(blank=True, null=True)
-    parcel_geometry = models.PolygonField(srid=WGS84_SRID, null=True)
+    parcel_geometry = models.GeometryField(srid=WGS84_SRID, null=True)
     # Physical
     geo_position = models.PointField(srid=WGS84_SRID, null=False, blank=False)
     elevation_at_location = models.DecimalField(max_digits=7,

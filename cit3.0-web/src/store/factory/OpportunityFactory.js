@@ -283,6 +283,11 @@ function createStateFromResponse(response) {
   });
   model.createLink();
   model.PID = response.pid;
+  model.nearGround = [
+    response.soil_name,
+    response.soil_texture,
+    response.soil_drainage,
+  ].join(", ");
   model.parcelGeometry =
     response.parcel_geometry &&
     wktToGeoJSON(response.parcel_geometry.split("SRID=4326;")[1]).coordinates;
