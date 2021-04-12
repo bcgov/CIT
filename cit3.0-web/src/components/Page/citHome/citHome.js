@@ -202,10 +202,9 @@ export default function citHome() {
       <Modal
         show={show}
         onHide={handleClose}
-        backdrop="static"
         keyboard={false}
       >
-        <Modal.Header>
+        <Modal.Header closeButton>
           <Modal.Title>
             Would you like to log in or continue as public?
           </Modal.Title>
