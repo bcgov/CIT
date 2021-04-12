@@ -5,3 +5,7 @@
 .mb-6 {
     margin: 0 0 2.5rem 0;
 }
+
+.link {
+    word-break: break-all;
+}
