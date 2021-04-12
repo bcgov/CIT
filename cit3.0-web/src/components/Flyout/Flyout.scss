@@ -9,18 +9,18 @@
 
     .content {
       overflow: auto;
-      padding: 1rem;
+      margin: 1rem;
     }
   }
   
   #sidebar-button-area { 
-    flex-grow: 1;
+    flex: 0 1 20%;
+    &.open {
+      flex: 0 1 0%;
+    }
     .icon { 
-      padding-left: 0;
+      margin-left: 0;
       z-index: 5;
-      line-height: 4rem; 
-      font-size: 3rem;
-      text-align: center; 
       user-select: none; 
       padding-top: 2vh;
       transition: visibility 5s, display 5s;
@@ -39,12 +39,8 @@
       .bcgov-normal-white {
         background-color: #F2F1F1;
         color:#606060;
-        width: 100px;
-        min-width: 100px;
-        height: 80px;
-        min-height: 80px;
         font-weight: bold;
-        border-width: 2px;
+        text-decoration: underline;
       }
     }
 
@@ -91,5 +87,8 @@
   }
 
   .children {
-    width: 100%;
+    flex: 0 1 80%;
+    &.open {
+      flex: 0 1 100%;
+    }
   }

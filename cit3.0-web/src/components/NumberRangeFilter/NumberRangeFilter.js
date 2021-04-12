@@ -22,8 +22,8 @@ export default function NumberRangeFilter(props) {
     setDisplayRange,
   } = props;
   const [show, setShow] = useState(false);
-  const [minInput, setMinInput] = useState(inputRange.min);
-  const [maxInput, setMaxInput] = useState(inputRange.max);
+  const [minInput, setMinInput] = useState(String(inputRange.min));
+  const [maxInput, setMaxInput] = useState(String(inputRange.max));
   const [validMax, setValidMax] = useState(true);
   const [validMin, setValidMin] = useState(true);
   const [isModified, setIsModified] = useState(false);
@@ -46,14 +46,20 @@ export default function NumberRangeFilter(props) {
     setValidMin(true);
     setValidMax(true);
     setIsModified(false);
+    setIsSelected(false);
+    setShow(false);
+    setDisplayRange({
+      min: inputRangeMin,
+      max: inputRangeMax,
+    });
   };
   const handleShow = () => setShow(true);
   const handleClose = () => {
     setShow(false);
     // Reset values to previous state
     setInputRangeValue({ ...displayRange });
-    setMaxInput(displayRange.max);
-    setMinInput(displayRange.min);
+    setMaxInput(String(displayRange.max));
+    setMinInput(String(displayRange.min));
     setValidMin(true);
     setValidMax(true);
   };
@@ -111,7 +117,7 @@ export default function NumberRangeFilter(props) {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            label="Reset"
+            label="Remove filter"
             styling="bcgov-normal-white mr-auto modal-reset-button btn"
             onClick={handleClear}
           />
