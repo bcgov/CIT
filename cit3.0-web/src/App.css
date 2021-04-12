@@ -97,3 +97,9 @@ div.bordered-light {
   height: 80vh;
 }
 
+@media print {
+  .no-print {
+    display: none;
+  }
+}
+

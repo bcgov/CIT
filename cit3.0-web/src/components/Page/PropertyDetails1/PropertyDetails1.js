@@ -60,8 +60,12 @@ export default function PropertyDetails1() {
   }
   // Select states
   const preferred = useSelector((state) => {
-    let result = [];
-    if (Array.isArray(state.opportunity.userInfo.preferredDevelopment.value)) {
+    let result = state.opportunity.userInfo.preferredDevelopment.value;
+    if (
+      Array.isArray(state.opportunity.userInfo.preferredDevelopment.value) &&
+      typeof state.opportunity.userInfo.preferredDevelopment.value[0] !==
+        "object"
+    ) {
       result = state.opportunity.userInfo.preferredDevelopment.value.map(
         (item) => {
           let found = {};

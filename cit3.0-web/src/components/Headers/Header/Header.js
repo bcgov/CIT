@@ -47,7 +47,7 @@ const Header = () => {
         </Navbar>
       </header>
       {keycloak.obj.authenticated ? (
-        <div className="navigation-container">
+        <div className="navigation-container no-print">
           {keycloak.hasRole([Roles.ECONOMIC_DEVELOPMENT_OFFICER]) && (
             <Button
               variant="link"

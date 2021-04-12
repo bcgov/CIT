@@ -6,6 +6,7 @@ import OpportunityMapContainer from "../../OpportunityDisplayMap/OpportunityMapC
 import Flyout from "../../Flyout/Flyout";
 import SearchFlyoutContent from "../../SearchFlyoutContent/SearchFlyoutContent";
 import { GET_OPPORTUNITIES_LIST_URL } from "../../../store/constants/api-urls";
+import FooterLinks from "../../FooterLinks/FooterLinks";
 
 export default function InvestorMainView() {
   const [totalCount, setTotalCount] = useState(0);
@@ -72,6 +73,7 @@ export default function InvestorMainView() {
           </Row>
         </Container>
       </Flyout>
+      <FooterLinks type="search-page" />
     </div>
   );
 }
