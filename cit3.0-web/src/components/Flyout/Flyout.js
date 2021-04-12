@@ -38,7 +38,7 @@ export default function Flyout(props) {
               <Col>
                 <Button
                   onClick={toggleSidebar}
-                  label="<< Open filter panel"
+                  label="Open filter panel >>"
                   styling="bcgov-normal-white"
                 />
               </Col>
