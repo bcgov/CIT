@@ -69,7 +69,7 @@ function displayResources(resources) {
     switch (resource[1].type) {
       case "link":
         element = (
-          <span className="ml-2">
+          <span className="ml-2 link">
             <a
               target="_blank"
               rel="noreferrer"
