@@ -35,8 +35,10 @@ def import_resource(resource_type):
 
     # TODO SY - move this into constants?
     location_csv_resources = [
-        "first_responders", "diagnostic_facilities", "timber_facilities", "civic_facilities",
-        "closed_mills", "airports"
+        'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities',
+        'closed_mills', 'airports', 'port_and_terminal', 'eao_projects', 'laboratory_service',
+        'local_govt_offices', 'emergency_social_service_facilities', 'natural_resource_projects',
+        'customs_ports_of_entry', 'pharmacies', 'public_library', 'first_nations_health_authority'
     ]
     bca_resources = [
         'bc_assessment_census_subdivision', 'bc_assessment_economic_region',
@@ -59,7 +61,7 @@ def import_resource(resource_type):
         for row in data:
             model_class = apps.get_model("pipeline", data_source.model_name)
             import_data_into_point_model(resource_type, model_class, row)
-        calculate_nearest_location_type_outside_50k(resource_type)
+        # calculate_nearest_location_type_outside_50k(resource_type)
     else:
         print("Error: Resource type {} not supported".format(resource_type))
 
