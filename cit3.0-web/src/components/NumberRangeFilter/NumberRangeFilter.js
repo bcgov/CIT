@@ -26,13 +26,12 @@ export default function NumberRangeFilter(props) {
   const [maxInput, setMaxInput] = useState(String(inputRange.max));
   const [validMax, setValidMax] = useState(true);
   const [validMin, setValidMin] = useState(true);
-  const [isModified, setIsModified] = useState(false);
 
   const inputRangeMax = initialInputRangeValues.max;
   const inputRangeMin = initialInputRangeValues.min;
 
   const handleSave = () => {
-    setIsSelected(isModified);
+    setIsSelected(true);
     setShow(false);
     setDisplayRange({
       min: inputRangeValue.min,
@@ -45,7 +44,6 @@ export default function NumberRangeFilter(props) {
     setMinInput(String(inputRangeMin));
     setValidMin(true);
     setValidMax(true);
-    setIsModified(false);
     setIsSelected(false);
     setShow(false);
     setDisplayRange({
@@ -62,11 +60,6 @@ export default function NumberRangeFilter(props) {
     setMinInput(String(displayRange.min));
     setValidMin(true);
     setValidMax(true);
-  };
-
-  const handleModified = (value, setStateFunction) => {
-    setIsModified(true);
-    setStateFunction(value);
   };
 
   return (
@@ -102,13 +95,11 @@ export default function NumberRangeFilter(props) {
             inputRange={inputRange}
             units={units}
             minInput={minInput}
-            setMinInput={(value) => handleModified(value, setMinInput)}
+            setMinInput={(value) => setMinInput(value)}
             maxInput={maxInput}
-            setMaxInput={(value) => handleModified(value, setMaxInput)}
+            setMaxInput={(value) => setMaxInput(value)}
             inputRangeValue={inputRangeValue}
-            setInputRangeValue={(value) =>
-              handleModified(value, setInputRangeValue)
-            }
+            setInputRangeValue={(value) => setInputRangeValue(value)}
             validMax={validMax}
             validMin={validMin}
             setValidMax={setValidMax}
