@@ -32,3 +32,12 @@ code {
   position: absolute;
   right: 10000px;
 }
+
+.nested-link:hover {
+  cursor: pointer;
+}
+
+.nested-link:hover a {
+  color: #0631f3;
+  text-decoration: underline;
+}
