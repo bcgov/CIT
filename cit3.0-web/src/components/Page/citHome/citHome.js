@@ -36,8 +36,6 @@ export default function citHome() {
       setPlaces([...commNames, ...regNames]);
     });
   }, []);
-  console.log(loggedIn);
-
   const typeOfSelected = (place) => {
     if (communities.find((c) => c === place)) {
       return "community";
