@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { Marker, Popup } from "react-leaflet";
+import { Marker, Tooltip } from "react-leaflet";
 import { v4 } from "uuid";
 import OpportunityFactory from "../../store/factory/OpportunityFactory";
 
@@ -8,8 +8,16 @@ export default function OpportunitiesMarker({ opportunities }) {
     opps.map((opp) => {
       const opportunity = OpportunityFactory.createStateFromResponse(opp);
       return (
-        <Marker key={v4()} position={opportunity.coords}>
-          <Popup>{opportunity.address}</Popup>
+        <Marker
+          key={v4()}
+          position={opportunity.coords}
+          eventHandlers={{
+            click: () => {
+              window.open(opportunity.link, "_blank");
+            },
+          }}
+        >
+          <Tooltip>{opportunity.address}</Tooltip>
         </Marker>
       );
     });
