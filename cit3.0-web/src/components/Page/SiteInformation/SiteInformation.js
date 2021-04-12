@@ -21,11 +21,9 @@ export default function SiteInformation({ location }) {
       <NavigationHeader currentStep={2} />
       <Container className="p-0 mt-3">
         <Alert
-          icon={<MdError size={32} />}
           type="warning"
           styling="bcgov-warning-background"
-          element="This shows you all the information we could collect from many open
-        source BC Gov. databases"
+          element="Proximity (distance to) information is populated from available B.C. Open Data sources and cannot be edited. Data is presented for reference use only. All information should be verified independently before being used or relied upon. The Province of British Columbia does not guarantee the quality, accuracy, completeness or timeliness of this information."
         />
       </Container>
       <OpportunityView data={location.state} />
