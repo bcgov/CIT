@@ -878,3 +878,21 @@ class PublicLibrary(Location):
 
     class Meta:
         ordering = ("id", )
+
+
+class FirstNationsHealthAuthoritySite(Location):
+    LATITUDE_FIELD = 'Y'
+    LONGITUDE_FIELD = 'X'
+    NAME_FIELD = 'location'
+
+    address = models.CharField(null=True, blank=True, max_length=255)
+    circuit_details_1 = models.CharField(null=True, blank=True, max_length=255)
+    circuit_vendor_1 = models.CharField(null=True, blank=True, max_length=255)
+    circuit_details_2 = models.CharField(null=True, blank=True, max_length=255)
+    circuit_vendor_2 = models.CharField(null=True, blank=True, max_length=255)
+    circuit_details_3 = models.CharField(null=True, blank=True, max_length=255)
+    circuit_vendor_4 = models.CharField(null=True, blank=True, max_length=255)
+    comments = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id", )

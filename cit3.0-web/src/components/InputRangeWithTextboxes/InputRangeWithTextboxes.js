@@ -49,34 +49,36 @@ export default function InputRangeWithTextboxes(props) {
   };
 
   const updateMax = (name, newMax) => {
-    const newMaxSubstring = newMax.substring(0, 8);
-    if (!Number.isNaN(Number(newMaxSubstring))) {
-      setMaxInput(Number(newMaxSubstring));
-      if (validate(name, Number(newMaxSubstring))) {
-        setValidMax(true);
-        setInputRangeValue({
-          min: inputRangeValue.min,
-          max: Number(newMaxSubstring),
-        });
-      } else {
-        setValidMax(false);
-      }
+    let newMaxSubstring = newMax.substring(0, 8);
+    if (newMaxSubstring === "") {
+      newMaxSubstring = "0";
+    }
+    setMaxInput(newMaxSubstring);
+    if (validate(name, Number(newMaxSubstring))) {
+      setValidMax(true);
+      setInputRangeValue({
+        min: inputRangeValue.min,
+        max: Number(newMaxSubstring),
+      });
+    } else {
+      setValidMax(false);
     }
   };
 
   const updateMin = (name, newMin) => {
-    const newMinSubstring = newMin.substring(0, 8);
-    if (!Number.isNaN(Number(newMinSubstring))) {
-      setMinInput(Number(newMinSubstring));
-      if (validate(name, Number(newMinSubstring))) {
-        setValidMin(true);
-        setInputRangeValue({
-          min: Number(newMinSubstring),
-          max: inputRangeValue.max,
-        });
-      } else {
-        setValidMin(false);
-      }
+    let newMinSubstring = newMin.substring(0, 8);
+    if (newMinSubstring === "") {
+      newMinSubstring = "0";
+    }
+    setMinInput(newMinSubstring);
+    if (validate(name, Number(newMinSubstring))) {
+      setValidMin(true);
+      setInputRangeValue({
+        min: Number(newMinSubstring),
+        max: inputRangeValue.max,
+      });
+    } else {
+      setValidMin(false);
     }
   };
 
@@ -92,8 +94,8 @@ export default function InputRangeWithTextboxes(props) {
     }
 
     setInputRangeValue(updatedValue);
-    setMinInput(updatedValue.min);
-    setMaxInput(updatedValue.max);
+    setMinInput(String(updatedValue.min));
+    setMaxInput(String(updatedValue.max));
     setValidMin(true);
     setValidMax(true);
   };
@@ -147,9 +149,9 @@ InputRangeWithTextboxes.propTypes = {
     max: PropTypes.number.isRequired,
   }).isRequired,
   units: PropTypes.string.isRequired,
-  minInput: PropTypes.number.isRequired,
+  minInput: PropTypes.string.isRequired,
   setMinInput: PropTypes.func.isRequired,
-  maxInput: PropTypes.number.isRequired,
+  maxInput: PropTypes.string.isRequired,
   setMaxInput: PropTypes.func.isRequired,
   inputRangeValue: PropTypes.shape({
     min: PropTypes.number.isRequired,

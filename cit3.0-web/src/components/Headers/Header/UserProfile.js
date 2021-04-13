@@ -24,9 +24,6 @@ const UserProfile = () => {
 
   return (
     <>
-      <NavLink to="/dashboard">
-        <Image className="avatar" src="/images/profile.svg" rounded />
-      </NavLink>
       <div
         className="dropdown-style px-0"
         title={displayName}

@@ -38,8 +38,8 @@ export default function SelectFilter(props) {
     return allSelectedFilterLabels.join(", ");
   };
 
-  const createFilterString = () => {
-    const allSelectedFilters = filters.filter(
+  const createFilterString = (currentFilters) => {
+    const allSelectedFilters = currentFilters.filter(
       (filter) => filter.isSelected === true
     );
 
@@ -67,7 +67,7 @@ export default function SelectFilter(props) {
     } else {
       setIsSelected(false);
     }
-    setQueryFilters(createFilterString());
+    setQueryFilters(createFilterString(filters));
     setShow(false);
   };
   const handleClear = () => {
@@ -77,6 +77,10 @@ export default function SelectFilter(props) {
     }));
 
     setFilters(clearedFilters);
+
+    setIsSelected(false);
+    setQueryFilters(createFilterString(clearedFilters));
+    setShow(false);
   };
 
   const toggleFilter = (filterLabel) => {
@@ -145,7 +149,7 @@ export default function SelectFilter(props) {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            label="Reset"
+            label="Remove filter"
             styling="bcgov-normal-white mr-auto modal-reset-button btn"
             onClick={handleClear}
           />
