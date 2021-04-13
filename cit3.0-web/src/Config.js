@@ -2,9 +2,9 @@ const Config = process.env.NODE_ENV
   ? {
       apiUrl: process.env.REACT_APP_API_BASE_URL,
       keycloakConfig: {
-        url: process.env.REACT_APP_KEY_CLOAK_URL,
-        realm: process.env.REACT_APP_KEY_CLOAK_REALM,
-        clientId: process.env.REACT_APP_KEY_CLOAK_CLIENT,
+        url: process.env.REACT_APP_KEYCLOAK_URL,
+        realm: process.env.REACT_APP_KEYCLOAK_REALM,
+        clientId: process.env.REACT_APP_KEYCLOAK_CLIENT,
       },
       snowplowUrl: process.env.REACT_APP_SNOWPLOW_COLLECTOR,
       geocoderKey: process.env.REACT_APP_GEOCODER_API_KEY,
