@@ -36,15 +36,6 @@ export default function citHome() {
       setPlaces([...commNames, ...regNames]);
     });
   }, []);
-  const typeOfSelected = (place) => {
-    if (communities.find((c) => c === place)) {
-      return "community";
-    }
-    if (regional.find((r) => r === place)) {
-      return "regionalDistrict";
-    }
-    return null;
-  };
 
   const typeOfSelected = (place) => {
     if (communities.find((c) => c === place)) {
