@@ -74,17 +74,23 @@ export default function AddOpportunity() {
   };
   const handleShow = () => setShow(true);
 
+  const closeModalAndContinue = () => {
+    handleClose();
+    history.push(`/opportunity/site-info`);
+  };
+
   useEffect(() => {
     if (hasApproval === "Yes" && agreed) {
       setError([]);
+      // Data is prepared, continue to next page
       if (changePage && !proximityInProgress) {
-        handleClose();
-        history.push(`/opportunity/site-info`);
+        closeModalAndContinue();
       }
     }
   }, [changePage, proximityInProgress]);
 
   const goToNextPage = () => {
+    setChangePage(false);
     handleShow();
     setError([]);
     let errors = [];
@@ -105,6 +111,8 @@ export default function AddOpportunity() {
     }
     if (agreed && !error.length) {
       setChangePage(true);
+    } else if (hasApproval === "Yes" && agreed) {
+      closeModalAndContinue();
     }
   };
 

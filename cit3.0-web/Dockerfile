@@ -12,6 +12,9 @@ RUN yarn install --frozen-lockfile
 
 COPY . .
 
+# Issue with babel mismatch in dependency
+ENV SKIP_PREFLIGHT_CHECK=true
+
 RUN yarn build
 
 FROM nginx
