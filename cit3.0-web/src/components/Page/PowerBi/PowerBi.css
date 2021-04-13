@@ -1,0 +1,8 @@
+.report-style-class{
+    width: 100%;
+    height: 90vh;
+}
+
+.report-style-class iframe {
+    border: none;
+}

@@ -24,8 +24,8 @@ export default function citHome() {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-  const publicUrl = "/community-insights/public/";
-  const privateUrl = "/community-insights/private/";
+  const publicUrl = "/community-insights/public";
+  const privateUrl = "/community-insights/private";
 
   useEffect(() => {
     axios.get("/api/opportunity/options").then((data) => {
@@ -46,13 +46,23 @@ export default function citHome() {
     return null;
   };
 
+  const typeOfSelected = (place) => {
+    if (communities.find((c) => c === place)) {
+      return "community";
+    }
+    if (regional.find((r) => r === place)) {
+      return "regionalDistrict";
+    }
+    return null;
+  };
+
   useEffect(() => {
     let type;
     if (selectedPlace) {
       type = typeOfSelected(selectedPlace);
     }
     if (selectedPlace && loggedIn) {
-      history.push(`${privateUrl}${type}=${selectedPlace}`);
+      history.push(`${privateUrl}?${type}=${selectedPlace}`);
     } else if (selectedPlace && !loggedIn) {
       handleShow();
     }
@@ -69,7 +79,7 @@ export default function citHome() {
   const handlePublic = () => {
     if (selectedPlace) {
       const type = typeOfSelected(selectedPlace);
-      history.push(`${publicUrl}${type}=${selectedPlace}`);
+      history.push(`${publicUrl}?${type}=${selectedPlace}`);
     } else {
       history.push(publicUrl);
     }
@@ -81,7 +91,7 @@ export default function citHome() {
       const type = typeOfSelected(selectedPlace);
       keycloak.obj.login({
         redirectUri: encodeURI(
-          `${configuration.baseUrl}${privateUrl}${type}=${selectedPlace}`
+          `${configuration.baseUrl}${privateUrl}?${type}=${selectedPlace}`
         ),
       });
     } else {
