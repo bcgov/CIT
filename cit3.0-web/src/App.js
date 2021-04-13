@@ -203,7 +203,13 @@ function App() {
                   component={OpportunityDeletePage}
                 />
                 <AppRoute
-                  path="/community-insights/public"
+                  protected
+                  path="/community-insights/private"
+                  layout={AuthLayout}
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                  ]}
                   component={PowerBi}
                 />
                 <AppRoute
