@@ -19,6 +19,29 @@ export default function PowerBi(props) {
   const [community, setCommunity] = useState(
     new URLSearchParams(search).get("community")
   );
+  const [regionalDistrict, setRegionalDistrict] = useState(
+    new URLSearchParams(search).get("regionalDistrict")
+  );
+
+  const filter = community
+    ? {
+        $schema: "http://powerbi.com/product/schema#basic",
+        target: {
+          table: "public pipeline_community",
+          column: "Community Name",
+        },
+        operator: "In",
+        values: [community],
+      }
+    : {
+        $schema: "http://powerbi.com/product/schema#basic",
+        target: {
+          table: "public pipeline_regionaldistrict",
+          column: "Regional District",
+        },
+        operator: "In",
+        values: [regionalDistrict],
+      };
 
   useEffect(() => {
     axios
@@ -65,7 +88,7 @@ export default function PowerBi(props) {
     <>
       <PowerBIEmbed
         embedConfig={{
-          type: "report", // Supported types: report, dashboard, tile, visual and qna
+          type: "report",
           id: reportConfig.id,
           embedUrl: reportConfig.embedUrl,
           accessToken: embedToken,
@@ -88,7 +111,6 @@ export default function PowerBi(props) {
             [
               "loaded",
               function () {
-                console.log("Report loaded");
                 window.report
                   .getPages("Communities Overview")
                   .then((data) => {
@@ -100,18 +122,9 @@ export default function PowerBi(props) {
                       window.report
                         .setPage(commReport[0].name)
                         .catch((err) => console.log("setpage error:", err));
-                      const filter = {
-                        $schema: "http://powerbi.com/product/schema#basic",
-                        target: {
-                          table: "public pipeline_community",
-                          column: "Community Name",
-                        },
-                        operator: "In",
-                        values: [community],
-                      };
+
                       window.report
                         .setFilters([filter])
-                        .then((data1) => console.log(data1))
                         .catch((err) => console.log("error: ", err));
                       window.report.refresh();
                     }
@@ -120,30 +133,17 @@ export default function PowerBi(props) {
               },
             ],
             [
-              "rendered",
-              function () {
-                console.log("Report rendered");
-              },
-            ],
-            [
               "error",
               function (event) {
                 console.log("ERROR:::", event.detail);
-              },
-            ],
-            [
-              "pageChanged",
-              function (event) {
-                // const pageName = event.detail.newPage.displayName;
-                // console.log(event.detail);
               },
             ],
           ])
         }
         // // Add CSS classes to the div element
         cssClassName="report-style-class"
+        // set report object
         getEmbeddedComponent={(embeddedReport) => {
-          console.log("getreport");
           window.report = embeddedReport;
         }}
       />
