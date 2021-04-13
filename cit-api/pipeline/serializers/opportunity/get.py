@@ -63,6 +63,7 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
             "parcel_ownership",
             "parcel_size",
             "pid",
+            "user_id",
             "parcel_geometry",
             "elevation_at_location",
             "soil_name",
