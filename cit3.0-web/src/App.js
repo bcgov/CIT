@@ -202,7 +202,7 @@ function App() {
                   layout={AuthLayout}
                   component={OpportunityDeletePage}
                 />
-                 <AppRoute
+                <AppRoute
                   protected
                   path="/community-insights/private"
                   layout={AuthLayout}
