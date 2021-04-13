@@ -48,9 +48,6 @@ const OpportunityApprovalItem = ({ opportunity }) => {
             </Col>
           </Row>
           <Row>
-            <Col sm={3} md={3} lg={3}>
-              &nbsp;
-            </Col>
             {opportunity.privateNote ? (
               <Col className="pl-0">
                 <b className="note-title">
