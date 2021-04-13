@@ -347,6 +347,7 @@ class OpportunitySerializer(serializers.ModelSerializer):
         instance.pid = validated_data.get('pid', instance.pid)
         instance.private_note = validated_data.get('private_note', instance.private_note)
         instance.public_note = validated_data.get('public_note', instance.public_note)
+        instance.last_admin = validated_data.get('last_admin', instance.last_admin)
         instance.regional_district_id = validated_data.get('regional_district_id', instance.regional_district_id)
         instance.soil_drainage = validated_data.get('soil_drainage', instance.soil_drainage)
         instance.soil_name = validated_data.get('soil_name', instance.soil_name)

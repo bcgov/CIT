@@ -25,3 +25,4 @@ export const ADD_SALE_PRICE = "ADD_SALE_PRICE";
 export const ADD_NAME = "ADD_NAME";
 export const ADD_SERVICE = "ADD_SERVICE";
 export const ADD_SERVICE_CAPACITY = "ADD_USER_INFO_CAPACITY";
+export const ADD_LAST_ADMIN = "ADD_LAST_ADMIN";
