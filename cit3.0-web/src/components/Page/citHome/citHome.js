@@ -199,11 +199,7 @@ export default function citHome() {
         </Row>
       </Container>
 
-      <Modal
-        show={show}
-        onHide={handleClose}
-        keyboard={false}
-      >
+      <Modal show={show} onHide={handleClose} keyboard={false}>
         <Modal.Header closeButton>
           <Modal.Title>
             Would you like to log in or continue as a guest?
