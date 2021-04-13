@@ -65,6 +65,7 @@ export default function AddOpportunity() {
   // Handle ProximityData call still running and change of page
   const [proximityInProgress, setProximityInProgress] = useState(false);
   const [changePage, setChangePage] = useState(false);
+  const [localityName, setLocalityName] = useState("Your Community");
 
   // Handle Modal if proximity data is still loading
   const [show, setShow] = useState(false);
@@ -89,6 +90,12 @@ export default function AddOpportunity() {
     }
   }, [changePage, proximityInProgress]);
 
+  useEffect(() => {
+    if (municipality) {
+      setLocalityName(municipality);
+    }
+  }, [municipality]);
+
   const goToNextPage = () => {
     setChangePage(false);
     handleShow();
@@ -97,7 +104,7 @@ export default function AddOpportunity() {
     if (!address) {
       errors = [
         ...errors,
-        "This opportunity has no address associated with it.",
+        "This opportunity has no address or parcel associated with it.",
       ];
       setError(errors);
     }
@@ -294,6 +301,7 @@ export default function AddOpportunity() {
               <Col>
                 <AddressSearchBar
                   setAddress={(addy) => dispatch(setAddress(addy))}
+                  setLocalityName={(name) => setLocalityName(name)}
                   getCoords={getCoords}
                   handleError={handleError}
                   currentAddress={address}
@@ -332,9 +340,9 @@ export default function AddOpportunity() {
                         <>
                           <PropertyInfo info="This land parcel or development opportunity resides on private land." />
                           <PropertyInfo
-                            info={`As a rep from ${
-                              municipality || "Your Community"
-                            } do you have the approval from the land owner to promote this investment opportunity?`}
+                            info={`As a representative from ${
+                              localityName || "Your Community"
+                            }, do you have the approval from the land owner to promote this investment opportunity?`}
                           />
                           <Col>
                             <Radios

@@ -8,6 +8,7 @@ export default function AddressSearchBar({
   setAddress,
   currentAddress,
   getCoords,
+  setLocalityName,
   handleError,
 }) {
   const [addresses, setAddresses] = useState([]);
@@ -21,6 +22,7 @@ export default function AddressSearchBar({
     try {
       const addressData = await getAddressData(event.target.value);
       setAddresses(addressData.data.features);
+      setLocalityName(addressData.data.features[0].properties.localityName);
       return true;
     } catch (error) {
       setShow(false);
@@ -102,5 +104,6 @@ AddressSearchBar.propTypes = {
   setAddress: PropTypes.func.isRequired,
   getCoords: PropTypes.func.isRequired,
   handleError: PropTypes.func.isRequired,
+  setLocalityName: PropTypes.func.isRequired,
   currentAddress: PropTypes.string,
 };
