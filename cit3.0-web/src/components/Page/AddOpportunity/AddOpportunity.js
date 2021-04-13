@@ -33,6 +33,7 @@ import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 
 export default function AddOpportunity() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const editing = useSelector((state) => state.opportunity.editing);
   const address = useSelector((state) => state.opportunity.address);
   const coords = useSelector((state) => state.opportunity.coords);
@@ -73,15 +74,13 @@ export default function AddOpportunity() {
   };
   const handleShow = () => setShow(true);
 
-  const history = useHistory();
-
   useEffect(() => {
     if (hasApproval === "Yes" && agreed) {
       setError([]);
-    }
-    if (changePage && !proximityInProgress) {
-      handleClose();
-      history.push(`/opportunity/site-info`);
+      if (changePage && !proximityInProgress) {
+        handleClose();
+        history.push(`/opportunity/site-info`);
+      }
     }
   }, [changePage, proximityInProgress]);
 
@@ -244,7 +243,7 @@ export default function AddOpportunity() {
       >
         {error.length ? (
           <>
-            <Modal.Header closeButton>
+            <Modal.Header>
               <Modal.Title>Warning</Modal.Title>
             </Modal.Header>
             <Modal.Body>
