@@ -18,6 +18,7 @@ import {
   setNotification,
   closeNotification,
 } from "../../../store/actions/notification";
+import sendAdminEmailNotification from "../../../store/actions/email";
 import { NOTIFICATION_ERROR } from "../../../store/constants/notification";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import { postUser } from "../../../store/actions/user";
@@ -40,7 +41,12 @@ const ReviewOpportunity = () => {
     dispatch(setOpportunityUser(user.id));
     dispatch(setApprovalStatus("NEW"));
     await postOpportunity(opportunityModel, keycloak.obj.token)
-      .then(() => {
+      .then((response) => {
+        sendAdminEmailNotification(response.data.id, keycloak.obj.token)
+          .then(() => {})
+          .catch((e) => {
+            console.log(e);
+          });
         dispatch(resetOpportunity());
         dispatch(closeNotification());
         history.push("/opportunity/success");

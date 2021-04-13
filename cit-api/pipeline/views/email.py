@@ -2,11 +2,9 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-#from pipeline.serializers.email import EmailSerializer
 from pipeline.permissions.IsAuthenticated import IsAuthenticated
 
 class EmailView(APIView):
- #   serializer_class = EmailSerializer
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -18,5 +16,3 @@ class EmailView(APIView):
             return Response("Email sent successfully for opportunity ID " + str(request_body.get("id")), status=status.HTTP_200_OK)
         else:
             return Response("An opportunity id is required", status=status.HTTP_400_BAD_REQUEST)
-
-
