@@ -5,7 +5,7 @@ import { Button } from "shared-components";
 import "./Flyout.scss";
 
 export default function Flyout(props) {
-  const [leftOpenState, setLeftOpenState] = useState(false);
+  const [leftOpenState, setLeftOpenState] = useState(true);
 
   const { children, flyoutComponent: FlyoutComponent, flyoutProps } = props;
 
@@ -22,7 +22,7 @@ export default function Flyout(props) {
             <Button
               onClick={toggleSidebar}
               label="<< Close filter panel"
-              styling="bcgov-normal-blue close-panel-button btn"
+              styling="btn bcgov-normal-blue close-panel-button btn"
             />
           </div>
           <div className="content">
@@ -31,14 +31,14 @@ export default function Flyout(props) {
         </div>
       </div>
 
-      <div id="sidebar-button-area">
+      <div id="sidebar-button-area" className={`${leftOpen}`}>
         <Container fluid>
           <Row>
             <div className={`icon ${leftOpen}`}>
               <Col>
                 <Button
                   onClick={toggleSidebar}
-                  label=">>"
+                  label="Open filter panel >>"
                   styling="bcgov-normal-white"
                 />
               </Col>
@@ -46,7 +46,7 @@ export default function Flyout(props) {
           </Row>
         </Container>
       </div>
-      <div className="children">{children}</div>
+      <div className={`children ${leftOpen}`}>{children}</div>
     </div>
   );
 }

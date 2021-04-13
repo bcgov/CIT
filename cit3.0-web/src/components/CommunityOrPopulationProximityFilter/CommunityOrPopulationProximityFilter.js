@@ -28,8 +28,8 @@ export default function CommunityOrPopulationProximityFilter(props) {
     min: inputRange.min,
     max: inputRange.max,
   });
-  const [minInput, setMinInput] = useState(inputRange.min);
-  const [maxInput, setMaxInput] = useState(inputRange.max);
+  const [minInput, setMinInput] = useState(String(inputRange.min));
+  const [maxInput, setMaxInput] = useState(String(inputRange.max));
   const [validMax, setValidMax] = useState(true);
   const [validMin, setValidMin] = useState(true);
   const [
@@ -113,13 +113,19 @@ export default function CommunityOrPopulationProximityFilter(props) {
 
   const handleClear = () => {
     setInputRangeValue({ min: inputRangeMin, max: inputRangeMax });
-    setMaxInput(inputRangeMax);
-    setMinInput(inputRangeMin);
+    setMaxInput(String(inputRangeMax));
+    setMinInput(String(inputRangeMin));
     setValidMin(true);
     setValidMax(true);
     setCurrentCommunity(null);
     setCurrentPopulation(null);
     setIsModified(false);
+    setIsSelected(false);
+    setShow(false);
+    setDisplayRange({
+      min: inputRangeMin,
+      max: inputRangeMax,
+    });
   };
   const handleShow = () => {
     setShow(true);
@@ -129,8 +135,8 @@ export default function CommunityOrPopulationProximityFilter(props) {
   const handleClose = () => {
     setShow(false);
     setInputRangeValue({ ...displayRange });
-    setMaxInput(displayRange.max);
-    setMinInput(displayRange.min);
+    setMaxInput(String(displayRange.max));
+    setMinInput(String(displayRange.min));
     setValidMin(true);
     setValidMax(true);
     setCurrentCommunity(currentCommunityOnOpen);
@@ -215,7 +221,7 @@ export default function CommunityOrPopulationProximityFilter(props) {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            label="Reset"
+            label="Remove filter"
             styling="bcgov-normal-white mr-auto modal-reset-button btn"
             onClick={handleClear}
           />
@@ -237,6 +243,11 @@ export default function CommunityOrPopulationProximityFilter(props) {
   );
 }
 
+CommunityOrPopulationProximityFilter.defaultProps = {
+  currentCommunity: null,
+  currentPopulation: null,
+};
+
 CommunityOrPopulationProximityFilter.propTypes = {
   inputRange: PropTypes.shape({
     min: PropTypes.number.isRequired,
@@ -254,8 +265,11 @@ CommunityOrPopulationProximityFilter.propTypes = {
   currentCommunity: PropTypes.shape({
     value: PropTypes.number.isRequired,
     label: PropTypes.string.isRequired,
-  }).isRequired,
+  }),
   setCurrentCommunity: PropTypes.func.isRequired,
-  currentPopulation: PropTypes.number.isRequired,
+  currentPopulation: PropTypes.shape({
+    value: PropTypes.number.isRequired,
+    label: PropTypes.string.isRequired,
+  }),
   setCurrentPopulation: PropTypes.func.isRequired,
 };

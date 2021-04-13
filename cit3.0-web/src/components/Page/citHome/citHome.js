@@ -17,7 +17,7 @@ export default function citHome() {
   const [regional, setRegional] = useState(null);
   const history = useHistory();
   const keycloak = useKeycloakWrapper();
-  const [loggedIn] = useState(!!keycloak.email);
+  const [loggedIn] = useState(keycloak.obj.authenticated);
   const configuration = useConfiguration();
   const [show, setShow] = useState(false);
 
@@ -200,15 +200,10 @@ export default function citHome() {
         </Row>
       </Container>
 
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header>
+      <Modal show={show} onHide={handleClose} keyboard={false}>
+        <Modal.Header closeButton>
           <Modal.Title>
-            Would you like to log in or continue as public?
+            Would you like to log in or continue as a guest?
           </Modal.Title>
         </Modal.Header>
         <Modal.Footer>

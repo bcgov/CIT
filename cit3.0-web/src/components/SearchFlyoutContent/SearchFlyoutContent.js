@@ -10,7 +10,7 @@ import "./SearchFlyoutContent.scss";
 
 export default function SearchFlyoutContent({ setQuery }) {
   const parcelSizeInitial = {
-    max: 250000,
+    max: 2000,
     min: 0,
   };
   const powerTransmissionLinesInitial = {
@@ -367,7 +367,7 @@ export default function SearchFlyoutContent({ setQuery }) {
       <h2>Filter your search</h2>
       <h3>General site details</h3>
       <NumberRangeFilter
-        inputRange={{ min: 0, max: 250000 }}
+        inputRange={{ min: 0, max: 2000 }}
         units="acres"
         description="Size of Property (in acres)"
         label="Parcel Size"
@@ -402,7 +402,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         setDisplayRange={setPowerTransmissionLinesDisplayRange}
       />
       <SelectFilter
-        label="Connectivity"
+        label="Connectivity Speed"
         filters={connectivityFilters}
         setFilters={setConnectivityFilters}
         isSelected={connectivityIsSelected}
