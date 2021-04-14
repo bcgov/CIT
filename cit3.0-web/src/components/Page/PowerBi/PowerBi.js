@@ -1,13 +1,14 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./PowerBi.css";
 import { PowerBIEmbed } from "powerbi-client-react";
 import { models } from "powerbi-client";
 import { useLocation } from "react-router-dom";
+import { Button } from "shared-components";
 
 export default function PowerBi(props) {
   const [currentPage, setCurrentPage] = useState(null);
-  // const [currentPageData, setCurrentPageData] = useState(null);
+  const [currentPageData, setCurrentPageData] = useState(null);
   const [token, setToken] = useState(null);
   const [reportConfig, setReportConfig] = useState(null);
 
@@ -24,8 +25,10 @@ export default function PowerBi(props) {
     new URLSearchParams(search).get("regionalDistrict")
   );
 
-  const filter = community
-    ? {
+  const filter = () => {
+    let result = null;
+    if (community) {
+      result = {
         $schema: "http://powerbi.com/product/schema#basic",
         target: {
           table: "public pipeline_community",
@@ -33,8 +36,9 @@ export default function PowerBi(props) {
         },
         operator: "In",
         values: [community],
-      }
-    : {
+      };
+    } else if (regionalDistrict) {
+      result = {
         $schema: "http://powerbi.com/product/schema#basic",
         target: {
           table: "public pipeline_regionaldistrict",
@@ -43,6 +47,9 @@ export default function PowerBi(props) {
         operator: "In",
         values: [regionalDistrict],
       };
+    }
+    return result;
+  };
 
   useEffect(() => {
     axios
@@ -52,14 +59,6 @@ export default function PowerBi(props) {
       })
       .catch((err) => console.error(err));
   }, []);
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`https://api.powerbi.com/v1.0/myorg/groups/${groupId}/reports`, {
-  //       headers: { Authorization: `Bearer ${token}` },
-  //     })
-  //     .then((data) => console.log(data.data));
-  // }, [token]);
 
   useEffect(() => {
     if (token) {
@@ -94,64 +93,17 @@ export default function PowerBi(props) {
     }
   }, [reportConfig]);
 
-  const [printConfig, setPrintConfig] = useState(null);
-  const [waiting, setWaiting] = useState(false);
-
   const saveAsPDF = () => {
-    console.log("currentPage: ", currentPage);
-    // axios
-    //   .post(
-    //     `https://api.powerbi.com/v1.0/myorg/groups/${groupId}/reports/${reportId}/ExportTo`,
-    //     {
-    //       format: "PDF",
-    //     },
-    //     {
-    //       headers: { Authorization: `Bearer ${token}` },
-    //     }
-    //   )
-    //   .then((result) => {
-    //     console.log("report result config: ", result);
-    //     setPrintConfig(result.data);
-    //     setWaiting(true);
-    //   })
-    //   .catch((err) => console.log("ERROR: ", err));
+    window.report.print();
   };
-  const exportId =
-    "Mi9CbG9iSWRWMi04ZjQxNGFmYy02ZTY0LTQ0YjctYmYyZi0wZmFjZjY5OWEzNzFOV0NMZEhNUjRUajg4UnRxUDMu";
-
-  // const [percentageComplete, setPercentageComplete] = useState(0);
-
-  // useEffect(() => {
-  //   if (percentageComplete < 100) {
-  //     const poll = setInterval(() => {
-  //       axios
-  //         .get(
-  //           `https://api.powerbi.com/v1.0/myorg/groups/${groupId}/reports/${reportId}/exports/${exportId}`,
-  //           {
-  //             headers: { Authorization: `Bearer ${token}` },
-  //           }
-  //         )
-  //         .then((res) => {
-  //           console.log("export result: ", res);
-  //           setPercentageComplete(res.data.percentComplete);
-  //           // see what the status is....
-  //         })
-  //         .catch((err) => console.log("error in poll:", err));
-  //     }, 10000);
-
-  //     if (percentageComplete === 100) {
-  //       return clearInterval(poll);
-  //     }
-  //   }
-  //   return null;
-  // }, [token]);
 
   return embedToken ? (
     <div id="embed-container">
-      <button type="button" onClick={saveAsPDF}>
-        Save As PDF
-      </button>
-      {console.log("currentPage", currentPage)}
+      <Button
+        styling="bcgov-normal-blue btn primary over"
+        label="Save As PDF"
+        onClick={saveAsPDF}
+      />
       <PowerBIEmbed
         embedConfig={{
           type: "report",
@@ -159,7 +111,7 @@ export default function PowerBi(props) {
           embedUrl: reportConfig.embedUrl,
           accessToken: embedToken,
           tokenType: models.TokenType.Embed,
-          pageName: currentPage ? currentPage.name : "",
+          pageName: currentPage || "",
           settings: {
             panes: {
               filters: {
@@ -184,16 +136,15 @@ export default function PowerBi(props) {
                     const commReport = data.filter(
                       (report) => report.displayName === "Community Overview"
                     );
-                    if (commReport[0].name !== currentPage.name) {
-                      // setCurrentPage(commReport[0]);
-                      // setCurrentPageData(commReport[0]);
+                    if (commReport[0].name !== currentPage) {
                       window.report
                         .setPage(commReport[0].name)
                         .catch((err) => console.log("setpage error:", err));
-
-                      window.report
-                        .setFilters([filter])
-                        .catch((err) => console.log("error: ", err));
+                      if (filter()) {
+                        window.report
+                          .setFilters([filter])
+                          .catch((err) => console.log("error: ", err));
+                      }
                       window.report.refresh();
                     }
                   })
@@ -210,7 +161,10 @@ export default function PowerBi(props) {
               "pageChanged",
               function (event) {
                 console.log("pageChanged: ", event.detail);
-                setCurrentPage(event.detail.newPage);
+                if (currentPage !== event.detail.newPage.name) {
+                  setCurrentPage(event.detail.newPage.name);
+                  setCurrentPageData(event.detail.newPage);
+                }
               },
             ],
           ])
