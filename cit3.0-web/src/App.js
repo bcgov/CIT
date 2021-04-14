@@ -30,6 +30,8 @@ import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainVie
 import OpportunityApproveListPage from "./components/Page/OpportunityApproveListPage/OpportunityApproveListPage";
 import UserManagementDashboard from "./components/Page/UserManagement/UserManagementDashboard";
 
+import PowerBi from "./components/Page/PowerBi/PowerBi";
+
 import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
 import HomePage from "./components/Page/HomePage/HomePage";
@@ -199,6 +201,16 @@ function App() {
                   ]}
                   layout={AuthLayout}
                   component={OpportunityDeletePage}
+                />
+                <AppRoute
+                  protected
+                  path="/community-insights/private"
+                  layout={AuthLayout}
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                  ]}
+                  component={PowerBi}
                 />
                 <AppRoute
                   protected

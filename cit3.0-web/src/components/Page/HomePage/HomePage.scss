@@ -3,22 +3,27 @@
     position: relative;
 }
 
+.header-div img {
+    object-fit: cover;
+}
+
 .header-text {
     color: white;
     position: absolute;
     top: 12%;
     right: 13%;
-    letter-spacing: 2pt;
+    letter-spacing: 1pt;
     line-height: 1.2;
 }
 
 .main-header-text {
     font-size: 40px;
-    
+    text-align: end;
 }
 
 .sub-header-text {
     font-weight: 400;
+    text-align: end;
 }
 
 .box {
