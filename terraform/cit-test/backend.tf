@@ -18,16 +18,19 @@ resource "azurerm_app_service" "backend" {
     DOCKER_REGISTRY_SERVER_URL      = "https://${data.terraform_remote_state.shared.outputs.acr_name}.azurecr.io"
     DOCKER_REGISTRY_SERVER_USERNAME = data.terraform_remote_state.shared.outputs.acr_admin
     DOCKER_REGISTRY_SERVER_PASSWORD = data.terraform_remote_state.shared.outputs.acr_password
+    DOCKER_ENABLE_CI                = true
     POSTGRES_DB                     = azurerm_postgresql_database.postgres.name
     POSTGRES_DJANGO_USER            = "${azurerm_postgresql_server.postgres.administrator_login}@${azurerm_postgresql_server.postgres.fqdn}"
     POSTGRES_DJANGO_PASSWORD        = azurerm_postgresql_server.postgres.administrator_login_password
     POSTGRES_HOST                   = azurerm_postgresql_server.postgres.fqdn
-    AUTHORITY                       = "https://login.microsoftonline.com/"
-    SCOPE                           = "https://analysis.windows.net/powerbi/api/.default"
     KEY_CLOAK_URL                   = "https://test.oidc.gov.bc.ca/auth/"
     KEY_CLOAK_REALM                 = "fyof530u"
     KEY_CLOAK_CLIENT                = "cit-test"
-    DOCKER_ENABLE_CI                = true
+    AUTHORITY                       = "https://login.microsoftonline.com/"
+    SCOPE                           = "https://analysis.windows.net/powerbi/api/.default"
+    TENANT_ID                       = "6fdb5200-3d0d-4a8a-b036-d3685e359adc"
+    CLIENT_ID                       = "f6450e1d-a85b-46b7-8180-c72f9ecad653"
+    CLIENT_SECRET                   = ""
   }
 
   tags = {

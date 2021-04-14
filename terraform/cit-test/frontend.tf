@@ -21,8 +21,8 @@ resource "azurerm_app_service" "frontend" {
     REACT_APP_KEYCLOAK_URL              = "https://test.oidc.gov.bc.ca/auth/"
     REACT_APP_KEYCLOAK_CLIENT           = "cit-test"
     REACT_APP_KEYCLOAK_REALM            = "fyof530u"
-    REACT_APP_POWER_BI_GROUP_ID         = "9bd828a8-9256-45f7-80ab-f39b8f647de0"
-    REACT_APP_POWER_BI_REPORT_ID        = "3a848d28-934f-4e08-be41-b4acd90f616a"
+    REACT_APP_POWER_BI_GROUP_ID         = "0399d295-4354-4955-8ed9-68709eb5e7b5"
+    REACT_APP_POWER_BI_REPORT_ID        = "1ac32266-addd-406c-a99b-41fec31de9de" #TODO: change to var
     REACT_APP_GEOCODER_API_KEY          = var.geocoder_key
     REACT_APP_BC_ROUTE_PLANNER_API_KEY  = var.router_key
     REACT_APP_SNOWPLOW_COLLECTOR        = "spt.apps.gov.bc.ca"
