@@ -97,7 +97,7 @@ export default function citHome() {
       <Container className="py-5 px-2">
         <Row>
           <Col sm={9}>
-            <h1 className="main-text py-2">
+            <h1 className="main-header py-2">
               Welcome to the Community <br />
               Information Tool
             </h1>
