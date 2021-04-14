@@ -17,7 +17,7 @@ resource "random_password" "db_password" {
 }
 
 resource "azurerm_postgresql_server" "postgres" {
-  name                = var.psql_name
+  name                = "cit-test-psql-af6z1jmd"
   location            = var.azure_location
   resource_group_name = var.azure_resource_group
 

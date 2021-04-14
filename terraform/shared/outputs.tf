@@ -1,5 +1,5 @@
-output "acr_url" {
-  value       = azurerm_container_registry.default.login_server
+output "acr_name" {
+  value       = azurerm_container_registry.default.name
   description = "The url of the Azure Container Registry"
 }
 output "acr_admin" {

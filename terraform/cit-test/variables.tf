@@ -49,36 +49,13 @@ variable "azure_location" {
 }
 
 #############################
-## Shared Variables        ##
-#############################
-        
-variable "acr_name" {
-  type        = string
-  description = "The name of the Azure Container Registry"
-}
-variable "acr_admin" {
-  type        = string
-  description = "ACR user for pulling images"
-}
-variable "acr_password" {
-  type        = string
-  description = "The password of the ACR user"
-}
-
-
-#############################
 ## Application Variables   ##
 #############################
 variable "geocoder_key" {
   type        = string
   description = "The geocoder API key"
 }
-
-
-#############################
-## To be removed           ##
-#############################
-variable psql_name {
+variable "router_key" {
   type        = string
-  description = "The name of the Postgresql database"
+  description = "The BC RouterAPI key"
 }
