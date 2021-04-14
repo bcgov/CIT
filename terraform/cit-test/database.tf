@@ -17,7 +17,7 @@ resource "random_password" "db_password" {
 }
 
 resource "azurerm_postgresql_server" "postgres" {
-  name                = "cit-test-psql-af6z1jmd"
+  name                = "psql-${var.app_suffix}-${var.environment}"
   location            = var.azure_location
   resource_group_name = var.azure_resource_group
 
@@ -33,6 +33,12 @@ resource "azurerm_postgresql_server" "postgres" {
 
   version                 = "11"
   ssl_enforcement_enabled = true
+
+  tags = {
+    description = var.description
+    environment = var.environment
+    owner       = var.owner
+  }
 
 }
 

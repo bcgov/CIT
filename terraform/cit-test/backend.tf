@@ -1,5 +1,5 @@
 resource "azurerm_app_service" "backend" {
-  name                = "cit-${var.azure_location}-${var.environment}-${var.app_suffix}-backend"
+  name                = "api-${var.app_suffix}-${var.environment}"
   location            = var.azure_location
   resource_group_name = var.azure_resource_group
   app_service_plan_id = azurerm_app_service_plan.webapp.id

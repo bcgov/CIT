@@ -34,6 +34,11 @@ resource "azurerm_postgresql_server" "postgres" {
   version                 = "11"
   ssl_enforcement_enabled = true
 
+  tags = {
+    description = var.description
+    environment = var.environment
+    owner       = var.owner
+  }
 }
 
 resource "azurerm_postgresql_database" "postgres" {
