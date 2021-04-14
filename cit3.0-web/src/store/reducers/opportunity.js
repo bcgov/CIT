@@ -27,6 +27,7 @@ import {
   ADD_PUBLIC_NOTE,
   ADD_PRIVATE_NOTE,
   ADD_USER,
+  ADD_LAST_ADMIN,
 } from "../constants/action-types";
 
 import { OPPORTUNITY_MODEL } from "../models/opportunity";
@@ -75,6 +76,9 @@ export default function opportunity(
       break;
     case ADD_PRIVATE_NOTE:
       state.privateNote = action.payload;
+      break;
+    case ADD_LAST_ADMIN:
+      state.lastAdmin = action.payload;
       break;
     case ADD_BUSINESS_CONTACT:
       state.businessContactName = action.payload.name;
