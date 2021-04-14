@@ -49,6 +49,7 @@ export default function PowerBi(props) {
         values: [regionalDistrict],
       };
     }
+    console.log(result);
     return result;
   };
 
@@ -143,7 +144,7 @@ export default function PowerBi(props) {
                         .catch((err) => console.log("setpage error:", err));
                       if (filter()) {
                         window.report
-                          .setFilters([filter])
+                          .setFilters([filter()])
                           .catch((err) => console.log("error: ", err));
                       }
                       window.report.refresh();
