@@ -49,7 +49,10 @@ export default function PowerBi(props) {
         values: [regionalDistrict],
       };
     }
+<<<<<<< HEAD
     console.log(result);
+=======
+>>>>>>> develop
     return result;
   };
 
