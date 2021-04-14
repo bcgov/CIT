@@ -81,7 +81,16 @@ export default function AddOpportunity() {
   };
 
   useEffect(() => {
-    if (hasApproval === "Yes" && agreed) {
+    setProximityInProgress(false);
+    setChangePage(false);
+  });
+
+  useEffect(() => {
+    if (
+      (parcelOwner !== "Private" ||
+        (parcelOwner === "Private" && hasApproval === "Yes")) &&
+      agreed
+    ) {
       setError([]);
       // Data is prepared, continue to next page
       if (changePage && !proximityInProgress) {
@@ -108,7 +117,7 @@ export default function AddOpportunity() {
       ];
       setError(errors);
     }
-    if (hasApproval !== "Yes") {
+    if (parcelOwner === "Private" && hasApproval !== "Yes") {
       errors = [...errors, "Please get the approval before listing this site."];
       setError(errors);
     }
