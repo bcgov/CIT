@@ -2,54 +2,60 @@
 ## Deployment Variables    ##
 #############################
 
-variable "az_resource_group" {
+variable "environment" {
   type        = string
-  description = "Resource group for configuration"
+  description = "Environment being deployed"
+  default     = "test"
 }
 
-variable "github_token" {
+variable "app_suffix" {
   type        = string
-  description = "Github PAT with repo write access"
+  description = "Environment being deployed"
+  default     = "cit"
 }
 
-variable "github_owner" {
+variable "owner" {
   type        = string
-  description = "Owner (group) of the Github repository'"
+  description = "Specify the owner of the resource"
 }
 
-variable "github_repository" {
+variable "description" {
   type        = string
-  description = "Github repository for the project'"
+  description = "Provide a description of the resource"
 }
 
-variable "subscription_id" {
+#############################
+## Azure Variables         ##
+#############################
+variable "azure_subscription_id" {
   type        = string
   description = "The Azure 'subscription id'"
 }
-
-variable "tenant_id" {
+variable "azure_tenant_id" {
   type        = string
   description = "The Azure 'tenant id'"
 }
 
+variable "azure_resource_group" {
+  type        = string
+  description = "Azure resource group"
+  default     = "CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01"
+}
+
+variable "azure_location" {
+  type        = string
+  description = "Azure resource group"
+  default     = "canadacentral"
+}
+
+#############################
+## Application Variables   ##
+#############################
 variable "geocoder_key" {
   type        = string
   description = "The geocoder API key"
 }
-
-#############################
-## Shared                  ##
-#############################
-
-variable "acr_url" {
+variable "router_key" {
   type        = string
-  description = "ACR url of repository with app images"
-}
-variable "acr_username" {
-  type        = string
-  description = "Username for ACR authentication"
-}
-variable "acr_password" {
-  type        = string
-  description = "Password for ACR authentication"
+  description = "The BC RouterAPI key"
 }

@@ -1,4 +1,4 @@
-app_name        = "CIT3"
+app_suffix        = "CIT3"
 owner           = "CITZ"
 description     = "Community Information Toolkit"
 environment     = "shared"

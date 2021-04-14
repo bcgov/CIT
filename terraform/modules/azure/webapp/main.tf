@@ -27,7 +27,7 @@ resource "azurerm_resource_group" "cit" {
 
 # Create the App Service Plan
 resource "azurerm_app_service_plan" "webapp" {
-  name                = "cit-${var.location}-${var.environment}-${var.app_name}"
+  name                = "cit-${var.location}-${var.environment}-${var.app_suffix}"
   location            = azurerm_resource_group.cit.location
   resource_group_name = azurerm_resource_group.cit.name
   kind                = "Linux"
@@ -81,7 +81,7 @@ resource "azurerm_app_service" "frontend" {
 
 # Create the Backend App Service
 resource "azurerm_app_service" "backend" {
-  name                = "cit-${var.location}-${var.environment}-${var.app_name}-backend"
+  name                = "cit-${var.location}-${var.environment}-${var.app_suffix}-backend"
   location            = azurerm_resource_group.cit.location
   resource_group_name = azurerm_resource_group.cit.name
   app_service_plan_id = azurerm_app_service_plan.webapp.id

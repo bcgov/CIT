@@ -1,46 +1,36 @@
-# Used for the names for resources that are required to be unique
-resource "random_string" "prefix" {
-  length  = 8
-  special = false
-  lower   = true
-  upper   = false
-  number  = true
+##############################
+## Main                     ##
+##############################
+
+data "azurerm_subscription" "primary" {}
+data "azurerm_client_config" "current" {}
+
+##############################
+## Azure App Service Plan   ##
+##############################
+
+resource "azurerm_app_service_plan" "webapp" {
+  name                = "cit-${var.app_suffix}-${var.environment}"
+  location            = var.azure_location
+  resource_group_name = var.azure_resource_group
+  kind                = "Linux"
+  reserved            = true
+  sku {
+    capacity = 1
+    size     = "P1v2"
+    tier     = "PremiumV2"
+  }
+
+  tags = {
+    description = var.description
+    environment = var.environment
+    owner       = var.owner
+  }
 }
 
-
-
-module "webapp" {
-
-  # Going to use local modules for this demo, but if deploying to dev/test/prod environments may be better to deploy into a modules repo
-  # and pull from different tags depending. eg:
-  #source = "git::https://github.com/bashbang/demo-tfmodues.git?ref=dev-0.0.54"
-
-  # Azure Specific Configuration
-  source = "../modules/azure/webapp"
-
-  tenant_id       = var.tenant_id
-  subscription_id = var.subscription_id
-
-  github_repository  = var.github_repository
-  github_token    = var.github_token
-  github_owner    = var.github_owner
-
-  geocoder_key    = var.geocoder_key
-
-  app_name        = "CIT3"
-  owner           = "CITZ"
-  description     = "Community Information Toolkit"
-  environment     = "prod"
-
-  rg_name = "cit"
-  psql_name = "cit-prod-psql-${random_string.prefix.id}"
-
-  # AWS Specific configuration
-  
-  # TODO: AWS module definitions
-  # source = "./modules/aws/webapp"
-
-}
+##############################
+## Remote tf state          ##
+##############################
 
 data "terraform_remote_state" "shared" {
   backend = "azurerm"

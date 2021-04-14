@@ -3,7 +3,7 @@
 #############################
 
 # application name 
-variable "app_name" {
+variable "app_suffix" {
   type        = string
   description = "This variable defines the application name used to build resources"
 }

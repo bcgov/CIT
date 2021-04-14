@@ -10,7 +10,7 @@ data "azurerm_client_config" "current" {}
 ##############################
 
 resource "azurerm_app_service_plan" "webapp" {
-  name                = "cit-${var.azure_location}-${var.environment}-${var.app_name}"
+  name                = "cit-${var.azure_location}-${var.environment}-${var.app_suffix}"
   location            = var.azure_location
   resource_group_name = var.azure_resource_group
   kind                = "Linux"

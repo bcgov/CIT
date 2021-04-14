@@ -17,22 +17,17 @@ terraform {
   backend "azurerm" {
     storage_account_name = "tfstatecit"
     container_name       = "tfstate"
-    key                  = "terraform.tfstate"
+    key                  = "prod.tfstate"
     # resource_group_name  = set in init command
     # access_key           = set in init command
   }
 }
 
 provider "azurerm" {
-  subscription_id = var.subscription_id
-  tenant_id       = var.tenant_id
+  subscription_id = var.azure_subscription_id
+  tenant_id       = var.azure_tenant_id
   skip_provider_registration = true
 
   features {
   }
-}
-
-provider "github" {
-  token = var.github_token
-  owner = var.github_owner
 }

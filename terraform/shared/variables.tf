@@ -8,7 +8,7 @@ variable "environment" {
   default     = "shared"
 }
 
-variable "app_name" {
+variable "app_suffix" {
   type        = string
   description = "Environment being deployed"
   default     = "cit"
