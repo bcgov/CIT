@@ -6,7 +6,7 @@ from django.contrib.gis.measure import D
 
 from pipeline.models.community import Community
 from pipeline.models.general import WildfireZone, TsunamiZone, Road, Municipality
-from pipeline.models.census import CensusSubdivision
+from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 
 from pipeline.constants import WGS84_SRID
 
@@ -33,18 +33,20 @@ def import_communities_from_csv(communities_file_path):
 
             # TODO: spatial query?
             try:
-                census_subdivision = CensusSubdivision.objects.get(id=row['CSDUID'])
-                community.census_subdivision_id = census_subdivision.id
-            except CensusSubdivision.DoesNotExist:
+                census_subdivision = CEN_PROF_DETAILED_CSD_ATTRS_SP.objects.get(
+                    census_subdivision_id=row['CSDUID'])
+                community.census_subdivision_id = census_subdivision.census_subdivision_id
+            except CEN_PROF_DETAILED_CSD_ATTRS_SP.DoesNotExist:
                 # TODO: spatial query
                 print(
                     "CensusSubdivision {} corresponding to Community {} was not found in the CensusSubdivision data"
                     .format(row['CSDUID'], community.place_name))
-                census_subdivisions = CensusSubdivision.objects.filter(
+                census_subdivisions = CEN_PROF_DETAILED_CSD_ATTRS_SP.objects.filter(
                     geom__contains=community.point)
                 print("performing spatial search for census subdivision", census_subdivisions)
                 if census_subdivisions:
-                    community.census_subdivision_id = census_subdivisions.first().id
+                    community.census_subdivision_id = census_subdivisions.first(
+                    ).census_subdivision_id
 
             # PostGIS uses the ST_DistanceSphere function to calculate distance
             # points inside the polygon return a distance of 0
