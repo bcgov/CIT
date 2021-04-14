@@ -200,10 +200,16 @@ export default function citHome() {
         </Row>
       </Container>
 
-      <Modal show={show} onHide={handleClose} keyboard={false}>
+      <Modal
+        show={show}
+        centered
+        onHide={handleClose}
+        keyboard={false}
+        size="lg"
+      >
         <Modal.Header closeButton>
-          <Modal.Title>
-            Would you like to log in or continue as a guest?
+          <Modal.Title className="pl-5">
+            <h2>Would you like to log in or continue as public?</h2>
           </Modal.Title>
         </Modal.Header>
         <Modal.Footer>
