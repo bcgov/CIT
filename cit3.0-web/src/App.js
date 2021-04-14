@@ -204,6 +204,16 @@ function App() {
                 />
                 <AppRoute
                   protected
+                  path="/community-insights/private"
+                  layout={AuthLayout}
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                  ]}
+                  component={PowerBi}
+                />
+                <AppRoute
+                  protected
                   exact
                   path="/manage/users"
                   roles={[

@@ -10,7 +10,7 @@ import "./SearchFlyoutContent.scss";
 
 export default function SearchFlyoutContent({ setQuery }) {
   const parcelSizeInitial = {
-    max: 250000,
+    max: 2000,
     min: 0,
   };
   const powerTransmissionLinesInitial = {
@@ -30,10 +30,6 @@ export default function SearchFlyoutContent({ setQuery }) {
     min: 0,
   };
   const proximityToCommunityOrPopulationInitial = {
-    max: 500,
-    min: 0,
-  };
-  const rAndDInitial = {
     max: 500,
     min: 0,
   };
@@ -100,9 +96,7 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [proximityCurrentPopulation, setProximityCurrentPopulation] = useState(
     null
   );
-  const [rAndDIsSelected, setRAndDIsSelected] = useState(false);
-  const [rAndDInputRange, setRAndDInputRange] = useState(rAndDInitial);
-  const [rAndDDisplayRange, setRAndDDisplayRange] = useState(rAndDInitial);
+
   const [zoningIsSelected, setZoningIsSelected] = useState(false);
   const [zoningQueryFilters, setZoningQueryFilters] = useState("");
   const [connectivityIsSelected, setConnectivityIsSelected] = useState(false);
@@ -170,6 +164,9 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [excludeUnknowns, setExcludeUnknowns] = useState(false);
 
   const [postSecondarySwitchValue, setPostSecondarySwitchValue] = useState(
+    false
+  );
+  const [researchCentreSwitchValue, setResearchCentreSwitchValue] = useState(
     false
   );
   const siteServicingFilters = [
@@ -246,14 +243,6 @@ export default function SearchFlyoutContent({ setQuery }) {
         max: "deep_water_port_max",
       },
     },
-    {
-      selected: rAndDIsSelected,
-      value: rAndDDisplayRange,
-      queryKey: {
-        min: "research_centre_min",
-        max: "research_centre_max",
-      },
-    },
   ];
 
   useEffect(() => {
@@ -267,6 +256,11 @@ export default function SearchFlyoutContent({ setQuery }) {
     query.append(
       "post_secondary_within_100km",
       postSecondarySwitchValue ? "Y" : "N"
+    );
+
+    query.append(
+      "research_centre_within_100km",
+      researchCentreSwitchValue ? "Y" : "N"
     );
 
     const activeNumberRangeFilters = numberRangeFilters.filter(
@@ -318,8 +312,8 @@ export default function SearchFlyoutContent({ setQuery }) {
     airServiceDisplayRange,
     railConnectionsDisplayRange,
     deepWaterPortDisplayRange,
-    rAndDDisplayRange,
     postSecondarySwitchValue,
+    researchCentreSwitchValue,
     zoningQueryFilters,
     connectivityQueryFilters,
     proximityToCommunityOrPopulationDisplayRange,
@@ -367,7 +361,7 @@ export default function SearchFlyoutContent({ setQuery }) {
       <h2>Filter your search</h2>
       <h3>General site details</h3>
       <NumberRangeFilter
-        inputRange={{ min: 0, max: 250000 }}
+        inputRange={{ min: 0, max: 2000 }}
         units="acres"
         description="Size of Property (in acres)"
         label="Parcel Size"
@@ -402,7 +396,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         setDisplayRange={setPowerTransmissionLinesDisplayRange}
       />
       <SelectFilter
-        label="Connectivity"
+        label="Connectivity Speed"
         filters={connectivityFilters}
         setFilters={setConnectivityFilters}
         isSelected={connectivityIsSelected}
@@ -523,20 +517,32 @@ export default function SearchFlyoutContent({ setQuery }) {
           <p>On</p>
         </Col>
       </Row>
-      <NumberRangeFilter
-        inputRange={{ min: 0, max: 500 }}
-        units="km"
-        description="Driving distance to R&amp;D in km"
-        label="R &amp; D Center nearby"
-        isDistance
-        isSelected={rAndDIsSelected}
-        setIsSelected={setRAndDIsSelected}
-        inputRangeValue={rAndDInputRange}
-        setInputRangeValue={setRAndDInputRange}
-        initialInputRangeValues={rAndDInitial}
-        displayRange={rAndDDisplayRange}
-        setDisplayRange={setRAndDDisplayRange}
-      />
+      <Row className="flex-nowrap">
+        <Col xs={7}>
+          <p>Research Centre within 100km?:</p>
+        </Col>
+        <Col xs="auto" className="no-padding">
+          <p>Off</p>
+        </Col>
+        <Col xs="auto">
+          <Switch
+            checked={researchCentreSwitchValue}
+            onChange={setResearchCentreSwitchValue}
+            onColor="#aad3df"
+            onHandleColor="#2693e6"
+            handleDiameter={30}
+            uncheckedIcon={false}
+            checkedIcon={false}
+            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+            height={20}
+            width={48}
+          />
+        </Col>
+        <Col xs="auto" className="no-padding">
+          <p>On</p>
+        </Col>
+      </Row>
     </div>
   );
 }
