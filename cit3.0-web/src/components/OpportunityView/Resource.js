@@ -48,7 +48,7 @@ function displayResources(resources) {
     let multiValues = [];
     let found;
 
-    if (resource[1].hidden) {
+    if (resource[1] === false || resource[1].hidden) {
       return;
     }
 
@@ -69,7 +69,7 @@ function displayResources(resources) {
     switch (resource[1].type) {
       case "link":
         element = (
-          <span className="ml-2">
+          <span className="ml-2 link">
             <a
               target="_blank"
               rel="noreferrer"

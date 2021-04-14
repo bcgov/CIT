@@ -24,30 +24,24 @@ const Header = () => {
               <img
                 className="bc-gov-icon longIcon"
                 src="/images/bcid-logo-rev-en.svg"
-                width="156"
-                height="43"
-                alt="Go to the Government of British Columbia website"
-              />
-              <img
-                className="bc-gov-icon shortIcon"
-                src="/images/bcid-symbol-rev.svg"
-                width="156"
+                width="175"
                 height="43"
                 alt="Go to the Government of British Columbia website"
               />
             </a>
           </Navbar.Brand>
-          <Nav className="title mr-auto">
+          <Nav className="mr-auto">
             <Nav.Item>
-              <div className="title longAppName">Community Investment Tool</div>
-              <div className="title shortAppName">CIT</div>
+              <div className="title">
+                Community Investment Opportunities Tool
+              </div>
             </Nav.Item>
           </Nav>
           {keycloak.obj && <UserProfile />}
         </Navbar>
       </header>
       {keycloak.obj.authenticated ? (
-        <div className="navigation-container">
+        <div className="navigation-container no-print">
           {keycloak.hasRole([Roles.ECONOMIC_DEVELOPMENT_OFFICER]) && (
             <Button
               variant="link"

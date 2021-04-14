@@ -82,7 +82,7 @@ const ReviewOpportunity = () => {
   return (
     <div data-testid="ReviewOpportunity">
       <NavigationHeader currentStep={5} />
-      {error.name === "Error" ? (
+      {error && error.name === "Error" ? (
         <Container className="p-0 mt-3">
           <Alert
             icon={<MdError size={32} />}

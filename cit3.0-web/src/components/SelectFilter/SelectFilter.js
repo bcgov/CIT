@@ -15,10 +15,14 @@ export default function SelectFilter(props) {
 
   const [show, setShow] = useState(false);
   const [displaySelected, setDisplaySelected] = useState({});
+  const [filtersOnOpen, setFiltersOnOpen] = useState([{}]);
 
-  const handleShow = () => setShow(true);
+  const handleShow = () => {
+    setShow(true);
+    setFiltersOnOpen([...filters]);
+  };
   const handleClose = () => {
-    setIsSelected(true);
+    setFilters(filtersOnOpen);
     setShow(false);
   };
 
@@ -34,8 +38,8 @@ export default function SelectFilter(props) {
     return allSelectedFilterLabels.join(", ");
   };
 
-  const createFilterString = () => {
-    const allSelectedFilters = filters.filter(
+  const createFilterString = (currentFilters) => {
+    const allSelectedFilters = currentFilters.filter(
       (filter) => filter.isSelected === true
     );
 
@@ -63,7 +67,7 @@ export default function SelectFilter(props) {
     } else {
       setIsSelected(false);
     }
-    setQueryFilters(createFilterString());
+    setQueryFilters(createFilterString(filters));
     setShow(false);
   };
   const handleClear = () => {
@@ -73,6 +77,10 @@ export default function SelectFilter(props) {
     }));
 
     setFilters(clearedFilters);
+
+    setIsSelected(false);
+    setQueryFilters(createFilterString(clearedFilters));
+    setShow(false);
   };
 
   const toggleFilter = (filterLabel) => {
@@ -131,7 +139,7 @@ export default function SelectFilter(props) {
         backdrop="static"
         keyboard={false}
       >
-        <Modal.Header>
+        <Modal.Header closeButton>
           <Modal.Title>{label}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -141,7 +149,7 @@ export default function SelectFilter(props) {
         </Modal.Body>
         <Modal.Footer>
           <Button
-            label="Clear"
+            label="Remove filter"
             styling="bcgov-normal-white mr-auto modal-reset-button btn"
             onClick={handleClear}
           />
