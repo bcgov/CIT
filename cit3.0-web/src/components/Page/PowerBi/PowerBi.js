@@ -71,7 +71,6 @@ export default function PowerBi(props) {
           }
         )
         .then((data) => {
-          console.log("get report config:", data.data);
           setReportConfig(data.data);
         })
         .catch((err) => console.error("error in getting report config", err));
@@ -133,7 +132,6 @@ export default function PowerBi(props) {
                 window.report
                   .getPages()
                   .then((data) => {
-                    console.log("pages: ", data);
                     const commReport = data.filter(
                       (report) => report.displayName === "Community Overview"
                     );
@@ -143,7 +141,7 @@ export default function PowerBi(props) {
                         .catch((err) => console.log("setpage error:", err));
                       if (filter()) {
                         window.report
-                          .setFilters([filter])
+                          .setFilters([filter()])
                           .catch((err) => console.log("error: ", err));
                       }
                       window.report.refresh();
@@ -161,7 +159,6 @@ export default function PowerBi(props) {
             [
               "pageChanged",
               function (event) {
-                console.log("pageChanged: ", event.detail);
                 if (currentPage !== event.detail.newPage.name) {
                   setCurrentPage(event.detail.newPage.name);
                   setCurrentPageData(event.detail.newPage);
