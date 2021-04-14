@@ -14,7 +14,8 @@ from pipeline.serializers.opportunity.distance import (
     OpportunityCommunitySerializer, OpportunityPostSecondarySerializer,
     OpportunityFirstResponderSerializer, OpportunityHospitalSerializer,
     OpportunityResearchCentreSerializer, OpportunityRiverSerializer,
-    OpportunityLakeSerializer)
+    OpportunityLakeSerializer, OpportunityMunicipalitySerializer, 
+    OpportunityRegionalDistrictSerializer)
 
 
 class OpportunityGetSerializer(serializers.ModelSerializer):
@@ -41,6 +42,8 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
     nearest_highway = serializers.SerializerMethodField()
     nearest_river = OpportunityRiverSerializer(required=False)
     nearest_lake = OpportunityLakeSerializer(required=False)
+    municipality = OpportunityMunicipalitySerializer(required=False)
+    regional_district = OpportunityRegionalDistrictSerializer(required=False)
 
     class Meta:
         model = Opportunity
