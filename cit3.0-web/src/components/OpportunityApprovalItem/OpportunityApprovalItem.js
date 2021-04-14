@@ -40,7 +40,9 @@ const OpportunityApprovalItem = ({ opportunity }) => {
                 className="p-2"
                 to={`${opportunity.link}/approve`}
                 onClick={() =>
-                  history.push(`/manage/opportunity/${opportunity.id}`)
+                  history.push(
+                    `/manage/investmentopportunities/view/${opportunity.id}`
+                  )
                 }
               >
                 View Listing

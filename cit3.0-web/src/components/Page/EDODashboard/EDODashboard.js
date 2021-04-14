@@ -62,7 +62,7 @@ export default function EDODashboard() {
   const goToMap = () => {
     dispatch(resetOpportunity());
     dispatch(resetUser());
-    history.push("/opportunity");
+    history.push("/investmentopportunities");
   };
 
   const handleModalClose = () => {

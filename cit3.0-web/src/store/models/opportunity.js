@@ -368,9 +368,9 @@ export class Opportunity {
   }
 
   createLink() {
-    this.state.link = `/opportunity/${toKebabCase(this.state.name)}-${
-      this.state.id
-    }`;
+    this.state.link = `/investmentopportunities/view/${toKebabCase(
+      this.state.name
+    )}-${this.state.id}`;
   }
 
   set opportunityName(value) {

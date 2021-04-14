@@ -43,7 +43,7 @@ const ReviewOpportunity = () => {
       .then(() => {
         dispatch(resetOpportunity());
         dispatch(closeNotification());
-        history.push("/opportunity/success");
+        history.push("/investmentopportunities/success");
       })
       .catch((e) => {
         dispatch(setNotification(NOTIFICATION_ERROR, e));
@@ -57,7 +57,7 @@ const ReviewOpportunity = () => {
       .then(() => {
         dispatch(resetOpportunity());
         dispatch(closeNotification());
-        history.push("/opportunity/success");
+        history.push("/investmentopportunities/success");
       })
       .catch((e) => {
         dispatch(setNotification(NOTIFICATION_ERROR, e));
@@ -75,7 +75,7 @@ const ReviewOpportunity = () => {
 
   const confirmCancel = () => {
     if (confirm("Are you sure you want discard this opportunity?")) {
-      history.push("/dashboard");
+      history.push("/investmentopportunities/dashboard");
     }
   };
 
@@ -95,7 +95,7 @@ const ReviewOpportunity = () => {
       <ReviewAndSubmitCallout
         submitOpportunity={() => handleSubmitOpportunity()}
         cancelOpportunity={() => confirmCancel()}
-        prevRoute="/addOpportunity/addional-details"
+        prevRoute="/investmentopportunities/additional-details"
       />
       <OpportunityView view="all" />
     </div>

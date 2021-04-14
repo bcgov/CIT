@@ -75,7 +75,7 @@ export default function PropertyDetails2() {
   const placeholder = "Enter URL here (eg. realtor.ca/myopportunity)";
 
   const goToNextPage = () => {
-    history.push(`/opportunity/review`);
+    history.push(`/investmentopportunities/review`);
   };
 
   const handleContinue = () => {
