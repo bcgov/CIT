@@ -5,6 +5,7 @@ import { PowerBIEmbed } from "powerbi-client-react";
 import { models } from "powerbi-client";
 import { useLocation } from "react-router-dom";
 import { Button } from "shared-components";
+import Config from "../../../Config";
 
 export default function PowerBi(props) {
   const [currentPage, setCurrentPage] = useState(null);
@@ -14,8 +15,8 @@ export default function PowerBi(props) {
 
   const [embedToken, setEmbedToken] = useState(null);
 
-  const groupId = process.env.REACT_APP_POWER_BI_GROUP_ID;
-  const reportId = process.env.REACT_APP_POWER_BI_REPORT_ID;
+  const groupId = Config.pbiGroupId;
+  const reportId = Config.pbiReportId;
 
   const { search } = useLocation();
   const [community, setCommunity] = useState(

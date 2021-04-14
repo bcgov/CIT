@@ -56,7 +56,7 @@ describe("<SearchFlyoutContent />", () => {
   test("it should validate the input in one of the number range filters", () => {
     const label = "Parcel Size";
     const inputRange = {
-      max: 250000,
+      max: 2000,
       min: 0,
     };
 
@@ -73,11 +73,11 @@ describe("<SearchFlyoutContent />", () => {
 
     const maxInputBox = screen.getByText(String(inputRange.max));
     const minInputBox = screen.getByText(String(inputRange.min));
-    const clearButton = screen.getByText("Reset");
+    const clearButton = screen.getByText("Remove filter");
 
     // Min > Max validation
-    fireEvent.change(maxInputBox, { target: { value: 3000 } });
-    fireEvent.change(minInputBox, { target: { value: 4000 } });
+    fireEvent.change(maxInputBox, { target: { value: 1000 } });
+    fireEvent.change(minInputBox, { target: { value: 2000 } });
     expect(screen.getByText("Invalid min number")).toBeInTheDocument();
     fireEvent.click(clearButton);
 
@@ -101,7 +101,7 @@ describe("<SearchFlyoutContent />", () => {
   test("it should display selected values correctly", () => {
     const label = "Parcel Size";
     const inputRange = {
-      max: 250000,
+      max: 2000,
       min: 0,
     };
     const units = "acres";
@@ -118,13 +118,13 @@ describe("<SearchFlyoutContent />", () => {
     fireEvent.click(numberRangeFilterButton);
 
     const maxInputBox = screen.getByText(String(inputRange.max));
-    fireEvent.change(maxInputBox, { target: { value: 5000 } });
+    fireEvent.change(maxInputBox, { target: { value: 1000 } });
 
     const saveButton = screen.getByText("Save");
     fireEvent.click(saveButton);
 
     expect(
-      screen.getByText(`${label}: ${inputRange.min}-${"5000"} ${units}`)
+      screen.getByText(`${label}: ${inputRange.min}-${"1000"} ${units}`)
     ).toBeInTheDocument();
   });
 

@@ -37,3 +37,7 @@
     height: 100%;
     border: none;
 }
+
+.main-text {
+    font-size: 40px;
+}

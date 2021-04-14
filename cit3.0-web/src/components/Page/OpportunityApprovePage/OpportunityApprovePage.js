@@ -10,6 +10,7 @@ import {
   setOpportunity,
   getOpportunity,
   updateOpportunity,
+  setLastAdmin,
 } from "../../../store/actions/opportunity";
 import { getOptions, setOptions } from "../../../store/actions/options";
 import OpportunityFactory from "../../../store/factory/OpportunityFactory";
@@ -18,7 +19,10 @@ import {
   NOTIFICATION_SUCCESS,
   NOTIFICATION_ERROR,
 } from "../../../store/constants/notification";
-import { setNotification } from "../../../store/actions/notification";
+import {
+  setNotification,
+  closeNotification,
+} from "../../../store/actions/notification";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import { getUser, postUser } from "../../../store/actions/user";
 import UserFactory from "../../../store/factory/UserFactory";
@@ -34,6 +38,7 @@ const OpportunityApprovePage = ({ id }) => {
   const opportunity = useSelector((state) => state.opportunity);
   const notificationShow = useSelector((state) => state.notification.show);
   const notificationType = useSelector((state) => state.notification.type);
+  const username = useSelector((state) => state.user.name);
   const keycloak = useKeycloakWrapper();
 
   useEffect(() => {
@@ -42,6 +47,7 @@ const OpportunityApprovePage = ({ id }) => {
       const found = location.pathname.match(/(\d+)+\/?$/);
       opId = found && parseInt(found[0], 10);
     }
+    dispatch(closeNotification());
     if (opId !== opportunity.id) {
       getOpportunity(opId).then((response) => {
         const opp = OpportunityFactory.createStateFromResponse(response.data);
@@ -87,6 +93,7 @@ const OpportunityApprovePage = ({ id }) => {
   }
 
   const handleUpdateOpportunity = (newStatus, approval) => {
+    dispatch(setLastAdmin(username));
     if (approval === "Yes") {
       postUser(
         UserFactory.createRequestFromState(user, opportunity),
