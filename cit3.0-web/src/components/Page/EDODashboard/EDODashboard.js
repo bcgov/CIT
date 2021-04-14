@@ -188,7 +188,7 @@ export default function EDODashboard() {
             <ul className="dashed">
               <li>Restrictions on title</li>
               <li>Future planned roads or existing rights-of-way</li>
-              <li>dentified flood zone</li>
+              <li>Identified flood zone</li>
               <li>
                 Presence of provincially significant cultural or natural
                 heritage features
