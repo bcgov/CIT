@@ -77,7 +77,7 @@ export default function AddOpportunity() {
 
   const closeModalAndContinue = () => {
     handleClose();
-    history.push(`/opportunity/site-info`);
+    history.push(`/investmentopportunities/site-info`);
   };
 
   const handleErrorModalContinue = () => {

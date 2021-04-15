@@ -22,7 +22,7 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
           editing: true,
         })
       );
-      history.push("/opportunity/");
+      history.push("/investmentopportunities/");
     });
   };
   const determineActions = (opp) => {
@@ -47,7 +47,9 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
             Closed/Won
           </Button>
           <br />
-          <NavLink to={`/delete/opportunity/${opp.id}/`}>Delete</NavLink>
+          <NavLink to={`/delete/investmentopportunities/${opp.id}/`}>
+            Delete
+          </NavLink>
         </>
       );
     }
@@ -64,7 +66,9 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
           Edit Listing
         </Button>
         <br />
-        <NavLink to={`/delete/opportunity/${opp.id}`}>Delete</NavLink>
+        <NavLink to={`/delete/investmentopportunities/${opp.id}`}>
+          Delete
+        </NavLink>
       </>
     );
   };

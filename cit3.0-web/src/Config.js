@@ -8,7 +8,8 @@ const Config = {
   snowplowUrl: window.env.snowplowUrl,
   geocoderKey: window.env.geocoderKey,
   routePlannerKey: window.env.routePlannerKey,
-  pbiReportId: window.env.pbiReportId,
+  pbiReportIdPublic: window.env.pbiReportIdPublic,
+  pbiReportIdInternal: window.env.pbiReportIdInternal,
   pbiGroupId: window.env.pbiGroupId,
 };
 
