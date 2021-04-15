@@ -4,10 +4,12 @@ import "./PowerBi.css";
 import { PowerBIEmbed } from "powerbi-client-react";
 import { models } from "powerbi-client";
 import { useLocation } from "react-router-dom";
+import { Button } from "shared-components";
 import Config from "../../../Config";
 
 export default function PowerBi(props) {
-  const [currentPage, setCurrentPage] = useState("");
+  const [currentPage, setCurrentPage] = useState(null);
+  const [currentPageData, setCurrentPageData] = useState(null);
   const [token, setToken] = useState(null);
   const [reportConfig, setReportConfig] = useState(null);
 
@@ -24,8 +26,10 @@ export default function PowerBi(props) {
     new URLSearchParams(search).get("regionalDistrict")
   );
 
-  const filter = community
-    ? {
+  const filter = () => {
+    let result = null;
+    if (community) {
+      result = {
         $schema: "http://powerbi.com/product/schema#basic",
         target: {
           table: "public pipeline_community",
@@ -33,8 +37,9 @@ export default function PowerBi(props) {
         },
         operator: "In",
         values: [community],
-      }
-    : {
+      };
+    } else if (regionalDistrict) {
+      result = {
         $schema: "http://powerbi.com/product/schema#basic",
         target: {
           table: "public pipeline_regionaldistrict",
@@ -43,6 +48,9 @@ export default function PowerBi(props) {
         operator: "In",
         values: [regionalDistrict],
       };
+    }
+    return result;
+  };
 
   useEffect(() => {
     axios
@@ -65,7 +73,7 @@ export default function PowerBi(props) {
         .then((data) => {
           setReportConfig(data.data);
         })
-        .catch((err) => console.error(err));
+        .catch((err) => console.error("error in getting report config", err));
     }
   }, [token]);
 
@@ -85,8 +93,17 @@ export default function PowerBi(props) {
     }
   }, [reportConfig]);
 
+  const saveAsPDF = () => {
+    window.report.print();
+  };
+
   return embedToken ? (
-    <>
+    <div id="embed-container">
+      <Button
+        styling="bcgov-normal-blue btn primary over"
+        label="Save As PDF"
+        onClick={saveAsPDF}
+      />
       <PowerBIEmbed
         embedConfig={{
           type: "report",
@@ -94,7 +111,7 @@ export default function PowerBi(props) {
           embedUrl: reportConfig.embedUrl,
           accessToken: embedToken,
           tokenType: models.TokenType.Embed,
-          pageName: currentPage,
+          pageName: currentPage || "",
           settings: {
             panes: {
               filters: {
@@ -113,20 +130,20 @@ export default function PowerBi(props) {
               "loaded",
               function () {
                 window.report
-                  .getPages("Communities Overview")
+                  .getPages()
                   .then((data) => {
                     const commReport = data.filter(
                       (report) => report.displayName === "Community Overview"
                     );
                     if (commReport[0].name !== currentPage) {
-                      setCurrentPage(commReport[0].name);
                       window.report
                         .setPage(commReport[0].name)
                         .catch((err) => console.log("setpage error:", err));
-
-                      window.report
-                        .setFilters([filter])
-                        .catch((err) => console.log("error: ", err));
+                      if (filter()) {
+                        window.report
+                          .setFilters([filter()])
+                          .catch((err) => console.log("error: ", err));
+                      }
                       window.report.refresh();
                     }
                   })
@@ -139,6 +156,15 @@ export default function PowerBi(props) {
                 console.log("ERROR:::", event.detail);
               },
             ],
+            [
+              "pageChanged",
+              function (event) {
+                if (currentPage !== event.detail.newPage.name) {
+                  setCurrentPage(event.detail.newPage.name);
+                  setCurrentPageData(event.detail.newPage);
+                }
+              },
+            ],
           ])
         }
         // // Add CSS classes to the div element
@@ -148,6 +174,6 @@ export default function PowerBi(props) {
           window.report = embeddedReport;
         }}
       />
-    </>
+    </div>
   ) : null;
 }

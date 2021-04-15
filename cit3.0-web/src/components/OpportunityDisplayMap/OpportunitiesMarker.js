@@ -1,9 +1,11 @@
 import PropTypes from "prop-types";
 import { Marker, Tooltip } from "react-leaflet";
+import { useHistory } from "react-router";
 import { v4 } from "uuid";
 import OpportunityFactory from "../../store/factory/OpportunityFactory";
 
 export default function OpportunitiesMarker({ opportunities }) {
+  const history = useHistory();
   const markers = (opps) =>
     opps.map((opp) => {
       const opportunity = OpportunityFactory.createStateFromResponse(opp);
@@ -13,7 +15,7 @@ export default function OpportunitiesMarker({ opportunities }) {
           position={opportunity.coords}
           eventHandlers={{
             click: () => {
-              window.open(opportunity.link, "_blank");
+              history.push(opportunity.link);
             },
           }}
         >
