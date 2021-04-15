@@ -38,6 +38,15 @@ export function useKeycloakWrapper() {
     userInfo && (userInfo.name || userInfo.preferred_username);
 
   /**
+   * Return the user's identity provider
+   */
+  const idp = () =>
+    userInfo &&
+    userInfo.preferred_username.slice(
+      userInfo.preferred_username.indexOf("@") + 1
+    );
+
+  /**
    * Return the user's first name
    */
   const firstName = () =>
@@ -81,6 +90,7 @@ export function useKeycloakWrapper() {
     firstName: firstName(),
     lastName: lastName(),
     email: email(),
+    idp: idp(),
     isAdmin:
       hasRole(Roles.SYSTEM_ADMINISTRATOR) || hasRole(Roles.SUPER_ADMINISTRATOR),
     isEdo: hasRole(Roles.SYSTEM_ADMINISTRATOR),
