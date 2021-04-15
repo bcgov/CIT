@@ -11,10 +11,8 @@ const Header = () => {
   const keycloak = useKeycloakWrapper();
   const history = useHistory();
   const location = useLocation();
-  console.log("LCOATION:", location);
 
   const title = () => {
-    console.log(location.pathname);
     if (location.pathname.includes("/investmentopportunities")) {
       return "Community Investment Opportunities Tool";
     }
