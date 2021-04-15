@@ -11,12 +11,14 @@ from pipeline.importers.utils import (
     calculate_nearest_location_types_outside_50k, calculate_communities_for_schools,
     calculate_regional_districts_for_communities)
 from pipeline.models.general import DataSource
+from admin import settings
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
         #If in test or prod make sure the most recent static files are fetched.
         if settings.ENV_LEVEL in ['test', 'prod']:
+            print("Pulling down latest static files.")
             for folder in ['bc_assessment', 'major_projects']:
                 folder_path = os.path.join(settings.AZURE_BLOB_STORAGE_LOCAL_PATH, folder)
                 print(folder_path)
@@ -35,6 +37,7 @@ class Command(BaseCommand):
                         download_file.write(blob_client.download_blob().readall())
 
         #Ensure that the data sources are updated
+        print("Importing newest list of data sources.")
         import_data_sources()
 
         non_bca_resources = DataSource.objects.exclude(name__in=[
