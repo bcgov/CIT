@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -28,6 +27,8 @@ DEBUG = bool(os.environ.get("DEBUG", False))
 
 # By default, it is ok for others to use our APIs and crawl our site.
 ALLOWED_HOSTS = ['*']
+
+ENV_LEVEL = os.environ.get('ENV_LEVEL', 'dev')
 
 ADMINS = (
     ('Clark', 'clark@countable.ca'),
@@ -187,3 +188,4 @@ LOGGING = {
 }
 
 AZURE_BLOB_STORAGE_CONNECTION_STRING = os.environ.get('AZURE_BLOB_STORAGE_CONNECTION_STRING', None)
+AZURE_BLOB_STORAGE_LOCAL_PATH = './data/'
