@@ -16,7 +16,7 @@ export default function PowerBi(props) {
   const [embedToken, setEmbedToken] = useState(null);
 
   const groupId = Config.pbiGroupId;
-  const reportId = Config.pbiReportIdInternal;
+  const reportId = Config.pbiReportIdPublic;
 
   const { search } = useLocation();
   const [community, setCommunity] = useState(
@@ -100,7 +100,7 @@ export default function PowerBi(props) {
   return embedToken ? (
     <div id="embed-container">
       <Button
-        styling="bcgov-normal-blue btn primary over"
+        styling="bcgov-normal-blue btn primary over public"
         label="Save As PDF"
         onClick={saveAsPDF}
       />

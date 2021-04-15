@@ -24,8 +24,8 @@ export default function citHome() {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-  const publicUrl = "/community-insights/public";
-  const privateUrl = "/community-insights/private";
+  const publicUrl = "/dashboard/public";
+  const privateUrl = "/dashboard/internal";
 
   useEffect(() => {
     axios.get("/api/opportunity/options").then((data) => {
@@ -97,7 +97,7 @@ export default function citHome() {
       <Container className="py-5 px-2">
         <Row>
           <Col sm={9}>
-            <h1 className="main-header-text py-2">
+            <h1 className="main-text py-2">
               Welcome to the Community <br />
               Information Tool
             </h1>
@@ -200,10 +200,16 @@ export default function citHome() {
         </Row>
       </Container>
 
-      <Modal show={show} onHide={handleClose} keyboard={false}>
+      <Modal
+        show={show}
+        centered
+        onHide={handleClose}
+        keyboard={false}
+        size="lg"
+      >
         <Modal.Header closeButton>
-          <Modal.Title>
-            Would you like to log in or continue as a guest?
+          <Modal.Title className="pl-5">
+            <h2>Would you like to log in or continue as public?</h2>
           </Modal.Title>
         </Modal.Header>
         <Modal.Footer>
