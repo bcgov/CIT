@@ -1,0 +1,22 @@
+.report-style-class{
+    width: 100%;
+    height: 85vh;
+}
+
+.report-style-class iframe {
+    border: none;
+}
+
+.embed-container {
+    position: relative;
+}
+
+.over {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.public {
+    top: 70px;
+}

@@ -131,12 +131,12 @@ class UserView(GenericAPIView):
         return Response(response)
     
     def put(self, request, format=None):
-        user_id = request.data.get('id', None)
+        user_email = request.data.get('email', None)
         assignment_municipalities = [x['id'] for x in request.data.get('municipalities', [])]
         assignment_regional_districts = [x['id'] for x in request.data.get('regionalDistricts', [])]
 
         try:
-            user = User.objects.get(id=user_id)
+            user = User.objects.get(email=user_email)
         except User.DoesNotExist:
             return Response({'message': 'User does not exist'},
                             status=status.HTTP_400_BAD_REQUEST)

@@ -13,7 +13,7 @@ export default function SiteInformation({ location }) {
   document.title = `Investments - Add Opportunity - Site Information`;
   const history = useHistory();
   const goToNextPage = () => {
-    history.push(`/opportunity/property-details`);
+    history.push(`/investmentopportunities/property-details`);
   };
 
   return (
@@ -27,7 +27,11 @@ export default function SiteInformation({ location }) {
         />
       </Container>
       <OpportunityView data={location.state} />
-      <ButtonRow showPrevious prevRoute="/opportunity" onClick={goToNextPage} />
+      <ButtonRow
+        showPrevious
+        prevRoute="/investmentopportunities"
+        onClick={goToNextPage}
+      />
     </>
   );
 }

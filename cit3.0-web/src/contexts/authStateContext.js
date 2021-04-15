@@ -17,20 +17,24 @@ const AuthStateContextProvider = ({ children }) => {
 
   React.useEffect(() => {
     if (keycloak.obj && keycloak.obj.authenticated) {
+      let idp = "";
       const loadUserInfo = () => {
         keycloak.obj
           .loadUserInfo()
           .then((user) => {
-            setUserInfo(user);
+            idp = user.preferred_username.slice(
+              user.preferred_username.indexOf("@") + 1
+            );
+            setUserInfo({ ...user, idp });
             getUser({ email: user.email }).then((existingUser) => {
               if (existingUser.data.length) {
-                dispatch(setUser(existingUser.data[0]));
+                dispatch(setUser({ ...existingUser.data[0], idp }));
               } else {
                 postUser(
                   UserFactory.createStateFromKeyCloak(user),
                   keycloak.obj.token
                 ).then((newUser) => {
-                  dispatch(setUser(newUser.data));
+                  dispatch(setUser({ ...newUser.data, idp }));
                 });
               }
             });

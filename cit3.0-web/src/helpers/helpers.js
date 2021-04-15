@@ -52,7 +52,7 @@ export function toKebabCase(str = "") {
 }
 
 export function createOpportunityLink(name, id) {
-  return `/opportunity/${toKebabCase(name)}-${id}`;
+  return `/investmentopportunities/view/${toKebabCase(name)}-${id}`;
 }
 
 export function determineStatusTextColour(approvalStatus) {

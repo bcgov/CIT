@@ -71,7 +71,7 @@ export default function AddOpportunity() {
   useEffect(() => {
     if (changePage && !proximityInProgress) {
       handleClose();
-      history.push(`/opportunity/site-info`);
+      history.push(`/investmentopportunities/site-info`);
     }
   }, [changePage, proximityInProgress]);
 

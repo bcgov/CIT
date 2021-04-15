@@ -280,7 +280,7 @@ export const OPPORTUNITY_MODEL = () => ({
   },
 });
 
-const STATUS_CODES = { Y: "Yes", N: "No", U: "Uknown" };
+const STATUS_CODES = { Y: "Yes", N: "No", U: "Unknown" };
 
 /**
  * Model used to map visual sections of the screens.

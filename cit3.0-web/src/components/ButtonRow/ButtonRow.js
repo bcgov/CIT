@@ -31,7 +31,7 @@ export default function ButtonRow({
           <Button
             onClick={() => {
               dispatch(resetOpportunity());
-              history.push("/dashboard");
+              history.push("/investmentopportunities/dashboard");
             }}
             label={cancelLabel}
             styling=" BC-Gov-SecondaryButton bc-gov-btn"
