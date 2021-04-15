@@ -17,7 +17,7 @@ export default function citHome() {
   const [regional, setRegional] = useState(null);
   const history = useHistory();
   const keycloak = useKeycloakWrapper();
-  const [loggedIn] = useState(keycloak.obj.authenticated);
+  const [loggedInWithIdir] = useState(keycloak.idp === "idir");
   const configuration = useConfiguration();
   const [show, setShow] = useState(false);
 
@@ -52,15 +52,15 @@ export default function citHome() {
     if (selectedPlace) {
       type = typeOfSelected(selectedPlace);
     }
-    if (selectedPlace && loggedIn) {
+    if (selectedPlace && loggedInWithIdir) {
       history.push(`${privateUrl}?${type}=${selectedPlace}`);
-    } else if (selectedPlace && !loggedIn) {
+    } else if (selectedPlace && !loggedInWithIdir) {
       handleShow();
     }
   }, [selectedPlace]);
 
   const handleExploreClick = () => {
-    if (loggedIn) {
+    if (loggedInWithIdir) {
       history.push(privateUrl);
     } else {
       handleShow();
@@ -77,19 +77,23 @@ export default function citHome() {
   };
 
   const handleLogin = () => {
-    // login and redirect to private report
+    // login with IDIR only and redirect to private report
+    let loginWithIdir;
     if (selectedPlace) {
       const type = typeOfSelected(selectedPlace);
-      keycloak.obj.login({
+      loginWithIdir = keycloak.obj.createLoginUrl({
+        idpHint: "idir",
         redirectUri: encodeURI(
           `${configuration.baseUrl}${privateUrl}?${type}=${selectedPlace}`
         ),
       });
     } else {
-      keycloak.obj.login({
+      loginWithIdir = keycloak.obj.createLoginUrl({
+        idpHint: "idir",
         redirectUri: encodeURI(`${configuration.baseUrl}${privateUrl}`),
       });
     }
+    window.location.href = loginWithIdir;
   };
 
   return (
@@ -208,10 +212,16 @@ export default function citHome() {
         size="lg"
       >
         <Modal.Header closeButton>
-          <Modal.Title className="pl-5">
+          <Modal.Title>
             <h2>Would you like to log in or continue as public?</h2>
           </Modal.Title>
         </Modal.Header>
+        <Modal.Body>
+          <h4>
+            *Please note that you must be logged in with an IDIR to continue to
+            the logged in view.
+          </h4>
+        </Modal.Body>
         <Modal.Footer>
           <SharedButton
             label="Continue as Public"
@@ -219,7 +229,7 @@ export default function citHome() {
             onClick={handlePublic}
           />
           <SharedButton
-            label="Login"
+            label="Login with IDIR"
             styling="bcgov-normal-blue modal-save-button btn"
             onClick={handleLogin}
           />
