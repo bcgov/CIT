@@ -160,7 +160,7 @@ export default function PropertyDetails1() {
   const history = useHistory();
 
   const goToNextPage = () => {
-    history.push("/opportunity/additional-details");
+    history.push("/investmentopportunities/additional-details");
   };
 
   const radioLabels = ["Yes", "No", "Unknown"];
@@ -494,7 +494,7 @@ export default function PropertyDetails1() {
         </Row>
       </Container>
       <ButtonRow
-        prevRoute="/opportunity/site-info"
+        prevRoute="/investmentopportunities/site-info"
         onClick={handleContinue}
         noContinue={
           rentalError ||

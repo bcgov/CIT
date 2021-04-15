@@ -53,7 +53,9 @@ export default function HomePage() {
                 </Row>
                 <Row className="d-flex justify-content-end w-100">
                   <Button
-                    onClick={() => history.push(`/search`)}
+                    onClick={() =>
+                      history.push(`/investmentopportunities/search`)
+                    }
                     styling="home-buttons"
                     label="Search Properties"
                   />
@@ -80,7 +82,9 @@ export default function HomePage() {
                 </Row>
                 <Row className="d-flex justify-content-start w-100">
                   <Button
-                    onClick={() => history.push(`/dashboard`)}
+                    onClick={() =>
+                      history.push(`/investmentopportunities/dashboard`)
+                    }
                     styling="home-buttons"
                     label="List Properties"
                   />
