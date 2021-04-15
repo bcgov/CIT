@@ -3,7 +3,11 @@ import PropTypes from "prop-types";
 import { Link, NavLink, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Map from "../Map/Map";
-import { determineStatusTextColour, formatDate } from "../../helpers/helpers";
+import {
+  determineStatusTextColour,
+  formatDate,
+  getAddress,
+} from "../../helpers/helpers";
 import {
   getOpportunity,
   setOpportunity,
@@ -90,7 +94,7 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
             />
           </div>
         </Col>
-        <Col>{opportunity.address}</Col>
+        <Col>{opportunity ? getAddress(opportunity.address) : ""}</Col>
         {!publicView ? (
           <>
             <Col>{formatDate(opportunity.dateCreated)}</Col>
