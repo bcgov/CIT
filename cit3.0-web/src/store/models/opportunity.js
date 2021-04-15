@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { toKebabCase } from "../../helpers/helpers";
+import { createOpportunityLink } from "../../helpers/helpers";
 
 /**
  * Initial opportunity model
@@ -368,9 +368,7 @@ export class Opportunity {
   }
 
   createLink() {
-    this.state.link = `/opportunity/${toKebabCase(this.state.name)}-${
-      this.state.id
-    }`;
+    this.state.link = createOpportunityLink(this.state.name, this.state.id);
   }
 
   set opportunityName(value) {

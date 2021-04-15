@@ -51,6 +51,10 @@ export function toKebabCase(str = "") {
   );
 }
 
+export function createOpportunityLink(name, id) {
+  return `/opportunity/${toKebabCase(name)}-${id}`;
+}
+
 export function determineStatusTextColour(approvalStatus) {
   if (approvalStatus === "NEW") {
     return <div className="status-text-green">New</div>;

@@ -23,6 +23,8 @@ import { NOTIFICATION_ERROR } from "../../../store/constants/notification";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import { postUser } from "../../../store/actions/user";
 import UserFactory from "../../../store/factory/UserFactory";
+import OpportunityFactory from "../../../store/factory/OpportunityFactory";
+import { createOpportunityLink } from "../../../helpers/helpers";
 
 const ReviewOpportunity = () => {
   const history = useHistory();
@@ -42,7 +44,15 @@ const ReviewOpportunity = () => {
     dispatch(setApprovalStatus("NEW"));
     await postOpportunity(opportunityModel, keycloak.obj.token)
       .then((response) => {
-        sendAdminEmailNotification(response.data.id, keycloak.obj.token)
+        const opportunityLink = createOpportunityLink(
+          opportunityModel.name,
+          response.data.id
+        );
+        sendAdminEmailNotification(
+          response.data.id,
+          opportunityLink,
+          keycloak.obj.token
+        )
           .then(() => {})
           .catch((e) => {
             console.log(e);
