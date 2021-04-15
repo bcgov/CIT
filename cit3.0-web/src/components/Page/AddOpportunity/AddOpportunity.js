@@ -58,19 +58,19 @@ export default function AddOpportunity() {
   );
 
   const [hasApproval, setHasApproval] = useState(false);
+  const [warning, setWarning] = useState([]);
   const [error, setError] = useState([]);
   const [agreed, setAgreed] = useState(false);
   const [noAddressFlag, setNoAddressFlag] = useState(false);
 
   // Handle ProximityData call still running and change of page
-  const [proximityInProgress, setProximityInProgress] = useState(false);
+  const [proximityInProgress, setProximityInProgress] = useState(true);
   const [changePage, setChangePage] = useState(false);
   const [localityName, setLocalityName] = useState("Your Community");
 
   // Handle Modal if proximity data is still loading
   const [show, setShow] = useState(false);
   const handleClose = () => {
-    setChangePage(false);
     setShow(false);
   };
   const handleShow = () => setShow(true);
@@ -80,24 +80,23 @@ export default function AddOpportunity() {
     history.push(`/opportunity/site-info`);
   };
 
-  useEffect(() => {
-    setProximityInProgress(false);
-    setChangePage(false);
-  });
-
-  useEffect(() => {
-    if (
-      (parcelOwner !== "Private" ||
-        (parcelOwner === "Private" && hasApproval === "Yes")) &&
-      agreed
-    ) {
+  const handleErrorModalContinue = () => {
+    if (!error.length && (!!address || !!geometry)) {
+      setWarning([]);
       setError([]);
-      // Data is prepared, continue to next page
-      if (changePage && !proximityInProgress) {
+      setChangePage(true);
+      if (!proximityInProgress) {
         closeModalAndContinue();
       }
     }
-  }, [changePage, proximityInProgress]);
+  };
+
+  useEffect(() => {
+    // Data is prepared, continue to next page
+    if (!error.length && changePage && !proximityInProgress) {
+      closeModalAndContinue();
+    }
+  }, [changePage, proximityInProgress, error]);
 
   useEffect(() => {
     if (municipality) {
@@ -106,28 +105,30 @@ export default function AddOpportunity() {
   }, [municipality]);
 
   const goToNextPage = () => {
-    setChangePage(false);
     handleShow();
+    setWarning([]);
     setError([]);
     let errors = [];
-    if (!address) {
-      errors = [
-        ...errors,
-        "This opportunity has no address or parcel associated with it.",
+    let warnings = [];
+
+    if (!address || !geometry) {
+      warnings = [
+        ...warnings,
+        `This opportunity has no ${!address ? "address" : ""}${
+          !address && !geometry ? " or " : ""
+        }${!geometry ? "parcel" : ""} associated with it.`,
       ];
-      setError(errors);
     }
     if (parcelOwner === "Private" && hasApproval !== "Yes") {
       errors = [...errors, "Please get the approval before listing this site."];
-      setError(errors);
     }
     if (!agreed) {
       errors = [...errors, "Please agree to the Terms of use."];
-      setError(errors);
     }
-    if (agreed && !error.length) {
-      setChangePage(true);
-    } else if (hasApproval === "Yes" && agreed) {
+    setWarning(warnings);
+    setError(errors);
+    setChangePage(agreed && !error.length && !warning.length);
+    if (!proximityInProgress) {
       closeModalAndContinue();
     }
   };
@@ -265,13 +266,13 @@ export default function AddOpportunity() {
         size="lg"
         centered
       >
-        {error.length ? (
+        {error.length || warning.length ? (
           <>
             <Modal.Header>
               <Modal.Title>Warning</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-              {error.map((e) => (
+              {[...error, ...warning].map((e) => (
                 <p className="text-red" key={v4()}>
                   {e}
                 </p>
@@ -286,9 +287,7 @@ export default function AddOpportunity() {
               <Button
                 label="Continue"
                 styling="bcgov-normal-blue modal-save-button btn"
-                onClick={() => {
-                  setChangePage(true);
-                }}
+                onClick={handleErrorModalContinue}
               />
             </Modal.Footer>
           </>
