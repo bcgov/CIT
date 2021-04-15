@@ -1,7 +1,7 @@
 import "./Header.scss";
 
 import React from "react";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { Button, Navbar, Nav } from "react-bootstrap";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import UserProfile from "./UserProfile";
@@ -10,6 +10,17 @@ import Roles from "../../../constants/roles";
 const Header = () => {
   const keycloak = useKeycloakWrapper();
   const history = useHistory();
+  const location = useLocation();
+
+  const title = () => {
+    if (location.pathname.includes("/investmentopportunities")) {
+      return "Community Investment Opportunities Tool";
+    }
+    if (location.pathname.includes("/dashboard")) {
+      return "Community Insights Tool";
+    }
+    return "";
+  };
 
   return (
     <>
@@ -32,9 +43,7 @@ const Header = () => {
           </Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Item>
-              <div className="title">
-                Community Investment Opportunities Tool
-              </div>
+              <div className="title">{title()}</div>
             </Nav.Item>
           </Nav>
           {keycloak.obj && <UserProfile />}
