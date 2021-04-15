@@ -31,6 +31,7 @@ import OpportunityApproveListPage from "./components/Page/OpportunityApproveList
 import UserManagementDashboard from "./components/Page/UserManagement/UserManagementDashboard";
 
 import PowerBi from "./components/Page/PowerBi/PowerBi";
+import PowerBiPublic from "./components/Page/PowerBi/PowerBiPublic";
 
 import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
@@ -64,7 +65,8 @@ function App() {
             <Router>
               <Header />
               <Switch>
-                <Redirect exact from="/" to="/home" />
+                <Redirect exact from="/" to="/investmentopportunities/home" />
+                <Redirect exact from="/dashboard" to="/dashboard/home" />
                 <AppRoute
                   title={getTitle("Login")}
                   path="/login"
@@ -208,7 +210,7 @@ function App() {
                 />
                 <AppRoute
                   protected
-                  path="/dashboard/private"
+                  path="/dashboard/internal"
                   layout={AuthLayout}
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
@@ -216,6 +218,7 @@ function App() {
                   ]}
                   component={PowerBi}
                 />
+                <AppRoute path="/dashboard/public" component={PowerBiPublic} />
                 <AppRoute
                   protected
                   exact

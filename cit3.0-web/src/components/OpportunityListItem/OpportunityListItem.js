@@ -21,7 +21,7 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
           editing: true,
         })
       );
-      history.push("/investmentopportunities/view/");
+      history.push("/investmentopportunities/");
     });
   };
   const determineActions = (opp) => {
