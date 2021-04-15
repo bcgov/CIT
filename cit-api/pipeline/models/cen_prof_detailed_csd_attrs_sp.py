@@ -504,6 +504,10 @@ class CEN_PROF_DETAILED_CSD_ATTRS_SP(models.Model):
     total_private_hslds_by_tenure = models.IntegerField(null=True)
     total_private_hslds_owned = models.IntegerField(null=True)
     total_private_hslds_rented = models.IntegerField(null=True)
+    visible_minority_num_male = models.IntegerField(null=True)
+    visible_minority_num_female = models.IntegerField(null=True)
+    visible_minority_pct_male = models.FloatField(null=True)
+    visible_minority_pct_female = models.FloatField(null=True)
     feature_area_sqm = models.FloatField(null=True)
     feature_length_m = models.FloatField(null=True)
 
