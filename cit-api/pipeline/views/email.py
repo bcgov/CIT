@@ -26,6 +26,7 @@ class EmailView(APIView):
                 if email_result.status_code == 201:
                     return Response("Email sent successfully for opportunity ID " + str(request_body.get("id")), status=status.HTTP_200_OK)
                 else:
+                    print(email_result)
                     return Response("Unable to successfully send email", status=status.HTTP_502_BAD_GATEWAY)
             else:
                 return Response("Unable to successfully obtain email token", status=status.HTTP_502_BAD_GATEWAY)        
