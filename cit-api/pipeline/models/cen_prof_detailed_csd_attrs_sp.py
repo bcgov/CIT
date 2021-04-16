@@ -10,6 +10,8 @@ class CEN_PROF_DETAILED_CSD_ATTRS_SP(models.Model):
     census_subdivision_id = models.IntegerField(null=True)
     census_subdivision_name = models.CharField(max_length=127)
     census_year = models.IntegerField(null=True)
+    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     global_nonresp_sf_pct = models.FloatField(null=True)
     global_nonresp_lf_pct = models.FloatField(null=True)
     commute_total_by_mode = models.IntegerField(null=True)
@@ -515,4 +517,4 @@ class CEN_PROF_DETAILED_CSD_ATTRS_SP(models.Model):
         ordering = ("id", )
 
     def __str__(self):
-        return self.name
+        return self.census_subdivision_name

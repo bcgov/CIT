@@ -1,6 +1,7 @@
 import csv
 import requests
 import copy
+import math
 
 from django.apps import apps
 from django.conf import settings
@@ -88,19 +89,25 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
 
 
 def import_data_into_area_model(resource_type, Model, row, index=None):
+    if resource_type == 'Census Subdivisions':
+        instance, created = Model.objects.get_or_create(
+            census_subdivision_id=row['CENSUS_SUBDIVISION_ID'])
+    elif resource_type == 'Census Division':
+        instance, created = Model.objects.get_or_create(
+            census_division_id=row['CENSUS_DIVISION_ID'])
+    else:
+        name_fields = Model.NAME_FIELD.split(",")
+        name = ", ".join([str(row[name_field]) for name_field in name_fields])
 
-    name_fields = Model.NAME_FIELD.split(",")
-    name = ", ".join([str(row[name_field]) for name_field in name_fields])
+        if name == 'None':
+            if hasattr(Model, 'ID_FIELD'):
+                name = f'Unnamed {resource_type} {row[Model.ID_FIELD]}'
+                print("Name", name)
+            else:
+                name = f'Unnamed {resource_type} {index}'
+                print("Name", name)
 
-    if name == 'None':
-        if hasattr(Model, 'ID_FIELD'):
-            name = f'Unnamed {resource_type} {row[Model.ID_FIELD]}'
-            print("Name", name)
-        else:
-            name = f'Unnamed {resource_type} {index}'
-            print("Name", name)
-
-    instance, created = Model.objects.get_or_create(name=name)
+        instance, created = Model.objects.get_or_create(name=name)
 
     print("instance", instance)
     if hasattr(Model, 'ID_FIELD'):
@@ -144,6 +151,8 @@ def import_variable_fields(instance, row, Model):
                 field_value = field_value[:Model._meta.get_field(transformed_field_name).max_length]
             except FieldDoesNotExist:
                 pass
+        if isinstance(field_value, float) and math.isnan(field_value):
+            field_value = None
         setattr(instance, transformed_field_name, field_value)
 
 

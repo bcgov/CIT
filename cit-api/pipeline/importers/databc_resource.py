@@ -78,7 +78,6 @@ def import_wms_resource(resource):
         query = "ROAD_CLASS in ('highway','freeway','ramp', 'arterial')"
 
     ds = bcdata.get_data(resource.dataset, as_gdf=True, query=query)
-
     for index, row in ds.iterrows():
         model_class = apps.get_model("pipeline", resource.model_name)
         print(resource.name)

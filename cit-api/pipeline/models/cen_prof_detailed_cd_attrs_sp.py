@@ -10,6 +10,8 @@ class CEN_PROF_DETAILED_CD_ATTRS_SP(models.Model):
     census_year = models.IntegerField(null=True)
     census_division_id = models.IntegerField(null=True)
     census_division_name = models.CharField(max_length=127)
+    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     global_nonresp_sf_pct = models.FloatField(null=True)
     global_nonresp_lf_pct = models.FloatField(null=True)
     commute_total_by_mode = models.IntegerField(null=True)
@@ -510,11 +512,10 @@ class CEN_PROF_DETAILED_CD_ATTRS_SP(models.Model):
     visible_minority_pct_female = models.FloatField(null=True)
     feature_area_sqm = models.FloatField(null=True)
     feature_length_m = models.FloatField(null=True)
-    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
+    
 
     class Meta:
         ordering = ("id", )
 
     def __str__(self):
-        return self.name
+        return self.census_division_name
