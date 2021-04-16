@@ -8,31 +8,25 @@ export default function AddressSearchBar({
   setAddress,
   currentAddress,
   getCoords,
-  setError,
-  setBlockContinue,
+  setLocalityName,
+  handleError,
 }) {
-  const [value, setValue] = useState("");
   const [addresses, setAddresses] = useState([]);
   const [show, setShow] = useState(false);
-
-  useEffect(() => {
-    setValue(currentAddress);
-  }, [currentAddress]);
 
   const runSearch = async (event) => {
     if (event.target.value) {
       setShow(true);
-    } else {
-      setBlockContinue(true);
     }
-    setValue(event.target.value);
+    setAddress(event.target.value);
     try {
       const addressData = await getAddressData(event.target.value);
       setAddresses(addressData.data.features);
+      setLocalityName(addressData.data.features[0].properties.localityName);
       return true;
     } catch (error) {
       setShow(false);
-      return setError(
+      return handleError(
         "Cannot find address data for this address, please try again."
       );
     }
@@ -44,7 +38,7 @@ export default function AddressSearchBar({
     setShow(false);
   };
   const selectAddress = (e) => {
-    setValue(e.target.value);
+    setAddress(e.target.value);
     setCoordsForSelectedAddress(e.target.value);
   };
 
@@ -78,7 +72,7 @@ export default function AddressSearchBar({
         autoComplete="off"
         className=" bcgov-text-input"
         id="addressSearch"
-        value={value || ""}
+        value={currentAddress || ""}
         onChange={(e) => runSearch(e)}
       />
       {show ? (
@@ -109,7 +103,7 @@ AddressSearchBar.defaultProps = {
 AddressSearchBar.propTypes = {
   setAddress: PropTypes.func.isRequired,
   getCoords: PropTypes.func.isRequired,
-  setError: PropTypes.func.isRequired,
+  handleError: PropTypes.func.isRequired,
+  setLocalityName: PropTypes.func.isRequired,
   currentAddress: PropTypes.string,
-  setBlockContinue: PropTypes.func.isRequired,
 };
