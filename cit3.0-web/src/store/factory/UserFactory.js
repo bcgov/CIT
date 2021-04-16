@@ -8,6 +8,7 @@ function createStateFromResponse(response) {
     name: response.name,
     email: response.email,
     role: response.role,
+    idp: response.idp,
     dateCreated: response.date_created,
     municipalities: response.municipalities,
     regionalDistricts: response.regional_districts,
