@@ -37,6 +37,7 @@ const AuthStateContextProvider = ({ children }) => {
           .loadUserInfo()
           .then((user) => {
             if (!user.email) {
+              keycloak.obj.clearToken();
               handleShow();
               return;
             }
@@ -83,7 +84,7 @@ const AuthStateContextProvider = ({ children }) => {
       <Modal
         show={show}
         centered
-        static
+        backdrop="static"
         onHide={handleClose}
         keyboard={false}
         size="lg"
