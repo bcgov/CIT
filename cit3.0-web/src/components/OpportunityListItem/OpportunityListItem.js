@@ -2,6 +2,7 @@ import { Row, Col, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { Link, NavLink, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import LinesEllipsis from "react-lines-ellipsis";
 import Map from "../Map/Map";
 import { determineStatusTextColour, formatDate } from "../../helpers/helpers";
 import {
@@ -78,7 +79,7 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
         className={publicView ? "nested-link" : ""}
         onClick={() => !!publicView && history.push(opportunity.link)}
       >
-        <Col>
+        <Col sm={3} md={3} lg={3}>
           <div
             style={{ borderRight: "2px solid #606060" }}
             className="opportunity-table-map-container"
@@ -90,20 +91,44 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
             />
           </div>
         </Col>
-        <Col>{opportunity.address}</Col>
-        {!publicView ? (
-          <>
-            <Col>{formatDate(opportunity.dateCreated)}</Col>
-            <Col>{determineStatusTextColour(opportunity.approvalStatus)}</Col>
-            <Col>{determineActions(opportunity)}</Col>
-          </>
-        ) : (
-          <Col className="d-flex align-items-end justify-content-end mr-1">
-            {publicView && (
-              <Link to={opportunity.link}>View property details</Link>
+        <Col>
+          <Row>
+            <Col>{opportunity.address || "No Address"}</Col>
+            {!publicView ? (
+              <>
+                <Col>{formatDate(opportunity.dateCreated)}</Col>
+                <Col>
+                  {determineStatusTextColour(opportunity.approvalStatus)}
+                </Col>
+                <Col>{determineActions(opportunity)}</Col>
+              </>
+            ) : (
+              <Col className="d-flex align-items-end justify-content-end mr-1">
+                {publicView && (
+                  <Link to={opportunity.link}>View property details</Link>
+                )}
+              </Col>
             )}
-          </Col>
-        )}
+          </Row>
+
+          {opportunity.publicNote ? (
+            <Row>
+              <Col className="pl-0">
+                <b className="note-title">
+                  Comment from {opportunity.lastAdmin}:
+                </b>
+                <LinesEllipsis
+                  className="note pr-3"
+                  text={opportunity.publicNote}
+                  maxLine="3"
+                  ellipsis="..."
+                  trimRight
+                  basedOn="letters"
+                />
+              </Col>
+            </Row>
+          ) : null}
+        </Col>
       </Row>
     </div>
   );

@@ -30,7 +30,7 @@ const OpportunityApprovalItem = ({ opportunity }) => {
         </Col>
         <Col>
           <Row>
-            <Col className="p-2">{opportunity.address}</Col>
+            <Col className="p-2">{opportunity.address || "No Address"}</Col>
             <Col className="p-2">{formatDate(opportunity.dateCreated)}</Col>
             <Col className="p-2">
               {determineStatusTextColour(opportunity.approvalStatus)}
@@ -50,9 +50,6 @@ const OpportunityApprovalItem = ({ opportunity }) => {
             </Col>
           </Row>
           <Row>
-            <Col sm={3} md={3} lg={3}>
-              &nbsp;
-            </Col>
             {opportunity.privateNote ? (
               <Col className="pl-0">
                 <b className="note-title">
