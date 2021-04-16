@@ -17,7 +17,7 @@ const Header = () => {
       return "Community Investment Opportunities Tool";
     }
     if (location.pathname.includes("/dashboard")) {
-      return "Community Insights Tool";
+      return "Community Information Tool";
     }
     return "";
   };
