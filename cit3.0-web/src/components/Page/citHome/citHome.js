@@ -20,6 +20,14 @@ export default function citHome() {
   const [loggedInWithIdir] = useState(keycloak.idp === "idir");
   const configuration = useConfiguration();
   const [show, setShow] = useState(false);
+  const [loginButtonText] = useState(
+    loggedInWithIdir ? "Continue with IDIR" : "Login with IDIR"
+  );
+  const [modalTitleText] = useState(
+    loggedInWithIdir
+      ? "Would you like to continue to the internal report or the public report?"
+      : "Would you like to log in or continue as public?"
+  );
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -45,26 +53,6 @@ export default function citHome() {
       return "regionalDistrict";
     }
     return null;
-  };
-
-  useEffect(() => {
-    let type;
-    if (selectedPlace) {
-      type = typeOfSelected(selectedPlace);
-    }
-    if (selectedPlace && loggedInWithIdir) {
-      history.push(`${privateUrl}?${type}=${selectedPlace}`);
-    } else if (selectedPlace && !loggedInWithIdir) {
-      handleShow();
-    }
-  }, [selectedPlace]);
-
-  const handleExploreClick = () => {
-    if (loggedInWithIdir) {
-      history.push(privateUrl);
-    } else {
-      handleShow();
-    }
   };
 
   const handlePublic = () => {
@@ -142,7 +130,10 @@ export default function citHome() {
                       <Typeahead
                         id="search-by-community"
                         size="large"
-                        onChange={(selected) => setSelectedPlace(selected[0])}
+                        onChange={(selected) => {
+                          setSelectedPlace(selected[0]);
+                          handleShow();
+                        }}
                         options={places}
                       />
                       <Button
@@ -183,7 +174,7 @@ export default function citHome() {
             <Row>
               <Col className="mt-2 d-flex justify-content-end">
                 <SharedButton
-                  onClick={handleExploreClick}
+                  onClick={handleShow}
                   styling="home-buttons explore-button"
                   label="Explore B.C. Communities"
                 />
@@ -213,13 +204,13 @@ export default function citHome() {
       >
         <Modal.Header closeButton>
           <Modal.Title>
-            <h2>Would you like to log in or continue as public?</h2>
+            <h2>{modalTitleText}</h2>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <h4>
             *Please note that you must be logged in with an IDIR to continue to
-            the logged in view.
+            the internal report.
           </h4>
         </Modal.Body>
         <Modal.Footer>
@@ -229,7 +220,7 @@ export default function citHome() {
             onClick={handlePublic}
           />
           <SharedButton
-            label="Login with IDIR"
+            label={loginButtonText}
             styling="bcgov-normal-blue modal-save-button btn"
             onClick={handleLogin}
           />
