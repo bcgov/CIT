@@ -4,7 +4,11 @@ import { Col, NavLink, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import LinesEllipsis from "react-lines-ellipsis";
 import Map from "../Map/Map";
-import { determineStatusTextColour, formatDate } from "../../helpers/helpers";
+import {
+  determineStatusTextColour,
+  formatDate,
+  getAddress,
+} from "../../helpers/helpers";
 import "./OpportunityApprovalItem.css";
 
 const OpportunityApprovalItem = ({ opportunity }) => {
@@ -30,7 +34,9 @@ const OpportunityApprovalItem = ({ opportunity }) => {
         </Col>
         <Col>
           <Row>
-            <Col className="p-2">{opportunity.address || "No Address"}</Col>
+            <Col className="p-2">
+              {opportunity ? getAddress(opportunity.address) : ""}
+            </Col>
             <Col className="p-2">{formatDate(opportunity.dateCreated)}</Col>
             <Col className="p-2">
               {determineStatusTextColour(opportunity.approvalStatus)}

@@ -74,8 +74,23 @@ export function determineStatusTextColour(approvalStatus) {
 }
 
 export function formatDate(ISODate) {
-  const dateString = ISODate.substring(0, 11);
-  return dateString;
+  return ISODate.split("T")[0];
+}
+
+export function getAddress(address) {
+  if (!address) {
+    return "No Address";
+  }
+  const splitAddress = address.split(",");
+  const street = splitAddress.shift();
+  const city = splitAddress.join(", ");
+  return (
+    <>
+      {street}
+      <br />
+      {city}
+    </>
+  );
 }
 
 export function convertCoords(coords) {
