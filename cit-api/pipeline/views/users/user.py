@@ -26,6 +26,7 @@ def get_row(user):
     response['email'] = user.email
     response['role'] = user.role
     response['date_created'] = user.date_created.strftime("%Y-%b-%d")
+    response['is_admin'] = user.is_admin
     for assignment in user.assignments_set.all():
         try:
             municipality = Municipality.objects.get(id=assignment.municipality_id)
@@ -134,7 +135,7 @@ class UserView(GenericAPIView):
         user_email = request.data.get('email', None)
         assignment_municipalities = [x['id'] for x in request.data.get('municipalities', [])]
         assignment_regional_districts = [x['id'] for x in request.data.get('regionalDistricts', [])]
-
+        print(request.data)
         try:
             user = User.objects.get(email=user_email)
         except User.DoesNotExist:
@@ -152,6 +153,11 @@ class UserView(GenericAPIView):
         for assignment in assignments:
             if assignment.regional_district is not None and assignment.regional_district.id not in assignment_regional_districts:
                 assignment.delete()
+
+        user_is_admin = request.data.get('is_admin', None)
+        if user_is_admin is not None:
+            user.is_admin = user_is_admin
+            user.save()
         
         return Response({'message' :'ok'}, status.HTTP_202_ACCEPTED)
 
