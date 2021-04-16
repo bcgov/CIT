@@ -71,17 +71,17 @@ export default function PropertyDetails2() {
   const history = useHistory();
 
   const noteLabel =
-    "Please note, the information you enter in this section will appear as is on the listing to promote this opportunity.  Do not include any personal infomation. ";
+    "Please note, the information you enter in this section will appear as is on the listing to promote this opportunity. Do not include any personal information. ";
   const oppDescLabel =
-    "Opportunity description including site characteristics, permit info, or any other relevant information.";
+    "Please describe the property including site characteristics, allowed uses, approval processes, permits, etc.";
   const enviroLabel =
-    "Please tell us about any environmental assessment info or environmental sensitivity, if known.";
+    "Provide information about any environmental sensitivities of the site, and any required or completed environmental assessments.";
   const commUrlLabel = "Link to your community website/webpage";
   const listingUrlLabel = "Link to more info about this opportunity";
   const urlNoteComm =
-    "This will direct potential Investors to a webpage of your choice where they can learn more about your community.";
+    "This will direct potential investors to a webpage of your choice where they can learn more about your community.";
   const urlNote =
-    "This will direct potential Investors to a webpage, brochure, PDF, image etc. of your choice where they can learn more about your community.";
+    "This will direct potential investors to a webpage, brochure, PDF, image etc. of your choice where they can learn more about the property.";
   const placeholderComm = "Enter URL here (eg. my community.ca)";
   const placeholder = "Enter URL here (eg. realtor.ca/myopportunity)";
 
@@ -129,7 +129,7 @@ export default function PropertyDetails2() {
           <Row>
             <PageTitleHeader
               title="Enter Property Details"
-              text="Tell us more about this investment opportunity.  All fields are optional."
+              text="Provide more information about the property. All fields are optional. Site Information:"
             />
           </Row>
         </Row>
