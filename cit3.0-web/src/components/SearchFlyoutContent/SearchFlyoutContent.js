@@ -99,8 +99,6 @@ export default function SearchFlyoutContent({ setQuery }) {
 
   const [zoningIsSelected, setZoningIsSelected] = useState(false);
   const [zoningQueryFilters, setZoningQueryFilters] = useState("");
-  const [connectivityIsSelected, setConnectivityIsSelected] = useState(false);
-  const [connectivityQueryFilters, setConnectivityQueryFilters] = useState("");
   const [zoningFilters, setZoningFilters] = useState([
     {
       label: "Commercial",
@@ -129,28 +127,7 @@ export default function SearchFlyoutContent({ setQuery }) {
     },
   ]);
 
-  const [connectivityFilters, setConnectivityFilters] = useState([
-    {
-      label: "50/10 mbps",
-      code: "50/10",
-      isSelected: false,
-    },
-    {
-      label: "25/5 mbps",
-      code: "25/5",
-      isSelected: false,
-    },
-    {
-      label: "10/2 mbps",
-      code: "10/2",
-      isSelected: false,
-    },
-    {
-      label: "5/1 mbps",
-      code: "5/1",
-      isSelected: false,
-    },
-  ]);
+  const [connectivitySwitchValue, setConnectivitySwitchValue] = useState(false);
 
   const [roadAccessSwitchValue, setRoadAccessSwitchValue] = useState(false);
   const [waterSwitchValue, setWaterSwitchValue] = useState(false);
@@ -276,8 +253,8 @@ export default function SearchFlyoutContent({ setQuery }) {
       query.append("zoning", zoningQueryFilters);
     }
 
-    if (connectivityIsSelected) {
-      query.append("connectivity", connectivityQueryFilters);
+    if (connectivitySwitchValue) {
+      query.append("connectivity", connectivitySwitchValue ? "Y" : "");
     }
 
     if (proximityToCommunityOrPopulationIsSelected) {
@@ -314,8 +291,8 @@ export default function SearchFlyoutContent({ setQuery }) {
     deepWaterPortDisplayRange,
     postSecondarySwitchValue,
     researchCentreSwitchValue,
+    connectivitySwitchValue,
     zoningQueryFilters,
-    connectivityQueryFilters,
     proximityToCommunityOrPopulationDisplayRange,
   ]);
 
@@ -395,14 +372,32 @@ export default function SearchFlyoutContent({ setQuery }) {
         displayRange={powerTransmissionLinesDisplayRange}
         setDisplayRange={setPowerTransmissionLinesDisplayRange}
       />
-      <SelectFilter
-        label="Connectivity Speed"
-        filters={connectivityFilters}
-        setFilters={setConnectivityFilters}
-        isSelected={connectivityIsSelected}
-        setIsSelected={setConnectivityIsSelected}
-        setQueryFilters={setConnectivityQueryFilters}
-      />
+      <Row className="flex-nowrap">
+        <Col xs={7}>
+          <p>Connectivity (50/10Mbps or more):</p>
+        </Col>
+        <Col xs="auto" className="no-padding">
+          <p>Off</p>
+        </Col>
+        <Col xs="auto">
+          <Switch
+            checked={connectivitySwitchValue}
+            onChange={setConnectivitySwitchValue}
+            onColor="#aad3df"
+            onHandleColor="#2693e6"
+            handleDiameter={30}
+            uncheckedIcon={false}
+            checkedIcon={false}
+            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+            height={20}
+            width={48}
+          />
+        </Col>
+        <Col xs="auto" className="no-padding">
+          <p>On</p>
+        </Col>
+      </Row>
       <Row className="flex-nowrap">
         <Col xs="6">
           <h3>Site Servicing</h3>
