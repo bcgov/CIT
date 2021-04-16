@@ -78,8 +78,10 @@ const LocationsPanel = ({
                     window.open(firstNationCommunity.link, "_blank")
                   }
                 >
-                  {firstNationCommunity.name} -{" "}
-                  {firstNationCommunity.distance.toFixed(2)}
+                  {firstNationCommunity.name
+                    .toLowerCase()
+                    .replace(/(^|\s)\S/g, (t) => t.toUpperCase())}{" "}
+                  - {firstNationCommunity.distance.toFixed(2)}
                   km
                 </a>
               </Col>

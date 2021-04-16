@@ -8,6 +8,6 @@ class UserTrackingView(generics.CreateAPIView):
     """
     User tracking endpoint for IDIR users
     """
-    model=UserTracking
+    model = UserTracking
     serializer_class = UserTrackingSerializer
     permission_classes = [IsAdminAuthenticated]
