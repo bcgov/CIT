@@ -6,6 +6,7 @@ import { models } from "powerbi-client";
 import { useLocation } from "react-router-dom";
 import { Button } from "shared-components";
 import Config from "../../../Config";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 
 export default function PowerBi(props) {
   const [currentPage, setCurrentPage] = useState(null);
@@ -13,16 +14,17 @@ export default function PowerBi(props) {
   const [token, setToken] = useState(null);
   const [reportConfig, setReportConfig] = useState(null);
 
+  const keycloak = useKeycloakWrapper();
+  const [loggedIn] = useState(keycloak.obj.authenticated);
+
   const [embedToken, setEmbedToken] = useState(null);
 
   const groupId = Config.pbiGroupId;
   const reportId = Config.pbiReportIdPublic;
 
   const { search } = useLocation();
-  const [community, setCommunity] = useState(
-    new URLSearchParams(search).get("community")
-  );
-  const [regionalDistrict, setRegionalDistrict] = useState(
+  const [community] = useState(new URLSearchParams(search).get("community"));
+  const [regionalDistrict] = useState(
     new URLSearchParams(search).get("regionalDistrict")
   );
 
@@ -100,7 +102,9 @@ export default function PowerBi(props) {
   return embedToken ? (
     <div id="embed-container">
       <Button
-        styling="bcgov-normal-blue btn primary over public"
+        styling={`bcgov-normal-blue btn primary over public ${
+          loggedIn ? "logged-in" : ""
+        }`}
         label="Save As PDF"
         onClick={saveAsPDF}
       />

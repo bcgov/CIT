@@ -3,11 +3,16 @@ import axios from "axios";
 import "./PowerBi.css";
 import { PowerBIEmbed } from "powerbi-client-react";
 import { models } from "powerbi-client";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Button } from "shared-components";
 import Config from "../../../Config";
+import { trackUser } from "../../../store/actions/user";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 
 export default function PowerBi(props) {
+  const keycloak = useKeycloakWrapper();
+  const user = useSelector((state) => state.user);
   const [currentPage, setCurrentPage] = useState(null);
   const [currentPageData, setCurrentPageData] = useState(null);
   const [token, setToken] = useState(null);
@@ -145,6 +150,10 @@ export default function PowerBi(props) {
                           .catch((err) => console.log("error: ", err));
                       }
                       window.report.refresh();
+                      trackUser(
+                        { user_id: user.id, report_url: window.location.href },
+                        keycloak.obj.token
+                      );
                     }
                   })
                   .catch((err) => console.log("error: ", err));

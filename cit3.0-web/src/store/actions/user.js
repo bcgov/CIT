@@ -9,8 +9,11 @@ import {
   SET_USER_INFO_ROLE,
 } from "../constants/user";
 import USER_INITIALIZATION from "../models/user";
-
-import { GET_USERS_URL, USER_URL } from "../constants/api-urls";
+import {
+  GET_USERS_URL,
+  USER_URL,
+  USER_TRACKING_URL,
+} from "../constants/api-urls";
 import UserFactory from "../factory/UserFactory";
 
 /**
@@ -58,6 +61,17 @@ export function deleteUser(user, token) {
  */
 export function updateUserAssignments(user, token) {
   return axios.put(USER_URL, user, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+}
+
+/**
+ * @param {object} user
+ * @param {string} token
+ * @return {Promise} of axios api call
+ */
+export function trackUser(user, token) {
+  return axios.post(USER_TRACKING_URL, user, {
     headers: { Authorization: `Bearer ${token}` },
   });
 }

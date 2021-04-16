@@ -350,7 +350,7 @@ export class Opportunity {
   set nearestFirstNations(value) {
     if (value && value.features) {
       this.state.firstNationCommunities = value.features.map((feature) => ({
-        name: feature.properties.name,
+        name: feature.properties.english_name,
         link: feature.properties.link,
         distance: feature.properties.distance,
         population: feature.properties.population,

@@ -28,7 +28,6 @@ export default function Map({
   setAddress,
   isInteractive,
   isSearchMode,
-  setError,
   setNoAddressFlag,
 }) {
   const [dimensions, setDimensions] = useState({
@@ -86,7 +85,6 @@ export default function Map({
         setCoords={setCoords}
         setAddress={setAddress}
         changeView={changeView}
-        setError={setError}
         setNoAddressFlag={setNoAddressFlag}
       />
     );
@@ -218,7 +216,6 @@ Map.defaultProps = {
   nearbyResources: null,
   setCoords: () => {},
   setAddress: () => {},
-  setError: () => {},
   setNoAddressFlag: () => {},
 };
 
@@ -232,6 +229,5 @@ Map.propTypes = {
   }),
   setCoords: PropTypes.func,
   setAddress: PropTypes.func,
-  setError: PropTypes.func,
   setNoAddressFlag: PropTypes.func,
 };

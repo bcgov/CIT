@@ -66,7 +66,11 @@ function App() {
               <Header />
               <Switch>
                 <Redirect exact from="/" to="/investmentopportunities/home" />
-                <Redirect exact from="/dashboard" to="/dashboard/home" />
+                <Redirect
+                  exact
+                  from="/cit-dashboard"
+                  to="/cit-dashboard/home"
+                />
                 <AppRoute
                   title={getTitle("Login")}
                   path="/login"
@@ -210,7 +214,7 @@ function App() {
                 />
                 <AppRoute
                   protected
-                  path="/dashboard/internal"
+                  path="/cit-dashboard/internal"
                   layout={AuthLayout}
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
@@ -218,7 +222,10 @@ function App() {
                   ]}
                   component={PowerBi}
                 />
-                <AppRoute path="/dashboard/public" component={PowerBiPublic} />
+                <AppRoute
+                  path="/cit-dashboard/public"
+                  component={PowerBiPublic}
+                />
                 <AppRoute
                   protected
                   exact
@@ -235,7 +242,7 @@ function App() {
                   path="/investmentopportunities/home"
                   component={HomePage}
                 />
-                <AppRoute path="/dashboard/home" component={citHome} />
+                <AppRoute path="/cit-dashboard/home" component={citHome} />
                 <AppRoute path="/datasources" component={Datasources} />
               </Switch>
               <div className="footer">
