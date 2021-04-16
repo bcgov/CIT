@@ -23,10 +23,8 @@ export default function PowerBi(props) {
   const reportId = Config.pbiReportIdPublic;
 
   const { search } = useLocation();
-  const [community, setCommunity] = useState(
-    new URLSearchParams(search).get("community")
-  );
-  const [regionalDistrict, setRegionalDistrict] = useState(
+  const [community] = useState(new URLSearchParams(search).get("community"));
+  const [regionalDistrict] = useState(
     new URLSearchParams(search).get("regionalDistrict")
   );
 
