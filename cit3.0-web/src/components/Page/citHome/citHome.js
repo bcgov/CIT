@@ -24,8 +24,8 @@ export default function citHome() {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-  const publicUrl = "/dashboard/public";
-  const privateUrl = "/dashboard/internal";
+  const publicUrl = "/cit-dashboard/public";
+  const privateUrl = "/cit-dashboard/internal";
 
   useEffect(() => {
     axios.get("/api/opportunity/options").then((data) => {
