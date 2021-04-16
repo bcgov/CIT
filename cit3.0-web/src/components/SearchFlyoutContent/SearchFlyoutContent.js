@@ -254,7 +254,7 @@ export default function SearchFlyoutContent({ setQuery }) {
     }
 
     if (connectivitySwitchValue) {
-      query.append("connectivity", connectivitySwitchValue ? "Y" : "");
+      query.append("connectivity", connectivitySwitchValue ? "Y" : "N");
     }
 
     if (proximityToCommunityOrPopulationIsSelected) {
