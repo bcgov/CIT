@@ -78,6 +78,9 @@ export function formatDate(ISODate) {
 }
 
 export function getAddress(address) {
+  if (!address) {
+    return "No Address";
+  }
   const splitAddress = address.split(",");
   const street = splitAddress.shift();
   const city = splitAddress.join(", ");
