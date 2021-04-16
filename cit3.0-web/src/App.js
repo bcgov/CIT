@@ -66,7 +66,11 @@ function App() {
               <Header />
               <Switch>
                 <Redirect exact from="/" to="/investmentopportunities/home" />
-                <Redirect exact from="/dashboard" to="/dashboard/home" />
+                <Redirect
+                  exact
+                  from="/cit-dashboard"
+                  to="/cit-dashboard/home"
+                />
                 <AppRoute
                   title={getTitle("Login")}
                   path="/login"
