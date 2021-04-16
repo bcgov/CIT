@@ -163,7 +163,7 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
         index = 0
         nearest_first_nations = list(instance.nearest_first_nations.all().values())
         for first_nation in nearest_first_nations:
-            nearest_first_nations[index]['reserve_name'] = IndianReserveBandName.objects.get(id=first_nation['reserve_id_id']).name
+            nearest_first_nations[index]['reserve_name'] = IndianReserveBandName.objects.get(id=first_nation['reserve_id_id']).english_name
             index += 1
         return nearest_first_nations
 
