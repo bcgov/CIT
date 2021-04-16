@@ -250,7 +250,7 @@ export const OPPORTUNITY_MODEL = () => ({
       salePrice: "",
     },
     currentZone: { title: "Current Zoning", value: "", type: "select" },
-    futureZone: { title: "Future Zoning", value: "", type: "select" },
+    futureZone: { title: "Designation", value: "", type: "select" },
     preferredDevelopment: {
       title: "Preferred Development",
       value: [],
