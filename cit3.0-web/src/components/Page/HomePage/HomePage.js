@@ -182,7 +182,7 @@ export default function HomePage() {
                   </p>
                   <p>
                     To create a listing, authorized representatives will be
-                    required to log-in with a BCEID. A one-time verification
+                    required to log-in with a BCeID. A one-time verification
                     process will confirm your status as an authorized community
                     representative community representative when you create your
                     first listing. All listings will be reviewed prior to
