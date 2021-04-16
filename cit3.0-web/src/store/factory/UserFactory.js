@@ -23,9 +23,6 @@ function createStateFromKeyCloak(keycloak) {
   return {
     name: keycloak.displayName || keycloak.name,
     email: keycloak.email,
-    idp: keycloak.preferred_username.slice(
-      keycloak.preferred_username.indexOf("@") + 1
-    ),
     role: "",
     municipalities: [],
     regionalDistricts: [],
