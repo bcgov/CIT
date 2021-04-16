@@ -5,30 +5,33 @@ import requests, os, json
 from requests.auth import HTTPBasicAuth
 
 from pipeline.permissions.IsAuthenticated import IsAuthenticated
+from pipeline.models.users.user import User
 
 class EmailView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
+        email_enabled = os.environ.get("EMAIL_NOTIFICATIONS_ENABLED")
+        if email_enabled not in ["True", "true"]:
+            return Response("Email notifications are currently disabled", status=status.HTTP_503_SERVICE_UNAVAILABLE)
         request_body = request.data
         opportunity_id = request_body.get("id", -1)
         opportunity_link = request_body.get("link", None)
         if opportunity_link is not None and opportunity_id is not -1:
             token_request_body = {'grant_type': 'client_credentials'}
             response = requests.post(os.environ.get("EMAIL_AUTH_HOST") + "/auth/realms/jbd6rnxw/protocol/openid-connect/token", data=token_request_body, auth=HTTPBasicAuth(os.environ.get("EMAIL_CLIENT_ID"),os.environ.get("EMAIL_CLIENT_SECRET")))       
-            if(response.status_code == 200):
+            if response.status_code == 200:
                 access_token = response.json()["access_token"]
                 email_result = self.send_email_notification(opportunity_id, opportunity_link, access_token)
-                if(email_result.status_code == 201):
+                if email_result.status_code == 201:
                     return Response("Email sent successfully for opportunity ID " + str(request_body.get("id")), status=status.HTTP_200_OK)
                 else:
-                    print(email_result.text)
                     return Response("Unable to successfully send email", status=status.HTTP_502_BAD_GATEWAY)
             else:
                 return Response("Unable to successfully obtain email token", status=status.HTTP_502_BAD_GATEWAY)        
-        elif(opportunity_id == -1):
+        elif opportunity_id == -1:
             return Response("An opportunity id is required", status=status.HTTP_400_BAD_REQUEST)
-        elif(opportunity_link == ""):
+        elif opportunity_link == "":
             return Response("A relative link to the opportunity is required", status=status.HTTP_400_BAD_REQUEST)
         else:
             return Response("An unknown error occured", status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -51,8 +54,7 @@ class EmailView(APIView):
                 "from": os.environ.get("EMAIL_SENDING_ADDRESS"),
                 "priority": "normal",
                 "subject": "A New Opportunity is Available for Review",
-                # TODO: Replace this address with table of admins
-                "to": [os.environ.get("EMAIL_SENDING_ADDRESS")],
+                "to": self.get_admin_email_addresses(),
                 "tag": "CIT_Admin_Notification",
             }
             email_config_json = json.dumps(email_config)
@@ -61,3 +63,6 @@ class EmailView(APIView):
 
     def build_full_link(self, relative_link):
         return os.environ.get("EMAIL_OPPORTUNITY_LINK_HOST") + relative_link
+
+    def get_admin_email_addresses(self):
+        return list(User.objects.filter(is_admin=True,deleted=False).exclude(email__in=['', 'Unknown']).values_list('email', flat=True))
