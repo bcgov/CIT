@@ -7,7 +7,7 @@ from pipeline.constants import WGS84_SRID
 
 class CEN_PROF_DETAILED_CSD_ATTRS_SP(models.Model):
 
-    census_subdivision_id = models.IntegerField(null=True)
+    census_subdivision_id = models.IntegerField(primary_key=True, null=False, blank=False)
     census_subdivision_name = models.CharField(max_length=127)
     census_year = models.IntegerField(null=True)
     geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
@@ -514,7 +514,7 @@ class CEN_PROF_DETAILED_CSD_ATTRS_SP(models.Model):
     feature_length_m = models.FloatField(null=True)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("census_subdivision_id", )
 
     def __str__(self):
         return self.census_subdivision_name

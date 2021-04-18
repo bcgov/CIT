@@ -16,7 +16,7 @@ from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineStr
 
 from pipeline.constants import WGS84_SRID
 from pipeline.models.community import Community
-from pipeline.models.census import CensusSubdivision
+from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.general import (DataSource, LocationDistance, SchoolDistrict, Municipality,
                                      CivicLeader, Hex, Service, ISP, RegionalDistrict)
@@ -429,7 +429,8 @@ def import_bc_assessment_data(file_path, Model, resource_type):
                     instance = Model.objects.get(bca_sbcsdu_sysid=id_field)
                 except Model.DoesNotExist:
                     instance = Model(bca_sbcsdu_sysid=id_field)
-                census_subdiv = CensusSubdivision.objects.get(id=int(row[link_field]))
+                census_subdiv = CEN_PROF_DETAILED_CSD_ATTRS_SP.objects.get(
+                    census_subdivision_id=int(row[link_field]))
                 instance.census_subdivision = census_subdiv
 
             elif resource_type == 'bc_assessment_economic_region':
