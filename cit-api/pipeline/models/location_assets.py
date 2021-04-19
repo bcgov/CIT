@@ -178,10 +178,10 @@ class Project(Location):
     project_stage = models.CharField(max_length=255, null=True, blank=True)
     project_category_name = models.CharField(max_length=255, null=True, blank=True)
 
-    public_funding_ind = models.IntegerField(null=True, blank=True)
-    green_building_ind = models.IntegerField(null=True, blank=True)
-    clean_energy_ind = models.IntegerField(null=True, blank=True)
-    first_nation_ind = models.IntegerField(null=True, blank=True)
+    public_funding_ind = models.CharField(max_length=255, null=True, blank=True)
+    green_building_ind = models.CharField(max_length=255, null=True, blank=True)
+    clean_energy_ind = models.CharField(max_length=255, null=True, blank=True)
+    first_nation_ind = models.CharField(max_length=255, null=True, blank=True)
     first_nation_names = models.CharField(max_length=255, null=True, blank=True)
     first_nation_agreement = models.CharField(max_length=255, null=True, blank=True)
 
