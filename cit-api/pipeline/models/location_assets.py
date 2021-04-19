@@ -152,132 +152,18 @@ class Court(Location):
     '''
 
 
-class EconomicProject(Location):
-    LATITUDE_FIELD = 'LATITUDE'
-    LONGITUDE_FIELD = 'LONGITUDE'
-    NAME_FIELD = 'PROJECT_NAME'
-    WEBSITE_FIELD = 'ORGANIZATION_ WEBSITE'
-
-    flnro_project_status = models.CharField(null=True, blank=True, max_length=255)
-    project_type = models.CharField(null=True, blank=True, max_length=255)
-    project_category = models.CharField(null=True, blank=True, max_length=255)
-    proponent = models.CharField(null=True, blank=True, max_length=255)
-    eao_project_status = models.CharField(null=True, blank=True, max_length=255)
-    project_comments = models.CharField(null=True, blank=True, max_length=255)
-
-    class Meta:
-        ordering = ("id", )
-
-    '''
-    {
-        '_id': 1,
-        'PROJECT_NAME': 'Ajax Copper Mine',
-        'PROJECT_DESCRIPTION': 'Copper and gold open pit mine',
-        'LATITUDE': 50.61233,
-        'LONGITUDE': -120.412388,
-        'FLNRO_AREA_NAME': 'South',
-        'FLNRO_REGION_NAME': 'Thompson / Okanagan',
-        'PROJECT_LOCATION': 'Kamloops',
-        *'FLNRO_PROJECT_STATUS': 'Permitting: Pre-Application',
-        *'PROJECT_TYPE': 'Major Mines',
-        *'PROJECT_CATEGORY': 'Copper, gold',
-        *'PROPONENT': 'KGHM Ajax Mining Inc.',
-        *'EAO_PROJECT_STATUS': 'EAO Process Suspended',
-        *'PROJECT_COMMENTS': '87027 (FCBC ATS); 10399-20 87027AJAX',
-        'NRS_MAJOR_PROJECT_ID': 1,
-        'ORGANIZATION_ WEBSITE': 'http://www2.gov.bc.ca/gov/content/industry/mineral-exploration-mining/permitting/major-mine-permitting-office'
-}
-    '''
-
-
-class NaturalResourceProject(Location):
-    LATITUDE_FIELD = 'LATITUDE'
-    LONGITUDE_FIELD = 'LONGITUDE'
-    NAME_FIELD = 'PROJECT_NAME'
-    WEBSITE_FIELD = 'ORGANIZATION_ WEBSITE'
-
-    project_description = models.CharField(null=True, blank=True, max_length=255)
-    project_location = models.CharField(null=True, blank=True, max_length=255)
-    project_comments = models.CharField(null=True, blank=True, max_length=255)
-    project_type = models.CharField(null=True, blank=True, max_length=255)
-    project_category = models.CharField(null=True, blank=True, max_length=255)
-    proponent = models.CharField(null=True, blank=True, max_length=255)
-    eao_project_status = models.CharField(null=True, blank=True, max_length=255)
-
-    class Meta:
-        ordering = ("id", )
-
-    def get_standardized_start_date_as_date(self):
-        if not self.standardized_start_date:
-            return None
-
-        return get_quarterly_date_str_as_date(self.standardized_start_date)
-
-    def get_standardized_completion_date_as_date(self):
-        if not self.standardized_completion_date:
-            return None
-
-        return get_quarterly_date_str_as_date(self.standardized_completion_date)
-
-    '''
-    {
-        '_id': 1,
-        'PROJECT_ID': 4023,
-        'PROJECT_NAME': 'RW Bruhn Bridge Replacement',
-        *'PROJECT_DESCRIPTION': 'Proposed construction of a 5-lane bridge to replace existing bridge. Project will include intersection improvements and a multi-use path. Federal government providing $91.082 million funding.',
-        *'ESTIMATED_COST': 225,
-        *'UPDATE_ACTIVITY': 'New proposed project',
-        'ENVIRONMENTAL_ASSESSMENT_STAGE': '',
-        *'CONSTRUCTION_TYPE': 'Infrastructure',
-        *'CONSTRUCTION_SUBTYPE': 'Roads & Highways',
-        *'PROJECT_TYPE': 'Transportation',
-        'REGION': '3. Thompson-Okanagan',
-        'MUNICIPALITY': 'Sicamous',
-        *'DEVELOPER': 'BC Ministry of Transportation and Infrastructure',
-        *'ARCHITECT': '',
-        *'PROJECT_STATUS': 'Proposed',
-        *'PROJECT_STAGE': 'Preliminary/Feasibility',
-        *'PROJECT_CATEGORY_NAME': 'Transportation & Warehousing',
-        'PUBLIC_FUNDING_IND': 'TRUE',
-        *'PROVINVIAL_FUNDING': 'TRUE',
-        *'FEDERAL_FUNDING': 'TRUE',
-        *'MUNICIPAL_FUNDING': 'FALSE',
-        'OTHER_PUBLIC_FUNDING': 'FALSE',
-        *'GREEN_BUILDING_IND': 'FALSE',
-        *'GREEN_BUILDING_DESC': '',
-        *'CLEAN_ENERGY_IND': 'FALSE',
-        'INDIGENOUS_IND': 'FALSE',
-        'INDIGENOUS_NAMES': '',
-        'INDIGENOUS_AGREEMENT': '',
-        *'CONSTRUCTION_JOBS': None,
-        *'OPERATING_JOBS': None,
-        *'STANDARDIZED_START_DATE': '2020-Q4',
-        *'STANDARDIZED_COMPLETION_DATE': '2023-Q4',
-        'LATITUDE': None,
-        'LONGITUDE': None,
-        'LATITUDE_DMS': '',
-        'LONGITUDE_DMS': '',
-        'TELEPHONE': '(250) 356-1861',
-        'PROJECT_WEBSITE': '',
-        'FIRST_ENTRY_DATE': '2018-12-01T00:00:00',
-        'LAST_UPDATE': '2018-12-01T00:00:00',
-        'UPDATED_FIELDS': 'Update all available, project added this quarter'
-    }
-    '''
-
-
 class Project(Location):
-    NAME_FIELD = 'PROJECT_ID,SOURCE_DATE'
+    NAME_FIELD = 'ECON_MAJOR_PROJECT_ID'
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
     TELEPHONE_FIELD = 'TELEPHONE'
     WEBSITE_FIELD = 'PROJECT_WEBSITE'
 
     project_id = models.IntegerField(null=True, blank=True)
-    project_name = models.TextField(null=True, blank=True)
-    project_description = models.TextField(null=True, blank=True)
+    project_name = models.CharField(max_length=255, null=True, blank=True)
+    project_description = models.CharField(max_length=255, null=True, blank=True)
     estimated_cost = models.IntegerField(null=True, blank=True)
-    update_activity = models.TextField(null=True, blank=True)
+    update_activity = models.CharField(max_length=255, null=True, blank=True)
     environmental_assessment_stage = models.CharField(max_length=255, null=True, blank=True)
     construction_type = models.CharField(max_length=255, null=True, blank=True)
     construction_subtype = models.CharField(max_length=255, null=True, blank=True)
@@ -293,16 +179,11 @@ class Project(Location):
     project_category_name = models.CharField(max_length=255, null=True, blank=True)
 
     public_funding_ind = models.IntegerField(null=True, blank=True)
-    provinvial_funding = models.IntegerField(null=True, blank=True)
-    federal_funding = models.IntegerField(null=True, blank=True)
-    municipal_funding = models.IntegerField(null=True, blank=True)
-    other_public_funding = models.IntegerField(null=True, blank=True)
     green_building_ind = models.IntegerField(null=True, blank=True)
-    green_building_desc = models.CharField(max_length=255, null=True, blank=True)
     clean_energy_ind = models.IntegerField(null=True, blank=True)
-    indigenous_ind = models.IntegerField(null=True, blank=True)
-    indigenous_names = models.CharField(max_length=255, null=True, blank=True)
-    indigenous_agreement = models.TextField(null=True, blank=True)
+    first_nation_ind = models.IntegerField(null=True, blank=True)
+    first_nation_names = models.CharField(max_length=255, null=True, blank=True)
+    first_nation_agreement = models.CharField(max_length=255, null=True, blank=True)
 
     construction_jobs = models.IntegerField(null=True, blank=True)
     operating_jobs = models.IntegerField(null=True, blank=True)
@@ -316,7 +197,9 @@ class Project(Location):
     last_update = models.CharField(max_length=255, null=True, blank=True)
     source_date = models.CharField(max_length=255, null=True, blank=True)
 
-    updated_fields = models.TextField(null=True, blank=True)
+    source_website = models.CharField(max_length=255, null=True, blank=True)
+
+    updated_fields = models.CharField(max_length=255, null=True, blank=True)
 
     # calculated fields
     is_earliest_entry = models.NullBooleanField()
