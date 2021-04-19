@@ -58,13 +58,8 @@ from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineStr
 from django.conf import settings
 
 from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA
-from pipeline.models.census import CensusSubdivision
 from pipeline.models.general import DataSource, Road, Hex, ISP, Service
 from pipeline.constants import BC_ALBERS_SRID, WGS84_SRID
-from pipeline.importers.census import (import_census_population_data, import_census_languages_data,
-                                       import_census_income_data, import_census_housing_data,
-                                       import_census_education_employment_data,
-                                       import_census_families_data)
 from pipeline.importers.utils import (import_data_into_area_model, get_databc_last_modified_date,
                                       get_openca_last_modified_date, _generate_geom)
 
@@ -75,9 +70,7 @@ csduid_to_geo_uid = {}
 def import_shp_resources(resource_type):
     shp_resource_names = DataSource.objects.filter(source_type="shp").values_list("name", flat=True)
 
-    if resource_type == "census":
-        import_census()
-    elif resource_type == "roads":
+    if resource_type == "roads":
         import_roads()
     elif resource_type == "hexes":
         import_hexes()
@@ -195,24 +188,6 @@ def import_hexes():
         data_source.save()
 
 
-def import_census():
-    # Get a mapping to GEO UID for loading data on census areas from statscan API.
-    body = requests.get(
-        'https://www12.statcan.gc.ca/rest/census-recensement/CR2016Geo.json?lang=E&geos=CSD&cpt=59',
-        verify=False).text
-    subdiv_metas = json.loads(body)
-    for sd in subdiv_metas['DATA']:
-        csduid = sd[3]
-        geo_uid = sd[0]
-        csduid_to_geo_uid[int(csduid)] = geo_uid
-
-    file_path = DataSource.objects.get(name="census").source_file_path
-    ds = _get_datasource(file_path)
-
-    for feat in ds[0]:
-        _save_subdiv(feat)
-
-
 def import_roads():
     data_source = DataSource.objects.get(name="roads")
     ds = _get_datasource(data_source.source_file_path)
@@ -269,37 +244,6 @@ def _get_datasource(filename):
 
     ds = gdalDataSource(the_shapefile)
     return ds
-
-
-def _save_subdiv(feat):
-    if "British Columbia" not in feat.get('PRNAME'):
-        return
-
-    geos_geom_out, geos_geom_simplified = _generate_geom(feat, WGS84_SRID)
-    subdiv = CensusSubdivision.objects.get_or_create(id=int(feat.get('CSDUID')),
-                                                     name=feat.get('CSDNAME'))[0]
-
-    print(subdiv.name)
-
-    subdiv.geo_uid = csduid_to_geo_uid[subdiv.id]
-    subdiv.geom = geos_geom_out
-    subdiv.geom_simplified = geos_geom_simplified
-
-    stats = json.loads(
-        requests.get(
-            'https://www12.statcan.gc.ca/rest/census-recensement/CPR2016.json?dguid={}'.format(
-                subdiv.geo_uid),
-            verify=False).text[:])
-
-    import_census_population_data(stats, subdiv)
-    import_census_families_data(stats, subdiv)
-    import_census_housing_data(stats, subdiv)
-    import_census_languages_data(stats, subdiv)
-    import_census_income_data(stats, subdiv)
-    import_census_housing_data(stats, subdiv)
-    import_census_education_employment_data(stats, subdiv)
-
-    subdiv.save()
 
 
 def _coerce_to_multipolygon(geom, srid=WGS84_SRID):
