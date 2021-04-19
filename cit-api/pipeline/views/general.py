@@ -11,12 +11,9 @@ from rest_framework import viewsets
 from drf_yasg.utils import swagger_auto_schema
 
 from pipeline.models.community import Community
-from pipeline.models.census import CensusSubdivision
 from pipeline.models.general import (LocationDistance, Service, RegionalDistrict, SchoolDistrict,
                                      DataSource, CivicLeader, PageView)
 from pipeline.serializers.general import (
-    CensusSubdivisionSerializer,
-    CensusSubdivisionDetailSerializer,
     LocationDistanceSerializer,
     ServiceListSerializer,
     RegionalDistrictSerializer,
@@ -103,7 +100,7 @@ class CommunityViewSet(viewsets.GenericViewSet):
         community = self.get_object()
         return Response({
             "community": community.id,
-            "population": community.census_subdivision.population
+            "population": community.census_subdivision.pop_total_2016
         })
 
 
@@ -116,34 +113,9 @@ class ServiceList(generics.ListAPIView):
             .select_related("isp")
 
 
-class CensusSubdivisionList(generics.ListAPIView):
-    queryset = CensusSubdivision.objects.all()
-    serializer_class = CensusSubdivisionSerializer
-
-
-class CensusSubdivisionDetail(generics.RetrieveAPIView):
-    queryset = CensusSubdivision.objects.all()
-    serializer_class = CensusSubdivisionDetailSerializer
-
-
 class LocationDistanceList(generics.ListAPIView):
     queryset = LocationDistance.objects.all()
     serializer_class = LocationDistanceSerializer
-
-
-class CensusSubdivisionGeoJSONList(APIView):
-    schema = None
-
-    def get(self, request, format=None):
-        return HttpResponse(
-            serialize(
-                'geojson',
-                CensusSubdivision.objects.all(),
-                geometry_field='geom',
-                fields=('population', 'population_percent_change'),
-            ),
-            content_type="application/json",
-        )
 
 
 class RegionalDistrictViewSet(viewsets.GenericViewSet):
