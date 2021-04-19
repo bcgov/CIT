@@ -1,15 +1,13 @@
 import { Container, Row, Col } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
+import { Alert } from "shared-components";
+import { MdInfo } from "react-icons/md";
 import Resource from "./Resource";
 import LocationsPanel from "../LocationsPanel/LocationsPanel";
 import BusinessContact from "../BusinessContact/BusinessContact";
 import Map from "../Map/Map";
-import {
-  setCoords,
-  setAddress,
-  setNearbyResources,
-} from "../../store/actions/opportunity";
+import { setCoords, setAddress } from "../../store/actions/opportunity";
 import "./OpportunityView.css";
 
 export default function OpportunityView({ view }) {
@@ -59,10 +57,20 @@ export default function OpportunityView({ view }) {
             </Row>
           ) : null}
           {overallInfo && (
-            <Resource
-              title="Site Info - General Details"
-              itemsToDisplay={overallInfo}
-            />
+            <>
+              <Resource
+                title="Site Info - General Details"
+                itemsToDisplay={overallInfo}
+              />
+              <div style={{ "margin-left": "-15px", "margin-right": "-15px" }}>
+                <Alert
+                  icon={<MdInfo size={32} />}
+                  type="info"
+                  styling="bcgov-info-background mb-3"
+                  element="Proximity details are provided in straight-line distances."
+                />
+              </div>
+            </>
           )}
           {physical && <Resource title="Physical" itemsToDisplay={physical} />}
           {transportation && (

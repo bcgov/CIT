@@ -4,6 +4,8 @@ import NumberFormat from "react-number-format";
 import { Container, Row, Col } from "react-bootstrap";
 import { v4 } from "uuid";
 import "./LocationsPanel.css";
+import { Alert } from "shared-components";
+import { MdInfo } from "react-icons/md";
 
 const LocationsPanel = ({
   address,
@@ -25,12 +27,18 @@ const LocationsPanel = ({
       </div>
       <h4 className="h4">{address || "No Address"}</h4>
     </div>
+    <Alert
+      icon={<MdInfo size={32} />}
+      type="info"
+      styling="bcgov-info-background mb-3"
+      element="Proximity details are provided in straight-line distances."
+    />
     {municipalities ? (
       <>
         <h3 className="mb-3">Nearest Municipalities</h3>
         <p>
-          Click on municipality name to view more information such as ... on out
-          Community explorer
+          Click on Municipality or First Nation&apos;s name to view more
+          information on our Community Information Tool
         </p>
         <Container className="mb-4">
           {municipalities.map((muni) => (
