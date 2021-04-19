@@ -47,7 +47,7 @@ class Command(BaseCommand):
         non_bca_resources = DataSource.objects.exclude(name__in=[
             'bc_assessment_economic_region', 'bc_assessment_census_subdivision',
             'bc_assessment_regional_district'
-        ]).filter(import_order=109).order_by('import_order')
+        ]).order_by('import_order')
 
         for resource in non_bca_resources:
             if resource.source_type == "wms":
