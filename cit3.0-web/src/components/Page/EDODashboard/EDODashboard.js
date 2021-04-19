@@ -203,9 +203,6 @@ export default function EDODashboard() {
             </ul>
           </li>
         </ul>
-        {/* <p className="dashboard-text mb-4">
-          
-        </p> */}
         <div className="add-opportunity-button">{addOpportunityButton}</div>
         <hr ref={resultRef} />
         {markAsSoldStatus === "Error" ? (
