@@ -12,7 +12,7 @@ import {
   GET_OPPORTUNITIES_LIST_URL,
   PATCH_OPPORTUNITIES_URL,
 } from "../../../store/constants/api-urls";
-import { getUser, resetUser } from "../../../store/actions/user";
+import { getUser } from "../../../store/actions/user";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import ConfirmCancelModal from "../../ConfirmCancelModal/ConfirmCancelModal";
 import FooterLinks from "../../FooterLinks/FooterLinks";
@@ -61,7 +61,6 @@ export default function EDODashboard() {
 
   const goToMap = () => {
     dispatch(resetOpportunity());
-    dispatch(resetUser());
     history.push("/investmentopportunities");
   };
 
