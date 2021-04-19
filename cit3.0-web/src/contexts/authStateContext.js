@@ -19,6 +19,9 @@ const AuthStateContextProvider = ({ children }) => {
   const dispatch = useDispatch();
 
   // Handle modal on error
+  const [modalErrorText, setModalErrorText] = React.useState(
+    "There does not appear to be an email associated with this account.  Please add an email to your account and try again."
+  );
   const configuration = useConfiguration();
   const [show, setShow] = React.useState(false);
   const handleShow = () => setShow(true);
@@ -58,9 +61,12 @@ const AuthStateContextProvider = ({ children }) => {
               }
             });
           })
-          .catch((e) => {
-            // eslint-disable-next-line
-            console.error(e);
+          .catch(() => {
+            keycloak.obj.clearToken();
+            setModalErrorText(
+              "We encountered a problem logging you in.  Please try again later."
+            );
+            handleShow();
           });
       };
       loadUserInfo();
@@ -89,16 +95,13 @@ const AuthStateContextProvider = ({ children }) => {
         keyboard={false}
         size="lg"
       >
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>
             <h2>There was a problem logging you in!</h2>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <h4>
-            There does not appear to be an email associated with this account.
-            Please add an email to your account and try again.
-          </h4>
+          <h4>{modalErrorText}</h4>
         </Modal.Body>
         <Modal.Footer>
           <SharedButton
