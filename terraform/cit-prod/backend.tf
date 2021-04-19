@@ -8,7 +8,7 @@ resource "azurerm_app_service" "backend" {
     linux_fx_version = "DOCKER|${data.terraform_remote_state.shared.outputs.acr_name}.azurecr.io/cit-webapi:prod"
     always_on = true
     cors {
-      allowed_origins = ["https://communityinformationtool.gov.bc.ca", "https://web-${var.app_suffix}-${var.environment}.azurewebsites.net"]
+      allowed_origins = ["https://communityinformationtool.gov.bc.ca"]
     }
   }
 
