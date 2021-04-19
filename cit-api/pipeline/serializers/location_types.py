@@ -1,10 +1,9 @@
 from rest_framework import serializers
 
-from pipeline.models.location_assets import (
-    FirstResponder, DiagnosticFacility, TimberFacility, CivicFacility, Hospital, NaturalResourceProject,
-    EconomicProject, Project, ServiceBCLocation, School, Clinic, Court, PostSecondaryInstitution,
-    ClosedMill, ResearchCentre, Airport, Location
-)
+from pipeline.models.location_assets import (FirstResponder, DiagnosticFacility, TimberFacility,
+                                             CivicFacility, Hospital, Project, ServiceBCLocation,
+                                             School, Clinic, Court, PostSecondaryInstitution,
+                                             ClosedMill, ResearchCentre, Airport, Location)
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -12,7 +11,8 @@ class LocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = ("id", "name", "community_id", "location_type", "get_latitude", "get_longitude", "location_fuzzy")
+        fields = ("id", "name", "community_id", "location_type", "get_latitude", "get_longitude",
+                  "location_fuzzy")
 
 
 class FirstResponderSerializer(serializers.ModelSerializer):
@@ -119,65 +119,18 @@ class HospitalSerializer(serializers.ModelSerializer):
         )
 
 
-class NaturalResourceProjectSerializer(serializers.ModelSerializer):
-    latitude = serializers.FloatField(source="get_latitude")
-    longitude = serializers.FloatField(source="get_longitude")
-    community = serializers.IntegerField(source="closest_community_id")
-
-    class Meta:
-        model = NaturalResourceProject
-        fields = (
-            "id",
-            "name",
-            "latitude",
-            "longitude",
-            "location_fuzzy",
-            "community",
-            "location_phone",
-            "location_website",
-            "project_comments",
-            "project_description",
-            "proponent",
-            "project_type",
-            "eao_project_status",
-            "project_category",
-            "project_location",
-        )
-
-
-class EconomicProjectSerializer(serializers.ModelSerializer):
-    latitude = serializers.FloatField(source="get_latitude")
-    longitude = serializers.FloatField(source="get_longitude")
-    community = serializers.IntegerField(source="closest_community_id")
-
-    class Meta:
-        model = EconomicProject
-        fields = (
-            "id",
-            "name",
-            "latitude",
-            "longitude",
-            "location_fuzzy",
-            "community",
-            "location_website",
-            "flnro_project_status",
-            "project_type",
-            "project_category",
-            "proponent",
-            "eao_project_status",
-            "project_comments",
-        )
-
-
 class ProjectSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(source="get_latitude")
     longitude = serializers.FloatField(source="get_longitude")
     community = serializers.IntegerField(source="closest_community_id")
     provincial_funding = serializers.IntegerField(source="provinvial_funding")
     standardized_start_date = serializers.DateField(source='get_standardized_start_date_as_date')
-    standardized_completion_date = serializers.DateField(source='get_standardized_completion_date_as_date')
-    standardized_start_date_quarter = serializers.CharField(source='get_standardized_start_date_as_quarter')
-    standardized_completion_date_quarter = serializers.CharField(source='get_standardized_completion_date_as_quarter')
+    standardized_completion_date = serializers.DateField(
+        source='get_standardized_completion_date_as_date')
+    standardized_start_date_quarter = serializers.CharField(
+        source='get_standardized_start_date_as_quarter')
+    standardized_completion_date_quarter = serializers.CharField(
+        source='get_standardized_completion_date_as_quarter')
 
     class Meta:
         model = Project
