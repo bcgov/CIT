@@ -4,13 +4,15 @@
 }
 
 .opportunity-table-row {
+    height: 100%;
     border: 2px solid #606060;
     margin-top: 1vh;
     margin-bottom: 1vh;
 }
 
 .opportunity-table-map-container {
-    height: 185px;
+    min-height: 185px;
+    height: calc(100%);
 }
 
 .status-text-green {

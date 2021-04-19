@@ -97,6 +97,16 @@ div.bordered-light {
   height: 80vh;
 }
 
+p.border--pill {
+  background: #EEE;
+  border-radius: 30px;
+  font-weight: 400;
+  border-width: 2px;
+  padding: 0.5rem;
+  margin: 0.5rem 0 0 auto;
+  text-align: end;
+}
+
 @media print {
   .no-print {
     display: none;
