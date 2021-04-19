@@ -27,6 +27,7 @@ import {
   ADD_NAME,
   ADD_SERVICE,
   ADD_SERVICE_CAPACITY,
+  ADD_LAST_ADMIN,
 } from "../constants/action-types";
 import {
   POST_OPPORTUNITIES_URL,
@@ -178,6 +179,14 @@ export function setPrivateNote(note) {
  */
 export function setPublicNote(note) {
   return { type: ADD_PUBLIC_NOTE, payload: note };
+}
+
+/**
+ * @param {Object} admin
+ * @return {Object} for redux reducer
+ */
+export function setLastAdmin(admin) {
+  return { type: ADD_LAST_ADMIN, payload: admin };
 }
 
 /**

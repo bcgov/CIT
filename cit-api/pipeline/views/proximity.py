@@ -179,10 +179,10 @@ class ProximityView(APIView):
                                 properties['percent_25_5'], properties['percent_50_10']]
             # scan for network_avg speed category
             last_network = properties['percent_5_1']
-            network_avg = NETWORK_CODES[0]
+            network_avg = 'Unknown network'
             index = 0
             for network in network_percents:
-                if abs(last_network - network) < 0.1:
+                if last_network is not None and network is not None and abs(last_network - network) < 0.1:
                     network_avg = NETWORK_CODES[index]
                 last_network = network
                 index += 1
@@ -241,13 +241,11 @@ class ProximityView(APIView):
             nearest_health_center['distance'] = nearest_health_center_check.first(
             ).distance.km
 
-        network_at_road = None
+        network_at_road = 'Unknown network'
         network_at_road_check = Road.objects.annotate(
             distance=Distance("geom", point)).filter(geom__distance_lte=(point, D(km=100))).order_by('distance')[:1]
-        if network_at_road_check:
-            network_at_road = dict()
-            network_at_road = network_at_road_check.first(
-            ).best_broadband
+        if network_at_road_check and network_at_road_check.first().best_broadband:
+            network_at_road = network_at_road_check.first().best_broadband
 
         municipality = None
         municipalities = None

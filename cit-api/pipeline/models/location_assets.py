@@ -19,6 +19,7 @@ class Location(models.Model):
     location_type = models.CharField(null=True, blank=True, max_length=255)
 
     closest_community = models.ForeignKey('Community', on_delete=models.CASCADE)
+    closest_community_distance = models.CharField(null=True, blank=True, max_length=64)
 
     location_phone = models.CharField(null=True, blank=True, max_length=255)
     location_email = models.EmailField(null=True, blank=True)
@@ -835,6 +836,63 @@ class CustomsPortOfEntry(Location):
     customs_port_street_address = models.CharField(null=True, blank=True, max_length=255)
     customs_port_type = models.CharField(null=True, blank=True, max_length=255)
     customs_port_municipality = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id", )
+
+
+class Pharmacy(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'SERVICE_NAME'
+    WEBSITE_FIELD = 'WEBSITE_URL'
+    PHONE_FIELD = 'CONTACT_PHONE'
+    EMAIL_FIELD = 'CONTACT_EMAIL'
+
+    wheelchair_accessible_ind = models.CharField(null=True, blank=True, max_length=4)
+    description = models.CharField(null=True, blank=True, max_length=255)
+    postal_code = models.CharField(null=True, blank=True, max_length=255)
+    street_address = models.CharField(null=True, blank=True, max_length=255)
+    keywords = models.CharField(null=True, blank=True, max_length=255)
+    organization_name = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id", )
+
+
+class PublicLibrary(Location):
+    LATITUDE_FIELD = 'LATITUDE'
+    LONGITUDE_FIELD = 'LONGITUDE'
+    NAME_FIELD = 'SERVICE_POINT_NAME'
+    WEBSITE_FIELD = 'WEBSITE_URL'
+
+    service_point_id = models.CharField(null=True, blank=True, max_length=255)
+    library_system_name = models.CharField(null=True, blank=True, max_length=255)
+    locality = models.CharField(null=True, blank=True, max_length=255)
+    wifi_ind = models.CharField(null=True, blank=True, max_length=4)
+    outreach_ind = models.CharField(null=True, blank=True, max_length=4)
+    accessibility_ind = models.CharField(null=True, blank=True, max_length=4)
+    custodian_org_description = models.CharField(null=True, blank=True, max_length=255)
+    postal_code = models.CharField(null=True, blank=True, max_length=255)
+    street_address = models.CharField(null=True, blank=True, max_length=255)
+
+    class Meta:
+        ordering = ("id", )
+
+
+class FirstNationsHealthAuthoritySite(Location):
+    LATITUDE_FIELD = 'Y'
+    LONGITUDE_FIELD = 'X'
+    NAME_FIELD = 'location'
+
+    address = models.CharField(null=True, blank=True, max_length=255)
+    circuit_details_1 = models.CharField(null=True, blank=True, max_length=255)
+    circuit_vendor_1 = models.CharField(null=True, blank=True, max_length=255)
+    circuit_details_2 = models.CharField(null=True, blank=True, max_length=255)
+    circuit_vendor_2 = models.CharField(null=True, blank=True, max_length=255)
+    circuit_details_3 = models.CharField(null=True, blank=True, max_length=255)
+    circuit_vendor_4 = models.CharField(null=True, blank=True, max_length=255)
+    comments = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
         ordering = ("id", )

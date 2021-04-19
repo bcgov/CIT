@@ -60,8 +60,12 @@ export default function PropertyDetails1() {
   }
   // Select states
   const preferred = useSelector((state) => {
-    let result = [];
-    if (Array.isArray(state.opportunity.userInfo.preferredDevelopment.value)) {
+    let result = state.opportunity.userInfo.preferredDevelopment.value;
+    if (
+      Array.isArray(state.opportunity.userInfo.preferredDevelopment.value) &&
+      typeof state.opportunity.userInfo.preferredDevelopment.value[0] !==
+        "object"
+    ) {
       result = state.opportunity.userInfo.preferredDevelopment.value.map(
         (item) => {
           let found = {};
@@ -156,7 +160,7 @@ export default function PropertyDetails1() {
   const history = useHistory();
 
   const goToNextPage = () => {
-    history.push("/opportunity/additional-details");
+    history.push("/investmentopportunities/additional-details");
   };
 
   const radioLabels = ["Yes", "No", "Unknown"];
@@ -490,7 +494,7 @@ export default function PropertyDetails1() {
         </Row>
       </Container>
       <ButtonRow
-        prevRoute="/opportunity/site-info"
+        prevRoute="/investmentopportunities/site-info"
         onClick={handleContinue}
         noContinue={
           rentalError ||

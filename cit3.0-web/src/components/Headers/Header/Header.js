@@ -1,7 +1,7 @@
 import "./Header.scss";
 
 import React from "react";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { Button, Navbar, Nav } from "react-bootstrap";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import UserProfile from "./UserProfile";
@@ -10,6 +10,17 @@ import Roles from "../../../constants/roles";
 const Header = () => {
   const keycloak = useKeycloakWrapper();
   const history = useHistory();
+  const location = useLocation();
+
+  const title = () => {
+    if (location.pathname.includes("/investmentopportunities")) {
+      return "Community Investment Opportunities Tool";
+    }
+    if (location.pathname.includes("/dashboard")) {
+      return "Community Information Tool";
+    }
+    return "";
+  };
 
   return (
     <>
@@ -24,35 +35,27 @@ const Header = () => {
               <img
                 className="bc-gov-icon longIcon"
                 src="/images/bcid-logo-rev-en.svg"
-                width="156"
-                height="43"
-                alt="Go to the Government of British Columbia website"
-              />
-              <img
-                className="bc-gov-icon shortIcon"
-                src="/images/bcid-symbol-rev.svg"
-                width="156"
+                width="175"
                 height="43"
                 alt="Go to the Government of British Columbia website"
               />
             </a>
           </Navbar.Brand>
-          <Nav className="title mr-auto">
+          <Nav className="mr-auto">
             <Nav.Item>
-              <div className="title longAppName">Community Investment Tool</div>
-              <div className="title shortAppName">CIT</div>
+              <div className="title">{title()}</div>
             </Nav.Item>
           </Nav>
           {keycloak.obj && <UserProfile />}
         </Navbar>
       </header>
       {keycloak.obj.authenticated ? (
-        <div className="navigation-container">
+        <div className="navigation-container no-print">
           {keycloak.hasRole([Roles.ECONOMIC_DEVELOPMENT_OFFICER]) && (
             <Button
               variant="link"
               className="text-white"
-              onClick={() => history.push("/dashboard")}
+              onClick={() => history.push("/investmentopportunities/dashboard")}
             >
               Dashboard
             </Button>
@@ -64,7 +67,7 @@ const Header = () => {
             <Button
               variant="link"
               className="text-white"
-              onClick={() => history.push("/manage/opportunities/")}
+              onClick={() => history.push("/manage/investmentopportunities/")}
             >
               Manage Opportunities
             </Button>

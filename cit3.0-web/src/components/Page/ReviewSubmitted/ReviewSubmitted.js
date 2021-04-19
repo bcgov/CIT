@@ -11,7 +11,7 @@ const ReviewSubmitted = () => {
   const history = useHistory();
   const backToDashboard = () => {
     dispatch(resetOpportunity());
-    history.push("/dashboard");
+    history.push("/investmentopportunities/dashboard");
   };
   return (
     <div className={styles.ReviewSubmitted} data-testid="ReviewSubmitted">

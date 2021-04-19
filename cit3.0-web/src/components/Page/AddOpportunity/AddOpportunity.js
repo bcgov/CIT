@@ -1,7 +1,9 @@
 import { useHistory } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Modal, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
+import { Button } from "shared-components";
 import { useEffect, useState } from "react";
+import v4 from "uuid";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MapContainer from "../../MapContainer/MapContainer";
 import AddressSearchBar from "../../AddressSearchBar/AddressSearchBar";
@@ -17,24 +19,28 @@ import {
 import {
   setAddress,
   setCoords,
-  setNearbyResources,
   setResourceIds,
   setPID,
   setGeometry,
   setParcelOwner,
   setParcelSize,
   setSiteId,
-  setOpportunityUser,
+  resetOpportunity,
 } from "../../../store/actions/opportunity";
 import Radios from "../../FormComponents/Radios";
 import Terms from "../../Terms/Terms";
+import LoadingScreen from "../../LoadingScreen/LoadingScreen";
 
 export default function AddOpportunity() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const editing = useSelector((state) => state.opportunity.editing);
   const address = useSelector((state) => state.opportunity.address);
   const coords = useSelector((state) => state.opportunity.coords);
   const PID = useSelector((state) => state.opportunity.siteInfo.PID.value);
+  const geometry = useSelector(
+    (state) => state.opportunity.siteInfo.geometry.coordinates
+  );
   const siteId = useSelector(
     (state) => state.opportunity.siteInfo.siteId.value
   );
@@ -52,21 +58,85 @@ export default function AddOpportunity() {
   );
 
   const [hasApproval, setHasApproval] = useState(false);
-  const [blockContinue, setBlockContinue] = useState(true);
-  const [error, setError] = useState(null);
+  const [warning, setWarning] = useState([]);
+  const [error, setError] = useState([]);
   const [agreed, setAgreed] = useState(false);
   const [noAddressFlag, setNoAddressFlag] = useState(false);
 
-  const handleRadioChange = (name, label, value) => {
-    setHasApproval(label);
-    if (label === "Yes") {
-      setBlockContinue(false);
-    } else {
-      setBlockContinue(true);
+  // Handle ProximityData call still running and change of page
+  const [proximityInProgress, setProximityInProgress] = useState(true);
+  const [changePage, setChangePage] = useState(false);
+  const [localityName, setLocalityName] = useState("Your Community");
+
+  // Handle Modal if proximity data is still loading
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+  };
+  const handleShow = () => setShow(true);
+
+  const closeModalAndContinue = () => {
+    handleClose();
+    history.push(`/investmentopportunities/site-info`);
+  };
+
+  const handleErrorModalContinue = () => {
+    if (!error.length && (!!address || !!geometry)) {
+      setWarning([]);
+      setError([]);
+      setChangePage(true);
+      if (!proximityInProgress) {
+        closeModalAndContinue();
+      }
     }
   };
 
-  const history = useHistory();
+  useEffect(() => {
+    // Data is prepared, continue to next page
+    if (!error.length && changePage && !proximityInProgress) {
+      closeModalAndContinue();
+    }
+  }, [changePage, proximityInProgress, error]);
+
+  useEffect(() => {
+    if (municipality) {
+      setLocalityName(municipality);
+    }
+  }, [municipality]);
+
+  const goToNextPage = () => {
+    handleShow();
+    setWarning([]);
+    setError([]);
+    let errors = [];
+    let warnings = [];
+
+    if (!address || !geometry) {
+      warnings = [
+        ...warnings,
+        `This opportunity has no ${!address ? "address" : ""}${
+          !address && !geometry ? " or " : ""
+        }${!geometry ? "parcel" : ""} associated with it.`,
+      ];
+    }
+    if (parcelOwner === "Private" && hasApproval !== "Yes") {
+      errors = [...errors, "Please get the approval before listing this site."];
+    }
+    if (!agreed) {
+      errors = [...errors, "Please agree to the Terms of use."];
+    }
+    setWarning(warnings);
+    setError(errors);
+    setChangePage(agreed && !error.length && !warning.length);
+    if (!proximityInProgress) {
+      closeModalAndContinue();
+    }
+  };
+
+  const handleRadioChange = (name, label, value) => {
+    setHasApproval(label);
+  };
+
   const title1 = "Add an Opportunity";
   const title2 = "Confirm Property";
   const text1 =
@@ -74,64 +144,13 @@ export default function AddOpportunity() {
   const text2 =
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 
-  const setParcelData = async (id) => {
-    dispatch(setParcelSize(0));
-    const pid = await getPID(id);
-    dispatch(setPID(pid));
-    if (pid) {
-      pid.forEach(async (_pid) => {
-        const parcelData = await getParcelData(_pid);
-        if (parcelData) {
-          dispatch(
-            setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE)
-          );
-          if (parcelData.data.features[0].properties.OWNER_TYPE !== "Private") {
-            setBlockContinue(false);
-          } else {
-            setBlockContinue(true);
-          }
-          await dispatch(
-            setParcelSize(
-              Number(
-                // convert sqM to Acres
-                (
-                  parcelData.data.features[0].properties.FEATURE_AREA_SQM *
-                  0.000247105
-                ).toFixed(3)
-              )
-            )
-          );
-          dispatch(setGeometry(parcelData.data.features[0].geometry));
-        }
-      });
-    } else {
-      dispatch(setGeometry({ coordinates: null }));
-      dispatch(setParcelOwner(null));
-      dispatch(setParcelSize(null));
-      setBlockContinue(false);
-    }
-
-    setError(false);
-  };
-
-  const setParcelDataNoAddress = async (noAddrCoords) => {
-    dispatch(setSiteId(null));
-    dispatch(setParcelSize(null));
-    dispatch(setParcelOwner(null));
-    dispatch(setPID(null));
-    dispatch(setGeometry({ coordinates: null }));
-    console.log(noAddrCoords);
-    const parcelData = await getParcelDataNoAddress(noAddrCoords);
-    if (noAddressFlag && parcelData) {
+  const setParcelInfoByCoords = async (newCoords) => {
+    const parcelData = await getParcelDataNoAddress(newCoords);
+    if (parcelData) {
       dispatch(setPID([parcelData.data.features[0].properties.PID]));
       dispatch(
         setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE)
       );
-      if (parcelData.data.features[0].properties.OWNER_TYPE !== "Private") {
-        setBlockContinue(false);
-      } else {
-        setBlockContinue(true);
-      }
       dispatch(
         setParcelSize(
           Number(
@@ -144,23 +163,67 @@ export default function AddOpportunity() {
         )
       );
       dispatch(setGeometry(parcelData.data.features[0].geometry));
-    } else {
-      dispatch(setGeometry({ coordinates: null }));
-      dispatch(setParcelOwner(null));
-      dispatch(setParcelSize(null));
-      setBlockContinue(false);
     }
-    setError(false);
+  };
+
+  const setParcelData = async (id) => {
+    // ensure previous parcel data is cleared, but keeps address, coords intact
+    dispatch(setParcelSize(null));
+    dispatch(setParcelOwner(null));
+    dispatch(setGeometry(null));
+    // ensure hasApproval is false
+    setHasApproval(false);
+    /// //////////////////////////
+    const pid = await getPID(id);
+    dispatch(setPID(pid));
+    if (pid) {
+      pid.forEach(async (_pid) => {
+        const parcelData = await getParcelData(_pid);
+        if (parcelData) {
+          dispatch(
+            setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE)
+          );
+          await dispatch(
+            setParcelSize(
+              Number(
+                // convert sqM to Acres
+                (
+                  parcelData.data.features[0].properties.FEATURE_AREA_SQM *
+                  0.000247105
+                ).toFixed(3)
+              )
+            )
+          );
+          dispatch(setGeometry(parcelData.data.features[0].geometry));
+          if (!geometry) {
+            // There is no geometry registered for this PID, try a lng lat query.
+            setParcelInfoByCoords(coords);
+          }
+        } else {
+          // There is no Parcel response for this PID, try a lng lat query.
+          setParcelInfoByCoords(coords);
+        }
+      });
+    } else {
+      // There is no PID for the pacel to be queried, try a lng lat query.
+      setParcelInfoByCoords(coords);
+    }
+  };
+
+  const setParcelDataNoAddress = async (noAddrCoords) => {
+    // ensure previous parcel data is cleared
+    dispatch(resetOpportunity());
+    // reset coords with new coords
+    dispatch(setCoords(noAddrCoords));
+    // ensure hasApproval is false
+    setHasApproval(false);
+    if (noAddressFlag) {
+      setParcelInfoByCoords(noAddrCoords);
+    }
   };
 
   const getCoords = async (addy) => {
-    dispatch(setSiteId(null));
-    dispatch(setParcelOwner(null));
-    dispatch(setGeometry(null));
-    dispatch(setParcelSize(null));
-    dispatch(setPID(null));
-    dispatch(setAddress(null));
-    setError("");
+    dispatch(resetOpportunity());
     try {
       const data = await getAddressData(addy);
       dispatch(setAddress(data.data.features[0].properties.fullAddress));
@@ -173,14 +236,10 @@ export default function AddOpportunity() {
       if (data.data.features[0].properties.siteID) {
         dispatch(setSiteId(data.data.features[0].properties.siteID));
       } else if (data.data.features.length) {
-        dispatch(setSiteId("unknown"));
-      } else {
-        setError("Cannot find address info, please try again.");
-        setBlockContinue(true);
-        return;
+        dispatch(setSiteId(null));
       }
     } catch (err) {
-      setError("Service is not available.  Please try again later");
+      setError([...error, "Service is not available.  Please try again later"]);
     }
   };
 
@@ -189,25 +248,53 @@ export default function AddOpportunity() {
       setParcelData(siteId);
     }
     if (noAddressFlag) {
-      dispatch(setSiteId(null));
       setParcelDataNoAddress(coords);
     }
   }, [siteId, noAddressFlag]);
 
-  const goToNextPage = () => {
-    history.push(`/opportunity/site-info`);
+  const handleError = (message) => {
+    setError([...error, message]);
   };
-
-  useEffect(() => {
-    if (editing) {
-      setBlockContinue(false);
-    }
-  }, []);
 
   return (
     <>
       <NavigationHeader currentStep={1} />
-
+      <Modal
+        show={show}
+        onHide={handleClose}
+        keyboard={false}
+        size="lg"
+        centered
+      >
+        {error.length || warning.length ? (
+          <>
+            <Modal.Header>
+              <Modal.Title>Warning</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              {[...error, ...warning].map((e) => (
+                <p className="text-red" key={v4()}>
+                  {e}
+                </p>
+              ))}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                label="Cancel"
+                styling="bcgov-normal-white mr-auto modal-reset-button btn"
+                onClick={handleClose}
+              />
+              <Button
+                label="Continue"
+                styling="bcgov-normal-blue modal-save-button btn"
+                onClick={handleErrorModalContinue}
+              />
+            </Modal.Footer>
+          </>
+        ) : (
+          <LoadingScreen />
+        )}
+      </Modal>
       <Container>
         <Row>
           {!address ? (
@@ -222,18 +309,11 @@ export default function AddOpportunity() {
               <Col>
                 <AddressSearchBar
                   setAddress={(addy) => dispatch(setAddress(addy))}
+                  setLocalityName={(name) => setLocalityName(name)}
                   getCoords={getCoords}
-                  setError={setError}
+                  handleError={handleError}
                   currentAddress={address}
-                  setBlockContinue={setBlockContinue}
                 />
-                {error && (
-                  <Row>
-                    <Col>
-                      <h3>{error}</h3>
-                    </Col>
-                  </Row>
-                )}
                 {address && !parcelSize && (
                   <Row>
                     <Col>
@@ -241,7 +321,7 @@ export default function AddOpportunity() {
                     </Col>
                   </Row>
                 )}
-                {!address && coords[0] !== 54.1722 && (
+                {!address && coords && coords[0] !== 54.1722 && (
                   <Row>
                     <Col>
                       <h3>Lat: {coords[0]}</h3>
@@ -257,18 +337,20 @@ export default function AddOpportunity() {
                         Ownership: <b>{parcelOwner}</b>
                       </p>
                       <p className="mb-0 pb-0">
-                        Parcel Size: <b>{parcelSize.toFixed(3)} acres</b>
+                        Parcel Size:{" "}
+                        <b>{parcelSize ? parcelSize.toFixed(3) : null} acres</b>
                       </p>
                       <p>
-                        PID: <b>{PID.length > 1 ? PID.join(", ") : PID}</b>
+                        PID:{" "}
+                        <b>{PID && PID.length > 1 ? PID.join(", ") : PID}</b>
                       </p>
                       {parcelOwner === "Private" && (
                         <>
                           <PropertyInfo info="This land parcel or development opportunity resides on private land." />
                           <PropertyInfo
-                            info={`As a rep from ${
-                              municipality || "Your Community"
-                            } do you have the approval from the land owner to promote this investment opportunity?`}
+                            info={`As a representative from ${
+                              localityName || "Your Community"
+                            }, do you have the approval from the land owner to promote this investment opportunity?`}
                           />
                           <Col>
                             <Radios
@@ -303,12 +385,11 @@ export default function AddOpportunity() {
               nearbyResources={nearbyResources}
               coords={coords}
               setResourceIds={(r) => dispatch(setResourceIds(r))}
-              setNearbyResources={(r) => dispatch(setNearbyResources(r))}
               setAddress={(a) => dispatch(setAddress(a))}
               setCoords={(c) => dispatch(setCoords(c))}
               setSiteId={(id) => dispatch(setSiteId(id))}
-              setError={setError}
               setNoAddressFlag={setNoAddressFlag}
+              setProximityInProgress={setProximityInProgress}
             />
           </Col>
         </Row>
@@ -316,7 +397,7 @@ export default function AddOpportunity() {
           <Terms agreed={agreed} setAgreed={setAgreed} />
         </Row>
       </Container>
-      <ButtonRow noContinue={blockContinue || !agreed} onClick={goToNextPage} />
+      <ButtonRow onClick={goToNextPage} />
     </>
   );
 }

@@ -280,7 +280,7 @@ export const OPPORTUNITY_MODEL = () => ({
   },
 });
 
-const STATUS_CODES = { Y: "Yes", N: "No", U: "Uknown" };
+const STATUS_CODES = { Y: "Yes", N: "No", U: "Unknown" };
 
 /**
  * Model used to map visual sections of the screens.
@@ -350,7 +350,7 @@ export class Opportunity {
   set nearestFirstNations(value) {
     if (value && value.features) {
       this.state.firstNationCommunities = value.features.map((feature) => ({
-        name: feature.properties.name,
+        name: feature.properties.english_name,
         link: feature.properties.link,
         distance: feature.properties.distance,
         population: feature.properties.population,
@@ -368,9 +368,9 @@ export class Opportunity {
   }
 
   createLink() {
-    this.state.link = `/opportunity/${toKebabCase(this.state.name)}-${
-      this.state.id
-    }`;
+    this.state.link = `/investmentopportunities/view/${toKebabCase(
+      this.state.name
+    )}-${this.state.id}`;
   }
 
   set opportunityName(value) {

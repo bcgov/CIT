@@ -15,6 +15,7 @@ import L from "leaflet";
 
 import "./map.css";
 import { useSelector } from "react-redux";
+import { v4 } from "uuid";
 import ChangeView from "../ChangeView/ChangeView";
 import AddLocationMarker from "../AddMarker/AddMarker";
 import ResourceMarker from "../AddMarker/ResourceMarker";
@@ -24,12 +25,9 @@ export default function Map({
   nearbyResources,
   coords,
   setCoords,
-  resourceIds,
-  setNearbyResources,
   setAddress,
   isInteractive,
   isSearchMode,
-  setError,
   setNoAddressFlag,
 }) {
   const [dimensions, setDimensions] = useState({
@@ -38,6 +36,10 @@ export default function Map({
   });
   const parcelPoly = useSelector(
     (state) => state.opportunity.siteInfo.geometry.coordinates
+  );
+
+  const polyType = useSelector(
+    (state) => state.opportunity.siteInfo.geometry.type
   );
   const address = useSelector((state) => state.opportunity.address);
 
@@ -48,12 +50,33 @@ export default function Map({
   const changeView = (centerCoords) => centerCoords;
 
   const convert = (lngLatAry) => {
-    const full = lngLatAry.map((poly) =>
-      poly.map((polyCoords) => [polyCoords[1], polyCoords[0]])
-    );
-    return (
-      <Polygon pathOptions={{ color: "rgb(255, 0, 128)" }} positions={full} />
-    );
+    if (polyType === "Polygon") {
+      const full = lngLatAry.map((poly) =>
+        poly.map((polyCoords) => [polyCoords[1], polyCoords[0]])
+      );
+      return (
+        <Polygon
+          key={v4()}
+          pathOptions={{ color: "rgb(255, 0, 128)" }}
+          positions={full}
+        />
+      );
+    }
+    if (polyType === "MultiPolygon") {
+      const fullAry = lngLatAry.map((p) =>
+        p.map((poly) =>
+          poly.map((polyCoords) => [polyCoords[1], polyCoords[0]])
+        )
+      );
+      return fullAry.map((ary) => (
+        <Polygon
+          key={v4()}
+          pathOptions={{ color: "rgb(255, 0, 128)" }}
+          positions={ary}
+        />
+      ));
+    }
+    return null;
   };
 
   if (isSearchMode) {
@@ -61,10 +84,7 @@ export default function Map({
       <AddLocationMarker
         setCoords={setCoords}
         setAddress={setAddress}
-        resourceIds={resourceIds}
-        setNearbyResources={setNearbyResources}
         changeView={changeView}
-        setError={setError}
         setNoAddressFlag={setNoAddressFlag}
       />
     );
@@ -194,11 +214,8 @@ Map.defaultProps = {
   isInteractive: true,
   isSearchMode: true,
   nearbyResources: null,
-  resourceIds: {},
-  setNearbyResources: () => {},
   setCoords: () => {},
   setAddress: () => {},
-  setError: () => {},
   setNoAddressFlag: () => {},
 };
 
@@ -210,13 +227,7 @@ Map.propTypes = {
     resource: PropTypes.string,
     data: PropTypes.arrayOf(PropTypes.shape),
   }),
-  resourceIds: PropTypes.shape({
-    name: PropTypes.string,
-    id: PropTypes.string,
-  }),
-  setNearbyResources: PropTypes.func,
   setCoords: PropTypes.func,
   setAddress: PropTypes.func,
-  setError: PropTypes.func,
   setNoAddressFlag: PropTypes.func,
 };

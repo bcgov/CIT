@@ -76,6 +76,7 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
     print("closest_community", closest_community)
 
     instance.closest_community = closest_community
+    instance.closest_community_distance = closest_community.distance
     instance.location_fuzzy = location_fuzzy
     import_contact_fields(instance, row, Model)
     import_variable_fields(instance, row, Model)
@@ -99,6 +100,9 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
             name = f'Unnamed {resource_type} {index}'
             print("Name", name)
 
+    # Not forced unique names in the dataset
+    if resource_type == 'Indian Reserves and Band Names':
+        name = f'{row[Model.NAME_FIELD]}, {row[Model.ID_FIELD]}'
     instance, created = Model.objects.get_or_create(name=name)
 
     print("instance", instance)
@@ -662,3 +666,14 @@ def _coerce_to_multilinestring(geom, srid=WGS84_SRID):
         return geom
     else:
         raise Exception("Bad geometry type: {}, skipping.".format(geom.__class__))
+
+
+def calculate_muni_or_rd(instance):
+    muni = Municipality.objects.filter(geom__covers=instance.geom).first()
+    rd = RegionalDistrict.objects.filter(geom__covers=instance.geom).first()
+    if muni:
+        instance.municipality = muni
+
+    instance.regional_district = rd
+
+    instance.save()

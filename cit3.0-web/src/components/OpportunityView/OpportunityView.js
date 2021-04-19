@@ -77,7 +77,6 @@ export default function OpportunityView({ view }) {
           >
             <Map
               isSearchMode={false}
-              setNearbyResources={(r) => dispatch(setNearbyResources(r))}
               coords={coords}
               setCoords={(c) => dispatch(setCoords(c))}
               setAddress={(a) => dispatch(setAddress(a))}

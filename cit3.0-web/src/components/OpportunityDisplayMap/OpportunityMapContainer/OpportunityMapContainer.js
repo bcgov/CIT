@@ -22,13 +22,15 @@ export default function OpportunityMapContainer({ totalCount, opportunities }) {
 
   const styles = {
     close: {
-      height: "30px",
-      width: "30px",
+      height: "40px",
+      width: "120px",
       position: "absolute",
-      right: 30,
-      top: 30,
+      background: "transparent",
+      right: 28,
+      top: 28,
       zIndex: 1000,
       cursor: "pointer",
+      border: "none",
     },
   };
 
@@ -36,11 +38,15 @@ export default function OpportunityMapContainer({ totalCount, opportunities }) {
     <Row className="row-relative" data-testid="opportunities-map">
       <div className={!showMap ? "map-hidden" : "map-visible"}>
         {showMap && (
-          <CgCloseR
-            data-testid="close-map-icon"
+          <button
             style={styles.close}
+            className="btnLink"
+            type="button"
             onClick={toggleMap}
-          />
+          >
+            <CgCloseR data-testid="close-map-icon" className="mapIcon" />
+            Hide Map
+          </button>
         )}
       </div>
 

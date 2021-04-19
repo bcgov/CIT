@@ -73,6 +73,10 @@ class OpportunitiesList(generics.ListAPIView):
         if(post_secondary_within_100km == 'Y'):
             queryset = queryset.filter(nearest_post_secondary__location_distance__lte=100)
 
+        research_centre_within_100km = self.request.query_params.get('research_centre_within_100km', None)
+        if(research_centre_within_100km == 'Y'):
+            queryset = queryset.filter(nearest_research_centre__research_centre_distance__lte=100)
+
         # TODO Figure out distance calulation issues
         community_id = int(self.request.query_params.get('community_id', INVALID_INT))
         community_distance = float(self.request.query_params.get('community_distance', INVALID_INT))
@@ -117,22 +121,14 @@ class OpportunitiesList(generics.ListAPIView):
         if(deep_water_port_max >= MIN_SIZE):
             queryset = queryset.filter(nearest_port__port_distance__lte=deep_water_port_max)
 
-        research_centre_min = float(self.request.query_params.get('research_centre_min', INVALID_INT))
-        research_centre_max = float(self.request.query_params.get('research_centre_max', INVALID_INT))
-        if(research_centre_min >= MIN_SIZE):
-            queryset = queryset.filter(nearest_research_center__research_centre_distance__gte=research_centre_min)
-        if(research_centre_max >= MIN_SIZE):
-            queryset = queryset.filter(nearest_research_center__research_centre_distance__lte=research_centre_max)
-
         zoning = self.request.query_params.get('zoning', None)
         if(zoning is not None):
             zonings = zoning.split(',')
             queryset = queryset.filter(Q(land_use_zoning__in=zonings) | Q(ocp_zoning_code__in=zonings))
 
         connectivity = self.request.query_params.get('connectivity', None)
-        if(connectivity is not None):
-            connectivities = connectivity.split(',')
-            queryset = queryset.filter(Q(network_avg__in=connectivities) | Q(network_at_road__in=connectivities))
+        if(connectivity == 'Y'):
+            queryset = queryset.filter(Q(network_avg__in=['50/10']) | Q(network_at_road__in=['50/10']))
 
         community_population_distance_min = float(self.request.query_params.get('community_population_distance_min', INVALID_INT))
         community_population_distance_max = float(self.request.query_params.get('community_population_distance_max', INVALID_INT))

@@ -10,6 +10,7 @@ class IndianReserveBandName(models.Model):
     NAME_FIELD = 'BAND_NAME'
 
     name = models.CharField(max_length=127)
+    band_name = models.CharField(max_length=127)
     english_name = models.CharField(max_length=127)
     band_number = models.IntegerField(null=True)
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
