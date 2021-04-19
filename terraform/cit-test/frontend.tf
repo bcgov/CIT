@@ -1,6 +1,5 @@
 resource "azurerm_app_service" "frontend" {
-  name                = "communityinformationtool-test"
-  # TODO: name        =  "web-${var.app_suffix}-${var.environment}"
+  name                =  "web-${var.app_suffix}-${var.environment}"
   location            = var.azure_location
   resource_group_name = var.azure_resource_group
   app_service_plan_id = azurerm_app_service_plan.webapp.id
