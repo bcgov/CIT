@@ -13,7 +13,7 @@ export default function FooterLinks({ type }) {
     subText:
       "Are you working for a community and would like to promote local investment opportunities such as the ones you can discover on this site?  Click here to start adding your Community's opportunities.",
     buttonText: "Add a Listing",
-    link: "/dashboard",
+    link: "/investmentopportunities/dashboard",
   };
 
   const AddOppPage = {
@@ -21,7 +21,7 @@ export default function FooterLinks({ type }) {
     subText:
       "Would you like to see all the investment opportunities in your region or find inspiration for a new listing?  View the Investment Opportunities Tool.",
     buttonText: "Search Opportunities",
-    link: "/search",
+    link: "/investmentopportunities/search",
   };
   const [data] = useState(type === "search-page" ? searchPage : AddOppPage);
 

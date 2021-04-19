@@ -17,15 +17,23 @@ export default function citHome() {
   const [regional, setRegional] = useState(null);
   const history = useHistory();
   const keycloak = useKeycloakWrapper();
-  const [loggedIn] = useState(keycloak.obj.authenticated);
+  const [loggedInWithIdir] = useState(keycloak.idp === "idir");
   const configuration = useConfiguration();
   const [show, setShow] = useState(false);
+  const [loginButtonText] = useState(
+    loggedInWithIdir ? "Continue with IDIR" : "Login with IDIR"
+  );
+  const [modalTitleText] = useState(
+    loggedInWithIdir
+      ? "Would you like to continue to the internal report or the public report?"
+      : "Would you like to log in or continue as public?"
+  );
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
-  const publicUrl = "/community-insights/public";
-  const privateUrl = "/community-insights/private";
+  const publicUrl = "/cit-dashboard/public";
+  const privateUrl = "/cit-dashboard/internal";
 
   useEffect(() => {
     axios.get("/api/opportunity/options").then((data) => {
@@ -47,26 +55,6 @@ export default function citHome() {
     return null;
   };
 
-  useEffect(() => {
-    let type;
-    if (selectedPlace) {
-      type = typeOfSelected(selectedPlace);
-    }
-    if (selectedPlace && loggedIn) {
-      history.push(`${privateUrl}?${type}=${selectedPlace}`);
-    } else if (selectedPlace && !loggedIn) {
-      handleShow();
-    }
-  }, [selectedPlace]);
-
-  const handleExploreClick = () => {
-    if (loggedIn) {
-      history.push(privateUrl);
-    } else {
-      handleShow();
-    }
-  };
-
   const handlePublic = () => {
     if (selectedPlace) {
       const type = typeOfSelected(selectedPlace);
@@ -77,19 +65,23 @@ export default function citHome() {
   };
 
   const handleLogin = () => {
-    // login and redirect to private report
+    // login with IDIR only and redirect to private report
+    let loginWithIdir;
     if (selectedPlace) {
       const type = typeOfSelected(selectedPlace);
-      keycloak.obj.login({
+      loginWithIdir = keycloak.obj.createLoginUrl({
+        idpHint: "idir",
         redirectUri: encodeURI(
           `${configuration.baseUrl}${privateUrl}?${type}=${selectedPlace}`
         ),
       });
     } else {
-      keycloak.obj.login({
+      loginWithIdir = keycloak.obj.createLoginUrl({
+        idpHint: "idir",
         redirectUri: encodeURI(`${configuration.baseUrl}${privateUrl}`),
       });
     }
+    window.location.href = loginWithIdir;
   };
 
   return (
@@ -138,7 +130,10 @@ export default function citHome() {
                       <Typeahead
                         id="search-by-community"
                         size="large"
-                        onChange={(selected) => setSelectedPlace(selected[0])}
+                        onChange={(selected) => {
+                          setSelectedPlace(selected[0]);
+                          handleShow();
+                        }}
                         options={places}
                       />
                       <Button
@@ -179,7 +174,7 @@ export default function citHome() {
             <Row>
               <Col className="mt-2 d-flex justify-content-end">
                 <SharedButton
-                  onClick={handleExploreClick}
+                  onClick={handleShow}
                   styling="home-buttons explore-button"
                   label="Explore B.C. Communities"
                 />
@@ -200,12 +195,24 @@ export default function citHome() {
         </Row>
       </Container>
 
-      <Modal show={show} onHide={handleClose} keyboard={false}>
+      <Modal
+        show={show}
+        centered
+        onHide={handleClose}
+        keyboard={false}
+        size="lg"
+      >
         <Modal.Header closeButton>
           <Modal.Title>
-            Would you like to log in or continue as a guest?
+            <h2>{modalTitleText}</h2>
           </Modal.Title>
         </Modal.Header>
+        <Modal.Body>
+          <h4>
+            *Please note that you must be logged in with an IDIR to continue to
+            the internal report.
+          </h4>
+        </Modal.Body>
         <Modal.Footer>
           <SharedButton
             label="Continue as Public"
@@ -213,7 +220,7 @@ export default function citHome() {
             onClick={handlePublic}
           />
           <SharedButton
-            label="Login"
+            label={loginButtonText}
             styling="bcgov-normal-blue modal-save-button btn"
             onClick={handleLogin}
           />

@@ -16,7 +16,6 @@ export default function MapContainer({
   coords,
   setCoords,
   setAddress,
-  setError,
   setNoAddressFlag,
   setProximityInProgress,
 }) {
@@ -70,7 +69,6 @@ export default function MapContainer({
           setCoords={setCoords}
           setAddress={setAddress}
           nearbyResources={nearbyResources}
-          setError={setError}
           setNoAddressFlag={setNoAddressFlag}
         />
       </div>
@@ -90,7 +88,6 @@ MapContainer.propTypes = {
   coords: PropTypes.arrayOf(PropTypes.number).isRequired,
   setCoords: PropTypes.func.isRequired,
   setAddress: PropTypes.func.isRequired,
-  setError: PropTypes.func.isRequired,
   setNoAddressFlag: PropTypes.func.isRequired,
   setProximityInProgress: PropTypes.func.isRequired,
 };

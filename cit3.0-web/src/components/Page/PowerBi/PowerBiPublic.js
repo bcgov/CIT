@@ -3,31 +3,28 @@ import axios from "axios";
 import "./PowerBi.css";
 import { PowerBIEmbed } from "powerbi-client-react";
 import { models } from "powerbi-client";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Button } from "shared-components";
 import Config from "../../../Config";
-import { trackUser } from "../../../store/actions/user";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 
 export default function PowerBi(props) {
-  const keycloak = useKeycloakWrapper();
-  const user = useSelector((state) => state.user);
   const [currentPage, setCurrentPage] = useState(null);
   const [currentPageData, setCurrentPageData] = useState(null);
   const [token, setToken] = useState(null);
   const [reportConfig, setReportConfig] = useState(null);
 
+  const keycloak = useKeycloakWrapper();
+  const [loggedIn] = useState(keycloak.obj.authenticated);
+
   const [embedToken, setEmbedToken] = useState(null);
 
   const groupId = Config.pbiGroupId;
-  const reportId = Config.pbiReportIdInternal;
+  const reportId = Config.pbiReportIdPublic;
 
   const { search } = useLocation();
-  const [community, setCommunity] = useState(
-    new URLSearchParams(search).get("community")
-  );
-  const [regionalDistrict, setRegionalDistrict] = useState(
+  const [community] = useState(new URLSearchParams(search).get("community"));
+  const [regionalDistrict] = useState(
     new URLSearchParams(search).get("regionalDistrict")
   );
 
@@ -105,7 +102,9 @@ export default function PowerBi(props) {
   return embedToken ? (
     <div id="embed-container">
       <Button
-        styling="bcgov-normal-blue btn primary over"
+        styling={`bcgov-normal-blue btn primary over public ${
+          loggedIn ? "logged-in" : ""
+        }`}
         label="Save As PDF"
         onClick={saveAsPDF}
       />
@@ -150,10 +149,6 @@ export default function PowerBi(props) {
                           .catch((err) => console.log("error: ", err));
                       }
                       window.report.refresh();
-                      trackUser(
-                        { user_id: user.id, report_url: window.location.href },
-                        keycloak.obj.token
-                      );
                     }
                   })
                   .catch((err) => console.log("error: ", err));

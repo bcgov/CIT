@@ -100,6 +100,9 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
             name = f'Unnamed {resource_type} {index}'
             print("Name", name)
 
+    # Not forced unique names in the dataset
+    if resource_type == 'Indian Reserves and Band Names':
+        name = f'{row[Model.NAME_FIELD]}, {row[Model.ID_FIELD]}'
     instance, created = Model.objects.get_or_create(name=name)
 
     print("instance", instance)
