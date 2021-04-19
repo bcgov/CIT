@@ -177,7 +177,7 @@ def calculate_communities_for_schools():
 
 def calculate_distances(location, dry_run=False):
     communities_within_50k = (Community.objects.filter(
-        point__distance_lte=(location.point, 0.5)).annotate(
+        point__distance_lte=(location.point, D(m=50000))).annotate(
             distance=Distance("point", location.point)).order_by("distance"))
 
     for community in communities_within_50k:
