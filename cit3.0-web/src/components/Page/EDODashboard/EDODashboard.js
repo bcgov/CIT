@@ -15,6 +15,7 @@ import {
 import { getUser, resetUser } from "../../../store/actions/user";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import ConfirmCancelModal from "../../ConfirmCancelModal/ConfirmCancelModal";
+import FooterLinks from "../../FooterLinks/FooterLinks";
 
 export default function EDODashboard() {
   const [tableData, setTableData] = useState([]);
@@ -61,7 +62,7 @@ export default function EDODashboard() {
   const goToMap = () => {
     dispatch(resetOpportunity());
     dispatch(resetUser());
-    history.push("/opportunity");
+    history.push("/investmentopportunities");
   };
 
   const handleModalClose = () => {
@@ -152,84 +153,87 @@ export default function EDODashboard() {
   }
 
   return (
-    <div className="dashboard-container">
-      <h1 className="dashboard-header">How it works</h1>
-      <p className="dashboard-text">
-        Community representatives can add up to five properties per community to
-        be featured on the tool. To create a new listing, follow a simple
-        process to add some key information about the property. The tool will
-        automatically provide additional location information to help investors
-        and site selectors quickly evaluate whether the site meets their
-        specific needs. All listings will be reviewed prior to publication and
-        will go live within 3-5 business days.
-      </p>
-      <p className="dashboard-text">
-        Before you add a listing, review the eligibility criteria to ensure the
-        property meets the eligibility criteria.
-      </p>
-      <ul className="dashed">
-        <li>
-          Properties must be zoned for industrial, commercial, or agricultural
-          use. Industrial properties of any size may be listed. Commercial and
-          agricultural
-        </li>
-        <li>Land must be available for sale or lease.</li>
-        <li>
-          Land may be publicly or privately owned but may only be listed with
-          the written permission of the landowner.
-        </li>
-        <li>
-          Land must be free of constraints that could impact the developable
-          area or range of land uses permitted on the property.
-          <br />
-          Potential constraints could include, but are not limited to:
-          <ul className="dashed">
-            <li>Restrictions on title</li>
-            <li>Future planned roads or existing rights-of-way</li>
-            <li>dentified flood zone</li>
-            <li>
-              Presence of provincially significant cultural or natural heritage
-              features
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <p className="dashboard-text mb-4">
-        Listings must be approved by either a municipality, regional district,
-        electoral area, province, First Nation or a regional economic
-        development organization, and from the Chief Administrative Officer or
-        their delegate.
-      </p>
-      <div className="add-opportunity-button">{addOpportunityButton}</div>
-      <hr ref={resultRef} />
-      {markAsSoldStatus === "Error" ? (
-        <Container className="p-0 mt-3">
-          <Alert
-            icon={<MdError size={32} />}
-            type="error"
-            styling="bcgov-error-background"
-            element="There was an error marking your opportunity as sold. Please try again later."
-          />
-        </Container>
-      ) : null}
-      {markAsSoldStatus === "Success" ? (
-        <Container className="p-0 mt-3">
-          <Alert
-            icon={<MdCheckBox size={32} />}
-            type="success"
-            styling="bcgov-success-background"
-            element="Successfully updated!"
-          />
-        </Container>
-      ) : null}
-      {dataSection}
-      <ConfirmCancelModal
-        show={showModal}
-        handleClose={handleModalClose}
-        handleSubmit={() => markAsSold(currentId)}
-        body={modalBody}
-        label={modalLabel}
-      />
-    </div>
+    <>
+      <div className="dashboard-container">
+        <h1 className="dashboard-header">How it works</h1>
+        <p className="dashboard-text">
+          Community representatives can add up to five properties per community
+          to be featured on the tool. To create a new listing, follow a simple
+          process to add some key information about the property. The tool will
+          automatically provide additional location information to help
+          investors and site selectors quickly evaluate whether the site meets
+          their specific needs. All listings will be reviewed prior to
+          publication and will go live within 3-5 business days.
+        </p>
+        <p className="dashboard-text">
+          Before you add a listing, review the eligibility criteria to ensure
+          the property meets the eligibility criteria.
+        </p>
+        <ul className="dashed">
+          <li>
+            Properties must be zoned for industrial, commercial, or agricultural
+            use. Industrial properties of any size may be listed. Commercial and
+            agricultural
+          </li>
+          <li>Land must be available for sale or lease.</li>
+          <li>
+            Land may be publicly or privately owned but may only be listed with
+            the written permission of the landowner.
+          </li>
+          <li>
+            Land must be free of constraints that could impact the developable
+            area or range of land uses permitted on the property.
+            <br />
+            Potential constraints could include, but are not limited to:
+            <ul className="dashed">
+              <li>Restrictions on title</li>
+              <li>Future planned roads or existing rights-of-way</li>
+              <li>Identified flood zone</li>
+              <li>
+                Presence of provincially significant cultural or natural
+                heritage features
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <p className="dashboard-text mb-4">
+          Listings must be approved by either a municipality, regional district,
+          electoral area, province, First Nation or a regional economic
+          development organization, and from the Chief Administrative Officer or
+          their delegate.
+        </p>
+        <div className="add-opportunity-button">{addOpportunityButton}</div>
+        <hr ref={resultRef} />
+        {markAsSoldStatus === "Error" ? (
+          <Container className="p-0 mt-3">
+            <Alert
+              icon={<MdError size={32} />}
+              type="error"
+              styling="bcgov-error-background"
+              element="There was an error marking your opportunity as sold. Please try again later."
+            />
+          </Container>
+        ) : null}
+        {markAsSoldStatus === "Success" ? (
+          <Container className="p-0 mt-3">
+            <Alert
+              icon={<MdCheckBox size={32} />}
+              type="success"
+              styling="bcgov-success-background"
+              element="Successfully updated!"
+            />
+          </Container>
+        ) : null}
+        {dataSection}
+        <ConfirmCancelModal
+          show={showModal}
+          handleClose={handleModalClose}
+          handleSubmit={() => markAsSold(currentId)}
+          body={modalBody}
+          label={modalLabel}
+        />
+      </div>
+      <FooterLinks type="add-opp" />
+    </>
   );
 }

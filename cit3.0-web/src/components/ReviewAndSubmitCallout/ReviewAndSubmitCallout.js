@@ -17,7 +17,7 @@ const ReviewAndSubmitCallout = ({
   const dispatch = useDispatch();
   const name = useSelector((state) => state.opportunity.name);
   const goToPrevPage = () => {
-    history.push("/opportunity/additional-details");
+    history.push("/investmentopportunities/additional-details");
   };
   return (
     <Container

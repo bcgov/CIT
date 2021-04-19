@@ -262,6 +262,10 @@ class OpportunitiesList(APIView):
         if(post_secondary_within_100km == 'Y'):
             queryset = queryset.filter(nearest_post_secondary__location_distance__lte=100)
 
+        research_centre_within_100km = self.request.query_params.get('research_centre_within_100km', None)
+        if(research_centre_within_100km == 'Y'):
+            queryset = queryset.filter(nearest_research_centre__research_centre_distance__lte=100)
+
         # TODO Figure out distance calulation issues
         community_id = int(request.query_params.get('community_id', INVALID_INT))
         community_distance = float(request.query_params.get('community_distance', INVALID_INT))
@@ -306,6 +310,7 @@ class OpportunitiesList(APIView):
         if(deep_water_port_max >= MIN_SIZE):
             queryset = queryset.filter(nearest_port__port_distance__lte=deep_water_port_max)
 
+<<<<<<< HEAD
         research_centre_min = float(request.query_params.get('research_centre_min', INVALID_INT))
         research_centre_max = float(request.query_params.get('research_centre_max', INVALID_INT))
         if(research_centre_min >= MIN_SIZE):
@@ -314,14 +319,23 @@ class OpportunitiesList(APIView):
             queryset = queryset.filter(nearest_research_centre__research_centre_distance__lte=research_centre_max)
 
         zoning = request.query_params.get('zoning', None)
+=======
+        zoning = self.request.query_params.get('zoning', None)
+>>>>>>> develop
         if(zoning is not None):
             zonings = zoning.split(',')
             queryset = queryset.filter(Q(land_use_zoning__in=zonings) | Q(ocp_zoning_code__in=zonings))
 
+<<<<<<< HEAD
         connectivity = request.query_params.get('connectivity', None)
         if(connectivity is not None):
             connectivities = connectivity.split(',')
             queryset = queryset.filter(Q(network_avg__in=connectivities) | Q(network_at_road__in=connectivities))
+=======
+        connectivity = self.request.query_params.get('connectivity', None)
+        if(connectivity == 'Y'):
+            queryset = queryset.filter(Q(network_avg__in=['50/10']) | Q(network_at_road__in=['50/10']))
+>>>>>>> develop
 
         community_population_distance_min = float(request.query_params.get('community_population_distance_min', INVALID_INT))
         community_population_distance_max = float(request.query_params.get('community_population_distance_max', INVALID_INT))

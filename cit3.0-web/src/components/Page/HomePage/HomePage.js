@@ -53,7 +53,9 @@ export default function HomePage() {
                 </Row>
                 <Row className="d-flex justify-content-end w-100">
                   <Button
-                    onClick={() => history.push(`/search`)}
+                    onClick={() =>
+                      history.push(`/investmentopportunities/search`)
+                    }
                     styling="home-buttons"
                     label="Search Properties"
                   />
@@ -80,7 +82,9 @@ export default function HomePage() {
                 </Row>
                 <Row className="d-flex justify-content-start w-100">
                   <Button
-                    onClick={() => history.push(`/dashboard`)}
+                    onClick={() =>
+                      history.push(`/investmentopportunities/dashboard`)
+                    }
                     styling="home-buttons"
                     label="List Properties"
                   />
@@ -178,7 +182,7 @@ export default function HomePage() {
                   </p>
                   <p>
                     To create a listing, authorized representatives will be
-                    required to log-in with a BCEID. A one-time verification
+                    required to log-in with a BCeID. A one-time verification
                     process will confirm your status as an authorized community
                     representative community representative when you create your
                     first listing. All listings will be reviewed prior to

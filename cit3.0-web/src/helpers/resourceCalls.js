@@ -1,5 +1,6 @@
 import axios from "axios";
 import querystring from "querystring";
+import Config from "../Config";
 
 export async function getAddressData(address) {
   return axios
@@ -7,7 +8,7 @@ export async function getAddressData(address) {
       `https://geocoder.api.gov.bc.ca/addresses.json?addressString=${address}&autoComplete=true&maxResults=15`,
       {
         headers: {
-          apikey: process.env.REACT_APP_GEOCODER_API_KEY,
+          apikey: Config.geocoderKey,
         },
       }
     )
@@ -21,7 +22,7 @@ export async function getAddressFromPoint(point) {
       `https://geocoder.api.gov.bc.ca/sites/nearest.json?point=${point[1]},${point[0]}&maxDistance=50`,
       {
         headers: {
-          apikey: process.env.REACT_APP_GEOCODER_API_KEY,
+          apikey: Config.geocoderKey,
         },
       }
     )
@@ -43,7 +44,7 @@ export async function getDistanceViaRoutePlanner(mainCoords, resourceCoords) {
     `https://router.api.gov.bc.ca/distance.json?points=${mainCoords[1]}%2C${mainCoords[0]}%2C${resourceCoords[1]}%2C${resourceCoords[0]}`,
     {
       headers: {
-        apikey: process.env.REACT_APP_BC_ROUTE_PLANNER_API_KEY,
+        apikey: Config.routePlannerKey,
       },
     }
   );

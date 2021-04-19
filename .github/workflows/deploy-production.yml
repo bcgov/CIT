@@ -1,0 +1,38 @@
+# This workflow will build and push a new container image to Azure ACR
+
+on:
+  workflow_dispatch
+
+name: Deploy to Prod
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: 
+      name: Production
+    steps:
+      # checkout the repo
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@master
+
+      - name: "Build and push webapi"
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      # TODO: tags with ${{ github.sha }}
+      - run: |
+          docker build cit-api -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:prod
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:prod
+
+      - name: "Build and push frontend"
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          docker build cit3.0-web -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:prod
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:prod
+
+

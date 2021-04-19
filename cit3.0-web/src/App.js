@@ -30,6 +30,9 @@ import InvestorMainView from "./components/Page/InvestorMainView/InvestorMainVie
 import OpportunityApproveListPage from "./components/Page/OpportunityApproveListPage/OpportunityApproveListPage";
 import UserManagementDashboard from "./components/Page/UserManagement/UserManagementDashboard";
 
+import PowerBi from "./components/Page/PowerBi/PowerBi";
+import PowerBiPublic from "./components/Page/PowerBi/PowerBiPublic";
+
 import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
 import HomePage from "./components/Page/HomePage/HomePage";
@@ -62,7 +65,12 @@ function App() {
             <Router>
               <Header />
               <Switch>
-                <Redirect exact from="/" to="/home" />
+                <Redirect exact from="/" to="/investmentopportunities/home" />
+                <Redirect
+                  exact
+                  from="/cit-dashboard"
+                  to="/cit-dashboard/home"
+                />
                 <AppRoute
                   title={getTitle("Login")}
                   path="/login"
@@ -81,7 +89,7 @@ function App() {
                 <AppRoute
                   protected
                   title={getTitle("Opportunity Dashboard")}
-                  path="/dashboard"
+                  path="/investmentopportunities/dashboard"
                   roles={[Roles.ECONOMIC_DEVELOPMENT_OFFICER]}
                   layout={AuthLayout}
                   component={EDODashboard}
@@ -89,7 +97,7 @@ function App() {
                 <AppRoute
                   protected
                   exact
-                  path="/opportunity"
+                  path="/investmentopportunities"
                   title={getTitle("Add Property")}
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
@@ -102,7 +110,7 @@ function App() {
                 <AppRoute
                   protected
                   exact
-                  path="/opportunity/site-info"
+                  path="/investmentopportunities/site-info"
                   title={getTitle("Site Information")}
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
@@ -115,7 +123,7 @@ function App() {
                 <AppRoute
                   protected
                   exact
-                  path="/opportunity/property-details"
+                  path="/investmentopportunities/property-details"
                   title={getTitle("Add Property Details")}
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
@@ -128,7 +136,7 @@ function App() {
                 <AppRoute
                   protected
                   exact
-                  path="/opportunity/additional-details"
+                  path="/investmentopportunities/additional-details"
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
@@ -141,7 +149,7 @@ function App() {
                 <AppRoute
                   protected
                   exact
-                  path="/opportunity/review"
+                  path="/investmentopportunities/review"
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
@@ -154,7 +162,7 @@ function App() {
                 <AppRoute
                   protected
                   exact
-                  path="/opportunity/success"
+                  path="/investmentopportunities/success"
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
@@ -167,7 +175,7 @@ function App() {
                 <AppRoute
                   protected
                   exact
-                  path="/manage/opportunities"
+                  path="/manage/investmentopportunities"
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
@@ -176,12 +184,12 @@ function App() {
                   component={OpportunityApproveListPage}
                 />
                 <AppRoute
-                  path="/opportunity/*:path"
+                  path="/investmentopportunities/view/*:path"
                   component={OpportunityPage}
                 />
                 <AppRoute
                   protected
-                  path="/manage/opportunity/*:path"
+                  path="/manage/investmentopportunities/view/*:path"
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
@@ -190,8 +198,12 @@ function App() {
                   component={OpportunityApprovePage}
                 />
                 <AppRoute
+                  path="/investmentopportunities/search"
+                  component={InvestorMainView}
+                />
+                <AppRoute
                   protected
-                  path="/delete/opportunity/*:path"
+                  path="/delete/investmentopportunities/*:path"
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
@@ -199,6 +211,20 @@ function App() {
                   ]}
                   layout={AuthLayout}
                   component={OpportunityDeletePage}
+                />
+                <AppRoute
+                  protected
+                  path="/cit-dashboard/internal"
+                  layout={AuthLayout}
+                  roles={[
+                    Roles.SUPER_ADMINISTRATOR,
+                    Roles.SYSTEM_ADMINISTRATOR,
+                  ]}
+                  component={PowerBi}
+                />
+                <AppRoute
+                  path="/cit-dashboard/public"
+                  component={PowerBiPublic}
                 />
                 <AppRoute
                   protected
@@ -211,9 +237,12 @@ function App() {
                   layout={AuthLayout}
                   component={UserManagementDashboard}
                 />
-                <AppRoute path="/search" component={InvestorMainView} />
-                <AppRoute path="/home" component={HomePage} />
-                <AppRoute path="/cit-home" component={citHome} />
+
+                <AppRoute
+                  path="/investmentopportunities/home"
+                  component={HomePage}
+                />
+                <AppRoute path="/cit-dashboard/home" component={citHome} />
                 <AppRoute path="/datasources" component={Datasources} />
               </Switch>
               <div className="footer">

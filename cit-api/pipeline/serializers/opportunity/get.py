@@ -14,7 +14,8 @@ from pipeline.serializers.opportunity.distance import (
     OpportunityCommunitySerializer, OpportunityPostSecondarySerializer,
     OpportunityFirstResponderSerializer, OpportunityHospitalSerializer,
     OpportunityResearchCentreSerializer, OpportunityRiverSerializer,
-    OpportunityLakeSerializer)
+    OpportunityLakeSerializer, OpportunityMunicipalitySerializer, 
+    OpportunityRegionalDistrictSerializer)
 
 
 class OpportunityGetSerializer(serializers.ModelSerializer):
@@ -41,6 +42,8 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
     nearest_highway = serializers.SerializerMethodField()
     nearest_river = OpportunityRiverSerializer(required=False)
     nearest_lake = OpportunityLakeSerializer(required=False)
+    municipality = OpportunityMunicipalitySerializer(required=False)
+    regional_district = OpportunityRegionalDistrictSerializer(required=False)
 
     class Meta:
         model = Opportunity
@@ -63,6 +66,7 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
             "parcel_ownership",
             "parcel_size",
             "pid",
+            "user_id",
             "parcel_geometry",
             "elevation_at_location",
             "soil_name",
@@ -159,7 +163,7 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
         index = 0
         nearest_first_nations = list(instance.nearest_first_nations.all().values())
         for first_nation in nearest_first_nations:
-            nearest_first_nations[index]['reserve_name'] = IndianReserveBandName.objects.get(id=first_nation['reserve_id_id']).name
+            nearest_first_nations[index]['reserve_name'] = IndianReserveBandName.objects.get(id=first_nation['reserve_id_id']).english_name
             index += 1
         return nearest_first_nations
 

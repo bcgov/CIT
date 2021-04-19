@@ -52,10 +52,21 @@ export default function PropertyDetails2() {
   const keycloak = useKeycloakWrapper();
 
   const [validEmail, setValidEmail] = useState(true);
+  const [validBusinessEmail, setValidBusinessEmail] = useState(true);
 
   const regex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-  const validateEmail = (value) =>
-    value ? setValidEmail(regex.test(value)) : setValidEmail(true);
+  const validateEmail = (value, business) => {
+    if (value && !business) {
+      setValidEmail(regex.test(value));
+    } else {
+      setValidEmail(true);
+    }
+    if (value && business) {
+      setValidBusinessEmail(regex.test(value));
+    } else {
+      setValidBusinessEmail(true);
+    }
+  };
 
   const history = useHistory();
 
@@ -75,7 +86,7 @@ export default function PropertyDetails2() {
   const placeholder = "Enter URL here (eg. realtor.ca/myopportunity)";
 
   const goToNextPage = () => {
-    history.push(`/opportunity/review`);
+    history.push(`/investmentopportunities/review`);
   };
 
   const handleContinue = () => {
@@ -244,8 +255,7 @@ export default function PropertyDetails2() {
         </Row>
         <Row className="mb-3">
           <Form.Check
-            // checked={userInfoSync}
-            checked={userInfoEmail}
+            checked={userInfoSync}
             onClick={(e) => handleYourInfoCheck(e.target.checked)}
             type="checkbox"
             label="Use the Contact Name/Email associated with the BCeID logged in."
@@ -274,7 +284,7 @@ export default function PropertyDetails2() {
             <div className="pb-3">
               <input
                 required
-                disabled={!!userInfoEmail}
+                disabled={userInfoSync}
                 autoComplete="off"
                 aria-labelledby="email-label"
                 className="bcgov-text-input mb-1 w-100"
@@ -282,16 +292,15 @@ export default function PropertyDetails2() {
                 name="userInfoEmail"
                 pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g"
                 onChange={(e) => {
+                  validateEmail(e.target.value, true);
                   dispatch(setUserInfoEmail(e.target.value));
-                  validateEmail(e.target.value);
                 }}
                 value={userInfoEmail}
               />
             </div>
-            {!validEmail ||
-              (!userInfoEmail && (
-                <Validator message="Please enter a valid email address" />
-              ))}
+            {!validBusinessEmail || !userInfoEmail ? (
+              <Validator message="Please enter a valid email address" />
+            ) : null}
             <TextInput
               required
               heading="Your Title/Role"

@@ -1,24 +1,10 @@
 .App-header.navbar {
-  padding: 0 10px;
+  padding: 0 65px;
   min-height: 70px;
   color: #ffffff;
 
-  .longAppName {
-    display: block;
-  }
-  .shortAppName {
-    display: none;
-  }
-  
-  .longIcon {
-    display: none;
-  }
-  .shortIcon {
-    display: block;
-  }
-
   .title {
-    font-size: 20px;
+    display: none;
   }
 
   .other {
@@ -60,26 +46,26 @@
 }
 
 .navigation-container {
-  padding: 10px 10vw;
+  padding: 10px 65px;
   background: #38598a;
 }
 
 // show long App Name when space allows
+@media (min-width: 600px) {
+  .App-header.navbar {
+    .title {
+      display: block;
+      font-size: calc(7px + 2.2vw);
+    }
+  }
+}
 @media (min-width: 992px) {
   .App-header.navbar {
-    .longAppName {
+    .title {
       display: block;
       text-align: left;
       padding-left: 40px;
-    }
-    .shortAppName {
-      display: none;
-    }
-    .longIcon {
-      display: block;
-    }
-    .shortIcon {
-      display: none;
+      font-size: 2rem;
     }
   }
 }

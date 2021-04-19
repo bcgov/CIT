@@ -14,13 +14,12 @@ const elements = [
   },
   {
     "Data Source": "Civic_leaders",
-    "Metadata URL":
-      "civicinfo.csv - should this be: https://www.civicinfo.bc.ca/people",
+    "Metadata URL": "https://www.civicinfo.bc.ca/people",
   },
   {
     "Data Source": "Communities",
     "Metadata URL":
-      "COMMUNITIES_V6.csv - should this be: https://open.canada.ca/data/en/dataset/fe945388-1dd9-4a4a-9a1e-5c552579a28c",
+      "https://open.canada.ca/data/en/dataset/fe945388-1dd9-4a4a-9a1e-5c552579a28c",
   },
   {
     "Data Source": "Court Locations",

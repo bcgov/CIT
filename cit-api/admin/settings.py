@@ -28,6 +28,8 @@ DEBUG = bool(os.environ.get("DEBUG", False))
 # By default, it is ok for others to use our APIs and crawl our site.
 ALLOWED_HOSTS = ['*']
 
+ENV_LEVEL = os.environ.get('ENV_LEVEL', 'dev')
+
 ADMINS = (
     ('Clark', 'clark@countable.ca'),
     ('Merwyn', 'merwyn.Pereira@gov.bc.ca'),
@@ -184,3 +186,6 @@ LOGGING = {
         }
     }
 }
+
+AZURE_BLOB_STORAGE_CONNECTION_STRING = os.environ.get('AZURE_BLOB_STORAGE_CONNECTION_STRING', None)
+AZURE_BLOB_STORAGE_LOCAL_PATH = './data/'
