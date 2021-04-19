@@ -4,7 +4,12 @@ import { Button as SharedButton } from "shared-components";
 import { useDispatch, useSelector } from "react-redux";
 import Proptypes from "prop-types";
 import { useKeycloakWrapper } from "../hooks/useKeycloakWrapper";
-import { getUser, postUser, setUser } from "../store/actions/user";
+import {
+  getUser,
+  postUser,
+  setUser,
+  updateUserAssignments,
+} from "../store/actions/user";
 import UserFactory from "../store/factory/UserFactory";
 import useConfiguration from "../hooks/useConfiguration";
 
@@ -48,6 +53,16 @@ const AuthStateContextProvider = ({ children }) => {
             getUser({ email: user.email }).then((existingUser) => {
               if (existingUser.data.length) {
                 dispatch(setUser({ ...existingUser.data[0], idp }));
+                if (
+                  existingUser.data[0].is_admin === false &&
+                  user.roles.some((role) => role === "IDIR")
+                ) {
+                  const updatedUser = { ...existingUser.data[0] };
+                  updatedUser.is_admin = true;
+                  updateUserAssignments(updatedUser, keycloak.obj.token)
+                    .then(() => {})
+                    .catch(() => {});
+                }
               } else {
                 postUser(
                   UserFactory.createStateFromKeyCloak(user),
