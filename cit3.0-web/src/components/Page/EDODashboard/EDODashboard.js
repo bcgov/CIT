@@ -194,15 +194,18 @@ export default function EDODashboard() {
                 Presence of provincially significant cultural or natural
                 heritage features
               </li>
+              <li>
+                Listings must be approved by either a municipality, regional
+                district, electoral area, province, First Nation or a regional
+                economic development organization, and from the Chief
+                Administrative Officer or their delegate.
+              </li>
             </ul>
           </li>
         </ul>
-        <p className="dashboard-text mb-4">
-          Listings must be approved by either a municipality, regional district,
-          electoral area, province, First Nation or a regional economic
-          development organization, and from the Chief Administrative Officer or
-          their delegate.
-        </p>
+        {/* <p className="dashboard-text mb-4">
+          
+        </p> */}
         <div className="add-opportunity-button">{addOpportunityButton}</div>
         <hr ref={resultRef} />
         {markAsSoldStatus === "Error" ? (
