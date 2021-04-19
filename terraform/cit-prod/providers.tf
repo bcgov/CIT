@@ -17,7 +17,7 @@ terraform {
   backend "azurerm" {
     storage_account_name = "tfstatecit"
     container_name       = "tfstate"
-    key                  = "terraform.tfstate"
+    key                  = "prod.tfstate"
     # resource_group_name  = set in init command
     # access_key           = set in init command
   }
