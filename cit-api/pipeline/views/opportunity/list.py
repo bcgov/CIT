@@ -139,10 +139,9 @@ class OpportunitiesList(generics.ListAPIView):
                 Q(land_use_zoning__in=zonings) | Q(ocp_zoning_code__in=zonings))
 
         connectivity = self.request.query_params.get('connectivity', None)
-        if (connectivity is not None):
-            connectivities = connectivity.split(',')
+        if (connectivity == 'Y'):
             queryset = queryset.filter(
-                Q(network_avg__in=connectivities) | Q(network_at_road__in=connectivities))
+                Q(network_avg__in=['50/10']) | Q(network_at_road__in=['50/10']))
 
         community_population_distance_min = float(
             self.request.query_params.get('community_population_distance_min', INVALID_INT))
