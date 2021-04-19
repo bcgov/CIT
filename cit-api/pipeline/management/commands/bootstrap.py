@@ -63,8 +63,6 @@ class Command(BaseCommand):
                 print(f'Importing {resource.display_name}...')
                 import_databc_resources(resource.name)
 
-        # calculate_nearest_location_types_outside_50k()
-
         # calculate foreign keys
         calculate_communities_for_schools()
         calculate_regional_districts_for_communities()
@@ -79,6 +77,7 @@ class Command(BaseCommand):
             print(f'Importing {resource.display_name}...')
             import_csv_resources(resource.name)
 
+        calculate_nearest_location_types_outside_50k()
         # TODO SY - is this still needed
         # calculate cached fields
         calculate_community_num_schools()

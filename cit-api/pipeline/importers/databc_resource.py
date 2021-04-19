@@ -6,7 +6,6 @@ from django.apps import apps
 from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA, BC_ALBERS_SRID, WGS84_SRID
 from pipeline.models.general import DataSource
 from pipeline.importers.utils import (import_data_into_point_model, import_data_into_area_model,
-                                      calculate_nearest_location_type_outside_50k,
                                       get_databc_last_modified_date, get_openca_last_modified_date,
                                       _generate_geom, _generate_bcdata_geom, calculate_muni_or_rd)
 
@@ -59,8 +58,6 @@ def import_resource(resource_type):
     for row in data:
         model_class = apps.get_model("pipeline", data_source.model_name)
         import_data_into_point_model(resource_type, model_class, row)
-
-    # calculate_nearest_location_type_outside_50k(resource_type)
 
     if data_source.source == SOURCE_DATABC:
         data_source.last_updated = get_databc_last_modified_date(data_source)
