@@ -20,8 +20,8 @@ export default function HomePage() {
               Community Investment Opportunities
             </h1>
             <h2 className="sub-header-text">
-              Your Portal to access some of the best Investments in British
-              Columbia
+              Connecting investors with opportunities in communities across
+              British Columbia
             </h2>
           </div>
         </div>
@@ -102,7 +102,7 @@ export default function HomePage() {
             />
           </Col>
         </Row>
-        <Row className="my-5">
+        <Row className="mt-5 mb-3">
           <h1>How the Program Works</h1>
           <p>
             Communities in B.C. can showcase up to five industrial, commercial
@@ -145,14 +145,14 @@ export default function HomePage() {
                   Presence of provincially significant cultural or natural
                   heritage features
                 </li>
+                <li>
+                  Listings must be approved by either a municipality, regional
+                  district, electoral area, province, First Nation or a
+                  provincial economic development organization, and from the
+                  Chief Administrative Officer or their delegate.
+                </li>
               </ul>
             </ul>
-            <p>
-              Listings must be approved by either a municipality, regional
-              district, electoral area, province, First Nation or a provincial
-              economic development organization, and from the Chief
-              Administrative Officer or their delegate.
-            </p>
           </p>
         </Row>
         <Row className="my-3 h-100 w-100">
