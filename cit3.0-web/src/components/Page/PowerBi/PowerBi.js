@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./PowerBi.css";
+import { Row, Col, Container } from "react-bootstrap";
 import { PowerBIEmbed } from "powerbi-client-react";
 import { models } from "powerbi-client";
 import { useSelector } from "react-redux";
@@ -24,10 +25,8 @@ export default function PowerBi(props) {
   const reportId = Config.pbiReportIdInternal;
 
   const { search } = useLocation();
-  const [community, setCommunity] = useState(
-    new URLSearchParams(search).get("community")
-  );
-  const [regionalDistrict, setRegionalDistrict] = useState(
+  const [community] = useState(new URLSearchParams(search).get("community"));
+  const [regionalDistrict] = useState(
     new URLSearchParams(search).get("regionalDistrict")
   );
 
@@ -41,7 +40,7 @@ export default function PowerBi(props) {
           column: "Community Name",
         },
         operator: "In",
-        values: [community],
+        values: [community.split("-").join(" ")],
       };
     } else if (regionalDistrict) {
       result = {
@@ -51,7 +50,7 @@ export default function PowerBi(props) {
           column: "Regional District",
         },
         operator: "In",
-        values: [regionalDistrict],
+        values: [regionalDistrict.split("-").join(" ")],
       };
     }
     return result;
@@ -102,13 +101,40 @@ export default function PowerBi(props) {
     window.report.print();
   };
 
+  const [commValue, setCommValue] = useState("");
+  const getCommunity = () => {
+    console.log(commValue);
+  };
+
   return embedToken ? (
     <div id="embed-container">
-      <Button
-        styling="bcgov-normal-blue btn primary over"
-        label="Save As PDF"
-        onClick={saveAsPDF}
-      />
+      <div className="navigation-container no-print">jfdskl</div>
+      <Container>
+        <Row
+          style={{ border: "1px solid red" }}
+          className="d-flex justify-content-center py-2"
+        >
+          <div className="mr-2">
+            <Button
+              styling="bcgov-normal-blue btn primary over"
+              label="Save As PDF"
+              onClick={saveAsPDF}
+            />
+          </div>
+          <div>
+            <input
+              onChange={(e) => setCommValue(e.target.value)}
+              value={commValue}
+              placeholder="Community name"
+            />
+            <Button
+              styling="bcgov-normal-blue btn primary over"
+              label="Copy link to community"
+              onClick={getCommunity}
+            />
+          </div>
+        </Row>
+      </Container>
       <PowerBIEmbed
         embedConfig={{
           type: "report",
@@ -174,6 +200,24 @@ export default function PowerBi(props) {
                 }
               },
             ],
+            [
+              "bookmarkApplied",
+              function (event) {
+                console.log("filters", event);
+                window.report.getFilters().then((filters) => {
+                  console.log(filters);
+                });
+              },
+            ],
+            [
+              "buttonClicked",
+              function (event) {
+                console.log("button", event);
+                window.report.getFilters().then((filters) => {
+                  console.log(filters);
+                });
+              },
+            ],
           ])
         }
         // // Add CSS classes to the div element
@@ -181,6 +225,7 @@ export default function PowerBi(props) {
         // set report object
         getEmbeddedComponent={(embeddedReport) => {
           window.report = embeddedReport;
+          console.log("embed", embeddedReport);
         }}
       />
     </div>
