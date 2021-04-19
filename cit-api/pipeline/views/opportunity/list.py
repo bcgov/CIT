@@ -340,11 +340,14 @@ class OpportunitiesList(APIView):
                                                                              community_population_distance_min,
                                                                              community_population_distance_max,
                                                                              proximity_population)
-        page_size = request.query_params.get('page_size', 0)
-        page = request.query_params.get('page', 0)
-        queryset = queryset[int(page) * int(page_size):(int(page) + 1) * int(page_size)]
-        serializer = OpportunityGetSerializer(queryset, many=True)
-        return Response(serializer.data)
+        page_size = request.query_params.get('page_size', 10)
+        page = request.query_params.get('page', 1)
+        paginator = LargeResultsSetPagination()
+        paginator.page_size = page_size
+        paginator.page = page
+        result_page = paginator.paginate_queryset(queryset, request)
+        serializer = OpportunityGetSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
     def filter_opportunities_by_distance_from_community(self, queryset, community_distance_min, community_distance_max, proximity_community_id):
         community = Community.objects.get(pk=proximity_community_id)
