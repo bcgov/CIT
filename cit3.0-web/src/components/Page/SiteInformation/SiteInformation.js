@@ -23,7 +23,7 @@ export default function SiteInformation({ location }) {
         <Alert
           type="warning"
           styling="bcgov-warning-background"
-          element="Proximity (distance to) information is populated from available B.C. Open Data sources and cannot be edited. Data is presented for reference use only. All information should be verified independently before being used or relied upon. The Province of British Columbia does not guarantee the quality, accuracy, completeness or timeliness of this information."
+          element="Your listing will include the following location and proximity data available from open data sources. You will be able to add additional data to your listing in the next steps, including site servicing information. The remainder of the information is not editable and is provided for reference only. All information should be verified independently before being used or relied upon. The Province of British Columbia does not guarantee the quality, accuracy, completeness or timeliness of this information."
         />
       </Container>
       <OpportunityView data={location.state} />
