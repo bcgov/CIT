@@ -45,6 +45,7 @@ const LocationsPanel = ({
             <Row key={v4()} className="d-flex justify-content-between">
               <Col className="pl-0">
                 <a
+                  style={{ "line-height": "2rem" }}
                   target="_blank"
                   rel="noreferrer"
                   href={`${muni.link}`}

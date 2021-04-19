@@ -326,7 +326,7 @@ export default function PropertyDetails1() {
             </Row>
           </Col>
           <Col>
-            <Row id="future-zone-label">Future Zoning</Row>
+            <Row id="future-zone-label">Designation</Row>
             <Row>
               <Select
                 aria-labelledby="future-zone-label"

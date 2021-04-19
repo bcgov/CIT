@@ -17,9 +17,8 @@ terraform {
   backend "azurerm" {
     storage_account_name = "tfstatecit"
     container_name       = "tfstate"
-    key                  = "terraform.tfstate"
-    # resource_group_name  = set in init command
-    # access_key           = set in init command
+    key                  = "shared.tfstate"
+    resource_group_name  = var.az_resource.group
   }
 }
 
@@ -30,4 +29,9 @@ provider "azurerm" {
 
   features {
   }
+}
+
+provider "github" {
+  token = var.github_token
+  owner = var.github_owner
 }
