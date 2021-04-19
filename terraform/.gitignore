@@ -2,4 +2,4 @@
 *.tfstate.backup
 .terraform.tfstate.lock.info
 .terraform
-variables.auto.tfvars
+secrets.auto.tfvars
