@@ -8,10 +8,9 @@ from pipeline.models.general import DataSource
 from pipeline.importers.communities import import_communities_from_csv
 from pipeline.importers.projects import import_projects
 from pipeline.importers.utils import (import_data_into_point_model, read_csv,
-                                      import_civic_leaders_from_csv,
-                                      calculate_nearest_location_type_outside_50k,
-                                      get_databc_last_modified_date, import_services,
-                                      get_openca_last_modified_date, import_bc_assessment_data)
+                                      import_civic_leaders_from_csv, get_databc_last_modified_date,
+                                      import_services, get_openca_last_modified_date,
+                                      import_bc_assessment_data)
 
 FILES_DIR = settings.BASE_DIR
 
@@ -61,7 +60,6 @@ def import_resource(resource_type):
         for row in data:
             model_class = apps.get_model("pipeline", data_source.model_name)
             import_data_into_point_model(resource_type, model_class, row)
-        # calculate_nearest_location_type_outside_50k(resource_type)
     else:
         print("Error: Resource type {} not supported".format(resource_type))
 

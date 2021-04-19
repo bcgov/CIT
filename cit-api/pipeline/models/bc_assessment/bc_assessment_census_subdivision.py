@@ -22,7 +22,8 @@ class BCAssessmentCensusSubdivision(models.Model):
     bca_sbcsdu_sysid = models.CharField(max_length=128, null=True, blank=True)
     census_division_name = models.CharField(max_length=128, null=True, blank=True)
     census_economic_region_name = models.CharField(max_length=128, null=True, blank=True)
-    census_subdivision = models.ForeignKey('CensusSubdivision', on_delete=models.DO_NOTHING)
+    census_subdivision = models.ForeignKey('CEN_PROF_DETAILED_CSD_ATTRS_SP',
+                                           on_delete=models.DO_NOTHING)
     census_division_name = models.CharField(max_length=128, null=True, blank=True)
     median_improvement_value = models.CharField(max_length=128, null=True, blank=True)
     median_land_value = models.CharField(max_length=128, null=True, blank=True)

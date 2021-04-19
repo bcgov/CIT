@@ -1,4 +1,3 @@
-from .census import *
 from .community import *
 from .general import *
 from .location_assets import *
@@ -23,3 +22,5 @@ from .roads_and_highways import *
 from .users.user import *
 from .users.tracking import *
 from .agricultural_land_reserve import *
+from .cen_prof_detailed_cd_attrs_sp import *
+from .cen_prof_detailed_csd_attrs_sp import *
