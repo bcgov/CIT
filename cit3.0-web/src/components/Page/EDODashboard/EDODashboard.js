@@ -173,7 +173,8 @@ export default function EDODashboard() {
           <li>
             Properties must be zoned for industrial, commercial, or agricultural
             use. Industrial properties of any size may be listed. Commercial and
-            agricultural
+            agricultural properties may be listed if they are at least 5 acres
+            in size.
           </li>
           <li>Land must be available for sale or lease.</li>
           <li>
