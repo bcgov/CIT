@@ -173,7 +173,8 @@ export default function EDODashboard() {
           <li>
             Properties must be zoned for industrial, commercial, or agricultural
             use. Industrial properties of any size may be listed. Commercial and
-            agricultural
+            agricultural properties may be listed if they are at least 5 acres
+            in size.
           </li>
           <li>Land must be available for sale or lease.</li>
           <li>
@@ -193,15 +194,15 @@ export default function EDODashboard() {
                 Presence of provincially significant cultural or natural
                 heritage features
               </li>
+              <li>
+                Listings must be approved by either a municipality, regional
+                district, electoral area, province, First Nation or a regional
+                economic development organization, and from the Chief
+                Administrative Officer or their delegate.
+              </li>
             </ul>
           </li>
         </ul>
-        <p className="dashboard-text mb-4">
-          Listings must be approved by either a municipality, regional district,
-          electoral area, province, First Nation or a regional economic
-          development organization, and from the Chief Administrative Officer or
-          their delegate.
-        </p>
         <div className="add-opportunity-button">{addOpportunityButton}</div>
         <hr ref={resultRef} />
         {markAsSoldStatus === "Error" ? (
