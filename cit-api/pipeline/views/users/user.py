@@ -135,7 +135,6 @@ class UserView(GenericAPIView):
         user_email = request.data.get('email', None)
         assignment_municipalities = [x['id'] for x in request.data.get('municipalities', [])]
         assignment_regional_districts = [x['id'] for x in request.data.get('regionalDistricts', [])]
-        print(request.data)
         try:
             user = User.objects.get(email=user_email)
         except User.DoesNotExist:

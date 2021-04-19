@@ -2,6 +2,7 @@ import axios from "axios";
 import { POST_ADMIN_EMAIL_NOTIFICATION_URL } from "../constants/api-urls";
 /**
  * @param {Number} id of opportunity to send email notification about
+ * @param {string} link to opportunity (relative URL)
  * @param {string} token used to authenticate with the back end API
  * @return {Promise} of axios api call
  */
