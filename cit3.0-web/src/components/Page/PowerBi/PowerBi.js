@@ -1,18 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./PowerBi.css";
+import { Button as ButtonLink, Overlay } from "react-bootstrap";
 import { PowerBIEmbed } from "powerbi-client-react";
 import { models } from "powerbi-client";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { Button } from "shared-components";
+import { Typeahead } from "react-bootstrap-typeahead";
 import Config from "../../../Config";
 import { trackUser } from "../../../store/actions/user";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import useConfiguration from "../../../hooks/useConfiguration";
+import { toKebabCase } from "../../../helpers/helpers";
 
-export default function PowerBi(props) {
+export default function PowerBi() {
   const keycloak = useKeycloakWrapper();
   const user = useSelector((state) => state.user);
+  const configuration = useConfiguration();
   const [currentPage, setCurrentPage] = useState(null);
   const [currentPageData, setCurrentPageData] = useState(null);
   const [token, setToken] = useState(null);
@@ -24,12 +28,17 @@ export default function PowerBi(props) {
   const reportId = Config.pbiReportIdInternal;
 
   const { search } = useLocation();
-  const [community, setCommunity] = useState(
-    new URLSearchParams(search).get("community")
-  );
-  const [regionalDistrict, setRegionalDistrict] = useState(
+  const [community] = useState(new URLSearchParams(search).get("community"));
+  const [regionalDistrict] = useState(
     new URLSearchParams(search).get("regionalDistrict")
   );
+
+  const [createdUrl, setCreatedUrl] = useState("");
+  const [selected, setSelected] = useState("");
+
+  const [places, setPlaces] = useState(null);
+  const [showToolTip, setShowToolTip] = useState(false);
+  const tooltip = useRef(null);
 
   const filter = () => {
     let result = null;
@@ -41,7 +50,7 @@ export default function PowerBi(props) {
           column: "Community Name",
         },
         operator: "In",
-        values: [community],
+        values: [community.split("-").join(" ")],
       };
     } else if (regionalDistrict) {
       result = {
@@ -51,7 +60,7 @@ export default function PowerBi(props) {
           column: "Regional District",
         },
         operator: "In",
-        values: [regionalDistrict],
+        values: [regionalDistrict.split("-").join(" ")],
       };
     }
     return result;
@@ -98,17 +107,93 @@ export default function PowerBi(props) {
     }
   }, [reportConfig]);
 
+  useEffect(() => {
+    axios.get("/api/opportunity/options").then((data) => {
+      const commNames = data.data.communities.map((comm) => comm.place_name);
+      const regNames = data.data.regionalDistricts.map((dist) => dist.name);
+      setPlaces([...commNames, ...regNames]);
+    });
+  }, []);
+
   const saveAsPDF = () => {
     window.report.print();
   };
 
+  const createAndCopyLinkToClipboard = () => {
+    const url = `${configuration.baseUrl}/cit-dashboard/public/${toKebabCase(
+      selected
+    )}`;
+    setCreatedUrl(url);
+    const el = document.createElement("textarea");
+    el.value = url;
+    el.setAttribute("readonly", "");
+    el.style.position = "absolute";
+    el.style.left = "-9999px";
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    setShowToolTip(true);
+    setTimeout(() => {
+      setShowToolTip(false);
+    }, 3000);
+  };
+
   return embedToken ? (
     <div id="embed-container">
-      <Button
-        styling="bcgov-normal-blue btn primary over"
-        label="Save As PDF"
-        onClick={saveAsPDF}
-      />
+      <div className="no-print cit-header">
+        {selected}
+        <ButtonLink
+          variant="link"
+          className="text-white mr-5"
+          onClick={saveAsPDF}
+        >
+          Save As PDF
+        </ButtonLink>
+        {places ? (
+          <>
+            <Typeahead
+              id="typeahead"
+              className="ml-5 mr-3"
+              onChange={(selectedPlace) => {
+                setSelected(selectedPlace[0]);
+              }}
+              value={selected}
+              placeholder="Community name"
+              options={places}
+            />
+            <button
+              disabled={!selected}
+              ref={tooltip}
+              type="button"
+              className="copy-btn btn primary"
+              onClick={createAndCopyLinkToClipboard}
+            >
+              Copy Link
+            </button>
+            <Overlay
+              target={tooltip.current}
+              show={showToolTip}
+              placement="top"
+            >
+              {({ placement, arrowProps, show: _show, popper, ...props2 }) => (
+                <div
+                  {...props2}
+                  style={{
+                    backgroundColor: "#a3c4f5",
+                    padding: "2px 10px",
+                    color: "white",
+                    borderRadius: 3,
+                    ...props2.style,
+                  }}
+                >
+                  Copied to clipboard: {createdUrl}
+                </div>
+              )}
+            </Overlay>
+          </>
+        ) : null}
+      </div>
       <PowerBIEmbed
         embedConfig={{
           type: "report",

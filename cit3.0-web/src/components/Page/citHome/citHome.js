@@ -9,6 +9,7 @@ import axios from "axios";
 import { Typeahead } from "react-bootstrap-typeahead";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
+import { toKebabCase } from "../../../helpers/helpers";
 
 export default function citHome() {
   const [selectedPlace, setSelectedPlace] = useState(null);
@@ -58,7 +59,7 @@ export default function citHome() {
   const handlePublic = () => {
     if (selectedPlace) {
       const type = typeOfSelected(selectedPlace);
-      history.push(`${publicUrl}?${type}=${selectedPlace}`);
+      history.push(`${publicUrl}?${type}=${toKebabCase(selectedPlace)}`);
     } else {
       history.push(publicUrl);
     }
@@ -72,7 +73,9 @@ export default function citHome() {
       loginWithIdir = keycloak.obj.createLoginUrl({
         idpHint: "idir",
         redirectUri: encodeURI(
-          `${configuration.baseUrl}${privateUrl}?${type}=${selectedPlace}`
+          `${configuration.baseUrl}${privateUrl}?${type}=${toKebabCase(
+            selectedPlace
+          )}`
         ),
       });
     } else {
