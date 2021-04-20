@@ -57,9 +57,9 @@ export const FIRE = {
 };
 export const POLICE = {
   colourName: "blue",
-  colourHex: "#CB2B3E",
+  colourHex: "#3D3D3D",
   iconUrl:
-    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+    "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png",
 };
 export const AMBULANCE = {
   colourName: "green",

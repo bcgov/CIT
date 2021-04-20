@@ -170,6 +170,7 @@ function displayResources(resources) {
                   thousandSeparator={isNaN(resource[1].value) ? false : ","}
                 />
               ) : null}
+              {!resource[1].name && !resource[1].value && "NA"}
             </b>
           </span>
         );
@@ -195,7 +196,7 @@ function displayResources(resources) {
                 decimalScale={2}
                 thousandSeparator=","
               />
-              {resource[1].salePrice || resource[1].rentalPrice ? " or " : ""}
+              {resource[1].salePrice && resource[1].rentalPrice ? " or " : ""}
               <NumberFormat
                 displayType="text"
                 value={resource[1].rentalPrice}
