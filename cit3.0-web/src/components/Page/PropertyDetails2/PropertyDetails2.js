@@ -284,7 +284,7 @@ export default function PropertyDetails2() {
         </Row>
       </Container>
       <ButtonRow
-        prevRoute="/opportunity/property-details"
+        prevRoute="/investmentopportunities/property-details"
         onClick={handleContinue}
         noContinue={
           !userInfoName || !validBusinessEmail || !businessContactName
