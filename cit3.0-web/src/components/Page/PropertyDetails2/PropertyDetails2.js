@@ -27,7 +27,7 @@ import UserFactory from "../../../store/factory/UserFactory";
 export default function PropertyDetails2() {
   const dispatch = useDispatch();
   const [businessContactSync, setBusinessContactSync] = useState(false);
-  const [userInfoSync, setUserInfoSync] = useState(false);
+  // const [userInfoSync, setUserInfoSync] = useState(false);
   const businessContactEmail = useSelector(
     (state) => state.opportunity.businessContactEmail
   );
@@ -99,27 +99,27 @@ export default function PropertyDetails2() {
     dispatch(setBusinessContactEmail(isChecked ? keycloak.email : ""));
   };
 
-  const handleYourInfoCheck = (isChecked) => {
-    setUserInfoSync(isChecked);
-    if (isChecked) {
-      dispatch(setUser(UserFactory.createStateFromKeyCloak(keycloak)));
-      getUser({ email: keycloak.email }).then((response) => {
-        const { data: users } = response;
-        if (users.length) {
-          const appUser = users[0];
-          dispatch(setUser(UserFactory.createStateFromResponse(appUser)));
-        }
-      });
-    } else {
-      dispatch(resetUser());
-    }
-  };
+  // const handleYourInfoCheck = (isChecked) => {
+  //   setUserInfoSync(isChecked);
+  //   if (isChecked) {
+  //     dispatch(setUser(UserFactory.createStateFromKeyCloak(keycloak)));
+  //     getUser({ email: keycloak.email }).then((response) => {
+  //       const { data: users } = response;
+  //       if (users.length) {
+  //         const appUser = users[0];
+  //         dispatch(setUser(UserFactory.createStateFromResponse(appUser)));
+  //       }
+  //     });
+  //   } else {
+  //     dispatch(resetUser());
+  //   }
+  // };
 
-  useEffect(() => {
-    if (userInfoEmail) {
-      setUserInfoSync(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userInfoEmail) {
+  //     setUserInfoSync(true);
+  //   }
+  // }, []);
 
   return (
     <>
@@ -253,15 +253,6 @@ export default function PropertyDetails2() {
             </span>
           </div>
         </Row>
-        <Row className="mb-3">
-          <Form.Check
-            checked={userInfoSync}
-            onClick={(e) => handleYourInfoCheck(e.target.checked)}
-            type="checkbox"
-            label="Use the Contact Name/Email associated with the BCeID logged in."
-            aria-label="Use the Contact Name/Email associated with the BCeID logged in."
-          />
-        </Row>
         <Row className="mb-4">
           <Col className="pl-0">
             <TextInput
@@ -278,13 +269,14 @@ export default function PropertyDetails2() {
             {!userInfoName && <Validator message="Please enter your name" />}
 
             <p id="email-label" className="mb-0">
-              Email *
+              Email * (This is the email associated with your log in information
+              and cannot be changed)
             </p>
 
             <div className="pb-3">
               <input
                 required
-                disabled={userInfoSync}
+                disabled
                 autoComplete="off"
                 aria-labelledby="email-label"
                 className="bcgov-text-input mb-1 w-100"

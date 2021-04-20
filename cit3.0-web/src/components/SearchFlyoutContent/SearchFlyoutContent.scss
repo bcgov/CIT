@@ -26,6 +26,8 @@
 }
 
 .search-flyout-content {
+  width: 100%;
+  overflow-x: hidden;
   h3 {
     padding-top: 10px;
     padding-bottom: 10px;
