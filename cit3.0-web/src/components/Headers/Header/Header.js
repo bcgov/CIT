@@ -11,7 +11,7 @@ const Header = () => {
   const keycloak = useKeycloakWrapper();
   const history = useHistory();
   const location = useLocation();
-  const [isPowerBI, setIsPowerBI] = useState(false);
+  const [isPowerBI, setIsPowerBI] = useState(null);
 
   const title = () => {
     if (location.pathname.includes("/investmentopportunities")) {
@@ -26,6 +26,8 @@ const Header = () => {
   useEffect(() => {
     if (title() === "Community Information Tool") {
       setIsPowerBI(true);
+    } else {
+      setIsPowerBI(false);
     }
   }, []);
 

@@ -2,11 +2,9 @@ import React from "react";
 import { Redirect } from "react-router-dom";
 import { Container, Row, Col, Spinner, Jumbotron } from "react-bootstrap";
 import { Button } from "shared-components";
-// import { useSelector } from "react-redux";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useQuery } from "../../../hooks/use-query";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
-// import { ADD_ACTIVATE_USER } from "../../../constants/actionTypes";
 
 // @todo: Move to actions / status sources
 // const NEW_CIT_USER = 201;
@@ -26,20 +24,11 @@ const Login = () => {
   const keyCloakWrapper = useKeycloakWrapper();
   const keycloak = keyCloakWrapper.obj;
   const isIE = usingIE();
-  // const activated = useSelector((state) => state.network[ADD_ACTIVATE_USER]);
   if (!keycloak) {
     return <Spinner animation="border" />;
   }
   if (keycloak && keycloak.authenticated) {
-    // if (
-    //   (activated && activated.status === NEW_CIT_USER) ||
-    //   (keyCloakWrapper &&
-    //     keyCloakWrapper.roles &&
-    //     !keyCloakWrapper.roles.length)
-    // ) {
-    //   return <Redirect to={{ pathname: "/access/request" }} />;
-    // }
-    return <Redirect to={redirect || "/search"} />;
+    return <Redirect to={redirect || "/investmentopportunities/dashboard"} />;
   }
   if (isIE) {
     return <Redirect to={{ pathname: "/ienotsupported" }} />;
