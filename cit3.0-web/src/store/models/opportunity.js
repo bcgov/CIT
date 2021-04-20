@@ -34,9 +34,15 @@ export const OPPORTUNITY_MODEL = () => ({
   municipalities: [],
   firstNationCommunities: [],
   services: {
+    networkAvg: {
+      title: "Site servicing",
+      subtitle: "- Speed average",
+      value: "",
+      type: "paragraph",
+    },
     networkAtRoad: {
       title: "Site servicing",
-      subtitle: "- Connectivity (50/10Mbps or more)",
+      subtitle: "- Speed at nearest road",
       value: "",
       type: "paragraph",
     },
@@ -553,8 +559,12 @@ export class Opportunity {
     this.state.services.transmission.value = value;
   }
 
+  set networkAvg(value) {
+    this.state.services.networkAvg.value = value;
+  }
+
   set networkAtRoad(value) {
-    this.state.services.networkAtRoad.value = value === "50/10" ? "Yes" : "No";
+    this.state.services.networkAtRoad.value = value;
   }
 
   set nearestTransmission(value) {
