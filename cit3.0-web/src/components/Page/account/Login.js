@@ -41,13 +41,12 @@ const Login = () => {
           <Col>
             <Jumbotron className="pl-0" style={{ background: "transparent" }}>
               <h3 className="mb-4">
-                Create and manage investment opportunities
+                Log-in to the Community Investment Opportunities Tool
               </h3>
               <p className="mb-4">
-                The data provided can assist your agency in making informed,
-                timely, and strategic decisions on the optimal use of real
-                community assets on behalf of the people and priorities of
-                British Columbia.
+                Sign-in to promote properties available for sale or lease in
+                your community and the tool will automatically add key location
+                information to support site selection decisions.
               </p>
               <hr className="hr-bold" />
               <Button
@@ -56,7 +55,7 @@ const Login = () => {
                 onClick={() => keycloak.login()}
               />
               <p>
-                Sign into CIT with your government issued IDIR or with your
+                Sign into the tool with your government issued IDIR or your
                 Business BCeID.
               </p>
             </Jumbotron>
