@@ -253,16 +253,6 @@ export default function PropertyDetails2() {
             </span>
           </div>
         </Row>
-        {/* <Row className="mb-3">
-          <Form.Check
-            checked
-            disabled
-            onClick={(e) => handleYourInfoCheck(e.target.checked)}
-            type="checkbox"
-            label="Use the Contact Name/Email associated with the BCeID logged in."
-            aria-label="Use the Contact Name/Email associated with the BCeID logged in."
-          />
-        </Row> */}
         <Row className="mb-4">
           <Col className="pl-0">
             <TextInput
