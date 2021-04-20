@@ -34,15 +34,9 @@ export const OPPORTUNITY_MODEL = () => ({
   municipalities: [],
   firstNationCommunities: [],
   services: {
-    networkAvg: {
-      title: "Network Connectivity",
-      subtitle: "- Speed average",
-      value: "",
-      type: "paragraph",
-    },
     networkAtRoad: {
-      title: "Network Connectivity",
-      subtitle: "- Speed at nearest road",
+      title: "Site servicing",
+      subtitle: "- Connectivity (50/10Mbps or more)",
       value: "",
       type: "paragraph",
     },
@@ -91,13 +85,6 @@ export const OPPORTUNITY_MODEL = () => ({
       type: "distance",
       suffix: "km",
     },
-    nearResearchCentre: {
-      title: "Research Centre within 100km",
-      name: "No",
-      value: 0,
-      type: "distance",
-      suffix: "km",
-    },
     nearHealth: {
       title: "Health Care Facility within 100km",
       name: "No",
@@ -139,6 +126,13 @@ export const OPPORTUNITY_MODEL = () => ({
     },
     nearSecondarySchool: {
       title: "Post-Secondary Education Facility within 100km",
+      name: "No",
+      value: 0,
+      type: "distance",
+      suffix: "km",
+    },
+    nearResearchCentre: {
+      title: "Research Centre within 100km",
       name: "No",
       value: 0,
       type: "distance",
@@ -559,12 +553,8 @@ export class Opportunity {
     this.state.services.transmission.value = value;
   }
 
-  set networkAvg(value) {
-    this.state.services.networkAvg.value = value;
-  }
-
   set networkAtRoad(value) {
-    this.state.services.networkAtRoad.value = value;
+    this.state.services.networkAtRoad.value = value === "50/10" ? "Yes" : "No";
   }
 
   set nearestTransmission(value) {
