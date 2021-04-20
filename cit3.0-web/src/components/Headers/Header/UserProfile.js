@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "shared-components";
-
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
@@ -28,6 +27,13 @@ const UserProfile = () => {
       setIsPowerBI(false);
     }
   }, []);
+
+  const isDashboard = () => {
+    if (isPowerBI && location.pathname.includes("/cit-dashboard/public")) {
+      return true;
+    }
+    return false;
+  };
 
   return (
     <>
@@ -66,12 +72,22 @@ const UserProfile = () => {
               </>
             }
             onClick={() => {
-              if (isPowerBI) {
+              if (isPowerBI && !isDashboard()) {
                 const loginWithIdir = keycloak.obj.createLoginUrl({
                   idpHint: "idir",
                   redirectUri: encodeURI(
                     `${configuration.baseUrl}${window.location.pathname}`
                   ),
+                });
+                window.location.href = loginWithIdir;
+              } else if (isDashboard()) {
+                const current = window.location.href.replace(
+                  "public",
+                  "internal"
+                );
+                const loginWithIdir = keycloak.obj.createLoginUrl({
+                  idpHint: "idir",
+                  redirectUri: current,
                 });
                 window.location.href = loginWithIdir;
               } else {
