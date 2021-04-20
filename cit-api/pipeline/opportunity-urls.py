@@ -7,6 +7,7 @@ from pipeline.views.opportunity.create import OpportunityCreateView
 from pipeline.views.opportunity.edit import OpportunityView
 from pipeline.views.opportunity.get import OpportunityGetView
 from pipeline.views.opportunity.list import OpportunitiesList
+from pipeline.views.opportunity.export import OpportunitiesListExport
 import pipeline.views.options
 import pipeline.views.proximity
 import pipeline.views.users.user
@@ -16,6 +17,7 @@ router = DefaultRouter()
 
 urlpatterns = [
     path("", include(router.urls)),
+    url(r"^export/$", OpportunitiesListExport.as_view()),
     url(r"^list/$", OpportunitiesList.as_view()),
     url(r"^single/$", OpportunityCreateView.as_view()),
     url(r"^single/(?P<id>\w+)/$", OpportunityGetView.as_view()),
