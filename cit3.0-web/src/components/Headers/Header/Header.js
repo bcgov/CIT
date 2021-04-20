@@ -24,7 +24,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (title() === "Community Information Tool") {
+    if (location.pathname.includes("/cit-dashboard")) {
       setIsPowerBI(true);
     } else {
       setIsPowerBI(false);
