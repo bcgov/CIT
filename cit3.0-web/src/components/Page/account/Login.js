@@ -55,7 +55,7 @@ const Login = () => {
                 onClick={() => keycloak.login()}
               />
               <p>
-                Sign into the tool with your government issues IDIR or your
+                Sign into the tool with your government issued IDIR or your
                 Business BCeID.
               </p>
             </Jumbotron>
