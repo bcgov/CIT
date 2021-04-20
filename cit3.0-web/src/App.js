@@ -65,7 +65,7 @@ function App() {
             <Router>
               <Header />
               <Switch>
-                <Redirect exact from="/" to="/investmentopportunities/home" />
+                <Redirect exact from="/" to="/cit-dashboard/home" />
                 <Redirect
                   exact
                   from="/cit-dashboard"
