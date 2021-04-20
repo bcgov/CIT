@@ -293,7 +293,7 @@ def get_route_planner_distance(origin, destination):
     travel_time = None
     travel_time_display = None
 
-    if route["routeFound"] == 'true':
+    if route["time"] != -1:
         distance = route["distance"]
         travel_time = route["time"]
         travel_time_display = route["timeText"]
