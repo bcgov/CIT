@@ -51,20 +51,14 @@ export default function PropertyDetails2() {
   );
   const keycloak = useKeycloakWrapper();
 
-  const [validEmail, setValidEmail] = useState(true);
   const [validBusinessEmail, setValidBusinessEmail] = useState(true);
 
   const regex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-  const validateEmail = (value, business) => {
-    if (value && !business) {
-      setValidEmail(regex.test(value));
-    } else {
-      setValidEmail(true);
-    }
-    if (value && business) {
+  const validateEmail = (value) => {
+    if (value) {
       setValidBusinessEmail(regex.test(value));
     } else {
-      setValidBusinessEmail(true);
+      setValidBusinessEmail(false);
     }
   };
 
@@ -97,29 +91,12 @@ export default function PropertyDetails2() {
     setBusinessContactSync(isChecked);
     dispatch(setBusinessContactName(isChecked ? keycloak.displayName : ""));
     dispatch(setBusinessContactEmail(isChecked ? keycloak.email : ""));
+    validateEmail(isChecked ? keycloak.email : "");
   };
 
-  // const handleYourInfoCheck = (isChecked) => {
-  //   setUserInfoSync(isChecked);
-  //   if (isChecked) {
-  //     dispatch(setUser(UserFactory.createStateFromKeyCloak(keycloak)));
-  //     getUser({ email: keycloak.email }).then((response) => {
-  //       const { data: users } = response;
-  //       if (users.length) {
-  //         const appUser = users[0];
-  //         dispatch(setUser(UserFactory.createStateFromResponse(appUser)));
-  //       }
-  //     });
-  //   } else {
-  //     dispatch(resetUser());
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (userInfoEmail) {
-  //     setUserInfoSync(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    handleCheck(true);
+  }, []);
 
   return (
     <>
@@ -189,7 +166,9 @@ export default function PropertyDetails2() {
         </Row>
         <Row>
           <div className="d-flex flex-column">
-            <h4>Business Contact</h4>
+            <h4>
+              Business Contact *<span className="text-red">required</span>
+            </h4>
             <span style={{ opacity: "0.7" }} className="my-1">
               This will be the contact information displayed on the public
               listing of this opportunity.
@@ -209,7 +188,7 @@ export default function PropertyDetails2() {
           <Col className="pl-0">
             <TextInput
               required={false}
-              heading="Business Contact Name"
+              heading="Business Contact Name *"
               notes=""
               rows={1}
               value={businessContactName}
@@ -218,8 +197,11 @@ export default function PropertyDetails2() {
               }
               name="busName"
             />
+            {!businessContactName && (
+              <Validator message="Please enter a contact name" />
+            )}
             <p id="email-label" className="mb-0">
-              Business Contact Email
+              Business Contact Email *
             </p>
             <div className="pb-3">
               <input
@@ -236,7 +218,7 @@ export default function PropertyDetails2() {
                 value={businessContactEmail}
               />
             </div>
-            {!validEmail && (
+            {!validBusinessEmail && (
               <Validator message="Please enter a valid email address" />
             )}
           </Col>
@@ -283,16 +265,9 @@ export default function PropertyDetails2() {
                 type="email"
                 name="userInfoEmail"
                 pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g"
-                onChange={(e) => {
-                  validateEmail(e.target.value, true);
-                  dispatch(setUserInfoEmail(e.target.value));
-                }}
                 value={userInfoEmail}
               />
             </div>
-            {!validBusinessEmail || !userInfoEmail ? (
-              <Validator message="Please enter a valid email address" />
-            ) : null}
             <TextInput
               required
               heading="Your Title/Role"
@@ -311,7 +286,9 @@ export default function PropertyDetails2() {
       <ButtonRow
         prevRoute="/opportunity/property-details"
         onClick={handleContinue}
-        noContinue={!validEmail || !userInfoEmail || !userInfoName}
+        noContinue={
+          !userInfoName || !validBusinessEmail || !businessContactName
+        }
       />
     </>
   );
