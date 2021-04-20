@@ -65,7 +65,12 @@ function App() {
             <Router>
               <Header />
               <Switch>
-                <Redirect exact from="/" to="/investmentopportunities/home" />
+                <Redirect exact from="/" to="/cit-dashboard/home" />
+                <Redirect
+                  exact
+                  from="/investmentopportunities"
+                  to="/investmentopportunities/home"
+                />
                 <Redirect
                   exact
                   from="/cit-dashboard"
@@ -97,7 +102,7 @@ function App() {
                 <AppRoute
                   protected
                   exact
-                  path="/investmentopportunities"
+                  path="/investmentopportunities/add"
                   title={getTitle("Add Property")}
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
