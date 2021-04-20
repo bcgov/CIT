@@ -87,7 +87,9 @@ const OpportunityListItem = ({
     const propertyStatus = options.propertyStatuses.find(
       (s) => s.code === opportunity.userInfo.saleOrLease.value
     ).name;
-    return propertyStatus !== "Both" ? propertyStatus : "Sale or Lease";
+    return propertyStatus !== "Both"
+      ? `For ${propertyStatus}`
+      : "Sale or Lease";
   };
 
   return (
