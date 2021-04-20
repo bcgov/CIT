@@ -19,11 +19,13 @@ from admin import settings
 
 
 class Command(BaseCommand):
+    SUB_FOLDERS = ['bc_assessment']
+
     def handle(self, *args, **options):
         #If in test or prod make sure the most recent static files are fetched.
         if settings.ENV_LEVEL in ['test', 'prod']:
             print("Pulling down latest static files.")
-            for folder in ['bc_assessment', 'major_projects']:
+            for folder in self.SUB_FOLDERS:
                 folder_path = os.path.join(settings.AZURE_BLOB_STORAGE_LOCAL_PATH, folder)
                 print(folder_path)
                 Path(folder_path).mkdir(parents=True, exist_ok=True)
@@ -63,8 +65,6 @@ class Command(BaseCommand):
                 print(f'Importing {resource.display_name}...')
                 import_databc_resources(resource.name)
 
-        # calculate_nearest_location_types_outside_50k()
-
         # calculate foreign keys
         calculate_communities_for_schools()
         calculate_regional_districts_for_communities()
@@ -79,6 +79,7 @@ class Command(BaseCommand):
             print(f'Importing {resource.display_name}...')
             import_csv_resources(resource.name)
 
+        calculate_nearest_location_types_outside_50k()
         # TODO SY - is this still needed
         # calculate cached fields
         calculate_community_num_schools()

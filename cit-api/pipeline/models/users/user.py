@@ -1,4 +1,5 @@
 from django.contrib.gis.db import models
+from django.utils import timezone
 
 
 class Assignments(models.Model):
@@ -21,4 +22,6 @@ class User(models.Model):
     email = models.CharField(max_length=255, blank=False, null=False)
     role = models.CharField(max_length=255, blank=False, null=False)
     deleted = models.BooleanField(default=False, help_text="This is for soft deletes")
-    date_created = models.DateTimeField(auto_now=True)
+    date_created = models.DateTimeField(default=timezone.now)
+    is_admin = models.BooleanField(default=False)
+

@@ -27,7 +27,7 @@ import UserFactory from "../../../store/factory/UserFactory";
 export default function PropertyDetails2() {
   const dispatch = useDispatch();
   const [businessContactSync, setBusinessContactSync] = useState(false);
-  const [userInfoSync, setUserInfoSync] = useState(false);
+  // const [userInfoSync, setUserInfoSync] = useState(false);
   const businessContactEmail = useSelector(
     (state) => state.opportunity.businessContactEmail
   );
@@ -71,17 +71,17 @@ export default function PropertyDetails2() {
   const history = useHistory();
 
   const noteLabel =
-    "Please note, the information you enter in this section will appear as is on the listing to promote this opportunity.  Do not include any personal infomation. ";
+    "Please note, the information you enter in this section will appear as is on the listing to promote this opportunity. Do not include any personal information. ";
   const oppDescLabel =
-    "Opportunity description including site characteristics, permit info, or any other relevant information.";
+    "Please describe the property including site characteristics, allowed uses, approval processes, permits, etc.";
   const enviroLabel =
-    "Please tell us about any environmental assessment info or environmental sensitivity, if known.";
+    "Provide information about any environmental sensitivities of the site, and any required or completed environmental assessments.";
   const commUrlLabel = "Link to your community website/webpage";
   const listingUrlLabel = "Link to more info about this opportunity";
   const urlNoteComm =
-    "This will direct potential Investors to a webpage of your choice where they can learn more about your community.";
+    "This will direct potential investors to a webpage of your choice where they can learn more about your community.";
   const urlNote =
-    "This will direct potential Investors to a webpage, brochure, PDF, image etc. of your choice where they can learn more about your community.";
+    "This will direct potential investors to a webpage, brochure, PDF, image etc. of your choice where they can learn more about the property.";
   const placeholderComm = "Enter URL here (eg. my community.ca)";
   const placeholder = "Enter URL here (eg. realtor.ca/myopportunity)";
 
@@ -99,27 +99,27 @@ export default function PropertyDetails2() {
     dispatch(setBusinessContactEmail(isChecked ? keycloak.email : ""));
   };
 
-  const handleYourInfoCheck = (isChecked) => {
-    setUserInfoSync(isChecked);
-    if (isChecked) {
-      dispatch(setUser(UserFactory.createStateFromKeyCloak(keycloak)));
-      getUser({ email: keycloak.email }).then((response) => {
-        const { data: users } = response;
-        if (users.length) {
-          const appUser = users[0];
-          dispatch(setUser(UserFactory.createStateFromResponse(appUser)));
-        }
-      });
-    } else {
-      dispatch(resetUser());
-    }
-  };
+  // const handleYourInfoCheck = (isChecked) => {
+  //   setUserInfoSync(isChecked);
+  //   if (isChecked) {
+  //     dispatch(setUser(UserFactory.createStateFromKeyCloak(keycloak)));
+  //     getUser({ email: keycloak.email }).then((response) => {
+  //       const { data: users } = response;
+  //       if (users.length) {
+  //         const appUser = users[0];
+  //         dispatch(setUser(UserFactory.createStateFromResponse(appUser)));
+  //       }
+  //     });
+  //   } else {
+  //     dispatch(resetUser());
+  //   }
+  // };
 
-  useEffect(() => {
-    if (userInfoEmail) {
-      setUserInfoSync(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (userInfoEmail) {
+  //     setUserInfoSync(true);
+  //   }
+  // }, []);
 
   return (
     <>
@@ -129,7 +129,7 @@ export default function PropertyDetails2() {
           <Row>
             <PageTitleHeader
               title="Enter Property Details"
-              text="Tell us more about this investment opportunity.  All fields are optional."
+              text="Provide more information about the property. All fields are optional. Site Information:"
             />
           </Row>
         </Row>
@@ -253,15 +253,6 @@ export default function PropertyDetails2() {
             </span>
           </div>
         </Row>
-        <Row className="mb-3">
-          <Form.Check
-            checked={userInfoSync}
-            onClick={(e) => handleYourInfoCheck(e.target.checked)}
-            type="checkbox"
-            label="Use the Contact Name/Email associated with the BCeID logged in."
-            aria-label="Use the Contact Name/Email associated with the BCeID logged in."
-          />
-        </Row>
         <Row className="mb-4">
           <Col className="pl-0">
             <TextInput
@@ -278,13 +269,14 @@ export default function PropertyDetails2() {
             {!userInfoName && <Validator message="Please enter your name" />}
 
             <p id="email-label" className="mb-0">
-              Email *
+              Email * (This is the email associated with your log in information
+              and cannot be changed)
             </p>
 
             <div className="pb-3">
               <input
                 required
-                disabled={userInfoSync}
+                disabled
                 autoComplete="off"
                 aria-labelledby="email-label"
                 className="bcgov-text-input mb-1 w-100"

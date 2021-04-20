@@ -13,8 +13,6 @@ from pipeline.models.location_assets import (
     TimberFacility,
     CivicFacility,
     Hospital,
-    NaturalResourceProject,
-    EconomicProject,
     Project,
     ServiceBCLocation,
     School,
@@ -31,8 +29,6 @@ from pipeline.serializers.location_types import (
     TimberFacilitySerializer,
     CivicFacilitySerializer,
     HospitalSerializer,
-    NaturalResourceProjectSerializer,
-    EconomicProjectSerializer,
     ProjectSerializer,
     ServiceBCLocationSerializer,
     SchoolSerializer,
@@ -117,16 +113,6 @@ class CivicFacilityList(generics.ListAPIView):
 class HospitalList(generics.ListAPIView):
     queryset = Hospital.objects.all()
     serializer_class = HospitalSerializer
-
-
-class NaturalResourceProjectList(generics.ListAPIView):
-    queryset = NaturalResourceProject.objects.all()
-    serializer_class = NaturalResourceProjectSerializer
-
-
-class EconomicProjectList(generics.ListAPIView):
-    queryset = EconomicProject.objects.all()
-    serializer_class = EconomicProjectSerializer
 
 
 class ProjectList(generics.ListAPIView):

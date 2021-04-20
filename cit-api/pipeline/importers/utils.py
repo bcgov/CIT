@@ -1,6 +1,7 @@
 import csv
 import requests
 import copy
+import math
 
 from django.apps import apps
 from django.conf import settings
@@ -15,7 +16,7 @@ from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineStr
 
 from pipeline.constants import WGS84_SRID
 from pipeline.models.community import Community
-from pipeline.models.census import CensusSubdivision
+from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.general import (DataSource, LocationDistance, SchoolDistrict, Municipality,
                                      CivicLeader, Hex, Service, ISP, RegionalDistrict)
@@ -82,28 +83,34 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
     import_variable_fields(instance, row, Model)
 
     instance.save()
-    # calculate_distances(instance, dry_run=dry_run)
+    calculate_distances(instance, dry_run=dry_run)
 
     return instance
 
 
 def import_data_into_area_model(resource_type, Model, row, index=None):
+    if resource_type == 'Census Subdivisions':
+        instance, created = Model.objects.get_or_create(
+            census_subdivision_id=row['CENSUS_SUBDIVISION_ID'])
+    elif resource_type == 'Census Division':
+        instance, created = Model.objects.get_or_create(
+            census_division_id=row['CENSUS_DIVISION_ID'])
+    else:
+        name_fields = Model.NAME_FIELD.split(",")
+        name = ", ".join([str(row[name_field]) for name_field in name_fields])
 
-    name_fields = Model.NAME_FIELD.split(",")
-    name = ", ".join([str(row[name_field]) for name_field in name_fields])
+        if name == 'None':
+            if hasattr(Model, 'ID_FIELD'):
+                name = f'Unnamed {resource_type} {row[Model.ID_FIELD]}'
+                print("Name", name)
+            else:
+                name = f'Unnamed {resource_type} {index}'
+                print("Name", name)
 
-    if name == 'None':
-        if hasattr(Model, 'ID_FIELD'):
-            name = f'Unnamed {resource_type} {row[Model.ID_FIELD]}'
-            print("Name", name)
-        else:
-            name = f'Unnamed {resource_type} {index}'
-            print("Name", name)
-
-    # Not forced unique names in the dataset
-    if resource_type == 'Indian Reserves and Band Names':
-        name = f'{row[Model.NAME_FIELD]}, {row[Model.ID_FIELD]}'
-    instance, created = Model.objects.get_or_create(name=name)
+        # Not forced unique names in the dataset
+        if resource_type == 'Indian Reserves and Band Names':
+            name = f'{row[Model.NAME_FIELD]}, {row[Model.ID_FIELD]}'
+        instance, created = Model.objects.get_or_create(name=name)
 
     print("instance", instance)
     if hasattr(Model, 'ID_FIELD'):
@@ -147,6 +154,8 @@ def import_variable_fields(instance, row, Model):
                 field_value = field_value[:Model._meta.get_field(transformed_field_name).max_length]
             except FieldDoesNotExist:
                 pass
+        if isinstance(field_value, float) and math.isnan(field_value):
+            field_value = None
         setattr(instance, transformed_field_name, field_value)
 
 
@@ -168,7 +177,7 @@ def calculate_communities_for_schools():
 
 def calculate_distances(location, dry_run=False):
     communities_within_50k = (Community.objects.filter(
-        point__distance_lte=(location.point, 0.5)).annotate(
+        point__distance_lte=(location.point, D(m=50000))).annotate(
             distance=Distance("point", location.point)).order_by("distance"))
 
     for community in communities_within_50k:
@@ -420,7 +429,8 @@ def import_bc_assessment_data(file_path, Model, resource_type):
                     instance = Model.objects.get(bca_sbcsdu_sysid=id_field)
                 except Model.DoesNotExist:
                     instance = Model(bca_sbcsdu_sysid=id_field)
-                census_subdiv = CensusSubdivision.objects.get(id=int(row[link_field]))
+                census_subdiv = CEN_PROF_DETAILED_CSD_ATTRS_SP.objects.get(
+                    census_subdivision_id=int(row[link_field]))
                 instance.census_subdivision = census_subdiv
 
             elif resource_type == 'bc_assessment_economic_region':
