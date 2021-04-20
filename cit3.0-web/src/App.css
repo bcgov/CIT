@@ -74,6 +74,10 @@ div.bcgov-warning-background {
   border: 2px solid rgb(252, 186, 25);
 }
 
+div.bcgov-info-background {
+  border: 2px solid #606060;
+}
+
 div.bordered {
   border: 2px solid #606060;
 }
