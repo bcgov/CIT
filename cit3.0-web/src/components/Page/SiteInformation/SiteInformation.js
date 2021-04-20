@@ -29,7 +29,7 @@ export default function SiteInformation({ location }) {
       <OpportunityView data={location.state} />
       <ButtonRow
         showPrevious
-        prevRoute="/investmentopportunities"
+        prevRoute="/investmentopportunities/add"
         onClick={goToNextPage}
       />
     </>
