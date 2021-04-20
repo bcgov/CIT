@@ -161,7 +161,7 @@ export default function PowerBi() {
               disabled={!selected}
               ref={tooltip}
               type="button"
-              className="bcgov-normal-blue btn primary over"
+              className="copy-btn btn primary"
               onClick={createAndCopyLinkToClipboard}
             >
               Copy Link
