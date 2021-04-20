@@ -13,7 +13,7 @@ from pipeline.models.users.user import User, Assignments
 from pipeline.models.general import Municipality, RegionalDistrict
 
 from pipeline.serializers.users.user import UserGetSerializer, UserPostSerializer
-from pipeline.permissions.IsAuthenticated import IsAuthenticated
+from pipeline.permissions.IsAuthenticated import IsAuthenticated, IsAdminAuthenticated
 
 
 def get_row(user):
@@ -49,7 +49,7 @@ class UserListView(GenericAPIView):
     View to retrieve a list of users
     """
     serializer_class = UserGetSerializer(many=True)
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminAuthenticated]
 
     user_email_param = openapi.Parameter('email',
                                          in_=openapi.IN_QUERY,
