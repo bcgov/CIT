@@ -111,7 +111,7 @@ const OpportunityPage = ({ id }) => {
       </Container>
       <OpportunityView view="all" />
 
-      <Container className="p-0">
+      <Container className="p-0 no-print">
         <Alert
           type="warning"
           styling="bcgov-warning-background mb-4"
