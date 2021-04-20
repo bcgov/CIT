@@ -128,13 +128,15 @@ export default function Map({
           </Marker>
         ) : null}
         {JSON.stringify(nearbyResources) !== "{}"
-          ? Object.entries(nearbyResources).map(([resource, resourceData]) => (
-              <ResourceMarker
-                key={resource}
-                resourceName={resource}
-                resources={resourceData}
-              />
-            ))
+          ? Object.entries(nearbyResources).map(([resource, resourceData]) =>
+              resource !== "community" ? (
+                <ResourceMarker
+                  key={resource}
+                  resourceName={resource}
+                  resources={resourceData}
+                />
+              ) : null
+            )
           : null}
       </>
     );

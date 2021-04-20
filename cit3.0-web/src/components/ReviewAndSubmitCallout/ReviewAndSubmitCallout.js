@@ -27,15 +27,14 @@ const ReviewAndSubmitCallout = ({
       <Row>
         <Col>
           <p>
-            This screen shows you the listing for your investment opportunity as
-            it will appear on the Investor Portal. All the data you see on this
-            page comes from different open source databases.
+            Please review your listing below. Your listing includes open source
+            location data, as well as information you have added.
           </p>
           <p>
-            When you are ready to proceed and submit this opportunity for
-            review, click the &quot;Submit my Opportunity&quot; button below. We
-            will review the submission within [x] days. You can see the status
-            of your submission on your dashboard.
+            Once you submit your listing, it will be reviewed within 3-5 days.
+            Your listing will then be published publicly or you may be contacted
+            for more information. You can track the status of your submission on
+            your dashboard.
           </p>
           <div role="form">
             <TextInput
