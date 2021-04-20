@@ -6,7 +6,6 @@ import { PowerBIEmbed } from "powerbi-client-react";
 import { models } from "powerbi-client";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { Button } from "shared-components";
 import { Typeahead } from "react-bootstrap-typeahead";
 import Config from "../../../Config";
 import { trackUser } from "../../../store/actions/user";
@@ -14,7 +13,7 @@ import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
 import { toKebabCase } from "../../../helpers/helpers";
 
-export default function PowerBi(props) {
+export default function PowerBi() {
   const keycloak = useKeycloakWrapper();
   const user = useSelector((state) => state.user);
   const configuration = useConfiguration();
@@ -110,7 +109,6 @@ export default function PowerBi(props) {
 
   useEffect(() => {
     axios.get("/api/opportunity/options").then((data) => {
-      console.log(data);
       const commNames = data.data.communities.map((comm) => comm.place_name);
       const regNames = data.data.regionalDistricts.map((dist) => dist.name);
       setPlaces([...commNames, ...regNames]);
@@ -261,24 +259,6 @@ export default function PowerBi(props) {
                 }
               },
             ],
-            [
-              "bookmarkApplied",
-              function (event) {
-                console.log("filters", event);
-                window.report.getFilters().then((filters) => {
-                  console.log(filters);
-                });
-              },
-            ],
-            [
-              "buttonClicked",
-              function (event) {
-                console.log("button", event);
-                window.report.getFilters().then((filters) => {
-                  console.log(filters);
-                });
-              },
-            ],
           ])
         }
         // // Add CSS classes to the div element
@@ -286,7 +266,6 @@ export default function PowerBi(props) {
         // set report object
         getEmbeddedComponent={(embeddedReport) => {
           window.report = embeddedReport;
-          console.log("embed", embeddedReport);
         }}
       />
     </div>

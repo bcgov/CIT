@@ -7,7 +7,6 @@ import { models } from "powerbi-client";
 import { useLocation } from "react-router-dom";
 import { Typeahead } from "react-bootstrap-typeahead";
 import Config from "../../../Config";
-import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import { toKebabCase } from "../../../helpers/helpers";
 import useConfiguration from "../../../hooks/useConfiguration";
 
