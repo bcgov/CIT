@@ -53,16 +53,9 @@ const AuthStateContextProvider = ({ children }) => {
             getUser({ email: user.email }).then((existingUser) => {
               if (existingUser.data.length) {
                 dispatch(setUser({ ...existingUser.data[0], idp }));
-                if (
-                  existingUser.data[0].is_admin === false &&
-                  user.roles.some((role) => role === "IDIR")
-                ) {
-                  const updatedUser = { ...existingUser.data[0] };
-                  updatedUser.is_admin = true;
-                  updateUserAssignments(updatedUser, keycloak.obj.token)
-                    .then(() => {})
-                    .catch(() => {});
-                }
+                updateUserAssignments(existingUser.data[0], keycloak.obj.token)
+                  .then(() => {})
+                  .catch(() => {});
               } else {
                 postUser(
                   UserFactory.createStateFromKeyCloak(user),
