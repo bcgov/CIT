@@ -224,6 +224,7 @@ export default function SearchFlyoutContent({ setQuery }) {
 
   useEffect(() => {
     const query = new URLSearchParams();
+    query.append("approval_status_id", "PUBL");
     siteServicingFilters.forEach((filter) => {
       query.append(filter.queryKey, filter.checked === true ? "Y" : "N");
     });
