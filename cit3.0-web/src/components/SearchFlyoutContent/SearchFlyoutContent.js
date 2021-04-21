@@ -303,7 +303,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         <p>{switchFilter.label}</p>
       </Col>
       <Col xs="auto" className="no-padding">
-        <p>Off</p>
+        <p>No</p>
       </Col>
       <Col xs="auto">
         <Switch
@@ -321,7 +321,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         />
       </Col>
       <Col xs="auto" className="no-padding">
-        <p>On</p>
+        <p>Yes</p>
       </Col>
     </Row>
   ));
@@ -378,7 +378,7 @@ export default function SearchFlyoutContent({ setQuery }) {
           <p>Connectivity (50/10Mbps or more):</p>
         </Col>
         <Col xs="auto" className="no-padding">
-          <p>Off</p>
+          <p>No</p>
         </Col>
         <Col xs="auto">
           <Switch
@@ -396,7 +396,7 @@ export default function SearchFlyoutContent({ setQuery }) {
           />
         </Col>
         <Col xs="auto" className="no-padding">
-          <p>On</p>
+          <p>Yes</p>
         </Col>
       </Row>
       <Row className="flex-nowrap">
@@ -492,7 +492,7 @@ export default function SearchFlyoutContent({ setQuery }) {
           <p>Post-secondary Institute within 100km?:</p>
         </Col>
         <Col xs="auto" className="no-padding">
-          <p>Off</p>
+          <p>No</p>
         </Col>
         <Col xs="auto">
           <Switch
@@ -510,7 +510,7 @@ export default function SearchFlyoutContent({ setQuery }) {
           />
         </Col>
         <Col xs="auto" className="no-padding">
-          <p>On</p>
+          <p>Yes</p>
         </Col>
       </Row>
       <Row className="flex-nowrap">
@@ -518,7 +518,7 @@ export default function SearchFlyoutContent({ setQuery }) {
           <p>Research Centre within 100km?:</p>
         </Col>
         <Col xs="auto" className="no-padding">
-          <p>Off</p>
+          <p>No</p>
         </Col>
         <Col xs="auto">
           <Switch
@@ -536,7 +536,7 @@ export default function SearchFlyoutContent({ setQuery }) {
           />
         </Col>
         <Col xs="auto" className="no-padding">
-          <p>On</p>
+          <p>Yes</p>
         </Col>
       </Row>
     </div>
