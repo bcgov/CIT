@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert } from "shared-components";
 import { MdInfo } from "react-icons/md";
+import { v4 } from "uuid";
 import Resource from "./Resource";
 import LocationsPanel from "../LocationsPanel/LocationsPanel";
 import BusinessContact from "../BusinessContact/BusinessContact";
@@ -59,6 +60,7 @@ export default function OpportunityView({ view }) {
           {overallInfo && (
             <>
               <Resource
+                key={v4()}
                 title="Site Info - General Details"
                 itemsToDisplay={overallInfo}
               />
@@ -72,11 +74,19 @@ export default function OpportunityView({ view }) {
               </div>
             </>
           )}
-          {physical && <Resource title="Physical" itemsToDisplay={physical} />}
-          {transportation && (
-            <Resource title="Transportation" itemsToDisplay={transportation} />
+          {physical && (
+            <Resource key={v4()} title="Physical" itemsToDisplay={physical} />
           )}
-          {services && <Resource title="Services" itemsToDisplay={services} />}
+          {transportation && (
+            <Resource
+              key={v4()}
+              title="Transportation"
+              itemsToDisplay={transportation}
+            />
+          )}
+          {services && (
+            <Resource key={v4()} title="Services" itemsToDisplay={services} />
+          )}
         </Col>
         <Col xs lg="5" className="leaflet-border pr-0">
           <div
