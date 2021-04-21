@@ -6,6 +6,7 @@ import "./Flyout.scss";
 
 export default function Flyout(props) {
   const [leftOpenState, setLeftOpenState] = useState(true);
+  const [resetFilters, setResetFilters] = useState(false);
 
   const { children, flyoutComponent: FlyoutComponent, flyoutProps } = props;
 
@@ -26,7 +27,11 @@ export default function Flyout(props) {
             />
           </div>
           <div className="content">
-            <FlyoutComponent {...flyoutProps} />
+            <FlyoutComponent
+              resetFilters={resetFilters}
+              setResetFilters={setResetFilters}
+              {...flyoutProps}
+            />
           </div>
         </div>
       </div>

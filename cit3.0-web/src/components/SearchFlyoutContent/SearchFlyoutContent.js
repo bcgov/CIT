@@ -8,7 +8,11 @@ import SelectFilter from "../SelectFilter/SelectFilter";
 import CommunityOrPopulationProximityFilter from "../CommunityOrPopulationProximityFilter/CommunityOrPopulationProximityFilter";
 import "./SearchFlyoutContent.scss";
 
-export default function SearchFlyoutContent({ setQuery }) {
+export default function SearchFlyoutContent({
+  setQuery,
+  resetFilters,
+  setResetFilters,
+}) {
   const parcelSizeInitial = {
     max: 2000,
     min: 0,
@@ -545,4 +549,6 @@ export default function SearchFlyoutContent({ setQuery }) {
 
 SearchFlyoutContent.propTypes = {
   setQuery: PropTypes.func.isRequired,
+  resetFilters: PropTypes.bool.isRequired,
+  setResetFilters: PropTypes.func.isRequired,
 };
