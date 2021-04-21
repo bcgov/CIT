@@ -29,7 +29,7 @@ const Header = () => {
     } else {
       setIsPowerBI(false);
     }
-  }, []);
+  });
 
   return (
     <>
