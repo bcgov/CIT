@@ -57,7 +57,7 @@ const UserProfile = () => {
                 });
               } else {
                 keycloak.obj.logout({
-                  redirectUri: `${configuration.baseUrl}`,
+                  redirectUri: `${configuration.baseUrl}/investmentopportunities/home`,
                 });
               }
             }}
