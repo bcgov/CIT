@@ -70,6 +70,7 @@ export default function AddressSearchBar({
       </FormLabel>
       <FormControl
         autoComplete="off"
+        placeholder="eg. 635 Humboldt St, Victoria, BC"
         className=" bcgov-text-input"
         id="addressSearch"
         value={currentAddress || ""}
