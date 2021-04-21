@@ -72,7 +72,7 @@ export function determineStatusTextColour(approvalStatus) {
     return <div className="status-text-orange">New - Edited</div>;
   }
   if (approvalStatus === "CLOS") {
-    return <div className="status-text-orange">Closed/Won</div>;
+    return <div className="status-text-orange">Closed</div>;
   }
   return approvalStatus;
 }

@@ -97,11 +97,11 @@ export default function EDODashboard() {
 
   const modalBody = (
     <div>
-      <p>Are you sure you wish to mark this opportunity as closed/won?</p>
+      <p>Are you sure you wish to mark this opportunity as closed?</p>
     </div>
   );
 
-  const modalLabel = "Mark as closed/won confirmation";
+  const modalLabel = "Mark as closed confirmation";
 
   let dataSection;
   let addOpportunityButton;
