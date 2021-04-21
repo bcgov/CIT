@@ -265,6 +265,7 @@ export default function AddOpportunity() {
         keyboard={false}
         size="lg"
         centered
+        backdrop="static"
       >
         {error.length || warning.length ? (
           <>
