@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Proptypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useHistory } from "react-router-dom";
@@ -34,10 +34,19 @@ const OpportunityPage = ({ id }) => {
     }
   }, []);
 
+  // catch the previous path sent from the search page if it exists and route to there
+  useEffect(() => {
+    if (location.state) {
+      if (location.state.prevPath) {
+        history.push(location.state.prevPath);
+      }
+    }
+  });
+
   const resetState = (e) => {
+    e.preventDefault();
     history.goBack();
     dispatch(resetOpportunity());
-    e.preventDefault();
   };
 
   // Copy the visually hidden textarea
@@ -66,12 +75,14 @@ const OpportunityPage = ({ id }) => {
       <Container className="p-0 mt-3">
         <Row className="no-print">
           <Col className="align-self-end">
-            <Button
-              label="Go Back to Search"
-              styling="bcgov-normal-blue btn px-4"
-              onClick={resetState}
-              onKeyDown={resetState}
-            />
+            {history.action !== "POP" && (
+              <Button
+                label="Back"
+                styling="bcgov-normal-blue btn px-4"
+                onClick={resetState}
+                onKeyDown={resetState}
+              />
+            )}
             <textarea
               readOnly
               id="link"
@@ -113,6 +124,7 @@ const OpportunityPage = ({ id }) => {
 
       <Container className="p-0 no-print">
         <Alert
+          icon={<></>}
           type="warning"
           styling="bcgov-warning-background mb-4"
           element="Property listings on this site include information provided by authorized community representatives and obtained from open data sources. The Province of British Columbia has not verified the information and prospective purchasers, lessors and others should conduct their own usual due diligence and make such enquiries as they deem necessary before purchasing, leasing or otherwise investing in the subject site. Prospective purchasers, lessors and other interested in the subject site should check existing laws and regulations to confirm that this particular property is suitable for their intended purpose or use and what permits, approvals and consultations, including with Indigenous communities, are required in order to develop such property, as well as any costs associated with such development. Listings are for information purposes only and are not intended to provide investment advice. Reliance upon any information shall be at the user’s sole risk. All information should be verified independently before being used or relied upon. The Province of British Columbia does not guarantee the quality, accuracy, completeness or timeliness of this information; and assumes no obligation to update this information or advise on further developments. The Province of British Columbia disclaims any liability for unauthorized use or reproduction of any information contained in this document and is not responsible for any direct, indirect, special or consequential damages or any other damages caused, arising out of or in connection with use of this information. The Province of British Columbia is not acting as a real estate broker or agent for any party in connection with any of the properties described on this website."
