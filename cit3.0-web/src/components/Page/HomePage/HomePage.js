@@ -184,10 +184,9 @@ export default function HomePage() {
                     To create a listing, authorized representatives will be
                     required to log-in with a <b>Business BCeID</b>. A one-time
                     verification process will confirm your status as an
-                    authorized community representative community representative
-                    when you create your first listing. All listings will be
-                    reviewed prior to publication and will go live within 3-5
-                    business days.
+                    authorized community representative when you create your
+                    first listing. All listings will be reviewed prior to
+                    publication and will go live within 3-5 business days.
                   </p>
                 </Row>
               </Col>
