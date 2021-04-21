@@ -62,7 +62,7 @@ export default function OpportunityView({ view }) {
                 title="Site Info - General Details"
                 itemsToDisplay={overallInfo}
               />
-              <div style={{ "margin-left": "-15px", "margin-right": "-15px" }}>
+              <div style={{ marginLeft: "-15px", marginRight: "-15px" }}>
                 <Alert
                   icon={<MdInfo size={32} />}
                   type="info"

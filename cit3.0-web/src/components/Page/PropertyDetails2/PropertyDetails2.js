@@ -259,6 +259,7 @@ export default function PropertyDetails2() {
               <input
                 required
                 disabled
+                readOnly
                 autoComplete="off"
                 aria-labelledby="email-label"
                 className="bcgov-text-input mb-1 w-100"
