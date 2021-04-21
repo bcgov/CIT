@@ -4,7 +4,7 @@ from rest_framework.response import Response
 import requests, os, json
 from requests.auth import HTTPBasicAuth
 
-from pipeline.permissions.IsAuthenticated import IsAuthenticated
+from pipeline.permissions.IsAuthenticated import IsAuthenticated, IsAdminAuthenticated
 from pipeline.models.users.user import User
 from pipeline.models.opportunity import Opportunity
 
@@ -67,7 +67,7 @@ class EmailView(APIView):
         return list(User.objects.filter(is_admin=True,deleted=False).exclude(email__in=['', 'Unknown']).values_list('email', flat=True))
 
 class EdoEmailView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminAuthenticated]
 
     def post(self, request):
         email_enabled = os.environ.get("EMAIL_NOTIFICATIONS_ENABLED")
