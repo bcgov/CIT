@@ -106,7 +106,7 @@ export default function PropertyDetails2() {
           <Row>
             <PageTitleHeader
               title="Enter Property Details"
-              text="Provide more information about the property. All fields are optional. Site Information:"
+              text="Provide more information about the property. All fields are optional."
             />
           </Row>
         </Row>
