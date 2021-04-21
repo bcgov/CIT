@@ -12,6 +12,7 @@ export default function TextInput({
   value,
   upperLeftLabel,
   lowerRightLabel,
+  maxLength,
 }) {
   return (
     <div className="d-flex flex-column w-100">
@@ -30,6 +31,7 @@ export default function TextInput({
           placeholder={placeholder}
           disabled={disabled}
           value={value}
+          maxLength={maxLength}
           onChange={(e) => handleChange(name, e.target.value)}
         />
         {upperLeftLabel !== "" && (
@@ -52,6 +54,7 @@ TextInput.defaultProps = {
   value: "",
   upperLeftLabel: "",
   lowerRightLabel: "",
+  maxLength: 0,
 };
 
 TextInput.propTypes = {
@@ -65,4 +68,5 @@ TextInput.propTypes = {
   value: PropTypes.string,
   upperLeftLabel: PropTypes.string,
   lowerRightLabel: PropTypes.string,
+  maxLength: PropTypes.number,
 };
