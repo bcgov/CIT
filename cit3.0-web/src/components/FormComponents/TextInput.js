@@ -54,7 +54,7 @@ TextInput.defaultProps = {
   value: "",
   upperLeftLabel: "",
   lowerRightLabel: "",
-  maxLength: 0,
+  maxLength: 9999,
 };
 
 TextInput.propTypes = {
