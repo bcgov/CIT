@@ -19,6 +19,7 @@ const OpportunityPage = ({ id }) => {
   const dispatch = useDispatch();
   const opportunity = useSelector((state) => state.opportunity);
   const opportunityName = useSelector((state) => state.opportunity.name);
+  const [buttonText, setButtonText] = useState("Go Back");
 
   useEffect(() => {
     let opId = id;
@@ -34,18 +35,25 @@ const OpportunityPage = ({ id }) => {
     }
   }, []);
 
-  // catch the previous path sent from the search page if it exists and route to there
+  // set appropriate button text
   useEffect(() => {
-    if (location.state) {
-      if (location.state.prevPath) {
-        history.push(location.state.prevPath);
-      }
+    const back = window.sessionStorage.getItem("back_url");
+    if (back && back.includes("/search")) {
+      setButtonText("Return to Search");
+    } else if (back && back.includes("/dashboard")) {
+      setButtonText("Return to Dashboard");
     }
-  });
+  }, []);
 
   const resetState = (e) => {
     e.preventDefault();
-    history.goBack();
+    const back = window.sessionStorage.getItem("back_url");
+    if (back) {
+      window.sessionStorage.removeItem("back_url");
+      history.push(back);
+    } else {
+      history.push("/investmentopportunities/search");
+    }
     dispatch(resetOpportunity());
   };
 
@@ -77,7 +85,7 @@ const OpportunityPage = ({ id }) => {
           <Col className="align-self-end">
             {history.action !== "POP" && (
               <Button
-                label="Back"
+                label={buttonText}
                 styling="bcgov-normal-blue btn px-4"
                 onClick={resetState}
                 onKeyDown={resetState}

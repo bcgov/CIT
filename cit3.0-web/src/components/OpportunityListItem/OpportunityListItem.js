@@ -1,6 +1,6 @@
 import { Row, Col, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
-import { Link, NavLink, useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import LinesEllipsis from "react-lines-ellipsis";
 import Map from "../Map/Map";
@@ -18,6 +18,13 @@ import OpportunityFactory from "../../store/factory/OpportunityFactory";
 const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const setCurrentUrl = (path) => {
+    // For returning to the correct page when cancelling a delete
+    window.sessionStorage.setItem("back_url", window.location.pathname);
+    history.push(path);
+  };
+
   const goToEditListing = () => {
     getOpportunity(opportunity.id).then((response) => {
       dispatch(
@@ -33,7 +40,13 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
     if (opp.approvalStatus === "PUBL") {
       return (
         <>
-          <NavLink to={opp.link}>View Listing</NavLink>
+          <Button
+            className="p-0"
+            variant="link"
+            onClick={() => setCurrentUrl(opp.link)}
+          >
+            View Listing
+          </Button>
           <br />
           <Button
             className="p-0"
@@ -59,7 +72,13 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
     }
     return (
       <>
-        <NavLink to={opp.link}>View Listing</NavLink>
+        <Button
+          className="p-0"
+          variant="link"
+          onClick={() => setCurrentUrl(opp.link)}
+        >
+          View Listing
+        </Button>
         <br />
 
         <Button
@@ -109,14 +128,13 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
             ) : (
               <Col className="d-flex align-items-end justify-content-end mr-1">
                 {publicView && (
-                  <Link
-                    to={{
-                      pathname: opportunity.link,
-                      state: { prevPath: window.location.pathname },
-                    }}
+                  <Button
+                    className="p-0"
+                    variant="link"
+                    onClick={() => setCurrentUrl(opportunity.link)}
                   >
                     View property details
-                  </Link>
+                  </Button>
                 )}
               </Col>
             )}
