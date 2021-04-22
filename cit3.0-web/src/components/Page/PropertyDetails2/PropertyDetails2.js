@@ -10,6 +10,7 @@ import {
   setBusinessContactName,
   setBusinessContactEmail,
   setUserInfo,
+  resetOpportunity,
 } from "../../../store/actions/opportunity";
 import {
   setUserInfoName,
@@ -85,6 +86,11 @@ export default function PropertyDetails2() {
 
   const handleContinue = () => {
     goToNextPage();
+  };
+
+  const onCancelClick = () => {
+    dispatch(resetOpportunity());
+    history.push("/investmentopportunities/dashboard");
   };
 
   const handleCheck = (isChecked) => {
@@ -298,6 +304,7 @@ export default function PropertyDetails2() {
         noContinue={
           !userInfoName || !validBusinessEmail || !businessContactName
         }
+        onCancelClick={onCancelClick}
       />
     </>
   );
