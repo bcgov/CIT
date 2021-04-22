@@ -110,7 +110,7 @@ export default function Map({
             />
           </LayersControl.BaseLayer>
 
-          <LayersControl.Overlay name="Parcels">
+          <LayersControl.Overlay checked name="Parcels">
             <WMSTileLayer
               version="1.3.0"
               transparent="true"

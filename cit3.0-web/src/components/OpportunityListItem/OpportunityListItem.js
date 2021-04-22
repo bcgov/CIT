@@ -26,7 +26,7 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
           editing: true,
         })
       );
-      history.push("/investmentopportunities/");
+      history.push("/investmentopportunities/add");
     });
   };
   const determineActions = (opp) => {
@@ -109,7 +109,14 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
             ) : (
               <Col className="d-flex align-items-end justify-content-end mr-1">
                 {publicView && (
-                  <Link to={opportunity.link}>View property details</Link>
+                  <Link
+                    to={{
+                      pathname: opportunity.link,
+                      state: { prevPath: window.location.pathname },
+                    }}
+                  >
+                    View property details
+                  </Link>
                 )}
               </Col>
             )}
