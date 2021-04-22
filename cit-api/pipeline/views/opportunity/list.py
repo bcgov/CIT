@@ -55,7 +55,8 @@ class OpportunitiesList(generics.ListAPIView):
 
         approval_status_id = self.request.query_params.get('approval_status_id', None)
         if (approval_status_id is not None):
-            queryset = queryset.filter(approval_status_id=approval_status_id)
+            statuses = approval_status_id.split(',')
+            queryset = queryset.filter(approval_status_id__in=statuses)
 
         regional_district = self.request.query_params.get('regional_district', None)
         if (regional_district is not None):
