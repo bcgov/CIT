@@ -39,7 +39,7 @@ const OpportunityApprovalItem = ({ opportunity }) => {
             </Col>
             <Col className="p-2">{formatDate(opportunity.dateCreated)}</Col>
             <Col className="p-2">
-              {determineStatusTextColour(opportunity.approvalStatus)}
+              {determineStatusTextColour(opportunity.approvalStatus, true)}
             </Col>
             <Col>
               <NavLink
