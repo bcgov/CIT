@@ -35,7 +35,7 @@ const OpportunityApprovalItem = ({ opportunity }) => {
         <Col>
           <Row>
             <Col className="p-2">
-              {opportunity ? getAddress(opportunity.address) : ""}
+              <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
             </Col>
             <Col className="p-2">{formatDate(opportunity.dateCreated)}</Col>
             <Col className="p-2">
@@ -43,6 +43,7 @@ const OpportunityApprovalItem = ({ opportunity }) => {
             </Col>
             <Col>
               <NavLink
+                style={{ textDecoration: "underline" }}
                 className="p-2"
                 to={`${opportunity.link}/approve`}
                 onClick={() =>
