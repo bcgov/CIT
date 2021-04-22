@@ -1,6 +1,6 @@
 import "./Header.scss";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router";
 import { Button, Navbar, Nav } from "react-bootstrap";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
@@ -11,16 +11,25 @@ const Header = () => {
   const keycloak = useKeycloakWrapper();
   const history = useHistory();
   const location = useLocation();
+  const [isPowerBI, setIsPowerBI] = useState(null);
 
   const title = () => {
     if (location.pathname.includes("/investmentopportunities")) {
       return "Community Investment Opportunities Tool";
     }
-    if (location.pathname.includes("/dashboard")) {
+    if (location.pathname.includes("/cit-dashboard")) {
       return "Community Information Tool";
     }
     return "";
   };
+
+  useEffect(() => {
+    if (location.pathname.includes("/cit-dashboard")) {
+      setIsPowerBI(true);
+    } else {
+      setIsPowerBI(false);
+    }
+  });
 
   return (
     <>
@@ -49,7 +58,7 @@ const Header = () => {
           {keycloak.obj && <UserProfile />}
         </Navbar>
       </header>
-      {keycloak.obj.authenticated ? (
+      {keycloak.obj.authenticated && !isPowerBI ? (
         <div className="navigation-container no-print">
           {keycloak.hasRole([Roles.ECONOMIC_DEVELOPMENT_OFFICER]) && (
             <Button

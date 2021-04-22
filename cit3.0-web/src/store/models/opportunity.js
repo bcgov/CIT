@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { toKebabCase } from "../../helpers/helpers";
+import { createOpportunityLink } from "../../helpers/helpers";
 
 /**
  * Initial opportunity model
@@ -250,7 +250,7 @@ export const OPPORTUNITY_MODEL = () => ({
       salePrice: "",
     },
     currentZone: { title: "Current Zoning", value: "", type: "select" },
-    futureZone: { title: "Future Zoning", value: "", type: "select" },
+    futureZone: { title: "Designation", value: "", type: "select" },
     preferredDevelopment: {
       title: "Preferred Development",
       value: [],
@@ -368,9 +368,7 @@ export class Opportunity {
   }
 
   createLink() {
-    this.state.link = `/investmentopportunities/view/${toKebabCase(
-      this.state.name
-    )}-${this.state.id}`;
+    this.state.link = createOpportunityLink(this.state.name, this.state.id);
   }
 
   set opportunityName(value) {

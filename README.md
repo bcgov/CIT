@@ -24,7 +24,7 @@ Install [Docker](https://docs.docker.com/engine/install/ubuntu/) and [Docker Com
 Copy a local config template:
 
 ```
-cp example.env .env
+cp .env.template .env
 ```
 
 To run the entire project in Docker use:

@@ -12,7 +12,7 @@ import {
   GET_OPPORTUNITIES_LIST_URL,
   PATCH_OPPORTUNITIES_URL,
 } from "../../../store/constants/api-urls";
-import { getUser, resetUser } from "../../../store/actions/user";
+import { getUser } from "../../../store/actions/user";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import ConfirmCancelModal from "../../ConfirmCancelModal/ConfirmCancelModal";
 import FooterLinks from "../../FooterLinks/FooterLinks";
@@ -61,8 +61,7 @@ export default function EDODashboard() {
 
   const goToMap = () => {
     dispatch(resetOpportunity());
-    dispatch(resetUser());
-    history.push("/investmentopportunities");
+    history.push("/investmentopportunities/add");
   };
 
   const handleModalClose = () => {
@@ -98,11 +97,11 @@ export default function EDODashboard() {
 
   const modalBody = (
     <div>
-      <p>Are you sure you wish to mark this opportunity as closed/won?</p>
+      <p>Are you sure you wish to mark this opportunity as closed?</p>
     </div>
   );
 
-  const modalLabel = "Mark as closed/won confirmation";
+  const modalLabel = "Mark as closed confirmation";
 
   let dataSection;
   let addOpportunityButton;
@@ -173,7 +172,8 @@ export default function EDODashboard() {
           <li>
             Properties must be zoned for industrial, commercial, or agricultural
             use. Industrial properties of any size may be listed. Commercial and
-            agricultural
+            agricultural properties may be listed if they are at least 5 acres
+            in size.
           </li>
           <li>Land must be available for sale or lease.</li>
           <li>
@@ -193,15 +193,15 @@ export default function EDODashboard() {
                 Presence of provincially significant cultural or natural
                 heritage features
               </li>
+              <li>
+                Listings must be approved by either a municipality, regional
+                district, electoral area, province, First Nation or a regional
+                economic development organization, and from the Chief
+                Administrative Officer or their delegate.
+              </li>
             </ul>
           </li>
         </ul>
-        <p className="dashboard-text mb-4">
-          Listings must be approved by either a municipality, regional district,
-          electoral area, province, First Nation or a regional economic
-          development organization, and from the Chief Administrative Officer or
-          their delegate.
-        </p>
         <div className="add-opportunity-button">{addOpportunityButton}</div>
         <hr ref={resultRef} />
         {markAsSoldStatus === "Error" ? (

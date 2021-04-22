@@ -27,7 +27,7 @@ import UserFactory from "../../../store/factory/UserFactory";
 export default function PropertyDetails2() {
   const dispatch = useDispatch();
   const [businessContactSync, setBusinessContactSync] = useState(false);
-  const [userInfoSync, setUserInfoSync] = useState(false);
+  // const [userInfoSync, setUserInfoSync] = useState(false);
   const businessContactEmail = useSelector(
     (state) => state.opportunity.businessContactEmail
   );
@@ -51,37 +51,31 @@ export default function PropertyDetails2() {
   );
   const keycloak = useKeycloakWrapper();
 
-  const [validEmail, setValidEmail] = useState(true);
   const [validBusinessEmail, setValidBusinessEmail] = useState(true);
 
   const regex = new RegExp(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
-  const validateEmail = (value, business) => {
-    if (value && !business) {
-      setValidEmail(regex.test(value));
-    } else {
-      setValidEmail(true);
-    }
-    if (value && business) {
+  const validateEmail = (value) => {
+    if (value) {
       setValidBusinessEmail(regex.test(value));
     } else {
-      setValidBusinessEmail(true);
+      setValidBusinessEmail(false);
     }
   };
 
   const history = useHistory();
 
   const noteLabel =
-    "Please note, the information you enter in this section will appear as is on the listing to promote this opportunity.  Do not include any personal infomation. ";
+    "Please note, the information you enter in this section will appear as is on the listing to promote this opportunity. Do not include any personal information. ";
   const oppDescLabel =
-    "Opportunity description including site characteristics, permit info, or any other relevant information.";
+    "Please describe the property including site characteristics, allowed uses, approval processes, permits, etc.";
   const enviroLabel =
-    "Please tell us about any environmental assessment info or environmental sensitivity, if known.";
+    "Provide information about any environmental sensitivities of the site, and any required or completed environmental assessments.";
   const commUrlLabel = "Link to your community website/webpage";
   const listingUrlLabel = "Link to more info about this opportunity";
   const urlNoteComm =
-    "This will direct potential Investors to a webpage of your choice where they can learn more about your community.";
+    "This will direct potential investors to a webpage of your choice where they can learn more about your community.";
   const urlNote =
-    "This will direct potential Investors to a webpage, brochure, PDF, image etc. of your choice where they can learn more about your community.";
+    "This will direct potential investors to a webpage, brochure, PDF, image etc. of your choice where they can learn more about the property.";
   const placeholderComm = "Enter URL here (eg. my community.ca)";
   const placeholder = "Enter URL here (eg. realtor.ca/myopportunity)";
 
@@ -97,28 +91,11 @@ export default function PropertyDetails2() {
     setBusinessContactSync(isChecked);
     dispatch(setBusinessContactName(isChecked ? keycloak.displayName : ""));
     dispatch(setBusinessContactEmail(isChecked ? keycloak.email : ""));
-  };
-
-  const handleYourInfoCheck = (isChecked) => {
-    setUserInfoSync(isChecked);
-    if (isChecked) {
-      dispatch(setUser(UserFactory.createStateFromKeyCloak(keycloak)));
-      getUser({ email: keycloak.email }).then((response) => {
-        const { data: users } = response;
-        if (users.length) {
-          const appUser = users[0];
-          dispatch(setUser(UserFactory.createStateFromResponse(appUser)));
-        }
-      });
-    } else {
-      dispatch(resetUser());
-    }
+    validateEmail(isChecked ? keycloak.email : "");
   };
 
   useEffect(() => {
-    if (userInfoEmail) {
-      setUserInfoSync(true);
-    }
+    handleCheck(true);
   }, []);
 
   return (
@@ -129,7 +106,7 @@ export default function PropertyDetails2() {
           <Row>
             <PageTitleHeader
               title="Enter Property Details"
-              text="Tell us more about this investment opportunity.  All fields are optional."
+              text="Provide more information about the property. All fields are optional."
             />
           </Row>
         </Row>
@@ -142,10 +119,14 @@ export default function PropertyDetails2() {
             notes={noteLabel}
             name="opportunityDescription"
             value={oppDesc}
+            maxLength={1000}
             handleChange={(_, value) =>
               dispatch(setUserInfo("opportunityDescription", value))
             }
           />
+          <div style={{ marginTop: "-24px" }} className="text-right w-100">
+            <span>{`${oppDesc.length}/1000 Characters`}</span>
+          </div>
         </Row>
         <Row className="mb-3">
           <h4>Environmental Information</h4>
@@ -156,10 +137,14 @@ export default function PropertyDetails2() {
             notes={noteLabel}
             name="environmentalInformation"
             value={envInfo}
+            maxLength={1000}
             handleChange={(_, value) =>
               dispatch(setUserInfo("environmentalInformation", value))
             }
           />
+          <div style={{ marginTop: "-24px" }} className="text-right w-100">
+            <span>{`${envInfo.length}/1000 Characters`}</span>
+          </div>
         </Row>
         <Row className="mb-4">
           <TextInput
@@ -189,7 +174,9 @@ export default function PropertyDetails2() {
         </Row>
         <Row>
           <div className="d-flex flex-column">
-            <h4>Business Contact</h4>
+            <h4>
+              Business Contact *<span className="text-red">required</span>
+            </h4>
             <span style={{ opacity: "0.7" }} className="my-1">
               This will be the contact information displayed on the public
               listing of this opportunity.
@@ -209,7 +196,7 @@ export default function PropertyDetails2() {
           <Col className="pl-0">
             <TextInput
               required={false}
-              heading="Business Contact Name"
+              heading="Business Contact Name *"
               notes=""
               rows={1}
               value={businessContactName}
@@ -218,8 +205,11 @@ export default function PropertyDetails2() {
               }
               name="busName"
             />
+            {!businessContactName && (
+              <Validator message="Please enter a contact name" />
+            )}
             <p id="email-label" className="mb-0">
-              Business Contact Email
+              Business Contact Email *
             </p>
             <div className="pb-3">
               <input
@@ -236,7 +226,7 @@ export default function PropertyDetails2() {
                 value={businessContactEmail}
               />
             </div>
-            {!validEmail && (
+            {!validBusinessEmail && (
               <Validator message="Please enter a valid email address" />
             )}
           </Col>
@@ -252,15 +242,6 @@ export default function PropertyDetails2() {
               public.
             </span>
           </div>
-        </Row>
-        <Row className="mb-3">
-          <Form.Check
-            checked={userInfoSync}
-            onClick={(e) => handleYourInfoCheck(e.target.checked)}
-            type="checkbox"
-            label="Use the Contact Name/Email associated with the BCeID logged in."
-            aria-label="Use the Contact Name/Email associated with the BCeID logged in."
-          />
         </Row>
         <Row className="mb-4">
           <Col className="pl-0">
@@ -278,29 +259,24 @@ export default function PropertyDetails2() {
             {!userInfoName && <Validator message="Please enter your name" />}
 
             <p id="email-label" className="mb-0">
-              Email *
+              Email * (This is the email associated with your log in information
+              and cannot be changed)
             </p>
 
             <div className="pb-3">
               <input
                 required
-                disabled={userInfoSync}
+                disabled
+                readOnly
                 autoComplete="off"
                 aria-labelledby="email-label"
                 className="bcgov-text-input mb-1 w-100"
                 type="email"
                 name="userInfoEmail"
                 pattern="/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g"
-                onChange={(e) => {
-                  validateEmail(e.target.value, true);
-                  dispatch(setUserInfoEmail(e.target.value));
-                }}
                 value={userInfoEmail}
               />
             </div>
-            {!validBusinessEmail || !userInfoEmail ? (
-              <Validator message="Please enter a valid email address" />
-            ) : null}
             <TextInput
               required
               heading="Your Title/Role"
@@ -317,9 +293,11 @@ export default function PropertyDetails2() {
         </Row>
       </Container>
       <ButtonRow
-        prevRoute="/opportunity/property-details"
+        prevRoute="/investmentopportunities/property-details"
         onClick={handleContinue}
-        noContinue={!validEmail || !userInfoEmail || !userInfoName}
+        noContinue={
+          !userInfoName || !validBusinessEmail || !businessContactName
+        }
       />
     </>
   );

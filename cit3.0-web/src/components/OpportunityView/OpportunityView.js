@@ -1,15 +1,14 @@
 import { Container, Row, Col } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
+import { Alert } from "shared-components";
+import { MdInfo } from "react-icons/md";
+import { v4 } from "uuid";
 import Resource from "./Resource";
 import LocationsPanel from "../LocationsPanel/LocationsPanel";
 import BusinessContact from "../BusinessContact/BusinessContact";
 import Map from "../Map/Map";
-import {
-  setCoords,
-  setAddress,
-  setNearbyResources,
-} from "../../store/actions/opportunity";
+import { setCoords, setAddress } from "../../store/actions/opportunity";
 import "./OpportunityView.css";
 
 export default function OpportunityView({ view }) {
@@ -59,16 +58,35 @@ export default function OpportunityView({ view }) {
             </Row>
           ) : null}
           {overallInfo && (
+            <>
+              <Resource
+                key={v4()}
+                title="Site Info - General Details"
+                itemsToDisplay={overallInfo}
+              />
+              <div style={{ marginLeft: "-15px", marginRight: "-15px" }}>
+                <Alert
+                  icon={<MdInfo size={32} />}
+                  type="info"
+                  styling="bcgov-info-background mb-3"
+                  element="Proximity details are provided in straight-line distances."
+                />
+              </div>
+            </>
+          )}
+          {physical && (
+            <Resource key={v4()} title="Physical" itemsToDisplay={physical} />
+          )}
+          {transportation && (
             <Resource
-              title="Site Info - General Details"
-              itemsToDisplay={overallInfo}
+              key={v4()}
+              title="Transportation"
+              itemsToDisplay={transportation}
             />
           )}
-          {physical && <Resource title="Physical" itemsToDisplay={physical} />}
-          {transportation && (
-            <Resource title="Transportation" itemsToDisplay={transportation} />
+          {services && (
+            <Resource key={v4()} title="Services" itemsToDisplay={services} />
           )}
-          {services && <Resource title="Services" itemsToDisplay={services} />}
         </Col>
         <Col xs lg="5" className="leaflet-border pr-0">
           <div

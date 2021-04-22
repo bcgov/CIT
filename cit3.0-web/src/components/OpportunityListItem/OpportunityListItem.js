@@ -32,7 +32,7 @@ const OpportunityListItem = ({
           editing: true,
         })
       );
-      history.push("/investmentopportunities/");
+      history.push("/investmentopportunities/add");
     });
   };
   const determineActions = (opp) => {
@@ -54,7 +54,7 @@ const OpportunityListItem = ({
             className="p-0"
             onClick={() => handleModalOpen(opp.id)}
           >
-            Closed/Won
+            Closed
           </Button>
           <br />
           <NavLink to={`/delete/investmentopportunities/${opp.id}/`}>
@@ -111,111 +111,117 @@ const OpportunityListItem = ({
           </div>
         </Col>
         <Col className="d-flex flex-column">
-          <Row>
-            <Col>
-              <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
-            </Col>
-            {publicView ? (
-              <Col
-                style={{
-                  marginRight: "0.5rem",
-                }}
-              >
-                <div className="d-flex flex-row flex-wrap align-content-end">
-                  {opportunity.siteInfo.parcelSize.value ? (
-                    <p className="border--pill">
-                      Parcel Size:{" "}
-                      <NumberFormat
-                        displayType="text"
-                        value={opportunity.siteInfo.parcelSize.value}
-                        suffix={` acres`}
-                        decimalScale={3}
-                        thousandSeparator={
-                          isNaN(opportunity.siteInfo.parcelSize.value)
-                            ? false
-                            : ","
-                        }
-                      />
-                    </p>
-                  ) : null}
-                  {opportunity.userInfo.currentZone.value && options ? (
-                    <p className="border--pill">{`Zoning: ${
-                      options.landUseZoning.find(
-                        (s) => s.code === opportunity.userInfo.currentZone.value
-                      ).name
-                    }`}</p>
-                  ) : null}
-                  {opportunity.userInfo.saleOrLease.value && options ? (
-                    <p className="border--pill">{`${saleOrLease()}`}</p>
-                  ) : null}
-                </div>
-              </Col>
-            ) : null}
-          </Row>
+          {publicView ? (
+            <>
+              <Row>
+                <Col>
+                  <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
+                </Col>
+                <Col
+                  style={{
+                    marginRight: "0.5rem",
+                  }}
+                >
+                  <div className="d-flex flex-row flex-wrap align-content-end">
+                    {opportunity.siteInfo.parcelSize.value ? (
+                      <p className="border--pill">
+                        Parcel Size:{" "}
+                        <NumberFormat
+                          displayType="text"
+                          value={opportunity.siteInfo.parcelSize.value}
+                          suffix={` acres`}
+                          decimalScale={3}
+                          thousandSeparator={
+                            isNaN(opportunity.siteInfo.parcelSize.value)
+                              ? false
+                              : ","
+                          }
+                        />
+                      </p>
+                    ) : null}
+                    {opportunity.userInfo.currentZone.value && options ? (
+                      <p className="border--pill">{`Zoning: ${
+                        options.landUseZoning.find(
+                          (s) =>
+                            s.code === opportunity.userInfo.currentZone.value
+                        ).name
+                      }`}</p>
+                    ) : null}
+                    {opportunity.userInfo.saleOrLease.value && options ? (
+                      <p className="border--pill">{`${saleOrLease()}`}</p>
+                    ) : null}
+                  </div>
+                </Col>
+              </Row>
+              <Row className="h-100">
+                <Col
+                  style={{
+                    paddingTop: "0.5rem",
+                    paddingBottom: "0.5rem",
+                  }}
+                >
+                  <LinesEllipsis
+                    className="note"
+                    text={opportunity.userInfo.opportunityDescription.value}
+                    maxLine="4"
+                    ellipsis="..."
+                    trimRight
+                    basedOn="letters"
+                  />
+                </Col>
+                <Col
+                  style={{
+                    alignSelf: "flex-end",
+                    paddingBottom: "0.5rem",
+                    marginRight: "0.5rem",
+                  }}
+                  sm={6}
+                  md={6}
+                  lg={4}
+                  className="text-right"
+                >
+                  <Link
+                    to={{
+                      pathname: opportunity.link,
+                      state: { prevPath: window.location.pathname },
+                    }}
+                  >
+                    View property details
+                  </Link>
+                </Col>
+              </Row>
+            </>
+          ) : null}
           <Row className="flex-grow-1">
             {!publicView ? (
               <>
+                <Col>
+                  <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
+                </Col>
                 <Col>{formatDate(opportunity.dateCreated)}</Col>
                 <Col>
                   {determineStatusTextColour(opportunity.approvalStatus)}
                 </Col>
                 <Col>{determineActions(opportunity)}</Col>
               </>
-            ) : (
-              <Col>
-                {publicView && (
-                  <Row className="h-100">
-                    <Col
-                      style={{
-                        paddingTop: "0.5rem",
-                        paddingBottom: "0.5rem",
-                      }}
-                    >
-                      <LinesEllipsis
-                        className="note"
-                        text={opportunity.userInfo.opportunityDescription.value}
-                        maxLine="4"
-                        ellipsis="..."
-                        trimRight
-                        basedOn="letters"
-                      />
-                    </Col>
-                    <Col
-                      style={{
-                        alignSelf: "flex-end",
-                        paddingBottom: "0.5rem",
-                        marginRight: "0.5rem",
-                      }}
-                      sm={6}
-                      md={6}
-                      lg={4}
-                      className="text-right"
-                    >
-                      <Link to={opportunity.link}>View property details</Link>
-                    </Col>
-                  </Row>
-                )}
-              </Col>
-            )}
+            ) : null}
+            {opportunity.publicNote ? (
+              <Row>
+                <Col>
+                  <LinesEllipsis
+                    className="note pr-3"
+                    text={`Reason: ${opportunity.publicNote}`}
+                    maxLine="3"
+                    ellipsis="..."
+                    trimRight
+                    basedOn="letters"
+                  />
+                </Col>
+              </Row>
+            ) : null}
           </Row>
         </Col>
       </Row>
-
-      {opportunity.publicNote ? (
-        <Row>
-          <Col className="pl-0">
-            <b className="note-title">Comment from {opportunity.lastAdmin}:</b>
-            <LinesEllipsis
-              className="note pr-3"
-              text={opportunity.publicNote}
-              maxLine="3"
-              ellipsis="..."
-              trimRight
-              basedOn="letters"
-            />
-          </Col>
-        </Row>
-      ) : null}
     </div>
   );
 };

@@ -6,7 +6,6 @@ from django.apps import apps
 from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA, BC_ALBERS_SRID, WGS84_SRID
 from pipeline.models.general import DataSource
 from pipeline.importers.utils import (import_data_into_point_model, import_data_into_area_model,
-                                      calculate_nearest_location_type_outside_50k,
                                       get_databc_last_modified_date, get_openca_last_modified_date,
                                       _generate_geom, _generate_bcdata_geom, calculate_muni_or_rd)
 
@@ -21,9 +20,9 @@ LOCATION_RESOURCES = [
     'port_and_terminal',
     'eao_projects',
     'laboratory_service',
+    'economic_projects',
     'local_govt_offices',
     'emergency_social_service_facilities',
-    'natural_resource_projects',
     'customs_ports_of_entry',
     'pharmacies',
     'public_library',
@@ -60,8 +59,6 @@ def import_resource(resource_type):
         model_class = apps.get_model("pipeline", data_source.model_name)
         import_data_into_point_model(resource_type, model_class, row)
 
-    # calculate_nearest_location_type_outside_50k(resource_type)
-
     if data_source.source == SOURCE_DATABC:
         data_source.last_updated = get_databc_last_modified_date(data_source)
         data_source.save()
@@ -78,7 +75,6 @@ def import_wms_resource(resource):
         query = "ROAD_CLASS in ('highway','freeway','ramp', 'arterial')"
 
     ds = bcdata.get_data(resource.dataset, as_gdf=True, query=query)
-
     for index, row in ds.iterrows():
         model_class = apps.get_model("pipeline", resource.model_name)
         print(resource.name)

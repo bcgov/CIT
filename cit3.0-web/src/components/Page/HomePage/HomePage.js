@@ -20,8 +20,8 @@ export default function HomePage() {
               Community Investment Opportunities
             </h1>
             <h2 className="sub-header-text">
-              Your Portal to access some of the best Investments in British
-              Columbia
+              Connecting investors with opportunities in communities across
+              British Columbia
             </h2>
           </div>
         </div>
@@ -102,7 +102,7 @@ export default function HomePage() {
             />
           </Col>
         </Row>
-        <Row className="my-5">
+        <Row className="mt-5 mb-3">
           <h1>How the Program Works</h1>
           <p>
             Communities in B.C. can showcase up to five industrial, commercial
@@ -145,14 +145,14 @@ export default function HomePage() {
                   Presence of provincially significant cultural or natural
                   heritage features
                 </li>
+                <li>
+                  Listings must be approved by either a municipality, regional
+                  district, electoral area, province, First Nation or a
+                  provincial economic development organization, and from the
+                  Chief Administrative Officer or their delegate.
+                </li>
               </ul>
             </ul>
-            <p>
-              Listings must be approved by either a municipality, regional
-              district, electoral area, province, First Nation or a provincial
-              economic development organization, and from the Chief
-              Administrative Officer or their delegate.
-            </p>
           </p>
         </Row>
         <Row className="my-3 h-100 w-100">
@@ -182,9 +182,9 @@ export default function HomePage() {
                   </p>
                   <p>
                     To create a listing, authorized representatives will be
-                    required to log-in with a BCeID. A one-time verification
-                    process will confirm your status as an authorized community
-                    representative community representative when you create your
+                    required to log-in with a <b>Business BCeID</b>. A one-time
+                    verification process will confirm your status as an
+                    authorized community representative when you create your
                     first listing. All listings will be reviewed prior to
                     publication and will go live within 3-5 business days.
                   </p>

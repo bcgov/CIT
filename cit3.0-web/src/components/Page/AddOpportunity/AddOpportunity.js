@@ -265,6 +265,7 @@ export default function AddOpportunity() {
         keyboard={false}
         size="lg"
         centered
+        backdrop="static"
       >
         {error.length || warning.length ? (
           <>
@@ -382,7 +383,7 @@ export default function AddOpportunity() {
           </Col>
           <Col className="leaflet-shadow">
             <MapContainer
-              nearbyResources={nearbyResources}
+              nearbyResources={{}}
               coords={coords}
               setResourceIds={(r) => dispatch(setResourceIds(r))}
               setAddress={(a) => dispatch(setAddress(a))}

@@ -20,7 +20,7 @@ class Community(models.Model):
     community_type = models.CharField(null=True, blank=True, max_length=255)
     is_coastal = models.NullBooleanField()
 
-    census_subdivision = models.ForeignKey('CensusSubdivision',
+    census_subdivision = models.ForeignKey('CEN_PROF_DETAILED_CSD_ATTRS_SP',
                                            null=True,
                                            on_delete=models.SET_NULL)
     municipality = models.ForeignKey('Municipality', null=True, on_delete=models.SET_NULL)

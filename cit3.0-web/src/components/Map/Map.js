@@ -110,7 +110,7 @@ export default function Map({
             />
           </LayersControl.BaseLayer>
 
-          <LayersControl.Overlay name="Parcels">
+          <LayersControl.Overlay checked name="Parcels">
             <WMSTileLayer
               version="1.3.0"
               transparent="true"
@@ -128,13 +128,15 @@ export default function Map({
           </Marker>
         ) : null}
         {JSON.stringify(nearbyResources) !== "{}"
-          ? Object.entries(nearbyResources).map(([resource, resourceData]) => (
-              <ResourceMarker
-                key={resource}
-                resourceName={resource}
-                resources={resourceData}
-              />
-            ))
+          ? Object.entries(nearbyResources).map(([resource, resourceData]) =>
+              resource !== "community" ? (
+                <ResourceMarker
+                  key={resource}
+                  resourceName={resource}
+                  resources={resourceData}
+                />
+              ) : null
+            )
           : null}
       </>
     );

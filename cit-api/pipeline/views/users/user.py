@@ -6,12 +6,14 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from keycloak import KeycloakOpenID
+import os
 
 from pipeline.models.users.user import User, Assignments
 from pipeline.models.general import Municipality, RegionalDistrict
 
 from pipeline.serializers.users.user import UserGetSerializer, UserPostSerializer
-from pipeline.permissions.IsAuthenticated import IsAdminAuthenticated
+from pipeline.permissions.IsAuthenticated import IsAuthenticated, IsAdminAuthenticated
 
 
 def get_row(user):
@@ -26,6 +28,7 @@ def get_row(user):
     response['email'] = user.email
     response['role'] = user.role
     response['date_created'] = user.date_created.strftime("%Y-%b-%d")
+    response['is_admin'] = user.is_admin
     for assignment in user.assignments_set.all():
         try:
             municipality = Municipality.objects.get(id=assignment.municipality_id)
@@ -81,7 +84,7 @@ class UserView(GenericAPIView):
     View to save details of a single user
     """
     serializer_class = UserPostSerializer
-    permission_classes = [IsAdminAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(request_body=UserPostSerializer,
                          method='POST',
@@ -97,13 +100,15 @@ class UserView(GenericAPIView):
         assignment_municipality = int(request.data.get('municipality', 0))
         assignment_regional_district = int(request.data.get('regional_district', 0))
 
+        user_is_admin = self.determine_user_admin_status(request)
+
         try:
             user = User.objects.get(email=user_email)
             user.name = user_name
             user.role = user_role
             user.save()
         except User.DoesNotExist:
-            user = User.objects.create(name=user_name, email=user_email, role=user_role)
+            user = User.objects.create(name=user_name, email=user_email, role=user_role, is_admin=user_is_admin)
 
         if assignment_municipality != 0 and len(
                 user.assignments_set.filter(municipality_id=assignment_municipality)) == 0:
@@ -134,7 +139,6 @@ class UserView(GenericAPIView):
         user_email = request.data.get('email', None)
         assignment_municipalities = [x['id'] for x in request.data.get('municipalities', [])]
         assignment_regional_districts = [x['id'] for x in request.data.get('regionalDistricts', [])]
-
         try:
             user = User.objects.get(email=user_email)
         except User.DoesNotExist:
@@ -152,6 +156,11 @@ class UserView(GenericAPIView):
         for assignment in assignments:
             if assignment.regional_district is not None and assignment.regional_district.id not in assignment_regional_districts:
                 assignment.delete()
+
+        user_is_admin = self.determine_user_admin_status(request)
+        
+        user.is_admin = user_is_admin
+        user.save()
         
         return Response({'message' :'ok'}, status.HTTP_202_ACCEPTED)
 
@@ -172,3 +181,14 @@ class UserView(GenericAPIView):
     
         return Response({'message' :'ok'}, status.HTTP_202_ACCEPTED)
 
+    def determine_user_admin_status(self, request):
+        keycloak_openid = KeycloakOpenID(server_url=os.environ.get('KEY_CLOAK_URL'),
+                            client_id=os.environ.get('KEY_CLOAK_CLIENT'),
+                            realm_name=os.environ.get('KEY_CLOAK_REALM'))
+
+        keycloak_user_info = keycloak_openid.userinfo(request.headers['Authorization'][7:])
+
+        if "IDIR" in keycloak_user_info["roles"]:
+            return True
+        else:
+            return False

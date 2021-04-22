@@ -13,9 +13,8 @@ from pipeline.models.railway import Railway
 from pipeline.serializers.opportunity.distance import (
     OpportunityCommunitySerializer, OpportunityPostSecondarySerializer,
     OpportunityFirstResponderSerializer, OpportunityHospitalSerializer,
-    OpportunityResearchCentreSerializer, OpportunityRiverSerializer,
-    OpportunityLakeSerializer, OpportunityMunicipalitySerializer, 
-    OpportunityRegionalDistrictSerializer)
+    OpportunityResearchCentreSerializer, OpportunityRiverSerializer, OpportunityLakeSerializer,
+    OpportunityMunicipalitySerializer, OpportunityRegionalDistrictSerializer)
 
 
 class OpportunityGetSerializer(serializers.ModelSerializer):
@@ -25,16 +24,12 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
     nearest_municipalities = serializers.SerializerMethodField()
     nearest_community = OpportunityCommunitySerializer(required=False)
     nearest_post_secondary = OpportunityPostSecondarySerializer(required=False)
-    nearest_coast_guard_station = OpportunityFirstResponderSerializer(
-        required=False)
-    nearest_ambulance_station = OpportunityFirstResponderSerializer(
-        required=False)
-    nearest_police_station = OpportunityFirstResponderSerializer(
-        required=False)
+    nearest_coast_guard_station = OpportunityFirstResponderSerializer(required=False)
+    nearest_ambulance_station = OpportunityFirstResponderSerializer(required=False)
+    nearest_police_station = OpportunityFirstResponderSerializer(required=False)
     nearest_fire_station = OpportunityFirstResponderSerializer(required=False)
     nearest_health_center = OpportunityHospitalSerializer(required=False)
-    nearest_research_centre = OpportunityResearchCentreSerializer(
-        required=False)
+    nearest_research_centre = OpportunityResearchCentreSerializer(required=False)
     nearest_customs_port_of_entry = serializers.SerializerMethodField()
     nearest_port = serializers.SerializerMethodField()
     nearest_railway = serializers.SerializerMethodField()
@@ -118,11 +113,14 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
         nearest_customs_port_of_entry = None
         if instance.nearest_customs_port_of_entry:
             nearest_customs_port_of_entry = dict()
-            nearest_customs_port_of_entry['customs_port_id'] = instance.nearest_customs_port_of_entry.customs_port_id_id
-            nearest_customs_port_of_entry['customs_port_distance'] = instance.nearest_customs_port_of_entry.customs_port_distance
-            nearest_customs_port_of_entry['name'] = CustomsPortOfEntry.objects.get(id=nearest_customs_port_of_entry['customs_port_id']).name
+            nearest_customs_port_of_entry[
+                'customs_port_id'] = instance.nearest_customs_port_of_entry.customs_port_id_id
+            nearest_customs_port_of_entry[
+                'customs_port_distance'] = instance.nearest_customs_port_of_entry.customs_port_distance
+            nearest_customs_port_of_entry['name'] = CustomsPortOfEntry.objects.get(
+                id=nearest_customs_port_of_entry['customs_port_id']).name
         return nearest_customs_port_of_entry
-    
+
     def get_nearest_port(self, instance):
         nearest_port = None
         if instance.nearest_port:
@@ -131,7 +129,7 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
             nearest_port['port_distance'] = instance.nearest_port.port_distance
             nearest_port['name'] = PortAndTerminal.objects.get(id=nearest_port['port_id']).name
         return nearest_port
-    
+
     def get_nearest_railway(self, instance):
         nearest_railway = None
         if instance.nearest_railway:
@@ -140,7 +138,7 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
             nearest_railway['railway_distance'] = instance.nearest_railway.railway_distance
             nearest_railway['name'] = Railway.objects.get(id=nearest_railway['railway_id']).name
         return nearest_railway
-    
+
     def get_nearest_airport(self, instance):
         nearest_airport = None
         if instance.nearest_airport:
@@ -156,14 +154,16 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
             nearest_highway = dict()
             nearest_highway['highway_id'] = instance.nearest_highway.highway_id_id
             nearest_highway['highway_distance'] = instance.nearest_highway.highway_distance
-            nearest_highway['name'] = RoadsAndHighways.objects.get(id=nearest_highway['highway_id']).name
+            nearest_highway['name'] = RoadsAndHighways.objects.get(
+                id=nearest_highway['highway_id']).name
         return nearest_highway
 
     def get_nearest_first_nations(self, instance):
         index = 0
         nearest_first_nations = list(instance.nearest_first_nations.all().values())
         for first_nation in nearest_first_nations:
-            nearest_first_nations[index]['reserve_name'] = IndianReserveBandName.objects.get(id=first_nation['reserve_id_id']).english_name
+            nearest_first_nations[index]['reserve_name'] = IndianReserveBandName.objects.get(
+                id=first_nation['reserve_id_id']).english_name
             index += 1
         return nearest_first_nations
 
@@ -171,10 +171,14 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
         index = 0
         nearest_municipalities = list(instance.nearest_municipalities.all().values())
         for municipality in nearest_municipalities:
-            nearest_municipalities[index]['municipality_name'] = Municipality.objects.get(id=municipality['municipality_id_id']).name
-            community_queryset = Community.objects.filter(municipality_id=municipality['municipality_id_id']).annotate(count=F('census_subdivision__population'))
+            nearest_municipalities[index]['municipality_name'] = Municipality.objects.get(
+                id=municipality['municipality_id_id']).name
+            community_queryset = Community.objects.filter(
+                municipality_id=municipality['municipality_id_id']).annotate(
+                    count=F('census_subdivision__pop_total_2016'))
             nearest_municipalities[index]['municipality_population'] = 0
             if len(community_queryset):
-                nearest_municipalities[index]['municipality_population'] = community_queryset.values()[0]['count']
+                nearest_municipalities[index][
+                    'municipality_population'] = community_queryset.values()[0]['count']
             index += 1
         return nearest_municipalities

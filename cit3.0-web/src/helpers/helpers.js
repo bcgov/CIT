@@ -51,9 +51,16 @@ export function toKebabCase(str = "") {
   );
 }
 
-export function determineStatusTextColour(approvalStatus) {
+export function createOpportunityLink(name, id) {
+  return `/investmentopportunities/view/${toKebabCase(name)}-${id}`;
+}
+
+export function determineStatusTextColour(approvalStatus, adminView) {
   if (approvalStatus === "NEW") {
-    return <div className="status-text-green">New</div>;
+    if (adminView) {
+      return <div className="status-text-green">New</div>;
+    }
+    return <div className="status-text-orange">Pending Review</div>;
   }
   if (approvalStatus === "PEND") {
     return <div className="status-text-orange">Pending Review</div>;
@@ -62,13 +69,16 @@ export function determineStatusTextColour(approvalStatus) {
     return <div className="status-text-green">Published</div>;
   }
   if (approvalStatus === "NCOM") {
-    return <div className="status-text-red">Not completed</div>;
+    if (adminView) {
+      return <div className="status-text-red">Pending Edit</div>;
+    }
+    return <div className="status-text-red">Needs to be edited</div>;
   }
   if (approvalStatus === "NWED") {
     return <div className="status-text-orange">New - Edited</div>;
   }
   if (approvalStatus === "CLOS") {
-    return <div className="status-text-orange">Closed/Won</div>;
+    return <div className="status-text-orange">Closed</div>;
   }
   return approvalStatus;
 }

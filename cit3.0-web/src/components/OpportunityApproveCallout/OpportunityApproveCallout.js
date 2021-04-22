@@ -13,7 +13,9 @@ import {
   setPublicNote,
 } from "../../store/actions/opportunity";
 import { closeNotification } from "../../store/actions/notification";
+import { sendEdoPublishedNotification } from "../../store/actions/email";
 import Radios from "../FormComponents/Radios";
+import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
 
 const OpportunityApproveCallout = ({
   publicNote,
@@ -34,6 +36,8 @@ const OpportunityApproveCallout = ({
   const [approveUser, setApproveUser] = useState("No");
   const listingLink = useSelector((state) => state.opportunity.link);
   const opportunityName = useSelector((state) => state.opportunity.name);
+  const opportunityId = useSelector((state) => state.opportunity.id);
+  const keycloak = useKeycloakWrapper();
 
   const goBackToAdmin = () => {
     dispatch(resetOpportunity());
@@ -89,6 +93,15 @@ const OpportunityApproveCallout = ({
         (s) => nextStatus === s.status_code
       ).status_name;
       onStatusChange(alertStatus, approveUser);
+      if (nextStatus === "PUBL" && currentStatus !== "PUBL") {
+        sendEdoPublishedNotification(
+          opportunityId,
+          listingLink,
+          keycloak.obj.token
+        )
+          .then(() => {})
+          .catch((error) => console.log(error));
+      }
     }
   };
 
