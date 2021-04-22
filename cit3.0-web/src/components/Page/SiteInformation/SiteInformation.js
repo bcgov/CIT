@@ -3,17 +3,25 @@ import { useHistory } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import { Alert } from "shared-components";
 import { MdError } from "react-icons/md";
+import { useDispatch } from "react-redux";
 
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import OpportunityView from "../../OpportunityView/OpportunityView";
 import ButtonRow from "../../ButtonRow/ButtonRow";
+import { resetOpportunity } from "../../../store/actions/opportunity";
 import "./SiteInformation.css";
 
 export default function SiteInformation({ location }) {
   document.title = `Investments - Add Opportunity - Site Information`;
   const history = useHistory();
+  const dispatch = useDispatch();
   const goToNextPage = () => {
     history.push(`/investmentopportunities/property-details`);
+  };
+
+  const onCancelClick = () => {
+    dispatch(resetOpportunity());
+    history.push("/investmentopportunities/dashboard");
   };
 
   return (
@@ -31,6 +39,7 @@ export default function SiteInformation({ location }) {
         showPrevious
         prevRoute="/investmentopportunities/add"
         onClick={goToNextPage}
+        onCancelClick={onCancelClick}
       />
     </>
   );

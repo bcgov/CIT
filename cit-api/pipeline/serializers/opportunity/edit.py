@@ -352,6 +352,7 @@ class OpportunitySerializer(serializers.ModelSerializer):
         instance.soil_drainage = validated_data.get('soil_drainage', instance.soil_drainage)
         instance.soil_name = validated_data.get('soil_name', instance.soil_name)
         instance.soil_texture = validated_data.get('soil_texture', instance.soil_texture)
+        instance.deleted = validated_data.get('deleted', instance.deleted)
 
         preferred_developments = []
         if validated_data.get('opportunity_preferred_development'):

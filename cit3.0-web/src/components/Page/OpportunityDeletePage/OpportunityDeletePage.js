@@ -24,6 +24,15 @@ const OpportunityDeletePage = ({ id }) => {
   const opportunity = useSelector((state) => state.opportunity);
   const keycloak = useKeycloakWrapper();
 
+  const onCancelClick = () => {
+    dispatch(resetOpportunity());
+    let backUrl = window.sessionStorage.getItem("back_url");
+    if (backUrl === null) {
+      backUrl = "/investmentopportunities/dashboard";
+    }
+    history.push(backUrl);
+  };
+
   useEffect(() => {
     let opId = id;
     if (!id) {
@@ -68,13 +77,18 @@ const OpportunityDeletePage = ({ id }) => {
           onClick={(e) => handleDeleteOpportunity(e)}
           continueLabel="Delete"
           noContinue={confirmName !== opportunity.name}
+          onCancelClick={onCancelClick}
         />
       </Container>
     </div>
   );
 };
 
-OpportunityDeletePage.propTypes = { id: PropTypes.number };
-OpportunityDeletePage.defaultProps = { id: 0 };
+OpportunityDeletePage.propTypes = {
+  id: PropTypes.number,
+};
+OpportunityDeletePage.defaultProps = {
+  id: 0,
+};
 
 export default OpportunityDeletePage;

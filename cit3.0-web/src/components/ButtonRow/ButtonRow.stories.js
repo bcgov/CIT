@@ -11,11 +11,19 @@ export default {
 };
 
 export const ButtonRowContinueDisabled = () => (
-  <ButtonRow noContinue onClick={() => action("clicked")} />
+  <ButtonRow
+    noContinue
+    onClick={() => action("clicked")}
+    onCancelClick={() => action("clicked")}
+  />
 );
 
 export const ButtonRowContinueEnabled = () => (
-  <ButtonRow noContinue={false} onClick={() => action("clicked")} />
+  <ButtonRow
+    noContinue={false}
+    onClick={() => action("clicked")}
+    onCancelClick={() => action("clicked")}
+  />
 );
 
 export const ButtonRowWithPreviousPageLink = () => (
@@ -23,5 +31,6 @@ export const ButtonRowWithPreviousPageLink = () => (
     noContinue={false}
     prevRoute="/investmentopportunities/property-details"
     onClick={() => action("clicked")}
+    onCancelClick={() => action("clicked")}
   />
 );
