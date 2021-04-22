@@ -115,40 +115,42 @@ const OpportunityListItem = ({
             <Col>
               <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
             </Col>
-            <Col
-              style={{
-                marginRight: "0.5rem",
-              }}
-            >
-              <div className="d-flex flex-row flex-wrap align-content-end">
-                {opportunity.siteInfo.parcelSize.value ? (
-                  <p className="border--pill">
-                    Parcel Size:{" "}
-                    <NumberFormat
-                      displayType="text"
-                      value={opportunity.siteInfo.parcelSize.value}
-                      suffix={` acres`}
-                      decimalScale={3}
-                      thousandSeparator={
-                        isNaN(opportunity.siteInfo.parcelSize.value)
-                          ? false
-                          : ","
-                      }
-                    />
-                  </p>
-                ) : null}
-                {opportunity.userInfo.currentZone.value && options ? (
-                  <p className="border--pill">{`Zoning: ${
-                    options.landUseZoning.find(
-                      (s) => s.code === opportunity.userInfo.currentZone.value
-                    ).name
-                  }`}</p>
-                ) : null}
-                {opportunity.userInfo.saleOrLease.value && options ? (
-                  <p className="border--pill">{`${saleOrLease()}`}</p>
-                ) : null}
-              </div>
-            </Col>
+            {publicView ? (
+              <Col
+                style={{
+                  marginRight: "0.5rem",
+                }}
+              >
+                <div className="d-flex flex-row flex-wrap align-content-end">
+                  {opportunity.siteInfo.parcelSize.value ? (
+                    <p className="border--pill">
+                      Parcel Size:{" "}
+                      <NumberFormat
+                        displayType="text"
+                        value={opportunity.siteInfo.parcelSize.value}
+                        suffix={` acres`}
+                        decimalScale={3}
+                        thousandSeparator={
+                          isNaN(opportunity.siteInfo.parcelSize.value)
+                            ? false
+                            : ","
+                        }
+                      />
+                    </p>
+                  ) : null}
+                  {opportunity.userInfo.currentZone.value && options ? (
+                    <p className="border--pill">{`Zoning: ${
+                      options.landUseZoning.find(
+                        (s) => s.code === opportunity.userInfo.currentZone.value
+                      ).name
+                    }`}</p>
+                  ) : null}
+                  {opportunity.userInfo.saleOrLease.value && options ? (
+                    <p className="border--pill">{`${saleOrLease()}`}</p>
+                  ) : null}
+                </div>
+              </Col>
+            ) : null}
           </Row>
           <Row className="flex-grow-1">
             {!publicView ? (
