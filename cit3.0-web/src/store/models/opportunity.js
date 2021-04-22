@@ -35,13 +35,13 @@ export const OPPORTUNITY_MODEL = () => ({
   firstNationCommunities: [],
   services: {
     networkAvg: {
-      title: "Network Connectivity",
+      title: "Site servicing",
       subtitle: "- Speed average",
       value: "",
       type: "paragraph",
     },
     networkAtRoad: {
-      title: "Network Connectivity",
+      title: "Site servicing",
       subtitle: "- Speed at nearest road",
       value: "",
       type: "paragraph",
@@ -91,13 +91,6 @@ export const OPPORTUNITY_MODEL = () => ({
       type: "distance",
       suffix: "km",
     },
-    nearResearchCentre: {
-      title: "Research Centre within 100km",
-      name: "No",
-      value: 0,
-      type: "distance",
-      suffix: "km",
-    },
     nearHealth: {
       title: "Health Care Facility within 100km",
       name: "No",
@@ -139,6 +132,13 @@ export const OPPORTUNITY_MODEL = () => ({
     },
     nearSecondarySchool: {
       title: "Post-Secondary Education Facility within 100km",
+      name: "No",
+      value: 0,
+      type: "distance",
+      suffix: "km",
+    },
+    nearResearchCentre: {
+      title: "Research Centre within 100km",
       name: "No",
       value: 0,
       type: "distance",

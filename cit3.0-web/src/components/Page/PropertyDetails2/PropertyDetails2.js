@@ -10,6 +10,7 @@ import {
   setBusinessContactName,
   setBusinessContactEmail,
   setUserInfo,
+  resetOpportunity,
 } from "../../../store/actions/opportunity";
 import {
   setUserInfoName,
@@ -87,6 +88,11 @@ export default function PropertyDetails2() {
     goToNextPage();
   };
 
+  const onCancelClick = () => {
+    dispatch(resetOpportunity());
+    history.push("/investmentopportunities/dashboard");
+  };
+
   const handleCheck = (isChecked) => {
     setBusinessContactSync(isChecked);
     dispatch(setBusinessContactName(isChecked ? keycloak.displayName : ""));
@@ -119,10 +125,14 @@ export default function PropertyDetails2() {
             notes={noteLabel}
             name="opportunityDescription"
             value={oppDesc}
+            maxLength={1000}
             handleChange={(_, value) =>
               dispatch(setUserInfo("opportunityDescription", value))
             }
           />
+          <div style={{ marginTop: "-24px" }} className="text-right w-100">
+            <span>{`${oppDesc.length}/1000 Characters`}</span>
+          </div>
         </Row>
         <Row className="mb-3">
           <h4>Environmental Information</h4>
@@ -133,10 +143,14 @@ export default function PropertyDetails2() {
             notes={noteLabel}
             name="environmentalInformation"
             value={envInfo}
+            maxLength={1000}
             handleChange={(_, value) =>
               dispatch(setUserInfo("environmentalInformation", value))
             }
           />
+          <div style={{ marginTop: "-24px" }} className="text-right w-100">
+            <span>{`${envInfo.length}/1000 Characters`}</span>
+          </div>
         </Row>
         <Row className="mb-4">
           <TextInput
@@ -290,6 +304,7 @@ export default function PropertyDetails2() {
         noContinue={
           !userInfoName || !validBusinessEmail || !businessContactName
         }
+        onCancelClick={onCancelClick}
       />
     </>
   );

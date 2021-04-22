@@ -1,10 +1,8 @@
 import { Col, Row, Container } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { Button } from "shared-components";
-import { useHistory, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./ButtonRow.css";
-import { useDispatch } from "react-redux";
-import { resetOpportunity } from "../../store/actions/opportunity";
 
 export default function ButtonRow({
   onClick,
@@ -12,9 +10,8 @@ export default function ButtonRow({
   noContinue,
   cancelLabel,
   continueLabel,
+  onCancelClick,
 }) {
-  const history = useHistory();
-  const dispatch = useDispatch();
   return (
     <Container className="bottom">
       {prevRoute && (
@@ -29,10 +26,7 @@ export default function ButtonRow({
       <Row>
         <Col>
           <Button
-            onClick={() => {
-              dispatch(resetOpportunity());
-              history.push("/investmentopportunities/dashboard");
-            }}
+            onClick={onCancelClick}
             label={cancelLabel}
             styling=" BC-Gov-SecondaryButton bc-gov-btn"
           />
@@ -63,4 +57,5 @@ ButtonRow.propTypes = {
   noContinue: PropTypes.bool,
   continueLabel: PropTypes.string,
   cancelLabel: PropTypes.string,
+  onCancelClick: PropTypes.func.isRequired,
 };

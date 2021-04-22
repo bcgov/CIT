@@ -103,8 +103,7 @@ class ProximityView(APIView):
 
         railway = None
         railway_check = Railway.objects.annotate(distance=Distance("geom", point)).filter(
-            geom__distance_lte=(point, D(km=100)),
-            track_classification="Yard").order_by('distance')[:1]
+            geom__distance_lte=(point, D(km=100))).order_by('distance')[:1]
         if railway_check:
             railway = json.loads(
                 serializers.serialize('geojson', railway_check, geometry_field=point))

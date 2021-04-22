@@ -1,5 +1,8 @@
 import axios from "axios";
-import { POST_ADMIN_EMAIL_NOTIFICATION_URL } from "../constants/api-urls";
+import {
+  POST_ADMIN_EMAIL_NOTIFICATION_URL,
+  POST_EDO_EMAIL_NOTIFICATION_URL,
+} from "../constants/api-urls";
 /**
  * @param {Number} id of opportunity to send email notification about
  * @param {string} link to opportunity (relative URL)
@@ -9,6 +12,19 @@ import { POST_ADMIN_EMAIL_NOTIFICATION_URL } from "../constants/api-urls";
 export default function sendAdminEmailNotification(id, link, token) {
   return axios.post(
     POST_ADMIN_EMAIL_NOTIFICATION_URL,
+    {
+      id,
+      link,
+    },
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+}
+
+export function sendEdoPublishedNotification(id, link, token) {
+  return axios.post(
+    POST_EDO_EMAIL_NOTIFICATION_URL,
     {
       id,
       link,

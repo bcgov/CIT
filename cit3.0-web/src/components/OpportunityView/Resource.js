@@ -48,8 +48,19 @@ function displayResources(resources) {
     let multiValues = [];
     let found;
 
-    if (resource[1] === false || resource[1].hidden) {
+    if (
+      resource[1] === false ||
+      resource[1].hidden ||
+      resource[0] === "networkAvg"
+    ) {
       return;
+    }
+    if (resource[0] === "networkAtRoad") {
+      /* eslint-disable no-param-reassign */
+      resource[1].subtitle = "- Connectivity (50/10Mbps or more)";
+      resource[1].value = ["50/10", "Yes"].includes(resource[1].value)
+        ? "Yes"
+        : "No";
     }
 
     // Insert Category section/datapoint

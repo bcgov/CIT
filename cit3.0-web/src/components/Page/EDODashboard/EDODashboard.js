@@ -28,6 +28,10 @@ export default function EDODashboard() {
   const dispatch = useDispatch();
   const keycloak = useKeycloakWrapper();
   const user = useSelector((state) => state.user);
+
+  // For returning to the correct page when cancelling a delete
+  window.sessionStorage.setItem("back_url", window.location.pathname);
+
   const getUserOpportunities = () => {
     getUser({ email: keycloak.email }).then((response) => {
       const { data: users } = response;

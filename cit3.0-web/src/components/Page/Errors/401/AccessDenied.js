@@ -13,10 +13,28 @@ const AccessDenied = () => (
           icon={<MdError size={32} />}
           type="error"
           styling="bcgov-error-background my-4"
-          element="You do not have permission to view this page"
+          element="You do not have permission to view this page."
         />
+        <h2 className="my-4">Oh no! What can I do next?</h2>
+        <ol style={{ lineHeight: "2rem" }} className="my-4">
+          <li>Be sure to login with the correct credentials.</li>
+          <li>
+            If you received permissions recently, refresh the page to get the
+            new role.
+          </li>
+          <li>
+            If this message is shown in error{" "}
+            <a href={`mailto:citinfo@gov.bc.ca?subject="Permission Request"`}>
+              contact us
+            </a>{" "}
+            for assistance.
+          </li>
+        </ol>
         <hr className="hr-bold my-2" />
-        <Link to="/login">Login to continue</Link>
+        <div className="d-flex justify-content-between">
+          <Link to="/investmentopportunities/home">Return to Homepage</Link>
+          <Link to="/login/">Login to continue</Link>
+        </div>
       </Col>
     </Row>
   </Container>
