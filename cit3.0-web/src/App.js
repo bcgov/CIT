@@ -227,10 +227,7 @@ function App() {
                   ]}
                   component={PowerBi}
                 />
-                <AppRoute
-                  path="/cit-dashboard/public"
-                  component={PowerBiPublic}
-                />
+                <AppRoute path="/cit-dashboard/public" component={PowerBi} />
                 <AppRoute
                   protected
                   exact
