@@ -273,7 +273,6 @@ export default function PowerBi() {
                       }
                       window.report.refresh();
                       if (reportId === Config.pbiReportIdInternal) {
-                        console.log("internal");
                         trackUser(
                           {
                             user_id: user.id,
