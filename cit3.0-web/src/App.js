@@ -31,7 +31,6 @@ import OpportunityApproveListPage from "./components/Page/OpportunityApproveList
 import UserManagementDashboard from "./components/Page/UserManagement/UserManagementDashboard";
 
 import PowerBi from "./components/Page/PowerBi/PowerBi";
-import PowerBiPublic from "./components/Page/PowerBi/PowerBiPublic";
 
 import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
