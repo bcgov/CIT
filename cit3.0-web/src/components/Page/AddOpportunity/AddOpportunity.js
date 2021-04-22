@@ -89,6 +89,7 @@ export default function AddOpportunity() {
         closeModalAndContinue();
       }
     }
+    handleClose();
   };
 
   useEffect(() => {
@@ -280,13 +281,17 @@ export default function AddOpportunity() {
               ))}
             </Modal.Body>
             <Modal.Footer>
+              {!(error.length || (!address && !geometry)) ? (
+                <Button
+                  label="Cancel"
+                  styling="bcgov-normal-white mr-auto modal-reset-button btn"
+                  onClick={handleClose}
+                />
+              ) : null}
               <Button
-                label="Cancel"
-                styling="bcgov-normal-white mr-auto modal-reset-button btn"
-                onClick={handleClose}
-              />
-              <Button
-                label="Continue"
+                label={
+                  error.length || (!address && !geometry) ? "Okay" : "Continue"
+                }
                 styling="bcgov-normal-blue modal-save-button btn"
                 onClick={handleErrorModalContinue}
               />
