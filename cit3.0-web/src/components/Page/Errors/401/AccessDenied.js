@@ -32,7 +32,7 @@ const AccessDenied = () => (
         </ol>
         <hr className="hr-bold my-2" />
         <div className="d-flex justify-content-between">
-          <Link to="/investmentopportunities/search/">Return to Homepage</Link>
+          <Link to="/investmentopportunities/home">Return to Homepage</Link>
           <Link to="/login/">Login to continue</Link>
         </div>
       </Col>
