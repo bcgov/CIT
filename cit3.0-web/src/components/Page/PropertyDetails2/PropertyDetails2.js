@@ -112,7 +112,8 @@ export default function PropertyDetails2() {
           <Row>
             <PageTitleHeader
               title="Enter Property Details"
-              text="Provide more information about the property. All fields are optional."
+              text="Tell us more about this investment opportunity."
+              span="All fields are required unless marked otherwise."
             />
           </Row>
         </Row>
@@ -130,12 +131,20 @@ export default function PropertyDetails2() {
               dispatch(setUserInfo("opportunityDescription", value))
             }
           />
-          <div style={{ marginTop: "-24px" }} className="text-right w-100">
-            <span>{`${oppDesc.length}/1000 Characters`}</span>
+          <div className="d-flex justify-content-between w-100 margin-top-valid">
+            {!oppDesc ? (
+              <Validator message="This field is required. Please enter information about your property." />
+            ) : (
+              <p>{"   "}</p>
+            )}
+            <div className="text-right">{`${oppDesc.length}/1000 Characters`}</div>
           </div>
         </Row>
         <Row className="mb-3">
-          <h4>Environmental Information</h4>
+          <h4>
+            Environmental Information{" "}
+            <span className="optional-text">(optional)</span>
+          </h4>
         </Row>
         <Row className="mb-4">
           <TextInput
@@ -148,13 +157,13 @@ export default function PropertyDetails2() {
               dispatch(setUserInfo("environmentalInformation", value))
             }
           />
-          <div style={{ marginTop: "-24px" }} className="text-right w-100">
+          <div className="text-right w-100 margin-top-valid">
             <span>{`${envInfo.length}/1000 Characters`}</span>
           </div>
         </Row>
         <Row className="mb-4">
           <TextInput
-            heading={commUrlLabel}
+            heading={<span>{`${commUrlLabel}  (optional)`}</span>}
             notes={urlNoteComm}
             rows={1}
             placeholder={placeholderComm}
@@ -167,7 +176,7 @@ export default function PropertyDetails2() {
         </Row>
         <Row className="mb-4">
           <TextInput
-            heading={listingUrlLabel}
+            heading={<span>{`${listingUrlLabel}  (optional)`}</span>}
             notes={urlNote}
             rows={1}
             placeholder={placeholder}
@@ -180,9 +189,7 @@ export default function PropertyDetails2() {
         </Row>
         <Row>
           <div className="d-flex flex-column">
-            <h4>
-              Business Contact *<span className="text-red">required</span>
-            </h4>
+            <h4>Business Contact</h4>
             <span style={{ opacity: "0.7" }} className="my-1">
               This will be the contact information displayed on the public
               listing of this opportunity.
@@ -202,7 +209,7 @@ export default function PropertyDetails2() {
           <Col className="pl-0">
             <TextInput
               required={false}
-              heading="Business Contact Name *"
+              heading="Business Contact Name"
               notes=""
               rows={1}
               value={businessContactName}
@@ -212,10 +219,12 @@ export default function PropertyDetails2() {
               name="busName"
             />
             {!businessContactName && (
-              <Validator message="Please enter a contact name" />
+              <div className="margin-top-valid">
+                <Validator message="Please enter a contact name" />
+              </div>
             )}
             <p id="email-label" className="mb-0">
-              Business Contact Email *
+              Business Contact Email
             </p>
             <div className="pb-3">
               <input
@@ -233,16 +242,16 @@ export default function PropertyDetails2() {
               />
             </div>
             {!validBusinessEmail && (
-              <Validator message="Please enter a valid email address" />
+              <div className="margin-top-valid">
+                <Validator message="Please enter a valid email address" />
+              </div>
             )}
           </Col>
           <Col />
         </Row>
         <Row>
           <div className="d-flex flex-column">
-            <h4>
-              Your Information *<span className="text-red">required</span>
-            </h4>
+            <h4>Your Information</h4>
             <span style={{ opacity: "0.7" }} className="my-1">
               This will be for our records, and won&apos;t be shown to the
               public.
@@ -253,7 +262,7 @@ export default function PropertyDetails2() {
           <Col className="pl-0">
             <TextInput
               required
-              heading="Your Full Name *"
+              heading="Your Full Name"
               notes=""
               rows={1}
               value={userInfoName}
@@ -262,10 +271,14 @@ export default function PropertyDetails2() {
               }}
               name="userInfoName"
             />
-            {!userInfoName && <Validator message="Please enter your name" />}
+            {!userInfoName && (
+              <div className="margin-top-valid">
+                <Validator message="Please enter your name" />
+              </div>
+            )}
 
             <p id="email-label" className="mb-0">
-              Email * (This is the email associated with your log in information
+              Email (This is the email associated with your log in information
               and cannot be changed)
             </p>
 
@@ -302,7 +315,10 @@ export default function PropertyDetails2() {
         prevRoute="/investmentopportunities/property-details"
         onClick={handleContinue}
         noContinue={
-          !userInfoName || !validBusinessEmail || !businessContactName
+          !userInfoName ||
+          !validBusinessEmail ||
+          !businessContactName ||
+          !oppDesc
         }
         onCancelClick={onCancelClick}
       />
