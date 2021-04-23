@@ -13,7 +13,7 @@ class Command(BaseCommand):
         if email_enabled not in ["True", "true"]:
             print("Email notifications are not currently enabled")
             return
-        stale_time = now() - timedelta(seconds=1)
+        stale_time = now() - timedelta(days=90)
         print("Notifying opportunities last modified before: " + str(stale_time))
         stale_opportunities = Opportunity.objects.filter(date_updated__lte=stale_time,deleted=False,approval_status="PUBL").exclude(user_id__email__in=['', 'Unknown'])
         print("Total stale opportunities to be notified:" + str(stale_opportunities.count()))
