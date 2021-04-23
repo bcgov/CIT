@@ -194,8 +194,12 @@ class Opportunity(models.Model):
                                         on_delete=models.SET_NULL,
                                         db_column="ocp_zoning_code",
                                         null=True)
+    # OLD: This is currently unused for submission
     opportunity_preferred_development = models.ManyToManyField(
         PreferredDevelopment, db_column="opportunity_preferred_development", null=True)
+    # NEW: This is preferred so user may add their own
+    opportunity_preferred_development_v2 = models.CharField(max_length=255, null=True, blank=True)
+
     opportunity_property_status = models.ForeignKey(PropertyStatus,
                                                     on_delete=models.SET_NULL,
                                                     db_column="opportunity_property_status",

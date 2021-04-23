@@ -730,8 +730,8 @@ export class Opportunity {
     this.state.userInfo.currentZone.value = value;
   }
 
-  set opportunityPreferredDevelopment(value) {
-    this.state.userInfo.preferredDevelopment.value = value;
+  set opportunityPreferredDevelopmentV2(value) {
+    this.state.userInfo.preferredDevelopment.value = { label: value };
   }
 
   set opportunityPropertyStatus(value) {

@@ -216,11 +216,6 @@ function createRequestFromModel(state) {
       ),
     };
   }
-  if (state.userInfo.preferredDevelopment.value.length) {
-    nearestLocations.opportunity_preferred_development = state.userInfo.preferredDevelopment.value.map(
-      (option) => option.value || option
-    );
-  }
   return {
     ...request,
     deleted: state.deleted,
@@ -264,6 +259,8 @@ function createRequestFromModel(state) {
     opportunity_electrical_capacity: parseFloat(
       state.services.electrical.value
     ),
+    opportunity_preferred_development_v2:
+      state.userInfo.preferredDevelopment.value.label,
     ...nearestLocations,
   };
 }

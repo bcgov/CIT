@@ -104,6 +104,7 @@ class OpportunitySerializer(serializers.ModelSerializer):
             "ocp_zoning_code",
             "opportunity_property_status",
             "opportunity_preferred_development",
+            "opportunity_preferred_development_v2",
             "nearest_port",
             "nearest_airport",
             "nearest_research_centre",
@@ -248,11 +249,6 @@ class OpportunitySerializer(serializers.ModelSerializer):
                 nearest_lake = LakeDistance.objects.create(**lake)
                 validated_data['nearest_lake'] = nearest_lake
 
-        preferred_developments = []
-        if validated_data.get('opportunity_preferred_development'):
-            preferred_developments = validated_data.pop(
-                'opportunity_preferred_development')
-
         # get reserves
         filtered_first_nations_distances = []
         if validated_data.get('nearest_first_nations_object'):
@@ -280,8 +276,6 @@ class OpportunitySerializer(serializers.ModelSerializer):
 
         # insert opportuntity with literal fields
         instance = Opportunity.objects.create(**validated_data)
-
-        instance.opportunity_preferred_development.set(preferred_developments)
 
         if filtered_first_nations_distances:
             for dist in filtered_first_nations_distances:
@@ -353,12 +347,7 @@ class OpportunitySerializer(serializers.ModelSerializer):
         instance.soil_name = validated_data.get('soil_name', instance.soil_name)
         instance.soil_texture = validated_data.get('soil_texture', instance.soil_texture)
         instance.deleted = validated_data.get('deleted', instance.deleted)
+        instance.opportunity_preferred_development_v2 = validated_data.pop('opportunity_preferred_development', instance.opportunity_preferred_development_v2)
 
-        preferred_developments = []
-        if validated_data.get('opportunity_preferred_development'):
-            preferred_developments = validated_data.pop(
-                'opportunity_preferred_development')
-        instance.opportunity_preferred_development.set(preferred_developments)
-        
         instance.save()
         return instance

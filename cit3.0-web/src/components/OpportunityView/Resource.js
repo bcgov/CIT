@@ -21,17 +21,10 @@ function displayResources(resources) {
   const zoningOptions = useSelector(
     (state) => state.options.landUseZoning
   ).map((option) => ({ value: option.code, label: option.name }));
-  const developmentOptions = useSelector(
-    (state) => state.options.preferredDevelopment
-  ).map((option) => ({ value: option.code, label: option.name }));
 
   const getTheOptions = async () => {
     // Fetch options, if not already stored on client
-    if (
-      !PropStatusOptions.length ||
-      !zoningOptions.length ||
-      !developmentOptions.length
-    ) {
+    if (!PropStatusOptions.length || !zoningOptions.length) {
       const options = await getOptions();
       dispatch(setOptions(options.data));
     }
@@ -142,29 +135,15 @@ function displayResources(resources) {
         );
         break;
       case "multi":
-        if (Array.isArray(resource[1].value)) {
-          multiValues = resource[1].value;
-          if (multiValues.length) {
-            element = (
-              <div className="d-flex flex-column">
-                <div className="ml-2">
-                  <b>
-                    {multiValues
-                      .map((v) => {
-                        if (typeof v !== "object") {
-                          return developmentOptions.find(
-                            (option) => v === option.value
-                          ).label;
-                        }
-                        return `${v.label}`;
-                      })
-                      .join(", ")}
-                  </b>
-                </div>
-              </div>
-            );
-          }
-        }
+        console.log(resource);
+        multiValues = resource[1].value;
+        element = (
+          <div className="d-flex flex-column">
+            <div className="ml-2">
+              <b>{multiValues.label}</b>
+            </div>
+          </div>
+        );
         break;
       default:
         element = (
