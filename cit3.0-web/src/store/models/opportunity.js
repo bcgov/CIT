@@ -731,7 +731,7 @@ export class Opportunity {
   }
 
   set opportunityPreferredDevelopmentV2(value) {
-    this.state.userInfo.preferredDevelopment.value = { label: value };
+    this.state.userInfo.preferredDevelopment.value = [{ label: value }];
   }
 
   set opportunityPropertyStatus(value) {
