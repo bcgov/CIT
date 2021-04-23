@@ -277,7 +277,6 @@ function createStateFromResponse(response) {
   // Remap slugified names to camelCase names
   Object.entries(response).forEach((field) => {
     const newKey = _.camelCase(field[0]);
-    console.log(newKey);
 
     if (field[1]) {
       // Model set methods map to redux state sections
