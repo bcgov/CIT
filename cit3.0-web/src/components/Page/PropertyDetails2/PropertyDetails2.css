@@ -3,5 +3,12 @@
 }
 .text-red {
     color: red;
+}
+
+.optional-text {
     font-weight: lighter;
+}
+
+.margin-top-valid {
+    margin-top: -20px;
 }
