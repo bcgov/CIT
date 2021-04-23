@@ -135,14 +135,18 @@ function displayResources(resources) {
         );
         break;
       case "multi":
-        multiValues = resource[1].value;
-        element = (
-          <div className="d-flex flex-column">
-            <div className="ml-2">
-              <b>{multiValues.label}</b>
-            </div>
-          </div>
-        );
+        if (Array.isArray(resource[1].value)) {
+          multiValues = resource[1].value;
+          if (multiValues.length) {
+            element = (
+              <div className="d-flex flex-column">
+                <div className="ml-2">
+                  <b>{multiValues.map((v) => v.label).join(", ")}</b>
+                </div>
+              </div>
+            );
+          }
+        }
         break;
       default:
         element = (

@@ -216,6 +216,13 @@ function createRequestFromModel(state) {
       ),
     };
   }
+  if (Array.isArray(state.userInfo.preferredDevelopment.value)) {
+    nearestLocations.opportunity_preferred_development_v2 =
+      state.userInfo.preferredDevelopment.value[0].label;
+  } else {
+    nearestLocations.opportunity_preferred_development_v2 =
+      state.userInfo.preferredDevelopment.value.label;
+  }
   return {
     ...request,
     deleted: state.deleted,
@@ -259,8 +266,6 @@ function createRequestFromModel(state) {
     opportunity_electrical_capacity: parseFloat(
       state.services.electrical.value
     ),
-    opportunity_preferred_development_v2:
-      state.userInfo.preferredDevelopment.value.label,
     ...nearestLocations,
   };
 }
@@ -272,6 +277,7 @@ function createStateFromResponse(response) {
   // Remap slugified names to camelCase names
   Object.entries(response).forEach((field) => {
     const newKey = _.camelCase(field[0]);
+    console.log(newKey);
 
     if (field[1]) {
       // Model set methods map to redux state sections
