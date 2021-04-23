@@ -47,8 +47,8 @@ def add_preferred_developments(apps, schema_editor):
         ["Wholesale Trade", "", "WOTR"]
     ]
     for option in developments:
-        p = PreferredDevelopment.objects.get(code=option[2])
-        if p is not None:
+        p = PreferredDevelopment.objects.filter(code=option[2]).first()
+        if p is None:
             new_development = PreferredDevelopment()
             new_development.name = option[0]
             new_development.description = option[1]
