@@ -21,8 +21,6 @@ export default function AddressSearchBar({
     setAddress(event.target.value);
     try {
       const addressData = await getAddressData(event.target.value);
-      console.log(addressData);
-      console.log(typeof addressData.data);
       if (typeof addressData.data === "string") {
         return false;
       }
