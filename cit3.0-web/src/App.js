@@ -244,7 +244,10 @@ function App() {
                   component={HomePage}
                 />
                 <AppRoute path="/cit-dashboard/home" component={citHome} />
-                <AppRoute path="/datasources" component={Datasources} />
+                <AppRoute
+                  path="/investmentopportunities/datasources"
+                  component={Datasources}
+                />
               </Switch>
               <div className="footer">
                 <Footer />
