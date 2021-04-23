@@ -378,115 +378,118 @@ export default function AddOpportunity() {
                   </Row>
                 )}
                 <Row>
-                  {!parcelInfo ? (
-                    <Col>
-                      <PropertyInfo info={address} tag={false} />
-                      {parcelOwner ? (
-                        <p className="mb-0 mt-3 pb-0">
-                          Ownership: <b>{parcelOwner}</b>
-                        </p>
-                      ) : null}
-                      {parcelSize ? (
-                        <p className="mb-0 pb-0">
-                          Parcel Size: <b>{parcelSize.toFixed(3)} acres</b>
-                        </p>
-                      ) : null}
-                      {PID ? (
-                        <p>
-                          PID:{" "}
-                          <b>{PID && PID.length > 1 ? PID.join(", ") : PID}</b>
-                        </p>
-                      ) : null}
-                      {parcelSize ? (
-                        <div>
-                          <Callout
-                            text="If the parcel information populated here is
-  incorrect. Clear and enter new details."
-                            checkboxLabel="Enter new details"
-                            agreeCallout={handleUpdateParcelInfo}
-                          />
-                        </div>
-                      ) : null}
-                      {parcelOwner === "Private" && (
-                        <>
-                          <PropertyInfo info="This land parcel or development opportunity resides on private land." />
-                          <PropertyInfo
-                            info={`As a representative from ${
-                              localityName || "Your Community"
-                            }, do you have the approval from the land owner to promote this investment opportunity?`}
-                          />
-                          <Col>
-                            <Radios
-                              aria-label="approval to sell"
-                              labels={["Yes", "No", "Pending Approval"]}
-                              name="approval-to-sell"
-                              value={hasApproval || ""}
-                              handleRadioChange={handleRadioChange}
+                  <Col>
+                    {!parcelInfo ? (
+                      <>
+                        <PropertyInfo info={address} tag={false} />
+                        {parcelOwner ? (
+                          <p className="mb-0 mt-3 pb-0">
+                            Ownership: <b>{parcelOwner}</b>
+                          </p>
+                        ) : null}
+                        {parcelSize ? (
+                          <p className="mb-0 pb-0">
+                            Parcel Size: <b>{parcelSize.toFixed(3)} acres</b>
+                          </p>
+                        ) : null}
+                        {PID ? (
+                          <p>
+                            PID:{" "}
+                            <b>
+                              {PID && PID.length > 1 ? PID.join(", ") : PID}
+                            </b>
+                          </p>
+                        ) : null}
+                        {parcelSize ? (
+                          <div>
+                            <Callout
+                              text="If the parcel information populated here is incorrect. Clear and enter new details."
+                              checkboxLabel="Enter new details"
+                              agreeCallout={handleUpdateParcelInfo}
                             />
-                          </Col>
-                          {hasApproval !== "Yes" && (
-                            <Row className="mt-2">
-                              <Col className="text-red">
-                                <p>
-                                  You must have the approval of the land owner
-                                  to promote this opportunity. Please get the
-                                  approval before listing this site.
-                                </p>
-                              </Col>
-                            </Row>
-                          )}
-                        </>
-                      )}
-                    </Col>
-                  ) : (
-                    <div className="m-3 ">
-                      <TextInput
-                        heading="Parcel Ownership"
-                        notes="Please note the information here will appear publicly"
-                        placeholder="Private"
-                        rows={1}
-                        value={parcelOwner}
-                        handleChange={(_, value) =>
-                          dispatch(setParcelOwner(value))
-                        }
-                        name="owner"
-                      />
-                      <div className="d-flex flex-column w-100">
-                        <p className="mb-0">Parcel Size</p>
-                        <p className="mb-0" style={{ opacity: "0.5" }}>
-                          The lot size that will be shown publicly.
-                        </p>
-                        <div className="text-wrapper">
-                          <NumberFormat
-                            className="bcgov-text-input"
-                            type="text"
-                            displayType="input"
-                            decimalScale={3}
-                            value={parcelSize || 0}
-                            units="acres"
-                            onValueChange={(value) => {
-                              if (value.floatValue !== parcelSize) {
-                                dispatch(setParcelSize(value.floatValue));
-                              }
-                            }}
-                          />
-                        </div>
-                      </div>
-                      <TextInput
-                        heading="PID"
-                        notes="Enter a parcel number(s) separated by commas, if available"
-                        placeholder="32165785"
-                        rows={1}
-                        value={PID && PID.join(",")}
-                        handleChange={(_, value) => {
-                          if (PID.join(",") !== value) {
-                            dispatch(setPID(value.split(",")));
+                          </div>
+                        ) : null}
+                      </>
+                    ) : (
+                      <div>
+                        <TextInput
+                          heading="Parcel Ownership"
+                          notes="Please note the information here will appear publicly"
+                          placeholder="Private"
+                          rows={1}
+                          value={parcelOwner}
+                          handleChange={(_, value) =>
+                            dispatch(setParcelOwner(value))
                           }
-                        }}
-                        name="owner"
-                      />
-                    </div>
-                  )}
+                          name="owner"
+                        />
+                        <div className="d-flex flex-column w-100">
+                          <p className="mb-0">Parcel Size</p>
+                          <p className="mb-0" style={{ opacity: "0.5" }}>
+                            The lot size that will be shown publicly.
+                          </p>
+                          <div className="text-wrapper">
+                            <NumberFormat
+                              className="bcgov-text-input"
+                              type="text"
+                              displayType="input"
+                              decimalScale={3}
+                              value={parcelSize || 0}
+                              units="acres"
+                              onValueChange={(value) => {
+                                if (value.floatValue !== parcelSize) {
+                                  dispatch(setParcelSize(value.floatValue));
+                                }
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <TextInput
+                          heading="PID"
+                          notes="Enter a parcel number(s) separated by commas, if available"
+                          placeholder="32165785"
+                          rows={1}
+                          value={PID && PID.join(",")}
+                          handleChange={(_, value) => {
+                            if (PID.join(",") !== value) {
+                              dispatch(setPID(value.split(",")));
+                            }
+                          }}
+                          name="owner"
+                        />
+                      </div>
+                    )}
+                    {parcelOwner === "Private" && (
+                      <>
+                        <PropertyInfo info="This land parcel or development opportunity resides on private land." />
+                        <PropertyInfo
+                          info={`As a representative from ${
+                            localityName || "Your Community"
+                          }, do you have the approval from the land owner to promote this investment opportunity?`}
+                        />
+                        <Col>
+                          <Radios
+                            aria-label="approval to sell"
+                            labels={["Yes", "No", "Pending Approval"]}
+                            name="approval-to-sell"
+                            value={hasApproval || ""}
+                            handleRadioChange={handleRadioChange}
+                          />
+                        </Col>
+                        {hasApproval !== "Yes" && (
+                          <Row className="mt-2">
+                            <Col className="text-red">
+                              <p>
+                                You must have the approval of the land owner to
+                                promote this opportunity. Please get the
+                                approval before listing this site.
+                              </p>
+                            </Col>
+                          </Row>
+                        )}
+                      </>
+                    )}
+                  </Col>
                 </Row>
               </Col>
             </Row>
