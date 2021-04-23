@@ -135,7 +135,6 @@ function displayResources(resources) {
         );
         break;
       case "multi":
-        console.log(resource);
         multiValues = resource[1].value;
         element = (
           <div className="d-flex flex-column">
