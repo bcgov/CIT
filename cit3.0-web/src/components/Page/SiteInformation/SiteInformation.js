@@ -1,8 +1,7 @@
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import { Alert } from "shared-components";
-import { MdError } from "react-icons/md";
 import { useDispatch } from "react-redux";
 
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
@@ -32,7 +31,26 @@ export default function SiteInformation({ location }) {
           icon={<></>}
           type="warning"
           styling="bcgov-warning-background"
-          element="Your listing will include the following location and proximity data available from open data sources. You will be able to add additional data to your listing in the next steps, including site servicing information. The remainder of the information is not editable and is provided for reference only. Proximity details are provided in straight-line distances. All information should be verified independently before being used or relied upon. The Province of British Columbia does not guarantee the quality, accuracy, completeness or timeliness of this information."
+          element={
+            <span>
+              Your listing will include the following location and proximity
+              data available from
+              <span>
+                {" "}
+                <Link to="/investmentopportunities/datasources">
+                  open data sources.
+                </Link>
+              </span>{" "}
+              You will be able to add additional data to your listing in the
+              next steps, including site servicing information. The remainder of
+              the information is not editable and is provided for reference
+              only. Proximity details are provided in straight-line distances.
+              All information should be verified independently before being used
+              or relied upon. The Province of British Columbia does not
+              guarantee the quality, accuracy, completeness or timeliness of
+              this information.
+            </span>
+          }
         />
       </Container>
       <OpportunityView data={location.state} />
