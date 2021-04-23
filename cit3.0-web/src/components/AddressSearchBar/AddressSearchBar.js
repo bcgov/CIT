@@ -21,6 +21,9 @@ export default function AddressSearchBar({
     setAddress(event.target.value);
     try {
       const addressData = await getAddressData(event.target.value);
+      if (typeof addressData.data === "string") {
+        return false;
+      }
       setAddresses(addressData.data.features);
       setLocalityName(addressData.data.features[0].properties.localityName);
       return true;
