@@ -35,14 +35,15 @@ const OpportunityApprovalItem = ({ opportunity }) => {
         <Col>
           <Row>
             <Col className="p-2">
-              {opportunity ? getAddress(opportunity.address) : ""}
+              <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
             </Col>
             <Col className="p-2">{formatDate(opportunity.dateCreated)}</Col>
             <Col className="p-2">
-              {determineStatusTextColour(opportunity.approvalStatus)}
+              {determineStatusTextColour(opportunity.approvalStatus, true)}
             </Col>
             <Col>
               <NavLink
+                style={{ textDecoration: "underline" }}
                 className="p-2"
                 to={`${opportunity.link}/approve`}
                 onClick={() =>
@@ -54,6 +55,7 @@ const OpportunityApprovalItem = ({ opportunity }) => {
                 View Listing
               </NavLink>
               <NavLink
+                style={{ textDecoration: "underline" }}
                 className="p-2"
                 to={`/delete/investmentopportunities/${opportunity.id}/`}
                 onClick={() =>

@@ -1,21 +1,13 @@
 import "./citHome.css";
-import { Container, Row, Col, Button, Modal } from "react-bootstrap";
+import { Container, Row, Col, Modal } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import "../HomePage/HomePage.scss";
 import { Button as SharedButton } from "shared-components";
-import { BsSearch } from "react-icons/bs";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { Typeahead } from "react-bootstrap-typeahead";
+import { useState } from "react";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
-import { toKebabCase } from "../../../helpers/helpers";
 
 export default function citHome() {
-  const [selectedPlace, setSelectedPlace] = useState(null);
-  const [places, setPlaces] = useState(null);
-  const [communities, setCommunities] = useState(null);
-  const [regional, setRegional] = useState(null);
   const history = useHistory();
   const keycloak = useKeycloakWrapper();
   const [loggedInWithIdir] = useState(keycloak.idp === "idir");
@@ -35,31 +27,13 @@ export default function citHome() {
 
   const publicUrl = "/cit-dashboard/public";
   const privateUrl = "/cit-dashboard/internal";
+  const searchRoute = "/search-communities";
 
-  useEffect(() => {
-    axios.get("/api/opportunity/options").then((data) => {
-      const commNames = data.data.communities.map((comm) => comm.place_name);
-      setCommunities(commNames);
-      const regNames = data.data.regionalDistricts.map((dist) => dist.name);
-      setRegional(regNames);
-      setPlaces([...commNames, ...regNames]);
-    });
-  }, []);
-
-  const typeOfSelected = (place) => {
-    if (communities.find((c) => c === place)) {
-      return "community";
-    }
-    if (regional.find((r) => r === place)) {
-      return "regionalDistrict";
-    }
-    return null;
-  };
+  const [goToCommPage, setGoToCommPage] = useState(false);
 
   const handlePublic = () => {
-    if (selectedPlace) {
-      const type = typeOfSelected(selectedPlace);
-      history.push(`${publicUrl}?${type}=${toKebabCase(selectedPlace)}`);
+    if (goToCommPage) {
+      history.push(`${publicUrl}${searchRoute}`);
     } else {
       history.push(publicUrl);
     }
@@ -68,14 +42,11 @@ export default function citHome() {
   const handleLogin = () => {
     // login with IDIR only and redirect to private report
     let loginWithIdir;
-    if (selectedPlace) {
-      const type = typeOfSelected(selectedPlace);
+    if (goToCommPage) {
       loginWithIdir = keycloak.obj.createLoginUrl({
         idpHint: "idir",
         redirectUri: encodeURI(
-          `${configuration.baseUrl}${privateUrl}?${type}=${toKebabCase(
-            selectedPlace
-          )}`
+          `${configuration.baseUrl}${privateUrl}${searchRoute}`
         ),
       });
     } else {
@@ -84,6 +55,7 @@ export default function citHome() {
         redirectUri: encodeURI(`${configuration.baseUrl}${privateUrl}`),
       });
     }
+
     window.location.href = loginWithIdir;
   };
 
@@ -127,31 +99,23 @@ export default function citHome() {
                   infrastructure and community assets to provide a sense of what
                   a community is like – and how it is changing.{" "}
                 </p>
-                <>
-                  {places ? (
-                    <div className="w-100 mt-4 comm-search-div">
-                      <Typeahead
-                        id="search-by-community"
-                        size="large"
-                        onChange={(selected) => {
-                          setSelectedPlace(selected[0]);
-                          handleShow();
-                        }}
-                        options={places}
-                      />
-                      <Button
-                        className="search-glass-box"
-                        variant="outline-secondary"
-                      >
-                        <BsSearch />
-                      </Button>
-                    </div>
-                  ) : null}
-                </>
+                <></>
               </Col>
             </Row>
-            <Row className="pb-0 d-flex justify-content-end">
-              <Col sm={3} className="svg-box pt-3">
+            <Row>
+              <Col className="mt-2 d-flex justify-content-end">
+                <SharedButton
+                  onClick={() => {
+                    setGoToCommPage(true);
+                    handleShow();
+                  }}
+                  styling="home-buttons explore-button"
+                  label="Search For Your Community"
+                />
+              </Col>
+            </Row>
+            <Row className=" mb-0 pb-0 d-flex justify-content-end">
+              <Col sm={3} className="svg-box">
                 <img
                   className="add-opp-img"
                   src="/images/house_CITHOME.svg"
@@ -184,7 +148,7 @@ export default function citHome() {
               </Col>
             </Row>
             <Row className="mb-0 pr-0 mt-3 d-flex justify-content-end">
-              <Col sm={6} className="p-0 mb-0 svg-box">
+              <Col sm={6} className="p-0 pt-1 mb-0 svg-box">
                 <img
                   className="add-opp-img"
                   src="/images/HouseMountain.svg"

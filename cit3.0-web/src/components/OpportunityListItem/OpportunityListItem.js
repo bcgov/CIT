@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import LinesEllipsis from "react-lines-ellipsis";
+import NumberFormat from "react-number-format";
 import Map from "../Map/Map";
 import {
   determineStatusTextColour,
@@ -15,7 +16,12 @@ import {
 } from "../../store/actions/opportunity";
 import OpportunityFactory from "../../store/factory/OpportunityFactory";
 
-const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
+const OpportunityListItem = ({
+  options,
+  opportunity,
+  publicView,
+  handleModalOpen,
+}) => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -96,6 +102,15 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
     );
   };
 
+  const saleOrLease = () => {
+    const propertyStatus = options.propertyStatuses.find(
+      (s) => s.code === opportunity.userInfo.saleOrLease.value
+    ).name;
+    return propertyStatus !== "Both"
+      ? `For ${propertyStatus}`
+      : "Sale or Lease";
+  };
+
   return (
     <div key={opportunity.id} className="opportunity-table-row w-100">
       <Row
@@ -114,20 +129,76 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
             />
           </div>
         </Col>
-        <Col>
-          <Row>
-            <Col>{opportunity ? getAddress(opportunity.address) : ""}</Col>
-            {!publicView ? (
-              <>
-                <Col>{formatDate(opportunity.dateCreated)}</Col>
+        <Col className="d-flex flex-column">
+          {publicView ? (
+            <>
+              <Row>
                 <Col>
-                  {determineStatusTextColour(opportunity.approvalStatus)}
+                  <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
                 </Col>
-                <Col>{determineActions(opportunity)}</Col>
-              </>
-            ) : (
-              <Col className="d-flex align-items-end justify-content-end mr-1">
-                {publicView && (
+                <Col
+                  style={{
+                    marginRight: "0.5rem",
+                  }}
+                >
+                  <div className="d-flex flex-row flex-wrap align-content-end">
+                    {opportunity.siteInfo.parcelSize.value ? (
+                      <p className="border--pill">
+                        Parcel Size:{" "}
+                        <NumberFormat
+                          displayType="text"
+                          value={opportunity.siteInfo.parcelSize.value}
+                          suffix={` acres`}
+                          decimalScale={3}
+                          thousandSeparator={
+                            isNaN(opportunity.siteInfo.parcelSize.value)
+                              ? false
+                              : ","
+                          }
+                        />
+                      </p>
+                    ) : null}
+                    {opportunity.userInfo.currentZone.value && options ? (
+                      <p className="border--pill">{`Zoning: ${
+                        options.landUseZoning.find(
+                          (s) =>
+                            s.code === opportunity.userInfo.currentZone.value
+                        ).name
+                      }`}</p>
+                    ) : null}
+                    {opportunity.userInfo.saleOrLease.value && options ? (
+                      <p className="border--pill">{`${saleOrLease()}`}</p>
+                    ) : null}
+                  </div>
+                </Col>
+              </Row>
+              <Row className="h-100">
+                <Col
+                  style={{
+                    paddingTop: "0.5rem",
+                    paddingBottom: "0.5rem",
+                  }}
+                >
+                  <LinesEllipsis
+                    className="note"
+                    text={opportunity.userInfo.opportunityDescription.value}
+                    maxLine="4"
+                    ellipsis="..."
+                    trimRight
+                    basedOn="letters"
+                  />
+                </Col>
+                <Col
+                  style={{
+                    alignSelf: "flex-end",
+                    paddingBottom: "0.5rem",
+                    marginRight: "0.5rem",
+                  }}
+                  sm={6}
+                  md={6}
+                  lg={4}
+                  className="text-right"
+                >
                   <Button
                     className="p-0"
                     variant="link"
@@ -135,28 +206,38 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
                   >
                     View property details
                   </Button>
-                )}
-              </Col>
-            )}
-          </Row>
-
-          {opportunity.publicNote ? (
-            <Row>
-              <Col className="pl-0">
-                <b className="note-title">
-                  Comment from {opportunity.lastAdmin}:
-                </b>
-                <LinesEllipsis
-                  className="note pr-3"
-                  text={opportunity.publicNote}
-                  maxLine="3"
-                  ellipsis="..."
-                  trimRight
-                  basedOn="letters"
-                />
-              </Col>
-            </Row>
+                </Col>
+              </Row>
+            </>
           ) : null}
+          <Row className="flex-grow-1">
+            {!publicView ? (
+              <>
+                <Col>
+                  <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
+                </Col>
+                <Col>{formatDate(opportunity.dateCreated)}</Col>
+                <Col>
+                  {determineStatusTextColour(opportunity.approvalStatus)}
+                </Col>
+                <Col>{determineActions(opportunity)}</Col>
+              </>
+            ) : null}
+            {opportunity.publicNote ? (
+              <Row>
+                <Col>
+                  <LinesEllipsis
+                    className="note pr-3"
+                    text={`Reason: ${opportunity.publicNote}`}
+                    maxLine="3"
+                    ellipsis="..."
+                    trimRight
+                    basedOn="letters"
+                  />
+                </Col>
+              </Row>
+            ) : null}
+          </Row>
         </Col>
       </Row>
     </div>
@@ -164,10 +245,12 @@ const OpportunityListItem = ({ opportunity, publicView, handleModalOpen }) => {
 };
 
 OpportunityListItem.defaultProps = {
+  options: {},
   handleModalOpen: () => {},
 };
 
 OpportunityListItem.propTypes = {
+  options: PropTypes.shape(),
   opportunity: PropTypes.shape().isRequired,
   handleModalOpen: PropTypes.func,
   publicView: PropTypes.bool.isRequired,

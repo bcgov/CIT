@@ -69,12 +69,26 @@ export default function AddOpportunity() {
   const [changePage, setChangePage] = useState(false);
   const [localityName, setLocalityName] = useState("Your Community");
 
-  // Handle Modal if proximity data is still loading
+  // Handle Modal for errors
   const [show, setShow] = useState(false);
   const handleClose = () => {
     setShow(false);
   };
   const handleShow = () => setShow(true);
+
+  // handle proximity data still loading modal
+  const [proxModalShow, setProxModalShow] = useState(false);
+
+  const showProximityModal = () => {
+    setChangePage(true);
+    setProxModalShow(true);
+  };
+  const handleProximityModalClose = () => {
+    if (!proximityInProgress) {
+      setChangePage(true);
+      setProxModalShow(false);
+    }
+  };
 
   const closeModalAndContinue = () => {
     handleClose();
@@ -90,6 +104,10 @@ export default function AddOpportunity() {
         closeModalAndContinue();
       }
     }
+    handleClose();
+    if (proximityInProgress && !error.length) {
+      showProximityModal();
+    }
   };
 
   const onCancelClick = () => {
@@ -101,8 +119,13 @@ export default function AddOpportunity() {
     // Data is prepared, continue to next page
     if (!error.length && changePage && !proximityInProgress) {
       closeModalAndContinue();
+      return;
     }
-  }, [changePage, proximityInProgress, error]);
+    if (!error.length && changePage && !proximityInProgress) {
+      handleProximityModalClose();
+      closeModalAndContinue();
+    }
+  }, [proximityInProgress, error]);
 
   useEffect(() => {
     if (municipality) {
@@ -133,7 +156,7 @@ export default function AddOpportunity() {
     }
     setWarning(warnings);
     setError(errors);
-    setChangePage(agreed && !error.length && !warning.length);
+    setChangePage(agreed && !errors.length);
     if (!proximityInProgress) {
       closeModalAndContinue();
     }
@@ -270,6 +293,16 @@ export default function AddOpportunity() {
     <>
       <NavigationHeader currentStep={1} />
       <Modal
+        show={proxModalShow}
+        onHide={handleProximityModalClose}
+        keyboard={false}
+        backdrop="static"
+        size="lg"
+        centered
+      >
+        <LoadingScreen />
+      </Modal>
+      <Modal
         show={show}
         onHide={handleClose}
         keyboard={false}
@@ -290,13 +323,17 @@ export default function AddOpportunity() {
               ))}
             </Modal.Body>
             <Modal.Footer>
+              {!(error.length || (!address && !geometry)) ? (
+                <Button
+                  label="Cancel"
+                  styling="bcgov-normal-white mr-auto modal-reset-button btn"
+                  onClick={handleClose}
+                />
+              ) : null}
               <Button
-                label="Cancel"
-                styling="bcgov-normal-white mr-auto modal-reset-button btn"
-                onClick={handleClose}
-              />
-              <Button
-                label="Continue"
+                label={
+                  error.length || (!address && !geometry) ? "Okay" : "Continue"
+                }
                 styling="bcgov-normal-blue modal-save-button btn"
                 onClick={handleErrorModalContinue}
               />

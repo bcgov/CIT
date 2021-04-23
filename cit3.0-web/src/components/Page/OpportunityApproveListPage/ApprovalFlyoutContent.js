@@ -35,7 +35,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
   const [pubFrom, setPubFrom] = useState(search[FORM_PUB_FROM_INPUT]);
   const [pubTo, setPubTo] = useState(search[FORM_PUB_TO_INPUT]);
 
-  const [statusCode, setStatusCode] = useState();
+  const [statusCode, setStatusCode] = useState([]);
   const [regionalDistrict, setRegionalDistrict] = useState();
 
   const validateInput = (fieldName, value) => {
@@ -63,12 +63,19 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
   };
 
   const handleStatusChange = (nextStatusCode) => {
-    let updateTo = nextStatusCode;
-    if (nextStatusCode === statusCode) {
-      updateTo = "";
+    let removedStatus = statusCode;
+    const index = statusCode.indexOf(nextStatusCode);
+    if (index !== -1) {
+      removedStatus = removedStatus.filter((item, ind) => ind !== index);
+      setStatusCode(removedStatus);
+    } else {
+      removedStatus = [...statusCode, nextStatusCode];
+      setStatusCode(removedStatus);
     }
-    setStatusCode(updateTo);
-    onQuery("approval_status_id", updateTo);
+    onQuery(
+      "approval_status_id",
+      Array.isArray(statusCode) ? removedStatus.join(",") : ""
+    );
   };
   const handleRegionalDistrictChange = (nextRDCode) => {
     setRegionalDistrict(nextRDCode);
@@ -76,7 +83,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
   };
 
   const handleResetFilters = () => {
-    setStatusCode("");
+    setStatusCode([]);
     setRegionalDistrict("");
     setSubFrom("");
     setSubTo("");
@@ -101,7 +108,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
   };
 
   const handlePubFrom = (value) => {
-    setSubFrom(value);
+    setPubFrom(value);
     onQuery(FORM_PUB_FROM_INPUT, value);
   };
   const handlePubTo = (value) => {
@@ -111,7 +118,9 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
 
   // Initialization
   useEffect(() => {
-    setStatusCode(search.approval_status_id);
+    setStatusCode(
+      search.approval_status_id ? search.approval_status_id.split(",") : []
+    );
     setRegionalDistrict(search.regional_district);
     setSubFrom(search[FORM_SUB_FROM_INPUT]);
     setSubTo(search[FORM_SUB_TO_INPUT]);
@@ -119,25 +128,32 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
     setPubTo(search[FORM_PUB_TO_INPUT]);
   }, []);
 
+  const order = ["NEW", "PEND", "NCOM", "NWED", "PUBL", "CLOS"];
+
   return (
     <div>
       <h3>{title}</h3>
       <div className="d-flex flex-column my-3">
         <h4 className="mb-3">Status</h4>
         {statuses &&
-          statuses.map((status) => (
-            <Button
-              key={v4()}
-              styling={`mb-3 bcgov-button filter-button ${
-                statusCode !== status.status_code
-                  ? "unselected bcgov-normal-white"
-                  : "border-0 bcgov-normal-blue"
-              }`}
-              onClick={() => handleStatusChange(status.status_code)}
-              label={status.status_name}
-              title={status.status_description}
-            />
-          ))}
+          statuses
+            .sort(
+              (a, b) =>
+                order.indexOf(a.status_code) - order.indexOf(b.status_code)
+            )
+            .map((status) => (
+              <Button
+                key={v4()}
+                styling={`mb-3 bcgov-button filter-button ${
+                  !statusCode.includes(status.status_code)
+                    ? "unselected bcgov-normal-white"
+                    : "border-0 bcgov-normal-blue"
+                }`}
+                onClick={() => handleStatusChange(status.status_code)}
+                label={status.status_name}
+                title={status.status_description}
+              />
+            ))}
       </div>
       <div className="my-3">
         <h4 className="mb-3">Submitted Date</h4>

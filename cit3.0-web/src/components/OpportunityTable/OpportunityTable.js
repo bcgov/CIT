@@ -41,6 +41,7 @@ export default function OpportunityTable(props) {
                 key={v4()}
                 opportunity={opportunity}
                 handleModalOpen={props.handleModalOpen}
+                publicView={false}
               />
             );
           })}
