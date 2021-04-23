@@ -5,6 +5,7 @@ import { Button } from "shared-components";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useQuery } from "../../../hooks/use-query";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import useConfiguration from "../../../hooks/useConfiguration";
 
 // @todo: Move to actions / status sources
 // const NEW_CIT_USER = 201;
@@ -33,6 +34,19 @@ const Login = () => {
   if (isIE) {
     return <Redirect to={{ pathname: "/ienotsupported" }} />;
   }
+  const configuration = useConfiguration();
+
+  const handleLogin = () => {
+    if (window.location.href.includes("cit-dashboard")) {
+      const loginWithIdir = keycloak.createLoginUrl({
+        idpHint: "idir",
+        redirectUri: encodeURI(`${configuration.baseUrl}/cit-dashboard/home`),
+      });
+      window.location.href = loginWithIdir;
+    } else {
+      keycloak.login();
+    }
+  };
   return (
     <Container className="login" fluid>
       <Container className="unauth" fluid>
@@ -52,7 +66,7 @@ const Login = () => {
               <Button
                 label="Sign In"
                 styling="bcgov-button bcgov-normal-blue btn mb-4"
-                onClick={() => keycloak.login()}
+                onClick={handleLogin}
               />
               <p>
                 Sign into the tool with your government issued IDIR or your
