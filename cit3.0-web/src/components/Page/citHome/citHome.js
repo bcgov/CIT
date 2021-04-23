@@ -3,8 +3,7 @@ import { Container, Row, Col, Modal } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import "../HomePage/HomePage.scss";
 import { Button as SharedButton } from "shared-components";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
 
@@ -28,17 +27,35 @@ export default function citHome() {
 
   const publicUrl = "/cit-dashboard/public";
   const privateUrl = "/cit-dashboard/internal";
+  const searchRoute = "/search-communities";
+
+  const [goToCommPage, setGoToCommPage] = useState(false);
 
   const handlePublic = () => {
-    history.push(publicUrl);
+    if (goToCommPage) {
+      history.push(`${publicUrl}${searchRoute}`);
+    } else {
+      history.push(publicUrl);
+    }
   };
 
   const handleLogin = () => {
     // login with IDIR only and redirect to private report
-    const loginWithIdir = keycloak.obj.createLoginUrl({
-      idpHint: "idir",
-      redirectUri: encodeURI(`${configuration.baseUrl}${privateUrl}`),
-    });
+    let loginWithIdir;
+    if (goToCommPage) {
+      loginWithIdir = keycloak.obj.createLoginUrl({
+        idpHint: "idir",
+        redirectUri: encodeURI(
+          `${configuration.baseUrl}${privateUrl}${searchRoute}`
+        ),
+      });
+    } else {
+      loginWithIdir = keycloak.obj.createLoginUrl({
+        idpHint: "idir",
+        redirectUri: encodeURI(`${configuration.baseUrl}${privateUrl}`),
+      });
+    }
+
     window.location.href = loginWithIdir;
   };
 
@@ -73,11 +90,47 @@ export default function citHome() {
           </Col>
         </Row>
         <Row>
-          <Col className="box cit-box explore-box corner">
+          <Col className="box mr-3 cit-box">
+            <Row>
+              <Col>
+                <h3>View my community or region</h3>
+                <p className="my-2">
+                  Community and regional profiles include socioeconomic data,
+                  infrastructure and community assets to provide a sense of what
+                  a community is like – and how it is changing.{" "}
+                </p>
+                <></>
+              </Col>
+            </Row>
+            <Row>
+              <Col className="mt-2 d-flex justify-content-end">
+                <SharedButton
+                  onClick={() => {
+                    setGoToCommPage(true);
+                    handleShow();
+                  }}
+                  styling="home-buttons explore-button"
+                  label="Search For Your Community"
+                />
+              </Col>
+            </Row>
+            <Row className=" mb-0 pb-0 d-flex justify-content-end">
+              <Col sm={3} className="svg-box">
+                <img
+                  className="add-opp-img"
+                  src="/images/house_CITHOME.svg"
+                  height="100%"
+                  width="100%"
+                  alt="cit home community search box"
+                />
+              </Col>
+            </Row>
+          </Col>
+          <Col className="box ml-3 cit-box explore-box corner">
             <Row>
               <Col>
                 <h3>Discover insights and patterns among B.C. communities</h3>
-                <p className="my-3">
+                <p className="my-2">
                   Find all communities in B.C. with particular characteristics –
                   whether you’re interested in economic health, access to
                   education and health care, connectivity, infrastructure, or
@@ -85,15 +138,17 @@ export default function citHome() {
                 </p>
               </Col>
             </Row>
-            <Row className="mb-0 pr-0 mt-3">
-              <Col className="mt-2">
+            <Row>
+              <Col className="mt-2 d-flex justify-content-end">
                 <SharedButton
                   onClick={handleShow}
                   styling="home-buttons explore-button"
                   label="Explore B.C. Communities"
                 />
               </Col>
-              <Col sm={6} className="p-0 mb-0 svg-box">
+            </Row>
+            <Row className="mb-0 pr-0 mt-3 d-flex justify-content-end">
+              <Col sm={6} className="p-0 pt-1 mb-0 svg-box">
                 <img
                   className="add-opp-img"
                   src="/images/HouseMountain.svg"

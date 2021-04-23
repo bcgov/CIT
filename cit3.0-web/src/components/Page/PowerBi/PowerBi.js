@@ -55,6 +55,11 @@ export default function PowerBi() {
   const [showToolTip, setShowToolTip] = useState(false);
   const tooltip = useRef(null);
 
+  const searchRoute = "/search-communities";
+  const [setPage, setSetPage] = useState(
+    window.location.pathname.includes(searchRoute)
+  );
+
   // Modal
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -74,6 +79,9 @@ export default function PowerBi() {
   };
 
   const getPlaceFromUrl = () => {
+    if (window.location.pathname.includes(searchRoute)) {
+      return false;
+    }
     const path = window.location.pathname.split("/");
     if (
       path.includes("public") &&
@@ -250,7 +258,7 @@ export default function PowerBi() {
                       const criteria = data.filter(
                         (report) => report.displayName === "Criteria Search"
                       );
-                      if (community || regionalDistrict) {
+                      if (community || regionalDistrict || setPage) {
                         if (commReport[0].name !== currentPage) {
                           window.report
                             .setPage(commReport[0].name)
