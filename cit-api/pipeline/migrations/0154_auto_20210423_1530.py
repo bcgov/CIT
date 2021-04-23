@@ -47,11 +47,13 @@ def add_preferred_developments(apps, schema_editor):
         ["Wholesale Trade", "", "WOTR"]
     ]
     for option in developments:
-        new_zoning = PreferredDevelopment()
-        new_zoning.name = option[0]
-        new_zoning.description = option[1]
-        new_zoning.code = option[2]
-        new_zoning.save()
+        p = PreferredDevelopment.objects.get(code=option[2])
+        if p is not None:
+            new_development = PreferredDevelopment()
+            new_development.name = option[0]
+            new_development.description = option[1]
+            new_development.code = option[2]
+            new_development.save()
 
 
 def undo_add_preferred_developments(apps, schema_editor):
