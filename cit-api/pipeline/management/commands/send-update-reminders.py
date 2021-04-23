@@ -57,7 +57,7 @@ def send_reminder_email(email, opportunity_list):
                 "encoding": "utf-8",
                 "from": os.environ.get("EMAIL_SENDING_ADDRESS"),
                 "priority": "normal",
-                "subject": "Your have Opportunities that have not been Modified for 90 Days",
+                "subject": "You Have Opportunities That Have Not Been Modified For 90 Days",
                 "to": [email],
                 "tag": "CIT_Admin_Notification",
             }
