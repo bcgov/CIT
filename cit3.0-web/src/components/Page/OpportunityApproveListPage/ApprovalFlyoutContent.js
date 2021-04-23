@@ -101,7 +101,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
   };
 
   const handlePubFrom = (value) => {
-    setSubFrom(value);
+    setPubFrom(value);
     onQuery(FORM_PUB_FROM_INPUT, value);
   };
   const handlePubTo = (value) => {
