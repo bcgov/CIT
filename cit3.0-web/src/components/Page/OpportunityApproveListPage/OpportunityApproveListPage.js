@@ -20,6 +20,9 @@ const OpportunityApproveListPage = () => {
   const history = useHistory();
   let search = querystring.decode(window.location.search.split("?")[1]);
 
+  // For returning to the correct page when cancelling a delete
+  window.sessionStorage.setItem("back_url", window.location.pathname);
+
   const { CancelToken } = axios;
   let source;
 

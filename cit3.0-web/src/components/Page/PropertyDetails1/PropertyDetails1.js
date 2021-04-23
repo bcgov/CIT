@@ -14,6 +14,7 @@ import {
   setServiceCapacity,
   setRentalPrice,
   setSalePrice,
+  resetOpportunity,
 } from "../../../store/actions/opportunity";
 import { setOptions, getOptions } from "../../../store/actions/options";
 import "./PropertyDetails1.scss";
@@ -21,6 +22,7 @@ import Validator from "../../FormComponents/Validator";
 
 export default function PropertyDetails1() {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [rentalError, setRentalError] = useState(false);
   const [saleError, setSaleError] = useState(false);
@@ -36,6 +38,11 @@ export default function PropertyDetails1() {
   const salePrice = useSelector(
     (state) => state.opportunity.userInfo.saleOrLease.salePrice
   );
+
+  const onCancelClick = () => {
+    dispatch(resetOpportunity());
+    history.push("/investmentopportunities/dashboard");
+  };
 
   // Get options for store
   const PropStatusOptions = useSelector(
@@ -156,8 +163,6 @@ export default function PropertyDetails1() {
     const { value } = state.opportunity.services.electrical;
     return value;
   });
-
-  const history = useHistory();
 
   const goToNextPage = () => {
     history.push("/investmentopportunities/additional-details");
@@ -504,6 +509,7 @@ export default function PropertyDetails1() {
           sewerError ||
           naturalGasError
         }
+        onCancelClick={onCancelClick}
       />
     </div>
   );

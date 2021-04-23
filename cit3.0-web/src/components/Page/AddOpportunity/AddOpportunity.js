@@ -92,6 +92,11 @@ export default function AddOpportunity() {
     handleClose();
   };
 
+  const onCancelClick = () => {
+    dispatch(resetOpportunity());
+    history.push("/investmentopportunities/dashboard");
+  };
+
   useEffect(() => {
     // Data is prepared, continue to next page
     if (!error.length && changePage && !proximityInProgress) {
@@ -403,7 +408,7 @@ export default function AddOpportunity() {
           <Terms agreed={agreed} setAgreed={setAgreed} />
         </Row>
       </Container>
-      <ButtonRow onClick={goToNextPage} />
+      <ButtonRow onClick={goToNextPage} onCancelClick={onCancelClick} />
     </>
   );
 }

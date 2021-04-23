@@ -1,6 +1,6 @@
 import { Row, Col, Button } from "react-bootstrap";
 import PropTypes from "prop-types";
-import { Link, NavLink, useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import LinesEllipsis from "react-lines-ellipsis";
 import NumberFormat from "react-number-format";
@@ -24,6 +24,13 @@ const OpportunityListItem = ({
 }) => {
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const setCurrentUrl = (path) => {
+    // For returning to the correct page when cancelling a delete
+    window.sessionStorage.setItem("back_url", window.location.pathname);
+    history.push(path);
+  };
+
   const goToEditListing = () => {
     getOpportunity(opportunity.id).then((response) => {
       dispatch(
@@ -39,7 +46,13 @@ const OpportunityListItem = ({
     if (opp.approvalStatus === "PUBL") {
       return (
         <>
-          <NavLink to={opp.link}>View Listing</NavLink>
+          <Button
+            className="p-0"
+            variant="link"
+            onClick={() => setCurrentUrl(opp.link)}
+          >
+            View Listing
+          </Button>
           <br />
           <Button
             className="p-0"
@@ -65,7 +78,13 @@ const OpportunityListItem = ({
     }
     return (
       <>
-        <NavLink to={opp.link}>View Listing</NavLink>
+        <Button
+          className="p-0"
+          variant="link"
+          onClick={() => setCurrentUrl(opp.link)}
+        >
+          View Listing
+        </Button>
         <br />
 
         <Button
@@ -180,14 +199,13 @@ const OpportunityListItem = ({
                   lg={4}
                   className="text-right"
                 >
-                  <Link
-                    to={{
-                      pathname: opportunity.link,
-                      state: { prevPath: window.location.pathname },
-                    }}
+                  <Button
+                    className="p-0"
+                    variant="link"
+                    onClick={() => setCurrentUrl(opportunity.link)}
                   >
                     View property details
-                  </Link>
+                  </Button>
                 </Col>
               </Row>
             </>

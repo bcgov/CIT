@@ -54,6 +54,18 @@ const OpportunityApprovalItem = ({ opportunity }) => {
               >
                 View Listing
               </NavLink>
+              <NavLink
+                style={{ textDecoration: "underline" }}
+                className="p-2"
+                to={`/delete/investmentopportunities/${opportunity.id}/`}
+                onClick={() =>
+                  history.push(
+                    `/delete/investmentopportunities/${opportunity.id}/`
+                  )
+                }
+              >
+                Delete
+              </NavLink>
             </Col>
           </Row>
           <Row>
