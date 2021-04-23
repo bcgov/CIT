@@ -75,7 +75,7 @@ export default function AddOpportunity() {
   };
   const handleShow = () => setShow(true);
 
-  // handle jproximity data still loading modal
+  // handle proximity data still loading modal
   const [proxModalShow, setProxModalShow] = useState(false);
 
   const showProximityModal = () => {
