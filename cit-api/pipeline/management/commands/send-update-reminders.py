@@ -30,6 +30,12 @@ class Command(BaseCommand):
         for email in email_opportunity_mapping:
             print(email)
             email_result = send_reminder_email(email, email_opportunity_mapping[email])
+            if email_result.status_code == 201:
+                print("Successfully sent notification for opportunity with ID " + str([mapped_opportunity.id for mapped_opportunity in email_opportunity_mapping[email]]))
+            else:
+                print("Error from email API: " + str(email_result.status_code))
+                print("Unable to send notification for opportunity with ID " + str([mapped_opportunity.id for mapped_opportunity in email_opportunity_mapping[email]]))
+                print(email_result.text)
 
 def send_reminder_email(email, opportunity_list):
     token_request_body = {'grant_type': 'client_credentials'}
