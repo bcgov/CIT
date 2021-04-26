@@ -1,5 +1,6 @@
 .opportunity-approve-map-container{
-    height: 170px;
+    min-height: 170px;
+    height: 100%;
 }
 
 .note-title.note-title,
