@@ -103,7 +103,7 @@ export default function citHome() {
               </Col>
             </Row>
             <Row>
-              <Col className="mt-2 d-flex justify-content-end">
+              <Col className="mt-4">
                 <SharedButton
                   onClick={() => {
                     setGoToCommPage(true);
@@ -139,7 +139,7 @@ export default function citHome() {
               </Col>
             </Row>
             <Row>
-              <Col className="mt-2 d-flex justify-content-end">
+              <Col className="mt-4">
                 <SharedButton
                   onClick={handleShow}
                   styling="home-buttons explore-button"

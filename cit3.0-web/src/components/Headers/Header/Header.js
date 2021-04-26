@@ -2,6 +2,7 @@ import "./Header.scss";
 
 import React, { useState, useEffect } from "react";
 import { useHistory, useLocation } from "react-router";
+import { Link } from "react-router-dom";
 import { Button, Navbar, Nav } from "react-bootstrap";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import UserProfile from "./UserProfile";
@@ -52,7 +53,16 @@ const Header = () => {
           </Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Item>
-              <div className="title">{title()}</div>
+              <Link
+                className="text-white main-header-text"
+                to={
+                  isPowerBI
+                    ? "/cit-dashboard/home"
+                    : "/investmentopportunities/home"
+                }
+              >
+                <div className="title">{title()}</div>
+              </Link>
             </Nav.Item>
           </Nav>
           {keycloak.obj && <UserProfile />}
