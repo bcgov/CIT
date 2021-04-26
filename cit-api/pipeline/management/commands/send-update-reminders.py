@@ -94,5 +94,4 @@ def to_kebab_case(opportunity_title):
     title_regex_match_list = re.findall("/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g", opportunity_title)
     separator = "-"
     kebab_case_title = separator.join(title_regex_match_list).lower()
-    print(kebab_case_title)
     return kebab_case_title
