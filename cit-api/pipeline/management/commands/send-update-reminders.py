@@ -73,7 +73,7 @@ def construct_email_body(opportunity_list):
         opportunity_links = opportunity_links + "</p>"
 
     email_body = "<p>Hello again! It has been over 90 days since you modified one or more of your listings on the Investment Opportunities Tool. Please help us ensure the tool remains useful for investors by confirming that your listings are still available. If a listing has been sold or is no longer available, please remove the listing. You may wish to promote a new investment opportunity in your community instead.</p>"
-    email_body = email_body + "<p>To renew a listing, please log-in to your dashboard on the Investment Opportunities Tool. Click “edit” to review that all the listing information is still correct. Once you re-submit your listing, it will be reviewed and published to the Opportunities Tool again. Thanks for helping investors find their next opportunity in B.C.!</p>"
+    email_body = email_body + "<p>To renew a listing, please log-in to <a href=\"" + build_full_dashboard_link() +  "\">your dashboard</a> on the Investment Opportunities Tool. Click “edit” to review that all the listing information is still correct. Once you re-submit your listing, it will be reviewed and published to the Opportunities Tool again. Thanks for helping investors find their next opportunity in B.C.!</p>"
     email_body = email_body + "<p>Click here to view the listing(s):</p>"
     email_body = email_body + opportunity_links
     return email_body
