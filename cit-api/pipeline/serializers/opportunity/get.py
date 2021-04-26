@@ -165,6 +165,8 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
         for first_nation in nearest_first_nations:
             nearest_first_nations[index]['reserve_name'] = IndianReserveBandName.objects.get(
                 id=first_nation['reserve_id_id']).english_name
+            nearest_first_nations[index]['reserve_link'] = IndianReserveBandName.objects.get(
+                id=first_nation['reserve_id_id']).name.split(',')[0]
             index += 1
         return nearest_first_nations
 
