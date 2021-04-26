@@ -469,7 +469,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         displayRange={deepWaterPortDisplayRange}
         setDisplayRange={setDeepWaterPortDisplayRange}
       />
-      <h3>Demographics</h3>
+      <h3>Nearby Communities</h3>
       <CommunityOrPopulationProximityFilter
         inputRange={{ min: 0, max: 500 }}
         units="km"

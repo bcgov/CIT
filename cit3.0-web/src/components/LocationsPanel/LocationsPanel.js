@@ -35,10 +35,10 @@ const LocationsPanel = ({
     />
     {municipalities ? (
       <>
-        <h3 className="mb-3">Nearest Municipalities</h3>
+        <h3 className="mb-3">Nearest Communities</h3>
         <p>
-          Click on Municipality or First Nation&apos;s name to view more
-          information on our Community Information Tool
+          View more information about labour force, key sectors and
+          infrastructure on the Community Information Tool.
         </p>
         <Container className="mb-4">
           {municipalities.map((muni) => (
