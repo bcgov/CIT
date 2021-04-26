@@ -49,13 +49,13 @@ class EmailView(APIView):
             email_config = {
                 "bcc": [],
                 "bodyType": "html",
-                "body": "<h1>A new opportunity has been submitted</h1><p>Click here to review the new opportunity: " + build_full_link(link) + "</p>",
+                "body": "<p>A new opportunity has been submitted to the Investment Opportunities Tool. Please review the listing to determine whether any revisions are required prior to publication.</p><p>Click here to view the listing: " + build_full_link(link) + "</p>",
                 "cc": [],
                 "delayTS": 0,
                 "encoding": "utf-8",
                 "from": os.environ.get("EMAIL_SENDING_ADDRESS"),
                 "priority": "normal",
-                "subject": "A New Opportunity is Available for Review",
+                "subject": "New Investment Opportunity submitted",
                 "to": self.get_admin_email_addresses(),
                 "tag": "CIT_Admin_Notification",
             }
@@ -106,13 +106,13 @@ class EdoEmailView(APIView):
             email_config = {
                 "bcc": [],
                 "bodyType": "html",
-                "body": "<h1>The opportunity you submitted has been published.</h1><p>Click here to view your published opportunity: " + build_full_link(link) + "</p>",
+                "body": "<p>Thank you for adding an opportunity to the Investment Opportunities Tool. Good news! Your listing has been published and is now visible to investors on the tool.</p>Click here to view your published listing: " + build_full_link(link) + "</p>",
                 "cc": [],
                 "delayTS": 0,
                 "encoding": "utf-8",
                 "from": os.environ.get("EMAIL_SENDING_ADDRESS"),
                 "priority": "normal",
-                "subject": "Your Opportunity has been Published",
+                "subject": "Your Investment Opportunity has been published",
                 "to": [self.get_edo_email_for_opportunity(id)],
                 "tag": "CIT_Admin_Notification",
             }

@@ -21,17 +21,10 @@ function displayResources(resources) {
   const zoningOptions = useSelector(
     (state) => state.options.landUseZoning
   ).map((option) => ({ value: option.code, label: option.name }));
-  const developmentOptions = useSelector(
-    (state) => state.options.preferredDevelopment
-  ).map((option) => ({ value: option.code, label: option.name }));
 
   const getTheOptions = async () => {
     // Fetch options, if not already stored on client
-    if (
-      !PropStatusOptions.length ||
-      !zoningOptions.length ||
-      !developmentOptions.length
-    ) {
+    if (!PropStatusOptions.length || !zoningOptions.length) {
       const options = await getOptions();
       dispatch(setOptions(options.data));
     }
@@ -148,18 +141,7 @@ function displayResources(resources) {
             element = (
               <div className="d-flex flex-column">
                 <div className="ml-2">
-                  <b>
-                    {multiValues
-                      .map((v) => {
-                        if (typeof v !== "object") {
-                          return developmentOptions.find(
-                            (option) => v === option.value
-                          ).label;
-                        }
-                        return `${v.label}`;
-                      })
-                      .join(", ")}
-                  </b>
+                  <b>{multiValues.map((v) => v.label).join(", ")}</b>
                 </div>
               </div>
             );

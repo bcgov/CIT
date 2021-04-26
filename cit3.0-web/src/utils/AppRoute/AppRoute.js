@@ -1,6 +1,7 @@
 import React, { useLayoutEffect } from "react";
 import Proptypes from "prop-types";
 import { useLocation, Route } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 import { useSelector } from "react-redux";
 import { Spinner } from "react-bootstrap";
@@ -22,9 +23,20 @@ const AppRoute = ({
     }
   }, [location.pathname]);
 
+  let route = (
+    <Route
+      {...rest}
+      render={(props) => (
+        <main>
+          <Component {...props} />
+        </main>
+      )}
+    />
+  );
+
   const keycloakReady = useSelector((state) => state.keycloakReady);
   if (!keycloakReady) {
-    return (
+    route = (
       <main className="center-spinner">
         <Spinner animation="border" />
       </main>
@@ -35,10 +47,8 @@ const AppRoute = ({
   const Layout =
     layout === undefined ? (props) => <>{props.children}</> : layout;
 
-  document.title = title;
-
   if (usePrivateRoute) {
-    return (
+    route = (
       <PrivateRoute
         {...rest}
         component={Component}
@@ -49,14 +59,14 @@ const AppRoute = ({
   }
 
   return (
-    <Route
-      {...rest}
-      render={(props) => (
-        <main>
-          <Component {...props} />
-        </main>
-      )}
-    />
+    <>
+      {title !== "" ? (
+        <Helmet>
+          <title>{title}</title>
+        </Helmet>
+      ) : null}
+      {route}
+    </>
   );
 };
 

@@ -117,3 +117,6 @@ p.border--pill {
   }
 }
 
+.app-container .bcgov-mandatory {
+  display: none;
+}

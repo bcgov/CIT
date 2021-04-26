@@ -216,10 +216,12 @@ function createRequestFromModel(state) {
       ),
     };
   }
-  if (state.userInfo.preferredDevelopment.value.length) {
-    nearestLocations.opportunity_preferred_development = state.userInfo.preferredDevelopment.value.map(
-      (option) => option.value || option
-    );
+  if (Array.isArray(state.userInfo.preferredDevelopment.value)) {
+    nearestLocations.opportunity_preferred_development_v2 =
+      state.userInfo.preferredDevelopment.value[0].label;
+  } else {
+    nearestLocations.opportunity_preferred_development_v2 =
+      state.userInfo.preferredDevelopment.value.label;
   }
   return {
     ...request,

@@ -85,6 +85,7 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
             "ocp_zoning_code",
             "opportunity_property_status",
             "opportunity_preferred_development",
+            "opportunity_preferred_development_v2",
             "nearest_port",
             "nearest_airport",
             "nearest_research_centre",
