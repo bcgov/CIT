@@ -15,6 +15,7 @@ import {
   setOpportunity,
 } from "../../store/actions/opportunity";
 import OpportunityFactory from "../../store/factory/OpportunityFactory";
+import "./OpportunityListItem.css";
 
 const OpportunityListItem = ({
   options,
@@ -117,11 +118,8 @@ const OpportunityListItem = ({
         className={publicView ? "nested-link" : ""}
         onClick={() => !!publicView && history.push(opportunity.link)}
       >
-        <Col sm={3} md={3} lg={3}>
-          <div
-            style={{ borderRight: "2px solid #606060" }}
-            className="opportunity-table-map-container"
-          >
+        <Col md={3} lg={3}>
+          <div className="border-list-item opportunity-table-map-container">
             <Map
               coords={opportunity.coords}
               isInteractive={false}
@@ -133,7 +131,7 @@ const OpportunityListItem = ({
           {publicView ? (
             <>
               <Row>
-                <Col>
+                <Col style={{ paddingLeft: "0" }}>
                   <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
                 </Col>
                 <Col
@@ -175,6 +173,7 @@ const OpportunityListItem = ({
               <Row className="h-100">
                 <Col
                   style={{
+                    paddingLeft: "0",
                     paddingTop: "0.5rem",
                     paddingBottom: "0.5rem",
                   }}
@@ -213,7 +212,7 @@ const OpportunityListItem = ({
           <Row className="flex-grow-1">
             {!publicView ? (
               <>
-                <Col>
+                <Col style={{ paddingLeft: "0" }}>
                   <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
                 </Col>
                 <Col>{formatDate(opportunity.dateCreated)}</Col>
@@ -223,21 +222,21 @@ const OpportunityListItem = ({
                 <Col>{determineActions(opportunity)}</Col>
               </>
             ) : null}
-            {opportunity.publicNote ? (
-              <Row>
-                <Col>
-                  <LinesEllipsis
-                    className="note pr-3"
-                    text={`Reason: ${opportunity.publicNote}`}
-                    maxLine="3"
-                    ellipsis="..."
-                    trimRight
-                    basedOn="letters"
-                  />
-                </Col>
-              </Row>
-            ) : null}
           </Row>
+          {!publicView && opportunity.publicNote ? (
+            <Row>
+              <Col style={{ paddingLeft: "0" }}>
+                <LinesEllipsis
+                  className="note pr-3"
+                  text={`Reason: ${opportunity.publicNote}`}
+                  maxLine="3"
+                  ellipsis="..."
+                  trimRight
+                  basedOn="letters"
+                />
+              </Col>
+            </Row>
+          ) : null}
         </Col>
       </Row>
     </div>

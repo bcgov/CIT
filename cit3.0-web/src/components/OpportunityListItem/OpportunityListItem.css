@@ -1,0 +1,19 @@
+.border-list-item {
+  border-right: 2px #606060 solid;
+}
+.details {
+  padding-left: 7%;
+}
+
+@media (max-width: 767px) {
+  .details {
+    padding-left: 15px;
+  }
+  .hide-point {
+    display: none
+  }
+  .border-list-item {
+    border-right: none;
+    border-bottom: 2px #606060 solid;
+  }
+}
