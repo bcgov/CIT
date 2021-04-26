@@ -17,7 +17,7 @@ class OptionsView(APIView):
         """
         statuses = ApprovalStatus.objects.all().values()
         regional_districts = RegionalDistrict.objects.all().values('id', 'area_id', 'name')
-        preferred_development = PreferredDevelopment.objects.all().values()
+        preferred_development = PreferredDevelopment.objects.all().order_by('name').values()
         property_statuses = PropertyStatus.objects.all().values()
         land_use_zoning = LandUseZoning.objects.all().values()
         communities = Community.objects.all().values("id", "place_name")

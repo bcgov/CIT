@@ -3,6 +3,7 @@ import { Container, Col, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
+import Creatable from "react-select/creatable";
 import PageTitleHeader from "../../Headers/PageTitleHeader/PageTitleHeader";
 import ButtonRow from "../../ButtonRow/ButtonRow";
 import Radios from "../../FormComponents/Radios";
@@ -347,8 +348,7 @@ export default function PropertyDetails1() {
           <Col className="mr-5">
             <Row id="preferred-dev-label">Preferred Development</Row>
             <Row>
-              <Select
-                isMulti
+              <Creatable
                 defaultValue={preferred}
                 aria-labelledby="preferred-dev-label"
                 value={preferred}
