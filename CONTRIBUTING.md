@@ -13,7 +13,7 @@ All contributors retain the original copyright to their stuff, but by contributi
 
 - Branch new features off the `develop` branch.
 - Naming convention based off the problem at hand.  (i.e. update-export-for-fault-tolerance )
-- Before pushing your new feature up to prod make sure to pull in the latest develop and fix any merge conflicts that might happen.
+- Before pushing your new feature up to Github, make sure to pull in the latest develop, and fix any merge conflicts that might happen.
 `git pull origin develop`
 - Push your branch up to github.
 `git push origin <branchname>`
@@ -23,7 +23,7 @@ All contributors retain the original copyright to their stuff, but by contributi
 ### Merging your code into develop.
 
 - GitHub will not let you merge code that has not passed the following checks
-  - The pipeline builds correctly (all unit tests pass)
+  - The pipeline builds correctly
 
   - Another developer has performed code review and you have implemented requested changes
 

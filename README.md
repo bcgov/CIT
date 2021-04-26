@@ -106,9 +106,9 @@ All tests are found under the tests directory in the cit-api and should be added
 
 ## Deployment
 
-Create a Pull request on [https://github.com/bcgov/CIT](https://github.com/bcgov/CIT), once its approved and merge by a repo admin, it will automatically be deployed to test.
+Create a Pull request on [https://github.com/bcgov/CIT](https://github.com/bcgov/CIT), once its approved and merged by a repo admin, it will automatically be deployed to test.
 
-A manual Github action will be trigger by a repo administrator to deploy to prod, after a request to deploy is made.
+A manual Github action will be triggered by a repo administrator to deploy to prod, after a request to deploy is made.
 
 ## How to Contribute
 
