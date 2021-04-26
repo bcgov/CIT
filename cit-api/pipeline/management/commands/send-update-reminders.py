@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.utils.timezone import now
 from datetime import timedelta
-import os, requests, json
+import os, requests, json, re
 from requests.auth import HTTPBasicAuth
 
 from pipeline.models.opportunity import Opportunity
@@ -57,7 +57,7 @@ def send_reminder_email(email, opportunity_list):
                 "encoding": "utf-8",
                 "from": os.environ.get("EMAIL_SENDING_ADDRESS"),
                 "priority": "normal",
-                "subject": "You Have Opportunities That Have Not Been Modified For 90 Days",
+                "subject": "Action required: Update your Investment Opportunity Listings",
                 "to": [email],
                 "tag": "CIT_Admin_Notification",
             }
@@ -66,22 +66,33 @@ def send_reminder_email(email, opportunity_list):
         return response
 
 def construct_email_body(opportunity_list):
-    opportunity_email_string = ""
+    opportunity_links = ""
     for opportunity in opportunity_list:
-        opportunity_email_string = opportunity_email_string + "<p>"    
-        if opportunity.opportunity_address != "":
-            opportunity_email_string = opportunity_email_string + opportunity.opportunity_address + " - "
-        else:
-            opportunity_email_string = opportunity_email_string + "No address - "
-        opportunity_email_string = opportunity_email_string + "Created on " + str(opportunity.date_created)
-        opportunity_email_string = opportunity_email_string + "</p>"
+        opportunity_links = opportunity_links + "<p>"    
+        opportunity_links = opportunity_links + build_individual_opportunity_link(opportunity)
+        opportunity_links = opportunity_links + "</p>"
 
-    return "<h1>You have opportunities that have not been modified for 90 days.</h1><p>These opportunities must be reviewed:</p>" + opportunity_email_string + "<p>Please click here to view your dashboard, and update any information that has changed: " + build_full_link() + "</p>"
+    email_body = "<p>Hello again! It has been over 90 days since you modified one or more of your listings on the Investment Opportunities Tool. Please help us ensure the tool remains useful for investors by confirming that your listings are still available. If a listing has been sold or is no longer available, please remove the listing. You may wish to promote a new investment opportunity in your community instead.</p>"
+    email_body = email_body + "<p>To renew a listing, please log-in to your dashboard on the Investment Opportunities Tool. Click “edit” to review that all the listing information is still correct. Once you re-submit your listing, it will be reviewed and published to the Opportunities Tool again. Thanks for helping investors find their next opportunity in B.C.!</p>"
+    email_body = email_body + "<p>Click here to view the listing(s):</p>"
+    email_body = email_body + opportunity_links
+    return email_body
 
 def get_edo_email_for_opportunity(id):
     opportunity = Opportunity.objects.get(id=id)
     edo = User.objects.get(id=opportunity.user_id)
     return edo.email
 
-def build_full_link():
+def build_full_dashboard_link():
     return os.environ.get("EMAIL_OPPORTUNITY_LINK_HOST") + "/investmentopportunities/dashboard"
+
+def build_individual_opportunity_link(opportunity):
+    opportunity_view_link = os.environ.get("EMAIL_OPPORTUNITY_LINK_HOST") + "/investmentopportunities/view/" + to_kebab_case(opportunity.opportunity_name) + "-" + str(opportunity.id)
+    return opportunity_view_link
+
+def to_kebab_case(opportunity_title):
+    title_regex_match_list = re.findall("/[A-Z]{2,}(?=[A-Z][a-z]+[0-9]*|\b)|[A-Z]?[a-z]+[0-9]*|[A-Z]|[0-9]+/g", opportunity_title)
+    separator = "-"
+    kebab_case_title = separator.join(title_regex_match_list).lower()
+    print(kebab_case_title)
+    return kebab_case_title
