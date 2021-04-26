@@ -83,7 +83,7 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
     import_variable_fields(instance, row, Model)
 
     instance.save()
-    # calculate_distances(instance, dry_run=dry_run)
+    calculate_distances(instance, dry_run=dry_run)
 
     return instance
 

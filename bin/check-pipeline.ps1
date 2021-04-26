@@ -33,5 +33,5 @@ $ErrorActionPreference = "SilentlyContinue"
 
 #-----------------------------------------------------------[Execution]------------------------------------------------------------
 
-az container show --name cit-data-pipeline --resource-group CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01
+az container show --name cit-data-pipeline-prod --resource-group CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01
 #az container attach --name cit-data-pipeline --resource-group CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01
