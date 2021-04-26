@@ -38,8 +38,6 @@ import HomePage from "./components/Page/HomePage/HomePage";
 import citHome from "./components/Page/citHome/citHome";
 
 function App() {
-  const getTitle = (page) => `Investments${` - ${page}`}`;
-
   return (
     <AuthStateContext.Consumer>
       {(context) => {
@@ -75,24 +73,16 @@ function App() {
                   from="/cit-dashboard"
                   to="/cit-dashboard/home"
                 />
+                <AppRoute title="Login" path="/login" component={Login} />
+                <AppRoute title="Logout" path="/logout" component={Logout} />
                 <AppRoute
-                  title={getTitle("Login")}
-                  path="/login"
-                  component={Login}
-                />
-                <AppRoute
-                  title={getTitle("Logout")}
-                  path="/logout"
-                  component={Logout}
-                />
-                <AppRoute
-                  title={getTitle("Access Denied - Login to continue")}
+                  title="Access Denied - Login to continue"
                   path="/forbidden"
                   component={AccessDenied}
                 />
                 <AppRoute
                   protected
-                  title={getTitle("Opportunity Dashboard")}
+                  title="Community Investment Opportunities Tool - Dashboard"
                   path="/investmentopportunities/dashboard"
                   roles={[Roles.ECONOMIC_DEVELOPMENT_OFFICER]}
                   layout={AuthLayout}
@@ -102,7 +92,7 @@ function App() {
                   protected
                   exact
                   path="/investmentopportunities/add"
-                  title={getTitle("Add Property")}
+                  title="Community Investment Opportunities Tool - Add Property"
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
@@ -115,7 +105,7 @@ function App() {
                   protected
                   exact
                   path="/investmentopportunities/site-info"
-                  title={getTitle("Site Information")}
+                  title="Community Investment Opportunities Tool - Site Information"
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
@@ -128,7 +118,7 @@ function App() {
                   protected
                   exact
                   path="/investmentopportunities/property-details"
-                  title={getTitle("Add Property Details")}
+                  title="Community Investment Opportunities Tool - Add Property Details"
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
@@ -146,7 +136,7 @@ function App() {
                     Roles.SYSTEM_ADMINISTRATOR,
                     Roles.ECONOMIC_DEVELOPMENT_OFFICER,
                   ]}
-                  title={getTitle("Add Additional Details")}
+                  title="Community Investment Opportunities Tool - Add Additional Details"
                   layout={AuthLayout}
                   component={PropertyDetails2}
                 />
@@ -159,7 +149,7 @@ function App() {
                     Roles.SYSTEM_ADMINISTRATOR,
                     Roles.ECONOMIC_DEVELOPMENT_OFFICER,
                   ]}
-                  title={getTitle("Opportunity Review & Submit")}
+                  title="Community Investment Opportunities Tool - Opportunity Review & Submit"
                   layout={AuthLayout}
                   component={ReviewOpportunity}
                 />
@@ -172,7 +162,7 @@ function App() {
                     Roles.SYSTEM_ADMINISTRATOR,
                     Roles.ECONOMIC_DEVELOPMENT_OFFICER,
                   ]}
-                  title={getTitle("Opportunity Submitted!")}
+                  title="Community Investment Opportunities Tool - Opportunity Submitted!"
                   layout={AuthLayout}
                   component={ReviewSubmitted}
                 />
@@ -180,6 +170,7 @@ function App() {
                   protected
                   exact
                   path="/manage/investmentopportunities"
+                  title="Community Investment Opportunities Tool - Opportunity Management"
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
@@ -189,11 +180,13 @@ function App() {
                 />
                 <AppRoute
                   path="/investmentopportunities/view/*:path"
+                  title="Community Investment Opportunities Tool - Opportunity Listing"
                   component={OpportunityPage}
                 />
                 <AppRoute
                   protected
                   path="/manage/investmentopportunities/view/*:path"
+                  title="Community Investment Opportunities Tool - Opportunity Approval"
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
@@ -203,11 +196,13 @@ function App() {
                 />
                 <AppRoute
                   path="/investmentopportunities/search"
+                  title="Community Investment Opportunities Tool - Search Investment Opportunities"
                   component={InvestorMainView}
                 />
                 <AppRoute
                   protected
                   path="/delete/investmentopportunities/*:path"
+                  title="Community Investment Opportunities Tool - Delete an Opportunity"
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
@@ -219,6 +214,7 @@ function App() {
                 <AppRoute
                   protected
                   path="/cit-dashboard/internal"
+                  title="Community Information Tool - Internal Report"
                   layout={AuthLayout}
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
@@ -226,11 +222,16 @@ function App() {
                   ]}
                   component={PowerBi}
                 />
-                <AppRoute path="/cit-dashboard/public" component={PowerBi} />
+                <AppRoute
+                  title="Community Information Tool - Community Report"
+                  path="/cit-dashboard/public"
+                  component={PowerBi}
+                />
                 <AppRoute
                   protected
                   exact
                   path="/manage/users"
+                  title="Community Information Tool - User Management"
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
@@ -241,11 +242,17 @@ function App() {
 
                 <AppRoute
                   path="/investmentopportunities/home"
+                  title="Community Investment Opportunities Tool"
                   component={HomePage}
                 />
-                <AppRoute path="/cit-dashboard/home" component={citHome} />
                 <AppRoute
-                  path="/investmentopportunities/datasources"
+                  path="/cit-dashboard/home"
+                  title="Community Information Tool"
+                  component={citHome}
+                />
+                <AppRoute
+                  path="/datasources"
+                  title="Community Information Tool - Data Sources"
                   component={Datasources}
                 />
               </Switch>
