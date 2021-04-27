@@ -349,6 +349,7 @@ export default function PropertyDetails1() {
             <Row id="preferred-dev-label">Preferred Development</Row>
             <Row>
               <Creatable
+                isMulti
                 defaultValue={preferred}
                 aria-labelledby="preferred-dev-label"
                 value={preferred}
