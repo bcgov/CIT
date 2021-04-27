@@ -47,6 +47,7 @@ export default function notification(state = NOTIFICATION_MODEL, action) {
       break;
     case NOTIFICATION_CLOSE:
       state.show = false;
+      state.data = null;
       break;
     default:
   }
