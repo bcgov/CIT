@@ -457,6 +457,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         <Col xs="auto" className="exclude-unknown-section">
           <input
             type="checkbox"
+            checked={excludeUnknowns}
             value={excludeUnknowns}
             onChange={() => setExcludeUnknowns(!excludeUnknowns)}
           />
