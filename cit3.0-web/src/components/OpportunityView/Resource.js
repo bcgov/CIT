@@ -56,10 +56,6 @@ function displayResources(resources) {
         : "No";
     }
 
-    // if (resource[0] === "Nearest Lake") {
-    //   resource[1].
-    // }
-
     // Insert Category section/datapoint
     if (!toDisplay[resource[1].title]) {
       toDisplay[resource[1].title] = {};
