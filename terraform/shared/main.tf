@@ -5,7 +5,7 @@ resource "azurerm_container_registry" "default" {
   name                = "acraf6z1jmd"
   resource_group_name = var.azure_resource_group
   location            = var.azure_location
-  sku                 = "Basic"
+  sku                 = "Standard"
   admin_enabled       = true
 
   tags = {

@@ -30,7 +30,14 @@ resource "azurerm_app_service" "backend" {
     SCOPE                           = "https://analysis.windows.net/powerbi/api/.default"
     TENANT_ID                       = "6fdb5200-3d0d-4a8a-b036-d3685e359adc"
     CLIENT_ID                       = "f6450e1d-a85b-46b7-8180-c72f9ecad653"
-    CLIENT_SECRET                   = ""
+    CLIENT_SECRET                   = var.pbi_secret
+    EMAIL_NOTIFICATIONS_ENABLED     = true
+    EMAIL_AUTH_HOST                 = "https://test.oidc.gov.bc.ca"
+    EMAIL_SERVICE_HOST              = "https://ches-test.apps.silver.devops.gov.bc.ca"
+    EMAIL_CLIENT_ID                 = "CIT_SERVICE_CLIENT"
+    EMAIL_CLIENT_SECRET             = var.email_client_secret
+    EMAIL_SENDING_ADDRESS           = "noreply@gov.bc.ca"
+    EMAIL_OPPORTUNITY_LINK_HOST     = "https://test.communityinformationtool.gov.bc.ca"
   }
 
   tags = {
