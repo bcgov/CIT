@@ -33,11 +33,5 @@ export default function AddLocationMarker(props) {
     }
   });
 
-  return positions.map((position) => (
-    <Marker key={v4()} position={position}>
-      <Popup>
-        Lat: {position.lat.toFixed(4)} Long: {position.lng.toFixed(4)}
-      </Popup>
-    </Marker>
-  ));
+  return null;
 }
