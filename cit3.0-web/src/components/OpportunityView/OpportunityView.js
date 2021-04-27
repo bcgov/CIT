@@ -63,6 +63,7 @@ export default function OpportunityView({ view }) {
                 key={v4()}
                 title="Site Info - General Details"
                 itemsToDisplay={overallInfo}
+                view={view}
               />
               <div style={{ marginLeft: "-15px", marginRight: "-15px" }}>
                 <Alert
@@ -75,17 +76,28 @@ export default function OpportunityView({ view }) {
             </>
           )}
           {physical && (
-            <Resource key={v4()} title="Physical" itemsToDisplay={physical} />
+            <Resource
+              key={v4()}
+              view={view}
+              title="Physical"
+              itemsToDisplay={physical}
+            />
           )}
           {transportation && (
             <Resource
               key={v4()}
+              view={view}
               title="Transportation"
               itemsToDisplay={transportation}
             />
           )}
           {services && (
-            <Resource key={v4()} title="Services" itemsToDisplay={services} />
+            <Resource
+              view={view}
+              key={v4()}
+              title="Services"
+              itemsToDisplay={services}
+            />
           )}
         </Col>
         <Col xs lg="5" className="leaflet-border pr-0">

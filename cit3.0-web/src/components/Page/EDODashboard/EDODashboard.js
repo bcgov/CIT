@@ -16,6 +16,7 @@ import { getUser } from "../../../store/actions/user";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import ConfirmCancelModal from "../../ConfirmCancelModal/ConfirmCancelModal";
 import FooterLinks from "../../FooterLinks/FooterLinks";
+import { closeNotification } from "../../../store/actions/notification";
 
 export default function EDODashboard() {
   const [tableData, setTableData] = useState([]);
@@ -65,6 +66,7 @@ export default function EDODashboard() {
 
   const goToMap = () => {
     dispatch(resetOpportunity());
+    dispatch(closeNotification());
     history.push("/investmentopportunities/add");
   };
 

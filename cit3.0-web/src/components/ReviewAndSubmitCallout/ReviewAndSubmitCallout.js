@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Button } from "shared-components/build/components/button/Button";
 import { Col, Container, NavLink, Row } from "react-bootstrap";
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setOpportunityName } from "../../store/actions/opportunity";
 import styles from "./ReviewAndSubmitCallout.module.css";
 import TextInput from "../FormComponents/TextInput";
+import { closeNotification } from "../../store/actions/notification";
 
 const ReviewAndSubmitCallout = ({
   prevRoute,
@@ -17,8 +18,10 @@ const ReviewAndSubmitCallout = ({
   const dispatch = useDispatch();
   const name = useSelector((state) => state.opportunity.name);
   const goToPrevPage = () => {
+    dispatch(closeNotification());
     history.push("/investmentopportunities/additional-details");
   };
+
   return (
     <Container
       className={styles.ReviewAndSubmitCallout}
@@ -66,7 +69,10 @@ const ReviewAndSubmitCallout = ({
         <Col>
           <Button
             id="cancel"
-            onClick={cancelOpportunity}
+            onClick={() => {
+              cancelOpportunity();
+              dispatch(closeNotification());
+            }}
             label="Cancel & Return to Dashboard"
             styling="BC-Gov-SecondaryButton bc-gov-btn"
           />

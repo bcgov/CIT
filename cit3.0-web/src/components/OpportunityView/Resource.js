@@ -10,7 +10,7 @@ import { setOptions, getOptions } from "../../store/actions/options";
 /**
  * @param {Object} resources from redux state: opportunity
  */
-function displayResources(resources) {
+function displayResources(resources, view) {
   // toDisplay to control nesting of elements
   const toDisplay = {};
   const dispatch = useDispatch();
@@ -152,7 +152,9 @@ function displayResources(resources) {
         element = (
           <span className="ml-2">
             <b>
-              {resource[1].name}{" "}
+              {resource[1].name === "Unknown" && view !== "all"
+                ? "*You can enter this information in the next step"
+                : resource[1].name}
               {resource[1].name && resource[1].value ? "-" : ""}{" "}
               {resource[1].value ? (
                 <NumberFormat
@@ -208,8 +210,8 @@ function displayResources(resources) {
 }
 
 /* eslint-disable no-lone-blocks, no-unused-expressions */
-export default function Resource({ title, itemsToDisplay }) {
-  const resourcesAsView = displayResources(itemsToDisplay);
+export default function Resource({ title, itemsToDisplay, view }) {
+  const resourcesAsView = displayResources(itemsToDisplay, view);
   const displayItems = (items) =>
     Object.keys(items).map((key) => {
       if (items[key] && items[key].$$typeof !== Symbol.for("react.element")) {
@@ -221,9 +223,11 @@ export default function Resource({ title, itemsToDisplay }) {
         );
       }
       return (
-        <Row className="mb-2" key={v4()}>
-          {key}: {items[key]}
-        </Row>
+        <>
+          <Row className="mb-2" key={v4()}>
+            {key}: {items[key]}
+          </Row>
+        </>
       );
     });
   return (
@@ -236,7 +240,12 @@ export default function Resource({ title, itemsToDisplay }) {
   );
 }
 
+Resource.defaultProps = {
+  view: "",
+};
+
 Resource.propTypes = {
   title: PropTypes.string.isRequired,
   itemsToDisplay: PropTypes.shape().isRequired,
+  view: PropTypes.string,
 };
