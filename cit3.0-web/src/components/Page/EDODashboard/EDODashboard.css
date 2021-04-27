@@ -2,6 +2,15 @@
     padding: 5vh 10vh 5vh;
 }
 
+@media(max-width: 767px) {
+    .dashboard-container {
+        padding: 3rem 1.5rem;
+    }
+    .dashboard-container .container-fluid {
+        padding: 0;
+    }
+}
+
 .dashboard-header {
     text-align: left;
 }

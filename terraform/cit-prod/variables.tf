@@ -59,3 +59,13 @@ variable "router_key" {
   type        = string
   description = "The BC RouterAPI key"
 }
+
+variable "email_client_secret" {
+  type        = string
+  description = "CHES client secret"
+}
+
+variable "pbi_secret" {
+  type        = string
+  description = "PowerBI client secret"
+}

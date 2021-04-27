@@ -11,7 +11,6 @@ import { resetOpportunity } from "../../../store/actions/opportunity";
 import "./SiteInformation.css";
 
 export default function SiteInformation({ location }) {
-  document.title = `Investments - Add Opportunity - Site Information`;
   const history = useHistory();
   const dispatch = useDispatch();
   const goToNextPage = () => {

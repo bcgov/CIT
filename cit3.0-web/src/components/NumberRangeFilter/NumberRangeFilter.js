@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import "./NumberRangeFilter.scss";
 import { Button } from "shared-components";
@@ -20,6 +20,7 @@ export default function NumberRangeFilter(props) {
     initialInputRangeValues,
     displayRange,
     setDisplayRange,
+    resetRangeInput,
   } = props;
   const [show, setShow] = useState(false);
   const [minInput, setMinInput] = useState(String(inputRange.min));
@@ -61,6 +62,10 @@ export default function NumberRangeFilter(props) {
     setValidMin(true);
     setValidMax(true);
   };
+
+  useEffect(() => {
+    handleClear();
+  }, [resetRangeInput]);
 
   return (
     <>
@@ -129,6 +134,7 @@ NumberRangeFilter.defaultProps = {
 };
 
 NumberRangeFilter.propTypes = {
+  resetRangeInput: PropTypes.bool.isRequired,
   inputRange: PropTypes.shape({
     min: PropTypes.number.isRequired,
     max: PropTypes.number.isRequired,

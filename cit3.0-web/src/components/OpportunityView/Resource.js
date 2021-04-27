@@ -30,6 +30,27 @@ function displayResources(resources, view) {
     }
   };
 
+  const setTheName = (resource) => {
+    let name = "";
+    if (resource.name === "Unknown" && view !== "all") {
+      name += "*You can enter this information in the next step";
+    } else if (
+      resource.title !== "Nearest Lake" &&
+      resource.title !== "Nearest River"
+    ) {
+      name += resource.name;
+    }
+    name +=
+      resource.title &&
+      resource.value &&
+      resource.title !== "Nearest Lake" &&
+      resource.title !== "Nearest River"
+        ? " - "
+        : "";
+
+    return name;
+  };
+
   useEffect(() => {
     getTheOptions();
   }, []);
@@ -152,10 +173,7 @@ function displayResources(resources, view) {
         element = (
           <span className="ml-2">
             <b>
-              {resource[1].name === "Unknown" && view !== "all"
-                ? "*You can enter this information in the next step"
-                : resource[1].name}
-              {resource[1].name && resource[1].value ? "-" : ""}{" "}
+              {resource[1].name ? setTheName(resource[1]) : null}
               {resource[1].value ? (
                 <NumberFormat
                   displayType="text"

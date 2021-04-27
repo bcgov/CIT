@@ -86,3 +86,4 @@ class Command(BaseCommand):
         calculate_community_num_hospitals()
         calculate_community_num_courts()
         calculate_community_num_timber_facilities()
+        print("Import process completed!")
