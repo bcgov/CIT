@@ -156,6 +156,16 @@ function displayResources(resources, view) {
                 ? "*You can enter this information in the next step"
                 : resource[1].name}
               {resource[1].name && resource[1].value ? "-" : ""}{" "}
+              {resource[1].title !== "Nearest Lake" &&
+              resource[1].title !== "Nearest River"
+                ? resource[1].name
+                : null}{" "}
+              {resource[1].title &&
+              resource[1].value &&
+              resource[1].title !== "Nearest Lake" &&
+              resource[1].title !== "Nearest River"
+                ? "-"
+                : ""}{" "}
               {resource[1].value ? (
                 <NumberFormat
                   displayType="text"

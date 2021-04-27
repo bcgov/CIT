@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "shared-components";
 import { useEffect, useState } from "react";
 import v4 from "uuid";
+import { Callout } from "shared-components/build/components/callout/Callout";
+import NumberFormat from "react-number-format";
 import NavigationHeader from "../../Headers/NavigationHeader/NavigationHeader";
 import MapContainer from "../../MapContainer/MapContainer";
 import AddressSearchBar from "../../AddressSearchBar/AddressSearchBar";
@@ -30,6 +32,7 @@ import {
 import Radios from "../../FormComponents/Radios";
 import Terms from "../../Terms/Terms";
 import LoadingScreen from "../../LoadingScreen/LoadingScreen";
+import TextInput from "../../FormComponents/TextInput";
 
 export default function AddOpportunity() {
   const dispatch = useDispatch();
@@ -50,9 +53,6 @@ export default function AddOpportunity() {
   const parcelOwner = useSelector(
     (state) => state.opportunity.siteInfo.parcelOwnership.name
   );
-  const nearbyResources = useSelector(
-    (state) => state.opportunity.nearbyResources
-  );
   const municipality = useSelector(
     (state) => state.opportunity.municipality.name
   );
@@ -62,6 +62,7 @@ export default function AddOpportunity() {
   const [error, setError] = useState([]);
   const [agreed, setAgreed] = useState(false);
   const [noAddressFlag, setNoAddressFlag] = useState(false);
+  const [parcelInfo, setParcelInfo] = useState(false);
 
   // Handle ProximityData call still running and change of page
   const [proximityInProgress, setProximityInProgress] = useState(true);
@@ -203,44 +204,43 @@ export default function AddOpportunity() {
     setHasApproval(false);
     /// //////////////////////////
     const pid = await getPID(id);
+    let countedSQM = 0;
     dispatch(setPID(pid));
     if (pid) {
       pid.forEach(async (_pid) => {
         const parcelData = await getParcelData(_pid);
         if (parcelData) {
-          dispatch(
+          await dispatch(
             setParcelOwner(parcelData.data.features[0].properties.OWNER_TYPE)
           );
+          countedSQM += parcelData.data.features[0].properties.FEATURE_AREA_SQM;
+          await dispatch(setGeometry(parcelData.data.features[0].geometry));
           await dispatch(
             setParcelSize(
               Number(
                 // convert sqM to Acres
-                (
-                  parcelData.data.features[0].properties.FEATURE_AREA_SQM *
-                  0.000247105
-                ).toFixed(3)
+                (countedSQM * 0.000247105).toFixed(3)
               )
             )
           );
-          dispatch(setGeometry(parcelData.data.features[0].geometry));
-          if (!geometry) {
-            // There is no geometry registered for this PID, try a lng lat query.
-            setParcelInfoByCoords(coords);
-          }
         } else {
           // There is no Parcel response for this PID, try a lng lat query.
           setParcelInfoByCoords(coords);
         }
       });
     } else {
-      // There is no PID for the pacel to be queried, try a lng lat query.
+      // There is no PID for the parcel to be queried, try a lng lat query.
       setParcelInfoByCoords(coords);
     }
   };
 
   const setParcelDataNoAddress = async (noAddrCoords) => {
     // ensure previous parcel data is cleared
-    dispatch(resetOpportunity());
+    dispatch(setParcelSize(null));
+    dispatch(setParcelOwner(null));
+    dispatch(setGeometry(null));
+    // ensure hasApproval is false
+    setHasApproval(false);
     // reset coords with new coords
     dispatch(setCoords(noAddrCoords));
     // ensure hasApproval is false
@@ -282,6 +282,11 @@ export default function AddOpportunity() {
 
   const handleError = (message) => {
     setError([...error, message]);
+  };
+
+  const handleUpdateParcelInfo = () => {
+    dispatch(setGeometry(null));
+    setParcelInfo(true);
   };
 
   return (
@@ -357,13 +362,6 @@ export default function AddOpportunity() {
                   handleError={handleError}
                   currentAddress={address}
                 />
-                {address && !parcelSize && (
-                  <Row>
-                    <Col>
-                      <PropertyInfo info={address} tag={false} />
-                    </Col>
-                  </Row>
-                )}
                 {!address && coords && coords[0] !== 54.1722 && (
                   <Row>
                     <Col>
@@ -372,54 +370,91 @@ export default function AddOpportunity() {
                     </Col>
                   </Row>
                 )}
-                {parcelSize ? (
-                  <Row>
-                    <Col>
-                      <PropertyInfo info={address} tag={false} />
+                <Row>
+                  <Col>
+                    <PropertyInfo info={address} tag={false} />
+                    {parcelOwner ? (
                       <p className="mb-0 mt-3 pb-0">
                         Ownership: <b>{parcelOwner}</b>
                       </p>
+                    ) : null}
+                    {parcelSize ? (
                       <p className="mb-0 pb-0">
-                        Parcel Size:{" "}
-                        <b>{parcelSize ? parcelSize.toFixed(3) : null} acres</b>
+                        Parcel Size: <b>{parcelSize.toFixed(3)} acres</b>
                       </p>
+                    ) : null}
+                    {PID ? (
                       <p>
                         PID:{" "}
                         <b>{PID && PID.length > 1 ? PID.join(", ") : PID}</b>
                       </p>
-                      {parcelOwner === "Private" && (
-                        <>
-                          <PropertyInfo info="This land parcel or development opportunity resides on private land." />
-                          <PropertyInfo
-                            info={`As a representative from ${
-                              localityName || "Your Community"
-                            }, do you have the approval from the land owner to promote this investment opportunity?`}
-                          />
-                          <Col>
-                            <Radios
-                              aria-label="approval to sell"
-                              labels={["Yes", "No", "Pending Approval"]}
-                              name="approval-to-sell"
-                              value={hasApproval || ""}
-                              handleRadioChange={handleRadioChange}
+                    ) : null}
+                    {!parcelInfo && parcelSize ? (
+                      <div>
+                        <Callout
+                          text="To modify the parcel size, click below to enter new details."
+                          checkboxLabel="Modify parcel size"
+                          agreeCallout={handleUpdateParcelInfo}
+                        />
+                      </div>
+                    ) : null}
+                    {parcelInfo ? (
+                      <div>
+                        <div className="d-flex flex-column w-100">
+                          <p className="mb-0">Parcel Size</p>
+                          <p className="mb-0" style={{ opacity: "0.5" }}>
+                            The lot size that will be shown publicly.
+                          </p>
+                          <div className="text-wrapper">
+                            <NumberFormat
+                              className="bcgov-text-input"
+                              type="text"
+                              displayType="input"
+                              decimalScale={3}
+                              value={parcelSize || 0}
+                              units="acres"
+                              onValueChange={(value) => {
+                                if (value.floatValue !== parcelSize) {
+                                  dispatch(setParcelSize(value.floatValue));
+                                }
+                              }}
                             />
-                          </Col>
-                          {hasApproval !== "Yes" && (
-                            <Row className="mt-2">
-                              <Col className="text-red">
-                                <p>
-                                  You must have the approval of the land owner
-                                  to promote this opportunity. Please get the
-                                  approval before listing this site.
-                                </p>
-                              </Col>
-                            </Row>
-                          )}
-                        </>
-                      )}
-                    </Col>
-                  </Row>
-                ) : null}
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+                    {parcelOwner === "Private" && (
+                      <>
+                        <PropertyInfo info="This land parcel or development opportunity resides on private land." />
+                        <PropertyInfo
+                          info={`As a representative from ${
+                            localityName || "Your Community"
+                          }, do you have the approval from the land owner to promote this investment opportunity?`}
+                        />
+                        <Col>
+                          <Radios
+                            aria-label="approval to sell"
+                            labels={["Yes", "No", "Pending Approval"]}
+                            name="approval-to-sell"
+                            value={hasApproval || ""}
+                            handleRadioChange={handleRadioChange}
+                          />
+                        </Col>
+                        {hasApproval !== "Yes" && (
+                          <Row className="mt-2">
+                            <Col className="text-red">
+                              <p>
+                                You must have the approval of the land owner to
+                                promote this opportunity. Please get the
+                                approval before listing this site.
+                              </p>
+                            </Col>
+                          </Row>
+                        )}
+                      </>
+                    )}
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </Col>

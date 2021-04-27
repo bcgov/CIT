@@ -104,23 +104,10 @@ export default function opportunity(
       }
       break;
     case ADD_PARCEL_OWNER:
-      if (
-        state.siteInfo.parcelOwnership.name &&
-        state.siteInfo.parcelOwnership.name !== action.payload &&
-        action.payload
-      ) {
-        state.siteInfo.parcelOwnership.name = `/${action.payload}`;
-      } else {
-        state.siteInfo.parcelOwnership.name = action.payload;
-      }
-
+      state.siteInfo.parcelOwnership.name = action.payload;
       break;
     case ADD_PARCEL_SIZE:
-      if (state.siteInfo.parcelSize.value && action.payload !== null) {
-        state.siteInfo.parcelSize.value += action.payload;
-      } else {
-        state.siteInfo.parcelSize.value = action.payload;
-      }
+      state.siteInfo.parcelSize.value = action.payload;
       break;
     case ADD_SITE_ID:
       state.siteInfo.siteId.value = action.payload;
