@@ -104,39 +104,29 @@ export default function HomePage() {
         </Row>
         <Row className="mt-5 mb-3">
           <h1>How the Program Works</h1>
-          <p>
-            Communities in B.C. can showcase up to five industrial, commercial
-            or agricultural properties available for sale or lease. The tool
-            will automatically provide additional location information to help
-            investors and site selectors quickly identify sites that meet their
-            specific needs, such as nearby infrastructure and labour force. The
-            tool will be marketed to national and international audiences and
-            increase the possibilities for attracting investment to your
-            community.
+          <p className="dashboard-text">
+            In “How the Program works” on the home page and the dashboard log-in
+            page, the last bullet should be tabbed back to be at the same level
+            as the bullets from the previous list. Not the same as the bullets
+            just above. See below for correct format
           </p>
-          <p>
-            Communities in B.C. can add up to five property listings that meet
-            the following criteria:
-            <ul className="dashed">
-              <li>
-                Properties must be zoned for industrial, commercial or
-                agricultural use. Industrial properties of any size may be
-                listed. Commercial and agricultural properties may be listed if
-                they are at least 5 acres in size.
-              </li>
-              <li>Land must be available for sale or lease.</li>
-              <li>
-                Land may be publicly or privately owned but may only be listed
-                with the written permission of the landowner.
-              </li>
-              <li>
-                Land must be free of constraints that could impact the
-                developable area or range of land uses permitted on the
-                property.
-              </li>
-              <p style={{ padding: "0px", marginBottom: "0px" }}>
-                Potential constraints could include but are not limited to:
-              </p>
+          <ul className="dashed">
+            <li>
+              Properties must be zoned for industrial, commercial or
+              agricultural use. Industrial properties of any size may be listed.
+              Commercial and agricultural properties may be listed if they are
+              at least 5 acres in size.
+            </li>
+            <li>Land must be available for sale or lease.</li>
+            <li>
+              Land may be publicly or privately owned but may only be listed
+              with the written permission of the landowner.
+            </li>
+            <li>
+              Land must be free of constraints that could impact the developable
+              area or range of land uses permitted on the property.
+              <br />
+              Potential constraints could include but are not limited to:
               <ul className="dashed">
                 <li>Restrictions on title</li>
                 <li>Future planned roads or existing rights-of-way</li>
@@ -152,8 +142,8 @@ export default function HomePage() {
                   Chief Administrative Officer or their delegate.
                 </li>
               </ul>
-            </ul>
-          </p>
+            </li>
+          </ul>
         </Row>
         <Row className="my-3 h-100 w-100">
           <Col sm={3}>
