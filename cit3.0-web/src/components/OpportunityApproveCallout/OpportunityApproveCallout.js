@@ -298,11 +298,6 @@ const OpportunityApproveCallout = ({
         size="lg"
         centered
       >
-        {/* <Modal.Header>
-          <Modal.Title>
-            <h2>Would you like to delete the current comment?</h2>
-          </Modal.Title>
-        </Modal.Header> */}
         <Modal.Body>
           <h3>You currently have this comment for the Community User/EDO:</h3>
           <p className="modal-text-indent">{publicNote}</p>
