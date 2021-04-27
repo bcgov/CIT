@@ -10,6 +10,7 @@ import Config from "./Config";
 import "./index.css";
 import { store } from "./store";
 import AuthStateContextProvider from "./contexts/authStateContext";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 
 axios.defaults.baseURL = Config.apiUrl;
 const keycloak = new Keycloak(Config.keycloakConfig);
@@ -30,3 +31,8 @@ const Index = () => (
 );
 
 ReactDOM.render(<Index />, document.getElementById("root"));
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://cra.link/PWA
+serviceWorkerRegistration.register();
