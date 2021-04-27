@@ -111,7 +111,11 @@ const OpportunityApproveCallout = ({
   };
 
   const checkComment = () => {
-    if (nextStatus !== currentStatus && publicNote === newPublicNote) {
+    if (
+      nextStatus !== currentStatus && // status has changed
+      newPublicNote !== "" && // comment box is not empty
+      publicNote === newPublicNote // comment has not changed
+    ) {
       handleShow();
     } else {
       submitStatusChange();
@@ -294,39 +298,33 @@ const OpportunityApproveCallout = ({
         size="lg"
         centered
       >
-        <Modal.Header>
+        {/* <Modal.Header>
           <Modal.Title>
             <h2>Would you like to delete the current comment?</h2>
           </Modal.Title>
-        </Modal.Header>
+        </Modal.Header> */}
         <Modal.Body>
           <h3>You currently have this comment for the Community User/EDO:</h3>
           <p className="modal-text-indent">{publicNote}</p>
-          <h3>
+          <h4>
             The comment will show on the listing. Would you like to delete this
             comment?
-          </h3>
+          </h4>
         </Modal.Body>
         <Modal.Footer>
-          <Row className="d-flex justify-content-between">
-            <Col>
-              <Button
-                label="Close"
-                styling="BC-Gov-SecondaryButton bc-gov-btn"
-                onClick={handleClose}
-              />
-            </Col>
-            <Col>
-              <Button
-                label="Delete Comment"
-                styling="bcgov-normal-blue btn primary"
-                onClick={() => {
-                  setNewPublicNote("");
-                  handleClose();
-                }}
-              />
-            </Col>
-          </Row>
+          <Button
+            label="Close"
+            styling="BC-Gov-SecondaryButton bc-gov-btn"
+            onClick={handleClose}
+          />
+          <Button
+            label="Delete Comment"
+            styling="bcgov-normal-blue btn primary more-pad"
+            onClick={() => {
+              setNewPublicNote("");
+              handleClose();
+            }}
+          />
         </Modal.Footer>
       </Modal>
     </Container>

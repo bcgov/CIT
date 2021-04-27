@@ -12,6 +12,10 @@
     margin-top: 15px;
 }
 
+.more-pad {
+    padding: 10px 20px;
+}
+
 @media (min-width: 845px) {
     .OpportunityApproveCallout p b {  
         position: absolute;
