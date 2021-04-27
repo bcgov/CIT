@@ -49,13 +49,13 @@ export const OPPORTUNITY_MODEL = () => ({
     roadAccess: {
       title: "Site servicing",
       subtitle: "- Road Access",
-      name: "*You can enter this information in the next step",
+      name: "Unknown",
       type: "text",
     },
     waterSupply: {
       title: "Site servicing",
       subtitle: "- Water",
-      name: "*You can enter this information in the next step",
+      name: "Unknown",
       value: "",
       type: "capacity",
       suffix: "m³/hour",
@@ -63,7 +63,7 @@ export const OPPORTUNITY_MODEL = () => ({
     naturalGas: {
       title: "Site servicing",
       subtitle: "- Natural Gas",
-      name: "*You can enter this information in the next step",
+      name: "Unknown",
       value: "",
       type: "pressure",
       suffix: "MMBTU/hour",
@@ -71,7 +71,7 @@ export const OPPORTUNITY_MODEL = () => ({
     sewer: {
       title: "Site servicing",
       subtitle: "- Sewer",
-      name: "*You can enter this information in the next step",
+      name: "Unknown",
       value: "",
       type: "capacity",
       suffix: "m³/hour",
@@ -79,7 +79,7 @@ export const OPPORTUNITY_MODEL = () => ({
     electrical: {
       title: "Site servicing",
       subtitle: "- Electrical",
-      name: "*You can enter this information in the next step",
+      name: "Unknown",
       value: "",
       type: "capacity",
       suffix: "MW",
