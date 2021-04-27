@@ -229,12 +229,15 @@ export default function SearchFlyoutContent({ setQuery }) {
     },
   ];
 
+  const [resetRangeInput, setResetRangeInput] = useState(false);
+
   const handleResetFilters = () => {
     setExcludeUnknowns(false);
     setParcelSizeIsSelected(false);
     setParcelSizeInputRange(parcelSizeInitial);
     setParcelSizeDisplayRange(parcelSizeInitial);
     setPowerTransmissionLinesIsSelected(false);
+    setPowerTransmissionLinesInputRange(powerTransmissionLinesInitial);
     setPowerTransmissionLinesDisplayRange(powerTransmissionLinesInitial);
     setAirServiceIsSelected(false);
     setAirServiceInputRange(airServiceInitial);
@@ -246,7 +249,12 @@ export default function SearchFlyoutContent({ setQuery }) {
     setRailConnectionsInputRange(railConnectionsInitial);
     setRailConnectionsDisplayRange(railConnectionsInitial);
     setProximityToCommunityOrPopulationIsSelected(false);
-    setproximityToCommunityOrPopulationDisplayRange();
+    setProximityToCommunityOrPopulationInputRange(
+      proximityToCommunityOrPopulationInitial
+    );
+    setproximityToCommunityOrPopulationDisplayRange(
+      proximityToCommunityOrPopulationInitial
+    );
     setProximityCurrentCommunity(proximityCurrentCommunityInitial);
     setProximityCurrentPopulation(proximityCurrentPopulationInitial);
     setZoningIsSelected(false);
@@ -260,6 +268,7 @@ export default function SearchFlyoutContent({ setQuery }) {
     setNaturalGasSwitchValue(false);
     setPostSecondarySwitchValue(false);
     setResearchCentreSwitchValue(false);
+    setResetRangeInput(!resetRangeInput);
   };
 
   useEffect(() => {
@@ -388,6 +397,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         inputRangeValue={parcelSizeInputRange}
         setInputRangeValue={setParcelSizeInputRange}
         initialInputRangeValues={parcelSizeInitial}
+        resetRangeInput={resetRangeInput}
         displayRange={parcelSizeDisplayRange}
         setDisplayRange={setParcelSizeDisplayRange}
       />
@@ -410,6 +420,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         inputRangeValue={powerTransmissionLinesInputRange}
         setInputRangeValue={setPowerTransmissionLinesInputRange}
         initialInputRangeValues={powerTransmissionLinesInitial}
+        resetRangeInput={resetRangeInput}
         displayRange={powerTransmissionLinesDisplayRange}
         setDisplayRange={setPowerTransmissionLinesDisplayRange}
       />
@@ -478,6 +489,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         inputRangeValue={airServiceInputRange}
         setInputRangeValue={setAirServiceInputRange}
         initialInputRangeValues={airServiceInitial}
+        resetRangeInput={resetRangeInput}
         displayRange={airServiceDisplayRange}
         setDisplayRange={setAirServiceDisplayRange}
       />
@@ -492,6 +504,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         inputRangeValue={railConnectionsInputRange}
         setInputRangeValue={setRailConnectionsInputRange}
         initialInputRangeValues={railConnectionsInitial}
+        resetRangeInput={resetRangeInput}
         displayRange={railConnectionsDisplayRange}
         setDisplayRange={setRailConnectionsDisplayRange}
       />
@@ -506,6 +519,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         inputRangeValue={deepWaterPortInputRange}
         setInputRangeValue={setDeepWaterPortInputRange}
         initialInputRangeValues={deepWaterPortInitial}
+        resetRangeInput={resetRangeInput}
         displayRange={deepWaterPortDisplayRange}
         setDisplayRange={setDeepWaterPortDisplayRange}
       />
@@ -519,6 +533,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         inputRangeValue={proximityToCommunityOrPopulationInputRange}
         setInputRangeValue={setProximityToCommunityOrPopulationInputRange}
         initialInputRangeValues={proximityToCommunityOrPopulationInitial}
+        resetRangeInput={resetRangeInput}
         displayRange={proximityToCommunityOrPopulationDisplayRange}
         setDisplayRange={setproximityToCommunityOrPopulationDisplayRange}
         currentCommunity={proximityCurrentCommunity}
