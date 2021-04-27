@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Switch from "react-switch";
+import { Button } from "shared-components";
 import { Row, Col, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { MdHelp } from "react-icons/md";
 import NumberRangeFilter from "../NumberRangeFilter/NumberRangeFilter";
@@ -33,6 +34,36 @@ export default function SearchFlyoutContent({ setQuery }) {
     max: 500,
     min: 0,
   };
+  const proximityCurrentCommunityInitial = null;
+  const proximityCurrentPopulationInitial = null;
+  const zoningQueryFiltersInitial = "";
+  const zoningFiltersInitial = [
+    {
+      label: "Commercial",
+      code: "COMM",
+      isSelected: false,
+    },
+    {
+      label: "Residential",
+      code: "RESD",
+      isSelected: false,
+    },
+    {
+      label: "Agriculture",
+      code: "AGRI",
+      isSelected: false,
+    },
+    {
+      label: "Industrial-light",
+      code: "INDL",
+      isSelected: false,
+    },
+    {
+      label: "Industrial-heavy",
+      code: "INDH",
+      isSelected: false,
+    },
+  ];
 
   const [parcelSizeIsSelected, setParcelSizeIsSelected] = useState(false);
   const [parcelSizeInputRange, setParcelSizeInputRange] = useState(
@@ -91,41 +122,17 @@ export default function SearchFlyoutContent({ setQuery }) {
     setproximityToCommunityOrPopulationDisplayRange,
   ] = useState(proximityToCommunityOrPopulationInitial);
   const [proximityCurrentCommunity, setProximityCurrentCommunity] = useState(
-    null
+    proximityCurrentCommunityInitial
   );
   const [proximityCurrentPopulation, setProximityCurrentPopulation] = useState(
-    null
+    proximityCurrentPopulationInitial
   );
 
   const [zoningIsSelected, setZoningIsSelected] = useState(false);
-  const [zoningQueryFilters, setZoningQueryFilters] = useState("");
-  const [zoningFilters, setZoningFilters] = useState([
-    {
-      label: "Commercial",
-      code: "COMM",
-      isSelected: false,
-    },
-    {
-      label: "Residential",
-      code: "RESD",
-      isSelected: false,
-    },
-    {
-      label: "Agriculture",
-      code: "AGRI",
-      isSelected: false,
-    },
-    {
-      label: "Industrial-light",
-      code: "INDL",
-      isSelected: false,
-    },
-    {
-      label: "Industrial-heavy",
-      code: "INDH",
-      isSelected: false,
-    },
-  ]);
+  const [zoningQueryFilters, setZoningQueryFilters] = useState(
+    zoningQueryFiltersInitial
+  );
+  const [zoningFilters, setZoningFilters] = useState(zoningFiltersInitial);
 
   const [connectivitySwitchValue, setConnectivitySwitchValue] = useState(false);
 
@@ -221,6 +228,39 @@ export default function SearchFlyoutContent({ setQuery }) {
       },
     },
   ];
+
+  const handleResetFilters = () => {
+    setExcludeUnknowns(false);
+    setParcelSizeIsSelected(false);
+    setParcelSizeInputRange(parcelSizeInitial);
+    setParcelSizeDisplayRange(parcelSizeInitial);
+    setPowerTransmissionLinesIsSelected(false);
+    setPowerTransmissionLinesDisplayRange(powerTransmissionLinesInitial);
+    setAirServiceIsSelected(false);
+    setAirServiceInputRange(airServiceInitial);
+    setAirServiceDisplayRange(airServiceInitial);
+    setDeepWaterPortIsSelected(false);
+    setDeepWaterPortInputRange(deepWaterPortInitial);
+    setDeepWaterPortDisplayRange(deepWaterPortInitial);
+    setRailConnectionsIsSelected(false);
+    setRailConnectionsInputRange(railConnectionsInitial);
+    setRailConnectionsDisplayRange(railConnectionsInitial);
+    setProximityToCommunityOrPopulationIsSelected(false);
+    setproximityToCommunityOrPopulationDisplayRange();
+    setProximityCurrentCommunity(proximityCurrentCommunityInitial);
+    setProximityCurrentPopulation(proximityCurrentPopulationInitial);
+    setZoningIsSelected(false);
+    setZoningQueryFilters(zoningQueryFiltersInitial);
+    setZoningFilters(zoningFiltersInitial);
+    setConnectivitySwitchValue(false);
+    setRoadAccessSwitchValue(false);
+    setWaterSwitchValue(false);
+    setSewerSwitchValue(false);
+    setElectricalInfrastructureSwitchValue(false);
+    setNaturalGasSwitchValue(false);
+    setPostSecondarySwitchValue(false);
+    setResearchCentreSwitchValue(false);
+  };
 
   useEffect(() => {
     const query = new URLSearchParams();
@@ -539,6 +579,14 @@ export default function SearchFlyoutContent({ setQuery }) {
           <p>Yes</p>
         </Col>
       </Row>
+      <hr className="hr-bold" />
+      <div className="d-flex justify-content-end">
+        <Button
+          styling="BC-Gov-SecondaryButton"
+          label="Reset all filters"
+          onClick={() => handleResetFilters()}
+        />
+      </div>
     </div>
   );
 }
