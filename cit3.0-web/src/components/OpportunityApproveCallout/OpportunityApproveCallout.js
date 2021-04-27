@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Container, Form, Row } from "react-bootstrap";
+import { Col, Container, Form, Row, Modal } from "react-bootstrap";
 import { Button } from "shared-components";
 import "./OpportunityApproveCallout.css";
 import TextInput from "../FormComponents/TextInput";
@@ -38,6 +38,11 @@ const OpportunityApproveCallout = ({
   const opportunityName = useSelector((state) => state.opportunity.name);
   const opportunityId = useSelector((state) => state.opportunity.id);
   const keycloak = useKeycloakWrapper();
+
+  const [show, setShow] = useState(false);
+
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
 
   const goBackToAdmin = () => {
     dispatch(resetOpportunity());
@@ -102,6 +107,14 @@ const OpportunityApproveCallout = ({
           .then(() => {})
           .catch((error) => console.log(error));
       }
+    }
+  };
+
+  const checkComment = () => {
+    if (nextStatus !== currentStatus && publicNote === newPublicNote) {
+      handleShow();
+    } else {
+      submitStatusChange();
     }
   };
 
@@ -267,12 +280,55 @@ const OpportunityApproveCallout = ({
               !validUser && approveUser === "No" && nextStatus === "PUBL"
             }
             id="submit"
-            onClick={submitStatusChange}
+            onClick={checkComment}
             label="Change Opportunity Status"
             styling="bcgov-normal-blue btn primary"
           />
         </Col>
       </Row>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        keyboard={false}
+        backdrop="static"
+        size="lg"
+        centered
+      >
+        <Modal.Header>
+          <Modal.Title>
+            <h2>Would you like to delete the current comment?</h2>
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h3>You currently have this comment for the Community User/EDO:</h3>
+          <p className="modal-text-indent">{publicNote}</p>
+          <h3>
+            The comment will show on the listing. Would you like to delete this
+            comment?
+          </h3>
+        </Modal.Body>
+        <Modal.Footer>
+          <Row className="d-flex justify-content-between">
+            <Col>
+              <Button
+                label="Close"
+                styling="BC-Gov-SecondaryButton bc-gov-btn"
+                onClick={handleClose}
+              />
+            </Col>
+            <Col>
+              <Button
+                label="Delete Comment"
+                styling="bcgov-normal-blue btn primary"
+                onClick={() => {
+                  setNewPublicNote("");
+                  handleClose();
+                }}
+              />
+            </Col>
+          </Row>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };

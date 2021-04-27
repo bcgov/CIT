@@ -6,6 +6,12 @@
     font-weight: 500;
 }
 
+.modal-text-indent {
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-top: 15px;
+}
+
 @media (min-width: 845px) {
     .OpportunityApproveCallout p b {  
         position: absolute;
