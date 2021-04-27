@@ -733,7 +733,7 @@ export class Opportunity {
   set opportunityPreferredDevelopmentV2(value) {
     this.state.userInfo.preferredDevelopment.value = value
       .split(";")
-      .map((label) => ({ label }));
+      .map((label) => ({ label, value: label }));
   }
 
   set opportunityPropertyStatus(value) {

@@ -2,7 +2,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { Alert } from "shared-components";
-import { MdInfo } from "react-icons/md";
 import { v4 } from "uuid";
 import Resource from "./Resource";
 import LocationsPanel from "../LocationsPanel/LocationsPanel";
@@ -67,7 +66,7 @@ export default function OpportunityView({ view }) {
               />
               <div style={{ marginLeft: "-15px", marginRight: "-15px" }}>
                 <Alert
-                  icon={<MdInfo size={32} />}
+                  icon={<></>}
                   type="info"
                   styling="bcgov-info-background mb-3"
                   element="Proximity details are provided in straight-line distances."

@@ -170,13 +170,13 @@ export default function EDODashboard() {
           their specific needs. All listings will be reviewed prior to
           publication and will go live within 3-5 business days.
         </p>
-        <p className="dashboard-text">
-          Before you add a listing, review the eligibility criteria to ensure
-          the property meets the eligibility criteria.
-        </p>
         <ul className="dashed">
           <li>
-            Properties must be zoned for industrial, commercial, or agricultural
+            Before you add a listing, review the eligibility criteria to ensure
+            the property meets the eligibility criteria.
+          </li>
+          <li>
+            Properties must be zoned for industrial, commercial or agricultural
             use. Industrial properties of any size may be listed. Commercial and
             agricultural properties may be listed if they are at least 5 acres
             in size.
@@ -190,7 +190,7 @@ export default function EDODashboard() {
             Land must be free of constraints that could impact the developable
             area or range of land uses permitted on the property.
             <br />
-            Potential constraints could include, but are not limited to:
+            Potential constraints could include but are not limited to:
             <ul className="dashed">
               <li>Restrictions on title</li>
               <li>Future planned roads or existing rights-of-way</li>
@@ -199,13 +199,13 @@ export default function EDODashboard() {
                 Presence of provincially significant cultural or natural
                 heritage features
               </li>
-              <li>
-                Listings must be approved by either a municipality, regional
-                district, electoral area, province, First Nation or a regional
-                economic development organization, and from the Chief
-                Administrative Officer or their delegate.
-              </li>
             </ul>
+          </li>
+          <li>
+            Listings must be approved by either a municipality, regional
+            district, electoral area, province, First Nation or a provincial
+            economic development organization, and from the Chief Administrative
+            Officer or their delegate.
           </li>
         </ul>
         <div className="add-opportunity-button">{addOpportunityButton}</div>
