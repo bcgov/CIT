@@ -5,7 +5,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import { v4 } from "uuid";
 import "./LocationsPanel.css";
 import { Alert } from "shared-components";
-import { MdInfo } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { toKebabCase } from "../../helpers/helpers";
 
@@ -30,7 +29,6 @@ const LocationsPanel = ({
       <h4 className="h4">{address || "No Address"}</h4>
     </div>
     <Alert
-      icon={<MdInfo size={32} />}
       type="info"
       styling="bcgov-info-background mb-3"
       element="Proximity details are provided in straight-line distances."

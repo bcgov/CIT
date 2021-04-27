@@ -162,12 +162,19 @@ export default function EDODashboard() {
       <div className="dashboard-container">
         <h1 className="dashboard-header">How it works</h1>
         <p className="dashboard-text">
-          In “How the Program works” on the home page and the dashboard log-in
-          page, the last bullet should be tabbed back to be at the same level as
-          the bullets from the previous list. Not the same as the bullets just
-          above. See below for correct format
+          Community representatives can add up to five properties per community
+          to be featured on the tool. To create a new listing, follow a simple
+          process to add some key information about the property. The tool will
+          automatically provide additional location information to help
+          investors and site selectors quickly evaluate whether the site meets
+          their specific needs. All listings will be reviewed prior to
+          publication and will go live within 3-5 business days.
         </p>
         <ul className="dashed">
+          <li>
+            Before you add a listing, review the eligibility criteria to ensure
+            the property meets the eligibility criteria.
+          </li>
           <li>
             Properties must be zoned for industrial, commercial or agricultural
             use. Industrial properties of any size may be listed. Commercial and
@@ -192,13 +199,13 @@ export default function EDODashboard() {
                 Presence of provincially significant cultural or natural
                 heritage features
               </li>
-              <li>
-                Listings must be approved by either a municipality, regional
-                district, electoral area, province, First Nation or a provincial
-                economic development organization, and from the Chief
-                Administrative Officer or their delegate.
-              </li>
             </ul>
+          </li>
+          <li>
+            Listings must be approved by either a municipality, regional
+            district, electoral area, province, First Nation or a provincial
+            economic development organization, and from the Chief Administrative
+            Officer or their delegate.
           </li>
         </ul>
         <div className="add-opportunity-button">{addOpportunityButton}</div>
