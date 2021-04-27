@@ -217,8 +217,10 @@ function createRequestFromModel(state) {
     };
   }
   if (Array.isArray(state.userInfo.preferredDevelopment.value)) {
-    nearestLocations.opportunity_preferred_development_v2 =
-      state.userInfo.preferredDevelopment.value[0].label;
+    const options = state.userInfo.preferredDevelopment.value.map(
+      (dev) => dev.label
+    );
+    nearestLocations.opportunity_preferred_development_v2 = options.join(";");
   } else {
     nearestLocations.opportunity_preferred_development_v2 =
       state.userInfo.preferredDevelopment.value.label;
