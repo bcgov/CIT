@@ -197,14 +197,14 @@ export const OPPORTUNITY_MODEL = () => ({
       type: "text",
     },
     nearLake: {
-      title: "Nearest lake",
+      title: "Nearest Lake",
       name: "",
       value: 0,
       type: "distance",
       suffix: "km",
     },
     nearRiver: {
-      title: "Nearest river",
+      title: "Nearest River",
       name: "",
       value: 0,
       type: "distance",

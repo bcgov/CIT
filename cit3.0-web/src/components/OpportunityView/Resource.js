@@ -56,6 +56,10 @@ function displayResources(resources) {
         : "No";
     }
 
+    // if (resource[0] === "Nearest Lake") {
+    //   resource[1].
+    // }
+
     // Insert Category section/datapoint
     if (!toDisplay[resource[1].title]) {
       toDisplay[resource[1].title] = {};
@@ -152,8 +156,16 @@ function displayResources(resources) {
         element = (
           <span className="ml-2">
             <b>
-              {resource[1].name}{" "}
-              {resource[1].name && resource[1].value ? "-" : ""}{" "}
+              {resource[1].title !== "Nearest Lake" &&
+              resource[1].title !== "Nearest River"
+                ? resource[1].name
+                : null}{" "}
+              {resource[1].title &&
+              resource[1].value &&
+              resource[1].title !== "Nearest Lake" &&
+              resource[1].title !== "Nearest River"
+                ? "-"
+                : ""}{" "}
               {resource[1].value ? (
                 <NumberFormat
                   displayType="text"
