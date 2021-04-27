@@ -29,6 +29,7 @@ const LocationsPanel = ({
       <h4 className="h4">{address || "No Address"}</h4>
     </div>
     <Alert
+      icon={<></>}
       type="info"
       styling="bcgov-info-background mb-3"
       element="Proximity details are provided in straight-line distances."

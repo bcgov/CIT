@@ -66,6 +66,7 @@ export default function OpportunityView({ view }) {
               />
               <div style={{ marginLeft: "-15px", marginRight: "-15px" }}>
                 <Alert
+                  icon={<></>}
                   type="info"
                   styling="bcgov-info-background mb-3"
                   element="Proximity details are provided in straight-line distances."
