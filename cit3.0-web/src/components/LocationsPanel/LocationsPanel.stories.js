@@ -14,11 +14,26 @@ const munis = [
     population: 10001,
   },
 ];
+const firstNationCommunities = [
+  {
+    name: "Lyackson First Nation",
+    link: "http://lyackson.bc.ca/",
+    distance: 20,
+    population: 200,
+  },
+  {
+    name: "Lyackson First Nation",
+    link: "http://lyackson.bc.ca/",
+    distance: 20,
+    population: 200,
+  },
+];
 
 storiesOf("LocationsPanel", module).add("default", () => (
   <LocationsPanel
     address="3045 Gibbins Road, Duncan, BC"
     coords={coords}
     municipalities={munis}
+    firstNationCommunities={firstNationCommunities}
   />
 ));
