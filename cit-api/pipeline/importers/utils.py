@@ -23,6 +23,11 @@ from pipeline.models.general import (DataSource, LocationDistance, SchoolDistric
 from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES
 
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+
+RETRY_STRATEGY = Retry(total=3)
+ADAPTER = HTTPAdapter(max_retries=retry_strategy)
 
 def import_data_into_point_model(resource_type, Model, row, dry_run=False):
     print("import_data_into_point_model", row)
@@ -280,12 +285,16 @@ def get_route_planner_distance(origin, destination):
         )
 
     print(api_url)
+    
+    http = requests.Session()
+    http.mount("https://", ADAPTER)
+    http.mount("http://", ADAPTER)
 
-    response = requests.get(api_url,
+    response = http.get(api_url,
                             headers={
                                 "accept": "*/*",
                                 "apikey": settings.ROUTE_PLANNER_API_KEY
-                            })
+                            }, timeout=30)
 
     print("response", response, response.content)
     route = response.json()
