@@ -184,6 +184,12 @@ export default function SearchFlyoutContent({ setQuery }) {
       onChange: setNaturalGasSwitchValue,
       queryKey: "opportunity_natural_gas_connected",
     },
+    {
+      label: "Connectivity (50/10Mbps+)",
+      checked: connectivitySwitchValue,
+      onChange: setConnectivitySwitchValue,
+      queryKey: "connectivity",
+    },
   ];
 
   const numberRangeFilters = [
@@ -303,10 +309,6 @@ export default function SearchFlyoutContent({ setQuery }) {
       query.append("zoning", zoningQueryFilters);
     }
 
-    if (connectivitySwitchValue) {
-      query.append("connectivity", connectivitySwitchValue ? "Y" : "N");
-    }
-
     if (proximityToCommunityOrPopulationIsSelected) {
       query.append(
         "community_population_distance_max",
@@ -424,32 +426,6 @@ export default function SearchFlyoutContent({ setQuery }) {
         displayRange={powerTransmissionLinesDisplayRange}
         setDisplayRange={setPowerTransmissionLinesDisplayRange}
       />
-      <Row className="flex-nowrap">
-        <Col xs={7}>
-          <p>Connectivity (50/10Mbps or more):</p>
-        </Col>
-        <Col xs="auto" className="no-padding">
-          <p>No</p>
-        </Col>
-        <Col xs="auto">
-          <Switch
-            checked={connectivitySwitchValue}
-            onChange={setConnectivitySwitchValue}
-            onColor="#aad3df"
-            onHandleColor="#2693e6"
-            handleDiameter={30}
-            uncheckedIcon={false}
-            checkedIcon={false}
-            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-            height={20}
-            width={48}
-          />
-        </Col>
-        <Col xs="auto" className="no-padding">
-          <p>Yes</p>
-        </Col>
-      </Row>
       <Row className="flex-nowrap">
         <Col xs="6">
           <h3>Site Servicing</h3>
