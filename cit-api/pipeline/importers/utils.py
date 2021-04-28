@@ -27,7 +27,7 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 
 RETRY_STRATEGY = Retry(total=3)
-ADAPTER = HTTPAdapter(max_retries=retry_strategy)
+ADAPTER = HTTPAdapter(max_retries=RETRY_STRATEGY)
 
 def import_data_into_point_model(resource_type, Model, row, dry_run=False):
     print("import_data_into_point_model", row)
