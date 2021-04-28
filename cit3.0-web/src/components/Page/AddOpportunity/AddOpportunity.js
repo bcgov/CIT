@@ -1,5 +1,5 @@
 import { useHistory } from "react-router-dom";
-import { Container, Row, Col, Modal, Form } from "react-bootstrap";
+import { Container, Row, Col, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "shared-components";
 import { useEffect, useState } from "react";
@@ -362,13 +362,6 @@ export default function AddOpportunity() {
                   handleError={handleError}
                   currentAddress={address}
                 />
-                {address && !parcelSize && (
-                  <Row>
-                    <Col>
-                      <PropertyInfo info={address} tag={false} />
-                    </Col>
-                  </Row>
-                )}
                 {!address && coords && coords[0] !== 54.1722 && (
                   <Row>
                     <Col>
@@ -379,50 +372,34 @@ export default function AddOpportunity() {
                 )}
                 <Row>
                   <Col>
-                    {!parcelInfo ? (
-                      <>
-                        <PropertyInfo info={address} tag={false} />
-                        {parcelOwner ? (
-                          <p className="mb-0 mt-3 pb-0">
-                            Ownership: <b>{parcelOwner}</b>
-                          </p>
-                        ) : null}
-                        {parcelSize ? (
-                          <p className="mb-0 pb-0">
-                            Parcel Size: <b>{parcelSize.toFixed(3)} acres</b>
-                          </p>
-                        ) : null}
-                        {PID ? (
-                          <p>
-                            PID:{" "}
-                            <b>
-                              {PID && PID.length > 1 ? PID.join(", ") : PID}
-                            </b>
-                          </p>
-                        ) : null}
-                        {parcelSize ? (
-                          <div>
-                            <Callout
-                              text="If the parcel information populated here is incorrect. Clear and enter new details."
-                              checkboxLabel="Enter new details"
-                              agreeCallout={handleUpdateParcelInfo}
-                            />
-                          </div>
-                        ) : null}
-                      </>
-                    ) : (
+                    <PropertyInfo info={address} tag={false} />
+                    {parcelOwner ? (
+                      <p className="mb-0 mt-3 pb-0">
+                        Ownership: <b>{parcelOwner}</b>
+                      </p>
+                    ) : null}
+                    {parcelSize ? (
+                      <p className="mb-0 pb-0">
+                        Parcel Size: <b>{parcelSize.toFixed(3)} acres</b>
+                      </p>
+                    ) : null}
+                    {PID ? (
+                      <p>
+                        PID:{" "}
+                        <b>{PID && PID.length > 1 ? PID.join(", ") : PID}</b>
+                      </p>
+                    ) : null}
+                    {!parcelInfo && parcelSize ? (
                       <div>
-                        <TextInput
-                          heading="Parcel Ownership"
-                          notes="Please note the information here will appear publicly"
-                          placeholder="Private"
-                          rows={1}
-                          value={parcelOwner}
-                          handleChange={(_, value) =>
-                            dispatch(setParcelOwner(value))
-                          }
-                          name="owner"
+                        <Callout
+                          text="To modify the parcel size, click below to enter new details."
+                          checkboxLabel="Modify parcel size"
+                          agreeCallout={handleUpdateParcelInfo}
                         />
+                      </div>
+                    ) : null}
+                    {parcelInfo ? (
+                      <div>
                         <div className="d-flex flex-column w-100">
                           <p className="mb-0">Parcel Size</p>
                           <p className="mb-0" style={{ opacity: "0.5" }}>
@@ -444,21 +421,8 @@ export default function AddOpportunity() {
                             />
                           </div>
                         </div>
-                        <TextInput
-                          heading="PID"
-                          notes="Enter a parcel number(s) separated by commas, if available"
-                          placeholder="32165785"
-                          rows={1}
-                          value={PID && PID.join(",")}
-                          handleChange={(_, value) => {
-                            if (PID.join(",") !== value) {
-                              dispatch(setPID(value.split(",")));
-                            }
-                          }}
-                          name="owner"
-                        />
                       </div>
-                    )}
+                    ) : null}
                     {parcelOwner === "Private" && (
                       <>
                         <PropertyInfo info="This land parcel or development opportunity resides on private land." />

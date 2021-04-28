@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Switch from "react-switch";
+import { Button } from "shared-components";
 import { Row, Col, Tooltip, OverlayTrigger } from "react-bootstrap";
 import { MdHelp } from "react-icons/md";
 import NumberRangeFilter from "../NumberRangeFilter/NumberRangeFilter";
@@ -33,6 +34,36 @@ export default function SearchFlyoutContent({ setQuery }) {
     max: 500,
     min: 0,
   };
+  const proximityCurrentCommunityInitial = null;
+  const proximityCurrentPopulationInitial = null;
+  const zoningQueryFiltersInitial = "";
+  const zoningFiltersInitial = [
+    {
+      label: "Commercial",
+      code: "COMM",
+      isSelected: false,
+    },
+    {
+      label: "Residential",
+      code: "RESD",
+      isSelected: false,
+    },
+    {
+      label: "Agriculture",
+      code: "AGRI",
+      isSelected: false,
+    },
+    {
+      label: "Industrial-light",
+      code: "INDL",
+      isSelected: false,
+    },
+    {
+      label: "Industrial-heavy",
+      code: "INDH",
+      isSelected: false,
+    },
+  ];
 
   const [parcelSizeIsSelected, setParcelSizeIsSelected] = useState(false);
   const [parcelSizeInputRange, setParcelSizeInputRange] = useState(
@@ -91,41 +122,17 @@ export default function SearchFlyoutContent({ setQuery }) {
     setproximityToCommunityOrPopulationDisplayRange,
   ] = useState(proximityToCommunityOrPopulationInitial);
   const [proximityCurrentCommunity, setProximityCurrentCommunity] = useState(
-    null
+    proximityCurrentCommunityInitial
   );
   const [proximityCurrentPopulation, setProximityCurrentPopulation] = useState(
-    null
+    proximityCurrentPopulationInitial
   );
 
   const [zoningIsSelected, setZoningIsSelected] = useState(false);
-  const [zoningQueryFilters, setZoningQueryFilters] = useState("");
-  const [zoningFilters, setZoningFilters] = useState([
-    {
-      label: "Commercial",
-      code: "COMM",
-      isSelected: false,
-    },
-    {
-      label: "Residential",
-      code: "RESD",
-      isSelected: false,
-    },
-    {
-      label: "Agriculture",
-      code: "AGRI",
-      isSelected: false,
-    },
-    {
-      label: "Industrial-light",
-      code: "INDL",
-      isSelected: false,
-    },
-    {
-      label: "Industrial-heavy",
-      code: "INDH",
-      isSelected: false,
-    },
-  ]);
+  const [zoningQueryFilters, setZoningQueryFilters] = useState(
+    zoningQueryFiltersInitial
+  );
+  const [zoningFilters, setZoningFilters] = useState(zoningFiltersInitial);
 
   const [connectivitySwitchValue, setConnectivitySwitchValue] = useState(false);
 
@@ -177,6 +184,12 @@ export default function SearchFlyoutContent({ setQuery }) {
       onChange: setNaturalGasSwitchValue,
       queryKey: "opportunity_natural_gas_connected",
     },
+    {
+      label: "Connectivity (50/10Mbps+)",
+      checked: connectivitySwitchValue,
+      onChange: setConnectivitySwitchValue,
+      queryKey: "connectivity",
+    },
   ];
 
   const numberRangeFilters = [
@@ -222,6 +235,48 @@ export default function SearchFlyoutContent({ setQuery }) {
     },
   ];
 
+  const [resetRangeInput, setResetRangeInput] = useState(false);
+
+  const handleResetFilters = () => {
+    setExcludeUnknowns(false);
+    setParcelSizeIsSelected(false);
+    setParcelSizeInputRange(parcelSizeInitial);
+    setParcelSizeDisplayRange(parcelSizeInitial);
+    setPowerTransmissionLinesIsSelected(false);
+    setPowerTransmissionLinesInputRange(powerTransmissionLinesInitial);
+    setPowerTransmissionLinesDisplayRange(powerTransmissionLinesInitial);
+    setAirServiceIsSelected(false);
+    setAirServiceInputRange(airServiceInitial);
+    setAirServiceDisplayRange(airServiceInitial);
+    setDeepWaterPortIsSelected(false);
+    setDeepWaterPortInputRange(deepWaterPortInitial);
+    setDeepWaterPortDisplayRange(deepWaterPortInitial);
+    setRailConnectionsIsSelected(false);
+    setRailConnectionsInputRange(railConnectionsInitial);
+    setRailConnectionsDisplayRange(railConnectionsInitial);
+    setProximityToCommunityOrPopulationIsSelected(false);
+    setProximityToCommunityOrPopulationInputRange(
+      proximityToCommunityOrPopulationInitial
+    );
+    setproximityToCommunityOrPopulationDisplayRange(
+      proximityToCommunityOrPopulationInitial
+    );
+    setProximityCurrentCommunity(proximityCurrentCommunityInitial);
+    setProximityCurrentPopulation(proximityCurrentPopulationInitial);
+    setZoningIsSelected(false);
+    setZoningQueryFilters(zoningQueryFiltersInitial);
+    setZoningFilters(zoningFiltersInitial);
+    setConnectivitySwitchValue(false);
+    setRoadAccessSwitchValue(false);
+    setWaterSwitchValue(false);
+    setSewerSwitchValue(false);
+    setElectricalInfrastructureSwitchValue(false);
+    setNaturalGasSwitchValue(false);
+    setPostSecondarySwitchValue(false);
+    setResearchCentreSwitchValue(false);
+    setResetRangeInput(!resetRangeInput);
+  };
+
   useEffect(() => {
     const query = new URLSearchParams();
     query.append("approval_status_id", "PUBL");
@@ -252,10 +307,6 @@ export default function SearchFlyoutContent({ setQuery }) {
 
     if (zoningIsSelected) {
       query.append("zoning", zoningQueryFilters);
-    }
-
-    if (connectivitySwitchValue) {
-      query.append("connectivity", connectivitySwitchValue ? "Y" : "N");
     }
 
     if (proximityToCommunityOrPopulationIsSelected) {
@@ -348,6 +399,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         inputRangeValue={parcelSizeInputRange}
         setInputRangeValue={setParcelSizeInputRange}
         initialInputRangeValues={parcelSizeInitial}
+        resetRangeInput={resetRangeInput}
         displayRange={parcelSizeDisplayRange}
         setDisplayRange={setParcelSizeDisplayRange}
       />
@@ -370,35 +422,10 @@ export default function SearchFlyoutContent({ setQuery }) {
         inputRangeValue={powerTransmissionLinesInputRange}
         setInputRangeValue={setPowerTransmissionLinesInputRange}
         initialInputRangeValues={powerTransmissionLinesInitial}
+        resetRangeInput={resetRangeInput}
         displayRange={powerTransmissionLinesDisplayRange}
         setDisplayRange={setPowerTransmissionLinesDisplayRange}
       />
-      <Row className="flex-nowrap">
-        <Col xs={7}>
-          <p>Connectivity (50/10Mbps or more):</p>
-        </Col>
-        <Col xs="auto" className="no-padding">
-          <p>No</p>
-        </Col>
-        <Col xs="auto">
-          <Switch
-            checked={connectivitySwitchValue}
-            onChange={setConnectivitySwitchValue}
-            onColor="#aad3df"
-            onHandleColor="#2693e6"
-            handleDiameter={30}
-            uncheckedIcon={false}
-            checkedIcon={false}
-            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-            height={20}
-            width={48}
-          />
-        </Col>
-        <Col xs="auto" className="no-padding">
-          <p>Yes</p>
-        </Col>
-      </Row>
       <Row className="flex-nowrap">
         <Col xs="6">
           <h3>Site Servicing</h3>
@@ -406,6 +433,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         <Col xs="auto" className="exclude-unknown-section">
           <input
             type="checkbox"
+            checked={excludeUnknowns}
             value={excludeUnknowns}
             onChange={() => setExcludeUnknowns(!excludeUnknowns)}
           />
@@ -438,6 +466,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         inputRangeValue={airServiceInputRange}
         setInputRangeValue={setAirServiceInputRange}
         initialInputRangeValues={airServiceInitial}
+        resetRangeInput={resetRangeInput}
         displayRange={airServiceDisplayRange}
         setDisplayRange={setAirServiceDisplayRange}
       />
@@ -452,6 +481,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         inputRangeValue={railConnectionsInputRange}
         setInputRangeValue={setRailConnectionsInputRange}
         initialInputRangeValues={railConnectionsInitial}
+        resetRangeInput={resetRangeInput}
         displayRange={railConnectionsDisplayRange}
         setDisplayRange={setRailConnectionsDisplayRange}
       />
@@ -466,10 +496,11 @@ export default function SearchFlyoutContent({ setQuery }) {
         inputRangeValue={deepWaterPortInputRange}
         setInputRangeValue={setDeepWaterPortInputRange}
         initialInputRangeValues={deepWaterPortInitial}
+        resetRangeInput={resetRangeInput}
         displayRange={deepWaterPortDisplayRange}
         setDisplayRange={setDeepWaterPortDisplayRange}
       />
-      <h3>Demographics</h3>
+      <h3>Nearby Communities</h3>
       <CommunityOrPopulationProximityFilter
         inputRange={{ min: 0, max: 500 }}
         units="km"
@@ -479,6 +510,7 @@ export default function SearchFlyoutContent({ setQuery }) {
         inputRangeValue={proximityToCommunityOrPopulationInputRange}
         setInputRangeValue={setProximityToCommunityOrPopulationInputRange}
         initialInputRangeValues={proximityToCommunityOrPopulationInitial}
+        resetRangeInput={resetRangeInput}
         displayRange={proximityToCommunityOrPopulationDisplayRange}
         setDisplayRange={setproximityToCommunityOrPopulationDisplayRange}
         currentCommunity={proximityCurrentCommunity}
@@ -539,6 +571,14 @@ export default function SearchFlyoutContent({ setQuery }) {
           <p>Yes</p>
         </Col>
       </Row>
+      <hr className="hr-bold" />
+      <div className="d-flex justify-content-end">
+        <Button
+          styling="BC-Gov-SecondaryButton"
+          label="Reset all filters"
+          onClick={() => handleResetFilters()}
+        />
+      </div>
     </div>
   );
 }

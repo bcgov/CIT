@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button } from "shared-components";
 import { Modal, Container, Row } from "react-bootstrap";
@@ -11,6 +11,7 @@ import "./CommunityOrPopulationProximityFilter.scss";
 export default function CommunityOrPopulationProximityFilter(props) {
   const dispatch = useDispatch();
   const {
+    resetRangeInput,
     inputRange,
     units,
     label,
@@ -148,6 +149,10 @@ export default function CommunityOrPopulationProximityFilter(props) {
     setStateFunction(value);
   };
 
+  useEffect(() => {
+    handleClear();
+  }, [resetRangeInput]);
+
   return (
     <>
       {!isSelected ? (
@@ -249,6 +254,7 @@ CommunityOrPopulationProximityFilter.defaultProps = {
 };
 
 CommunityOrPopulationProximityFilter.propTypes = {
+  resetRangeInput: PropTypes.bool.isRequired,
   inputRange: PropTypes.shape({
     min: PropTypes.number.isRequired,
     max: PropTypes.number.isRequired,

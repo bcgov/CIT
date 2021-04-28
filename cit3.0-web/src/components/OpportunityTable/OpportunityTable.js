@@ -14,10 +14,10 @@ export default function OpportunityTable(props) {
       <Container fluid>
         {!props.public && (
           <Row>
-            <Col>
+            <Col className="hide-point">
               <b>Point</b>
             </Col>
-            <Col>
+            <Col className="details">
               <b>Details</b>
             </Col>
             <Col>

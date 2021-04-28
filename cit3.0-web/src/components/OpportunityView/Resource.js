@@ -10,7 +10,7 @@ import { setOptions, getOptions } from "../../store/actions/options";
 /**
  * @param {Object} resources from redux state: opportunity
  */
-function displayResources(resources) {
+function displayResources(resources, view) {
   // toDisplay to control nesting of elements
   const toDisplay = {};
   const dispatch = useDispatch();
@@ -28,6 +28,27 @@ function displayResources(resources) {
       const options = await getOptions();
       dispatch(setOptions(options.data));
     }
+  };
+
+  const setTheName = (resource) => {
+    let name = "";
+    if (resource.name === "Unknown" && view !== "all") {
+      name += "*You can enter this information in the next step";
+    } else if (
+      resource.title !== "Nearest Lake" &&
+      resource.title !== "Nearest River"
+    ) {
+      name += resource.name;
+    }
+    name +=
+      resource.title &&
+      resource.value &&
+      resource.title !== "Nearest Lake" &&
+      resource.title !== "Nearest River"
+        ? " - "
+        : "";
+
+    return name;
   };
 
   useEffect(() => {
@@ -152,8 +173,7 @@ function displayResources(resources) {
         element = (
           <span className="ml-2">
             <b>
-              {resource[1].name}{" "}
-              {resource[1].name && resource[1].value ? "-" : ""}{" "}
+              {resource[1].name ? setTheName(resource[1]) : null}
               {resource[1].value ? (
                 <NumberFormat
                   displayType="text"
@@ -208,8 +228,8 @@ function displayResources(resources) {
 }
 
 /* eslint-disable no-lone-blocks, no-unused-expressions */
-export default function Resource({ title, itemsToDisplay }) {
-  const resourcesAsView = displayResources(itemsToDisplay);
+export default function Resource({ title, itemsToDisplay, view }) {
+  const resourcesAsView = displayResources(itemsToDisplay, view);
   const displayItems = (items) =>
     Object.keys(items).map((key) => {
       if (items[key] && items[key].$$typeof !== Symbol.for("react.element")) {
@@ -221,9 +241,11 @@ export default function Resource({ title, itemsToDisplay }) {
         );
       }
       return (
-        <Row className="mb-2" key={v4()}>
-          {key}: {items[key]}
-        </Row>
+        <>
+          <Row className="mb-2" key={v4()}>
+            {key}: {items[key]}
+          </Row>
+        </>
       );
     });
   return (
@@ -236,7 +258,12 @@ export default function Resource({ title, itemsToDisplay }) {
   );
 }
 
+Resource.defaultProps = {
+  view: "",
+};
+
 Resource.propTypes = {
   title: PropTypes.string.isRequired,
   itemsToDisplay: PropTypes.shape().isRequired,
+  view: PropTypes.string,
 };

@@ -5,7 +5,8 @@ import { Container, Row, Col } from "react-bootstrap";
 import { v4 } from "uuid";
 import "./LocationsPanel.css";
 import { Alert } from "shared-components";
-import { MdInfo } from "react-icons/md";
+import { NavLink } from "react-router-dom";
+import { toKebabCase } from "../../helpers/helpers";
 
 const LocationsPanel = ({
   address,
@@ -28,31 +29,28 @@ const LocationsPanel = ({
       <h4 className="h4">{address || "No Address"}</h4>
     </div>
     <Alert
-      icon={<MdInfo size={32} />}
+      icon={<></>}
       type="info"
       styling="bcgov-info-background mb-3"
       element="Proximity details are provided in straight-line distances."
     />
     {municipalities ? (
       <>
-        <h3 className="mb-3">Nearest Municipalities</h3>
+        <h3 className="mb-3">Nearest Communities</h3>
         <p>
-          Click on Municipality or First Nation&apos;s name to view more
-          information on our Community Information Tool
+          View more information about labour force, key sectors and
+          infrastructure on the Community Information Tool.
         </p>
         <Container className="mb-4">
           {municipalities.map((muni) => (
             <Row key={v4()} className="d-flex justify-content-between">
               <Col className="pl-0">
-                <a
+                <NavLink
                   style={{ lineHeight: "2rem" }}
-                  target="_blank"
-                  rel="noreferrer"
-                  href={`${muni.link}`}
-                  onClick={() => window.open(muni.link, "_blank")}
+                  to={`/cit-dashboard/public/${toKebabCase(muni.name)}`}
                 >
                   {muni.name} - {muni.distance.toFixed(2)}km
-                </a>
+                </NavLink>
               </Col>
               <Col className="d-flex justify-content-end pr-0" md="auto">
                 {muni.population ? "Pop. " : ""}
@@ -79,20 +77,17 @@ const LocationsPanel = ({
           {firstNationCommunities.map((firstNationCommunity) => (
             <Row key={v4()} className="d-flex justify-content-between mb-2">
               <Col className="pl-0">
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  href={`${firstNationCommunity.link}`}
-                  onClick={() =>
-                    window.open(firstNationCommunity.link, "_blank")
-                  }
+                <NavLink
+                  to={`/cit-dashboard/public/${toKebabCase(
+                    firstNationCommunity.link
+                  )}`}
                 >
                   {firstNationCommunity.name
                     .toLowerCase()
                     .replace(/(^|\s)\S/g, (t) => t.toUpperCase())}{" "}
                   - {firstNationCommunity.distance.toFixed(2)}
                   km
-                </a>
+                </NavLink>
               </Col>
               <Col className="d-flex justify-content-end pr-0" md="auto">
                 {firstNationCommunity.population ? "Pop. " : ""}
