@@ -255,9 +255,16 @@ class ProximityView(APIView):
                 community_queryset = Community.objects.filter(
                     municipality_id=municipality_id).annotate(
                         count=Sum(F('census_subdivision__pop_total_2016')))
+                # Valid population found, else not valid
+                #
+                # Tech Loan: The area overlap query below is to patch up misssing data in the Communities V6 spread sheet
                 if len(community_queryset):
                     municipalities['features'][index]['properties'][
                         'population'] = community_queryset.values()[0]['count']
+                else:
+                    total_pop = Community.objects.raw(
+                        f'select pm.id, pcpdcas.* from pipeline_municipality pm, pipeline_cen_prof_detailed_csd_attrs_sp pcpdcas where pm.id = {municipality_id} and st_intersects(pm.geom, pcpdcas.geom) and (st_area(st_intersection(pm.geom, pcpdcas.geom))/st_area(pm.geom)) > .55;')[0].pop_total_2016
+                    municipalities['features'][index]['properties']['population'] = total_pop
                 index += 1
 
         # TODO: Join on community, join on census for population
