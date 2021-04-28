@@ -3,9 +3,9 @@ import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
 
 import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
 import "./App.css";
-import { Footer } from "shared-components";
 import LoadingBar from "react-redux-loading-bar";
 import { Spinner } from "react-bootstrap";
+import Footer from "./components/Footer/Footer";
 import Header from "./components/Headers/Header/Header";
 
 import OpportunityApprovePage from "./components/Page/OpportunityApprovePage/OpportunityApprovePage";

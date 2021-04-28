@@ -40,11 +40,11 @@ docker-compose up db -d --build
 docker-compose up cit-api -d --build
 ```
 
-and then to run the CIT 2.0 front end see the cit-web [readme](/cit-web/readme.md). To run the Community investment tool see [readme](/cit3.0-web/readme.md).
+To run the Community investment tool see [readme](/cit3.0-web/readme.md).
 
-Once the app is running you can access the CIT 2.0 frontend app at `http://localhost:8080`, the Community Investment Tool Front end at `http://localhost:3000`, the Django app api at `http://localhost:8000/api` and the swagger documentation at `http://localhost:8000/swagger/`. To access the database use the proper user and port 5432.
+Once the app is running you can access the Community Investment Tool Front end at `http://localhost:3000`, the Django app api at `http://localhost:8000/api` and the swagger documentation at `http://localhost:8000/swagger/`. To access the database use the proper user and port 5432.
 
-You can create a new terminal, and run commands to interact with the application. `docker-compose ps` to show services, and `docker-compose exec web bash` to open a shell in inside the django service.
+You can create a new terminal, and run commands to interact with the application. `docker-compose ps` to show services, and `docker-compose exec cit-api bash` to open a shell in inside the django service.
 
 ## Importing Data
 
