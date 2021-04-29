@@ -1,6 +1,6 @@
 # Frontend Application
 
-This frontend application contains two high-lelvel business objectives: Community Investment Opportunities Tool, and Community Information Tool.
+This frontend application contains two high-level business objectives: Community Investment Opportunities Tool, and Community Information Tool.
 
 ## Community Investment Opportunities Tool
 
