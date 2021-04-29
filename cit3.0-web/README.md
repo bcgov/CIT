@@ -93,7 +93,7 @@ Runs ESLint on all files and automatically fixes any errors found.
 
 `contexts` - context like authorization, shared across application components.
 
-`hooks` - components-specific code chunk, matched react life cycles well.
+`hooks` - component-specific code chunks, intended to match react life cycles.
 
 `layouts` - User authentication layout, for reuse in the page design.
 
