@@ -187,7 +187,7 @@ export default function PowerBi() {
 
   const createAndCopyLinkToClipboard = () => {
     const url = `${configuration.baseUrl}/cit-dashboard/public/${toKebabCase(
-      selected
+      selected.toLowerCase()
     )}`;
     setCreatedUrl(url);
     const el = document.createElement("textarea");
@@ -205,7 +205,7 @@ export default function PowerBi() {
     }, 3000);
   };
 
-  return embedToken ? (
+  return embedToken && places ? (
     <>
       <div id="embed-container">
         <div className="no-print cit-header">
