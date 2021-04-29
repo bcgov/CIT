@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.db import connection
-from datetime import date
+from datetime import date, timedelta
 import csv
 import os
 import requests
@@ -28,12 +28,14 @@ def send_tracking_email():
         response = requests.get(os.environ.get("EMAIL_SERVICE_HOST") + "/api/v1/health", headers=headers)
         # Get time span
         today = date.today()
-        start_end = calendar.monthrange(today.year, today.month)
-        from_date = f"{today.year}-{today.month}-1"
-        to_date = f"{today.year}-{today.month}-{start_end[1]}"
+        three_weeks_ago = today - timedelta(weeks=3)
+        start_end = calendar.monthrange(three_weeks_ago.year, three_weeks_ago.month)
+        from_date = f"{three_weeks_ago.year}-{three_weeks_ago.month}-1"
+        to_date = f"{three_weeks_ago.year}-{three_weeks_ago.month}-{start_end[1]}"
         # Get user tracking records
         csv_content = get_user_tracking(from_date, to_date)
         encoded_csv_content = encode_csv_file(csv_content)
+        environment_level = os.environ.get("ENV_LEVEL")
         if response.status_code == 200:
             email_config = {
                 "bcc": [],
@@ -51,7 +53,7 @@ def send_tracking_email():
                     {
                         "content": f"{encoded_csv_content}",
                         "encoding": "base64",
-                        "filename": f"cit_user_bca_access_from_{from_date}_to_{to_date}.csv"
+                        "filename": f"{environment_level}_cit_user_bca_access_from_{from_date}_to_{to_date}.csv"
                     }
                 ]
             }
