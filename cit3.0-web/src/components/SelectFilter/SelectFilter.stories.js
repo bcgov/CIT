@@ -30,40 +30,17 @@ export const ZoningFilter = () => {
     },
   ]);
 
+  const [zoningIsSelected, setZoningIsSelected] = useState(false);
+  const [zoningQueryFilters, setZoningQueryFilters] = useState({});
+
   return (
     <SelectFilter
       label="Zoning"
       filters={zoningFilters}
       setFilters={setZoningFilters}
-    />
-  );
-};
-
-export const ConnectivityFilter = () => {
-  const [connectivityFilters, setConnectivityFilters] = useState([
-    {
-      label: "50/10 mbps",
-      isSelected: false,
-    },
-    {
-      label: "25/5 mbps",
-      isSelected: false,
-    },
-    {
-      label: "10/2 mbps",
-      isSelected: false,
-    },
-    {
-      label: "5/1 mbps",
-      isSelected: false,
-    },
-  ]);
-
-  return (
-    <SelectFilter
-      label="Connectivity"
-      filters={connectivityFilters}
-      setFilters={setConnectivityFilters}
+      isSelected={zoningIsSelected}
+      setIsSelected={setZoningIsSelected}
+      setQueryFilters={setZoningQueryFilters}
     />
   );
 };

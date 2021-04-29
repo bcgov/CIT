@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import NumberRangeFilter from "./NumberRangeFilter";
 
 export default {
@@ -6,20 +6,34 @@ export default {
   component: NumberRangeFilter,
 };
 
-export const ParcelMapFilter = () => (
-  <NumberRangeFilter
-    inputRange={{ min: 0, max: 250000 }}
-    units="acres"
-    description="Size of Property (in acres)"
-    label="Parcel Size"
-  />
-);
+export const ParcelMapFilter = () => {
+  const parcelSizeInitial = {
+    max: 2000,
+    min: 0,
+  };
+  const [parcelSizeIsSelected, setParcelSizeIsSelected] = useState(false);
+  const [parcelSizeInputRange, setParcelSizeInputRange] = useState(
+    parcelSizeInitial
+  );
+  const [parcelSizeDisplayRange, setParcelSizeDisplayRange] = useState(
+    parcelSizeInitial
+  );
+  const [resetRangeInput, setResetRangeInput] = useState(false);
 
-export const GrossFloorArea = () => (
-  <NumberRangeFilter
-    inputRange={{ min: 0, max: 50000 }}
-    units="square feet"
-    description="Size of Property (in square feet)"
-    label="Gross Floor Area"
-  />
-);
+  return (
+    <NumberRangeFilter
+      inputRange={{ min: 0, max: 2000 }}
+      units="acres"
+      description="Size of Property (in acres)"
+      label="Parcel Size"
+      isSelected={parcelSizeIsSelected}
+      setIsSelected={setParcelSizeIsSelected}
+      inputRangeValue={parcelSizeInputRange}
+      setInputRangeValue={setParcelSizeInputRange}
+      initialInputRangeValues={parcelSizeInitial}
+      resetRangeInput={resetRangeInput}
+      displayRange={parcelSizeDisplayRange}
+      setDisplayRange={setParcelSizeDisplayRange}
+    />
+  );
+};
