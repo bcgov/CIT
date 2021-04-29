@@ -187,7 +187,7 @@ export default function PowerBi() {
 
   const createAndCopyLinkToClipboard = () => {
     const url = `${configuration.baseUrl}/cit-dashboard/public/${toKebabCase(
-      selected
+      selected.toLowerCase()
     )}`;
     setCreatedUrl(url);
     const el = document.createElement("textarea");
