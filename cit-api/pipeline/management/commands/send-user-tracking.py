@@ -15,9 +15,11 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         print("IDIR tracking report starting to process...")
         response = send_tracking_email()
-        if response.status_code == 201:
+        if response is not None and response.status_code == 201:
             print("IDIR tracking report complete and sent!")
         else:
+            if response is not None:
+                print(response.text)
             print("IDIR tracking report could not complete!")
 
 def send_tracking_email():
