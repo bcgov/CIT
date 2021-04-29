@@ -13,7 +13,12 @@ import base64
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        send_tracking_email()
+        print("IDIR tracking report starting to process...")
+        response = send_tracking_email()
+        if response.status_code == 201:
+            print("IDIR tracking report complete and sent!")
+        else:
+            print("IDIR tracking report could not complete!")
 
 def send_tracking_email():
     token_request_body = {'grant_type': 'client_credentials'}
@@ -33,7 +38,9 @@ def send_tracking_email():
         from_date = f"{three_weeks_ago.year}-{three_weeks_ago.month}-1"
         to_date = f"{three_weeks_ago.year}-{three_weeks_ago.month}-{start_end[1]}"
         # Get user tracking records
+        print("Creating csv content from user tracking table")
         csv_content = get_user_tracking(from_date, to_date)
+        print("Encoding csv content for email attachment")
         encoded_csv_content = encode_csv_file(csv_content)
         environment_level = os.environ.get("ENV_LEVEL")
         if response.status_code == 200:
@@ -58,8 +65,11 @@ def send_tracking_email():
                 ]
             }
             email_config_json = json.dumps(email_config)
+            print("Sending attachment to databc...")
             response = requests.post(os.environ.get("EMAIL_SERVICE_HOST") + "/api/v1/email", data=email_config_json, headers=headers)
         return response
+    else:
+        print(response.text)
 
 def construct_email_body(from_date, to_date):
     return f"List of CIT BCA User Accesses for {from_date} to {to_date}"
