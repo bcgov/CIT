@@ -81,7 +81,7 @@ const LocationsPanel = ({
               <Col className="pl-0">
                 <NavLink
                   to={`/cit-dashboard/public/${toKebabCase(
-                    firstNationCommunity.link.toLowerCase()
+                    firstNationCommunity.link
                   )}`}
                 >
                   {firstNationCommunity.name
