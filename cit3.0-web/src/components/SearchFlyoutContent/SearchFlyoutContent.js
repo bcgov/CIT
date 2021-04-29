@@ -414,7 +414,7 @@ export default function SearchFlyoutContent({ setQuery }) {
       <NumberRangeFilter
         inputRange={{ min: 0, max: 100 }}
         units="km"
-        description="Driving distance to power transmission lines in km"
+        description="Straight line distance to power transmission lines in km"
         label="Power Transmission Lines"
         isDistance
         isSelected={powerTransmissionLinesIsSelected}
@@ -458,7 +458,7 @@ export default function SearchFlyoutContent({ setQuery }) {
       <NumberRangeFilter
         inputRange={{ min: 0, max: 500 }}
         units="km"
-        description="Driving distance to airport in km"
+        description="Straight line distance to airport in km"
         label="Air Service"
         isDistance
         isSelected={airServiceIsSelected}
@@ -473,7 +473,7 @@ export default function SearchFlyoutContent({ setQuery }) {
       <NumberRangeFilter
         inputRange={{ min: 0, max: 500 }}
         units="km"
-        description="Driving distance to rail connections in km"
+        description="Straight line distance to rail connections in km"
         label="Rail Connections"
         isDistance
         isSelected={railConnectionsIsSelected}
@@ -488,7 +488,7 @@ export default function SearchFlyoutContent({ setQuery }) {
       <NumberRangeFilter
         inputRange={{ min: 0, max: 500 }}
         units="km"
-        description="Driving distance to deep water port in km"
+        description="Straight line distance to deep water port in km"
         label="Deep Water Port"
         isDistance
         isSelected={deepWaterPortIsSelected}
