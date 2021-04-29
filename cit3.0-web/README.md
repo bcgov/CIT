@@ -8,7 +8,7 @@ The Community Investment Opportunity Tool is a place where Economic Development 
 
 ## Community Information Tool
 
-Is an emedded PowerBI report in addition to a splash page and web interface. The majority of the functionality is implemented in the PowerBI environment.
+This is an embedded PowerBI report in addition to a splash page and web interface. The majority of the functionality is implemented in the PowerBI environment.
 
 ## Prerequisites:
 
