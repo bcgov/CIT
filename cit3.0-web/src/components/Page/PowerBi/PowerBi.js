@@ -205,7 +205,7 @@ export default function PowerBi() {
     }, 3000);
   };
 
-  return embedToken ? (
+  return embedToken && places ? (
     <>
       <div id="embed-container">
         <div className="no-print cit-header">
