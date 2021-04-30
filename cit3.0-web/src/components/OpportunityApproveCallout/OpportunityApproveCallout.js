@@ -38,6 +38,7 @@ const OpportunityApproveCallout = ({
   const opportunityName = useSelector((state) => state.opportunity.name);
   const opportunityId = useSelector((state) => state.opportunity.id);
   const keycloak = useKeycloakWrapper();
+  const [asked, setAsked] = useState(false);
 
   const [show, setShow] = useState(false);
 
@@ -114,9 +115,11 @@ const OpportunityApproveCallout = ({
     if (
       nextStatus !== currentStatus && // status has changed
       newPublicNote !== "" && // comment box is not empty
-      publicNote === newPublicNote // comment has not changed
+      publicNote === newPublicNote && // comment has not changed
+      asked === false
     ) {
       handleShow();
+      setAsked(true);
     } else {
       submitStatusChange();
     }
