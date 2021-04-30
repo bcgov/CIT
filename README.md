@@ -46,6 +46,16 @@ Once the app is running you can access the Community Investment Tool Front end a
 
 You can create a new terminal, and run commands to interact with the application. `docker-compose ps` to show services, and `docker-compose exec cit-api bash` to open a shell in inside the django service.
 
+## Docker containers
+
+CIT consists of 5 main docker containers when running locally, these are defined in `docker-compose.yml` and respective Dockerfiles.
+
+- `cit-web` - Builds and hosts `./cit3.0-web` on port 80, utilizing npm and nginx.
+- `cit-api` - Builds and hosts `./cit-api` on port 8000, utilizing python 3.6, in addition to providing swagger on `*:8000/swagger/`
+- `db` - Stands up a Postgres database for cit-api to use on port 5432
+- `kcpostgres` - Stands up a Postgres database for keycloak to use
+- `keycloak` - Provides a local instance of keycloak on port 8080
+
 ## Importing Data
 
 See [DATA.md](DATA.md)
