@@ -21,8 +21,8 @@ resource "azurerm_app_service" "frontend" {
     REACT_APP_KEYCLOAK_CLIENT             = "cit-test"
     REACT_APP_KEYCLOAK_REALM              = "fyof530u"
     REACT_APP_POWER_BI_GROUP_ID           = "0399d295-4354-4955-8ed9-68709eb5e7b5"
-    REACT_APP_POWER_BI_REPORT_ID_PUBLIC   = "3776791c-6ded-4300-8833-5040e3b948c0"
-    REACT_APP_POWER_BI_REPORT_ID_INTERNAL = "3fb90e72-006c-4d43-8e54-8d626510761c"
+    REACT_APP_POWER_BI_REPORT_ID_PUBLIC   = "e76a7ea8-7719-4bea-a1f1-34c8dd7275eb"
+    REACT_APP_POWER_BI_REPORT_ID_INTERNAL = "cddb3a4e-ebe8-4501-8fe3-3f4235afc588"
     REACT_APP_GEOCODER_API_KEY            = var.geocoder_key
     REACT_APP_BC_ROUTE_PLANNER_API_KEY    = var.router_key
     REACT_APP_SNOWPLOW_COLLECTOR          = "spt.apps.gov.bc.ca"

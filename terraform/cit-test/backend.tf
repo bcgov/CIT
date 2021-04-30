@@ -36,7 +36,7 @@ resource "azurerm_app_service" "backend" {
     EMAIL_SERVICE_HOST              = "https://ches-test.apps.silver.devops.gov.bc.ca"
     EMAIL_CLIENT_ID                 = "CIT_SERVICE_CLIENT"
     EMAIL_CLIENT_SECRET             = var.email_client_secret
-    EMAIL_SENDING_ADDRESS           = "noreply@gov.bc.ca"
+    EMAIL_SENDING_ADDRESS           = "citinfo@gov.bc.ca"
     EMAIL_OPPORTUNITY_LINK_HOST     = "https://test.communityinformationtool.gov.bc.ca"
   }
 
