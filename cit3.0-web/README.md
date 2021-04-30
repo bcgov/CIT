@@ -107,3 +107,4 @@ Runs ESLint on all files and automatically fixes any errors found.
 
 - Hot module reloading with `yarn start` doesn't always bust the build files in the browser. Known areas to refresh the page on an edit is the redux store files in `src/store/`.
 - Environment variables must both be entered in .env and src/public/static/env.js for the application to run
+- Using `npx generate-react-cli component MyNewComponent` you can save time creating files, read more about the tool here: <https://www.npmjs.com/package/generate-react-cli>
