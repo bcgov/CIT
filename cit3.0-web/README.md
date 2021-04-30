@@ -4,11 +4,11 @@ This frontend application contains two high-level business objectives: Community
 
 ## Community Investment Opportunities Tool
 
-The Community Investment Opportunity Tool is a place where Economic Development Officers (EDO) can go to post possible investment opportunities for their respective communities. This tool includes a user authenticated portion where EDO's can go to see their currently posted investment opportunities as well as post new ones. It also includes a public facing view where possible investors can go to see all the currently available opportunities in the province or narrow down the opportunities on a set of filterable criteria.
+The Community Investment Opportunity Tool is a place where Economic Development Officers (EDO) can go to post possible investment opportunities for their respective communities. This tool includes a user authenticated portion where EDO's can go to see their currently posted investment opportunities as well as to post new ones. It also includes a public facing view where possible investors can go to see all the currently available opportunities in the province or narrow down the opportunities on a set of filterable criteria.
 
 ## Community Information Tool
 
-This is an embedded PowerBI report in addition to a splash page and web interface. The majority of the functionality is implemented in the PowerBI environment.
+This is an embedded PowerBI report in addition to a home page and web interface. The home page allows a user to choose to view the public report or to use their IDIR to log in to view the internal report.  A logged in user has the option to view either the internal report or the public report.  The data viewing functionality is implemented in the PowerBI environment.  The web interface allows a user to Save to PDF (or print) the currently selected report page as well as to create and copy to clipboard a link to the Tool for a specific community or regional district.  
 
 ## Prerequisites:
 

@@ -45,14 +45,17 @@ const LocationsPanel = ({
           {municipalities.map((muni) => (
             <Row key={v4()} className="d-flex justify-content-between">
               <Col className="pl-0">
-                <NavLink
-                  style={{ lineHeight: "2rem" }}
-                  to={`/cit-dashboard/public/${toKebabCase(
-                    muni.name.toLowerCase()
-                  )}`}
-                >
-                  {muni.name} - {muni.distance.toFixed(2)}km
-                </NavLink>
+                <span className="ml-2 link">
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href={`/cit-dashboard/public/${toKebabCase(
+                      muni.name.toLowerCase()
+                    )}`}
+                  >
+                    {muni.name} - {muni.distance.toFixed(2)}km
+                  </a>
+                </span>
               </Col>
               <Col className="d-flex justify-content-end pr-0" md="auto">
                 {muni.population ? "Pop. " : ""}
@@ -79,17 +82,21 @@ const LocationsPanel = ({
           {firstNationCommunities.map((firstNationCommunity) => (
             <Row key={v4()} className="d-flex justify-content-between mb-2">
               <Col className="pl-0">
-                <NavLink
-                  to={`/cit-dashboard/public/${toKebabCase(
-                    firstNationCommunity.link
-                  )}`}
-                >
-                  {firstNationCommunity.name
-                    .toLowerCase()
-                    .replace(/(^|\s)\S/g, (t) => t.toUpperCase())}{" "}
-                  - {firstNationCommunity.distance.toFixed(2)}
-                  km
-                </NavLink>
+                <span className="ml-2 link">
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href={`/cit-dashboard/public/${toKebabCase(
+                      firstNationCommunity.link.toLowerCase()
+                    )}`}
+                  >
+                    {firstNationCommunity.name
+                      .toLowerCase()
+                      .replace(/(^|\s)\S/g, (t) => t.toUpperCase())}{" "}
+                    - {firstNationCommunity.distance.toFixed(2)}
+                    km
+                  </a>
+                </span>
               </Col>
               <Col className="d-flex justify-content-end pr-0" md="auto">
                 {firstNationCommunity.population ? "Pop. " : ""}

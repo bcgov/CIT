@@ -350,19 +350,19 @@ export class Opportunity {
   set nearestFirstNations(value) {
     if (value && value.features) {
       this.state.firstNationCommunities = value.features.map((feature) => ({
-        name: feature.properties.english_name,
-        link: feature.properties.link,
+        name: feature.properties.place_name,
+        link: feature.properties.place_name,
         distance: feature.properties.distance,
         population: feature.properties.population,
         pk: feature.properties.pk,
       }));
     } else {
       this.state.firstNationCommunities = value.map((feature) => ({
-        name: feature.reserve_name,
-        link: feature.reserve_link,
-        distance: feature.reserve_distance,
-        population: feature.reserve_population,
-        pk: feature.reserve_id,
+        name: feature.name,
+        link: feature.name,
+        distance: feature.distance,
+        population: feature.population,
+        pk: feature.pk,
       }));
     }
   }
