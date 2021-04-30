@@ -15,7 +15,6 @@ LOCATION_RESOURCES = [
     'diagnostic_facilities',
     'timber_facilities',
     'civic_facilities',
-    'closed_mills',
     'airports',
     'port_and_terminal',
     'eao_projects',
