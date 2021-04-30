@@ -1,12 +1,14 @@
 from rest_framework import serializers
 import json
 from django.db.models import F
+from django.contrib.gis.measure import D
 from pipeline.models.location_assets import Airport
 from pipeline.models.community import Community
 from pipeline.models.general import Municipality
 from pipeline.models.indian_reserve_band_name import IndianReserveBandName
 from pipeline.models.location_assets import PortAndTerminal, CustomsPortOfEntry
 from pipeline.models.roads_and_highways import RoadsAndHighways
+from django.contrib.gis.db.models.functions import Distance
 from pipeline.models.opportunity import Opportunity
 from pipeline.models.preferred_development import PreferredDevelopment
 from pipeline.models.railway import Railway
@@ -161,13 +163,17 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
 
     def get_nearest_first_nations(self, instance):
         index = 0
-        nearest_first_nations = list(instance.nearest_first_nations.all().values())
-        for first_nation in nearest_first_nations:
-            nearest_first_nations[index]['reserve_name'] = IndianReserveBandName.objects.get(
-                id=first_nation['reserve_id_id']).english_name
-            nearest_first_nations[index]['reserve_link'] = IndianReserveBandName.objects.get(
-                id=first_nation['reserve_id_id']).name.split(',')[0]
-            index += 1
+        nearest_first_nations = None
+        if instance.nearest_first_nations:
+            nearest_first_nations = []
+            nearest_fns = Community.objects.annotate(distance=Distance("point", instance.geo_position)).filter(point__distance_lte=(instance.geo_position, D(km=100)), community_type__in=["Rural First Nations Reserve", "Urban First Nations Reserve"]).order_by('distance')[:3]
+            for fn in nearest_fns:
+                mapped_fn = dict()
+                mapped_fn["name"] = fn.place_name
+                mapped_fn["link"] = fn.place_name
+                mapped_fn["distance"] = fn.distance.km
+                nearest_first_nations.append(mapped_fn)
+                index += 1
         return nearest_first_nations
 
     def get_nearest_municipalities(self, instance):

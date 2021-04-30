@@ -270,9 +270,9 @@ class ProximityView(APIView):
         # TODO: Join on community, join on census for population
         # Might be missing info
         first_nation_communities = None
-        first_nation_community_check = IndianReserveBandName.objects.annotate(
-            distance=Distance("geom", point)).filter(geom__distance_lte=(point, D(
-                km=100))).order_by('distance')[:3]
+        first_nation_community_check = Community.objects.annotate(
+            distance=Distance("point", point)).filter(point__distance_lte=(point, D(
+                km=100)), community_type__in=["Rural First Nations Reserve", "Urban First Nations Reserve"]).order_by('distance')[:3]
         if first_nation_community_check:
             first_nation_communities = json.loads(
                 serializers.serialize('geojson', first_nation_community_check,
