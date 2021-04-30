@@ -47,7 +47,9 @@ const LocationsPanel = ({
               <Col className="pl-0">
                 <NavLink
                   style={{ lineHeight: "2rem" }}
-                  to={`/cit-dashboard/public/${toKebabCase(muni.name)}`}
+                  to={`/cit-dashboard/public/${toKebabCase(
+                    muni.name.toLowerCase()
+                  )}`}
                 >
                   {muni.name} - {muni.distance.toFixed(2)}km
                 </NavLink>

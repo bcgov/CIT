@@ -27,9 +27,21 @@ CIVIC_LEADER_CHOICES = (
 )
 
 LOCATION_TYPES = [
-    'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities',
-    'hospitals', 'projects', 'servicebc_locations', 'schools', 'clinics', 'courts',
-    'post_secondary_institutions', 'closed_mills', 'research_centres', 'airports'
+    'first_responders',
+    'diagnostic_facilities',
+    'timber_facilities',
+    'civic_facilities',
+    'closed_mills',
+    'airports',
+    'port_and_terminal',
+    'eao_projects',
+    'laboratory_service',
+    'economic_projects',
+    'local_govt_offices',
+    'emergency_social_service_facilities',
+    'customs_ports_of_entry',
+    'pharmacies',
+    'public_library',
 ]
 
 POWERBI_AGG_DOMESTIC = "ReportSection6249eac6d911d2930de3"

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import MockAdapter from "axios-mock-adapter";
 import SearchFlyoutContent from "./SearchFlyoutContent";
@@ -39,5 +39,7 @@ export const SearchContent = () => {
       },
     ],
   });
-  return <SearchFlyoutContent />;
+
+  const [query, setQuery] = useState("");
+  return <SearchFlyoutContent setQuery={setQuery} />;
 };
