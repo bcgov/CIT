@@ -219,6 +219,7 @@ function App() {
                   roles={[
                     Roles.SUPER_ADMINISTRATOR,
                     Roles.SYSTEM_ADMINISTRATOR,
+                    Roles.POWER_BI_VIEWER,
                   ]}
                   component={PowerBi}
                 />
