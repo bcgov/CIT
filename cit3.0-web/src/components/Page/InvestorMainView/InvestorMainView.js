@@ -16,6 +16,9 @@ export default function InvestorMainView() {
   const [pageSize] = useState(4);
   const [query, setQuery] = useState("");
 
+  // For returning to the correct page
+  window.sessionStorage.setItem("back_url", window.location.pathname);
+
   useEffect(() => {
     if (query.length > 0) {
       setCurrentPage(1);
