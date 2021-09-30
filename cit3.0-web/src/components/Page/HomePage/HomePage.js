@@ -1,5 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./HomePage.scss";
 import { Button } from "shared-components";
 
@@ -199,8 +199,12 @@ export default function HomePage() {
             <h5>Disclaimer</h5>
             <p>
               Property listings on this site include information provided by
-              authorized community representatives and obtained from open data
-              sources. The Province of British Columbia has not verified the
+              authorized community representatives and obtained from
+              <span>
+                {" "}
+                <Link to="/datasources">open data sources.</Link>
+              </span>{" "}
+              . The Province of British Columbia has not verified the
               information and prospective purchasers, lessors, and others should
               conduct their own usual due diligence and make such enquiries as
               they deem necessary before purchasing, leasing or otherwise
