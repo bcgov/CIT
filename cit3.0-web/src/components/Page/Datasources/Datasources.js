@@ -62,10 +62,6 @@ const elements = [
       "https://catalogue.data.gov.bc.ca/dataset/e3c3c580-996a-4668-8bc5-6aa7c7dc4932",
   },
   {
-    "Data Source": "Northern Rockies Census Division",
-    "Metadata URL": "",
-  },
-  {
     "Data Source": "ParcelMap BC",
     "Metadata URL":
       "https://catalogue.data.gov.bc.ca/dataset/29a6171a-fab6-4644-b0f7-5d4e466f6837",
