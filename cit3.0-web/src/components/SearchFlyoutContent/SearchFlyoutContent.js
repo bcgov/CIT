@@ -1,71 +1,175 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import Switch from "react-switch";
 import { Button } from "shared-components";
-import { Row, Col, Tooltip, OverlayTrigger } from "react-bootstrap";
+import { Row, Col, Tooltip, OverlayTrigger, Form } from "react-bootstrap";
 import { MdHelp } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
 import NumberRangeFilter from "../NumberRangeFilter/NumberRangeFilter";
 import SelectFilter from "../SelectFilter/SelectFilter";
 import CommunityOrPopulationProximityFilter from "../CommunityOrPopulationProximityFilter/CommunityOrPopulationProximityFilter";
 import "./SearchFlyoutContent.scss";
+import { getOptions, setOptions } from "../../store/actions/options";
 
-export default function SearchFlyoutContent({ setQuery }) {
+const FORM_EXCLUDE_UNKNOWNS = "exclude_unknowns";
+const FORM_OPPORTUNITY_ROAD_CONNECTED = "opportunity_road_connected";
+const FORM_OPPORTUNITY_WATER_CONNECTED = "opportunity_water_connected";
+const FORM_OPPORTUNITY_SEWER_CONNECTED = "opportunity_sewer_connected";
+const FORM_OPPORTUNITY_ELECTRICAL_CONNECTED =
+  "opportunity_electrical_connected";
+const FORM_OPPORTUNITY_NATURAL_GAS_CONNECTED =
+  "opportunity_natural_gas_connected";
+const FORM_CONNECTIVITY = "connectivity";
+
+const FORM_REGIONAL_DISTRICT = "regional_district";
+
+const FORM_PARCEL_SIZE_MIN = "parcel_size_min";
+const FORM_PARCEL_SIZE_MAX = "parcel_size_max";
+
+const FORM_POWER_TRANSMISSION_LINES_MIN = "power_transmission_lines_min";
+const FORM_POWER_TRANSMISSION_LINES_MAX = "power_transmission_lines_max";
+
+const FORM_AIR_SERVICE_MIN = "air_service_min";
+const FORM_AIR_SERVICE_MAX = "air_service_max";
+
+const FORM_RAIL_CONNECTIONS_MIN = "rail_connections_min";
+const FORM_RAIL_CONNECTIONS_MAX = "rail_connections_max";
+
+const FORM_DEEP_WATER_PORT_MIN = "deep_water_port_min";
+const FORM_DEEP_WATER_PORT_MAX = "deep_water_port_max";
+
+const FORM_POST_SECONDARY = "post_secondary_within_100km";
+const FORM_RESEARCH_CENTRE = "research_centre_within_100km";
+
+const FORM_COMMUNITY_POPULATION_DISTANCE_MIN =
+  "community_population_distance_min";
+const FORM_COMMUNITY_POPULATION_DISTANCE_MAX =
+  "community_population_distance_max";
+const FORM_PROXIMITY_COMMUNITY_ID = "proximity_community_id";
+const FORM_PROXIMITY_POPULATION = "proximity_population";
+
+const FORM_ZONING = "zoning";
+
+export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
+  const dispatch = useDispatch();
+  const regionalDistricts = useSelector(
+    (state) => state.options.regionalDistricts
+  );
+  const communityOptions = useSelector(
+    (state) => state.options.communities
+  ).map((option) => ({ value: option.id, label: option.place_name }));
+
   const parcelSizeInitial = {
-    max: 2000,
-    min: 0,
+    max:
+      FORM_PARCEL_SIZE_MAX in search
+        ? parseFloat(search[FORM_PARCEL_SIZE_MAX])
+        : 2000,
+    min:
+      FORM_PARCEL_SIZE_MIN in search
+        ? parseFloat(search[FORM_PARCEL_SIZE_MIN])
+        : 0,
   };
   const powerTransmissionLinesInitial = {
-    max: 100,
-    min: 0,
+    max:
+      FORM_POWER_TRANSMISSION_LINES_MAX in search
+        ? parseFloat(search[FORM_POWER_TRANSMISSION_LINES_MAX])
+        : 100,
+    min:
+      FORM_POWER_TRANSMISSION_LINES_MIN in search
+        ? parseFloat(search[FORM_POWER_TRANSMISSION_LINES_MIN])
+        : 0,
   };
   const airServiceInitial = {
-    max: 500,
-    min: 0,
+    max:
+      FORM_AIR_SERVICE_MAX in search
+        ? parseFloat(search[FORM_AIR_SERVICE_MAX])
+        : 500,
+    min:
+      FORM_AIR_SERVICE_MIN in search
+        ? parseFloat(search[FORM_AIR_SERVICE_MIN])
+        : 0,
   };
   const railConnectionsInitial = {
-    max: 500,
-    min: 0,
+    max:
+      FORM_RAIL_CONNECTIONS_MAX in search
+        ? parseFloat(search[FORM_RAIL_CONNECTIONS_MAX])
+        : 500,
+    min:
+      FORM_RAIL_CONNECTIONS_MIN in search
+        ? parseFloat(search[FORM_RAIL_CONNECTIONS_MIN])
+        : 0,
   };
   const deepWaterPortInitial = {
-    max: 500,
-    min: 0,
+    max:
+      FORM_DEEP_WATER_PORT_MAX in search
+        ? parseFloat(search[FORM_DEEP_WATER_PORT_MAX])
+        : 500,
+    min:
+      FORM_DEEP_WATER_PORT_MIN in search
+        ? parseFloat(search[FORM_DEEP_WATER_PORT_MIN])
+        : 0,
   };
   const proximityToCommunityOrPopulationInitial = {
-    max: 500,
-    min: 0,
+    max:
+      FORM_COMMUNITY_POPULATION_DISTANCE_MAX in search
+        ? parseFloat(search[FORM_COMMUNITY_POPULATION_DISTANCE_MAX])
+        : 500,
+    min:
+      FORM_COMMUNITY_POPULATION_DISTANCE_MIN in search
+        ? parseFloat(search[FORM_COMMUNITY_POPULATION_DISTANCE_MIN])
+        : 0,
   };
-  const proximityCurrentCommunityInitial = null;
-  const proximityCurrentPopulationInitial = null;
+  const proximityCurrentCommunityInitial =
+    FORM_PROXIMITY_COMMUNITY_ID in search
+      ? communityOptions.find(
+          (item) =>
+            item.value === parseInt(search[FORM_PROXIMITY_COMMUNITY_ID], 10)
+        )
+      : null;
+  const proximityCurrentPopulationInitial =
+    FORM_PROXIMITY_POPULATION in search
+      ? parseInt(search[FORM_PROXIMITY_POPULATION], 10)
+      : null;
   const zoningQueryFiltersInitial = "";
   const zoningFiltersInitial = [
     {
       label: "Commercial",
       code: "COMM",
-      isSelected: false,
+      isSelected:
+        FORM_ZONING in search ? search[FORM_ZONING].includes("COMM") : false,
     },
     {
       label: "Residential",
       code: "RESD",
-      isSelected: false,
+      isSelected:
+        FORM_ZONING in search ? search[FORM_ZONING].includes("RESD") : false,
     },
     {
       label: "Agriculture",
       code: "AGRI",
-      isSelected: false,
+      isSelected:
+        FORM_ZONING in search ? search[FORM_ZONING].includes("AGRI") : false,
     },
     {
       label: "Industrial-light",
       code: "INDL",
-      isSelected: false,
+      isSelected:
+        FORM_ZONING in search ? search[FORM_ZONING].includes("INDL") : false,
     },
     {
       label: "Industrial-heavy",
       code: "INDH",
-      isSelected: false,
+      isSelected:
+        FORM_ZONING in search ? search[FORM_ZONING].includes("INDH") : false,
     },
   ];
 
-  const [parcelSizeIsSelected, setParcelSizeIsSelected] = useState(false);
+  const [regionalDistrict, setRegionalDistrict] = useState(
+    FORM_REGIONAL_DISTRICT in search ? search[FORM_REGIONAL_DISTRICT] : null
+  );
+  const [parcelSizeIsSelected, setParcelSizeIsSelected] = useState(
+    FORM_PARCEL_SIZE_MIN in search || FORM_PARCEL_SIZE_MAX in search
+  );
   const [parcelSizeInputRange, setParcelSizeInputRange] = useState(
     parcelSizeInitial
   );
@@ -75,7 +179,10 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [
     powerTransmissionLinesIsSelected,
     setPowerTransmissionLinesIsSelected,
-  ] = useState(false);
+  ] = useState(
+    FORM_POWER_TRANSMISSION_LINES_MIN in search ||
+      FORM_POWER_TRANSMISSION_LINES_MAX in search
+  );
   const [
     powerTransmissionLinesInputRange,
     setPowerTransmissionLinesInputRange,
@@ -84,14 +191,18 @@ export default function SearchFlyoutContent({ setQuery }) {
     powerTransmissionLinesDisplayRange,
     setPowerTransmissionLinesDisplayRange,
   ] = useState(powerTransmissionLinesInitial);
-  const [airServiceIsSelected, setAirServiceIsSelected] = useState(false);
+  const [airServiceIsSelected, setAirServiceIsSelected] = useState(
+    FORM_AIR_SERVICE_MIN in search || FORM_AIR_SERVICE_MAX in search
+  );
   const [airServiceInputRange, setAirServiceInputRange] = useState(
     airServiceInitial
   );
   const [airServiceDisplayRange, setAirServiceDisplayRange] = useState(
     airServiceInitial
   );
-  const [deepWaterPortIsSelected, setDeepWaterPortIsSelected] = useState(false);
+  const [deepWaterPortIsSelected, setDeepWaterPortIsSelected] = useState(
+    FORM_DEEP_WATER_PORT_MIN in search || FORM_DEEP_WATER_PORT_MAX in search
+  );
   const [deepWaterPortInputRange, setDeepWaterPortInputRange] = useState(
     deepWaterPortInitial
   );
@@ -100,7 +211,7 @@ export default function SearchFlyoutContent({ setQuery }) {
   );
 
   const [railConnectionsIsSelected, setRailConnectionsIsSelected] = useState(
-    false
+    FORM_RAIL_CONNECTIONS_MIN in search || FORM_RAIL_CONNECTIONS_MAX in search
   );
   const [railConnectionsInputRange, setRailConnectionsInputRange] = useState(
     railConnectionsInitial
@@ -112,7 +223,10 @@ export default function SearchFlyoutContent({ setQuery }) {
   const [
     proximityToCommunityOrPopulationIsSelected,
     setProximityToCommunityOrPopulationIsSelected,
-  ] = useState(false);
+  ] = useState(
+    FORM_COMMUNITY_POPULATION_DISTANCE_MAX in search ||
+      FORM_COMMUNITY_POPULATION_DISTANCE_MIN in search
+  );
   const [
     proximityToCommunityOrPopulationInputRange,
     setProximityToCommunityOrPopulationInputRange,
@@ -128,67 +242,117 @@ export default function SearchFlyoutContent({ setQuery }) {
     proximityCurrentPopulationInitial
   );
 
-  const [zoningIsSelected, setZoningIsSelected] = useState(false);
+  const [zoningIsSelected, setZoningIsSelected] = useState(
+    FORM_ZONING in search
+  );
   const [zoningQueryFilters, setZoningQueryFilters] = useState(
     zoningQueryFiltersInitial
   );
   const [zoningFilters, setZoningFilters] = useState(zoningFiltersInitial);
 
-  const [connectivitySwitchValue, setConnectivitySwitchValue] = useState(false);
+  const [connectivitySwitchValue, setConnectivitySwitchValue] = useState(
+    FORM_CONNECTIVITY in search ? search[FORM_CONNECTIVITY] === "Y" : false
+  );
 
-  const [roadAccessSwitchValue, setRoadAccessSwitchValue] = useState(false);
-  const [waterSwitchValue, setWaterSwitchValue] = useState(false);
-  const [sewerSwitchValue, setSewerSwitchValue] = useState(false);
+  const [roadAccessSwitchValue, setRoadAccessSwitchValue] = useState(
+    FORM_OPPORTUNITY_ROAD_CONNECTED in search
+      ? search[FORM_OPPORTUNITY_ROAD_CONNECTED] === "Y"
+      : false
+  );
+  const [waterSwitchValue, setWaterSwitchValue] = useState(
+    FORM_OPPORTUNITY_WATER_CONNECTED in search
+      ? search[FORM_OPPORTUNITY_WATER_CONNECTED] === "Y"
+      : false
+  );
+  const [sewerSwitchValue, setSewerSwitchValue] = useState(
+    FORM_OPPORTUNITY_SEWER_CONNECTED in search
+      ? search[FORM_OPPORTUNITY_SEWER_CONNECTED] === "Y"
+      : false
+  );
   const [
     electricalInfrastructureSwitchValue,
     setElectricalInfrastructureSwitchValue,
-  ] = useState(false);
-  const [naturalGasSwitchValue, setNaturalGasSwitchValue] = useState(false);
+  ] = useState(
+    FORM_OPPORTUNITY_ELECTRICAL_CONNECTED in search
+      ? search[FORM_OPPORTUNITY_NATURAL_GAS_CONNECTED] === "Y"
+      : false
+  );
+  const [naturalGasSwitchValue, setNaturalGasSwitchValue] = useState(
+    FORM_OPPORTUNITY_NATURAL_GAS_CONNECTED in search
+      ? search[FORM_OPPORTUNITY_NATURAL_GAS_CONNECTED] === "Y"
+      : false
+  );
 
-  const [excludeUnknowns, setExcludeUnknowns] = useState(false);
+  const [excludeUnknowns, setExcludeUnknowns] = useState(
+    FORM_EXCLUDE_UNKNOWNS in search
+      ? search[FORM_EXCLUDE_UNKNOWNS] === "Y"
+      : false
+  );
 
   const [postSecondarySwitchValue, setPostSecondarySwitchValue] = useState(
-    false
+    FORM_POST_SECONDARY in search ? search[FORM_POST_SECONDARY] === "Y" : false
   );
   const [researchCentreSwitchValue, setResearchCentreSwitchValue] = useState(
-    false
+    FORM_RESEARCH_CENTRE in search
+      ? search[FORM_RESEARCH_CENTRE] === "Y"
+      : false
   );
   const siteServicingFilters = [
     {
       label: "Road access:",
       checked: roadAccessSwitchValue,
-      onChange: setRoadAccessSwitchValue,
-      queryKey: "opportunity_road_connected",
+      onChange: (value) => {
+        onQuery({ [FORM_OPPORTUNITY_ROAD_CONNECTED]: value ? "Y" : "N" });
+        setRoadAccessSwitchValue(value);
+      },
+      queryKey: FORM_OPPORTUNITY_ROAD_CONNECTED,
     },
     {
       label: "Water:",
       checked: waterSwitchValue,
-      onChange: setWaterSwitchValue,
-      queryKey: "opportunity_water_connected",
+      onChange: (value) => {
+        onQuery({ [FORM_OPPORTUNITY_WATER_CONNECTED]: value ? "Y" : "N" });
+        setWaterSwitchValue(value);
+      },
+      queryKey: FORM_OPPORTUNITY_WATER_CONNECTED,
     },
     {
       label: "Sewer:",
       checked: sewerSwitchValue,
-      onChange: setSewerSwitchValue,
-      queryKey: "opportunity_sewer_connected",
+      onChange: (value) => {
+        onQuery({ [FORM_OPPORTUNITY_SEWER_CONNECTED]: value ? "Y" : "N" });
+        setSewerSwitchValue(value);
+      },
+      queryKey: FORM_OPPORTUNITY_SEWER_CONNECTED,
     },
     {
       label: "Electrical Infrastructure:",
       checked: electricalInfrastructureSwitchValue,
-      onChange: setElectricalInfrastructureSwitchValue,
-      queryKey: "opportunity_electrical_connected",
+      onChange: (value) => {
+        onQuery({ [FORM_OPPORTUNITY_ELECTRICAL_CONNECTED]: value ? "Y" : "N" });
+        setElectricalInfrastructureSwitchValue(value);
+      },
+      queryKey: FORM_OPPORTUNITY_ELECTRICAL_CONNECTED,
     },
     {
       label: "Natural Gas:",
       checked: naturalGasSwitchValue,
-      onChange: setNaturalGasSwitchValue,
-      queryKey: "opportunity_natural_gas_connected",
+      onChange: (value) => {
+        onQuery({
+          [FORM_OPPORTUNITY_NATURAL_GAS_CONNECTED]: value ? "Y" : "N",
+        });
+        setNaturalGasSwitchValue(value);
+      },
+      queryKey: FORM_OPPORTUNITY_NATURAL_GAS_CONNECTED,
     },
     {
       label: "Connectivity (50/10Mbps+)",
       checked: connectivitySwitchValue,
-      onChange: setConnectivitySwitchValue,
-      queryKey: "connectivity",
+      onChange: (value) => {
+        onQuery({ [FORM_CONNECTIVITY]: !excludeUnknowns });
+        setConnectivitySwitchValue(value);
+      },
+      queryKey: FORM_CONNECTIVITY,
     },
   ];
 
@@ -197,72 +361,89 @@ export default function SearchFlyoutContent({ setQuery }) {
       selected: parcelSizeIsSelected,
       value: parcelSizeDisplayRange,
       queryKey: {
-        min: "parcel_size_min",
-        max: "parcel_size_max",
+        min: FORM_PARCEL_SIZE_MIN,
+        max: FORM_PARCEL_SIZE_MAX,
       },
     },
     {
       selected: powerTransmissionLinesIsSelected,
       value: powerTransmissionLinesDisplayRange,
       queryKey: {
-        min: "power_transmission_lines_min",
-        max: "power_transmission_lines_max",
+        min: FORM_POWER_TRANSMISSION_LINES_MIN,
+        max: FORM_POWER_TRANSMISSION_LINES_MAX,
       },
     },
     {
       selected: airServiceIsSelected,
       value: airServiceDisplayRange,
       queryKey: {
-        min: "air_service_min",
-        max: "air_service_max",
+        min: FORM_AIR_SERVICE_MIN,
+        max: FORM_AIR_SERVICE_MAX,
       },
     },
     {
       selected: railConnectionsIsSelected,
       value: railConnectionsDisplayRange,
       queryKey: {
-        min: "rail_connections_min",
-        max: "rail_connections_max",
+        min: FORM_RAIL_CONNECTIONS_MIN,
+        max: FORM_RAIL_CONNECTIONS_MAX,
       },
     },
     {
       selected: deepWaterPortIsSelected,
       value: deepWaterPortDisplayRange,
       queryKey: {
-        min: "deep_water_port_min",
-        max: "deep_water_port_max",
+        min: FORM_DEEP_WATER_PORT_MIN,
+        max: FORM_DEEP_WATER_PORT_MAX,
       },
     },
   ];
-
-  const [resetRangeInput, setResetRangeInput] = useState(false);
+  // Fetch options, if not already stored on client
+  if (!communityOptions.length) {
+    getOptions().then((response) => {
+      dispatch(setOptions(response.data));
+      const selected = response.data.communities.find(
+        (item) => item.id === parseInt(search[FORM_PROXIMITY_COMMUNITY_ID], 10)
+      );
+      if (selected) {
+        setProximityCurrentCommunity({
+          value: selected.id,
+          label: selected.place_name,
+        });
+      }
+    });
+  }
+  const handleRegionalDistrictChange = (nextRDCode) => {
+    setRegionalDistrict(nextRDCode);
+    onQuery({ [FORM_REGIONAL_DISTRICT]: nextRDCode });
+  };
 
   const handleResetFilters = () => {
+    // eslint-disable-next-line
+    search = {};
+    resetFilters();
+    resetFilters();
     setExcludeUnknowns(false);
     setParcelSizeIsSelected(false);
-    setParcelSizeInputRange(parcelSizeInitial);
-    setParcelSizeDisplayRange(parcelSizeInitial);
+    setParcelSizeInputRange({ min: 0, max: 2000 });
+    setParcelSizeDisplayRange({ min: 0, max: 2000 });
     setPowerTransmissionLinesIsSelected(false);
-    setPowerTransmissionLinesInputRange(powerTransmissionLinesInitial);
-    setPowerTransmissionLinesDisplayRange(powerTransmissionLinesInitial);
+    setPowerTransmissionLinesInputRange({ min: 0, max: 100 });
+    setPowerTransmissionLinesDisplayRange({ min: 0, max: 100 });
     setAirServiceIsSelected(false);
-    setAirServiceInputRange(airServiceInitial);
-    setAirServiceDisplayRange(airServiceInitial);
+    setAirServiceInputRange({ min: 0, max: 500 });
+    setAirServiceDisplayRange({ min: 0, max: 500 });
     setDeepWaterPortIsSelected(false);
-    setDeepWaterPortInputRange(deepWaterPortInitial);
-    setDeepWaterPortDisplayRange(deepWaterPortInitial);
+    setDeepWaterPortInputRange({ min: 0, max: 500 });
+    setDeepWaterPortDisplayRange({ min: 0, max: 500 });
     setRailConnectionsIsSelected(false);
-    setRailConnectionsInputRange(railConnectionsInitial);
-    setRailConnectionsDisplayRange(railConnectionsInitial);
+    setRailConnectionsInputRange({ min: 0, max: 500 });
+    setRailConnectionsDisplayRange({ min: 0, max: 500 });
     setProximityToCommunityOrPopulationIsSelected(false);
-    setProximityToCommunityOrPopulationInputRange(
-      proximityToCommunityOrPopulationInitial
-    );
-    setproximityToCommunityOrPopulationDisplayRange(
-      proximityToCommunityOrPopulationInitial
-    );
-    setProximityCurrentCommunity(proximityCurrentCommunityInitial);
-    setProximityCurrentPopulation(proximityCurrentPopulationInitial);
+    setProximityToCommunityOrPopulationInputRange({ min: 0, max: 500 });
+    setproximityToCommunityOrPopulationDisplayRange({ min: 0, max: 500 });
+    setProximityCurrentCommunity(null);
+    setProximityCurrentPopulation(null);
     setZoningIsSelected(false);
     setZoningQueryFilters(zoningQueryFiltersInitial);
     setZoningFilters(zoningFiltersInitial);
@@ -274,79 +455,7 @@ export default function SearchFlyoutContent({ setQuery }) {
     setNaturalGasSwitchValue(false);
     setPostSecondarySwitchValue(false);
     setResearchCentreSwitchValue(false);
-    setResetRangeInput(!resetRangeInput);
   };
-
-  useEffect(() => {
-    const query = new URLSearchParams();
-    query.append("approval_status_id", "PUBL");
-    siteServicingFilters.forEach((filter) => {
-      query.append(filter.queryKey, filter.checked === true ? "Y" : "N");
-    });
-
-    query.append("exclude_unknowns", excludeUnknowns ? "Y" : "N");
-
-    query.append(
-      "post_secondary_within_100km",
-      postSecondarySwitchValue ? "Y" : "N"
-    );
-
-    query.append(
-      "research_centre_within_100km",
-      researchCentreSwitchValue ? "Y" : "N"
-    );
-
-    const activeNumberRangeFilters = numberRangeFilters.filter(
-      (filter) => filter.selected === true
-    );
-
-    activeNumberRangeFilters.forEach((filter) => {
-      query.append(filter.queryKey.max, filter.value.max);
-      query.append(filter.queryKey.min, filter.value.min);
-    });
-
-    if (zoningIsSelected) {
-      query.append("zoning", zoningQueryFilters);
-    }
-
-    if (proximityToCommunityOrPopulationIsSelected) {
-      query.append(
-        "community_population_distance_max",
-        proximityToCommunityOrPopulationDisplayRange.max
-      );
-      query.append(
-        "community_population_distance_min",
-        proximityToCommunityOrPopulationDisplayRange.min
-      );
-
-      if (proximityCurrentCommunity !== null) {
-        query.append("proximity_community_id", proximityCurrentCommunity.value);
-      }
-
-      if (proximityCurrentPopulation !== null) {
-        query.append("proximity_population", proximityCurrentPopulation.value);
-      }
-    }
-
-    setQuery(query.toString());
-  }, [
-    roadAccessSwitchValue,
-    waterSwitchValue,
-    sewerSwitchValue,
-    electricalInfrastructureSwitchValue,
-    naturalGasSwitchValue,
-    excludeUnknowns,
-    parcelSizeDisplayRange,
-    powerTransmissionLinesDisplayRange,
-    airServiceDisplayRange,
-    railConnectionsDisplayRange,
-    deepWaterPortDisplayRange,
-    postSecondarySwitchValue,
-    researchCentreSwitchValue,
-    connectivitySwitchValue,
-    zoningQueryFilters,
-    proximityToCommunityOrPopulationDisplayRange,
-  ]);
 
   const siteServicingSection = siteServicingFilters.map((switchFilter) => (
     <Row className="flex-nowrap" key={switchFilter.label}>
@@ -398,10 +507,14 @@ export default function SearchFlyoutContent({ setQuery }) {
         setIsSelected={setParcelSizeIsSelected}
         inputRangeValue={parcelSizeInputRange}
         setInputRangeValue={setParcelSizeInputRange}
-        initialInputRangeValues={parcelSizeInitial}
-        resetRangeInput={resetRangeInput}
         displayRange={parcelSizeDisplayRange}
         setDisplayRange={setParcelSizeDisplayRange}
+        onSave={(value) => {
+          onQuery({
+            [FORM_PARCEL_SIZE_MIN]: value.min,
+            [FORM_PARCEL_SIZE_MAX]: value.max,
+          });
+        }}
       />
       <SelectFilter
         label="Zoning"
@@ -409,7 +522,10 @@ export default function SearchFlyoutContent({ setQuery }) {
         setFilters={setZoningFilters}
         isSelected={zoningIsSelected}
         setIsSelected={setZoningIsSelected}
-        setQueryFilters={setZoningQueryFilters}
+        setQueryFilters={(filter) => {
+          onQuery({ [FORM_ZONING]: filter });
+          setZoningQueryFilters(filter);
+        }}
       />
       <NumberRangeFilter
         inputRange={{ min: 0, max: 100 }}
@@ -421,10 +537,14 @@ export default function SearchFlyoutContent({ setQuery }) {
         setIsSelected={setPowerTransmissionLinesIsSelected}
         inputRangeValue={powerTransmissionLinesInputRange}
         setInputRangeValue={setPowerTransmissionLinesInputRange}
-        initialInputRangeValues={powerTransmissionLinesInitial}
-        resetRangeInput={resetRangeInput}
         displayRange={powerTransmissionLinesDisplayRange}
         setDisplayRange={setPowerTransmissionLinesDisplayRange}
+        onSave={(value) => {
+          onQuery({
+            [FORM_POWER_TRANSMISSION_LINES_MIN]: value.min,
+            [FORM_POWER_TRANSMISSION_LINES_MAX]: value.max,
+          });
+        }}
       />
       <Row className="flex-nowrap">
         <Col xs="6">
@@ -435,7 +555,12 @@ export default function SearchFlyoutContent({ setQuery }) {
             type="checkbox"
             checked={excludeUnknowns}
             value={excludeUnknowns}
-            onChange={() => setExcludeUnknowns(!excludeUnknowns)}
+            onChange={() => {
+              onQuery({
+                [FORM_EXCLUDE_UNKNOWNS]: !excludeUnknowns ? "Y" : "N",
+              });
+              setExcludeUnknowns(!excludeUnknowns);
+            }}
           />
         </Col>
         <Col xs="auto" className="exclude-unknown-section">
@@ -465,10 +590,14 @@ export default function SearchFlyoutContent({ setQuery }) {
         setIsSelected={setAirServiceIsSelected}
         inputRangeValue={airServiceInputRange}
         setInputRangeValue={setAirServiceInputRange}
-        initialInputRangeValues={airServiceInitial}
-        resetRangeInput={resetRangeInput}
         displayRange={airServiceDisplayRange}
         setDisplayRange={setAirServiceDisplayRange}
+        onSave={(value) => {
+          onQuery({
+            [FORM_AIR_SERVICE_MIN]: value.min,
+            [FORM_AIR_SERVICE_MAX]: value.max,
+          });
+        }}
       />
       <NumberRangeFilter
         inputRange={{ min: 0, max: 500 }}
@@ -480,10 +609,14 @@ export default function SearchFlyoutContent({ setQuery }) {
         setIsSelected={setRailConnectionsIsSelected}
         inputRangeValue={railConnectionsInputRange}
         setInputRangeValue={setRailConnectionsInputRange}
-        initialInputRangeValues={railConnectionsInitial}
-        resetRangeInput={resetRangeInput}
         displayRange={railConnectionsDisplayRange}
         setDisplayRange={setRailConnectionsDisplayRange}
+        onSave={(value) => {
+          onQuery({
+            [FORM_RAIL_CONNECTIONS_MIN]: value.min,
+            [FORM_RAIL_CONNECTIONS_MAX]: value.max,
+          });
+        }}
       />
       <NumberRangeFilter
         inputRange={{ min: 0, max: 500 }}
@@ -495,29 +628,48 @@ export default function SearchFlyoutContent({ setQuery }) {
         setIsSelected={setDeepWaterPortIsSelected}
         inputRangeValue={deepWaterPortInputRange}
         setInputRangeValue={setDeepWaterPortInputRange}
-        initialInputRangeValues={deepWaterPortInitial}
-        resetRangeInput={resetRangeInput}
         displayRange={deepWaterPortDisplayRange}
         setDisplayRange={setDeepWaterPortDisplayRange}
+        onSave={(value) => {
+          onQuery({
+            [FORM_DEEP_WATER_PORT_MIN]: value.min,
+            [FORM_DEEP_WATER_PORT_MAX]: value.max,
+          });
+        }}
       />
       <h3>Nearby Communities</h3>
-      <CommunityOrPopulationProximityFilter
-        inputRange={{ min: 0, max: 500 }}
-        units="km"
-        label="Proximity to community/population"
-        isSelected={proximityToCommunityOrPopulationIsSelected}
-        setIsSelected={setProximityToCommunityOrPopulationIsSelected}
-        inputRangeValue={proximityToCommunityOrPopulationInputRange}
-        setInputRangeValue={setProximityToCommunityOrPopulationInputRange}
-        initialInputRangeValues={proximityToCommunityOrPopulationInitial}
-        resetRangeInput={resetRangeInput}
-        displayRange={proximityToCommunityOrPopulationDisplayRange}
-        setDisplayRange={setproximityToCommunityOrPopulationDisplayRange}
-        currentCommunity={proximityCurrentCommunity}
-        setCurrentCommunity={setProximityCurrentCommunity}
-        currentPopulation={proximityCurrentPopulation}
-        setCurrentPopulation={setProximityCurrentPopulation}
-      />
+      {communityOptions ? (
+        <CommunityOrPopulationProximityFilter
+          inputRange={{ min: 0, max: 500 }}
+          units="km"
+          label="Proximity to community/population"
+          isSelected={proximityToCommunityOrPopulationIsSelected}
+          setIsSelected={setProximityToCommunityOrPopulationIsSelected}
+          inputRangeValue={proximityToCommunityOrPopulationInputRange}
+          setInputRangeValue={setProximityToCommunityOrPopulationInputRange}
+          initialInputRangeValues={proximityToCommunityOrPopulationInitial}
+          displayRange={proximityToCommunityOrPopulationDisplayRange}
+          setDisplayRange={setproximityToCommunityOrPopulationDisplayRange}
+          currentCommunity={proximityCurrentCommunity}
+          setCurrentCommunity={setProximityCurrentCommunity}
+          currentPopulation={proximityCurrentPopulation}
+          setCurrentPopulation={setProximityCurrentPopulation}
+          onSave={(value) => {
+            const updateQuery = {
+              [FORM_COMMUNITY_POPULATION_DISTANCE_MIN]: value.min,
+              [FORM_COMMUNITY_POPULATION_DISTANCE_MAX]: value.max,
+            };
+            if (value.id) {
+              updateQuery[FORM_PROXIMITY_COMMUNITY_ID] = value.id;
+            }
+            if (value.pop) {
+              updateQuery[FORM_PROXIMITY_POPULATION] = value.pop;
+            }
+            onQuery(updateQuery);
+          }}
+        />
+      ) : null}
+
       <h3>Advanced Education &amp; Research</h3>
       <Row className="flex-nowrap">
         <Col xs={7}>
@@ -529,7 +681,10 @@ export default function SearchFlyoutContent({ setQuery }) {
         <Col xs="auto">
           <Switch
             checked={postSecondarySwitchValue}
-            onChange={setPostSecondarySwitchValue}
+            onChange={(value) => {
+              onQuery({ [FORM_POST_SECONDARY]: value ? "Y" : "N" });
+              setPostSecondarySwitchValue(value);
+            }}
             onColor="#aad3df"
             onHandleColor="#2693e6"
             handleDiameter={30}
@@ -555,7 +710,10 @@ export default function SearchFlyoutContent({ setQuery }) {
         <Col xs="auto">
           <Switch
             checked={researchCentreSwitchValue}
-            onChange={setResearchCentreSwitchValue}
+            onChange={(value) => {
+              onQuery({ [FORM_RESEARCH_CENTRE]: value ? "Y" : "N" });
+              setResearchCentreSwitchValue(value);
+            }}
             onColor="#aad3df"
             onHandleColor="#2693e6"
             handleDiameter={30}
@@ -571,6 +729,24 @@ export default function SearchFlyoutContent({ setQuery }) {
           <p>Yes</p>
         </Col>
       </Row>
+      <h3>Regional District</h3>
+      <Form.Group controlId="regional_district">
+        <Form.Label className="visually-hidden">To</Form.Label>
+        <Form.Control
+          as="select"
+          name="regional-district"
+          value={regionalDistrict}
+          onChange={(e) => handleRegionalDistrictChange(e.target.value)}
+        >
+          <option value="">All</option>
+          {regionalDistricts &&
+            regionalDistricts.map((district) => (
+              <option key={district.id} value={district.id}>
+                {district.name}({district.area_id})
+              </option>
+            ))}
+        </Form.Control>
+      </Form.Group>
       <hr className="hr-bold" />
       <div className="d-flex justify-content-end">
         <Button
@@ -584,5 +760,7 @@ export default function SearchFlyoutContent({ setQuery }) {
 }
 
 SearchFlyoutContent.propTypes = {
-  setQuery: PropTypes.func.isRequired,
+  onQuery: PropTypes.func.isRequired,
+  resetFilters: PropTypes.func.isRequired,
+  search: PropTypes.shape().isRequired,
 };

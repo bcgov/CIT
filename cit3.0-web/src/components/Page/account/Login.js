@@ -92,7 +92,7 @@ const Login = () => {
                 If you&apos;re not yet registered, <br />
                 2.{" "}
                 <a
-                  href="https://www.bceid.ca/os/?7169"
+                  href="https://www.bceid.ca/directories/bluepages/details.aspx?serviceId=7291"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

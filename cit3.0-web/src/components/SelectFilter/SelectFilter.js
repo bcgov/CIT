@@ -14,7 +14,6 @@ export default function SelectFilter(props) {
   } = props;
 
   const [show, setShow] = useState(false);
-  const [displaySelected, setDisplaySelected] = useState({});
   const [filtersOnOpen, setFiltersOnOpen] = useState([{}]);
 
   const handleShow = () => {
@@ -59,6 +58,8 @@ export default function SelectFilter(props) {
 
     return false;
   };
+
+  const [displaySelected, setDisplaySelected] = useState(createLabel());
 
   const handleSave = () => {
     if (isModified()) {

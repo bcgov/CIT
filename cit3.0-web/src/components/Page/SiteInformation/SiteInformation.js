@@ -36,9 +36,7 @@ export default function SiteInformation({ location }) {
               data available from
               <span>
                 {" "}
-                <Link to="/investmentopportunities/datasources">
-                  open data sources.
-                </Link>
+                <Link to="/datasources">open data sources.</Link>
               </span>{" "}
               You will be able to add additional data to your listing in the
               next steps, including site servicing information. The remainder of

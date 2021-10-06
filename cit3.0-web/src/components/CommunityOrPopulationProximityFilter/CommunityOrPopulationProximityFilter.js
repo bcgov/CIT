@@ -2,16 +2,13 @@ import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Button } from "shared-components";
 import { Modal, Container, Row } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Select, { createFilter } from "react-select";
 import InputRangeWithTextboxes from "../InputRangeWithTextboxes/InputRangeWithTextboxes";
-import { setOptions, getOptions } from "../../store/actions/options";
 import "./CommunityOrPopulationProximityFilter.scss";
 
 export default function CommunityOrPopulationProximityFilter(props) {
-  const dispatch = useDispatch();
   const {
-    resetRangeInput,
     inputRange,
     units,
     label,
@@ -23,7 +20,17 @@ export default function CommunityOrPopulationProximityFilter(props) {
     setCurrentCommunity,
     currentPopulation,
     setCurrentPopulation,
+    onSave,
   } = props;
+  const initialLabel = () => {
+    if (currentCommunity !== null) {
+      return currentCommunity.label;
+    }
+    if (currentPopulation !== null) {
+      return `population of at least ${currentPopulation}`;
+    }
+    return "";
+  };
   const [show, setShow] = useState(false);
   const [inputRangeValue, setInputRangeValue] = useState({
     min: inputRange.min,
@@ -36,7 +43,7 @@ export default function CommunityOrPopulationProximityFilter(props) {
   const [
     displayCommunityOrPopulation,
     setDisplayCommunityOrPopulation,
-  ] = useState(null);
+  ] = useState(initialLabel());
   const [isModified, setIsModified] = useState(false);
   const [currentCommunityOnOpen, setCurrentCommunityOnOpen] = useState({});
   const [currentPopulationOnOpen, setCurrentPopulationOnOpen] = useState({});
@@ -47,13 +54,13 @@ export default function CommunityOrPopulationProximityFilter(props) {
   const communityOptions = useSelector(
     (state) => state.options.communities
   ).map((option) => ({ value: option.id, label: option.place_name }));
-
-  // Fetch options, if not already stored on client
-  if (!communityOptions.length) {
-    getOptions().then((response) => {
-      dispatch(setOptions(response.data));
-    });
-  }
+  useEffect(() => {
+    if (currentCommunity !== null) {
+      setDisplayCommunityOrPopulation(
+        currentCommunity && currentCommunity.label
+      );
+    }
+  }, [communityOptions]);
 
   const populationOptions = [
     {
@@ -105,10 +112,20 @@ export default function CommunityOrPopulationProximityFilter(props) {
     });
     if (currentCommunity !== null) {
       setDisplayCommunityOrPopulation(currentCommunity.label);
+      onSave({
+        min: inputRangeValue.min,
+        max: inputRangeValue.max,
+        id: currentCommunity.value,
+      });
     } else if (currentPopulation !== null) {
       setDisplayCommunityOrPopulation(
         `population of at least ${currentPopulation.label}`
       );
+      onSave({
+        min: inputRangeValue.min,
+        max: inputRangeValue.max,
+        pop: currentPopulation.value,
+      });
     }
   };
 
@@ -126,6 +143,12 @@ export default function CommunityOrPopulationProximityFilter(props) {
     setDisplayRange({
       min: inputRangeMin,
       max: inputRangeMax,
+    });
+    onSave({
+      min: "",
+      max: "",
+      id: "",
+      pop: "",
     });
   };
   const handleShow = () => {
@@ -148,10 +171,6 @@ export default function CommunityOrPopulationProximityFilter(props) {
     setIsModified(true);
     setStateFunction(value);
   };
-
-  useEffect(() => {
-    handleClear();
-  }, [resetRangeInput]);
 
   return (
     <>
@@ -203,6 +222,7 @@ export default function CommunityOrPopulationProximityFilter(props) {
                 aria-labelledby="community-label"
                 options={communityOptions}
                 value={currentCommunity}
+                defaultValue={currentCommunity}
                 onChange={(value) =>
                   handleModified(value, handleCommunityChange)
                 }
@@ -254,7 +274,6 @@ CommunityOrPopulationProximityFilter.defaultProps = {
 };
 
 CommunityOrPopulationProximityFilter.propTypes = {
-  resetRangeInput: PropTypes.bool.isRequired,
   inputRange: PropTypes.shape({
     min: PropTypes.number.isRequired,
     max: PropTypes.number.isRequired,
@@ -278,4 +297,5 @@ CommunityOrPopulationProximityFilter.propTypes = {
     label: PropTypes.string.isRequired,
   }),
   setCurrentPopulation: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };

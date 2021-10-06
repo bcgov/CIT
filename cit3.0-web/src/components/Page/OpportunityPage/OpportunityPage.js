@@ -47,13 +47,7 @@ const OpportunityPage = ({ id }) => {
 
   const resetState = (e) => {
     e.preventDefault();
-    const back = window.sessionStorage.getItem("back_url");
-    if (back) {
-      window.sessionStorage.removeItem("back_url");
-      history.push(back);
-    } else {
-      history.push("/investmentopportunities/search");
-    }
+    history.goBack();
     dispatch(resetOpportunity());
   };
 

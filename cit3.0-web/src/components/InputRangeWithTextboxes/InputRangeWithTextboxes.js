@@ -100,6 +100,9 @@ export default function InputRangeWithTextboxes(props) {
     setValidMax(true);
   };
 
+  setMinInput(String(inputRangeValue.min));
+  setMaxInput(String(inputRangeValue.max));
+
   return (
     <Container fluid>
       <div className="input-range">
