@@ -61,7 +61,10 @@ const Header = () => {
                     : "/investmentopportunities/home"
                 }
               >
-                <div className="title">{title()}</div>
+                <div className="title">
+                  {title()}
+                  <span className="beta-tag">BETA</span>
+                </div>
               </Link>
             </Nav.Item>
           </Nav>
