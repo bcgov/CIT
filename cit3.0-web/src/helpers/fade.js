@@ -2,7 +2,6 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-param-reassign */
 export function fadeIn(el) {
-  console.log(el);
   let opacity = 0;
 
   el.style.opacity = 0;

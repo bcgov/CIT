@@ -1,5 +1,7 @@
 import { Row, Col, Container } from "react-bootstrap";
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
+import querystring from "querystring";
 import axios from "axios";
 import OpportunityListContainer from "../../OpportunitiesListContainer/OpportunitiesListContainer";
 import OpportunityMapContainer from "../../OpportunityDisplayMap/OpportunityMapContainer/OpportunityMapContainer";
@@ -15,15 +17,40 @@ export default function InvestorMainView() {
   const [paginatedOpportunities, setPaginatedOpportunities] = useState(null);
   const [pageSize] = useState(4);
   const [query, setQuery] = useState("");
+  const history = useHistory();
+  let search = querystring.decode(window.location.search.split("?")[1]);
 
   // For returning to the correct page
   window.sessionStorage.setItem("back_url", window.location.pathname);
 
   useEffect(() => {
-    if (query.length > 0) {
+    const latestQuery = window.location.search.split("?")[1];
+    setQuery(latestQuery);
+    search = querystring.decode(querystring.encode(latestQuery));
+  }, []);
+  const { CancelToken } = axios;
+  let sourceSearch;
+  let sourceSearchPagination;
+
+  useEffect(() => {
+    if (sourceSearch) {
+      sourceSearch.cancel("newer search");
+    }
+    sourceSearch = CancelToken.source();
+    search = querystring.decode(query);
+    search.approval_status_id = "PUBL";
+    const latestQuery = querystring.encode(search);
+    if (latestQuery.length > 0) {
       setCurrentPage(1);
       axios
-        .get(`${GET_OPPORTUNITIES_LIST_URL}?${query ? `${query}&` : ""}`)
+        .get(
+          `${GET_OPPORTUNITIES_LIST_URL}?${
+            latestQuery ? `${latestQuery}` : ""
+          }`,
+          {
+            cancelToken: sourceSearch.token,
+          }
+        )
         .then((data) => {
           setOpportunities(data.data.results);
           setTotalCount(data.data.count);
@@ -32,15 +59,31 @@ export default function InvestorMainView() {
           setOpportunities(null);
         });
     }
+    return () => {
+      sourceSearch.cancel("Cancelling in cleanup");
+    };
   }, [query]);
 
   useEffect(() => {
-    if (query.length > 0) {
+    if (sourceSearchPagination) {
+      sourceSearchPagination.cancel("newer search");
+    }
+    sourceSearchPagination = CancelToken.source();
+
+    search = querystring.decode(query);
+    search.approval_status_id = "PUBL";
+    search.pageSize = pageSize;
+    search.currentPage = currentPage;
+    const latestQuery = querystring.encode(search);
+    if (latestQuery.length > 0) {
       axios
         .get(
           `${GET_OPPORTUNITIES_LIST_URL}?${
-            query ? `${query}&` : ""
-          }page=${currentPage}&page_size=${pageSize}`
+            latestQuery ? `${latestQuery}` : ""
+          }`,
+          {
+            cancelToken: sourceSearchPagination.token,
+          }
         )
         .then((data) => {
           setPaginatedOpportunities(data.data.results);
@@ -49,11 +92,37 @@ export default function InvestorMainView() {
           setPaginatedOpportunities(null);
         });
     }
+    return () => {
+      sourceSearchPagination.cancel("Cancelling in cleanup");
+    };
   }, [currentPage, query]);
 
   return (
     <div className="w-100">
-      <Flyout flyoutComponent={SearchFlyoutContent} flyoutProps={{ setQuery }}>
+      <Flyout
+        flyoutComponent={SearchFlyoutContent}
+        flyoutProps={{
+          search,
+          onQuery: (keyValues) => {
+            search = querystring.decode(query);
+            Object.entries(keyValues).forEach((keyValue) => {
+              const [key, value] = keyValue;
+              if (value !== "") {
+                search[key] = value;
+              } else {
+                delete search[key];
+              }
+            });
+            setQuery(querystring.encode(search));
+            history.push({ search: querystring.encode(search) });
+          },
+          resetFilters: () => {
+            setQuery("");
+            search = querystring.decode(query);
+            history.push({ search: "" });
+          },
+        }}
+      >
         <Container>
           <Row>
             <Col>

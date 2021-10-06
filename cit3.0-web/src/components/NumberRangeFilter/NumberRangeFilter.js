@@ -17,10 +17,9 @@ export default function NumberRangeFilter(props) {
     setIsSelected,
     inputRangeValue,
     setInputRangeValue,
-    initialInputRangeValues,
     displayRange,
     setDisplayRange,
-    resetRangeInput,
+    onSave,
   } = props;
   const [show, setShow] = useState(false);
   const [minInput, setMinInput] = useState(String(inputRange.min));
@@ -28,13 +27,17 @@ export default function NumberRangeFilter(props) {
   const [validMax, setValidMax] = useState(true);
   const [validMin, setValidMin] = useState(true);
 
-  const inputRangeMax = initialInputRangeValues.max;
-  const inputRangeMin = initialInputRangeValues.min;
+  const inputRangeMax = inputRange.max;
+  const inputRangeMin = inputRange.min;
 
   const handleSave = () => {
     setIsSelected(true);
     setShow(false);
     setDisplayRange({
+      min: inputRangeValue.min,
+      max: inputRangeValue.max,
+    });
+    onSave({
       min: inputRangeValue.min,
       max: inputRangeValue.max,
     });
@@ -51,6 +54,10 @@ export default function NumberRangeFilter(props) {
       min: inputRangeMin,
       max: inputRangeMax,
     });
+    onSave({
+      min: "",
+      max: "",
+    });
   };
   const handleShow = () => setShow(true);
   const handleClose = () => {
@@ -62,10 +69,6 @@ export default function NumberRangeFilter(props) {
     setValidMin(true);
     setValidMax(true);
   };
-
-  useEffect(() => {
-    handleClear();
-  }, [resetRangeInput]);
 
   return (
     <>
@@ -96,20 +99,22 @@ export default function NumberRangeFilter(props) {
         </Modal.Header>
         <Modal.Body>
           <p>{description}</p>
-          <InputRangeWithTextboxes
-            inputRange={inputRange}
-            units={units}
-            minInput={minInput}
-            setMinInput={(value) => setMinInput(value)}
-            maxInput={maxInput}
-            setMaxInput={(value) => setMaxInput(value)}
-            inputRangeValue={inputRangeValue}
-            setInputRangeValue={(value) => setInputRangeValue(value)}
-            validMax={validMax}
-            validMin={validMin}
-            setValidMax={setValidMax}
-            setValidMin={setValidMin}
-          />
+          {inputRangeValue ? (
+            <InputRangeWithTextboxes
+              inputRange={inputRange}
+              units={units}
+              minInput={minInput}
+              setMinInput={(value) => setMinInput(value)}
+              maxInput={maxInput}
+              setMaxInput={(value) => setMaxInput(value)}
+              inputRangeValue={inputRangeValue}
+              setInputRangeValue={(value) => setInputRangeValue(value)}
+              validMax={validMax}
+              validMin={validMin}
+              setValidMax={setValidMax}
+              setValidMin={setValidMin}
+            />
+          ) : null}
         </Modal.Body>
         <Modal.Footer>
           <Button
@@ -134,7 +139,6 @@ NumberRangeFilter.defaultProps = {
 };
 
 NumberRangeFilter.propTypes = {
-  resetRangeInput: PropTypes.bool.isRequired,
   inputRange: PropTypes.shape({
     min: PropTypes.number.isRequired,
     max: PropTypes.number.isRequired,
@@ -150,13 +154,10 @@ NumberRangeFilter.propTypes = {
     min: PropTypes.number.isRequired,
   }).isRequired,
   setInputRangeValue: PropTypes.func.isRequired,
-  initialInputRangeValues: PropTypes.shape({
-    max: PropTypes.number.isRequired,
-    min: PropTypes.number.isRequired,
-  }).isRequired,
   displayRange: PropTypes.shape({
     max: PropTypes.number.isRequired,
     min: PropTypes.number.isRequired,
   }).isRequired,
   setDisplayRange: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
 };
