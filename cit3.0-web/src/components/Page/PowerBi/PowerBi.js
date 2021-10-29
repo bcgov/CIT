@@ -172,7 +172,6 @@ export default function PowerBi() {
       const regNames = data.data.regionalDistricts.map((dist) => dist.name);
       setRegional(regNames);
       setPlaces([...commNames, ...regNames]);
-      setEmbedToken(true);
     });
   }, []);
 
