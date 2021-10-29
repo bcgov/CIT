@@ -72,7 +72,7 @@ export default function PowerBi() {
     if (communities.find((c) => c.toLowerCase() === place)) {
       return "community";
     }
-    if (regional.find((r) => r.toLowerCase() === place.split("-").join(" "))) {
+    if (regional.find((r) => r.toLowerCase() === place)) {
       return "regionalDistrict";
     }
     return null;
@@ -87,7 +87,7 @@ export default function PowerBi() {
       path.includes("public") &&
       path.findIndex((word) => word === "public") !== path.length - 1
     ) {
-      const place = path[path.length - 1].split("-").join(" ");
+      const place = decodeURIComponent(path[path.length - 1]);
       const type = typeOfSelected(place);
       if (type === "community") {
         setCommunity(place);
@@ -172,6 +172,7 @@ export default function PowerBi() {
       const regNames = data.data.regionalDistricts.map((dist) => dist.name);
       setRegional(regNames);
       setPlaces([...commNames, ...regNames]);
+      setEmbedToken(true);
     });
   }, []);
 
@@ -186,9 +187,10 @@ export default function PowerBi() {
   };
 
   const createAndCopyLinkToClipboard = () => {
-    const url = `${configuration.baseUrl}/cit-dashboard/public/${toKebabCase(
-      selected.toLowerCase()
-    )}`;
+    const url = `${
+      configuration.baseUrl
+    }/cit-dashboard/public/${encodeURIComponent(selected.toLowerCase())}`;
+    console.log(url);
     setCreatedUrl(url);
     const el = document.createElement("textarea");
     el.value = url;
