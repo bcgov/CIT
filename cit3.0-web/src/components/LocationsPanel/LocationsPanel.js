@@ -49,7 +49,7 @@ const LocationsPanel = ({
                   <a
                     target="_blank"
                     rel="noreferrer"
-                    href={`/cit-dashboard/public/${toKebabCase(
+                    href={`/cit-dashboard/public/${encodeURIComponent(
                       muni.name.toLowerCase()
                     )}`}
                   >
@@ -86,7 +86,7 @@ const LocationsPanel = ({
                   <a
                     target="_blank"
                     rel="noreferrer"
-                    href={`/cit-dashboard/public/${toKebabCase(
+                    href={`/cit-dashboard/public/${encodeURIComponent(
                       firstNationCommunity.link.toLowerCase()
                     )}`}
                   >

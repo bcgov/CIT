@@ -18,7 +18,6 @@ import Config from "../../../Config";
 import { trackUser } from "../../../store/actions/user";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
-import { toKebabCase } from "../../../helpers/helpers";
 
 export default function PowerBi() {
   const keycloak = useKeycloakWrapper();
@@ -189,7 +188,6 @@ export default function PowerBi() {
     const url = `${
       configuration.baseUrl
     }/cit-dashboard/public/${encodeURIComponent(selected.toLowerCase())}`;
-    console.log(url);
     setCreatedUrl(url);
     const el = document.createElement("textarea");
     el.value = url;
