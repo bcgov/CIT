@@ -44,6 +44,8 @@ services:
       POSTGRES_PASSWORD: password
   keycloak:
       image: quay.io/keycloak/keycloak:latest
+      volumes:
+        - ./realm-export.json:/tmp/realm-export.json
       environment:
         DB_VENDOR: POSTGRES
         DB_ADDR: kcpostgres
@@ -53,12 +55,21 @@ services:
         DB_PASSWORD: password
         KEYCLOAK_USER: admin
         KEYCLOAK_PASSWORD: Pa55w0rd
+        KEYCLOAK_IMPORT: /tmp/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
         # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the PostgreSQL JDBC driver documentation in order to use it.
         #JDBC_PARAMS: "ssl=true"
+        
       ports:
         - 8080:8080
       depends_on:
         - kcpostgres
+  keycloak-config:
+    build:
+      context: .
+      args:
+        - KEYCLOAK_URL=http://localhost:8080
+    command: sh -c "dockerize -wait http://localhost:8080/auth -timeout 300s /tmp/createuser.sh"
+    depends_on: [keycloak]
 
 volumes:
   pg-data:
