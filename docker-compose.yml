@@ -63,13 +63,12 @@ services:
         - 8080:8080
       depends_on:
         - kcpostgres
-  keycloak-config:
-    build:
-      context: .
-      args:
-        - KEYCLOAK_URL=http://localhost:8080
-    command: sh -c "dockerize -wait http://localhost:8080/auth -timeout 300s /tmp/createuser.sh"
-    depends_on: [keycloak]
+      #command: |
+      #  cd /opt/jboss/keycloak/bin/ |
+      #  ./kcadm.sh config credentials --server http://localhost:8080/auth --realm master --user admin --password Pa55w0rd |
+      #  ./kcadm.sh create users -s username=bobross -s enabled=true -s email=bobross@example.com -r fyof530u |
+      #  ./kcadm.sh set-password -r fyof530u --username bobross --new-password password
+
 
 volumes:
   pg-data:
