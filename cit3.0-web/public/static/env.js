@@ -8,6 +8,7 @@
   window.env.snowplowUrl = "spt.apps.gov.bc.ca";
   window.env.geocoderKey = "";
   window.env.routePlannerKey = "";
-  window.env.pbiReportId = "3a848d28-934f-4e08-be41-b4acd90f616a";
-  window.env.pbiGroupId = "9bd828a8-9256-45f7-80ab-f39b8f647de0";
+  window.env.pbiReportIdPublic = "e76a7ea8-7719-4bea-a1f1-34c8dd7275eb";
+  window.env.pbiReportIdInternal = "cddb3a4e-ebe8-4501-8fe3-3f4235afc588";
+  window.env.pbiGroupId = "0399d295-4354-4955-8ed9-68709eb5e7b5";
 })(this);
