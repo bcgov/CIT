@@ -76,7 +76,10 @@ export default function citHome() {
               across B.C. with integrated socioeconomic data, infrastructure,
               and community assets data. The Tool supports community, regional,
               and province-wide planning which is essential to building
-              thriving, healthy communities.
+              thriving, healthy communities. We are continuing to evolve and
+              would appreciate{" "}
+              <a href="mailto:citinfo@gov.bc.ca">your feedback</a>. Please check
+              back in April 2022 for new updates.
             </p>
           </Col>
           <Col sm={3} className="svg-box pt-3">
