@@ -5,8 +5,8 @@ resource "azurerm_app_service" "backend" {
   app_service_plan_id = azurerm_app_service_plan.webapp.id
 
   site_config {
-    linux_fx_version = "DOCKER|${data.terraform_remote_state.shared.outputs.acr_name}.azurecr.io/cit-webapi:latest"
-    always_on = true
+    linux_fx_version = "DOCKER|${azurerm_container_registry.citacrtest.name}.azurecr.io/cit-webapi:latest"
+    always_on        = true
     cors {
       allowed_origins = ["https://test.communityinformationtool.gov.bc.ca"]
     }
@@ -15,9 +15,9 @@ resource "azurerm_app_service" "backend" {
   # TODO: Get connection secrets from AKV
   app_settings = {
     WEBSITES_PORT                   = 8000
-    DOCKER_REGISTRY_SERVER_URL      = "https://${data.terraform_remote_state.shared.outputs.acr_name}.azurecr.io"
-    DOCKER_REGISTRY_SERVER_USERNAME = data.terraform_remote_state.shared.outputs.acr_admin
-    DOCKER_REGISTRY_SERVER_PASSWORD = data.terraform_remote_state.shared.outputs.acr_password
+    DOCKER_REGISTRY_SERVER_URL      = "https://${azurerm_container_registry.citacrtest.name}.azurecr.io"
+    DOCKER_REGISTRY_SERVER_USERNAME = azurerm_container_registry.citacrtest.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.citacrtest.admin_password
     DOCKER_ENABLE_CI                = true
     POSTGRES_DB                     = azurerm_postgresql_database.postgres.name
     POSTGRES_DJANGO_USER            = "${azurerm_postgresql_server.postgres.administrator_login}@${azurerm_postgresql_server.postgres.fqdn}"

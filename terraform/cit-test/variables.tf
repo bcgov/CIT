@@ -39,7 +39,7 @@ variable "azure_tenant_id" {
 variable "azure_resource_group" {
   type        = string
   description = "Azure resource group"
-  default     = "CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01"
+  default     = "CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01-Test"
 }
 
 variable "azure_location" {
@@ -69,4 +69,3 @@ variable "pbi_secret" {
   type        = string
   description = "PowerBI client secret"
 }
-

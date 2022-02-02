@@ -15,10 +15,10 @@ terraform {
     }
   }
   backend "azurerm" {
-    storage_account_name = "tfstatecit"
+    storage_account_name = "tfstatecittest"
     container_name       = "tfstate"
     key                  = "shared.tfstate"
-    resource_group_name  = var.az_resource.group
+    resource_group_name  = "azure_resource_group.name"
   }
 }
 

@@ -8,4 +8,5 @@ output "db_admin" {
 output "db_password" {
   value       = azurerm_postgresql_server.postgres.administrator_login_password
   description = "The admin PSQL admin user password"
+  sensitive   = true
 }

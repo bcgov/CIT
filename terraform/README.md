@@ -2,10 +2,10 @@
 
 This project uses Terraform in order to provision the necessary cloud infrastructure for deploying
 the application. The current chosen infrastructure provider is Microsoft Azure. In order to deploy
-the application you will need to have an available Azure subscription in which to deploy to. 
+the application you will need to have an available Azure subscription in which to deploy to.
 
 ## Prerequisites
-* Terraform CLI 
+* Terraform CLI
 * Azure CLI installed
 
 # Configure Azure CLI
@@ -21,7 +21,7 @@ to specify which subscription you wish to use. `az account set --subscription="S
 Finally, copy the `variables.auto.tfvars.template` file and rename it `variables.auto.tfvars`, then
 populate the following variables:
 
-* **subscription_id**={Your Azure subscription ID} 
+* **subscription_id**={Your Azure subscription ID}
 * **tenant_id**={tenant}
 
 ## Configure Github Repository
@@ -89,3 +89,39 @@ NOTE: This requires a maintained `.tfstate` file that was created in provisionin
 the first place. Still looking at how to maintain this either via VCS or Terraform Cloud.
 
 
+
+
+
+
+===============
+
+# TODO: This document needs to be sanitized as it holds secrets.
+
+Updated Documentation to start from scratch creating the TF state info and using AZ:
+
+az login
+# get the list of accounts to obtain the "id" of the required account.  This is the subscription id.
+az account list
+# use that subscription id to set it as the default for convince.
+az account set -s "be5c5c2b-d7e6-4940-ae15-37d7ef061283"
+# same with setting the default resource group for ease.
+az config set defaults.group=CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01-Test
+
+# this is creating the data store that will hold the TF-State file
+az storage account create --name tfstatecittest  --sku Standard_LRS --encryption-services blob
+
+# Now get the keys we need to access the store:
+az storage account keys list --account-name tfstatecittest
+
+# create a container in the newly created datastore. The account-name is the name from the account create above, and the account-key is from the account key list from above.
+az storage container create --name tfstate --account-name tfstatecittest --account-key <SECRET-FROM-ACCOUNT-KEY-LIST>
+
+# Create a file that holds the account key (above) in a file for the TF backend to use during init:
+cp secrets.backend.template secrets.backend
+# edit the file above
+
+terraform init -backend-config=secrets.backend
+
+
+# NOTE: we've obsoleted the "shared" TF function as we're keeping -Test and -Prod resource groups seperate and not going to use the same resources at all.
+# TODO: we need to decide how to promote between test and prod.
