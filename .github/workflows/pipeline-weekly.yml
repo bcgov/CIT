@@ -1,0 +1,27 @@
+# This workflow will build a new container weekly running the data pipeline weekly pulls
+
+name: Do things every 5 minutes
+on:
+  schedule:
+    #- cron: "0 13 * * 1"
+    - cron: "*/1 * * * *"
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: 
+      name: Production
+    steps:
+      # checkout the repo
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@master
+
+      - name: "Build and push webapi"
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      
+      - name: "Run Azure container start"
+        run: |
+          az container start list --name cit-data-pipeline --resource-group CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01 [--no-wait] [--subscription] BCGov-MGD-CLNPD1
