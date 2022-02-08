@@ -19,7 +19,7 @@ terraform {
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
     resource_group_name  = "CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01-Test"
-    access_key           = "${var.tf_state_backend_access_key}"
+    access_key           = var.tf_state_backend_access_key
     use_azuread_auth     = true
     use_msi              = true
   }
