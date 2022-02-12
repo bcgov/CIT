@@ -562,19 +562,6 @@ class CivicFacility(Location):
     '''
 
 
-class ClosedMill(Location):
-    LATITUDE_FIELD = 'Resource_Latitude'
-    LONGITUDE_FIELD = 'Resource_Longitude'
-    NAME_FIELD = 'Name'
-
-    class Meta:
-        ordering = ("id", )
-
-    '''
-    OrderedDict([('Place_ID', '7928'), ('Place_Name', 'Baynes Lake'), ('Name', 'Canfor Sawmill - Elko'), ('Resource_Longitude', '-115.10295'), ('Resource_Latitude', '49.27562'), ('Type', 'Closed Mill')])
-    '''
-
-
 class ResearchCentre(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
@@ -648,20 +635,6 @@ class PortAndTerminal(Location):
     class Meta:
         ordering = ("id", )
 
-
-class EAOProjects(Location):
-    LATITUDE_FIELD = 'LATITUDE'
-    LONGITUDE_FIELD = 'LONGITUDE'
-    NAME_FIELD = 'PROJECT_NAME'
-    WEBSITE_FIELD = 'PROJECT_URL'
-
-    project_description = models.CharField(null=True, blank=True, max_length=255)
-    type = models.CharField(null=True, blank=True, max_length=255)
-    sub_type = models.CharField(null=True, blank=True, max_length=255)
-    proponent = models.CharField(null=True, blank=True, max_length=255)
-
-    class Meta:
-        ordering = ("id", )
 
 
 class LaboratoryService(Location):

@@ -13,7 +13,6 @@ from .permitted_major_mines import *
 from .provincial_electoral_district import *
 from .railway import *
 from .river import *
-from .bc_floodplain import *
 from .bc_assessment.bc_assessment_census_subdivision import *
 from .bc_assessment.bc_assessment_regional_district import *
 from .bc_assessment.bc_assessment_economic_region import *
