@@ -13,7 +13,8 @@ const AccessDenied = () => {
       <Row>
         <Col className="mt-5">
           <h2 className="my-4">
-            Thank you for your interest, for CIT access please{" "}
+            Thank you for interest in the Community Information Tool, for IDIR
+            access please
             <a
               href={`mailto:citinfo@gov.bc.ca?subject="CIT Permission Request"`}
             >
