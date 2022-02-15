@@ -36,6 +36,7 @@ import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
 import HomePage from "./components/Page/HomePage/HomePage";
 import citHome from "./components/Page/citHome/citHome";
+import Disclaimer from "./components/Page/Disclaimer/Disclaimer";
 
 function App() {
   return (
@@ -240,7 +241,6 @@ function App() {
                   layout={AuthLayout}
                   component={UserManagementDashboard}
                 />
-
                 <AppRoute
                   path="/investmentopportunities/home"
                   title="Community Investment Opportunities Tool"
@@ -250,6 +250,11 @@ function App() {
                   path="/cit-dashboard/home"
                   title="Community Information Tool"
                   component={citHome}
+                />
+                <AppRoute
+                  path="/Disclaimer"
+                  title="Community Information Tool"
+                  component={Disclaimer}
                 />
                 <AppRoute
                   path="/datasources"

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const LinkElement = (url, label) => (
   <li className="nav-item m-1">
     <a
@@ -8,6 +10,14 @@ const LinkElement = (url, label) => (
     >
       {label}
     </a>
+  </li>
+);
+
+const LinkRouteElement = (url, label) => (
+  <li className="nav-item m-1">
+    <Link className="nav-link" to={url}>
+      {label}
+    </Link>
   </li>
 );
 
@@ -34,10 +44,7 @@ export default function Footer() {
           <ul className="navbar-nav text-right">
             {LinkElement("mailto:citinfo@gov.bc.ca", "Contact Us")}
             {LinkElement("https://www2.gov.bc.ca", "BC Government")}
-            {LinkElement(
-              "https://www2.gov.bc.ca/gov/content/home/disclaimer",
-              "Disclaimer"
-            )}
+            {LinkRouteElement("/Disclaimer", "Disclaimer")}
             {LinkElement(
               "https://www2.gov.bc.ca/gov/content/home/privacy",
               "Privacy"
