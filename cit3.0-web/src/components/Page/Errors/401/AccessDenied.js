@@ -1,9 +1,8 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
-import { Alert } from "shared-components/build/components/alert/Alert";
-import { MdError } from "react-icons/md";
 import { useSelector } from "react-redux";
+import "./AccessDenied.css";
 
 const AccessDenied = () => {
   const backUrl = localStorage.getItem("currentAppHome");
@@ -12,29 +11,31 @@ const AccessDenied = () => {
   return (
     <Container data-testid="AccessDeniedPage">
       <Row>
-        <Col>
-          <h2 className="my-4">Access Denied</h2>
-          <Alert
-            icon={<MdError size={32} />}
-            type="error"
-            styling="bcgov-error-background my-4"
-            element="You do not have permission to view this page."
-          />
-          <h2 className="my-4">Oh no! What can I do next?</h2>
-          <ol style={{ lineHeight: "2rem" }} className="my-4">
-            <li>Be sure to login with the correct credentials.</li>
+        <Col className="mt-5">
+          <h2 className="my-4">
+            Thank you for your interest, for CIT access please{" "}
+            <a
+              href={`mailto:citinfo@gov.bc.ca?subject="CIT Permission Request"`}
+            >
+              contact us
+            </a>
+            .
+          </h2>
+          <ul style={{ lineHeight: "2rem" }} className="my-4">
             <li>
-              If you received permissions recently, refresh the page to get the
-              new role.
+              If you have requested permissions recently, refresh the page to
+              get the new role.
             </li>
             <li>
               If this message is shown in error{" "}
-              <a href={`mailto:citinfo@gov.bc.ca?subject="Permission Request"`}>
+              <a
+                href={`mailto:citinfo@gov.bc.ca?subject="CIT Permission Request"`}
+              >
                 contact us
               </a>{" "}
               for assistance.
             </li>
-          </ol>
+          </ul>
           <hr className="hr-bold my-2" />
           <div className="d-flex justify-content-between">
             <Link to={backUrl}>Return to Homepage</Link>
