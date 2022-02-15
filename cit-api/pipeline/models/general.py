@@ -243,6 +243,8 @@ class TsunamiZone(models.Model):
         return self.name
 
 
+
+
 class PageView(models.Model):
     url = models.URLField()
     timestamp = models.DateTimeField()

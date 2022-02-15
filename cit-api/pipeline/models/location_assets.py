@@ -562,6 +562,7 @@ class CivicFacility(Location):
     '''
 
 
+
 class ResearchCentre(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
@@ -634,7 +635,6 @@ class PortAndTerminal(Location):
 
     class Meta:
         ordering = ("id", )
-
 
 
 class LaboratoryService(Location):
