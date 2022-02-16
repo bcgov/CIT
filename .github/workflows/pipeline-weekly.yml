@@ -1,6 +1,6 @@
 # This workflow will build a new container weekly running the data pipeline weekly pulls
 
-name: Do things
+name: AZ Login
 on:
   #schedule:
     #- cron: "0 13 * * 1"
