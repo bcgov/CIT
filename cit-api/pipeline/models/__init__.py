@@ -9,11 +9,9 @@ from .census_economic_region import *
 from .health_authority_boundary import *
 from .lake import *
 from .natural_resource_region import *
-from .permitted_major_mines import *
 from .provincial_electoral_district import *
 from .railway import *
 from .river import *
-from .bc_floodplain import *
 from .bc_assessment.bc_assessment_census_subdivision import *
 from .bc_assessment.bc_assessment_regional_district import *
 from .bc_assessment.bc_assessment_economic_region import *
