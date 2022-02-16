@@ -29,7 +29,6 @@ jobs:
           azcliversion: 2.0.72
           inlineScript: |
             az account show
-            az storage -h
       #- name: "Run Azure container start"
       #  run: |
       #    az container start list --name cit-data-pipeline --resource-group CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01 [--no-wait] [--subscription] BCGov-MGD-CLNPD1
