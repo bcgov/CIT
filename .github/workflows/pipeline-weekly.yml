@@ -2,26 +2,34 @@
 
 name: Do things every 5 minutes
 on:
-  schedule:
+  #schedule:
     #- cron: "0 13 * * 1"
-    - cron: "*/1 * * * *"
+    #- cron: "*/1 * * * *"
+  push:
+    branches:
+      - github-actions-data-pipeline
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: 
-      name: Production
+      name: Test
     steps:
       # checkout the repo
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master
 
-      - name: "Build and push webapi"
-        uses: azure/docker-login@v1
+      - name: Log in with Azure
+        uses: azure/login@v1
         with:
-          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
       
-      - name: "Run Azure container start"
-        run: |
-          az container start list --name cit-data-pipeline --resource-group CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01 [--no-wait] [--subscription] BCGov-MGD-CLNPD1
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+        azcliversion: 2.0.72
+        inlineScript: |
+            az account show
+            az storage -h
+      #- name: "Run Azure container start"
+      #  run: |
+      #    az container start list --name cit-data-pipeline --resource-group CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01 [--no-wait] [--subscription] BCGov-MGD-CLNPD1
