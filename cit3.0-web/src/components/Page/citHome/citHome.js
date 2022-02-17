@@ -6,6 +6,7 @@ import { Button as SharedButton } from "shared-components";
 import { useState } from "react";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
+import DisclaimerCIT from "../../DisclaimerCIT/DisclaimerCIT";
 
 export default function citHome() {
   const history = useHistory();
@@ -166,7 +167,7 @@ export default function citHome() {
           </Col>
         </Row>
       </Container>
-
+      <DisclaimerCIT />
       <Modal
         show={show}
         centered
