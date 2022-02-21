@@ -243,8 +243,26 @@ class TsunamiZone(models.Model):
         return self.name
 
 
-
-
 class PageView(models.Model):
     url = models.URLField()
     timestamp = models.DateTimeField()
+
+
+class PHDemographicDistribution(models.Model):
+    phh_id = models.IntegerField(primary_key=True, max_length=12)
+    phh_type = models.IntegerField()              # PHH Type: 1 = Centroid of a 2016 Census dissemination block; 2 = Atlas of Canada Placename point; 3 = 2016 Census Road Network Address Range Left; 4 = 2016 Census Road Network Address Range Right; 5 = Previous representative point Left; 6 = Previous representative point Right; 8 = PHH null points added on highways
+    population = models.FloatField()              # population (PHH representative)
+    total_private_dwellings = models.FloatField()   # total private dwellings
+    private_dwellings_usual_residents_occupied = models.FloatField()    # private dwellings occupied by usual residents
+    dbuid_ididu = models.IntegerField()         # 2016 Census dissemination block
+    hexuid_iduhex = models.TextField()          # Hexagon identifier
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+
+class NBDPHHSpeeds(models.Model):
+    phh_id = models.IntegerField(primary_key=True, max_length=12)
+    combined_lt5_1 = models.BooleanField(default=False)
+    combined_5_1 = models.BooleanField(default=False)
+    combined_10_2 = models.BooleanField(default=False)
+    combined_25_5 = models.BooleanField(default=False)
+    combined_50_10 = models.BooleanField(default=False)

@@ -19,7 +19,7 @@ from pipeline.models.community import Community
 from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.general import (DataSource, LocationDistance, SchoolDistrict, Municipality,
-                                     CivicLeader, Hex, Service, ISP, RegionalDistrict)
+                                      Hex, Service, ISP, RegionalDistrict)
 from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES
 
@@ -455,39 +455,6 @@ def import_bc_assessment_data(file_path, Model, resource_type):
             print(instance.__dict__)
             instance.save()
 
-
-def import_civic_leaders_from_csv(file_path):
-    with open(file_path) as csv_file:
-        csv_reader = csv.DictReader(csv_file, delimiter=',')
-        for row in csv_reader:
-            # Only import elected mayors and [todo] councillors
-            if not (row['Elected (YES/NO)'] == 'YES' and
-                    (row['Type'] == 'MAYOR' or row['Type'] == 'COUNCILLOR')):
-                continue
-
-            try:
-                community = Community.objects.get(place_name=row['Local Government'])
-
-            except Community.DoesNotExist:
-                print("Could not find community called {}".format(row['Local Government']))
-                continue
-
-            if row['Type'] == 'MAYOR':
-                position = "mayor"
-            elif row['Type'] == 'COUNCILLOR':
-                position = "councillor"
-
-            civic_leader, created = CivicLeader.objects.get_or_create(
-                first_name=row['First Name'].title(),
-                last_name=row['Last Name'].title(),
-                middle_name=row['Middle Name'].title(),
-                community=community,
-                position=position)
-            print("civic_leader", civic_leader)
-
-            civic_leader.gender = row['Gender'].title()
-            civic_leader.experience = row['Experience'].title()
-            civic_leader.save()
 
 
 def import_services(file_path):
