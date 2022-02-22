@@ -20,6 +20,7 @@ import OpportunityDeletePage from "./components/Page/OpportunityDeletePage/Oppor
 import { AuthStateContext } from "./contexts/authStateContext";
 import Login from "./components/Page/account/Login";
 import Logout from "./components/Page/account/Logout";
+import UserStory from "./components/Page/UserStory/UserStory";
 import AccessDenied from "./components/Page/Errors/401/AccessDenied";
 
 import ReviewSubmitted from "./components/Page/ReviewSubmitted/ReviewSubmitted";
@@ -249,6 +250,11 @@ function App() {
                   path="/cit-dashboard/home"
                   title="Community Information Tool"
                   component={citHome}
+                />
+                <AppRoute
+                  path="/userstory"
+                  title="Community Information Tool"
+                  component={UserStory}
                 />
                 <AppRoute
                   path="/datasources"

@@ -1,0 +1,18 @@
+.inline-row {
+    display: flex;
+}   
+
+.row {
+    margin-top: 12px;
+}
+
+.user-story-label {
+    margin-top: 6px;
+    margin-right: 6px;
+}
+
+.searchFilter {
+    color: #376fa3 !important;
+    font-weight: bold;
+    font-size: 1.2em;
+}
