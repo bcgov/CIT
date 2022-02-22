@@ -1,0 +1,12 @@
+.inline-row {
+    display: flex;
+}   
+
+.row {
+    margin-top: 12px;
+}
+
+.user-story-label {
+    margin-top: 6px;
+    margin-right: 6px;
+}
