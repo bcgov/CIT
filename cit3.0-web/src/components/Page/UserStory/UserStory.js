@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -94,6 +94,7 @@ const options3 = [
 let loading = false;
 
 export default function UserStory() {
+  const selectInputRef = useRef();
   const [isOption1Visible, setIsOption1Visible] = useState(true);
   const [isOption2Visible, setIsOption2Visible] = useState(false);
   const [isOption3Visible, setIsOption3Visible] = useState(false);
@@ -101,6 +102,7 @@ export default function UserStory() {
   const [isOption5Visible, setIsOption5Visible] = useState(false);
   const [searchFilter, setSearchFilter] = useState("");
   const [areaType, setAreaType] = useState("");
+  const [areaTypeValue, setAreaTypeValue] = useState("");
   const [options4, setOptions4] = useState("");
 
   const [community, setCommunity] = useState("");
@@ -177,7 +179,6 @@ export default function UserStory() {
   };
 
   const handleOption1Change = (e) => {
-    console.log("option1", e, isOption2Visible);
     if (e.label === "an Investor") {
       setIsOption2Visible(true);
     } else {
@@ -189,7 +190,6 @@ export default function UserStory() {
   };
 
   const handleOption2Change = (e) => {
-    console.log("option2", e);
     if (
       e.label === "learning more about the province or a specific area of BC"
     ) {
@@ -202,9 +202,9 @@ export default function UserStory() {
   };
 
   const handleOption3Change = (e) => {
-    console.log("option3", e);
     setAreaType(e.label);
-
+    setIsOption4Visible(false);
+    setIsOption5Visible(false);
     switch (e.label) {
       case "Regional Districts":
         setOptions4(regionals);
@@ -216,13 +216,13 @@ export default function UserStory() {
         setIsOption4Visible(true);
         break;
       default:
-        setIsOption4Visible(false);
         setAreaType("---");
     }
   };
 
   const handleOption4Change = (e) => {
-    console.log("option4", e);
+    console.log(e.value);
+    setIsOption5Visible(true);
     setSearchFilter(e.label);
   };
 
@@ -333,16 +333,32 @@ export default function UserStory() {
               </Col>
             </Row>
           )}
+          {isOption5Visible && (
+            <>
+              <Row>
+                <Col sm={12} className="inline-row">
+                  <span className="user-story-label">
+                    Ok, let’s learn more about{" "}
+                    <span className="searchFilter">{searchFilter}</span>
+                  </span>
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={12} className="inline-row">
+                  <div className="app flex-row align-items-center">
+                    <Button
+                      color="primary"
+                      className="m-4"
+                      onClick={openPowerBI}
+                    >
+                      GO
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+            </>
+          )}
         </Container>
-        {isOption4Visible && (
-          <div className="app flex-row align-items-center">
-            <Container>
-              <Button color="primary" className="m-4" onClick={openPowerBI}>
-                View Results for Your New Search
-              </Button>
-            </Container>
-          </div>
-        )}
       </div>
     </>
   );
