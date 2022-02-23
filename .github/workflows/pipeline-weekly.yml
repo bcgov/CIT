@@ -26,12 +26,12 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
       
-      - name: Azure CLI script
-        uses: azure/CLI@v1
-        with:
-          azcliversion: 2.0.72
-          inlineScript: |
-            az account show
+      #- name: Azure CLI script
+      #  uses: azure/CLI@v1
+      #  with:
+      #    azcliversion: 2.0.72
+      #    inlineScript: |
+      #      az account show
       #- name: "Run Azure container startup"
       #  run: |
       #    az container start list --name cit-data-pipeline --resource-group CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01 [--no-wait] [--subscription] BCGov-MGD-CLNPD1
