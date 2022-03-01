@@ -1,0 +1,39 @@
+{
+    "userStoryOptions2": [
+      {
+        "id": "1",
+        "code": "VIEWING",
+        "label": "viewing Investment Opportunity matching my criteria",
+        "text1": "We have a tool you might like to check out: our CIOT. (description). Would you like to go to the CIOT?",
+        "text2": null
+      },
+      {
+        "id": "2",
+        "code": "LEARNING",
+        "label": "learning more about the province or a specific area of BC",
+        "text1": "<h3>Great!</h3> <p>You can choose between different types of areas from Communities and Unincorporated Areas, First Nations land and Reserves, Regional District to larger Economic Regions or Tourism Regions.</p><p>What kind of area would you like to look at?</p>",
+        "text2": "I would like to like at"
+      },
+      {
+        "id": "3",
+        "code": "DISCOVERING",
+        "label": "discovering insights and patterns among BC communities",
+        "text1": "We have a criteria search that has many types of filters to help you narrow down specific areas of BC that matches your criteria.",
+        "text2": "Would you like to try it?"
+      },
+      {
+        "id": "4",
+        "code": "COMPARING",
+        "label": "comparing an area",
+        "text1": "",
+        "text2": null
+      },
+      {
+        "id": "5",
+        "code": "PROMOTING",
+        "label": "promoting an investment opportunity in my community",
+        "text1": null,
+        "text2": null
+      }
+    ]
+  }

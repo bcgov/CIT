@@ -1,6 +1,20 @@
-.inline-row {
+.your-story {
     display: flex;
-}   
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.your-story-elements h3 {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+.your-story-elements p {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
 
 .row {
     margin-top: 12px;
