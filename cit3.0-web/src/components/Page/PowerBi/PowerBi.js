@@ -20,6 +20,7 @@ import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
 
 export default function PowerBi() {
+  console.log("params", window.location.pathname);
   const keycloak = useKeycloakWrapper();
   const user = useSelector((state) => state.user);
   const configuration = useConfiguration();
@@ -57,6 +58,11 @@ export default function PowerBi() {
   const searchRoute = "/search-communities";
   const [setPage, setSetPage] = useState(
     window.location.pathname.includes(searchRoute)
+  );
+
+  const compareRoute = "/compare-area";
+  const [isCompareArea, setIsCompareArea] = useState(
+    window.location.pathname.includes(compareRoute)
   );
 
   // Modal
@@ -204,6 +210,91 @@ export default function PowerBi() {
     }, 3000);
   };
 
+  const powerBiEventHandlers = new Map([
+    [
+      "loaded",
+      function () {
+        window.report
+          .getPages()
+          .then((data) => {
+            console.log(data);
+            const commReport = data.filter(
+              (report) => report.displayName === "Community Overview"
+            );
+            const criteria = data.filter(
+              (report) => report.displayName === "Criteria Search"
+            );
+            const compareReport = data.filter(
+              (report) => report.displayName === "Economic"
+            );
+            if (isCompareArea) {
+              console.log("compare-area", compareReport);
+              window.report
+                .setPage(compareReport[0].name)
+                .catch((err) => console.log("setpage error:", err));
+            } else if (community || regionalDistrict || setPage) {
+              if (commReport[0].name !== currentPage) {
+                window.report
+                  .setPage(commReport[0].name)
+                  .catch((err) => console.log("setpage error:", err));
+                if (filter()) {
+                  window.report
+                    .setFilters([filter()])
+                    .catch((err) => console.log("error: ", err));
+                }
+              }
+            } else if (criteria[0].name !== currentPage) {
+              window.report
+                .setPage(criteria[0].name)
+                .catch((err) => console.log("setpage error:", err));
+              if (filter()) {
+                window.report
+                  .setFilters([filter()])
+                  .catch((err) => console.log("error: ", err));
+              }
+            }
+            window.report.refresh();
+            if (reportId === Config.pbiReportIdInternal) {
+              trackUser(
+                {
+                  user_id: user.id,
+                  report_url: window.location.href,
+                },
+                keycloak.obj.token
+              );
+            }
+          })
+          .catch((err) => console.log("error: ", err));
+      },
+    ],
+    [
+      "error",
+      function (event) {
+        console.log("ERROR:::", event.detail);
+      },
+    ],
+    [
+      "pageChanged",
+      function (event) {
+        if (currentPage !== event.detail.newPage.name) {
+          setCurrentPage(event.detail.newPage.name);
+          setCurrentPageData(event.detail.newPage);
+        }
+      },
+    ],
+  ]);
+
+  const powerBiSettings = {
+    panes: {
+      filters: {
+        visible: true,
+      },
+      pageNavigation: {
+        visible: true,
+      },
+    },
+  };
+
   return embedToken && places ? (
     <>
       <div id="embed-container">
@@ -231,87 +322,10 @@ export default function PowerBi() {
             accessToken: embedToken,
             tokenType: models.TokenType.Embed,
             pageName: currentPage || "",
-            settings: {
-              panes: {
-                filters: {
-                  visible: true,
-                },
-                pageNavigation: {
-                  visible: true,
-                },
-              },
-            },
+            settings: { powerBiSettings },
           }}
-          // Define event handlers
-          eventHandlers={
-            new Map([
-              [
-                "loaded",
-                function () {
-                  window.report
-                    .getPages()
-                    .then((data) => {
-                      const commReport = data.filter(
-                        (report) => report.displayName === "Community Overview"
-                      );
-                      const criteria = data.filter(
-                        (report) => report.displayName === "Criteria Search"
-                      );
-                      if (community || regionalDistrict || setPage) {
-                        if (commReport[0].name !== currentPage) {
-                          window.report
-                            .setPage(commReport[0].name)
-                            .catch((err) => console.log("setpage error:", err));
-                          if (filter()) {
-                            window.report
-                              .setFilters([filter()])
-                              .catch((err) => console.log("error: ", err));
-                          }
-                        }
-                      } else if (criteria[0].name !== currentPage) {
-                        window.report
-                          .setPage(criteria[0].name)
-                          .catch((err) => console.log("setpage error:", err));
-                        if (filter()) {
-                          window.report
-                            .setFilters([filter()])
-                            .catch((err) => console.log("error: ", err));
-                        }
-                      }
-                      window.report.refresh();
-                      if (reportId === Config.pbiReportIdInternal) {
-                        trackUser(
-                          {
-                            user_id: user.id,
-                            report_url: window.location.href,
-                          },
-                          keycloak.obj.token
-                        );
-                      }
-                    })
-                    .catch((err) => console.log("error: ", err));
-                },
-              ],
-              [
-                "error",
-                function (event) {
-                  console.log("ERROR:::", event.detail);
-                },
-              ],
-              [
-                "pageChanged",
-                function (event) {
-                  if (currentPage !== event.detail.newPage.name) {
-                    setCurrentPage(event.detail.newPage.name);
-                    setCurrentPageData(event.detail.newPage);
-                  }
-                },
-              ],
-            ])
-          }
-          // // Add CSS classes to the div element
+          eventHandlers={powerBiEventHandlers}
           cssClassName="report-style-class"
-          // set report object
           getEmbeddedComponent={(embeddedReport) => {
             window.report = embeddedReport;
           }}

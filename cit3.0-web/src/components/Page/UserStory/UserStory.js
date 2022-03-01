@@ -56,7 +56,7 @@ export default function UserStory() {
   };
 
   const redirectComparePage = () => {
-    const path = "cit-dashboard/compare";
+    const path = "cit-dashboard/public?reportname=compare";
     history.push(path);
   };
 
