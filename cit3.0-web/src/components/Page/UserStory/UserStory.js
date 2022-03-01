@@ -24,6 +24,7 @@ export default function UserStory() {
   const [isOption5Visible, setIsOption5Visible] = useState(false);
 
   const [isComparing, setIsComparing] = useState(false);
+  const [isComparing, setIsComparing] = useState(false);
   const [isViewing, setIsViewing] = useState(false);
   const [isDiscovering, setIsDiscovering] = useState(false);
   const [isPromoting, setIsPromoting] = useState(false);
@@ -56,7 +57,7 @@ export default function UserStory() {
   };
 
   const redirectComparePage = () => {
-    const path = "cit-dashboard/public?reportname=compare";
+    const path = "cit-dashboard/public/compare-area";
     history.push(path);
   };
 
@@ -88,7 +89,7 @@ export default function UserStory() {
     }),
     singleValue: (base) => ({
       ...base,
-      color: "#376fa3",
+      color: "#3288D9",
       fontWeight: "bold",
       fontSize: "1.2em",
     }),
@@ -145,7 +146,7 @@ export default function UserStory() {
     setIsViewing(e.code === "VIEWING");
     setIsPromoting(e.code === "PROMOTING");
     setIsLearning(e.code === "LEARNING");
-    if (isLearning) setIsOption3Visible(false);
+    if (e.code === "COMPARING") setIsOption3Visible(false);
     else setIsOption3Visible(true);
     setIsOption4Visible(false);
     setIsOption5Visible(false);
@@ -199,6 +200,8 @@ export default function UserStory() {
       <div className={styles.UserStory}>
         <Container>
           <div className="your-story your-story-elements">
+            <h3 className="my-4">Community Information Tool</h3>
+            <hr />
             <h3 className="my-4">
               Hi, welcome to our Community Information Tool. We have lots of
               information available. Tell us a bit more about you and we will

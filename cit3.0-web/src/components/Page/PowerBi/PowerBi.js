@@ -61,9 +61,10 @@ export default function PowerBi() {
   );
 
   const compareRoute = "/compare-area";
-  const [isCompareArea, setIsCompareArea] = useState(
-    window.location.pathname.includes(compareRoute)
-  );
+  const isCompareArea = window.location.pathname.includes(compareRoute);
+
+  const criteriaRoute = "/criteria-search";
+  const isCriteriaSearch = window.location.pathname.includes(criteriaRoute);
 
   // Modal
   const [show, setShow] = useState(false);
@@ -217,7 +218,10 @@ export default function PowerBi() {
         window.report
           .getPages()
           .then((data) => {
-            console.log(data);
+            // const visuals = data[0].getVisuals().then((v) => {
+            //   const myVisuals = v;
+            //   console.log(myVisuals);
+            // });
             const commReport = data.filter(
               (report) => report.displayName === "Community Overview"
             );
@@ -227,8 +231,12 @@ export default function PowerBi() {
             const compareReport = data.filter(
               (report) => report.displayName === "Economic"
             );
-            if (isCompareArea) {
-              console.log("compare-area", compareReport);
+
+            if (isCriteriaSearch) {
+              window.report
+                .setPage(criteria[0].name)
+                .catch((err) => console.log("setpage error:", err));
+            } else if (isCompareArea) {
               window.report
                 .setPage(compareReport[0].name)
                 .catch((err) => console.log("setpage error:", err));
