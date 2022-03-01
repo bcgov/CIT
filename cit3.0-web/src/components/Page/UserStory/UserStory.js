@@ -18,7 +18,6 @@ import styles from "./UserStory.css";
 let loading = false;
 
 export default function UserStory() {
-  console.log(userStoryOptions1);
   const [isOption2Visible, setIsOption2Visible] = useState(false);
   const [isOption3Visible, setIsOption3Visible] = useState(false);
   const [isOption4Visible, setIsOption4Visible] = useState(false);
@@ -82,10 +81,10 @@ export default function UserStory() {
       ...base,
       flex: 0,
       paddingRight: 8,
-      whiteSpace: "nowrap",
     }),
     menu: (base) => ({
       ...base,
+      width: 400,
     }),
     singleValue: (base) => ({
       ...base,
@@ -102,6 +101,7 @@ export default function UserStory() {
       borderBottom: "3px solid #376fa3",
       borderRadius: "0",
       boxShadow: "none",
+      width: 400,
     }),
     indicatorSeparator: (base) => ({
       ...base,
@@ -145,7 +145,8 @@ export default function UserStory() {
     setIsViewing(e.code === "VIEWING");
     setIsPromoting(e.code === "PROMOTING");
     setIsLearning(e.code === "LEARNING");
-    if (isLearning) setIsOption3Visible(true);
+    if (isLearning) setIsOption3Visible(false);
+    else setIsOption3Visible(true);
     setIsOption4Visible(false);
     setIsOption5Visible(false);
     setOption3Text1(e.text1);
@@ -256,41 +257,40 @@ export default function UserStory() {
                 />
               </>
             )}
-            {isOption5Visible && (
-              <>
-                <p>
-                  <span className="user-story-label">
-                    Ok, let’s learn more about{" "}
-                    <span className="searchFilter">{searchFilter}</span>
-                  </span>
-                </p>
-                <p>
-                  <Button
-                    color="primary"
-                    className="m-4"
-                    onClick={redirectPage}
-                  >
-                    GO
-                  </Button>
-                </p>
-              </>
-            )}
-            {isComparing && (
-              <>
-                <br />
-                <p>Ok, let’s go to the compare page</p>
-                <p>
-                  <Button
-                    color="primary"
-                    className="m-4"
-                    onClick={redirectComparePage}
-                  >
-                    GO
-                  </Button>
-                </p>
-              </>
-            )}
           </div>
+        </Container>
+
+        <Container>
+          {isOption5Visible && (
+            <>
+              <p>
+                <span className="user-story-label">
+                  Ok, let’s learn more about{" "}
+                  <span className="searchFilter">{searchFilter}</span>
+                </span>
+              </p>
+              <p>
+                <Button color="primary" className="m-4" onClick={redirectPage}>
+                  GO
+                </Button>
+              </p>
+            </>
+          )}
+          {isComparing && (
+            <>
+              <br />
+              <p>Ok, let’s go to the compare page.</p>
+              <div className="app flex-row align-items-left">
+                <Button
+                  color="primary"
+                  className="m-4"
+                  onClick={redirectComparePage}
+                >
+                  GO
+                </Button>
+              </div>
+            </>
+          )}
         </Container>
       </div>
     </>
