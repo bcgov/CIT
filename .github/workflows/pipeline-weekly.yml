@@ -20,10 +20,10 @@ jobs:
       
       - name: "Generate env file"
         run: |
-        echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
-        echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
-        echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
-        echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env 
+            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
+            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
+            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
+            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env 
 
       - name: Start containers
         run: docker-compose up --build
