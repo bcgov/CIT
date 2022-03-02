@@ -7,7 +7,6 @@ import {
   Modal,
   Container,
   Row,
-  Card,
 } from "react-bootstrap";
 import { Button as SharedButton } from "shared-components";
 import { PowerBIEmbed } from "powerbi-client-react";
@@ -113,7 +112,7 @@ export default function PowerBi() {
     return null;
   };
 
-  const filterTest = () => {
+  const filterCensus = () => {
     const result = {
       $schema: "http://powerbi.com/product/schema#basic",
       target: {
@@ -342,10 +341,10 @@ export default function PowerBi() {
       "loaded",
       function () {
         console.log("economic loaded");
-        if (filterTest()) {
+        if (filterCensus()) {
           console.log("economic loaded filter");
           window.report
-            .setFilters([filterTest()])
+            .setFilters([filterCensus()])
             .catch((err) => console.log("error: ", err));
         }
         window.report.getPages().then((data) => {
@@ -369,10 +368,10 @@ export default function PowerBi() {
       "loaded",
       function () {
         console.log("social loaded");
-        if (filterTest()) {
+        if (filterCensus()) {
           console.log("social loaded filter");
           window.report
-            .setFilters([filterTest()])
+            .setFilters([filterCensus()])
             .catch((err) => console.log("error: ", err));
         }
         window.report.getPages().then((data) => {
