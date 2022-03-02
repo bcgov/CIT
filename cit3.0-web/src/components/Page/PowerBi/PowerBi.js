@@ -20,7 +20,6 @@ import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
 
 export default function PowerBi() {
-  console.log("params", window.location.pathname);
   const keycloak = useKeycloakWrapper();
   const user = useSelector((state) => state.user);
   const configuration = useConfiguration();
@@ -40,6 +39,14 @@ export default function PowerBi() {
       ? Config.pbiReportIdPublic
       : Config.pbiReportIdInternal
   );
+
+  const [isEconomicPageVisible, setIsEconomicPageVisible] = useState(null);
+  const [isSocialPageVisible, setIsSocialPageVisible] = useState(null);
+  const [isAssetsPageVisible, setIsAssetsPageVisible] = useState(null);
+  const [
+    isCommunityOverviewPageVisible,
+    setIsCommunityOverviewPageVisible,
+  ] = useState(null);
 
   const [community, setCommunity] = useState("");
   const [regionalDistrict, setRegionalDistrict] = useState("");
@@ -102,6 +109,19 @@ export default function PowerBi() {
       }
     }
     return null;
+  };
+
+  const filterTest = () => {
+    const result = {
+      $schema: "http://powerbi.com/product/schema#basic",
+      target: {
+        column: "Census Subdivision Name",
+        table: "public pipeline_cen_prof_detailed_csd_attrs_sp",
+      },
+      operator: "In",
+      values: ["Abbotsford"],
+    };
+    return result;
   };
 
   const filter = () => {
@@ -188,6 +208,7 @@ export default function PowerBi() {
   }, [communities, regional]);
 
   const saveAsPDF = () => {
+    window.report.getFilters().then((data) => console.log(data));
     window.report.print();
   };
 
@@ -284,10 +305,95 @@ export default function PowerBi() {
     [
       "pageChanged",
       function (event) {
+        window.report.getFilters().then((data) => console.log(data));
         if (currentPage !== event.detail.newPage.name) {
           setCurrentPage(event.detail.newPage.name);
           setCurrentPageData(event.detail.newPage);
         }
+      },
+    ],
+  ]);
+  const eventHandlersMap = new Map([
+    [
+      "loaded",
+      function () {
+        console.log("Report has loaded");
+      },
+    ],
+    [
+      "rendered",
+      function () {
+        console.log("Report has rendered");
+      },
+    ],
+    [
+      "error",
+      function (event) {
+        if (event) {
+          console.error(event.detail);
+        }
+      },
+    ],
+  ]);
+  const economicEventHandlers = new Map([
+    [
+      "loaded",
+      function () {
+        console.log("economic loaded");
+        if (filterTest()) {
+          console.log("economic loaded filter");
+          window.report
+            .setFilters([filterTest()])
+            .catch((err) => console.log("error: ", err));
+        }
+        window.report.getPages().then((data) => {
+          console.log("economic loaded data");
+        });
+      },
+    ],
+    [
+      "filtersApplied",
+      function () {
+        console.log("filtersApplied");
+        window.report
+          .getFilters()
+          .then((data) => console.log("filters applied", data));
+      },
+    ],
+  ]);
+
+  const socialEventHandlers = new Map([
+    [
+      "loaded",
+      function () {
+        console.log("social loaded");
+        if (filterTest()) {
+          console.log("social loaded filter");
+          window.report
+            .setFilters([filterTest()])
+            .catch((err) => console.log("error: ", err));
+        }
+        window.report.getPages().then((data) => {
+          const reportFilter = data.find(
+            (r) => r.displayName === "Duplicate of Social"
+          );
+          console.log("reportFilter", reportFilter.name);
+          if (reportFilter) {
+            window.report.setFilters([filter()]);
+            window.report
+              .setPage(reportFilter.name)
+              .catch((err) => console.log("setpage error:", err));
+          }
+        });
+      },
+    ],
+    [
+      "filtersApplied",
+      function () {
+        console.log("filtersApplied");
+        // window.report
+        // .getFilters()
+        // .then((data) => console.log("filters applied", data));
       },
     ],
   ]);
@@ -298,7 +404,7 @@ export default function PowerBi() {
         visible: true,
       },
       pageNavigation: {
-        visible: true,
+        visible: false,
       },
     },
   };
@@ -322,22 +428,65 @@ export default function PowerBi() {
             Create URL to a Community
           </button>
         </div>
-        <PowerBIEmbed
-          embedConfig={{
-            type: "report",
-            id: reportConfig.id,
-            embedUrl: reportConfig.embedUrl,
-            accessToken: embedToken,
-            tokenType: models.TokenType.Embed,
-            pageName: currentPage || "",
-            settings: { powerBiSettings },
-          }}
-          eventHandlers={powerBiEventHandlers}
-          cssClassName="report-style-class"
-          getEmbeddedComponent={(embeddedReport) => {
-            window.report = embeddedReport;
-          }}
-        />
+        <Container>
+          <Row>
+            <h3>Social</h3>
+            <PowerBIEmbed
+              embedConfig={{
+                type: "report",
+                id: reportConfig.id,
+                embedUrl: reportConfig.embedUrl,
+                accessToken: embedToken,
+                tokenType: models.TokenType.Embed,
+                pageName: "ReportSection43ccae10ce66e4908050",
+                settings: { ...powerBiSettings },
+              }}
+              eventHandlers={socialEventHandlers}
+              cssClassName="report-style-class"
+              getEmbeddedComponent={(embeddedReport) => {
+                window.report = embeddedReport;
+              }}
+            />
+          </Row>
+          <Row>
+            <h3>Economic</h3>
+            <PowerBIEmbed
+              embedConfig={{
+                type: "report",
+                id: reportConfig.id,
+                embedUrl: reportConfig.embedUrl,
+                accessToken: embedToken,
+                tokenType: models.TokenType.Embed,
+                pageName: "ReportSection5f1b0b3a159570239e40",
+                settings: { ...powerBiSettings },
+              }}
+              eventHandlers={economicEventHandlers}
+              cssClassName="report-style-class"
+              getEmbeddedComponent={(embeddedReport) => {
+                window.report = embeddedReport;
+              }}
+            />
+          </Row>
+          <Row>
+            <h3>Data Sources</h3>
+            <PowerBIEmbed
+              embedConfig={{
+                type: "report",
+                id: reportConfig.id,
+                embedUrl: reportConfig.embedUrl,
+                accessToken: embedToken,
+                tokenType: models.TokenType.Embed,
+                pageName: "ReportSection211b7dd5bb62d91986fa",
+                settings: { ...powerBiSettings },
+              }}
+              eventHandlers={powerBiEventHandlers}
+              cssClassName="report-style-class"
+              getEmbeddedComponent={(embeddedReport) => {
+                window.report = embeddedReport;
+              }}
+            />
+          </Row>
+        </Container>
       </div>
       <Modal
         show={show}

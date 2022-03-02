@@ -23,7 +23,7 @@ export default function UserStory() {
   const [isOption4Visible, setIsOption4Visible] = useState(false);
   const [isOption5Visible, setIsOption5Visible] = useState(false);
 
-  const [isComparing, setIsComparing] = useState(false);
+  const [isSmallerPage, setIsSmallerPage] = useState(false);
   const [isComparing, setIsComparing] = useState(false);
   const [isViewing, setIsViewing] = useState(false);
   const [isDiscovering, setIsDiscovering] = useState(false);
@@ -61,6 +61,11 @@ export default function UserStory() {
     history.push(path);
   };
 
+  const redirectCriteriaSearchPage = () => {
+    const path = "cit-dashboard/public/criteria-search";
+    history.push(path);
+  };
+
   const regionalDistricts = useSelector(
     (state) => state.options.regionalDistricts
   );
@@ -76,6 +81,7 @@ export default function UserStory() {
 
   const keycloak = useKeycloakWrapper();
   const [loggedInWithIdir] = useState(keycloak.idp === "idir");
+  console.log("loggedInWithIdir", loggedInWithIdir, keycloak);
 
   const selectStyle = {
     container: (base) => ({
