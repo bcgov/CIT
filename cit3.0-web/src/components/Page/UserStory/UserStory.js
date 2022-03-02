@@ -81,7 +81,6 @@ export default function UserStory() {
 
   const keycloak = useKeycloakWrapper();
   const [loggedInWithIdir] = useState(keycloak.idp === "idir");
-  console.log("loggedInWithIdir", loggedInWithIdir, keycloak);
 
   const selectStyle = {
     container: (base) => ({
@@ -89,19 +88,29 @@ export default function UserStory() {
       flex: 0,
       paddingRight: 8,
     }),
-    menu: (base) => ({
+    option: (base, state) => ({
+      ...base,
+      border: "solid white 1px",
+      color: "#ffffff",
+      backgroundColor: state.isSelected ? "#003366" : "#003366",
+    }),
+    menu: (base, state) => ({
       ...base,
       width: 400,
+      border: "solid white 2px",
     }),
+    menuList: (base, state) => ({
+      ...base,
+      border: "solid white 2px",
+    }),
+
     singleValue: (base) => ({
       ...base,
       color: "#3288D9",
-      fontWeight: "bold",
-      fontSize: "1.2em",
+      fontSize: "1.1em",
     }),
     control: (base, state) => ({
       ...base,
-      color: state.isSelected ? "red" : "blue",
       borderTop: "none",
       borderLeft: "none",
       borderRight: "none",
