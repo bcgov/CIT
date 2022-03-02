@@ -26,7 +26,9 @@ jobs:
             echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env 
 
       - name: Start containers
-        run: docker-compose up --build
+        run: |
+            echo pwd
+            docker-compose /cit-api/docker-compose.yml up --build
       
 
       #- name: Log in with Azure
