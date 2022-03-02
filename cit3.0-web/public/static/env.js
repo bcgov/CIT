@@ -10,19 +10,6 @@
   window.env.routePlannerKey = "";
   window.env.pbiReportIdPublic = "a89da60c-8af9-4196-b16c-4ee6eb14d74c";
   window.env.pbiReportIdInternal = "a89da60c-8af9-4196-b16c-4ee6eb14d74c";
+  window.env.pbiReportIdCompare = "0df7213b-b144-4486-952b-64781499838b";
   window.env.pbiGroupId = "0399d295-4354-4955-8ed9-68709eb5e7b5";
 })(this);
-
-//3.0 internal
-
-//groups/0399d295-4354-4955-8ed9-68709eb5e7b5
-//reports/3fb90e72-006c-4d43-8e54-8d626510761c
-
-//3.0 public
-//groups/0399d295-4354-4955-8ed9-68709eb5e7b5
-///reports/3776791c-6ded-4300-8833-5040e3b948c0
-
-//4.0 internal
-
-//groups/0399d295-4354-4955-8ed9-68709eb5e7b5
-//reports/a89da60c-8af9-4196-b16c-4ee6eb14d74c
