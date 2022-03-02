@@ -1,0 +1,14 @@
+version: "3.3"
+
+services:
+  cit-api:
+    build:
+      context: ./
+      dockerfile: Dockerfile.pipelinedev
+    image: countable/cit
+    volumes:
+      - ./:/code
+    env_file:
+      - .env
+    ports:
+      - 8000:8000

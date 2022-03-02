@@ -7,7 +7,7 @@ on:
     #- cron: "*/1 * * * *"
   push:
     branches:
-      - github-actions-data-pipeline
+      - cit-63
 permissions:
   id-token: write
   contents: read
@@ -21,15 +21,20 @@ jobs:
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master
 
-      - name: Log in with Azure
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Start containers
+        run: docker-compose "docker-compose.yml" up -d --build cit-api
       
-      - name: POSTGRES_CONNECTION
-        uses: azure/postgresql@v1
-        with:
-          server-name: ${{ secrets.AZURE_POSTGRES_TEST_HOST }}
-          connection-string: psql host=${{ secrets.AZURE_POSTGRES_TEST_HOST }} port=5432 dbname=cit user=${{ secrets.AZURE_POSTGRES_TEST_USERNAME }} password=${{ secrets.AZURE_POSTGRES_TEST_PASSWORD }}
-          #sql-file: './data.sql'
-     
+      - name: Stop containers
+        if: always()
+        run: docker-compose "docker-compose.yml" down
+      #- name: Log in with Azure
+      #  uses: azure/login@v1
+      #  with:
+      #    creds: ${{ secrets.AZURE_CREDENTIALS }}
+      #
+      #- name: POSTGRES_CONNECTION
+      #  uses: azure/postgresql@v1
+      #  with:
+      #    server-name: ${{ secrets.AZURE_POSTGRES_TEST_HOST }}
+      #    connection-string: psql host=${{ secrets.AZURE_POSTGRES_TEST_HOST }} port=5432 dbname=cit user=${{ secrets.AZURE_POSTGRES_TEST_USERNAME }} password=${{ secrets.AZURE_POSTGRES_TEST_PASSWORD }}
+      #    #sql-file: './data.sql'
