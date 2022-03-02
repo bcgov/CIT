@@ -7,10 +7,7 @@ on:
     #- cron: "*/1 * * * *"
   push:
     branches:
-      - cit-63
-permissions:
-  id-token: write
-  contents: read
+      - github-actions-data-pipeline
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -20,13 +17,18 @@ jobs:
       # checkout the repo
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master
+      
+      - name: "Gen env file"
+        run: |
+        echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env |
+        echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env |
+        echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env |
+        echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env 
 
       - name: Start containers
-        run: docker-compose "docker-compose.yml" up -d --build cit-api
+        run: docker-compose "docker-compose.yml" up --build
       
-      - name: Stop containers
-        if: always()
-        run: docker-compose "docker-compose.yml" down
+
       #- name: Log in with Azure
       #  uses: azure/login@v1
       #  with:
