@@ -27,8 +27,8 @@ jobs:
 
       - name: Start containers
         run: |
-            echo pwd
-            docker-compose /cit-api/docker-compose.yml up --build
+            pwd
+            docker-compose '/cit-api/docker-compose.yml' up --build
       
 
       #- name: Log in with Azure
