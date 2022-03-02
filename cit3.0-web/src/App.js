@@ -240,7 +240,6 @@ function App() {
                   layout={AuthLayout}
                   component={UserManagementDashboard}
                 />
-
                 <AppRoute
                   path="/investmentopportunities/home"
                   title="Community Investment Opportunities Tool"

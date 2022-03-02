@@ -1,4 +1,4 @@
-from django.contrib.gis.db import models
+""" from django.contrib.gis.db import models
 from django.contrib.gis.db.models import MultiPolygonField
 from django.contrib.gis.geos import Point
 
@@ -20,3 +20,4 @@ class BCFloodplain(models.Model):
 
     def __str__(self):
         return self.name
+ """

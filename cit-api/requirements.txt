@@ -1,5 +1,5 @@
 Django==2.2.16
-psycopg2==2.8.6
+psycopg2-binary==2.8.6
 djangorestframework==3.12.1
 djangorestframework-csv==2.1.0
 djangorestframework-gis==0.16

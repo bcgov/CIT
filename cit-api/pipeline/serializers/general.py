@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from pipeline.constants import DATABC_PERMALINK_URL
 from pipeline.models.general import (LocationDistance, Service, RegionalDistrict, SchoolDistrict,
-                                     DataSource, CivicLeader, PageView)
+                                     DataSource, PageView)
 
 
 class DataSourceSerializer(serializers.ModelSerializer):
@@ -93,19 +93,6 @@ class SchoolDistrictSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "sd_num", "community")
 
 
-class CivicLeaderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CivicLeader
-        fields = (
-            "id",
-            "last_name",
-            "first_name",
-            "middle_name",
-            "community",
-            "gender",
-            "position",
-            "experience",
-        )
 
 
 class PageViewSerializer(serializers.ModelSerializer):

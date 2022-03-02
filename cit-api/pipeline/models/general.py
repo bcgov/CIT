@@ -243,29 +243,26 @@ class TsunamiZone(models.Model):
         return self.name
 
 
-class CivicLeader(models.Model):
-    from pipeline.constants import CIVIC_LEADER_CHOICES
-
-    community = models.ForeignKey("Community", on_delete=models.DO_NOTHING)
-    first_name = models.CharField(max_length=255)
-    middle_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255)
-    gender = models.CharField(max_length=255)
-    experience = models.CharField(max_length=255)
-    position = models.CharField(choices=CIVIC_LEADER_CHOICES, max_length=255)
-    """
-[('Local Government', '100 Mile House'), ('Jurisdiction Type', 'District'), ('First Name', 'Mitch'), ('Last Name', 'Campsall'), ('Middle Name', ''), ('Gender', 'M'), ('Age', ''), ('Experience', 'Incumbent'), ('Type', 'MAYOR'), ('Elected (YES/NO)', 'YES'), ('Number of Votes', '410'), ('Acclamation(YES/NO)', ''), ('Electoral/SD Area', ''), ('Electoral/SD Area Est. Eligible Voters', ''), ('Elector Organization', ''), ('Regional District', 'Cariboo'), ('Geographic Region', 'North Central / Cariboo'), ('Last Updated', '2018-10-21 06:38:07')]
-    """
-    class Meta:
-        ordering = ("id", )
-
-    def __str__(self):
-        return "{}: {} {}".format(self.community, self.first_name, self.last_name)
-
-    def get_name(self):
-        return "{} {}".format(self.first_name, self.last_name)
-
-
 class PageView(models.Model):
     url = models.URLField()
     timestamp = models.DateTimeField()
+
+
+class PHDemographicDistribution(models.Model):
+    phh_id = models.IntegerField(primary_key=True, max_length=12)
+    phh_type = models.IntegerField()              # PHH Type: 1 = Centroid of a 2016 Census dissemination block; 2 = Atlas of Canada Placename point; 3 = 2016 Census Road Network Address Range Left; 4 = 2016 Census Road Network Address Range Right; 5 = Previous representative point Left; 6 = Previous representative point Right; 8 = PHH null points added on highways
+    population = models.FloatField()              # population (PHH representative)
+    total_private_dwellings = models.FloatField()   # total private dwellings
+    private_dwellings_usual_residents_occupied = models.FloatField()    # private dwellings occupied by usual residents
+    dbuid_ididu = models.IntegerField()         # 2016 Census dissemination block
+    hexuid_iduhex = models.TextField()          # Hexagon identifier
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)
+
+class NBDPHHSpeeds(models.Model):
+    phh_id = models.IntegerField(primary_key=True, max_length=12)
+    combined_lt5_1 = models.BooleanField(default=False)
+    combined_5_1 = models.BooleanField(default=False)
+    combined_10_2 = models.BooleanField(default=False)
+    combined_25_5 = models.BooleanField(default=False)
+    combined_50_10 = models.BooleanField(default=False)

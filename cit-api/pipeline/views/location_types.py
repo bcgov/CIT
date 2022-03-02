@@ -19,7 +19,6 @@ from pipeline.models.location_assets import (
     Clinic,
     Court,
     PostSecondaryInstitution,
-    ClosedMill,
     ResearchCentre,
     Airport,
 )
@@ -35,7 +34,6 @@ from pipeline.serializers.location_types import (
     PostSecondaryInstitutionSerializer,
     ClinicSerializer,
     CourtSerializer,
-    ClosedMillSerializer,
     ResearchCentreSerializer,
     AirportSerializer,
     LocationSerializer,
@@ -148,11 +146,6 @@ class ClinicList(generics.ListAPIView):
 class CourtList(generics.ListAPIView):
     queryset = Court.objects.all()
     serializer_class = CourtSerializer
-
-
-class ClosedMillList(generics.ListAPIView):
-    queryset = ClosedMill.objects.all()
-    serializer_class = ClosedMillSerializer
 
 
 class ResearchCentreList(generics.ListAPIView):
