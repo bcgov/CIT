@@ -152,8 +152,11 @@ export default function UserStory() {
     setIsViewing(e.code === "VIEWING");
     setIsPromoting(e.code === "PROMOTING");
     setIsLearning(e.code === "LEARNING");
-    if (e.code === "COMPARING") setIsOption3Visible(false);
-    else setIsOption3Visible(true);
+    if (e.code === "COMPARING" || e.code === "DISCOVERING") {
+      setIsOption3Visible(false);
+    } else {
+      setIsOption3Visible(true);
+    }
     setIsOption4Visible(false);
     setIsOption5Visible(false);
     setOption3Text1(e.text1);
@@ -294,6 +297,21 @@ export default function UserStory() {
                   color="primary"
                   className="m-4"
                   onClick={redirectComparePage}
+                >
+                  GO
+                </Button>
+              </div>
+            </>
+          )}
+          {isDiscovering && (
+            <>
+              <br />
+              <p>Ok, let’s go</p>
+              <div className="app flex-row align-items-left">
+                <Button
+                  color="primary"
+                  className="m-4"
+                  onClick={redirectCriteriaSearchPage}
                 >
                   GO
                 </Button>
