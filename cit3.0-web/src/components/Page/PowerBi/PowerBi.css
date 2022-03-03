@@ -1,11 +1,54 @@
-.report-style-class{
+.report-style {
     width: 100%;
-    height: 85vh;
+    height: 100vh;
 }
 
-.report-style-class iframe {
+.report-iframe  iframe {
     border: none;
+    width: 100%;
+    height: 100%;
 }
+
+.report-compare {
+    width: 1280px;
+    height: 2900px;
+}
+
+.report-criteria-search {
+    width: 1280px;
+    height: 850px;
+}
+
+.report-census {
+    width: 1280px;
+    height: 190px;
+}
+
+.report-connectivity {
+    width: 20000px;
+    height: 1100px;
+}
+
+.report-economic {
+    width: 1280px;
+    height: 1550px;
+}
+
+.report-social {
+    width: 1280px;
+    height: 1600px;
+}
+
+.report-assets {
+    width: 1280px;
+    height: 1770px;
+}
+
+.report-bca-assessment {
+    width: 1280px;
+    height: 1550px;
+}
+
 
 .embed-container {
     position: relative;

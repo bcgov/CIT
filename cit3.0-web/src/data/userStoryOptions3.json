@@ -1,0 +1,40 @@
+{ "userStoryOptions3": [
+    {
+      "id": "1",
+      "label": "All of British Columbia"
+    },
+    {
+      "id": "2",
+      "label": "Communities & Unincorporated areas"
+    },
+    {
+      "id": "3",
+      "label": "First Nations"
+    },
+    {
+        "id": "4",
+        "label": "Regional Districts"
+    },
+    {
+      "id": "5",
+      "label": "Economic Regions"
+    },
+    {
+      "id": "6",
+      "label": "Tourism Regions"
+    },
+    {
+      "id": "7",
+      "label": "Wildfire Zones"
+    },
+    {
+        "id": "8",
+        "label": "Tsunami Notification Zones"
+    },
+    {
+        "id": "9",
+        "label": "Natural Resource Regions"
+    }
+  ]
+}
+

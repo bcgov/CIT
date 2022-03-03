@@ -4,103 +4,37 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import "../HomePage/HomePage.scss";
 import Select from "react-select";
+import ReactHtmlParser from "react-html-parser";
+
 import { useDispatch, useSelector } from "react-redux";
 import { getOptions, setOptions } from "../../../store/actions/options";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import { userStoryOptions1 } from "../../../data/userStoryOptions1.json";
+import { userStoryOptions2 } from "../../../data/userStoryOptions2.json";
+import { userStoryOptions3 } from "../../../data/userStoryOptions3.json";
 
 import styles from "./UserStory.css";
-
-const options1 = [
-  {
-    value: 1,
-    label: "a BC Government Employee",
-  },
-  {
-    value: 2,
-    label: "an Investor",
-  },
-  {
-    value: 3,
-    label: "a Representative for my community",
-  },
-  {
-    value: 4,
-    label: "a Researcher",
-  },
-  {
-    value: 5,
-    label: "a Member of the Public",
-  },
-];
-
-const options2 = [
-  {
-    value: 1,
-    label: "viewing Investment Opportunities matching my criteria",
-  },
-  {
-    value: 2,
-    label: "learning more about the province or a specific area of BC",
-  },
-  {
-    value: 3,
-    label: "discovering insights and patterns among BC communities",
-  },
-  {
-    value: 4,
-    label: "comparing  an area",
-  },
-];
-
-const options3 = [
-  {
-    value: 1,
-    label: "All of British Columbia",
-  },
-  {
-    value: 2,
-    label: "Communities & Unincorporated areas",
-  },
-  {
-    value: 3,
-    label: "First Nations",
-  },
-  {
-    value: 4,
-    label: "Regional Districts",
-  },
-  {
-    value: 5,
-    label: "Economic Regions",
-  },
-  {
-    value: 6,
-    label: "Tourism Regions",
-  },
-  {
-    value: 7,
-    label: "Wildfire Zones ",
-  },
-  {
-    value: 8,
-    label: "Tsunami Notification Zones",
-  },
-  {
-    value: 9,
-    label: "Natural Resource Regions",
-  },
-];
 
 let loading = false;
 
 export default function UserStory() {
-  const selectInputRef = useRef();
-  const [isOption1Visible, setIsOption1Visible] = useState(true);
   const [isOption2Visible, setIsOption2Visible] = useState(false);
   const [isOption3Visible, setIsOption3Visible] = useState(false);
   const [isOption4Visible, setIsOption4Visible] = useState(false);
   const [isOption5Visible, setIsOption5Visible] = useState(false);
+
+  const [isSmallerPage, setIsSmallerPage] = useState(false);
+  const [isComparing, setIsComparing] = useState(false);
+  const [isViewing, setIsViewing] = useState(false);
+  const [isDiscovering, setIsDiscovering] = useState(false);
+  const [isPromoting, setIsPromoting] = useState(false);
+  const [isLearning, setIsLearning] = useState(false);
+
+  const [options2, setOptions2] = useState([]);
+  const [redirectURL, setRedirectURL] = useState("");
   const [searchFilter, setSearchFilter] = useState("");
+  const [option3Text1, setOption3Text1] = useState("");
+  const [option3Text2, setOption3Text2] = useState("");
   const [areaType, setAreaType] = useState("");
   const [areaTypeValue, setAreaTypeValue] = useState("");
   const [options4, setOptions4] = useState("");
@@ -115,10 +49,20 @@ export default function UserStory() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const openPowerBI = () => {
+  const redirectPage = () => {
     const path = `cit-dashboard/public/${encodeURIComponent(
       searchFilter.toLowerCase()
     )}`;
+    history.push(path);
+  };
+
+  const redirectComparePage = () => {
+    const path = "cit-dashboard/public/compare-area";
+    history.push(path);
+  };
+
+  const redirectCriteriaSearchPage = () => {
+    const path = "cit-dashboard/public/criteria-search";
     history.push(path);
   };
 
@@ -141,26 +85,38 @@ export default function UserStory() {
   const selectStyle = {
     container: (base) => ({
       ...base,
-      flex: 1,
+      flex: 0,
+      paddingRight: 8,
     }),
-    menu: (base) => ({
+    option: (base, state) => ({
       ...base,
+      border: "solid white 1px",
+      color: "#ffffff",
+      backgroundColor: state.isSelected ? "#000000" : "#003366",
+    }),
+    menu: (base, state) => ({
+      ...base,
+      width: 400,
+      border: "solid white 2px",
+    }),
+    menuList: (base, state) => ({
+      ...base,
+      border: "solid white 2px",
     }),
     singleValue: (base) => ({
       ...base,
-      color: "#376fa3",
-      fontWeight: "bold",
-      fontSize: "1.2em",
+      color: "#3288D9",
+      fontSize: "1.1em",
     }),
     control: (base, state) => ({
       ...base,
-      color: state.isSelected ? "red" : "blue",
       borderTop: "none",
       borderLeft: "none",
       borderRight: "none",
       borderBottom: "3px solid #376fa3",
       borderRadius: "0",
       boxShadow: "none",
+      width: 400,
     }),
     indicatorSeparator: (base) => ({
       ...base,
@@ -174,31 +130,45 @@ export default function UserStory() {
     }),
     placeholder: (base) => ({
       ...base,
-      text: "xxx",
+      text: "",
     }),
   };
 
+  const handleLogin = () => {
+    keycloak.login();
+    // if (keycloak && !keycloak.authenticated) {
+    //   keycloak.login;
+    // }
+  };
+
   const handleOption1Change = (e) => {
-    if (e.label === "an Investor") {
-      setIsOption2Visible(true);
-    } else {
-      setIsOption2Visible(false);
-      setIsOption3Visible(false);
-      setIsOption4Visible(false);
-      setIsOption5Visible(false);
-    }
+    // if (e.isLoginRequired) handleLogin();
+    const options2temp = [];
+    e.userStoryOptions2.forEach((elem) => {
+      options2temp.push(userStoryOptions2.find((x) => x.id === elem.id));
+    });
+    setOptions2(options2temp);
+    setIsOption2Visible(true);
+    setIsOption3Visible(false);
+    setIsOption4Visible(false);
+    setIsOption5Visible(false);
   };
 
   const handleOption2Change = (e) => {
-    if (
-      e.label === "learning more about the province or a specific area of BC"
-    ) {
-      setIsOption3Visible(true);
-    } else {
+    setIsComparing(e.code === "COMPARING");
+    setIsDiscovering(e.code === "DISCOVERING");
+    setIsViewing(e.code === "VIEWING");
+    setIsPromoting(e.code === "PROMOTING");
+    setIsLearning(e.code === "LEARNING");
+    if (e.code === "COMPARING" || e.code === "DISCOVERING") {
       setIsOption3Visible(false);
-      setIsOption4Visible(false);
-      setIsOption5Visible(false);
+    } else {
+      setIsOption3Visible(true);
     }
+    setIsOption4Visible(false);
+    setIsOption5Visible(false);
+    setOption3Text1(e.text1);
+    setOption3Text2(e.text2);
   };
 
   const handleOption3Change = (e) => {
@@ -211,7 +181,6 @@ export default function UserStory() {
         setIsOption4Visible(true);
         break;
       case "Communities & Unincorporated areas":
-        console.log("Communities & Unincorporated areas", communities);
         setOptions4(communities);
         setIsOption4Visible(true);
         break;
@@ -221,7 +190,6 @@ export default function UserStory() {
   };
 
   const handleOption4Change = (e) => {
-    console.log(e.value);
     setIsOption5Visible(true);
     setSearchFilter(e.label);
   };
@@ -244,83 +212,69 @@ export default function UserStory() {
     });
   }, []);
 
+  const testoptions = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
+
   return (
     <>
       <div className={styles.UserStory}>
         <Container>
-          <Row>
-            <Col sm={12}>
-              <h3 className="my-4">
-                Hi, welcome to our Community Information Tool. We have lots of
-                information available (expand on this??). Tell us a bit more
-                about you and we will help you get to info that is relevant to
-                you
-              </h3>
-            </Col>
-          </Row>
-          {isOption1Visible && (
-            <Row className="row flex-nowrap">
-              <Col sm={12} className="inline-row">
-                <span className="user-story-label">I am</span>
-                <Select
-                  placeholder=""
-                  options={options1}
-                  styles={selectStyle}
-                  onChange={handleOption1Change}
-                />
-              </Col>
-            </Row>
-          )}
-          {isOption2Visible && (
-            <Row>
-              <Col sm={12} className="inline-row">
+          <div className="your-story your-story-elements">
+            <h3 className="my-4">Community Information Tool</h3>
+            <hr />
+            <h3 className="my-4">
+              Hi, welcome to our Community Information Tool. We have lots of
+              information available. Tell us a bit more about you and we will
+              help you get to info that is relevant to you
+            </h3>
+            <>
+              <span className="user-story-label">I am</span>
+              <Select
+                placeholder=""
+                options={userStoryOptions1}
+                styles={selectStyle}
+                onChange={handleOption1Change}
+                getOptionValue={(x) => x.id}
+              />
+            </>
+            {isOption2Visible && (
+              <>
                 <span className="user-story-label">and I am interested in</span>
                 <Select
                   placeholder=""
                   options={options2}
                   styles={selectStyle}
                   onChange={handleOption2Change}
+                  getOptionValue={(x) => x.id}
                 />
-              </Col>
-            </Row>
-          )}
-          {isOption3Visible && (
-            <>
-              <Row>
-                <Col sm={12} className="inline-row">
+              </>
+            )}
+            {isOption3Visible && (
+              <>
+                {option3Text1 && (
                   <span className="user-story-label">
-                    Great! You can choose between different types of areas from
-                    Communities and Unincorporated Areas, First Nations land and
-                    Reserves, Regional District to larger Economic Regions or
-                    Tourism Regions.
+                    {ReactHtmlParser(option3Text1)}
                   </span>
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={12} className="inline-row">
+                )}
+                {option3Text2 && (
                   <span className="user-story-label">
-                    What kind of area would you like to look at?
+                    {ReactHtmlParser(option3Text2)}
                   </span>
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={12} className="inline-row">
-                  <span className="user-story-label">
-                    I would like to look at
-                  </span>
-                  <Select
-                    placeholder=""
-                    options={options3}
-                    styles={selectStyle}
-                    onChange={handleOption3Change}
-                  />
-                </Col>
-              </Row>
-            </>
-          )}
-          {isOption4Visible && (
-            <Row>
-              <Col sm={12} className="inline-row">
+                )}
+                <Select
+                  placeholder=""
+                  options={userStoryOptions3}
+                  styles={selectStyle}
+                  onChange={handleOption3Change}
+                  getOptionValue={(x) => x.id}
+                />
+              </>
+            )}
+            {isOption4Visible && (
+              <>
                 <span className="user-story-label">
                   Which {areaType} specifically?
                 </span>
@@ -330,32 +284,55 @@ export default function UserStory() {
                   styles={selectStyle}
                   onChange={handleOption4Change}
                 />
-              </Col>
-            </Row>
-          )}
+              </>
+            )}
+          </div>
+        </Container>
+
+        <Container>
           {isOption5Visible && (
             <>
-              <Row>
-                <Col sm={12} className="inline-row">
-                  <span className="user-story-label">
-                    Ok, let’s learn more about{" "}
-                    <span className="searchFilter">{searchFilter}</span>
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={12} className="inline-row">
-                  <div className="app flex-row align-items-center">
-                    <Button
-                      color="primary"
-                      className="m-4"
-                      onClick={openPowerBI}
-                    >
-                      GO
-                    </Button>
-                  </div>
-                </Col>
-              </Row>
+              <p>
+                <span className="user-story-label">
+                  Ok, let’s learn more about{" "}
+                  <span className="searchFilter">{searchFilter}</span>
+                </span>
+              </p>
+              <p>
+                <Button color="primary" className="m-4" onClick={redirectPage}>
+                  GO
+                </Button>
+              </p>
+            </>
+          )}
+          {isComparing && (
+            <>
+              <br />
+              <p>Ok, let’s go to the compare page.</p>
+              <div className="app flex-row align-items-left">
+                <Button
+                  color="primary"
+                  className="m-4"
+                  onClick={redirectComparePage}
+                >
+                  GO
+                </Button>
+              </div>
+            </>
+          )}
+          {isDiscovering && (
+            <>
+              <br />
+              <p>Ok, let’s go</p>
+              <div className="app flex-row align-items-left">
+                <Button
+                  color="primary"
+                  className="m-4"
+                  onClick={redirectCriteriaSearchPage}
+                >
+                  GO
+                </Button>
+              </div>
             </>
           )}
         </Container>
