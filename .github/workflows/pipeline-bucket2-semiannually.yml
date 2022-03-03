@@ -8,7 +8,8 @@ on:
   push:
     branches:
       - github-actions-data-pipeline
-
+env: 
+  BUCKET_COMMAND: bucket_2_semiannually
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -25,11 +26,7 @@ jobs:
             echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
             echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
             echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
-
-      - name: Set data bucket variable
-        run: echo "${{ env.BUCKET_COMMAND }}"
-        env: 
-          BUCKET_COMMAND: bucket_2_semiannually
+            echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build
