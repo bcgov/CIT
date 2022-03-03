@@ -1,13 +1,13 @@
 # This workflow will build a new container weekly running the census data pipeline weekly pulls
 
-name: Census Data Pipeline
+name: Census Data Pipeline - Bucket 1
 on:
   #schedule:
     #- cron: "0 13 * * 1"
     #- cron: "*/1 * * * *"
-  push:
-    branches:
-      - github-actions-data-pipeline
+  #push:
+  #  branches:
+  #    - github-actions-data-pipeline
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
