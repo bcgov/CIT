@@ -19,12 +19,18 @@ from pipeline.models.community import Community
 from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.general import (DataSource, LocationDistance, SchoolDistrict, Municipality,
-                                     CivicLeader, Hex, Service, ISP, RegionalDistrict)
+                                      Hex, Service, ISP, RegionalDistrict)
 from pipeline.models.location_assets import School, Hospital
 from pipeline.constants import LOCATION_TYPES
 
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+from sqlalchemy import create_engine
+from pipeline.models.Housing_Data import Housing_Data
+from sqlalchemy.sql.expression import false
+import requests
+import io
+import pandas as pd
 
 RETRY_STRATEGY = Retry(total=3)
 ADAPTER = HTTPAdapter(max_retries=RETRY_STRATEGY)
@@ -696,3 +702,27 @@ def calculate_muni_or_rd(instance):
     instance.regional_district = rd
 
     instance.save()
+
+def import_housing(URL):
+    #csv_file = 'total.csv'
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', "Upgrade-Insecure-Requests": "1","DNT": "1","Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","Accept-Language": "en-US,en;q=0.5","Accept-Encoding": "gzip, deflate"}
+    url = "https://www2.gov.bc.ca/assets/gov/data/statistics/economy/building-permits/total.csv"
+    s = requests.get(url,headers=headers)
+    if s.ok:
+        data1 = s.content.decode('utf8')
+        data = pd.read_csv(io.StringIO(data1),skiprows=1)
+        data.rename(columns={data.columns[0]:'census_subdivision_id',data.columns[1]:'census_subdivision_name'}, inplace=True)
+        data=data[(data['census_subdivision_id'].str.contains("[a-zA-Z]")==False) & (data['census_subdivision_id'].str.len() > 4)] 
+        data = data.melt(id_vars=['census_subdivision_id','census_subdivision_name'], var_name='YearMonth', value_name='Total_Building_Permits ')
+        data['Month'] = data['YearMonth'].str.split('-').str[1]
+        data['Year'] = '20'+data['YearMonth'].str.split('-').str[0]    
+
+    
+        user = settings.DATABASES['default']['USER']
+        password = settings.DATABASES['default']['PASSWORD']
+        database_name = settings.DATABASES['default']['NAME']
+        Host = settings.DATABASES['default']['HOST']
+    
+        database_url = 'postgresql://{user}:{password}@{Host}:5432/{database_name}'.format(user=user,password=password,Host=Host,database_name=database_name )
+        engine = create_engine(database_url)
+        data.to_sql(Housing_Data._meta.db_table,if_exists = 'replace',con=engine,index=False)
