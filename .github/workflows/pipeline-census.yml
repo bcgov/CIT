@@ -1,6 +1,6 @@
-# This workflow will build a new container weekly running the data pipeline weekly pulls
+# This workflow will build a new container weekly running the census data pipeline weekly pulls
 
-name: AZ Login
+name: Census Data Pipeline
 on:
   #schedule:
     #- cron: "0 13 * * 1"
@@ -28,16 +28,3 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build
-      
-
-      #- name: Log in with Azure
-      #  uses: azure/login@v1
-      #  with:
-      #    creds: ${{ secrets.AZURE_CREDENTIALS }}
-      #
-      #- name: POSTGRES_CONNECTION
-      #  uses: azure/postgresql@v1
-      #  with:
-      #    server-name: ${{ secrets.AZURE_POSTGRES_TEST_HOST }}
-      #    connection-string: psql host=${{ secrets.AZURE_POSTGRES_TEST_HOST }} port=5432 dbname=cit user=${{ secrets.AZURE_POSTGRES_TEST_USERNAME }} password=${{ secrets.AZURE_POSTGRES_TEST_PASSWORD }}
-      #    #sql-file: './data.sql'

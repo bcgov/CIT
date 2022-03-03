@@ -1,0 +1,13 @@
+[
+  {
+    "name": "timber_facilities",
+    "display_name": "Timber Facilities",
+    "model_name": "TimberFacility",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": "c5553f20-f589-4ca5-8ed6-afb45ae281b1",
+    "permalink_id": "67daf53d-e3bb-45ee-9121-8aa1193b7492",
+    "dataset": "british-columbia-major-timber-processing-facilities",
+    "import_order": 13
+  }
+]
