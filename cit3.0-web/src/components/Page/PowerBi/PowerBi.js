@@ -209,7 +209,7 @@ export default function PowerBi() {
   }, [communities, regional]);
 
   const saveAsPDF = () => {
-    window.report.getFilters().then((data) => console.log(data));
+    // window.report.getFilters().then((data) => console.log(data));
     window.report.print();
   };
 
@@ -306,7 +306,6 @@ export default function PowerBi() {
     [
       "pageChanged",
       function (event) {
-        window.report.getFilters().then((data) => console.log(data));
         if (currentPage !== event.detail.newPage.name) {
           setCurrentPage(event.detail.newPage.name);
           setCurrentPageData(event.detail.newPage);
@@ -342,7 +341,6 @@ export default function PowerBi() {
       function () {
         console.log("economic loaded");
         if (filterCensus()) {
-          console.log("economic loaded filter");
           window.report
             .setFilters([filterCensus()])
             .catch((err) => console.log("error: ", err));
@@ -355,7 +353,6 @@ export default function PowerBi() {
     [
       "filtersApplied",
       function () {
-        console.log("filtersApplied");
         window.report
           .getFilters()
           .then((data) => console.log("filters applied", data));
@@ -367,9 +364,7 @@ export default function PowerBi() {
     [
       "loaded",
       function () {
-        console.log("social loaded");
         if (filterCensus()) {
-          console.log("social loaded filter");
           window.report
             .setFilters([filterCensus()])
             .catch((err) => console.log("error: ", err));

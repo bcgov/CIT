@@ -92,7 +92,7 @@ export default function UserStory() {
       ...base,
       border: "solid white 1px",
       color: "#ffffff",
-      backgroundColor: state.isSelected ? "#003366" : "#003366",
+      backgroundColor: state.isSelected ? "#000000" : "#003366",
     }),
     menu: (base, state) => ({
       ...base,
@@ -103,7 +103,6 @@ export default function UserStory() {
       ...base,
       border: "solid white 2px",
     }),
-
     singleValue: (base) => ({
       ...base,
       color: "#3288D9",
@@ -213,6 +212,12 @@ export default function UserStory() {
     });
   }, []);
 
+  const testoptions = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
+
   return (
     <>
       <div className={styles.UserStory}>
@@ -232,6 +237,7 @@ export default function UserStory() {
                 options={userStoryOptions1}
                 styles={selectStyle}
                 onChange={handleOption1Change}
+                getOptionValue={(x) => x.id}
               />
             </>
             {isOption2Visible && (
@@ -242,6 +248,7 @@ export default function UserStory() {
                   options={options2}
                   styles={selectStyle}
                   onChange={handleOption2Change}
+                  getOptionValue={(x) => x.id}
                 />
               </>
             )}
@@ -262,6 +269,7 @@ export default function UserStory() {
                   options={userStoryOptions3}
                   styles={selectStyle}
                   onChange={handleOption3Change}
+                  getOptionValue={(x) => x.id}
                 />
               </>
             )}
