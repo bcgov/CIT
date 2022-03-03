@@ -27,9 +27,9 @@ jobs:
             echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
 
       - name: Set data bucket variable
-        run: echo '$BUCKET_COMMAND'
+        run: echo "${{ env.BUCKET_COMMAND }}"
         env: 
           BUCKET_COMMAND: bucket_2_semiannually
-          
+
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build
