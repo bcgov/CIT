@@ -5,9 +5,12 @@ on:
   #schedule:
     #- cron: "0 13 * * 1"
     #- cron: "*/1 * * * *"
-  #push:
-  #  branches:
-  #    - github-actions-data-pipeline
+  push:
+    branches:
+      - github-actions-data-pipeline
+  workflow_dispatch:
+env: 
+  BUCKET_COMMAND: bucket_1
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -15,7 +18,7 @@ jobs:
       name: Test
     steps:
       # checkout the repo
-      - name: "Checkout GitHub Action"
+      - name: "Checkout GitHub Actionthe relap"
         uses: actions/checkout@master
       
       - name: "Generate env file"
@@ -24,7 +27,7 @@ jobs:
             echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
             echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
             echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env 
-            ls -lstra
+            echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build
