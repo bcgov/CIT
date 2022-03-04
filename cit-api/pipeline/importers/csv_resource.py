@@ -8,7 +8,7 @@ from pipeline.models.general import DataSource
 from pipeline.importers.communities import import_communities_from_csv
 from pipeline.importers.projects import import_projects
 from pipeline.importers.utils import (import_data_into_point_model, read_csv,
-                                      import_civic_leaders_from_csv, get_databc_last_modified_date,
+                                      get_databc_last_modified_date,
                                       import_services, get_openca_last_modified_date,
                                       import_bc_assessment_data)
 
@@ -46,8 +46,6 @@ def import_resource(resource_type):
 
     if resource_type == "communities":
         import_communities_from_csv(file_path)
-    elif resource_type == "civic_leaders":
-        import_civic_leaders_from_csv(file_path)
     elif resource_type == "services":
         import_services(file_path)
     elif resource_type == "projects":
