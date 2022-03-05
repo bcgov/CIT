@@ -42,7 +42,7 @@ share/python-wheels/
 *.egg
 MANIFEST
 cit-api/static/
-cit-api/data/
+cit-api/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -120,7 +120,6 @@ celerybeat.pid
 
 # Environments
 .env
-.env.js
 .venv
 env/
 venv/
