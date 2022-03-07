@@ -8,6 +8,8 @@ on:
   push:
     branches:
       - github-actions-data-pipeline
+  workflow_dispatch:
+  
 env: 
   BUCKET_COMMAND: bucket_2_semiannually
 jobs:
