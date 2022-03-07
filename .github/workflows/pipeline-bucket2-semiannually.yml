@@ -38,6 +38,9 @@ jobs:
              --file ~/census_divisions.zip \
              --account-key ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }} \
              --auth-mode key
+        run: |
+            ls -lstra
+            mv census_divisions.zip /data
 
       - name: "Generate env file"
         run: |
@@ -49,5 +52,5 @@ jobs:
 
       - name: Start containers
         run: |
-            mv census_divisions.zip /data
+            ls -lstra
             docker-compose -f cit-api/docker-compose.yml up --build
