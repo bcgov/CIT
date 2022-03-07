@@ -1,0 +1,150 @@
+{
+    "userStoryOptions1": [
+      {
+        "id": "1",
+        "code": "BCGOV",
+        "label": "a BC Government Employee",
+        "report": "CIT Internal",
+        "isLoginRequired": true,
+        "userStoryOptions2": [
+          {
+            "id": "2",
+            "code": "LEARNING"
+          },
+          {
+            "id": "3",
+            "code": "DISCOVERING"
+          },
+          {
+            "id": "4",
+            "code": "COMPARING"
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "code": "INVESTOR",
+        "label": "an Investor",
+        "report": "CIT Public",
+        "isLoginRequired": null,
+        "userStoryOptions2": [
+          {
+            "id": "1",
+            "code": "VIEWING"
+          },
+          {
+            "id": "2",
+            "code": "LEARNING"
+          },
+          {
+            "id": "3",
+            "code": "DISCOVERING"
+          },
+          {
+            "id": "4",
+            "code": "COMPARING"
+          },
+          {
+            "id": "5",
+            "code": "PROMOTING"
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "code": "COMMUNITYREP",
+        "label": "a Representative for my community",
+        "report": "CIT Public",
+        "isLoginRequired": null,
+        "userStoryOptions2": [
+          {
+            "id": "1",
+            "code": "VIEWING"
+          },
+          {
+            "id": "2",
+            "code": "LEARNING"
+          },
+          {
+            "id": "3",
+            "code": "DISCOVERING"
+          },
+          {
+            "id": "4",
+            "code": "COMPARING"
+          },
+          {
+            "id": "5",
+            "code": "PROMOTING"
+          }
+        ]
+      },
+      {
+        "id": "4",
+        "code": "RESEARCHER",
+        "label": "a Researcher",
+        "report": "CIT Public",
+        "isLoginRequired": null,
+        "userStoryOptions2": [
+          {
+            "id": "2",
+            "code": "LEARNING"
+          },
+          {
+            "id": "3",
+            "code": "DISCOVERING"
+          },
+          {
+            "id": "4",
+            "code": "COMPARING"
+          }
+        ]
+      },
+      {
+        "id": "5",
+        "code": "PUBLIC",
+        "label": "a Member of the Public",
+        "report": "CIT Public",
+        "isLoginRequired": null,
+        "userStoryOptions2": [
+          {
+            "id": "2",
+            "code": "LEARNING"
+          },
+          {
+            "id": "3",
+            "code": "DISCOVERING"
+          },
+          {
+            "id": "4",
+            "code": "COMPARING"
+          }
+        ]
+      },
+      {
+        "id": "6",
+        "code": "FIRSTNATION",
+        "label": "a First Nation Representative",
+        "report": "CIT Public",
+        "isLoginRequired": null,
+        "userStoryOptions2": [
+          {
+            "id": "2",
+            "code": "LEARNING"
+          },
+          {
+            "id": "3",
+            "code": "DISCOVERING"
+          },
+          {
+            "id": "4",
+            "code": "COMPARING"
+          },
+          {
+            "id": "5",
+            "code": "PROMOTING"
+          }
+        ]
+      }
+    ]
+  }

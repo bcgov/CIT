@@ -1,0 +1,40 @@
+.your-story {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: BCSans;
+}
+
+.smaller-page {
+    -webkit-transform:scale(0.67);
+    -moz-transform:scale(0.67);
+    -ms-transform:scale(0.67);
+    transform:scale(0.67);
+    -ms-transform-origin:0 0;
+    -webkit-transform-origin:0 0;
+    -moz-transform-origin:0 0;
+    transform-origin:0 0;
+}
+
+h3 {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
+
+p {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+
+.user-story-label {
+    margin-top: 6px;
+    margin-right: 6px;
+}
+
+.searchFilter {
+    color: #376fa3 !important;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
