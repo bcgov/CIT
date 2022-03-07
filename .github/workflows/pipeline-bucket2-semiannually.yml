@@ -31,14 +31,14 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            az storage blob download \
+            az storage blob directory download \
+             -c data 
              --account-name citpipelinedata \
-             --container-name data \
-             --name census_divisions.zip \
-             --file ~/census_divisions.zip \
+             -s data \
+             -d "/data" \
+             --recursive
              --account-key ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }} \
              --auth-mode key
-            cd ..
             ls -lstra
 
       - name: "Generate env file"
