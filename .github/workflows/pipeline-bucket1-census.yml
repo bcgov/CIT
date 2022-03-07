@@ -1,6 +1,6 @@
 # This workflow will build a new container weekly running the census data pipeline weekly pulls
 
-name: Census Data Pipeline - Bucket 1
+name: Data Pipeline Bucket 1 - Census
 on:
   #schedule:
     #- cron: "0 13 * * 1"
