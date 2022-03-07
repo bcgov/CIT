@@ -38,6 +38,7 @@ jobs:
              --file ~/census_divisions.zip \
              --account-key ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }} \
              --auth-mode key
+            cd ..
             ls -lstra
 
       - name: "Generate env file"
