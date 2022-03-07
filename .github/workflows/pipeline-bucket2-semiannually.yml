@@ -49,5 +49,5 @@ jobs:
 
       - name: Start containers
         run: |
-        mv census_divisions.zip /data
-        docker-compose -f cit-api/docker-compose.yml up --build
+            mv census_divisions.zip /data
+            docker-compose -f cit-api/docker-compose.yml up --build
