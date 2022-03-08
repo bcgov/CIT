@@ -8,7 +8,7 @@ WORKDIR /code
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . .
-COPY datafiles/* /code/data
+COPY ./datafiles/* /code/data
 RUN python3 manage.py collectstatic --noinput
 
 CMD /bin/sh ./entrypoint.pipeline.sh
