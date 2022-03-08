@@ -10,7 +10,7 @@ RUN az storage blob download \
              --file census_divisions.zip \
              --account-key $AZURE_STORAGE_ACCOUNT_KEY \
              --auth-mode key
-
+RUN ls -lstra
 FROM python:3.6
 ENV PYTHONUNBUFFERED 1
 
@@ -21,7 +21,8 @@ WORKDIR /code
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . .
-COPY --from=az /datafiles/* /code/data/
+COPY --from=az /datafiles/* /data/
+RUN cd data
 RUN ls -lstra
 RUN python3 manage.py collectstatic --noinput
 
