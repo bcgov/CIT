@@ -1,5 +1,6 @@
 FROM mcr.microsoft.com/azure-cli AS az
 
+ARG AZURE_STORAGE_ACCOUNT_KEY
 RUN mkdir /datafiles
 WORKDIR /datafiles
 RUN az storage blob download \
