@@ -31,12 +31,11 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            az storage blob directory download \
-             -c data 
+            az storage blob download \
              --account-name citpipelinedata \
-             -s data \
-             -d "/data" \
-             --recursive
+             --container-name data \
+             --name census_divisions.zip \
+             --file census_divisions.zip \
              --account-key ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }} \
              --auth-mode key
             ls -lstra
