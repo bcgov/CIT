@@ -32,4 +32,6 @@ jobs:
 
       - name: Start containers
         run: |
+            pwd
+            ls -la
             docker-compose -f cit-api/docker-compose.yml up --build
