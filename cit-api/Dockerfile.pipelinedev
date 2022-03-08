@@ -11,6 +11,22 @@ RUN az storage blob download \
              --account-key $AZURE_STORAGE_ACCOUNT_KEY \
              --auth-mode key
 
+#RUN az storage blob download \
+#             --account-name citpipelinedata \
+#             --container-name data \
+#             --name BC_Roads.zip \
+#             --file BC_Roads.zip \
+#             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+#             --auth-mode key
+#
+#RUN az storage blob download \
+#             --account-name citpipelinedata \
+#             --container-name data \
+#             --name hexbc.kml \
+#             --file hexbc.kml \
+#             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+#             --auth-mode key
+
 FROM python:3.6
 ENV PYTHONUNBUFFERED 1
 
