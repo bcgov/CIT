@@ -19,7 +19,8 @@ RUN apt-get update && apt-get install -y libproj-dev gdal-bin libpq-dev libpytho
 RUN mkdir /code
 WORKDIR /code
 COPY requirements.txt /code/
-COPY --from=az datafiles .
+COPY --from=az datafiles /code/
+RUN ls -lstra
 RUN pip install -r requirements.txt
 COPY . .
 
