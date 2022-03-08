@@ -1,0 +1,9 @@
+.select-label {
+    margin-top: 6px;
+    margin-right: 4px;
+}
+
+.select-container {
+    display: flex;
+    flex-wrap: wrap;
+}
