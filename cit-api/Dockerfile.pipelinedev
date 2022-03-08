@@ -1,3 +1,15 @@
+FROM mcr.microsoft.com/azure-cli AS az
+
+RUN mkdir /datafiles
+WORKDIR /datafiles
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data \
+             --name census_divisions.zip \
+             --file census_divisions.zip \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
 FROM python:3.6
 ENV PYTHONUNBUFFERED 1
 
@@ -8,7 +20,7 @@ WORKDIR /code
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . .
-COPY ./datafiles/* /code/data
+COPY --from=az /datafiles /code/data
 RUN python3 manage.py collectstatic --noinput
 
 CMD /bin/sh ./entrypoint.pipeline.sh
