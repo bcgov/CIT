@@ -19,12 +19,10 @@ RUN apt-get update && apt-get install -y libproj-dev gdal-bin libpq-dev libpytho
 RUN mkdir /code
 WORKDIR /code
 COPY requirements.txt /code/
-COPY --from=az datafiles /code/
-RUN ls -lstra
 RUN pip install -r requirements.txt
 COPY . .
 
-
+COPY --from=az datafiles /code/data
 RUN python3 manage.py collectstatic --noinput
 
 CMD /bin/sh ./entrypoint.pipeline.sh
