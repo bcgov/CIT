@@ -5,9 +5,9 @@ on:
   #schedule:
     #- cron: "0 13 * * 1"
     #- cron: "*/1 * * * *"
-  push:
-    branches:
-      - github-actions-data-pipeline
+  #push:
+  #  branches:
+  #    - github-actions-data-pipeline
   workflow_dispatch:
 env: 
   BUCKET_COMMAND: bucket_2_semiannually
@@ -31,7 +31,4 @@ jobs:
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
-        run: |
-            pwd
-            ls -la
-            docker-compose -f cit-api/docker-compose.yml up --build
+        run: docker-compose -f cit-api/docker-compose.yml up --build

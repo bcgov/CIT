@@ -5,13 +5,13 @@ on:
   #schedule:
     #- cron: "0 13 * * 1"
     #- cron: "*/1 * * * *"
-  #push:
-  #  branches:
-  #    - github-actions-data-pipeline
+  push:
+    branches:
+      - github-actions-data-pipeline
   workflow_dispatch:
-
 env: 
   BUCKET_COMMAND: bucket_2_weekly
+  AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
