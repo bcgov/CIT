@@ -1,5 +1,5 @@
 import { Container, Row, Col } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import "./HomePage.scss";
 import { Button } from "shared-components";
 import DisclaimerCIOT from "../../DisclaimerCIOT/DisclaimerCIOT";
