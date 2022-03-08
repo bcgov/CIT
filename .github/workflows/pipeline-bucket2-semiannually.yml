@@ -51,5 +51,6 @@ jobs:
         run: |
             mkdir datafiles
             cp census_divisions.zip datafiles
+            mv datafiles cit-api
             ls -lstra
             docker-compose -f cit-api/docker-compose.yml up --build
