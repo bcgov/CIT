@@ -28,7 +28,7 @@ jobs:
             echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
             echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
-            echo 'AZURE_STORAGE_ACCOUNT_KEY = ${{ env.AZURE_STORAGE_ACCOUNT_KEY }}' >> .env
+            echo 'AZURE_STORAGE_ACCOUNT_KEY = ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}' >> .env
 
       - name: Start containers
         run: |
