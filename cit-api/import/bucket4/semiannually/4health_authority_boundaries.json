@@ -1,0 +1,13 @@
+[
+  {
+    "name": "health_authority_boundaries",
+    "display_name": "Health Authority Boundaries",
+    "model_name": "HealthAuthorityBoundary",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": null,
+    "permalink_id": "7bc6018f-bb4f-4e5d-845e-c529e3d1ac3b",
+    "dataset": "health-authority-boundaries",
+    "import_order": 25
+  }
+]

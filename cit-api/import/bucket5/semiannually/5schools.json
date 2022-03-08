@@ -1,0 +1,12 @@
+[
+  {
+    "name": "schools",
+    "display_name": "Schools (K-12)",
+    "model_name": "School",
+    "source": "databc",
+    "source_type": "api",
+    "resource_id": "5832eff2-3380-435e-911b-5ada41c1d30b",
+    "permalink_id": "95da1091-7e8c-4aa6-9c1b-5ab159ea7b42",
+    "import_order": 39
+  }
+]
