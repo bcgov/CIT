@@ -11,6 +11,7 @@ on:
   workflow_dispatch:
 env: 
   BUCKET_COMMAND: bucket_2_semiannually
+  AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -28,7 +29,6 @@ jobs:
             echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
             echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
-            echo 'AZURE_STORAGE_ACCOUNT_KEY = ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}' >> .env
 
       - name: Start containers
         run: |
