@@ -20,9 +20,13 @@ RUN mkdir /code
 WORKDIR /code
 COPY requirements.txt /code/
 RUN pip install -r requirements.txt
+COPY --from=az datafiles .
+RUN ls -lstra
 COPY . .
-COPY --from=az /datafiles/* /data/
-RUN cd data
+COPY --from=az datafiles /data/
+RUN ls -lstra
+
+WORKDIR /data
 RUN ls -lstra
 RUN python3 manage.py collectstatic --noinput
 
