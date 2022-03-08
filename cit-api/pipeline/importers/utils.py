@@ -1,5 +1,4 @@
 import csv
-from numpy import int64
 import requests
 import copy
 import math
@@ -26,12 +25,6 @@ from pipeline.constants import LOCATION_TYPES
 
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
-from sqlalchemy import create_engine
-from pipeline.models.Housing_Data import Housing_Data
-from sqlalchemy.sql.expression import false
-import requests
-import io
-import pandas as pd
 
 RETRY_STRATEGY = Retry(total=3)
 ADAPTER = HTTPAdapter(max_retries=RETRY_STRATEGY)
@@ -670,36 +663,3 @@ def calculate_muni_or_rd(instance):
     instance.regional_district = rd
 
     instance.save()
-
-def import_housing(URL):
-    #csv_file = 'total.csv'
-    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', "Upgrade-Insecure-Requests": "1","DNT": "1","Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","Accept-Language": "en-US,en;q=0.5","Accept-Encoding": "gzip, deflate"}
-    url = "https://www2.gov.bc.ca/assets/gov/data/statistics/economy/building-permits/total.csv"
-    s = requests.get(url,headers=headers)
-    if s.ok:
-        try:
-            data1 = s.content.decode('utf8')
-            data = pd.read_csv(io.StringIO(data1),skiprows=1)
-            data.rename(columns={data.columns[0]:'census_subdivision_id'}, inplace=True)
-            data.drop(data.columns[1], axis=1,inplace=True)
-            data=data[(data['census_subdivision_id'].str.contains("[a-zA-Z]")==False) & (data['census_subdivision_id'].str.len() > 4)] 
-            data = data.melt(id_vars=['census_subdivision_id'], var_name='yearmonth', value_name='total_building_permits ')
-            data['census_subdivision_id'] = data['census_subdivision_id'].astype(str).astype(int64)
-            data['month'] = data['yearmonth'].str.split('-').str[1]
-            data['year'] = data['yearmonth'].str.split('-').str[0]
-            data['year']=pd.to_datetime(data['year'], format = '%y',errors='coerce').dt.year
-            data['month']=pd.to_datetime(data['month'], format = '%b',errors='coerce').dt.month
-
-
-    
-            user = settings.DATABASES['default']['USER']
-            password = settings.DATABASES['default']['PASSWORD']
-            database_name = settings.DATABASES['default']['NAME']
-            Host = settings.DATABASES['default']['HOST']
-    
-            database_url = 'postgresql://{user}:{password}@{Host}:5432/{database_name}'.format(user=user,password=password,Host=Host,database_name=database_name )
-            engine = create_engine(database_url)
-            data.to_sql(Housing_Data._meta.db_table,if_exists = 'replace',con=engine,index=False)
-
-        except Exception as e:
-            print(e)
