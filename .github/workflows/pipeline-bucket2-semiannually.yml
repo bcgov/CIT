@@ -49,5 +49,6 @@ jobs:
 
       - name: Start containers
         run: |
-            pwd
+            mkdir datafiles
+            cp census_division.zip datafiles
             docker-compose -f cit-api/docker-compose.yml up --build
