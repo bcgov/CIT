@@ -1,0 +1,13 @@
+[
+  {
+    "name": "laboratory_service",
+    "display_name": "Laboratory Service",
+    "model_name": "LaboratoryService",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": null,
+    "permalink_id": "401671c5-4fc4-4ffb-9e29-0cdc3c9433ba",
+    "dataset": "laboratory-services-in-bc",
+    "import_order": 22
+  }
+]

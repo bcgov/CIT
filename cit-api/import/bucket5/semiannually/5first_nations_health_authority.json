@@ -1,0 +1,11 @@
+[
+  {
+    "name": "first_nations_health_authority",
+    "display_name": "First Nations Health Authority Site",
+    "model_name": "FirstNationsHealthAuthoritySite",
+    "source": "internal",
+    "source_type": "csv",
+    "source_file_path": "data/FNHA_data.csv",
+    "import_order": 107
+  }
+]
