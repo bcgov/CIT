@@ -60,13 +60,13 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
       text: "",
     }),
   };
-
+  console.log(userStory);
   return (
     <>
       <div className="select-container">
         {userStory.postText && <>{ReactHtmlParser(userStory.postText)}</>}
         {userStory.user_story_paths &&
-          userStory.user_story_paths.length > 0 &&
+          userStory.user_story_paths.length > 1 &&
           userStoryYes && (
             <>
               <Button
@@ -88,7 +88,7 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
             </>
           )}
         {userStory.user_story_paths &&
-          userStory.user_story_paths.length > 0 &&
+          userStory.user_story_paths.length > 1 &&
           !userStoryYes && (
             <Select
               placeholder=""

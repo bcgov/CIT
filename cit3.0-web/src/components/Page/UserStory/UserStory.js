@@ -115,7 +115,9 @@ export default function UserStory() {
     }
     setAllOptions([...newUserOptions, userOption]);
 
-    if (userOption.code.includes("-YES")) {
+    const isLastOption = userOption.user_story_paths.length < 2;
+
+    if (userOption.code.includes("-YES") || isLastOption) {
       setIsYesButton(true);
       setIsNoButton(true);
       setRedirectURL(e.url);
