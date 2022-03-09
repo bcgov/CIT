@@ -1,7 +1,7 @@
-{
+ {
     "userStoryPaths": [
       {
-        "id": "1786",
+        "id": "1987",
         "code": "START",
         "group": "start",
         "value": "START",
@@ -10,7 +10,7 @@
         "postText": null,
         "user_story_paths": [
           {
-            "id": "1787",
+            "id": "1988",
             "code": "BCGOV",
             "group": "who",
             "value": "1-BCGOV",
@@ -20,7 +20,7 @@
             "url": ""
           },
           {
-            "id": "1788",
+            "id": "1989",
             "code": "FIRSTNATION",
             "group": "who",
             "value": "2-FIRSTNATION",
@@ -30,7 +30,7 @@
             "url": ""
           },
           {
-            "id": "1789",
+            "id": "1990",
             "code": "PUBLIC",
             "group": "who",
             "value": "3-PUBLIC",
@@ -40,7 +40,7 @@
             "url": ""
           },
           {
-            "id": "1790",
+            "id": "1991",
             "code": "INVESTOR",
             "group": "who",
             "value": "4-INVESTOR",
@@ -50,7 +50,7 @@
             "url": ""
           },
           {
-            "id": "1791",
+            "id": "1992",
             "code": "COMMUNITYREP",
             "group": "who",
             "value": "5-COMMUNITYREP",
@@ -60,7 +60,7 @@
             "url": ""
           },
           {
-            "id": "1792",
+            "id": "1993",
             "code": "RESEARCHER",
             "group": "who",
             "value": "6-RESEARCHER",
@@ -72,7 +72,7 @@
         ]
       },
       {
-        "id": "1787",
+        "id": "1988",
         "code": "BCGOV",
         "group": "who",
         "value": "1-BCGOV",
@@ -81,7 +81,7 @@
         "postText": null,
         "user_story_paths": [
           {
-            "id": "1794",
+            "id": "1995",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -91,7 +91,7 @@
             "url": ""
           },
           {
-            "id": "1795",
+            "id": "1996",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -101,19 +101,19 @@
             "url": ""
           },
           {
-            "id": "1796",
+            "id": "1997",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
             "label": "comparing  an area",
-            "preText": "<p>Do you want to go to compare page?</p>",
+            "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
             "postText": null,
             "url": ""
           }
         ]
       },
       {
-        "id": "1788",
+        "id": "1989",
         "code": "FIRSTNATION",
         "group": "who",
         "value": "2-FIRSTNATION",
@@ -122,7 +122,7 @@
         "postText": null,
         "user_story_paths": [
           {
-            "id": "1794",
+            "id": "1995",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -132,7 +132,7 @@
             "url": ""
           },
           {
-            "id": "1795",
+            "id": "1996",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -142,17 +142,17 @@
             "url": ""
           },
           {
-            "id": "1796",
+            "id": "1997",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
             "label": "comparing  an area",
-            "preText": "<p>Do you want to go to compare page?</p>",
+            "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
             "postText": null,
             "url": ""
           },
           {
-            "id": "1797",
+            "id": "1998",
             "code": "PROMOTING",
             "group": "what",
             "value": "4-PROMOTING",
@@ -164,7 +164,7 @@
         ]
       },
       {
-        "id": "1789",
+        "id": "1990",
         "code": "PUBLIC",
         "group": "who",
         "value": "3-PUBLIC",
@@ -173,7 +173,7 @@
         "postText": null,
         "user_story_paths": [
           {
-            "id": "1794",
+            "id": "1995",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -183,7 +183,7 @@
             "url": ""
           },
           {
-            "id": "1795",
+            "id": "1996",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -193,19 +193,19 @@
             "url": ""
           },
           {
-            "id": "1796",
+            "id": "1997",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
             "label": "comparing  an area",
-            "preText": "<p>Do you want to go to compare page?</p>",
+            "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
             "postText": null,
             "url": ""
           }
         ]
       },
       {
-        "id": "1790",
+        "id": "1991",
         "code": "INVESTOR",
         "group": "who",
         "value": "4-INVESTOR",
@@ -214,7 +214,7 @@
         "postText": null,
         "user_story_paths": [
           {
-            "id": "1793",
+            "id": "1994",
             "code": "VIEWING",
             "group": "what",
             "value": "1-VIEWING",
@@ -224,7 +224,7 @@
             "url": ""
           },
           {
-            "id": "1794",
+            "id": "1995",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -234,7 +234,7 @@
             "url": ""
           },
           {
-            "id": "1795",
+            "id": "1996",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -244,17 +244,17 @@
             "url": ""
           },
           {
-            "id": "1796",
+            "id": "1997",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
             "label": "comparing  an area",
-            "preText": "<p>Do you want to go to compare page?</p>",
+            "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
             "postText": null,
             "url": ""
           },
           {
-            "id": "1797",
+            "id": "1998",
             "code": "PROMOTING",
             "group": "what",
             "value": "4-PROMOTING",
@@ -266,7 +266,7 @@
         ]
       },
       {
-        "id": "1791",
+        "id": "1992",
         "code": "COMMUNITYREP",
         "group": "who",
         "value": "5-COMMUNITYREP",
@@ -275,7 +275,7 @@
         "postText": null,
         "user_story_paths": [
           {
-            "id": "1793",
+            "id": "1994",
             "code": "VIEWING",
             "group": "what",
             "value": "1-VIEWING",
@@ -285,7 +285,7 @@
             "url": ""
           },
           {
-            "id": "1794",
+            "id": "1995",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -295,7 +295,7 @@
             "url": ""
           },
           {
-            "id": "1795",
+            "id": "1996",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -305,19 +305,19 @@
             "url": ""
           },
           {
-            "id": "1796",
+            "id": "1997",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
             "label": "comparing  an area",
-            "preText": "<p>Do you want to go to compare page?</p>",
+            "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
             "postText": null,
             "url": ""
           }
         ]
       },
       {
-        "id": "1792",
+        "id": "1993",
         "code": "RESEARCHER",
         "group": "who",
         "value": "6-RESEARCHER",
@@ -326,7 +326,7 @@
         "postText": null,
         "user_story_paths": [
           {
-            "id": "1794",
+            "id": "1995",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -336,7 +336,7 @@
             "url": ""
           },
           {
-            "id": "1795",
+            "id": "1996",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -346,19 +346,19 @@
             "url": ""
           },
           {
-            "id": "1796",
+            "id": "1997",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
             "label": "comparing  an area",
-            "preText": "<p>Do you want to go to compare page?</p>",
+            "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
             "postText": null,
             "url": ""
           }
         ]
       },
       {
-        "id": "1793",
+        "id": "1994",
         "code": "VIEWING",
         "group": "what",
         "value": "1-VIEWING",
@@ -367,7 +367,7 @@
         "postText": null,
         "user_story_paths": [
           {
-            "id": "1810",
+            "id": "2011",
             "code": "VIEWING-YES",
             "group": "viewing-yesno",
             "value": "1-VIEWING-YES",
@@ -377,7 +377,7 @@
             "url": "investmentopportunities/home"
           },
           {
-            "id": "1811",
+            "id": "2012",
             "code": "VIEWING-NO",
             "group": "viewing-yesno",
             "value": "2-VIEWING-NO",
@@ -389,7 +389,7 @@
         ]
       },
       {
-        "id": "1794",
+        "id": "1995",
         "code": "LEARNING",
         "group": "what",
         "value": "2-LEARNING",
@@ -398,7 +398,7 @@
         "postText": null,
         "user_story_paths": [
           {
-            "id": "1798",
+            "id": "1999",
             "code": "ALLBC-YES",
             "group": "area",
             "value": "ALLBC-YES",
@@ -408,7 +408,7 @@
             "url": "cit-dashboard/public/criteria-search"
           },
           {
-            "id": "1799",
+            "id": "2000",
             "code": "COMMUNITYAREA",
             "group": "area",
             "value": "COMMUNITYAREA",
@@ -418,7 +418,7 @@
             "url": ""
           },
           {
-            "id": "1800",
+            "id": "2001",
             "code": "FIRSTNATIONS",
             "group": "area",
             "value": "FIRSTNATIONS",
@@ -428,7 +428,7 @@
             "url": ""
           },
           {
-            "id": "1801",
+            "id": "2002",
             "code": "REGIONALDISTRICTS",
             "group": "area",
             "value": "REGIONALDISTRICTS",
@@ -438,7 +438,7 @@
             "url": ""
           },
           {
-            "id": "1802",
+            "id": "2003",
             "code": "ECONOMICREGIONS",
             "group": "area",
             "value": "ECONOMICREGIONS",
@@ -448,7 +448,7 @@
             "url": ""
           },
           {
-            "id": "1803",
+            "id": "2004",
             "code": "TOURISMREGIONS",
             "group": "area",
             "value": "TOURISMREGIONS",
@@ -458,7 +458,7 @@
             "url": ""
           },
           {
-            "id": "1804",
+            "id": "2005",
             "code": "WILDFIREZONES",
             "group": "area",
             "value": "WILDFIREZONES",
@@ -468,7 +468,7 @@
             "url": ""
           },
           {
-            "id": "1805",
+            "id": "2006",
             "code": "TSUNAMINOTIFICATIONZONES",
             "group": "area",
             "value": "TSUNAMINOTIFICATIONZONES",
@@ -478,7 +478,7 @@
             "url": ""
           },
           {
-            "id": "1806",
+            "id": "2007",
             "code": "NATURALRESOURCEREGIONS",
             "group": "area",
             "value": "NATURALRESOURCEREGIONS",
@@ -490,7 +490,7 @@
         ]
       },
       {
-        "id": "1795",
+        "id": "1996",
         "code": "DISCOVERING",
         "group": "what",
         "value": "2-DISCOVERING",
@@ -499,7 +499,7 @@
         "postText": null,
         "user_story_paths": [
           {
-            "id": "1808",
+            "id": "2009",
             "code": "DISCOVERING-YES",
             "group": "discovering-yesno",
             "value": "1-DISCOVERING-YES",
@@ -509,7 +509,7 @@
             "url": "cit-dashboard/public/criteria-search"
           },
           {
-            "id": "1809",
+            "id": "2010",
             "code": "DISCOVERING-NO",
             "group": "discovering-yesno",
             "value": "2-DISCOVERING-NO",
@@ -521,16 +521,16 @@
         ]
       },
       {
-        "id": "1796",
+        "id": "1997",
         "code": "COMPARING",
         "group": "what",
         "value": "3-COMPARING",
         "label": "comparing  an area",
-        "preText": "<p>Do you want to go to compare page?</p>",
+        "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
         "postText": null,
         "user_story_paths": [
           {
-            "id": "1812",
+            "id": "2013",
             "code": "COMPARING-YES",
             "group": "comparing-yesno",
             "value": "1-COMPARING-YES",
@@ -538,21 +538,11 @@
             "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
             "postText": null,
             "url": "cit-dashboard/public/compare-area"
-          },
-          {
-            "id": "1813",
-            "code": "COMPARING-NO",
-            "group": "comparing-yesno",
-            "value": "2-COMPARING-NO",
-            "label": "No",
-            "preText": "",
-            "postText": null,
-            "url": "userstory"
           }
         ]
       },
       {
-        "id": "1797",
+        "id": "1998",
         "code": "PROMOTING",
         "group": "what",
         "value": "4-PROMOTING",
@@ -561,7 +551,7 @@
         "postText": null,
         "user_story_paths": [
           {
-            "id": "1815",
+            "id": "2016",
             "code": "PROMOTING-YES",
             "group": "promoting-yesno",
             "value": "1-PROMOTING-YES",
@@ -571,7 +561,7 @@
             "url": "investmentopportunities/home"
           },
           {
-            "id": "1816",
+            "id": "2017",
             "code": "PROMOTING-NO",
             "group": "promoting-yesno",
             "value": "2-PROMOTING-NO",
@@ -583,7 +573,7 @@
         ]
       },
       {
-        "id": "1798",
+        "id": "1999",
         "code": "ALLBC-YES",
         "group": "area",
         "value": "ALLBC-YES",
@@ -593,7 +583,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1799",
+        "id": "2000",
         "code": "COMMUNITYAREA",
         "group": "area",
         "value": "COMMUNITYAREA",
@@ -603,7 +593,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1800",
+        "id": "2001",
         "code": "FIRSTNATIONS",
         "group": "area",
         "value": "FIRSTNATIONS",
@@ -613,7 +603,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1801",
+        "id": "2002",
         "code": "REGIONALDISTRICTS",
         "group": "area",
         "value": "REGIONALDISTRICTS",
@@ -623,7 +613,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1802",
+        "id": "2003",
         "code": "ECONOMICREGIONS",
         "group": "area",
         "value": "ECONOMICREGIONS",
@@ -633,7 +623,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1803",
+        "id": "2004",
         "code": "TOURISMREGIONS",
         "group": "area",
         "value": "TOURISMREGIONS",
@@ -643,7 +633,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1804",
+        "id": "2005",
         "code": "WILDFIREZONES",
         "group": "area",
         "value": "WILDFIREZONES",
@@ -653,7 +643,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1805",
+        "id": "2006",
         "code": "TSUNAMINOTIFICATIONZONES",
         "group": "area",
         "value": "TSUNAMINOTIFICATIONZONES",
@@ -663,7 +653,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1806",
+        "id": "2007",
         "code": "NATURALRESOURCEREGIONS",
         "group": "area",
         "value": "NATURALRESOURCEREGIONS",
@@ -673,7 +663,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1807",
+        "id": "2008",
         "code": "AREA-OPTION-LIST-YES",
         "group": "area-option-list",
         "value": "AREA-OPTION-LIST-YES",
@@ -683,7 +673,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1808",
+        "id": "2009",
         "code": "DISCOVERING-YES",
         "group": "discovering-yesno",
         "value": "1-DISCOVERING-YES",
@@ -693,7 +683,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1809",
+        "id": "2010",
         "code": "DISCOVERING-NO",
         "group": "discovering-yesno",
         "value": "2-DISCOVERING-NO",
@@ -703,7 +693,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1810",
+        "id": "2011",
         "code": "VIEWING-YES",
         "group": "viewing-yesno",
         "value": "1-VIEWING-YES",
@@ -713,7 +703,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1811",
+        "id": "2012",
         "code": "VIEWING-NO",
         "group": "viewing-yesno",
         "value": "2-VIEWING-NO",
@@ -723,7 +713,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1812",
+        "id": "2013",
         "code": "COMPARING-YES",
         "group": "comparing-yesno",
         "value": "1-COMPARING-YES",
@@ -733,7 +723,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1813",
+        "id": "2014",
         "code": "COMPARING-NO",
         "group": "comparing-yesno",
         "value": "2-COMPARING-NO",
@@ -743,7 +733,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1814",
+        "id": "2015",
         "code": "GENERIC-NO",
         "group": "generic-no",
         "value": "99-GENERIC-NO",
@@ -753,7 +743,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1815",
+        "id": "2016",
         "code": "PROMOTING-YES",
         "group": "promoting-yesno",
         "value": "1-PROMOTING-YES",
@@ -763,7 +753,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1816",
+        "id": "2017",
         "code": "PROMOTING-NO",
         "group": "promoting-yesno",
         "value": "2-PROMOTING-NO",
@@ -773,7 +763,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1817",
+        "id": "2018",
         "code": "END",
         "group": "end",
         "value": "99-END",
@@ -783,7 +773,7 @@
         "user_story_paths": []
       },
       {
-        "id": "1818",
+        "id": "2019",
         "code": "RESET-NO",
         "group": "reset",
         "value": "99-RESET-NO",

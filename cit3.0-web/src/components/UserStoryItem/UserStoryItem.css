@@ -7,3 +7,7 @@
     display: flex;
     flex-wrap: wrap;
 }
+.confirm-button {
+    min-height: 10px;
+}
+
