@@ -1,17 +1,16 @@
 # This workflow will build a new container weekly running the census data pipeline weekly pulls
 
-name: Data Pipeline - Bucket 2 Weekly
+name: Data Pipeline Bucket 3 - Communities
 on:
   #schedule:
     #- cron: "0 13 * * 1"
     #- cron: "*/1 * * * *"
-  #push:
-  #  branches:
-  #    - github-actions-data-pipeline
+  push:
+    branches:
+      - github-actions-data-pipeline
   workflow_dispatch:
 env: 
-  BUCKET_COMMAND: bucket_2_weekly
-  AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
+  BUCKET_COMMAND: bucket_3
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -21,13 +20,13 @@ jobs:
       # checkout the repo
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master
-      
+
       - name: "Generate env file"
         run: |
             echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
             echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
             echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
+            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env 
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
