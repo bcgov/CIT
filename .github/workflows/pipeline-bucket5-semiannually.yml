@@ -1,17 +1,17 @@
 # This workflow will build a new container weekly running the census data pipeline weekly pulls
 
-name: Data Pipeline - Bucket 5 monthly
+name: Data Pipeline - Bucket 5 semiannually
 on:
   #schedule:
     #- cron: "0 13 * * 1"
     #- cron: "*/1 * * * *"
-  #push:
-  #  branches:
-  #    - github-actions-data-pipeline
+  push:
+    branches:
+      - github-actions-data-pipeline
   workflow_dispatch:
-
+  
 env: 
-  BUCKET_COMMAND: bucket_5_monthly
+  BUCKET_COMMAND: bucket_5_semiannually
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   build-and-deploy:
