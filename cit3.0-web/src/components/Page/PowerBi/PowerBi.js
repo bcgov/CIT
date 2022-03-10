@@ -34,11 +34,26 @@ export default function PowerBi() {
 
   const groupId = Config.pbiGroupId;
 
-  const [reportId, setReportId] = useState(
-    location.pathname.includes("public")
-      ? Config.pbiReportIdPublic
-      : Config.pbiReportIdInternal
-  );
+  const compareRoute = "/compare-area";
+  const isCompareArea = window.location.pathname.includes(compareRoute);
+
+  const criteriaRoute = "/criteria-search";
+  const isCriteriaSearch = window.location.pathname.includes(criteriaRoute);
+
+  let reportId = location.pathname.includes("public")
+    ? Config.pbiReportIdPublic
+    : Config.pbiReportIdInternal;
+
+  if (isCompareArea) reportId = Config.pbiReportIdCompare;
+  if (isCriteriaSearch) reportId = Config.pbiReportIdSearch;
+
+  const [isEconomicPageVisible, setIsEconomicPageVisible] = useState(null);
+  const [isSocialPageVisible, setIsSocialPageVisible] = useState(null);
+  const [isAssetsPageVisible, setIsAssetsPageVisible] = useState(null);
+  const [
+    isCommunityOverviewPageVisible,
+    setIsCommunityOverviewPageVisible,
+  ] = useState(null);
 
   const [community, setCommunity] = useState("");
   const [regionalDistrict, setRegionalDistrict] = useState("");
@@ -95,6 +110,19 @@ export default function PowerBi() {
       }
     }
     return null;
+  };
+
+  const filterCensus = () => {
+    const result = {
+      $schema: "http://powerbi.com/product/schema#basic",
+      target: {
+        column: "Census Subdivision Name",
+        table: "public pipeline_cen_prof_detailed_csd_attrs_sp",
+      },
+      operator: "In",
+      values: ["Abbotsford"],
+    };
+    return result;
   };
 
   const filter = () => {
@@ -181,6 +209,7 @@ export default function PowerBi() {
   }, [communities, regional]);
 
   const saveAsPDF = () => {
+    // window.report.getFilters().then((data) => console.log(data));
     window.report.print();
   };
 
@@ -204,6 +233,197 @@ export default function PowerBi() {
     }, 3000);
   };
 
+  const powerBiEventHandlers = new Map([
+    [
+      "loaded",
+      function () {
+        window.report
+          .getPages()
+          .then((data) => {
+            // const visuals = data[0].getVisuals().then((v) => {
+            //   const myVisuals = v;
+            //   console.log(myVisuals);
+            // });
+            const commReport = data.filter(
+              (report) => report.displayName === "Community Overview"
+            );
+            const criteria = data.filter(
+              (report) => report.displayName === "Criteria Search"
+            );
+            const compareReport = data.filter(
+              (report) => report.displayName === "Economic"
+            );
+
+            if (isCriteriaSearch) {
+              window.report
+                .setPage(criteria[0].name)
+                .catch((err) => console.log("setpage error:", err));
+            } else if (isCompareArea) {
+              window.report
+                .setPage(compareReport[0].name)
+                .catch((err) => console.log("setpage error:", err));
+            } else if (community || regionalDistrict || setPage) {
+              if (commReport[0].name !== currentPage) {
+                window.report
+                  .setPage(commReport[0].name)
+                  .catch((err) => console.log("setpage error:", err));
+                if (filter()) {
+                  window.report
+                    .setFilters([filter()])
+                    .catch((err) => console.log("error: ", err));
+                }
+              }
+            } else if (criteria[0].name !== currentPage) {
+              window.report
+                .setPage(criteria[0].name)
+                .catch((err) => console.log("setpage error:", err));
+              if (filter()) {
+                window.report
+                  .setFilters([filter()])
+                  .catch((err) => console.log("error: ", err));
+              }
+            }
+            window.report.refresh();
+            if (reportId === Config.pbiReportIdInternal) {
+              trackUser(
+                {
+                  user_id: user.id,
+                  report_url: window.location.href,
+                },
+                keycloak.obj.token
+              );
+            }
+          })
+          .catch((err) => console.log("error: ", err));
+      },
+    ],
+    [
+      "error",
+      function (event) {
+        console.log("ERROR:::", event.detail);
+      },
+    ],
+    [
+      "pageChanged",
+      function (event) {
+        if (currentPage !== event.detail.newPage.name) {
+          setCurrentPage(event.detail.newPage.name);
+          setCurrentPageData(event.detail.newPage);
+        }
+      },
+    ],
+  ]);
+  const eventHandlersMap = new Map([
+    [
+      "loaded",
+      function () {
+        console.log("Report has loaded");
+      },
+    ],
+    [
+      "rendered",
+      function () {
+        console.log("Report has rendered");
+      },
+    ],
+    [
+      "error",
+      function (event) {
+        if (event) {
+          console.error(event.detail);
+        }
+      },
+    ],
+  ]);
+  const economicEventHandlers = new Map([
+    [
+      "loaded",
+      function () {
+        console.log("economic loaded");
+        if (filterCensus()) {
+          window.report
+            .setFilters([filterCensus()])
+            .catch((err) => console.log("error: ", err));
+        }
+        window.report.getPages().then((data) => {
+          console.log("economic loaded data");
+        });
+      },
+    ],
+    [
+      "filtersApplied",
+      function () {
+        window.report
+          .getFilters()
+          .then((data) => console.log("filters applied", data));
+      },
+    ],
+  ]);
+
+  const socialEventHandlers = new Map([
+    [
+      "loaded",
+      function () {
+        if (filterCensus()) {
+          window.report
+            .setFilters([filterCensus()])
+            .catch((err) => console.log("error: ", err));
+        }
+        window.report.getPages().then((data) => {
+          const reportFilter = data.find(
+            (r) => r.displayName === "Duplicate of Social"
+          );
+          if (reportFilter) {
+            window.report.setFilters([filter()]);
+            window.report
+              .setPage(reportFilter.name)
+              .catch((err) => console.log("setpage error:", err));
+          }
+        });
+      },
+    ],
+    [
+      "filtersApplied",
+      function () {
+        console.log("filtersApplied");
+        // window.report
+        // .getFilters()
+        // .then((data) => console.log("filters applied", data));
+      },
+    ],
+  ]);
+
+  const powerBiSettings = {
+    panes: {
+      filters: {
+        visible: false,
+      },
+      pageNavigation: {
+        visible: false,
+      },
+    },
+  };
+
+  const powerBiSettingsLayout = {
+    layoutType: models.LayoutType.Custom,
+    customLayout: {
+      pageSize: {
+        type: models.PageSizeType.Custom,
+        width: 1280,
+        height: 190,
+      },
+      displayOption: models.DisplayOption.FitToWidth,
+    },
+    panes: {
+      filters: {
+        visible: false,
+      },
+      pageNavigation: {
+        visible: false,
+      },
+    },
+  };
+
   return embedToken && places ? (
     <>
       <div id="embed-container">
@@ -223,99 +443,187 @@ export default function PowerBi() {
             Create URL to a Community
           </button>
         </div>
-        <PowerBIEmbed
-          embedConfig={{
-            type: "report",
-            id: reportConfig.id,
-            embedUrl: reportConfig.embedUrl,
-            accessToken: embedToken,
-            tokenType: models.TokenType.Embed,
-            pageName: currentPage || "",
-            settings: {
-              panes: {
-                filters: {
-                  visible: true,
-                },
-                pageNavigation: {
-                  visible: true,
-                },
-              },
-            },
-          }}
-          // Define event handlers
-          eventHandlers={
-            new Map([
-              [
-                "loaded",
-                function () {
-                  window.report
-                    .getPages()
-                    .then((data) => {
-                      const commReport = data.filter(
-                        (report) => report.displayName === "Community Overview"
-                      );
-                      const criteria = data.filter(
-                        (report) => report.displayName === "Criteria Search"
-                      );
-                      if (community || regionalDistrict || setPage) {
-                        if (commReport[0].name !== currentPage) {
-                          window.report
-                            .setPage(commReport[0].name)
-                            .catch((err) => console.log("setpage error:", err));
-                          if (filter()) {
-                            window.report
-                              .setFilters([filter()])
-                              .catch((err) => console.log("error: ", err));
-                          }
-                        }
-                      } else if (criteria[0].name !== currentPage) {
-                        window.report
-                          .setPage(criteria[0].name)
-                          .catch((err) => console.log("setpage error:", err));
-                        if (filter()) {
-                          window.report
-                            .setFilters([filter()])
-                            .catch((err) => console.log("error: ", err));
-                        }
-                      }
-                      window.report.refresh();
-                      if (reportId === Config.pbiReportIdInternal) {
-                        trackUser(
-                          {
-                            user_id: user.id,
-                            report_url: window.location.href,
-                          },
-                          keycloak.obj.token
-                        );
-                      }
-                    })
-                    .catch((err) => console.log("error: ", err));
-                },
-              ],
-              [
-                "error",
-                function (event) {
-                  console.log("ERROR:::", event.detail);
-                },
-              ],
-              [
-                "pageChanged",
-                function (event) {
-                  if (currentPage !== event.detail.newPage.name) {
-                    setCurrentPage(event.detail.newPage.name);
-                    setCurrentPageData(event.detail.newPage);
-                  }
-                },
-              ],
-            ])
-          }
-          // // Add CSS classes to the div element
-          cssClassName="report-style-class"
-          // set report object
-          getEmbeddedComponent={(embeddedReport) => {
-            window.report = embeddedReport;
-          }}
-        />
+        <br />
+        <Container>
+          {isCompareArea && (
+            <>
+              <Row>
+                <PowerBIEmbed
+                  embedConfig={{
+                    type: "report",
+                    id: reportConfig.id,
+                    embedUrl: reportConfig.embedUrl,
+                    accessToken: embedToken,
+                    tokenType: models.TokenType.Embed,
+                    settings: { ...powerBiSettings },
+                  }}
+                  eventHandlers={socialEventHandlers}
+                  cssClassName="report-compare report-iframe"
+                  getEmbeddedComponent={(embeddedReport) => {
+                    window.report = embeddedReport;
+                  }}
+                />
+              </Row>
+            </>
+          )}
+          {isCriteriaSearch && (
+            <>
+              <Row>
+                <PowerBIEmbed
+                  embedConfig={{
+                    type: "report",
+                    id: reportConfig.id,
+                    embedUrl: reportConfig.embedUrl,
+                    accessToken: embedToken,
+                    tokenType: models.TokenType.Embed,
+                    settings: { ...powerBiSettings },
+                  }}
+                  eventHandlers={economicEventHandlers}
+                  cssClassName="report-criteria-search report-iframe"
+                  getEmbeddedComponent={(embeddedReport) => {
+                    window.report = embeddedReport;
+                  }}
+                />
+              </Row>
+            </>
+          )}
+          {!isCompareArea && !isCriteriaSearch && (
+            <>
+              {
+                ""
+                // 1. census
+              }
+              <Row>
+                <PowerBIEmbed
+                  embedConfig={{
+                    type: "report",
+                    id: reportConfig.id,
+                    embedUrl: reportConfig.embedUrl,
+                    accessToken: embedToken,
+                    tokenType: models.TokenType.Embed,
+                    pageName: "ReportSectionf24405d55f47f20b64ac",
+                    settings: { ...powerBiSettings },
+                  }}
+                  eventHandlers={powerBiEventHandlers}
+                  cssClassName="report-census report-iframe"
+                  getEmbeddedComponent={(embeddedReport) => {
+                    window.report = embeddedReport;
+                  }}
+                />
+              </Row>
+              {
+                ""
+                // 2. connectivity
+              }
+              <Row>
+                <PowerBIEmbed
+                  embedConfig={{
+                    type: "report",
+                    id: reportConfig.id,
+                    embedUrl: reportConfig.embedUrl,
+                    accessToken: embedToken,
+                    tokenType: models.TokenType.Embed,
+                    pageName: "ReportSection3a82bd236c8333e0318f",
+                    settings: { ...powerBiSettings },
+                  }}
+                  eventHandlers={powerBiEventHandlers}
+                  cssClassName="report-connectivity report-iframe"
+                  getEmbeddedComponent={(embeddedReport) => {
+                    window.report = embeddedReport;
+                  }}
+                />
+              </Row>
+              {
+                ""
+                // 3. Economic
+              }
+              <Row>
+                <PowerBIEmbed
+                  embedConfig={{
+                    type: "report",
+                    id: reportConfig.id,
+                    embedUrl: reportConfig.embedUrl,
+                    accessToken: embedToken,
+                    tokenType: models.TokenType.Embed,
+                    pageName: "ReportSection42cfd715841cc0ee8562",
+                    settings: { ...powerBiSettings },
+                  }}
+                  eventHandlers={powerBiEventHandlers}
+                  cssClassName="report-economic report-iframe"
+                  getEmbeddedComponent={(embeddedReport) => {
+                    window.report = embeddedReport;
+                  }}
+                />
+              </Row>
+              {
+                ""
+                // 4. Social
+              }
+              <Row>
+                <PowerBIEmbed
+                  embedConfig={{
+                    type: "report",
+                    id: reportConfig.id,
+                    embedUrl: reportConfig.embedUrl,
+                    accessToken: embedToken,
+                    tokenType: models.TokenType.Embed,
+                    pageName: "ReportSection046e168ffc92218874fc",
+                    settings: { ...powerBiSettings },
+                  }}
+                  eventHandlers={powerBiEventHandlers}
+                  cssClassName="report-social report-iframe"
+                  getEmbeddedComponent={(embeddedReport) => {
+                    window.report = embeddedReport;
+                  }}
+                />
+              </Row>
+              {
+                ""
+                // 5. Assets & Infrastructure
+              }
+              <Row>
+                <PowerBIEmbed
+                  embedConfig={{
+                    type: "report",
+                    id: reportConfig.id,
+                    embedUrl: reportConfig.embedUrl,
+                    accessToken: embedToken,
+                    tokenType: models.TokenType.Embed,
+                    pageName: "ReportSectiona8fb2e2a05ee64729e48",
+                    settings: { ...powerBiSettings },
+                  }}
+                  eventHandlers={powerBiEventHandlers}
+                  cssClassName="report-assets report-iframe"
+                  getEmbeddedComponent={(embeddedReport) => {
+                    window.report = embeddedReport;
+                  }}
+                />
+              </Row>
+              {
+                ""
+                // 6. BC Assessment
+              }
+              <Row>
+                <PowerBIEmbed
+                  embedConfig={{
+                    type: "report",
+                    id: reportConfig.id,
+                    embedUrl: reportConfig.embedUrl,
+                    accessToken: embedToken,
+                    tokenType: models.TokenType.Embed,
+                    pageName: "ReportSectionef1d1d41b06063001cb3",
+                    settings: { ...powerBiSettings },
+                  }}
+                  eventHandlers={powerBiEventHandlers}
+                  cssClassName="report-bca-assessment report-iframe"
+                  getEmbeddedComponent={(embeddedReport) => {
+                    window.report = embeddedReport;
+                  }}
+                />
+              </Row>
+            </>
+          )}
+        </Container>
       </div>
       <Modal
         show={show}

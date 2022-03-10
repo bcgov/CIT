@@ -22,4 +22,5 @@ from .users.tracking import *
 from .agricultural_land_reserve import *
 from .cen_prof_detailed_cd_attrs_sp import *
 from .cen_prof_detailed_csd_attrs_sp import *
-from .tourism_region import *
+from .Housing_Data import *
+

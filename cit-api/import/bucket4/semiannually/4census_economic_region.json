@@ -1,0 +1,13 @@
+[
+  {
+    "name": "census_economic_region",
+    "display_name": "Census Economic Regions",
+    "model_name": "CensusEconomicRegion",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": null,
+    "permalink_id": "1aebc451-a41c-496f-8b18-6f414cde93b7",
+    "dataset": "current-census-economic-regions",
+    "import_order": 26
+  }
+]

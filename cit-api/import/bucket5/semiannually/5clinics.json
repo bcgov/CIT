@@ -1,0 +1,12 @@
+[
+  {
+    "name": "clinics",
+    "display_name": "Walk-in Clinics",
+    "model_name": "Clinic",
+    "source": "databc",
+    "source_type": "api",
+    "resource_id": "3ca6b086-c92b-4654-ae82-ff5723d00611",
+    "permalink_id": "5e2707c3-0aa4-4d2d-aedc-4dd0914b686a",
+    "import_order": 40
+  }
+]

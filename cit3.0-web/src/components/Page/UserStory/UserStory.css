@@ -1,11 +1,42 @@
-.inline-row {
+.your-story {
     display: flex;
-}   
-
-.row {
-    margin-top: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: BCSans;
+    font-size:1em; 
 }
 
+.smaller-page {
+    -webkit-transform:scale(0.67);
+    -moz-transform:scale(0.67);
+    -ms-transform:scale(0.67);
+    transform:scale(0.67);
+    -ms-transform-origin:0 0;
+    -webkit-transform-origin:0 0;
+    -moz-transform-origin:0 0;
+    transform-origin:0 0;
+}
+
+h3 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size:1em; 
+    line-height: 1.4;
+}
+
+p {
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+.break {
+    flex-basis: 100%;
+    height: 0;
+  }
+  
 .user-story-label {
     margin-top: 6px;
     margin-right: 6px;
@@ -14,5 +45,5 @@
 .searchFilter {
     color: #376fa3 !important;
     font-weight: bold;
-    font-size: 1.2em;
+    font-size: 1.2rem;
 }

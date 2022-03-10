@@ -1,0 +1,14 @@
+[
+  {
+    "name": "services",
+    "display_name": "Internet Connectivity (ISPs)",
+    "model_name": "Service",
+    "source": "openca",
+    "source_type": "csv",
+    "source_file_path": "data/ISP_Hex_FSI.csv",
+    "resource_id": "00a331db-121b-445d-b119-35dbbe3eedd9",
+    "sub_resource_id": "ec679621-d333-40c7-a7ea-66e17d007010",
+    "external_url": "https://open.canada.ca/data/en/dataset/00a331db-121b-445d-b119-35dbbe3eedd9",
+    "import_order": 103
+  }
+]
