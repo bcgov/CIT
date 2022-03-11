@@ -51,6 +51,30 @@ RUN az storage blob download \
              --account-key $AZURE_STORAGE_ACCOUNT_KEY \
              --auth-mode key
 
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data/bc_assessment \
+             --name bca_summary_by_cd_use.csv \
+             --file bca_summary_by_cd_use.csv \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data/bc_assessment \
+             --name bca_summary_by_csd_use.csv \
+             --file bca_summary_by_csd_use.csv \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data/bc_assessment \
+             --name bca_summary_by_er_use.csv \
+             --file bca_summary_by_er_use.csv \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
 FROM python:3.6
 ENV PYTHONUNBUFFERED 1
 
