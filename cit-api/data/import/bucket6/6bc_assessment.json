@@ -5,7 +5,7 @@
     "model_name": "BCAssessmentRegionalDistrict",
     "source": "internal",
     "source_type": "csv",
-    "source_file_path": "data/bc_assessment/bca_summary_by_cd_use.csv",
+    "source_file_path": "data/bca_summary_by_cd_use.csv",
     "import_order": 104
   },
   {
@@ -14,7 +14,7 @@
     "model_name": "BCAssessmentCensusSubdivision",
     "source": "internal",
     "source_type": "csv",
-    "source_file_path": "data/bc_assessment/bca_summary_by_csd_use.csv",
+    "source_file_path": "data/bca_summary_by_csd_use.csv",
     "import_order": 105
   },
   {
@@ -23,7 +23,7 @@
     "model_name": "BCAssessmentEconomicRegion",
     "source": "internal",
     "source_type": "csv",
-    "source_file_path": "data/bc_assessment/bca_summary_by_er_use.csv",
+    "source_file_path": "data/bca_summary_by_er_use.csv",
     "import_order": 106
   }
 ]
