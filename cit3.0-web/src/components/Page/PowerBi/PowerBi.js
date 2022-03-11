@@ -47,12 +47,6 @@ export default function PowerBi() {
   if (isCompareArea) reportId = Config.pbiReportIdCompare;
   if (isCriteriaSearch) reportId = Config.pbiReportIdSearch;
 
-  // const [isEconomicVisible, setIsEconomicVisible] = useState(false);
-  // const [isSocialVisible, setIsSocialVisible] = useState(false);
-  // const [isAssetsVisible, setIsAssetsVisible] = useState(null);
-  // const [isConnectivityVisible, setIsConnectivityVisible] = useState(false);
-  // const [isBcAssessmentVisible, setIsBcAssessmentVisible] = useState(false);
-
   const [community, setCommunity] = useState("");
   const [regionalDistrict, setRegionalDistrict] = useState("");
 
@@ -98,13 +92,6 @@ export default function PowerBi() {
   const isAssetsVisible = reportSection.includes("assetsandinfrastracture");
   const isBcAssessmentVisible = reportSection.includes("bcassessment");
 
-  // if (reportSection.includes("connectivity")) setIsConnectivityVisible(true);
-  // if (reportSection.includes("social")) setIsSocialVisible(true);
-  // if (reportSection.includes("economic")) setIsEconomicVisible(true);
-  // if (reportSection.includes("assetsandinfrastracture"))
-  //   setIsAssetsVisible(true);
-  // if (reportSection.includes("bcassessment")) setIsBcAssessmentVisible(true);
-
   const typeOfSelected = (place) => {
     if (communities.find((c) => c.toLowerCase() === place)) {
       return "community";
@@ -138,45 +125,16 @@ export default function PowerBi() {
     return null;
   };
 
-  const filterZoneType = () => {
-    const result = {
-      $schema: "http://powerbi.com/product/schema#basic",
-      target: {
-        column: "zone_type",
-        table: "Region Distribution",
-      },
-      operator: "In",
-      values: ["Census Subdivisions"],
-    };
-    return result;
-  };
-
-  const filterZoneName = () => {
-    const result = {
-      $schema: "http://powerbi.com/product/schema#basic",
-      target: {
-        column: "zone_name",
-        table: "Region Distribution",
-      },
-      operator: "In",
-      values: ["Abbotsford2"],
-    };
-    return result;
-  };
-
   const powerBiReportFilter = (table, column, filterValues) => {
     const result = {
       $schema: "http://powerbi.com/product/schema#basic",
       target: {
-        table: "",
-        column: "",
+        table,
+        column,
       },
       operator: "In",
-      values: [],
+      values: filterValues,
     };
-    result.target.table = table;
-    result.target.column = column;
-    result.values = filterValues;
     return result;
   };
 
@@ -222,11 +180,18 @@ export default function PowerBi() {
     return result;
   };
 
-  const testFilter = () => {
+  const zoneFilter = () => {
     const regionalDistrictsFilter = querystring.get("regionaldistricts");
 
     if (!regionalDistrictsFilter || regionalDistrictsFilter.length === 0)
       return null;
+
+    const testresult = powerBiReportFilter(
+      "public pipeline_community",
+      "Community Name",
+      regionalDistrictsFilter.split(",")
+    );
+    console.log("test filter", testresult);
 
     const zoneType = {
       $schema: "http://powerbi.com/product/schema#basic",
@@ -429,7 +394,7 @@ export default function PowerBi() {
         console.log("census report has loaded");
         window.report.updateFilters(
           models.FiltersOperations.ReplaceAll,
-          testFilter()
+          zoneFilter()
         );
       },
     ],
@@ -440,9 +405,10 @@ export default function PowerBi() {
       "loaded",
       function () {
         console.log("connectivity report has loaded");
+
         window.report.updateFilters(
           models.FiltersOperations.ReplaceAll,
-          testFilter()
+          zoneFilter()
         );
       },
     ],
@@ -454,7 +420,7 @@ export default function PowerBi() {
         console.log("economic report has loaded");
         window.report.updateFilters(
           models.FiltersOperations.ReplaceAll,
-          testFilter()
+          zoneFilter()
         );
       },
     ],
@@ -467,7 +433,7 @@ export default function PowerBi() {
         console.log("social report has loaded");
         window.report.updateFilters(
           models.FiltersOperations.ReplaceAll,
-          testFilter()
+          zoneFilter()
         );
       },
     ],
@@ -480,7 +446,7 @@ export default function PowerBi() {
         console.log("assets report has loaded");
         window.report.updateFilters(
           models.FiltersOperations.ReplaceAll,
-          testFilter()
+          zoneFilter()
         );
       },
     ],
@@ -493,7 +459,7 @@ export default function PowerBi() {
         console.log("bc assessment report has loaded");
         window.report.updateFilters(
           models.FiltersOperations.ReplaceAll,
-          testFilter()
+          zoneFilter()
         );
       },
     ],
@@ -507,6 +473,15 @@ export default function PowerBi() {
       pageNavigation: {
         visible: false,
       },
+    },
+  };
+
+  const layoutSettings = {
+    displayOption: models.DisplayOption.ActualSize,
+    pageSize: {
+      type: models.PageSizeType.Custom,
+      width: "100%",
+      height: "100%",
     },
   };
 
@@ -632,7 +607,7 @@ export default function PowerBi() {
                       tokenType: models.TokenType.Embed,
                       pageName: "ReportSection3a82bd236c8333e0318f",
                       settings: { ...powerBiSettings },
-                      filters: testFilter(),
+                      filters: zoneFilter(),
                     }}
                     eventHandlers={connectivityEventHandlers}
                     cssClassName="report-connectivity report-iframe"

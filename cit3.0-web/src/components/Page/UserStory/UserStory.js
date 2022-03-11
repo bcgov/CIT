@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Container, Button, Row } from "react-bootstrap";
+import { Container, Button, Row, Col } from "react-bootstrap";
 import { ArrowRight } from "react-bootstrap-icons";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
@@ -156,27 +156,42 @@ export default function UserStory() {
     <>
       <Container className="mt-4 your-story your-story-elements">
         <Row>
-          <h3>Hi, welcome to our Community Information Tool</h3>
-          <p>
-            The Community Information Tool offers insight into communities
-            across B.C. with integrated socio-economic data, infrastructure, and
-            community assets data. The Tool supports community, regional, and
-            province-wide planning, which is essential to building thriving,
-            healthy communities.
-          </p>
-          <h3>
-            Tell us a bit more about you and we will help you get to info that
-            is relevant to you
-          </h3>
+          <Col sm={12}>
+            <h3>Hi, welcome to our Community Information Tool</h3>
+            <p>
+              The Community Information Tool offers insight into communities
+              across B.C. with integrated socio-economic data, infrastructure,
+              and community assets data. The Tool supports community, regional,
+              and province-wide planning, which is essential to building
+              thriving, healthy communities.
+            </p>
+            <h3>
+              Tell us a bit more about you and we will help you get to info that
+              is relevant to you
+            </h3>
+          </Col>
         </Row>
+      </Container>
+      <Container className="mt-2 your-story your-story-elements">
         <Row>
-          {userOptions.map((story) => (
-            <UserStoryItem
-              key={story.id}
-              userStory={story}
-              onUserStoryChange={handleUserStoryChange}
+          <Col sm={9}>
+            {userOptions.map((story) => (
+              <UserStoryItem
+                key={story.id}
+                userStory={story}
+                onUserStoryChange={handleUserStoryChange}
+              />
+            ))}
+          </Col>
+          <Col sm={3} className="svg-box pt-3 your-story-image">
+            <img
+              className="add-opp-img"
+              src="/images/CIT_logo.svg"
+              height="100%"
+              width="100%"
+              alt="cit logo mountains"
             />
-          ))}
+          </Col>
         </Row>
       </Container>
       {(isNoButton || isYesButton) && (
