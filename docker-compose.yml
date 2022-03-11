@@ -24,6 +24,15 @@ services:
       - 8000:8000
     depends_on:
       - db
+  cit-user-tracking:
+    build:
+      context: ./cit-api
+      dockerfile: Dockerfile.usertracking
+    image: countable/cit
+    env_file:
+      - cit-api/.env
+    ports:
+      - 8000:8000
   db:
     image: mdillon/postgis
     env_file:
