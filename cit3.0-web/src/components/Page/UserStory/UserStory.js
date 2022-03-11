@@ -20,6 +20,9 @@ export default function UserStory() {
   const [isYesButton, setIsYesButton] = useState(false);
   const [isNoButton, setIsNoButton] = useState(false);
   const [redirectURL, setRedirectURL] = useState("");
+  const [areaType, setAreaType] = useState("");
+  const [areaSearchFilter, setAreaSearchFilter] = useState("");
+  const [powerBiReports, setPowerBiReports] = useState([]);
   const [communities, setCommunities] = useState(null);
   const [regionals, setRegionals] = useState(null);
 
@@ -27,9 +30,20 @@ export default function UserStory() {
   const dispatch = useDispatch();
 
   const redirectPage = () => {
-    console.log(redirectURL);
-    const path = redirectURL;
-    history.push(path);
+    let path = redirectURL;
+    let powerBiqs = "";
+    powerBiReports.forEach((p) => {
+      powerBiqs = `${powerBiqs}&pbi=${encodeURIComponent(p)}`;
+    });
+    console.log(powerBiqs);
+    const querystring = encodeURIComponent(
+      areaSearchFilter.toLowerCase() + powerBiqs
+    );
+    if (redirectURL.includes("{querystring}")) {
+      path = redirectURL.replace("{querystring}", querystring);
+    }
+    console.log(path);
+    // history.push(path);
   };
 
   const regionalDistricts = useSelector(
@@ -76,13 +90,22 @@ export default function UserStory() {
     setIsYesButton(false);
   };
 
-  const handleAllOptionsChange = (e) => {
-    if (!e.code) {
-      e.code = "AREA-OPTION-LIST-YES";
-      e.group = "area-option-list";
+  const handleUserStoryChange = (e) => {
+    let param;
+    if (Array.isArray(e)) {
+      setPowerBiReports(e.map((x) => x.value));
+      param = e.find((x, index) => index < 1);
+    } else {
+      param = e;
     }
 
-    const groupIndex = userOptions.findIndex((x) => x.group === e.group);
+    if (!param.code) {
+      param.code = "AREA-TYPE-LIST";
+      param.group = "area-type-list";
+      setAreaSearchFilter(param.label);
+    }
+
+    const groupIndex = userOptions.findIndex((x) => x.group === param.group);
 
     let newUserOptions = [];
     if (groupIndex > 0) {
@@ -91,28 +114,24 @@ export default function UserStory() {
       newUserOptions = userOptions;
     }
 
-    const userOption = userStoryPaths.find((x) => x.code === e.code);
-    userOption.postText = userOption.preText;
-    if (userOption.preText.includes("{AREA-TYPE}")) {
-      userOption.postText = userOption.preText.replace(
-        "{AREA-TYPE}",
-        userOption.label
-      );
-    }
-    if (userOption.preText.includes("{SEARCH-FILTER}")) {
-      userOption.postText = userOption.preText.replace(
-        "{SEARCH-FILTER}",
-        e.label
-      );
-      e.url = `cit-dashboard/public/${e.label}`;
-    }
+    const userOption = userStoryPaths.find((x) => x.code === param.code);
+
+    if (param.group === "area") setAreaType(userOption.label);
 
     if (userOption.code.includes("REGIONALDISTRICTS")) {
       userOption.user_story_paths = regionals;
     }
+
     if (userOption.code.includes("COMMUNITYAREA")) {
       userOption.user_story_paths = communities;
     }
+
+    let replaceText = userOption.preText;
+    replaceText = replaceText.replace("{AREA-TYPE-1}", userOption.label);
+    replaceText = replaceText.replace("{AREA-TYPE-2}", areaType);
+    replaceText = replaceText.replace("{AREA-SEARCH-FILTER}", param.label);
+    userOption.postText = replaceText;
+
     setAllOptions([...newUserOptions, userOption]);
 
     const isLastOption = userOption.user_story_paths.length < 2;
@@ -120,7 +139,7 @@ export default function UserStory() {
     if (userOption.code.includes("-YES") || isLastOption) {
       setIsYesButton(true);
       setIsNoButton(true);
-      setRedirectURL(e.url);
+      setRedirectURL(param.url);
     } else {
       setIsYesButton(false);
       setIsNoButton(false);
@@ -153,7 +172,7 @@ export default function UserStory() {
             <UserStoryItem
               key={story.id}
               userStory={story}
-              onUserStoryChange={handleAllOptionsChange}
+              onUserStoryChange={handleUserStoryChange}
             />
           ))}
         </Row>
@@ -171,7 +190,7 @@ export default function UserStory() {
                     onClick={resetUserStory}
                   >
                     {" "}
-                    Reset Search
+                    Reset Search Criteria
                   </Button>
                 </>
               )}
@@ -185,7 +204,7 @@ export default function UserStory() {
                     onClick={redirectPage}
                   >
                     {" "}
-                    View Result <ArrowRight />
+                    View Results <ArrowRight />
                   </Button>
                 </>
               )}

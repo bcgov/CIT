@@ -16,6 +16,7 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
       flex: 0,
       margin: 0,
       paddingRight: 8,
+      fontSize: "1em",
     }),
     option: (base, state) => ({
       ...base,
@@ -35,7 +36,14 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
     singleValue: (base) => ({
       ...base,
       color: "#3288D9",
-      fontSize: "1em",
+    }),
+    valueContainer: (base) => ({
+      ...base,
+      color: "#3288D9",
+    }),
+    multiValue: (base) => ({
+      ...base,
+      color: "#3288D9",
     }),
     control: (base) => ({
       ...base,
@@ -60,7 +68,7 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
       text: "",
     }),
   };
-  console.log(userStory);
+
   return (
     <>
       <div className="select-container">
@@ -96,6 +104,7 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
               styles={selectStyle}
               onChange={onUserStoryChange}
               aria-sort="ascending"
+              isMulti={userStory.isMultiple}
             />
           )}
       </div>
