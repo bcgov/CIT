@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import axios from "axios";
 import "./PowerBi.css";
 import {
@@ -47,13 +47,11 @@ export default function PowerBi() {
   if (isCompareArea) reportId = Config.pbiReportIdCompare;
   if (isCriteriaSearch) reportId = Config.pbiReportIdSearch;
 
-  const [isEconomicPageVisible, setIsEconomicPageVisible] = useState(null);
-  const [isSocialPageVisible, setIsSocialPageVisible] = useState(null);
-  const [isAssetsPageVisible, setIsAssetsPageVisible] = useState(null);
-  const [
-    isCommunityOverviewPageVisible,
-    setIsCommunityOverviewPageVisible,
-  ] = useState(null);
+  // const [isEconomicVisible, setIsEconomicVisible] = useState(false);
+  // const [isSocialVisible, setIsSocialVisible] = useState(false);
+  // const [isAssetsVisible, setIsAssetsVisible] = useState(null);
+  // const [isConnectivityVisible, setIsConnectivityVisible] = useState(false);
+  // const [isBcAssessmentVisible, setIsBcAssessmentVisible] = useState(false);
 
   const [community, setCommunity] = useState("");
   const [regionalDistrict, setRegionalDistrict] = useState("");
@@ -70,6 +68,7 @@ export default function PowerBi() {
   const tooltip = useRef(null);
 
   const searchRoute = "/search-communities";
+  const filterRoute = "/filterreport";
   const [setPage, setSetPage] = useState(
     window.location.pathname.includes(searchRoute)
   );
@@ -81,6 +80,30 @@ export default function PowerBi() {
     setShow(false);
     setSelected(false);
   };
+
+  const useQuery = () => {
+    const { search } = useLocation();
+    return useMemo(() => new URLSearchParams(search), [search]);
+  };
+
+  const querystring = useQuery();
+
+  const reportSection = querystring.get("powerbi")
+    ? querystring.get("powerbi")
+    : "";
+
+  const isConnectivityVisible = reportSection.includes("connectivity");
+  const isSocialVisible = reportSection.includes("social");
+  const isEconomicVisible = reportSection.includes("economic");
+  const isAssetsVisible = reportSection.includes("assetsandinfrastracture");
+  const isBcAssessmentVisible = reportSection.includes("bcassessment");
+
+  // if (reportSection.includes("connectivity")) setIsConnectivityVisible(true);
+  // if (reportSection.includes("social")) setIsSocialVisible(true);
+  // if (reportSection.includes("economic")) setIsEconomicVisible(true);
+  // if (reportSection.includes("assetsandinfrastracture"))
+  //   setIsAssetsVisible(true);
+  // if (reportSection.includes("bcassessment")) setIsBcAssessmentVisible(true);
 
   const typeOfSelected = (place) => {
     if (communities.find((c) => c.toLowerCase() === place)) {
@@ -94,6 +117,9 @@ export default function PowerBi() {
 
   const getPlaceFromUrl = () => {
     if (window.location.pathname.includes(searchRoute)) {
+      return false;
+    }
+    if (window.location.pathname.includes(filterRoute)) {
       return false;
     }
     const path = window.location.pathname.split("/");
@@ -112,43 +138,124 @@ export default function PowerBi() {
     return null;
   };
 
-  const filterCensus = () => {
+  const filterZoneType = () => {
     const result = {
       $schema: "http://powerbi.com/product/schema#basic",
       target: {
-        column: "Census Subdivision Name",
-        table: "public pipeline_cen_prof_detailed_csd_attrs_sp",
+        column: "zone_type",
+        table: "Region Distribution",
       },
       operator: "In",
-      values: ["Abbotsford"],
+      values: ["Census Subdivisions"],
     };
+    return result;
+  };
+
+  const filterZoneName = () => {
+    const result = {
+      $schema: "http://powerbi.com/product/schema#basic",
+      target: {
+        column: "zone_name",
+        table: "Region Distribution",
+      },
+      operator: "In",
+      values: ["Abbotsford2"],
+    };
+    return result;
+  };
+
+  const powerBiReportFilter = (table, column, filterValues) => {
+    const result = {
+      $schema: "http://powerbi.com/product/schema#basic",
+      target: {
+        table: "",
+        column: "",
+      },
+      operator: "In",
+      values: [],
+    };
+    result.target.table = table;
+    result.target.column = column;
+    result.values = filterValues;
     return result;
   };
 
   const filter = () => {
     let result = null;
-    if (community) {
-      result = {
-        $schema: "http://powerbi.com/product/schema#basic",
-        target: {
-          table: "public pipeline_community",
-          column: "Community Name",
-        },
-        operator: "In",
-        values: [community],
-      };
-    } else if (regionalDistrict) {
-      result = {
-        $schema: "http://powerbi.com/product/schema#basic",
-        target: {
-          table: "public pipeline_regionaldistrict",
-          column: "Regional District",
-        },
-        operator: "In",
-        values: [regionalDistrict],
-      };
+    const communityAreaFilter = querystring.get("communityarea");
+    const regionalDistrictsFilter = querystring.get("regionaldistricts");
+    console.log("communityAreaFilter", communityAreaFilter);
+    console.log("regionalDistrictsFilter", regionalDistrictsFilter);
+
+    // const firstNationsFilter = querystring.get("firstnations");
+    // const economicRegionsFilter = querystring.get("economicregions");
+    // const wildfireZonesFilter = querystring.get("wildfirezones");
+    // const tsunamiNotificationZonesFilter = querystring.get(
+    //   "tsunaminotificationzones"
+    // );
+    // const naturalResourceRegionsFilter = querystring.get(
+    //   "naturalresourceregions"
+    // );
+
+    if (communityAreaFilter) {
+      result = powerBiReportFilter(
+        "public pipeline_community",
+        "Community Name",
+        communityAreaFilter.split(",")
+      );
     }
+
+    if (regionalDistrictsFilter) {
+      result = powerBiReportFilter(
+        "public pipeline_regionaldistrict",
+        "Regional District",
+        regionalDistrictsFilter.split(",")
+      );
+    }
+
+    result = powerBiReportFilter(
+      "Region Distribution",
+      "zone_name",
+      communityAreaFilter.split(",")
+    );
+
     return result;
+  };
+
+  const testFilter = () => {
+    const regionalDistrictsFilter = querystring.get("regionaldistricts");
+
+    if (!regionalDistrictsFilter || regionalDistrictsFilter.length === 0)
+      return null;
+
+    const zoneType = {
+      $schema: "http://powerbi.com/product/schema#basic",
+      target: {
+        column: "zone_type",
+        table: "Region Distribution",
+      },
+      operator: "In",
+      values: [],
+    };
+
+    zoneType.values = ["Regional Districts"];
+
+    const zoneName = {
+      $schema: "http://powerbi.com/product/schema#basic",
+      target: {
+        column: "zone_name",
+        table: "Region Distribution",
+      },
+      operator: "In",
+      values: [],
+    };
+
+    zoneName.values = regionalDistrictsFilter.split(",");
+
+    const newFilters = [zoneType, zoneName];
+    console.log("test-filter", newFilters);
+
+    return newFilters;
   };
 
   useEffect(() => {
@@ -253,7 +360,6 @@ export default function PowerBi() {
             const compareReport = data.filter(
               (report) => report.displayName === "Economic"
             );
-
             if (isCriteriaSearch) {
               window.report
                 .setPage(criteria[0].name)
@@ -313,25 +419,31 @@ export default function PowerBi() {
       },
     ],
   ]);
-  const eventHandlersMap = new Map([
+
+  // event handlers
+
+  const censusEventHandlers = new Map([
     [
       "loaded",
       function () {
-        console.log("Report has loaded");
+        console.log("census report has loaded");
+        window.report.updateFilters(
+          models.FiltersOperations.ReplaceAll,
+          testFilter()
+        );
       },
     ],
+  ]);
+
+  const connectivityEventHandlers = new Map([
     [
-      "rendered",
+      "loaded",
       function () {
-        console.log("Report has rendered");
-      },
-    ],
-    [
-      "error",
-      function (event) {
-        if (event) {
-          console.error(event.detail);
-        }
+        console.log("connectivity report has loaded");
+        window.report.updateFilters(
+          models.FiltersOperations.ReplaceAll,
+          testFilter()
+        );
       },
     ],
   ]);
@@ -339,23 +451,11 @@ export default function PowerBi() {
     [
       "loaded",
       function () {
-        console.log("economic loaded");
-        if (filterCensus()) {
-          window.report
-            .setFilters([filterCensus()])
-            .catch((err) => console.log("error: ", err));
-        }
-        window.report.getPages().then((data) => {
-          console.log("economic loaded data");
-        });
-      },
-    ],
-    [
-      "filtersApplied",
-      function () {
-        window.report
-          .getFilters()
-          .then((data) => console.log("filters applied", data));
+        console.log("economic report has loaded");
+        window.report.updateFilters(
+          models.FiltersOperations.ReplaceAll,
+          testFilter()
+        );
       },
     ],
   ]);
@@ -364,31 +464,37 @@ export default function PowerBi() {
     [
       "loaded",
       function () {
-        if (filterCensus()) {
-          window.report
-            .setFilters([filterCensus()])
-            .catch((err) => console.log("error: ", err));
-        }
-        window.report.getPages().then((data) => {
-          const reportFilter = data.find(
-            (r) => r.displayName === "Duplicate of Social"
-          );
-          if (reportFilter) {
-            window.report.setFilters([filter()]);
-            window.report
-              .setPage(reportFilter.name)
-              .catch((err) => console.log("setpage error:", err));
-          }
-        });
+        console.log("social report has loaded");
+        window.report.updateFilters(
+          models.FiltersOperations.ReplaceAll,
+          testFilter()
+        );
       },
     ],
+  ]);
+
+  const assetsEventHandlers = new Map([
     [
-      "filtersApplied",
+      "loaded",
       function () {
-        console.log("filtersApplied");
-        // window.report
-        // .getFilters()
-        // .then((data) => console.log("filters applied", data));
+        console.log("assets report has loaded");
+        window.report.updateFilters(
+          models.FiltersOperations.ReplaceAll,
+          testFilter()
+        );
+      },
+    ],
+  ]);
+
+  const bcAssessmentEventHandlers = new Map([
+    [
+      "loaded",
+      function () {
+        console.log("bc assessment report has loaded");
+        window.report.updateFilters(
+          models.FiltersOperations.ReplaceAll,
+          testFilter()
+        );
       },
     ],
   ]);
@@ -396,7 +502,7 @@ export default function PowerBi() {
   const powerBiSettings = {
     panes: {
       filters: {
-        visible: false,
+        visible: true,
       },
       pageNavigation: {
         visible: false,
@@ -457,7 +563,7 @@ export default function PowerBi() {
                     tokenType: models.TokenType.Embed,
                     settings: { ...powerBiSettings },
                   }}
-                  eventHandlers={socialEventHandlers}
+                  eventHandlers={powerBiEventHandlers}
                   cssClassName="report-compare report-iframe"
                   getEmbeddedComponent={(embeddedReport) => {
                     window.report = embeddedReport;
@@ -478,7 +584,7 @@ export default function PowerBi() {
                     tokenType: models.TokenType.Embed,
                     settings: { ...powerBiSettings },
                   }}
-                  eventHandlers={economicEventHandlers}
+                  eventHandlers={powerBiEventHandlers}
                   cssClassName="report-criteria-search report-iframe"
                   getEmbeddedComponent={(embeddedReport) => {
                     window.report = embeddedReport;
@@ -504,7 +610,7 @@ export default function PowerBi() {
                     pageName: "ReportSectionf24405d55f47f20b64ac",
                     settings: { ...powerBiSettings },
                   }}
-                  eventHandlers={powerBiEventHandlers}
+                  eventHandlers={censusEventHandlers}
                   cssClassName="report-census report-iframe"
                   getEmbeddedComponent={(embeddedReport) => {
                     window.report = embeddedReport;
@@ -515,112 +621,123 @@ export default function PowerBi() {
                 ""
                 // 2. connectivity
               }
-              <Row>
-                <PowerBIEmbed
-                  embedConfig={{
-                    type: "report",
-                    id: reportConfig.id,
-                    embedUrl: reportConfig.embedUrl,
-                    accessToken: embedToken,
-                    tokenType: models.TokenType.Embed,
-                    pageName: "ReportSection3a82bd236c8333e0318f",
-                    settings: { ...powerBiSettings },
-                  }}
-                  eventHandlers={powerBiEventHandlers}
-                  cssClassName="report-connectivity report-iframe"
-                  getEmbeddedComponent={(embeddedReport) => {
-                    window.report = embeddedReport;
-                  }}
-                />
-              </Row>
+              {isConnectivityVisible && (
+                <Row>
+                  <PowerBIEmbed
+                    embedConfig={{
+                      type: "report",
+                      id: reportConfig.id,
+                      embedUrl: reportConfig.embedUrl,
+                      accessToken: embedToken,
+                      tokenType: models.TokenType.Embed,
+                      pageName: "ReportSection3a82bd236c8333e0318f",
+                      settings: { ...powerBiSettings },
+                      filters: testFilter(),
+                    }}
+                    eventHandlers={connectivityEventHandlers}
+                    cssClassName="report-connectivity report-iframe"
+                    getEmbeddedComponent={(embeddedReport) => {
+                      window.report = embeddedReport;
+                    }}
+                  />
+                </Row>
+              )}
               {
                 ""
                 // 3. Economic
               }
-              <Row>
-                <PowerBIEmbed
-                  embedConfig={{
-                    type: "report",
-                    id: reportConfig.id,
-                    embedUrl: reportConfig.embedUrl,
-                    accessToken: embedToken,
-                    tokenType: models.TokenType.Embed,
-                    pageName: "ReportSection42cfd715841cc0ee8562",
-                    settings: { ...powerBiSettings },
-                  }}
-                  eventHandlers={powerBiEventHandlers}
-                  cssClassName="report-economic report-iframe"
-                  getEmbeddedComponent={(embeddedReport) => {
-                    window.report = embeddedReport;
-                  }}
-                />
-              </Row>
+              {isEconomicVisible && (
+                <Row>
+                  <PowerBIEmbed
+                    embedConfig={{
+                      type: "report",
+                      id: reportConfig.id,
+                      embedUrl: reportConfig.embedUrl,
+                      accessToken: embedToken,
+                      tokenType: models.TokenType.Embed,
+                      pageName: "ReportSection42cfd715841cc0ee8562",
+                      settings: { ...powerBiSettings },
+                    }}
+                    eventHandlers={economicEventHandlers}
+                    cssClassName="report-economic report-iframe"
+                    getEmbeddedComponent={(embeddedReport) => {
+                      window.report = embeddedReport;
+                    }}
+                  />
+                </Row>
+              )}
               {
                 ""
                 // 4. Social
               }
-              <Row>
-                <PowerBIEmbed
-                  embedConfig={{
-                    type: "report",
-                    id: reportConfig.id,
-                    embedUrl: reportConfig.embedUrl,
-                    accessToken: embedToken,
-                    tokenType: models.TokenType.Embed,
-                    pageName: "ReportSection046e168ffc92218874fc",
-                    settings: { ...powerBiSettings },
-                  }}
-                  eventHandlers={powerBiEventHandlers}
-                  cssClassName="report-social report-iframe"
-                  getEmbeddedComponent={(embeddedReport) => {
-                    window.report = embeddedReport;
-                  }}
-                />
-              </Row>
+              {isSocialVisible && (
+                <Row>
+                  <PowerBIEmbed
+                    embedConfig={{
+                      type: "report",
+                      id: reportConfig.id,
+                      embedUrl: reportConfig.embedUrl,
+                      accessToken: embedToken,
+                      tokenType: models.TokenType.Embed,
+                      pageName: "ReportSection046e168ffc92218874fc",
+                      settings: { ...powerBiSettings },
+                    }}
+                    eventHandlers={socialEventHandlers}
+                    cssClassName="report-social report-iframe"
+                    getEmbeddedComponent={(embeddedReport) => {
+                      window.report = embeddedReport;
+                    }}
+                  />
+                </Row>
+              )}
               {
                 ""
                 // 5. Assets & Infrastructure
               }
-              <Row>
-                <PowerBIEmbed
-                  embedConfig={{
-                    type: "report",
-                    id: reportConfig.id,
-                    embedUrl: reportConfig.embedUrl,
-                    accessToken: embedToken,
-                    tokenType: models.TokenType.Embed,
-                    pageName: "ReportSectiona8fb2e2a05ee64729e48",
-                    settings: { ...powerBiSettings },
-                  }}
-                  eventHandlers={powerBiEventHandlers}
-                  cssClassName="report-assets report-iframe"
-                  getEmbeddedComponent={(embeddedReport) => {
-                    window.report = embeddedReport;
-                  }}
-                />
-              </Row>
+              {isAssetsVisible && (
+                <Row>
+                  <PowerBIEmbed
+                    embedConfig={{
+                      type: "report",
+                      id: reportConfig.id,
+                      embedUrl: reportConfig.embedUrl,
+                      accessToken: embedToken,
+                      tokenType: models.TokenType.Embed,
+                      pageName: "ReportSectiona8fb2e2a05ee64729e48",
+                      settings: { ...powerBiSettings },
+                    }}
+                    eventHandlers={assetsEventHandlers}
+                    cssClassName="report-assets report-iframe"
+                    getEmbeddedComponent={(embeddedReport) => {
+                      window.report = embeddedReport;
+                    }}
+                  />
+                </Row>
+              )}
               {
                 ""
                 // 6. BC Assessment
               }
-              <Row>
-                <PowerBIEmbed
-                  embedConfig={{
-                    type: "report",
-                    id: reportConfig.id,
-                    embedUrl: reportConfig.embedUrl,
-                    accessToken: embedToken,
-                    tokenType: models.TokenType.Embed,
-                    pageName: "ReportSectionef1d1d41b06063001cb3",
-                    settings: { ...powerBiSettings },
-                  }}
-                  eventHandlers={powerBiEventHandlers}
-                  cssClassName="report-bca-assessment report-iframe"
-                  getEmbeddedComponent={(embeddedReport) => {
-                    window.report = embeddedReport;
-                  }}
-                />
-              </Row>
+              {isBcAssessmentVisible && (
+                <Row>
+                  <PowerBIEmbed
+                    embedConfig={{
+                      type: "report",
+                      id: reportConfig.id,
+                      embedUrl: reportConfig.embedUrl,
+                      accessToken: embedToken,
+                      tokenType: models.TokenType.Embed,
+                      pageName: "ReportSectionef1d1d41b06063001cb3",
+                      settings: { ...powerBiSettings },
+                    }}
+                    eventHandlers={bcAssessmentEventHandlers}
+                    cssClassName="report-bca-assessment report-iframe"
+                    getEmbeddedComponent={(embeddedReport) => {
+                      window.report = embeddedReport;
+                    }}
+                  />
+                </Row>
+              )}
             </>
           )}
         </Container>

@@ -758,7 +758,7 @@
             "label": "Connectivity",
             "preText": "",
             "postText": null,
-            "url": "cit-dashboard/public/{querystring}"
+            "url": "cit-dashboard/public/reportfilter"
           },
           {
             "id": "2894",
@@ -769,7 +769,7 @@
             "label": "Social",
             "preText": "",
             "postText": null,
-            "url": "cit-dashboard/public/{querystring}"
+            "url": "cit-dashboard/public/reportfilter"
           },
           {
             "id": "2895",
@@ -780,29 +780,29 @@
             "label": "Economic",
             "preText": "",
             "postText": null,
-            "url": "cit-dashboard/public/{querystring}"
+            "url": "cit-dashboard/public/reportfilter"
           },
           {
             "id": "2896",
-            "code": "ASSETS AND INFRASTRACTURE",
+            "code": "ASSETSANDINFRASTRACTURE",
             "group": "power-bi-report",
             "isMultiple": true,
-            "value": "ASSETS AND INFRASTRACTURE",
+            "value": "ASSETSANDINFRASTRACTURE",
             "label": "Assets and Infrastracture",
             "preText": "",
             "postText": null,
-            "url": "cit-dashboard/public/{querystring}"
+            "url": "cit-dashboard/public/reportfilter"
           },
           {
             "id": "2897",
-            "code": "BC-ASSESSMENT",
+            "code": "BCASSESSMENT",
             "group": "power-bi-report",
             "isMultiple": true,
-            "value": "BC-ASSESSMENT",
+            "value": "BCASSESSMENT",
             "label": "BC Assessment",
             "preText": "",
             "postText": null,
-            "url": "cit-dashboard/public/{querystring}"
+            "url": "cit-dashboard/public/reportfilter"
           }
         ]
       },
@@ -1130,10 +1130,10 @@
       },
       {
         "id": "2896",
-        "code": "ASSETS AND INFRASTRACTURE",
+        "code": "ASSETSANDINFRASTRACTURE",
         "group": "power-bi-report",
         "isMultiple": true,
-        "value": "ASSETS AND INFRASTRACTURE",
+        "value": "ASSETSANDINFRASTRACTURE",
         "label": "Assets and Infrastracture",
         "preText": "",
         "postText": null,
@@ -1153,10 +1153,10 @@
       },
       {
         "id": "2897",
-        "code": "BC-ASSESSMENT",
+        "code": "BCASSESSMENT",
         "group": "power-bi-report",
         "isMultiple": true,
-        "value": "BC-ASSESSMENT",
+        "value": "BCASSESSMENT",
         "label": "BC Assessment",
         "preText": "",
         "postText": null,

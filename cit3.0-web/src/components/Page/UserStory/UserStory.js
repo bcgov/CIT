@@ -7,20 +7,19 @@ import "../HomePage/HomePage.scss";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getOptions, setOptions } from "../../../store/actions/options";
-import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import { userStoryPaths } from "../../../data/userStoryPaths.json";
 
 import "./UserStory.css";
 import UserStoryItem from "../../UserStoryItem/UserStoryItem";
 
-let loading = false;
-
 export default function UserStory() {
+  let loading = false;
   const [userOptions, setAllOptions] = useState([]);
   const [isYesButton, setIsYesButton] = useState(false);
   const [isNoButton, setIsNoButton] = useState(false);
   const [redirectURL, setRedirectURL] = useState("");
   const [areaType, setAreaType] = useState("");
+  const [areaFilterId, setAreaFilterId] = useState("");
   const [areaSearchFilter, setAreaSearchFilter] = useState("");
   const [powerBiReports, setPowerBiReports] = useState([]);
   const [communities, setCommunities] = useState(null);
@@ -31,19 +30,12 @@ export default function UserStory() {
 
   const redirectPage = () => {
     let path = redirectURL;
-    let powerBiqs = "";
-    powerBiReports.forEach((p) => {
-      powerBiqs = `${powerBiqs}&pbi=${encodeURIComponent(p)}`;
-    });
-    console.log(powerBiqs);
-    const querystring = encodeURIComponent(
-      areaSearchFilter.toLowerCase() + powerBiqs
-    );
-    if (redirectURL.includes("{querystring}")) {
-      path = redirectURL.replace("{querystring}", querystring);
+    if (redirectURL.includes("reportfilter")) {
+      const powerBiqs = `powerbi=${powerBiReports.join(",")}`;
+      const areaFilter = encodeURIComponent(areaSearchFilter);
+      path = `${redirectURL}?${areaFilterId}=${areaFilter}&${powerBiqs}`;
     }
-    console.log(path);
-    // history.push(path);
+    history.push(path);
   };
 
   const regionalDistricts = useSelector(
@@ -92,14 +84,21 @@ export default function UserStory() {
 
   const handleUserStoryChange = (e) => {
     let param;
+
+    if (e.length === 0) {
+      setIsNoButton(false);
+      setIsYesButton(false);
+      return;
+    }
+
     if (Array.isArray(e)) {
-      setPowerBiReports(e.map((x) => x.value));
+      setPowerBiReports(e.map((x) => x.value.toLowerCase()));
       param = e.find((x, index) => index < 1);
     } else {
       param = e;
     }
 
-    if (!param.code) {
+    if (param && !param.code) {
       param.code = "AREA-TYPE-LIST";
       param.group = "area-type-list";
       setAreaSearchFilter(param.label);
@@ -116,7 +115,10 @@ export default function UserStory() {
 
     const userOption = userStoryPaths.find((x) => x.code === param.code);
 
-    if (param.group === "area") setAreaType(userOption.label);
+    if (param.group === "area") {
+      setAreaType(userOption.label);
+      setAreaFilterId(userOption.code.toLowerCase());
+    }
 
     if (userOption.code.includes("REGIONALDISTRICTS")) {
       userOption.user_story_paths = regionals;
@@ -200,7 +202,7 @@ export default function UserStory() {
                     variant="primary"
                     size="lg"
                     active
-                    className="mr-5"
+                    className="mr-5 bcgov-normal-blue modal-save-button btn"
                     onClick={redirectPage}
                   >
                     {" "}
