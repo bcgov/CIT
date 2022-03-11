@@ -1,0 +1,786 @@
+ {
+    "userStoryPaths": [
+      {
+        "id": "1987",
+        "code": "START",
+        "group": "start",
+        "value": "START",
+        "label": "",
+        "preText": "<p>I am</p>",
+        "postText": null,
+        "user_story_paths": [
+          {
+            "id": "1988",
+            "code": "BCGOV",
+            "group": "who",
+            "value": "1-BCGOV",
+            "label": "A B.C. Government Employee",
+            "preText": "<p>and I'm interested in</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1989",
+            "code": "FIRSTNATION",
+            "group": "who",
+            "value": "2-FIRSTNATION",
+            "label": "A First Nation Representative",
+            "preText": "<p>and I'm interested in</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1990",
+            "code": "PUBLIC",
+            "group": "who",
+            "value": "3-PUBLIC",
+            "label": "A Member of the Public",
+            "preText": "<p>and I'm interested in</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1991",
+            "code": "INVESTOR",
+            "group": "who",
+            "value": "4-INVESTOR",
+            "label": "An Investor",
+            "preText": "<p>and I'm interested in</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1992",
+            "code": "COMMUNITYREP",
+            "group": "who",
+            "value": "5-COMMUNITYREP",
+            "label": "A Representative for my Community",
+            "preText": "<p>and I'm interested in</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1993",
+            "code": "RESEARCHER",
+            "group": "who",
+            "value": "6-RESEARCHER",
+            "label": "A Researcher",
+            "preText": "<p>and I'm interested in</p>",
+            "postText": null,
+            "url": ""
+          }
+        ]
+      },
+      {
+        "id": "1988",
+        "code": "BCGOV",
+        "group": "who",
+        "value": "1-BCGOV",
+        "label": "A B.C. Government Employee",
+        "preText": "<p>and I'm interested in</p>",
+        "postText": null,
+        "user_story_paths": [
+          {
+            "id": "1995",
+            "code": "LEARNING",
+            "group": "what",
+            "value": "2-LEARNING",
+            "label": "learning more about the province or a specific area of BC",
+            "preText": "<div class='break'></div> <h3>Great!</h3> <p>You can choose between different types of areas from Communities and Unincorporated Areas, First Nations land and Reserves, Regional District to larger Economic Regions or Tourism Regions.</p><h3>What kind of area would you like to look at?</h3><div class='break'></div> \n<p>I would like to look at</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1996",
+            "code": "DISCOVERING",
+            "group": "what",
+            "value": "2-DISCOVERING",
+            "label": "discovering insights and patterns among BC communities",
+            "preText": "<p>We have a criteria search that has many types of filters to help you narrow down spacific areas of BC that matches your criteria.</p> <p>Would you like to try it?</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1997",
+            "code": "COMPARING",
+            "group": "what",
+            "value": "3-COMPARING",
+            "label": "comparing  an area",
+            "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
+            "postText": null,
+            "url": ""
+          }
+        ]
+      },
+      {
+        "id": "1989",
+        "code": "FIRSTNATION",
+        "group": "who",
+        "value": "2-FIRSTNATION",
+        "label": "A First Nation Representative",
+        "preText": "<p>and I'm interested in</p>",
+        "postText": null,
+        "user_story_paths": [
+          {
+            "id": "1995",
+            "code": "LEARNING",
+            "group": "what",
+            "value": "2-LEARNING",
+            "label": "learning more about the province or a specific area of BC",
+            "preText": "<div class='break'></div> <h3>Great!</h3> <p>You can choose between different types of areas from Communities and Unincorporated Areas, First Nations land and Reserves, Regional District to larger Economic Regions or Tourism Regions.</p><h3>What kind of area would you like to look at?</h3><div class='break'></div> \n<p>I would like to look at</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1996",
+            "code": "DISCOVERING",
+            "group": "what",
+            "value": "2-DISCOVERING",
+            "label": "discovering insights and patterns among BC communities",
+            "preText": "<p>We have a criteria search that has many types of filters to help you narrow down spacific areas of BC that matches your criteria.</p> <p>Would you like to try it?</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1997",
+            "code": "COMPARING",
+            "group": "what",
+            "value": "3-COMPARING",
+            "label": "comparing  an area",
+            "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1998",
+            "code": "PROMOTING",
+            "group": "what",
+            "value": "4-PROMOTING",
+            "label": "promoting an investment opportunity in my community",
+            "preText": "<p>Would you like to go to the Community Investment Opportunity Tool?</p>",
+            "postText": null,
+            "url": "investmentopportunities/home"
+          }
+        ]
+      },
+      {
+        "id": "1990",
+        "code": "PUBLIC",
+        "group": "who",
+        "value": "3-PUBLIC",
+        "label": "A Member of the Public",
+        "preText": "<p>and I'm interested in</p>",
+        "postText": null,
+        "user_story_paths": [
+          {
+            "id": "1995",
+            "code": "LEARNING",
+            "group": "what",
+            "value": "2-LEARNING",
+            "label": "learning more about the province or a specific area of BC",
+            "preText": "<div class='break'></div> <h3>Great!</h3> <p>You can choose between different types of areas from Communities and Unincorporated Areas, First Nations land and Reserves, Regional District to larger Economic Regions or Tourism Regions.</p><h3>What kind of area would you like to look at?</h3><div class='break'></div> \n<p>I would like to look at</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1996",
+            "code": "DISCOVERING",
+            "group": "what",
+            "value": "2-DISCOVERING",
+            "label": "discovering insights and patterns among BC communities",
+            "preText": "<p>We have a criteria search that has many types of filters to help you narrow down spacific areas of BC that matches your criteria.</p> <p>Would you like to try it?</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1997",
+            "code": "COMPARING",
+            "group": "what",
+            "value": "3-COMPARING",
+            "label": "comparing  an area",
+            "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
+            "postText": null,
+            "url": ""
+          }
+        ]
+      },
+      {
+        "id": "1991",
+        "code": "INVESTOR",
+        "group": "who",
+        "value": "4-INVESTOR",
+        "label": "An Investor",
+        "preText": "<p>and I'm interested in</p>",
+        "postText": null,
+        "user_story_paths": [
+          {
+            "id": "1994",
+            "code": "VIEWING",
+            "group": "what",
+            "value": "1-VIEWING",
+            "label": "viewing Investment Oppurtunity matching my criteria",
+            "preText": "<p>We have a tool you might like to check out our CIOT.</p><div class='break'></div> Would you like to go to the CIOT?</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1995",
+            "code": "LEARNING",
+            "group": "what",
+            "value": "2-LEARNING",
+            "label": "learning more about the province or a specific area of BC",
+            "preText": "<div class='break'></div> <h3>Great!</h3> <p>You can choose between different types of areas from Communities and Unincorporated Areas, First Nations land and Reserves, Regional District to larger Economic Regions or Tourism Regions.</p><h3>What kind of area would you like to look at?</h3><div class='break'></div> \n<p>I would like to look at</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1996",
+            "code": "DISCOVERING",
+            "group": "what",
+            "value": "2-DISCOVERING",
+            "label": "discovering insights and patterns among BC communities",
+            "preText": "<p>We have a criteria search that has many types of filters to help you narrow down spacific areas of BC that matches your criteria.</p> <p>Would you like to try it?</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1997",
+            "code": "COMPARING",
+            "group": "what",
+            "value": "3-COMPARING",
+            "label": "comparing  an area",
+            "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1998",
+            "code": "PROMOTING",
+            "group": "what",
+            "value": "4-PROMOTING",
+            "label": "promoting an investment opportunity in my community",
+            "preText": "<p>Would you like to go to the Community Investment Opportunity Tool?</p>",
+            "postText": null,
+            "url": "investmentopportunities/home"
+          }
+        ]
+      },
+      {
+        "id": "1992",
+        "code": "COMMUNITYREP",
+        "group": "who",
+        "value": "5-COMMUNITYREP",
+        "label": "A Representative for my Community",
+        "preText": "<p>and I'm interested in</p>",
+        "postText": null,
+        "user_story_paths": [
+          {
+            "id": "1994",
+            "code": "VIEWING",
+            "group": "what",
+            "value": "1-VIEWING",
+            "label": "viewing Investment Oppurtunity matching my criteria",
+            "preText": "<p>We have a tool you might like to check out our CIOT.</p><div class='break'></div> Would you like to go to the CIOT?</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1995",
+            "code": "LEARNING",
+            "group": "what",
+            "value": "2-LEARNING",
+            "label": "learning more about the province or a specific area of BC",
+            "preText": "<div class='break'></div> <h3>Great!</h3> <p>You can choose between different types of areas from Communities and Unincorporated Areas, First Nations land and Reserves, Regional District to larger Economic Regions or Tourism Regions.</p><h3>What kind of area would you like to look at?</h3><div class='break'></div> \n<p>I would like to look at</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1996",
+            "code": "DISCOVERING",
+            "group": "what",
+            "value": "2-DISCOVERING",
+            "label": "discovering insights and patterns among BC communities",
+            "preText": "<p>We have a criteria search that has many types of filters to help you narrow down spacific areas of BC that matches your criteria.</p> <p>Would you like to try it?</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1997",
+            "code": "COMPARING",
+            "group": "what",
+            "value": "3-COMPARING",
+            "label": "comparing  an area",
+            "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
+            "postText": null,
+            "url": ""
+          }
+        ]
+      },
+      {
+        "id": "1993",
+        "code": "RESEARCHER",
+        "group": "who",
+        "value": "6-RESEARCHER",
+        "label": "A Researcher",
+        "preText": "<p>and I'm interested in</p>",
+        "postText": null,
+        "user_story_paths": [
+          {
+            "id": "1995",
+            "code": "LEARNING",
+            "group": "what",
+            "value": "2-LEARNING",
+            "label": "learning more about the province or a specific area of BC",
+            "preText": "<div class='break'></div> <h3>Great!</h3> <p>You can choose between different types of areas from Communities and Unincorporated Areas, First Nations land and Reserves, Regional District to larger Economic Regions or Tourism Regions.</p><h3>What kind of area would you like to look at?</h3><div class='break'></div> \n<p>I would like to look at</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1996",
+            "code": "DISCOVERING",
+            "group": "what",
+            "value": "2-DISCOVERING",
+            "label": "discovering insights and patterns among BC communities",
+            "preText": "<p>We have a criteria search that has many types of filters to help you narrow down spacific areas of BC that matches your criteria.</p> <p>Would you like to try it?</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "1997",
+            "code": "COMPARING",
+            "group": "what",
+            "value": "3-COMPARING",
+            "label": "comparing  an area",
+            "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
+            "postText": null,
+            "url": ""
+          }
+        ]
+      },
+      {
+        "id": "1994",
+        "code": "VIEWING",
+        "group": "what",
+        "value": "1-VIEWING",
+        "label": "viewing Investment Oppurtunity matching my criteria",
+        "preText": "<p>We have a tool you might like to check out our CIOT.</p><div class='break'></div> Would you like to go to the CIOT?</p>",
+        "postText": null,
+        "user_story_paths": [
+          {
+            "id": "2011",
+            "code": "VIEWING-YES",
+            "group": "viewing-yesno",
+            "value": "1-VIEWING-YES",
+            "label": "Yes",
+            "preText": "",
+            "postText": null,
+            "url": "investmentopportunities/home"
+          },
+          {
+            "id": "2012",
+            "code": "VIEWING-NO",
+            "group": "viewing-yesno",
+            "value": "2-VIEWING-NO",
+            "label": "No",
+            "preText": "<p>Ok, maybe you can come back and have a look at it another day. Tell us what you would like to see now.</p>",
+            "postText": null,
+            "url": "userstory"
+          }
+        ]
+      },
+      {
+        "id": "1995",
+        "code": "LEARNING",
+        "group": "what",
+        "value": "2-LEARNING",
+        "label": "learning more about the province or a specific area of BC",
+        "preText": "<div class='break'></div> <h3>Great!</h3> <p>You can choose between different types of areas from Communities and Unincorporated Areas, First Nations land and Reserves, Regional District to larger Economic Regions or Tourism Regions.</p><h3>What kind of area would you like to look at?</h3><div class='break'></div> \n<p>I would like to look at</p>",
+        "postText": null,
+        "user_story_paths": [
+          {
+            "id": "1999",
+            "code": "ALLBC-YES",
+            "group": "area",
+            "value": "ALLBC-YES",
+            "label": "All of British Columbia",
+            "preText": "<p>Ok, let's learn more about the province of British Columbia.</p>",
+            "postText": null,
+            "url": "cit-dashboard/public/criteria-search"
+          },
+          {
+            "id": "2000",
+            "code": "COMMUNITYAREA",
+            "group": "area",
+            "value": "COMMUNITYAREA",
+            "label": "Communities & Unincorporated areas",
+            "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "2001",
+            "code": "FIRSTNATIONS",
+            "group": "area",
+            "value": "FIRSTNATIONS",
+            "label": "First Nations",
+            "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "2002",
+            "code": "REGIONALDISTRICTS",
+            "group": "area",
+            "value": "REGIONALDISTRICTS",
+            "label": "Regional Districts",
+            "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "2003",
+            "code": "ECONOMICREGIONS",
+            "group": "area",
+            "value": "ECONOMICREGIONS",
+            "label": "Economic Regions",
+            "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "2004",
+            "code": "TOURISMREGIONS",
+            "group": "area",
+            "value": "TOURISMREGIONS",
+            "label": "Tourism Regions",
+            "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "2005",
+            "code": "WILDFIREZONES",
+            "group": "area",
+            "value": "WILDFIREZONES",
+            "label": "Wildfire Zones ",
+            "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "2006",
+            "code": "TSUNAMINOTIFICATIONZONES",
+            "group": "area",
+            "value": "TSUNAMINOTIFICATIONZONES",
+            "label": "Tsunami Notification Zones",
+            "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+            "postText": null,
+            "url": ""
+          },
+          {
+            "id": "2007",
+            "code": "NATURALRESOURCEREGIONS",
+            "group": "area",
+            "value": "NATURALRESOURCEREGIONS",
+            "label": "Natural Resource Regions",
+            "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+            "postText": null,
+            "url": ""
+          }
+        ]
+      },
+      {
+        "id": "1996",
+        "code": "DISCOVERING",
+        "group": "what",
+        "value": "2-DISCOVERING",
+        "label": "discovering insights and patterns among BC communities",
+        "preText": "<p>We have a criteria search that has many types of filters to help you narrow down spacific areas of BC that matches your criteria.</p> <p>Would you like to try it?</p>",
+        "postText": null,
+        "user_story_paths": [
+          {
+            "id": "2009",
+            "code": "DISCOVERING-YES",
+            "group": "discovering-yesno",
+            "value": "1-DISCOVERING-YES",
+            "label": "Yes",
+            "preText": "",
+            "postText": null,
+            "url": "cit-dashboard/public/criteria-search"
+          },
+          {
+            "id": "2010",
+            "code": "DISCOVERING-NO",
+            "group": "discovering-yesno",
+            "value": "2-DISCOVERING-NO",
+            "label": "No",
+            "preText": "",
+            "postText": null,
+            "url": "userstory"
+          }
+        ]
+      },
+      {
+        "id": "1997",
+        "code": "COMPARING",
+        "group": "what",
+        "value": "3-COMPARING",
+        "label": "comparing  an area",
+        "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
+        "postText": null,
+        "user_story_paths": [
+          {
+            "id": "2013",
+            "code": "COMPARING-YES",
+            "group": "comparing-yesno",
+            "value": "1-COMPARING-YES",
+            "label": "Yes",
+            "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
+            "postText": null,
+            "url": "cit-dashboard/public/compare-area"
+          }
+        ]
+      },
+      {
+        "id": "1998",
+        "code": "PROMOTING",
+        "group": "what",
+        "value": "4-PROMOTING",
+        "label": "promoting an investment opportunity in my community",
+        "preText": "<p>Would you like to go to the Community Investment Opportunity Tool?</p>",
+        "postText": null,
+        "user_story_paths": [
+          {
+            "id": "2016",
+            "code": "PROMOTING-YES",
+            "group": "promoting-yesno",
+            "value": "1-PROMOTING-YES",
+            "label": "Yes",
+            "preText": "",
+            "postText": null,
+            "url": "investmentopportunities/home"
+          },
+          {
+            "id": "2017",
+            "code": "PROMOTING-NO",
+            "group": "promoting-yesno",
+            "value": "2-PROMOTING-NO",
+            "label": "No",
+            "preText": "<p>Ok, maybe you can come back and have a look at it another day. Tell us what you would like to see now.</p>",
+            "postText": null,
+            "url": "userstory"
+          }
+        ]
+      },
+      {
+        "id": "1999",
+        "code": "ALLBC-YES",
+        "group": "area",
+        "value": "ALLBC-YES",
+        "label": "All of British Columbia",
+        "preText": "<p>Ok, let's learn more about the province of British Columbia.</p>",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2000",
+        "code": "COMMUNITYAREA",
+        "group": "area",
+        "value": "COMMUNITYAREA",
+        "label": "Communities & Unincorporated areas",
+        "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2001",
+        "code": "FIRSTNATIONS",
+        "group": "area",
+        "value": "FIRSTNATIONS",
+        "label": "First Nations",
+        "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2002",
+        "code": "REGIONALDISTRICTS",
+        "group": "area",
+        "value": "REGIONALDISTRICTS",
+        "label": "Regional Districts",
+        "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2003",
+        "code": "ECONOMICREGIONS",
+        "group": "area",
+        "value": "ECONOMICREGIONS",
+        "label": "Economic Regions",
+        "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2004",
+        "code": "TOURISMREGIONS",
+        "group": "area",
+        "value": "TOURISMREGIONS",
+        "label": "Tourism Regions",
+        "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2005",
+        "code": "WILDFIREZONES",
+        "group": "area",
+        "value": "WILDFIREZONES",
+        "label": "Wildfire Zones ",
+        "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2006",
+        "code": "TSUNAMINOTIFICATIONZONES",
+        "group": "area",
+        "value": "TSUNAMINOTIFICATIONZONES",
+        "label": "Tsunami Notification Zones",
+        "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2007",
+        "code": "NATURALRESOURCEREGIONS",
+        "group": "area",
+        "value": "NATURALRESOURCEREGIONS",
+        "label": "Natural Resource Regions",
+        "preText": "<p>Which  {AREA-TYPE} specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2008",
+        "code": "AREA-OPTION-LIST-YES",
+        "group": "area-option-list",
+        "value": "AREA-OPTION-LIST-YES",
+        "label": "area-option-list",
+        "preText": "<p>Ok, let's learn more about {SEARCH-FILTER}.</p>",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2009",
+        "code": "DISCOVERING-YES",
+        "group": "discovering-yesno",
+        "value": "1-DISCOVERING-YES",
+        "label": "Yes",
+        "preText": "",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2010",
+        "code": "DISCOVERING-NO",
+        "group": "discovering-yesno",
+        "value": "2-DISCOVERING-NO",
+        "label": "No",
+        "preText": "",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2011",
+        "code": "VIEWING-YES",
+        "group": "viewing-yesno",
+        "value": "1-VIEWING-YES",
+        "label": "Yes",
+        "preText": "",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2012",
+        "code": "VIEWING-NO",
+        "group": "viewing-yesno",
+        "value": "2-VIEWING-NO",
+        "label": "No",
+        "preText": "<p>Ok, maybe you can come back and have a look at it another day. Tell us what you would like to see now.</p>",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2013",
+        "code": "COMPARING-YES",
+        "group": "comparing-yesno",
+        "value": "1-COMPARING-YES",
+        "label": "Yes",
+        "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2014",
+        "code": "COMPARING-NO",
+        "group": "comparing-yesno",
+        "value": "2-COMPARING-NO",
+        "label": "No",
+        "preText": "",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2015",
+        "code": "GENERIC-NO",
+        "group": "generic-no",
+        "value": "99-GENERIC-NO",
+        "label": "No",
+        "preText": "",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2016",
+        "code": "PROMOTING-YES",
+        "group": "promoting-yesno",
+        "value": "1-PROMOTING-YES",
+        "label": "Yes",
+        "preText": "",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2017",
+        "code": "PROMOTING-NO",
+        "group": "promoting-yesno",
+        "value": "2-PROMOTING-NO",
+        "label": "No",
+        "preText": "<p>Ok, maybe you can come back and have a look at it another day. Tell us what you would like to see now.</p>",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2018",
+        "code": "END",
+        "group": "end",
+        "value": "99-END",
+        "label": "GO",
+        "preText": "",
+        "postText": null,
+        "user_story_paths": []
+      },
+      {
+        "id": "2019",
+        "code": "RESET-NO",
+        "group": "reset",
+        "value": "99-RESET-NO",
+        "label": "reset",
+        "preText": "",
+        "postText": null,
+        "user_story_paths": []
+      }
+    ]
+  }

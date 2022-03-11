@@ -1,0 +1,16 @@
+[{
+
+    "name": "Housing_Data",
+    "display_name": "Housing Data with permit counts",
+    "model_name": "Housing_Data",
+    "source": "statscan",
+    "source_type": "csv",
+    "source_file_path": "",
+    "resource_id": "",
+    "sub_resource_id": "",
+    "external_url": "https://www2.gov.bc.ca/assets/gov/data/statistics/economy/building-permits/total.csv",
+    "import_order": 1
+}
+]
+
+  
