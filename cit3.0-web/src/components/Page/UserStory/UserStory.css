@@ -15,8 +15,7 @@
     min-height: 100vh !important;
     width: 50vw;
     margin-right: 0;
-  }
-
+}
 
 .smaller-page {
     -webkit-transform:scale(0.67);

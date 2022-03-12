@@ -175,13 +175,50 @@ export default function UserStory() {
       <Container className="mt-2 your-story your-story-elements">
         <Row>
           <Col sm={9}>
-            {userOptions.map((story) => (
-              <UserStoryItem
-                key={story.id}
-                userStory={story}
-                onUserStoryChange={handleUserStoryChange}
-              />
-            ))}
+            <Container className="mt-2 your-story your-story-elements">
+              <Row>
+                {userOptions.map((story) => (
+                  <UserStoryItem
+                    key={story.id}
+                    userStory={story}
+                    onUserStoryChange={handleUserStoryChange}
+                  />
+                ))}
+              </Row>
+              {(isNoButton || isYesButton) && (
+                <>
+                  <Row className="mt-5">
+                    {isNoButton && (
+                      <>
+                        <Button
+                          variant="outline-primary"
+                          size="lg"
+                          className="mr-4"
+                          onClick={resetUserStory}
+                        >
+                          {" "}
+                          Reset Search Criteria
+                        </Button>
+                      </>
+                    )}
+                    {isYesButton && (
+                      <>
+                        <Button
+                          variant="primary"
+                          size="lg"
+                          active
+                          className="mr-5 bcgov-normal-blue modal-save-button btn"
+                          onClick={redirectPage}
+                        >
+                          {" "}
+                          View Results <ArrowRight />
+                        </Button>
+                      </>
+                    )}
+                  </Row>
+                </>
+              )}
+            </Container>
           </Col>
           <Col sm={3} className="svg-box pt-3 your-story-image">
             <img
@@ -194,41 +231,6 @@ export default function UserStory() {
           </Col>
         </Row>
       </Container>
-      {(isNoButton || isYesButton) && (
-        <>
-          <Container className="my-5">
-            <Row>
-              {isNoButton && (
-                <>
-                  <Button
-                    variant="outline-primary"
-                    size="lg"
-                    className="mr-4"
-                    onClick={resetUserStory}
-                  >
-                    {" "}
-                    Reset Search Criteria
-                  </Button>
-                </>
-              )}
-              {isYesButton && (
-                <>
-                  <Button
-                    variant="primary"
-                    size="lg"
-                    active
-                    className="mr-5 bcgov-normal-blue modal-save-button btn"
-                    onClick={redirectPage}
-                  >
-                    {" "}
-                    View Results <ArrowRight />
-                  </Button>
-                </>
-              )}
-            </Row>
-          </Container>
-        </>
-      )}
     </>
   );
 }

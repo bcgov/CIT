@@ -471,7 +471,7 @@ export default function PowerBi() {
         visible: true,
       },
       pageNavigation: {
-        visible: false,
+        visible: true,
       },
     },
   };
