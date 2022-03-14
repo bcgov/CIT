@@ -7,6 +7,11 @@
     display: flex;
     flex-wrap: wrap;
 }
+
+.select-container a:hover {
+    background-color: yellow;
+  }
+
 .confirm-button {
     min-height: 10px;
 }

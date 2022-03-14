@@ -10,7 +10,7 @@
   window.env.routePlannerKey = "";
   window.env.pbiReportIdPublic = "c5ecf762-11d7-4aa6-ad06-05fcc8912561";
   window.env.pbiReportIdInternal = "c5ecf762-11d7-4aa6-ad06-05fcc8912561";
-  window.env.pbiReportIdCompare = "0df7213b-b144-4486-952b-64781499838b";
-  window.env.pbiReportIdSearch = "066ae4b2-1e90-4cff-8029-3c432b9ae1b6";
+  window.env.pbiReportIdCompare = "43ed4787-b50e-4e39-8863-bedcb074e13a";
+  window.env.pbiReportIdSearch = "d1b121dc-2c0c-4df6-8de3-4ac66defe814";
   window.env.pbiGroupId = "0399d295-4354-4955-8ed9-68709eb5e7b5";
 })(this);

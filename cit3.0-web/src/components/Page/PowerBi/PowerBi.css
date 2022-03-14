@@ -1,6 +1,7 @@
 .report-style {
     width: 100%;
     height: 100vh;
+	margin: 1% auto;
 }
 
 .report-iframe  iframe {
@@ -19,6 +20,29 @@
     height: 850px;
 }
 
+.report-with-tabs {
+    width: 1280px;
+    height: 800px;
+}
+
+.report-buttons {
+	text-align: center;
+}
+
+.report-buttons button {
+	background: #337AB7;
+	border: 0;
+	border-radius: 5px;
+	color: #FFFFFF;
+	font-size: medium;
+	margin-right: 15px;
+	width: 160px;
+}
+
+.hide-section {
+    display: none;
+    height: 0;
+}
 .report-census {
     width: 1280px;
     height: 190px;
