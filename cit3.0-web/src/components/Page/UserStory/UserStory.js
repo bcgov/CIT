@@ -152,24 +152,52 @@ export default function UserStory() {
     }
   };
 
+  const header = (
+    <>
+      <h3>Hi, welcome to our Community Information Tool</h3>
+      <p>
+        The Community Information Tool offers insight into communities across
+        B.C. with integrated socio-economic data, infrastructure, and community
+        assets data. The Tool supports community, regional, and province-wide
+        planning, which is essential to building thriving, healthy communities.
+      </p>
+      <h3>
+        Tell us a bit more about you and we will help you get to info that is
+        relevant to you
+      </h3>
+    </>
+  );
+
+  const noButton = (
+    <Button
+      variant="outline-primary"
+      size="lg"
+      className="mr-4"
+      onClick={resetUserStory}
+    >
+      {" "}
+      Reset Search Criteria
+    </Button>
+  );
+
+  const yesButton = (
+    <Button
+      variant="primary"
+      size="lg"
+      active
+      className="mr-5 bcgov-normal-blue modal-save-button btn"
+      onClick={redirectPage}
+    >
+      {" "}
+      View Results <ArrowRight />
+    </Button>
+  );
+
   return (
     <>
       <Container className="mt-4 your-story your-story-elements">
         <Row>
-          <Col sm={12}>
-            <h3>Hi, welcome to our Community Information Tool</h3>
-            <p>
-              The Community Information Tool offers insight into communities
-              across B.C. with integrated socio-economic data, infrastructure,
-              and community assets data. The Tool supports community, regional,
-              and province-wide planning, which is essential to building
-              thriving, healthy communities.
-            </p>
-            <h3>
-              Tell us a bit more about you and we will help you get to info that
-              is relevant to you
-            </h3>
-          </Col>
+          <Col sm={12}>{header}</Col>
         </Row>
       </Container>
       <Container className="mt-2 your-story your-story-elements">
@@ -188,33 +216,8 @@ export default function UserStory() {
               {(isNoButton || isYesButton) && (
                 <>
                   <Row className="mt-5">
-                    {isNoButton && (
-                      <>
-                        <Button
-                          variant="outline-primary"
-                          size="lg"
-                          className="mr-4"
-                          onClick={resetUserStory}
-                        >
-                          {" "}
-                          Reset Search Criteria
-                        </Button>
-                      </>
-                    )}
-                    {isYesButton && (
-                      <>
-                        <Button
-                          variant="primary"
-                          size="lg"
-                          active
-                          className="mr-5 bcgov-normal-blue modal-save-button btn"
-                          onClick={redirectPage}
-                        >
-                          {" "}
-                          View Results <ArrowRight />
-                        </Button>
-                      </>
-                    )}
+                    {isNoButton && noButton}
+                    {isYesButton && yesButton}
                   </Row>
                 </>
               )}

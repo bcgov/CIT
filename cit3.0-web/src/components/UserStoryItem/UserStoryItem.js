@@ -18,11 +18,15 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
       paddingRight: 8,
       fontSize: "1em",
     }),
-    option: (base, state) => ({
+    option: (base, { isSelected, isFocused }) => ({
       ...base,
       border: "solid white 1px",
       color: "#ffffff",
-      backgroundColor: state.isSelected ? "#003366" : "#3288D9",
+      backgroundColor: isFocused
+        ? "#003366"
+        : isSelected
+        ? "#003366"
+        : "#3288D9",
     }),
     menu: (base) => ({
       ...base,
