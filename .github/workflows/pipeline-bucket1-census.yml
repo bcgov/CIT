@@ -5,10 +5,17 @@ on:
   #schedule:
     #- cron: "0 13 * * 1"
     #- cron: "*/1 * * * *"
-  #push:
-  #  branches:
-  #    - github-actions-data-pipeline
+  push:
+    branches:
+      - github-actions-data-pipeline
   workflow_dispatch:
+    inputs:
+      environment:
+        type: environment
+        description: Select the environment
+        options:
+        - test
+        - prod
 env: 
   BUCKET_COMMAND: bucket_1
 jobs:
@@ -21,6 +28,10 @@ jobs:
       - name: "Checkout GitHub Actionthe relap"
         uses: actions/checkout@master
       
+      - name: greet
+        run: | 
+          echo "environment is ${{ github.event.inputs.environment }}"
+
       - name: "Generate env file"
         run: |
             echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
