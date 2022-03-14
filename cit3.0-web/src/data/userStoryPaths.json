@@ -1,7 +1,7 @@
-{
+ {
     "userStoryPaths": [
       {
-        "id": "2860",
+        "id": "3233",
         "code": "START",
         "group": "start",
         "isMultiple": null,
@@ -9,9 +9,10 @@
         "label": "",
         "preText": "<p>I am</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2861",
+            "id": "3234",
             "code": "BCGOV",
             "group": "who",
             "isMultiple": null,
@@ -22,7 +23,7 @@
             "url": ""
           },
           {
-            "id": "2862",
+            "id": "3235",
             "code": "FIRSTNATION",
             "group": "who",
             "isMultiple": null,
@@ -33,7 +34,7 @@
             "url": ""
           },
           {
-            "id": "2863",
+            "id": "3236",
             "code": "PUBLIC",
             "group": "who",
             "isMultiple": null,
@@ -44,7 +45,7 @@
             "url": ""
           },
           {
-            "id": "2864",
+            "id": "3237",
             "code": "INVESTOR",
             "group": "who",
             "isMultiple": null,
@@ -55,7 +56,7 @@
             "url": ""
           },
           {
-            "id": "2865",
+            "id": "3238",
             "code": "COMMUNITYREP",
             "group": "who",
             "isMultiple": null,
@@ -66,7 +67,7 @@
             "url": ""
           },
           {
-            "id": "2866",
+            "id": "3239",
             "code": "RESEARCHER",
             "group": "who",
             "isMultiple": null,
@@ -79,7 +80,7 @@
         ]
       },
       {
-        "id": "2861",
+        "id": "3234",
         "code": "BCGOV",
         "group": "who",
         "isMultiple": null,
@@ -87,9 +88,10 @@
         "label": "A B.C. Government Employee",
         "preText": "<p>and I'm interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2868",
+            "id": "3241",
             "code": "LEARNING",
             "group": "what",
             "isMultiple": null,
@@ -100,7 +102,7 @@
             "url": ""
           },
           {
-            "id": "2869",
+            "id": "3242",
             "code": "DISCOVERING",
             "group": "what",
             "isMultiple": null,
@@ -111,7 +113,7 @@
             "url": ""
           },
           {
-            "id": "2870",
+            "id": "3243",
             "code": "COMPARING",
             "group": "what",
             "isMultiple": null,
@@ -124,7 +126,7 @@
         ]
       },
       {
-        "id": "2862",
+        "id": "3235",
         "code": "FIRSTNATION",
         "group": "who",
         "isMultiple": null,
@@ -132,9 +134,10 @@
         "label": "A First Nation Representative",
         "preText": "<p>and I'm interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2868",
+            "id": "3241",
             "code": "LEARNING",
             "group": "what",
             "isMultiple": null,
@@ -145,7 +148,7 @@
             "url": ""
           },
           {
-            "id": "2869",
+            "id": "3242",
             "code": "DISCOVERING",
             "group": "what",
             "isMultiple": null,
@@ -156,7 +159,7 @@
             "url": ""
           },
           {
-            "id": "2870",
+            "id": "3243",
             "code": "COMPARING",
             "group": "what",
             "isMultiple": null,
@@ -167,7 +170,7 @@
             "url": "cit-dashboard/public/compare-area"
           },
           {
-            "id": "2871",
+            "id": "3244",
             "code": "PROMOTING",
             "group": "what",
             "isMultiple": null,
@@ -180,7 +183,7 @@
         ]
       },
       {
-        "id": "2863",
+        "id": "3236",
         "code": "PUBLIC",
         "group": "who",
         "isMultiple": null,
@@ -188,9 +191,10 @@
         "label": "A Member of the Public",
         "preText": "<p>and I'm interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2868",
+            "id": "3241",
             "code": "LEARNING",
             "group": "what",
             "isMultiple": null,
@@ -201,7 +205,7 @@
             "url": ""
           },
           {
-            "id": "2869",
+            "id": "3242",
             "code": "DISCOVERING",
             "group": "what",
             "isMultiple": null,
@@ -212,7 +216,7 @@
             "url": ""
           },
           {
-            "id": "2870",
+            "id": "3243",
             "code": "COMPARING",
             "group": "what",
             "isMultiple": null,
@@ -225,7 +229,7 @@
         ]
       },
       {
-        "id": "2864",
+        "id": "3237",
         "code": "INVESTOR",
         "group": "who",
         "isMultiple": null,
@@ -233,9 +237,10 @@
         "label": "An Investor",
         "preText": "<p>and I'm interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2867",
+            "id": "3240",
             "code": "VIEWING",
             "group": "what",
             "isMultiple": null,
@@ -246,7 +251,7 @@
             "url": ""
           },
           {
-            "id": "2868",
+            "id": "3241",
             "code": "LEARNING",
             "group": "what",
             "isMultiple": null,
@@ -257,7 +262,7 @@
             "url": ""
           },
           {
-            "id": "2869",
+            "id": "3242",
             "code": "DISCOVERING",
             "group": "what",
             "isMultiple": null,
@@ -268,7 +273,7 @@
             "url": ""
           },
           {
-            "id": "2870",
+            "id": "3243",
             "code": "COMPARING",
             "group": "what",
             "isMultiple": null,
@@ -279,7 +284,7 @@
             "url": "cit-dashboard/public/compare-area"
           },
           {
-            "id": "2871",
+            "id": "3244",
             "code": "PROMOTING",
             "group": "what",
             "isMultiple": null,
@@ -292,7 +297,7 @@
         ]
       },
       {
-        "id": "2865",
+        "id": "3238",
         "code": "COMMUNITYREP",
         "group": "who",
         "isMultiple": null,
@@ -300,9 +305,10 @@
         "label": "A Representative for my Community",
         "preText": "<p>and I'm interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2867",
+            "id": "3240",
             "code": "VIEWING",
             "group": "what",
             "isMultiple": null,
@@ -313,7 +319,7 @@
             "url": ""
           },
           {
-            "id": "2868",
+            "id": "3241",
             "code": "LEARNING",
             "group": "what",
             "isMultiple": null,
@@ -324,7 +330,7 @@
             "url": ""
           },
           {
-            "id": "2869",
+            "id": "3242",
             "code": "DISCOVERING",
             "group": "what",
             "isMultiple": null,
@@ -335,7 +341,7 @@
             "url": ""
           },
           {
-            "id": "2870",
+            "id": "3243",
             "code": "COMPARING",
             "group": "what",
             "isMultiple": null,
@@ -348,7 +354,7 @@
         ]
       },
       {
-        "id": "2866",
+        "id": "3239",
         "code": "RESEARCHER",
         "group": "who",
         "isMultiple": null,
@@ -356,9 +362,10 @@
         "label": "A Researcher",
         "preText": "<p>and I'm interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2868",
+            "id": "3241",
             "code": "LEARNING",
             "group": "what",
             "isMultiple": null,
@@ -369,7 +376,7 @@
             "url": ""
           },
           {
-            "id": "2869",
+            "id": "3242",
             "code": "DISCOVERING",
             "group": "what",
             "isMultiple": null,
@@ -380,7 +387,7 @@
             "url": ""
           },
           {
-            "id": "2870",
+            "id": "3243",
             "code": "COMPARING",
             "group": "what",
             "isMultiple": null,
@@ -393,7 +400,7 @@
         ]
       },
       {
-        "id": "2867",
+        "id": "3240",
         "code": "VIEWING",
         "group": "what",
         "isMultiple": null,
@@ -401,9 +408,10 @@
         "label": "viewing Investment Oppurtunity matching my criteria",
         "preText": "<p>We have a tool you might like to check out our CIOT.</p><div class='break'></div> Would you like to go to the CIOT?</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2884",
+            "id": "3257",
             "code": "VIEWING-YES",
             "group": "viewing-yesno",
             "isMultiple": null,
@@ -414,7 +422,7 @@
             "url": "investmentopportunities/home"
           },
           {
-            "id": "2885",
+            "id": "3258",
             "code": "VIEWING-NO",
             "group": "viewing-yesno",
             "isMultiple": null,
@@ -427,7 +435,7 @@
         ]
       },
       {
-        "id": "2868",
+        "id": "3241",
         "code": "LEARNING",
         "group": "what",
         "isMultiple": null,
@@ -435,9 +443,10 @@
         "label": "learning more about the province or a specific area of BC",
         "preText": "<div class='break'></div> <h3>Great!</h3> <p>You can choose between different types of areas from Communities and Unincorporated Areas, First Nations land and Reserves, Regional District to larger Economic Regions or Tourism Regions.</p><h3>What kind of area would you like to look at?</h3><div class='break'></div> \n<p>I would like to look at</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2872",
+            "id": "3245",
             "code": "ALLBC",
             "group": "area",
             "isMultiple": null,
@@ -448,7 +457,7 @@
             "url": "cit-dashboard/public/criteria-search"
           },
           {
-            "id": "2873",
+            "id": "3246",
             "code": "COMMUNITYAREA",
             "group": "area",
             "isMultiple": null,
@@ -459,7 +468,7 @@
             "url": ""
           },
           {
-            "id": "2874",
+            "id": "3247",
             "code": "FIRSTNATIONS",
             "group": "area",
             "isMultiple": null,
@@ -470,7 +479,7 @@
             "url": ""
           },
           {
-            "id": "2875",
+            "id": "3248",
             "code": "REGIONALDISTRICTS",
             "group": "area",
             "isMultiple": null,
@@ -481,7 +490,7 @@
             "url": ""
           },
           {
-            "id": "2876",
+            "id": "3249",
             "code": "ECONOMICREGIONS",
             "group": "area",
             "isMultiple": null,
@@ -492,7 +501,7 @@
             "url": ""
           },
           {
-            "id": "2877",
+            "id": "3250",
             "code": "TOURISMREGIONS",
             "group": "area",
             "isMultiple": null,
@@ -503,7 +512,7 @@
             "url": ""
           },
           {
-            "id": "2878",
+            "id": "3251",
             "code": "WILDFIREZONES",
             "group": "area",
             "isMultiple": null,
@@ -514,7 +523,7 @@
             "url": ""
           },
           {
-            "id": "2879",
+            "id": "3252",
             "code": "TSUNAMINOTIFICATIONZONES",
             "group": "area",
             "isMultiple": null,
@@ -525,7 +534,7 @@
             "url": ""
           },
           {
-            "id": "2880",
+            "id": "3253",
             "code": "NATURALRESOURCEREGIONS",
             "group": "area",
             "isMultiple": null,
@@ -538,7 +547,7 @@
         ]
       },
       {
-        "id": "2869",
+        "id": "3242",
         "code": "DISCOVERING",
         "group": "what",
         "isMultiple": null,
@@ -546,9 +555,10 @@
         "label": "discovering insights and patterns among BC communities",
         "preText": "<p>We have a criteria search that has many types of filters to help you narrow down spacific areas of BC that matches your criteria.</p> <p>Would you like to try it?</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2882",
+            "id": "3255",
             "code": "DISCOVERING-YES",
             "group": "discovering-yesno",
             "isMultiple": null,
@@ -559,7 +569,7 @@
             "url": "cit-dashboard/public/criteria-search"
           },
           {
-            "id": "2883",
+            "id": "3256",
             "code": "DISCOVERING-NO",
             "group": "discovering-yesno",
             "isMultiple": null,
@@ -572,7 +582,7 @@
         ]
       },
       {
-        "id": "2870",
+        "id": "3243",
         "code": "COMPARING",
         "group": "what",
         "isMultiple": null,
@@ -580,9 +590,10 @@
         "label": "comparing  an area",
         "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
         "postText": null,
+        "url": "cit-dashboard/public/compare-area",
         "user_story_paths": [
           {
-            "id": "2886",
+            "id": "3259",
             "code": "COMPARING-YES",
             "group": "comparing-yesno",
             "isMultiple": null,
@@ -595,7 +606,7 @@
         ]
       },
       {
-        "id": "2871",
+        "id": "3244",
         "code": "PROMOTING",
         "group": "what",
         "isMultiple": null,
@@ -603,9 +614,10 @@
         "label": "promoting an investment opportunity in my community",
         "preText": "<p>Would you like to go to the Community Investment Opportunity Tool?</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2889",
+            "id": "3262",
             "code": "PROMOTING-YES",
             "group": "promoting-yesno",
             "isMultiple": null,
@@ -616,7 +628,7 @@
             "url": "investmentopportunities/home"
           },
           {
-            "id": "2890",
+            "id": "3263",
             "code": "PROMOTING-NO",
             "group": "promoting-yesno",
             "isMultiple": null,
@@ -629,7 +641,7 @@
         ]
       },
       {
-        "id": "2872",
+        "id": "3245",
         "code": "ALLBC",
         "group": "area",
         "isMultiple": null,
@@ -637,9 +649,10 @@
         "label": "All of British Columbia",
         "preText": "<p>Ok, let's learn more about the province of British Columbia.</p>",
         "postText": null,
+        "url": "cit-dashboard/public/criteria-search",
         "user_story_paths": [
           {
-            "id": "2891",
+            "id": "3264",
             "code": "END",
             "group": "end",
             "isMultiple": null,
@@ -652,7 +665,7 @@
         ]
       },
       {
-        "id": "2873",
+        "id": "3246",
         "code": "COMMUNITYAREA",
         "group": "area",
         "isMultiple": null,
@@ -660,10 +673,11 @@
         "label": "Communities & Unincorporated areas",
         "preText": "<p>Which <b>{AREA-TYPE-1}</b> specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": []
       },
       {
-        "id": "2874",
+        "id": "3247",
         "code": "FIRSTNATIONS",
         "group": "area",
         "isMultiple": null,
@@ -671,10 +685,11 @@
         "label": "First Nations",
         "preText": "<p>Which <b>{AREA-TYPE-1}</b> specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": []
       },
       {
-        "id": "2875",
+        "id": "3248",
         "code": "REGIONALDISTRICTS",
         "group": "area",
         "isMultiple": null,
@@ -682,10 +697,11 @@
         "label": "Regional Districts",
         "preText": "<p>Which <b>{AREA-TYPE-1}</b> specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": []
       },
       {
-        "id": "2876",
+        "id": "3249",
         "code": "ECONOMICREGIONS",
         "group": "area",
         "isMultiple": null,
@@ -693,10 +709,11 @@
         "label": "Economic Regions",
         "preText": "<p>Which <b>{AREA-TYPE-1}</b> specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": []
       },
       {
-        "id": "2877",
+        "id": "3250",
         "code": "TOURISMREGIONS",
         "group": "area",
         "isMultiple": null,
@@ -704,10 +721,11 @@
         "label": "Tourism Regions",
         "preText": "<p>Which <b>{AREA-TYPE-1}</b> specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": []
       },
       {
-        "id": "2878",
+        "id": "3251",
         "code": "WILDFIREZONES",
         "group": "area",
         "isMultiple": null,
@@ -715,10 +733,11 @@
         "label": "Wildfire Zones ",
         "preText": "<p>Which <b>{AREA-TYPE-1}</b> specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": []
       },
       {
-        "id": "2879",
+        "id": "3252",
         "code": "TSUNAMINOTIFICATIONZONES",
         "group": "area",
         "isMultiple": null,
@@ -726,10 +745,11 @@
         "label": "Tsunami Notification Zones",
         "preText": "<p>Which <b>{AREA-TYPE-1}</b> specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": []
       },
       {
-        "id": "2880",
+        "id": "3253",
         "code": "NATURALRESOURCEREGIONS",
         "group": "area",
         "isMultiple": null,
@@ -737,77 +757,35 @@
         "label": "Natural Resource Regions",
         "preText": "<p>Which <b>{AREA-TYPE-1}</b> specifically?</p><div class='break'></div> <p>I am specifically interested in</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": []
       },
       {
-        "id": "2881",
-        "code": "AREA-TYPE-LIST",
+        "id": "3254",
+        "code": "AREA-TYPE-LIST-YES",
         "group": "area-type-list",
-        "isMultiple": true,
-        "value": "AREA-TYPE-LIST",
+        "isMultiple": null,
+        "value": "AREA-TYPE-LIST-YES",
         "label": "",
-        "preText": "<p>Ok, you want to learn more about <b>{AREA-TYPE-2}</b> of <b>{AREA-SEARCH-FILTER}</b>. </p>\n<p>What aspect would you like to learn more about?</p>\n<div class='break'></div>\n<p>I am particularly interested in</p>",
+        "preText": "",
         "postText": null,
+        "url": "reports/publicreport/reportfilter",
         "user_story_paths": [
           {
-            "id": "2893",
-            "code": "CONNECTIVITY",
-            "group": "power-bi-report",
-            "isMultiple": true,
-            "value": "CONNECTIVITY",
-            "label": "Connectivity",
+            "id": "3264",
+            "code": "END",
+            "group": "end",
+            "isMultiple": null,
+            "value": "99-END",
+            "label": "GO",
             "preText": "",
             "postText": null,
-            "url": "cit-dashboard/public/reportfilter"
-          },
-          {
-            "id": "2894",
-            "code": "SOCIAL",
-            "group": "power-bi-report",
-            "isMultiple": true,
-            "value": "SOCIAL",
-            "label": "Social",
-            "preText": "",
-            "postText": null,
-            "url": "cit-dashboard/public/reportfilter"
-          },
-          {
-            "id": "2895",
-            "code": "ECONOMIC",
-            "group": "power-bi-report",
-            "isMultiple": true,
-            "value": "ECONOMIC",
-            "label": "Economic",
-            "preText": "",
-            "postText": null,
-            "url": "cit-dashboard/public/reportfilter"
-          },
-          {
-            "id": "2896",
-            "code": "ASSETSANDINFRASTRACTURE",
-            "group": "power-bi-report",
-            "isMultiple": true,
-            "value": "ASSETSANDINFRASTRACTURE",
-            "label": "Assets and Infrastracture",
-            "preText": "",
-            "postText": null,
-            "url": "cit-dashboard/public/reportfilter"
-          },
-          {
-            "id": "2897",
-            "code": "BCASSESSMENT",
-            "group": "power-bi-report",
-            "isMultiple": true,
-            "value": "BCASSESSMENT",
-            "label": "BC Assessment",
-            "preText": "",
-            "postText": null,
-            "url": "cit-dashboard/public/reportfilter"
+            "url": ""
           }
         ]
       },
       {
-        "id": "2882",
+        "id": "3255",
         "code": "DISCOVERING-YES",
         "group": "discovering-yesno",
         "isMultiple": null,
@@ -815,9 +793,10 @@
         "label": "Yes",
         "preText": "",
         "postText": null,
+        "url": "cit-dashboard/public/criteria-search",
         "user_story_paths": [
           {
-            "id": "2891",
+            "id": "3264",
             "code": "END",
             "group": "end",
             "isMultiple": null,
@@ -830,7 +809,7 @@
         ]
       },
       {
-        "id": "2883",
+        "id": "3256",
         "code": "DISCOVERING-NO",
         "group": "discovering-yesno",
         "isMultiple": null,
@@ -838,9 +817,10 @@
         "label": "No",
         "preText": "",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2891",
+            "id": "3264",
             "code": "END",
             "group": "end",
             "isMultiple": null,
@@ -853,7 +833,7 @@
         ]
       },
       {
-        "id": "2884",
+        "id": "3257",
         "code": "VIEWING-YES",
         "group": "viewing-yesno",
         "isMultiple": null,
@@ -861,9 +841,10 @@
         "label": "Yes",
         "preText": "",
         "postText": null,
+        "url": "investmentopportunities/home",
         "user_story_paths": [
           {
-            "id": "2891",
+            "id": "3264",
             "code": "END",
             "group": "end",
             "isMultiple": null,
@@ -876,7 +857,7 @@
         ]
       },
       {
-        "id": "2885",
+        "id": "3258",
         "code": "VIEWING-NO",
         "group": "viewing-yesno",
         "isMultiple": null,
@@ -884,9 +865,10 @@
         "label": "No",
         "preText": "<p>Ok, maybe you can come back and have a look at it another day. Tell us what you would like to see now.</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2891",
+            "id": "3264",
             "code": "END",
             "group": "end",
             "isMultiple": null,
@@ -899,7 +881,7 @@
         ]
       },
       {
-        "id": "2886",
+        "id": "3259",
         "code": "COMPARING-YES",
         "group": "comparing-yesno",
         "isMultiple": null,
@@ -907,9 +889,10 @@
         "label": "Yes",
         "preText": "<p>Our tool lets you compare different types of areas to each other or to the BC average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
         "postText": null,
+        "url": "cit-dashboard/public/compare-area",
         "user_story_paths": [
           {
-            "id": "2891",
+            "id": "3264",
             "code": "END",
             "group": "end",
             "isMultiple": null,
@@ -922,7 +905,7 @@
         ]
       },
       {
-        "id": "2887",
+        "id": "3260",
         "code": "COMPARING-NO",
         "group": "comparing-yesno",
         "isMultiple": null,
@@ -930,9 +913,10 @@
         "label": "No",
         "preText": "",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2891",
+            "id": "3264",
             "code": "END",
             "group": "end",
             "isMultiple": null,
@@ -945,7 +929,7 @@
         ]
       },
       {
-        "id": "2888",
+        "id": "3261",
         "code": "GENERIC-NO",
         "group": "generic-no",
         "isMultiple": null,
@@ -953,9 +937,10 @@
         "label": "No",
         "preText": "",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2891",
+            "id": "3264",
             "code": "END",
             "group": "end",
             "isMultiple": null,
@@ -968,7 +953,7 @@
         ]
       },
       {
-        "id": "2889",
+        "id": "3262",
         "code": "PROMOTING-YES",
         "group": "promoting-yesno",
         "isMultiple": null,
@@ -976,9 +961,10 @@
         "label": "Yes",
         "preText": "",
         "postText": null,
+        "url": "investmentopportunities/home",
         "user_story_paths": [
           {
-            "id": "2891",
+            "id": "3264",
             "code": "END",
             "group": "end",
             "isMultiple": null,
@@ -991,7 +977,7 @@
         ]
       },
       {
-        "id": "2890",
+        "id": "3263",
         "code": "PROMOTING-NO",
         "group": "promoting-yesno",
         "isMultiple": null,
@@ -999,9 +985,10 @@
         "label": "No",
         "preText": "<p>Ok, maybe you can come back and have a look at it another day. Tell us what you would like to see now.</p>",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2891",
+            "id": "3264",
             "code": "END",
             "group": "end",
             "isMultiple": null,
@@ -1014,7 +1001,7 @@
         ]
       },
       {
-        "id": "2891",
+        "id": "3264",
         "code": "END",
         "group": "end",
         "isMultiple": null,
@@ -1022,9 +1009,10 @@
         "label": "GO",
         "preText": "",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2891",
+            "id": "3264",
             "code": "END",
             "group": "end",
             "isMultiple": null,
@@ -1037,132 +1025,18 @@
         ]
       },
       {
-        "id": "2892",
+        "id": "3265",
         "code": "RESET-NO",
         "group": "reset",
-        "isMultiple": null,
+        "isMultiple": true,
         "value": "99-RESET-NO",
         "label": "reset",
         "preText": "",
         "postText": null,
+        "url": "",
         "user_story_paths": [
           {
-            "id": "2891",
-            "code": "END",
-            "group": "end",
-            "isMultiple": null,
-            "value": "99-END",
-            "label": "GO",
-            "preText": "",
-            "postText": null,
-            "url": ""
-          }
-        ]
-      },
-      {
-        "id": "2893",
-        "code": "CONNECTIVITY",
-        "group": "power-bi-report",
-        "isMultiple": true,
-        "value": "CONNECTIVITY",
-        "label": "Connectivity",
-        "preText": "",
-        "postText": null,
-        "user_story_paths": [
-          {
-            "id": "2891",
-            "code": "END",
-            "group": "end",
-            "isMultiple": null,
-            "value": "99-END",
-            "label": "GO",
-            "preText": "",
-            "postText": null,
-            "url": ""
-          }
-        ]
-      },
-      {
-        "id": "2894",
-        "code": "SOCIAL",
-        "group": "power-bi-report",
-        "isMultiple": true,
-        "value": "SOCIAL",
-        "label": "Social",
-        "preText": "",
-        "postText": null,
-        "user_story_paths": [
-          {
-            "id": "2891",
-            "code": "END",
-            "group": "end",
-            "isMultiple": null,
-            "value": "99-END",
-            "label": "GO",
-            "preText": "",
-            "postText": null,
-            "url": ""
-          }
-        ]
-      },
-      {
-        "id": "2895",
-        "code": "ECONOMIC",
-        "group": "power-bi-report",
-        "isMultiple": true,
-        "value": "ECONOMIC",
-        "label": "Economic",
-        "preText": "",
-        "postText": null,
-        "user_story_paths": [
-          {
-            "id": "2891",
-            "code": "END",
-            "group": "end",
-            "isMultiple": null,
-            "value": "99-END",
-            "label": "GO",
-            "preText": "",
-            "postText": null,
-            "url": ""
-          }
-        ]
-      },
-      {
-        "id": "2896",
-        "code": "ASSETSANDINFRASTRACTURE",
-        "group": "power-bi-report",
-        "isMultiple": true,
-        "value": "ASSETSANDINFRASTRACTURE",
-        "label": "Assets and Infrastracture",
-        "preText": "",
-        "postText": null,
-        "user_story_paths": [
-          {
-            "id": "2891",
-            "code": "END",
-            "group": "end",
-            "isMultiple": null,
-            "value": "99-END",
-            "label": "GO",
-            "preText": "",
-            "postText": null,
-            "url": ""
-          }
-        ]
-      },
-      {
-        "id": "2897",
-        "code": "BCASSESSMENT",
-        "group": "power-bi-report",
-        "isMultiple": true,
-        "value": "BCASSESSMENT",
-        "label": "BC Assessment",
-        "preText": "",
-        "postText": null,
-        "user_story_paths": [
-          {
-            "id": "2891",
+            "id": "3264",
             "code": "END",
             "group": "end",
             "isMultiple": null,

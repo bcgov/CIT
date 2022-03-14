@@ -29,14 +29,14 @@
 	text-align: center;
 }
 
-button {
+.report-buttons button {
 	background: #337AB7;
 	border: 0;
 	border-radius: 5px;
 	color: #FFFFFF;
 	font-size: medium;
 	margin-right: 15px;
-	width: 150px;
+	width: 160px;
 }
 
 .hide-section {

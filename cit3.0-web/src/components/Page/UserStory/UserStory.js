@@ -30,10 +30,15 @@ export default function UserStory() {
 
   const redirectPage = () => {
     let path = redirectURL;
+
     if (redirectURL.includes("reportfilter")) {
-      const powerBiqs = `powerbi=${powerBiReports.join(",")}`;
       const areaFilter = encodeURIComponent(areaSearchFilter);
-      path = `${redirectURL}?${areaFilterId}=${areaFilter}&${powerBiqs}`;
+      path = `${redirectURL}?${areaFilterId}=${areaFilter}}`;
+
+      if (powerBiReports.length > 0) {
+        const powerBiqs = `powerbi=${powerBiReports.join(",")}`;
+        path = `${path}&${powerBiqs}`;
+      }
     }
     history.push(path);
   };
@@ -99,8 +104,9 @@ export default function UserStory() {
     }
 
     if (param && !param.code) {
-      param.code = "AREA-TYPE-LIST";
+      param.code = "AREA-TYPE-LIST-YES";
       param.group = "area-type-list";
+      param.url = "reports/publicreport/reportfilter";
       setAreaSearchFilter(param.label);
     }
 
@@ -195,11 +201,13 @@ export default function UserStory() {
 
   return (
     <>
+      <h1>{redirectURL}</h1>
       <Container className="mt-4 your-story your-story-elements">
         <Row>
           <Col sm={12}>{header}</Col>
         </Row>
       </Container>
+
       <Container className="mt-2 your-story your-story-elements">
         <Row>
           <Col sm={9}>
