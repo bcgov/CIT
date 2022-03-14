@@ -66,7 +66,7 @@ export default function PublicReport() {
     },
     panes: {
       filters: {
-        visible: true,
+        visible: false,
       },
       pageNavigation: {
         visible: false,
@@ -111,16 +111,10 @@ export default function PublicReport() {
     [
       "loaded",
       function () {
-        console.log("Report has loaded");
         SetIsReportLoaded(true);
       },
     ],
-    [
-      "rendered",
-      function () {
-        console.log("Report has rendered");
-      },
-    ],
+    ["rendered", function () {}],
     [
       "error",
       function (event) {
@@ -145,10 +139,8 @@ export default function PublicReport() {
   };
 
   const setPage = async (pageName) => {
-    if (!report) {
-      console.log("Report not available", pageName);
-      return;
-    }
+    if (!report) return;
+
     const pages = await report.getPages();
     const newPage = pages.find((page) => page.displayName === pageName);
 
@@ -157,29 +149,12 @@ export default function PublicReport() {
     }
   };
 
-  const setFilter = (table, column, filterValues) => {
-    const result = {
-      $schema: "http://powerbi.com/product/schema#basic",
-      target: {
-        table,
-        column,
-      },
-      operator: "In",
-      values: filterValues,
-    };
-    return result;
-  };
-
   const useQuery = () => {
     const { search } = useLocation();
     return useMemo(() => new URLSearchParams(search), [search]);
   };
 
   const querystring = useQuery();
-
-  const reportSection = querystring.get("powerbi")
-    ? querystring.get("powerbi")
-    : "";
 
   const zoneFilter = () => {
     const regionalDistrictsFilter = querystring.get("regionaldistricts");
@@ -211,16 +186,12 @@ export default function PublicReport() {
 
     zoneName.values = regionalDistrictsFilter.split(",");
 
-    const newFilters = [zoneType, zoneName];
-
-    return newFilters;
+    return [zoneType, zoneName];
   };
 
   const setReportFilter = async () => {
-    if (!report) {
-      console.log("Report not available");
-      return;
-    }
+    if (!report) return;
+
     await report.setFilters(zoneFilter());
   };
 

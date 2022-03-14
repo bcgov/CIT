@@ -201,7 +201,6 @@ export default function UserStory() {
 
   return (
     <>
-      <h1>{redirectURL}</h1>
       <Container className="mt-4 your-story your-story-elements">
         <Row>
           <Col sm={12}>{header}</Col>
