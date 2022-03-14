@@ -5,9 +5,9 @@ on:
   #schedule:
     #- cron: "0 13 * * 1"
     #- cron: "*/1 * * * *"
-  push:
-    branches:
-      - github-actions-data-pipeline
+  #push:
+  #  branches:
+  #    - github-actions-data-pipeline
   workflow_dispatch:
     inputs:
       environment:
@@ -21,8 +21,8 @@ env:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: 
-      name: Test
+    #environment: 
+    #  name: Test
     steps:
       # checkout the repo
       - name: "Checkout GitHub Actionthe relap"
