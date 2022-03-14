@@ -1,6 +1,6 @@
 # This workflow will build a new container weekly running the census data pipeline weekly pulls
 
-name: Data Pipeline Bucket 1 - Census
+
 on:
   workflow_dispatch:
     inputs:
@@ -10,13 +10,14 @@ on:
         options:
         - test
         - prod
+name: Data Pipeline Bucket 1 - Census
 env: 
   BUCKET_COMMAND: bucket_1
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    #environment: 
-    #  name: Test
+    environment: 
+      name: Test
     steps:
       # checkout the repo
       - name: "Checkout GitHub Actionthe relap"
