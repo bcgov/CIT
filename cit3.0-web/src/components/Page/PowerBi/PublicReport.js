@@ -165,6 +165,19 @@ export default function PublicReport() {
     }
   };
 
+  const setReportFilter = (table, column, filterValues) => {
+    const result = {
+      $schema: "http://powerbi.com/product/schema#basic",
+      target: {
+        table,
+        column,
+      },
+      operator: "In",
+      values: filterValues,
+    };
+    return result;
+  };
+
   useEffect(() => {
     const defaultPage = reportTabs.find((tab) => tab.isDefault);
     if (defaultPage) setPage(defaultPage.pageName);
