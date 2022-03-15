@@ -118,7 +118,7 @@
             "group": "what",
             "isMultiple": null,
             "value": "3-COMPARING",
-            "label": "to comparing an area to another one",
+            "label": "comparing an area to another one",
             "preText": "<p class='section-break'>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
             "postText": null,
             "url": "cit-dashboard/public/compare-area"
@@ -164,7 +164,7 @@
             "group": "what",
             "isMultiple": null,
             "value": "3-COMPARING",
-            "label": "to comparing an area to another one",
+            "label": "comparing an area to another one",
             "preText": "<p class='section-break'>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
             "postText": null,
             "url": "cit-dashboard/public/compare-area"
@@ -176,7 +176,7 @@
             "isMultiple": null,
             "value": "4-PROMOTING",
             "label": "promoting an investment opportunity in my community",
-            "preText": "<p>Would you like to go to the Community Investment Opportunity Tool?</p><div class='break'></div> ",
+            "preText": "<p class='section-break'>Would you like to go to the Community Investment Opportunity Tool?</p><div class='break'></div> ",
             "postText": null,
             "url": ""
           }
@@ -221,7 +221,7 @@
             "group": "what",
             "isMultiple": null,
             "value": "3-COMPARING",
-            "label": "to comparing an area to another one",
+            "label": "comparing an area to another one",
             "preText": "<p class='section-break'>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
             "postText": null,
             "url": "cit-dashboard/public/compare-area"
@@ -245,8 +245,8 @@
             "group": "what",
             "isMultiple": null,
             "value": "1-VIEWING",
-            "label": "viewing Investment Oppurtunity matching my criteria",
-            "preText": "<p class='section-break'>We have a tool you might like to check out our CIOT.</p><div class='break'></div><p>Would you like to go to the CIOT?</p><div class='break'></div> ",
+            "label": "viewing Investment Opportunity matching my criteria",
+            "preText": "<p class='section-break'>We have a tool you might like to check out our CIOT.</p><div class='section-break'></div><p>Would you like to go to the CIOT?</p><div class='break'></div> ",
             "postText": null,
             "url": ""
           },
@@ -278,7 +278,7 @@
             "group": "what",
             "isMultiple": null,
             "value": "3-COMPARING",
-            "label": "to comparing an area to another one",
+            "label": "comparing an area to another one",
             "preText": "<p class='section-break'>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
             "postText": null,
             "url": "cit-dashboard/public/compare-area"
@@ -290,7 +290,7 @@
             "isMultiple": null,
             "value": "4-PROMOTING",
             "label": "promoting an investment opportunity in my community",
-            "preText": "<p>Would you like to go to the Community Investment Opportunity Tool?</p><div class='break'></div> ",
+            "preText": "<p class='section-break'>Would you like to go to the Community Investment Opportunity Tool?</p><div class='break'></div> ",
             "postText": null,
             "url": ""
           }
@@ -313,8 +313,8 @@
             "group": "what",
             "isMultiple": null,
             "value": "1-VIEWING",
-            "label": "viewing Investment Oppurtunity matching my criteria",
-            "preText": "<p class='section-break'>We have a tool you might like to check out our CIOT.</p><div class='break'></div><p>Would you like to go to the CIOT?</p><div class='break'></div> ",
+            "label": "viewing Investment Opportunity matching my criteria",
+            "preText": "<p class='section-break'>We have a tool you might like to check out our CIOT.</p><div class='section-break'></div><p>Would you like to go to the CIOT?</p><div class='break'></div> ",
             "postText": null,
             "url": ""
           },
@@ -346,7 +346,7 @@
             "group": "what",
             "isMultiple": null,
             "value": "3-COMPARING",
-            "label": "to comparing an area to another one",
+            "label": "comparing an area to another one",
             "preText": "<p class='section-break'>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
             "postText": null,
             "url": "cit-dashboard/public/compare-area"
@@ -392,7 +392,7 @@
             "group": "what",
             "isMultiple": null,
             "value": "3-COMPARING",
-            "label": "to comparing an area to another one",
+            "label": "comparing an area to another one",
             "preText": "<p class='section-break'>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
             "postText": null,
             "url": "cit-dashboard/public/compare-area"
@@ -405,8 +405,8 @@
         "group": "what",
         "isMultiple": null,
         "value": "1-VIEWING",
-        "label": "viewing Investment Oppurtunity matching my criteria",
-        "preText": "<p class='section-break'>We have a tool you might like to check out our CIOT.</p><div class='break'></div><p>Would you like to go to the CIOT?</p><div class='break'></div> ",
+        "label": "viewing Investment Opportunity matching my criteria",
+        "preText": "<p class='section-break'>We have a tool you might like to check out our CIOT.</p><div class='section-break'></div><p>Would you like to go to the CIOT?</p><div class='break'></div> ",
         "postText": null,
         "url": "",
         "user_story_paths": [
@@ -587,7 +587,7 @@
         "group": "what",
         "isMultiple": null,
         "value": "3-COMPARING",
-        "label": "to comparing an area to another one",
+        "label": "comparing an area to another one",
         "preText": "<p class='section-break'>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</p>",
         "postText": null,
         "url": "cit-dashboard/public/compare-area",
@@ -612,7 +612,7 @@
         "isMultiple": null,
         "value": "4-PROMOTING",
         "label": "promoting an investment opportunity in my community",
-        "preText": "<p>Would you like to go to the Community Investment Opportunity Tool?</p><div class='break'></div> ",
+        "preText": "<p class='section-break'>Would you like to go to the Community Investment Opportunity Tool?</p><div class='break'></div> ",
         "postText": null,
         "url": "",
         "user_story_paths": [

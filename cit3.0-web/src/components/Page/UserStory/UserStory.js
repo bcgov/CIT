@@ -135,7 +135,10 @@ export default function UserStory() {
     }
 
     let replaceText = userOption.preText;
-    replaceText = replaceText.replace("{AREA-TYPE-1}", userOption.label);
+    replaceText = replaceText.replace(
+      "{AREA-TYPE-1}",
+      userOption.label.slice(0, -1)
+    );
     replaceText = replaceText.replace("{AREA-TYPE-2}", areaType);
     replaceText = replaceText.replace("{AREA-SEARCH-FILTER}", param.label);
     userOption.postText = replaceText;
@@ -187,7 +190,7 @@ export default function UserStory() {
       className="bcgov-normal-blue user-story-button"
       onClick={redirectPage}
     >
-      View Results <ArrowRight />
+      Let&apos;s Go <ArrowRight />
     </Button>
   );
 
