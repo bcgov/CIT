@@ -251,10 +251,6 @@ export default function PowerBi() {
         window.report
           .getPages()
           .then((data) => {
-            // const visuals = data[0].getVisuals().then((v) => {
-            //   const myVisuals = v;
-            //   console.log(myVisuals);
-            // });
             const commReport = data.filter(
               (report) => report.displayName === "Community Overview"
             );
@@ -403,17 +399,6 @@ export default function PowerBi() {
       },
     ],
   ]);
-
-  const powerBiSettings1 = {
-    panes: {
-      filters: {
-        visible: false,
-      },
-      pageNavigation: {
-        visible: false,
-      },
-    },
-  };
 
   const powerBiSettings = {
     layoutType: models.LayoutType.Custom,

@@ -83,7 +83,7 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
             <>
               <Button
                 variant="primary"
-                className="m-2"
+                className="user-story-button"
                 size="sm"
                 onClick={() => onUserStoryChange(userStoryYes)}
               >
@@ -91,7 +91,7 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
               </Button>{" "}
               <Button
                 variant="outline-primary"
-                className="m-2"
+                className="user-story-button"
                 size="sm"
                 onClick={() => onUserStoryChange(userStoryNo)}
               >

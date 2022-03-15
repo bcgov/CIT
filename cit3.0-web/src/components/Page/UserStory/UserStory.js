@@ -33,7 +33,7 @@ export default function UserStory() {
 
     if (redirectURL.includes("reportfilter")) {
       const areaFilter = encodeURIComponent(areaSearchFilter);
-      path = `${redirectURL}?${areaFilterId}=${areaFilter}}`;
+      path = `${redirectURL}?${areaFilterId}=${areaFilter}`;
 
       if (powerBiReports.length > 0) {
         const powerBiqs = `powerbi=${powerBiReports.join(",")}`;
@@ -167,21 +167,15 @@ export default function UserStory() {
         assets data. The Tool supports community, regional, and province-wide
         planning, which is essential to building thriving, healthy communities.
       </p>
-      <h3>
-        Tell us a bit more about you and we will help you get to info that is
-        relevant to you
-      </h3>
     </>
   );
 
   const noButton = (
     <Button
       variant="outline-primary"
-      size="lg"
-      className="mr-4"
+      className="user-story-button"
       onClick={resetUserStory}
     >
-      {" "}
       Reset Search Criteria
     </Button>
   );
@@ -189,12 +183,10 @@ export default function UserStory() {
   const yesButton = (
     <Button
       variant="primary"
-      size="lg"
       active
-      className="mr-5 bcgov-normal-blue modal-save-button btn"
+      className="bcgov-normal-blue user-story-button"
       onClick={redirectPage}
     >
-      {" "}
       View Results <ArrowRight />
     </Button>
   );
@@ -205,12 +197,9 @@ export default function UserStory() {
         <Row>
           <Col sm={12}>{header}</Col>
         </Row>
-      </Container>
-
-      <Container className="mt-2 your-story your-story-elements">
         <Row>
           <Col sm={9}>
-            <Container className="mt-2 your-story your-story-elements">
+            <Container className="your-story your-story-elements">
               <Row>
                 {userOptions.map((story) => (
                   <UserStoryItem
@@ -222,7 +211,7 @@ export default function UserStory() {
               </Row>
               {(isNoButton || isYesButton) && (
                 <>
-                  <Row className="mt-5">
+                  <Row className="section-break">
                     {isNoButton && noButton}
                     {isYesButton && yesButton}
                   </Row>
