@@ -3,7 +3,7 @@
 name: Data Pipeline - Bucket 2 Weekly
 on:
   schedule:
-  // Every Monday at 1PM UTC (9AM EST)
+  # Every Monday at 1PM UTC (9AM EST)
     - cron: "0 13 * * 1"
 env: 
   BUCKET_COMMAND: bucket_2_weekly
