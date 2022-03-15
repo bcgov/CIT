@@ -1,20 +1,46 @@
-# This workflow will build a new container monthly running the datasets in Bucket 4 monthly
+# This workflow will ask for input from the user, running the chosen bucket of datasets in the chosen environment
 
-name: Data Pipeline - Bucket 4 monthly
+name: Manual pipeline run
 on:
-  schedule:
-    - cron: "* * 1 * *"
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Select the environment
+        required: true
+        options:
+        - test
+        - prod
+      buckets:
+        type: choice
+        description: Select the bucket
+        required: true
+        options:
+        - bucket_1
+        - bucket_2_weekly
+        - bucket_2_semiannually
+        - bucket_3
+        - bucket_4_monthly
+        - bucket_4_semiannually
+        - bucket_5_monthly
+        - bucket_5_semiannually
+        - bucket_6
 env: 
-  BUCKET_COMMAND: bucket_4_monthly
+  BUCKET_COMMAND: ${{ github.event.inputs.buckets }}
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   run-test:
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.environment == 'test' }}
     steps:
       # checkout the repo
-      - name: "Checkout GitHub Action"
+      - name: "Checkout GitHub Actionthe relap"
         uses: actions/checkout@master
-        
+      
+      - name: Environment check
+        run: | 
+          echo "environment is ${{ github.event.inputs.environment }}"
+
       - name: "Generate env file"
         run: |
             echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
@@ -26,20 +52,25 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build
-
   run-prod:
     runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.environment == 'prod' }}
     steps:
       # checkout the repo
-      - name: "Checkout GitHub Action"
+      - name: "Checkout GitHub Actionthe relap"
         uses: actions/checkout@master
+      
+      - name: Environment check
+        run: | 
+          echo "environment is ${{ github.event.inputs.environment }}"
 
       - name: "Generate env file"
         run: |
             echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
             echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
             echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env 
+            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers

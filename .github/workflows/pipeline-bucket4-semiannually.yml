@@ -1,34 +1,45 @@
-# This workflow will build a new container weekly running the census data pipeline weekly pulls
+# This workflow will build a new container semiannually running the datasets in Bucket 4 semiannually
 
 name: Data Pipeline - Bucket 4 semiannually
 on:
-  #schedule:
-    #- cron: "0 13 * * 1"
-    #- cron: "*/1 * * * *"
-  #push:
-  #  branches:
-  #    - github-actions-data-pipeline
-  workflow_dispatch:
-  
+  schedule:
+    - cron: "0 0 1 */6 *" 
 env: 
   BUCKET_COMMAND: bucket_4_semiannually
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
-  build-and-deploy:
+  run-test:
     runs-on: ubuntu-latest
-    environment: 
-      name: Test
     steps:
       # checkout the repo
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master
-      
+        
       - name: "Generate env file"
         run: |
             echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
             echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
             echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
             echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
+            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+            echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
+
+      - name: Start containers
+        run: docker-compose -f cit-api/docker-compose.yml up --build
+
+  run-prod:
+    runs-on: ubuntu-latest
+    steps:
+      # checkout the repo
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@master
+
+      - name: "Generate env file"
+        run: |
+            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env 
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
