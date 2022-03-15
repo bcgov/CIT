@@ -420,6 +420,26 @@ export default function PowerBi() {
     },
   };
 
+  const powerBiSettingsCompare = {
+    layoutType: models.LayoutType.Custom,
+    customLayout: {
+      pageSize: {
+        type: models.PageSizeType.Custom,
+        width: 1280,
+        height: 2905,
+      },
+      displayOption: models.DisplayOption.FitToWidth,
+    },
+    panes: {
+      filters: {
+        visible: false,
+      },
+      pageNavigation: {
+        visible: false,
+      },
+    },
+  };
+
   const powerBiSettingsWithTabs = {
     panes: {
       filters: {
@@ -481,7 +501,7 @@ export default function PowerBi() {
 
   return embedToken && places ? (
     <>
-      <div id="embed-container">
+      <div>
         <div className="no-print cit-header">
           <ButtonLink
             variant="link"
@@ -499,71 +519,65 @@ export default function PowerBi() {
           </button>
         </div>
         <br />
-        <Container className="my-4">
+        <div className="report-container">
           {isCompareArea && (
             <>
-              <Row>
-                <PowerBIEmbed
-                  embedConfig={{
-                    type: "report",
-                    id: reportConfig.id,
-                    embedUrl: reportConfig.embedUrl,
-                    accessToken: embedToken,
-                    tokenType: models.TokenType.Embed,
-                    settings: { ...powerBiSettings },
-                  }}
-                  eventHandlers={socialEventHandlers}
-                  cssClassName="report-compare report-iframe"
-                  getEmbeddedComponent={(embeddedReport) => {
-                    window.report = embeddedReport;
-                  }}
-                />
-              </Row>
+              <PowerBIEmbed
+                embedConfig={{
+                  type: "report",
+                  id: reportConfig.id,
+                  embedUrl: reportConfig.embedUrl,
+                  accessToken: embedToken,
+                  tokenType: models.TokenType.Embed,
+                  settings: { ...powerBiSettingsCompare },
+                }}
+                eventHandlers={socialEventHandlers}
+                cssClassName="report-compare report-iframe"
+                getEmbeddedComponent={(embeddedReport) => {
+                  window.report = embeddedReport;
+                }}
+              />
             </>
           )}
           {isCriteriaSearch && (
             <>
-              <Row>
-                <PowerBIEmbed
-                  embedConfig={{
-                    type: "report",
-                    id: reportConfig.id,
-                    embedUrl: reportConfig.embedUrl,
-                    accessToken: embedToken,
-                    tokenType: models.TokenType.Embed,
-                    settings: { ...powerBiSettings },
-                  }}
-                  eventHandlers={economicEventHandlers}
-                  cssClassName="report-criteria-search report-iframe"
-                  getEmbeddedComponent={(embeddedReport) => {
-                    window.report = embeddedReport;
-                  }}
-                />
-              </Row>
+              <PowerBIEmbed
+                embedConfig={{
+                  type: "report",
+                  id: reportConfig.id,
+                  embedUrl: reportConfig.embedUrl,
+                  accessToken: embedToken,
+                  tokenType: models.TokenType.Embed,
+                  settings: { ...powerBiSettings },
+                }}
+                eventHandlers={economicEventHandlers}
+                cssClassName="report-criteria-search report-iframe"
+                getEmbeddedComponent={(embeddedReport) => {
+                  window.report = embeddedReport;
+                }}
+              />
             </>
           )}
           {!isCompareArea && !isCriteriaSearch && (
             <>
-              <Row>
-                <PowerBIEmbed
-                  embedConfig={{
-                    type: "report",
-                    id: reportConfig.id,
-                    embedUrl: reportConfig.embedUrl,
-                    accessToken: embedToken,
-                    tokenType: models.TokenType.Embed,
-                    settings: { ...powerBiSettingsWithTabs },
-                  }}
-                  eventHandlers={withTabsEventHandlers}
-                  cssClassName="report-with-tabs report-iframe"
-                  getEmbeddedComponent={(embeddedReport) => {
-                    window.report = embeddedReport;
-                  }}
-                />
-              </Row>
+              <PowerBIEmbed
+                embedConfig={{
+                  type: "report",
+                  id: reportConfig.id,
+                  embedUrl: reportConfig.embedUrl,
+                  accessToken: embedToken,
+                  tokenType: models.TokenType.Embed,
+                  settings: { ...powerBiSettingsWithTabs },
+                }}
+                eventHandlers={withTabsEventHandlers}
+                cssClassName="report-with-tabs report-iframe"
+                getEmbeddedComponent={(embeddedReport) => {
+                  window.report = embeddedReport;
+                }}
+              />
             </>
           )}
-        </Container>
+        </div>
       </div>
       <Modal
         show={show}
