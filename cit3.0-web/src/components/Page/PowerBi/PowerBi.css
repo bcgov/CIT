@@ -30,13 +30,14 @@
 }
 
 .report-buttons button {
-	background: #337AB7;
-	border: 0;
-	border-radius: 5px;
-	color: #FFFFFF;
-	font-size: medium;
-	margin-right: 15px;
-	width: 160px;
+	background: #FCBA19;
+	color: #000000;
+	width: 180px;
+    height: 44px;
+    font-weight: bold !important;
+    font-size: 16px;
+    padding-right: 15px;
+    padding-left: 15px;
 }
 
 .hide-section {

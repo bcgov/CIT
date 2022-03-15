@@ -21,11 +21,11 @@ export default function PublicReport() {
       pageName: "Connectivity",
       label: "Connectivity",
       isLoginRequired: null,
-      isDefault: null,
+      isDefault: true,
     },
     {
       pageName: "Assets & Infrastructure",
-      label: "Assets and Insfrastracture",
+      label: "Infrastructure",
       isLoginRequired: null,
       isDefault: null,
     },
@@ -36,21 +36,9 @@ export default function PublicReport() {
       isDefault: null,
     },
     {
-      pageName: "Census",
-      label: "Census",
-      isLoginRequired: null,
-      isDefault: true,
-    },
-    {
       pageName: "Social",
       label: "Social",
       isLoginRequired: null,
-      isDefault: null,
-    },
-    {
-      pageName: "BC Assessment",
-      label: "BC Assessment",
-      isLoginRequired: true,
       isDefault: null,
     },
   ];
