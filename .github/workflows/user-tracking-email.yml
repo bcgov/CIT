@@ -1,0 +1,73 @@
+# This workflow will ask for input from the user, running the user tracking email script in the chosen environment
+
+name: User Tracking Email
+on:
+  push:
+    branches:
+      - CIT-121
+  workflow_dispatch:
+    inputs:
+      environment:
+        type: choice
+        description: Select the environment
+        required: true
+        options:
+        - test
+        - prod
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.environment == 'test' }}
+    steps:
+      # checkout the repo
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@master
+      
+      - name: "Generate env file"
+        run: |
+            echo 'ENV_LEVEL = ${{ github.event.inputs.environment }}' >> .env
+            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
+            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
+            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
+            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
+            echo 'EMAIL_NOTIFICATIONS_ENABLED = ${{ secrets.EMAIL_NOTIFICATIONS_ENABLED }}' >> .env
+            echo 'EMAIL_AUTH_HOST = ${{ secrets.EMAIL_AUTH_HOST_TEST }}' >> .env
+            echo 'EMAIL_SERVICE_HOST = ${{ secrets.EMAIL_SERVICE_HOST_TEST }}' >> .env
+            echo 'EMAIL_CLIENT_ID = ${{ secrets.EMAIL_CLIENT_ID_TEST }}' >> .env
+            echo 'EMAIL_CLIENT_SECRET = ${{ secrets.EMAIL_CLIENT_SECRET_TEST }}' >> .env
+            echo 'EMAIL_SENDING_ADDRESS = ${{ secrets.EMAIL_SENDING_ADDRESS_TEST }}' >> .env
+            echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_TEST }}' >> .env
+            echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
+            echo 'AZURE_BLOB_STORAGE_CONNECTION_STRING = ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}' >> .env
+            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY}}' >> .env
+
+      - name: Start containers
+        run: docker-compose -f docker-compose.yml up --build cit-user-tracking
+ # run-prod:
+ #   runs-on: ubuntu-latest
+ #   if: ${{ github.event.inputs.environment == 'prod' }}
+ #   steps:
+ #     # checkout the repo
+ #     - name: "Checkout GitHub Action"
+ #       uses: actions/checkout@master
+ #     
+ #     - name: "Generate env file"
+ #       run: |
+ #           echo 'ENV_LEVEL = ${{ github.event.inputs.environment }}' >> .env
+ #           echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+ #           echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+ #           echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+ #           echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+ #           echo 'EMAIL_NOTIFICATIONS_ENABLED = ${{ secrets.EMAIL_NOTIFICATIONS_ENABLED }}' >> .env
+ #           echo 'EMAIL_AUTH_HOST = ${{ secrets.EMAIL_AUTH_HOST_PROD }}' >> .env
+ #           echo 'EMAIL_SERVICE_HOST = ${{ secrets.EMAIL_SERVICE_HOST_PROD }}' >> .env
+ #           echo 'EMAIL_CLIENT_ID = ${{ secrets.EMAIL_CLIENT_ID_PROD }}' >> .env
+ #           echo 'EMAIL_CLIENT_SECRET = ${{ secrets.EMAIL_CLIENT_SECRET_PROD }}' >> .env
+ #           echo 'EMAIL_SENDING_ADDRESS = ${{ secrets.EMAIL_SENDING_ADDRESS_PROD }}' >> .env
+ #           echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_PROD }}' >> .env
+ #           echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_PROD }}' >> .env
+ #           echo 'AZURE_BLOB_STORAGE_CONNECTION_STRING = ${{ secrets.AZURE_BLOB_STORAGE_CONNECTION_STRING }}' >> .env
+ #           echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env
+#
+ #     - name: Start containers
+ #       run: docker-compose -f docker-compose.yml up --build cit-user-tracking
