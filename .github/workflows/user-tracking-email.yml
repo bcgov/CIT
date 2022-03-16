@@ -17,7 +17,7 @@ on:
 jobs:
   run-test:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.environment == 'test' }}
+    #if: ${{ github.event.inputs.environment == 'test' }}
     steps:
       # checkout the repo
       - name: "Checkout GitHub Action"
