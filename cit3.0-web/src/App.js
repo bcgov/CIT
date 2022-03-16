@@ -32,7 +32,7 @@ import OpportunityApproveListPage from "./components/Page/OpportunityApproveList
 import UserManagementDashboard from "./components/Page/UserManagement/UserManagementDashboard";
 
 import PowerBi from "./components/Page/PowerBi/PowerBi";
-
+import PublicReport from "./components/Page/PowerBi/PublicReport";
 import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
 import HomePage from "./components/Page/HomePage/HomePage";
@@ -255,6 +255,11 @@ function App() {
                   path="/userstory"
                   title="Community Information Tool"
                   component={UserStory}
+                />
+                <AppRoute
+                  path="/reports/publicreport"
+                  title="Community Information Tool"
+                  component={PublicReport}
                 />
                 <AppRoute
                   path="/datasources"
