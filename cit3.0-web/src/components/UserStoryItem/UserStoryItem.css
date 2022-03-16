@@ -7,7 +7,13 @@
     display: flex;
     flex-wrap: wrap;
 }
-.confirm-button {
-    min-height: 10px;
-}
 
+.user-story-button {
+    height: 40px;
+    font-weight: bold !important;
+    font-size: 16px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
