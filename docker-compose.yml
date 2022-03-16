@@ -1,15 +1,6 @@
 version: "3.3"
 
 services:
-  cit-user-tracking:
-    build:
-      context: ./cit-api
-      dockerfile: Dockerfile.usertracking
-    image: countable/cit
-    env_file:
-      - .env
-    ports:
-      - 8000:8000
   cit-web:
     container_name: cit-web
     build: ./cit3.0-web

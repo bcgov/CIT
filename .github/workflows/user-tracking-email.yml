@@ -42,7 +42,7 @@ jobs:
             echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY}}' >> .env
 
       - name: "Start containers"
-        run: docker-compose up --build cit-user-tracking
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-user-tracking
  # run-prod:
  #   runs-on: ubuntu-latest
  #   if: ${{ github.event.inputs.environment == 'prod' }}
