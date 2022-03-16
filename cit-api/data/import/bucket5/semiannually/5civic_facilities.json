@@ -1,0 +1,13 @@
+[
+  {
+    "name": "civic_facilities",
+    "display_name": "Civic Facilities",
+    "model_name": "CivicFacility",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": "64284a1e-0c89-4ae3-bea4-59bc0eb9d579",
+    "permalink_id": "ea7cd54f-1820-4f4a-8b2c-40c8a51f84bd",
+    "dataset": "civic-facilities",
+    "import_order": 14
+  }
+]

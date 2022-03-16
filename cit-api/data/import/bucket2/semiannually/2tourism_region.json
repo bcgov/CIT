@@ -1,0 +1,13 @@
+[
+    {
+      "name": "tourism_regions",
+      "display_name": "Tourism Regions",
+      "model_name": "tourismregion",
+      "source": "databc",
+      "source_type": "wms",
+      "permalink_id": "055a8572-35c2-4c92-ada6-7c588a72ada1",
+      "dataset": "bc-tourism-regions",
+      "import_order": 0
+    }
+  
+  ]

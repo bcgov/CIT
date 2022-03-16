@@ -1,0 +1,29 @@
+[
+  {
+    "name": "bc_assessment_regional_district",
+    "display_name": "BC Assessment data aggregated by regional district",
+    "model_name": "BCAssessmentRegionalDistrict",
+    "source": "internal",
+    "source_type": "csv",
+    "source_file_path": "data/bca_summary_by_cd_use.csv",
+    "import_order": 104
+  },
+  {
+    "name": "bc_assessment_census_subdivision",
+    "display_name": "BC Assessment data aggregated by census subdivision",
+    "model_name": "BCAssessmentCensusSubdivision",
+    "source": "internal",
+    "source_type": "csv",
+    "source_file_path": "data/bca_summary_by_csd_use.csv",
+    "import_order": 105
+  },
+  {
+    "name": "bc_assessment_economic_region",
+    "display_name": "BC Assessment data aggregated by census economic region",
+    "model_name": "BCAssessmentEconomicRegion",
+    "source": "internal",
+    "source_type": "csv",
+    "source_file_path": "data/bca_summary_by_er_use.csv",
+    "import_order": 106
+  }
+]

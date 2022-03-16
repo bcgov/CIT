@@ -1,0 +1,13 @@
+[
+  {
+    "name": "wildfires_zones",
+    "display_name": "Wildfire Wildland Urban Interface Risk Class",
+    "model_name": "WildfireZone",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": "8eafea9f-3e84-4a9b-bd60-522c0059b74b",
+    "permalink_id": "3c71551e-c1aa-4272-9c89-64fbd22a910d",
+    "dataset": "bc-wildfire-wildland-urban-interface-risk-class",
+    "import_order": 5
+  }
+]

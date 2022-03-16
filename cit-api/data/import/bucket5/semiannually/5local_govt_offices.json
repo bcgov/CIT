@@ -1,0 +1,13 @@
+[
+  {
+    "name": "local_govt_offices",
+    "display_name": "Local Government Offices",
+    "model_name": "LocalGovernmentOffice",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": null,
+    "permalink_id": "0fe8083a-881a-4fa8-8925-3a23b788e1b9",
+    "dataset": "local-government-offices",
+    "import_order": 23
+  }
+]

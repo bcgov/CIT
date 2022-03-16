@@ -1,0 +1,13 @@
+[
+  {
+    "name": "natural_resource_regions",
+    "display_name": "Natural Resource Regions",
+    "model_name": "NaturalResourceRegion",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": null,
+    "permalink_id": "dfc492c0-69c5-4c20-a6de-2c9bc999301f",
+    "dataset": "natural-resource-nr-regions",
+    "import_order": 27
+  }
+]
