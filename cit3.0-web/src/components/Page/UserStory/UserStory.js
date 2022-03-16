@@ -3,18 +3,20 @@ import { Container, Button, Row, Col } from "react-bootstrap";
 import { ArrowRight } from "react-bootstrap-icons";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+
 import "../HomePage/HomePage.scss";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getOptions, setOptions } from "../../../store/actions/options";
 import { userStoryPaths } from "../../../data/userStoryPaths.json";
-
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import "./UserStory.css";
 import UserStoryItem from "../../UserStoryItem/UserStoryItem";
 
 export default function UserStory() {
   let loading = false;
   const [userOptions, setAllOptions] = useState([]);
+  const [who, setwho] = useState("");
   const [isYesButton, setIsYesButton] = useState(false);
   const [isNoButton, setIsNoButton] = useState(false);
   const [redirectURL, setRedirectURL] = useState("");
@@ -24,6 +26,8 @@ export default function UserStory() {
   const [powerBiReports, setPowerBiReports] = useState([]);
   const [communities, setCommunities] = useState(null);
   const [regionals, setRegionals] = useState(null);
+
+  const keycloak = useKeycloakWrapper();
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -110,6 +114,9 @@ export default function UserStory() {
       setAreaSearchFilter(param.label);
     }
 
+    if (param && param.group === "who") {
+      setwho(param);
+    }
     const groupIndex = userOptions.findIndex((x) => x.group === param.group);
 
     let newUserOptions = [];
@@ -149,16 +156,25 @@ export default function UserStory() {
 
     if (userOption.code.includes("-YES") || isLastOption) {
       setIsYesButton(true);
-      setIsNoButton(true);
+      setIsNoButton(false);
       setRedirectURL(param.url);
     } else {
       setIsYesButton(false);
       setIsNoButton(false);
     }
     if (userOption.code.includes("-NO")) {
-      setIsNoButton(true);
-      setIsYesButton(false);
+      const isNo = userOption.user_story_paths.find((x) =>
+        x.code.includes("-NO")
+      );
+      if (isNo) {
+        setIsNoButton(true);
+        setIsYesButton(false);
+      }
     }
+  };
+
+  const handleIsNo = () => {
+    handleUserStoryChange(who);
   };
 
   const header = (
@@ -173,13 +189,24 @@ export default function UserStory() {
     </>
   );
 
-  const noButton = (
+  const resetButton = (
     <Button
       variant="outline-primary"
       className="user-story-button"
       onClick={resetUserStory}
     >
       Reset Search Criteria
+    </Button>
+  );
+
+  const noButton = (
+    <Button
+      variant="outline-primary"
+      className="user-story-button"
+      onClick={handleIsNo}
+      active
+    >
+      Ok
     </Button>
   );
 
@@ -212,12 +239,16 @@ export default function UserStory() {
                   />
                 ))}
               </Row>
-              {(isNoButton || isYesButton) && (
+              {isYesButton && (
                 <>
                   <Row className="section-break">
-                    {isNoButton && noButton}
-                    {isYesButton && yesButton}
+                    {resetButton} {yesButton}
                   </Row>
+                </>
+              )}
+              {isNoButton && (
+                <>
+                  <Row className="section-break">{noButton}</Row>
                 </>
               )}
             </Container>
