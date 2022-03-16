@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile.usertracking
     image: countable/cit
     env_file:
-      - cit-api/.env
+      - ../.env
     ports:
       - 8000:8000
   cit-web:
