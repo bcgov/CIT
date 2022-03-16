@@ -32,6 +32,8 @@ export default function UserStory() {
   const history = useHistory();
   const dispatch = useDispatch();
 
+  const userName = keycloak ? keycloak.firstName : "";
+
   const redirectPage = () => {
     let path = redirectURL;
 
@@ -179,7 +181,10 @@ export default function UserStory() {
 
   const header = (
     <>
-      <h3>Hi, welcome to our Community Information Tool</h3>
+      <h3>
+        Hi{userName ? " " : ""}
+        {userName}, welcome to our Community Information Tool
+      </h3>
       <p>
         The Community Information Tool offers insight into communities across
         B.C. with integrated socio-economic data, infrastructure, and community
