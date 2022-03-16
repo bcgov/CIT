@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Container, Button } from "react-bootstrap";
+import { Container, Button, ButtonGroup, ToggleButton } from "react-bootstrap";
 import Config from "../../../Config";
 import "./PowerBi.css";
 
@@ -15,6 +15,8 @@ export default function PublicReport() {
 
   const groupId = Config.pbiGroupId;
   const reportId = Config.pbiReportIdPublic;
+
+  const [tabValue, setTabValue] = useState("Connectivity");
 
   const reportTabs = [
     {
@@ -129,7 +131,7 @@ export default function PublicReport() {
 
   const setPage = async (pageName) => {
     if (!report) return;
-
+    setTabValue(pageName);
     const pages = await report.getPages();
     const newPage = pages.find((page) => page.displayName === pageName);
 
@@ -187,7 +189,11 @@ export default function PublicReport() {
   const reportButtons = (
     <div className="d-flex justify-content-center report-buttons my-4">
       {reportTabs.map((tab) => (
-        <Button type="Button" onClick={() => setPage(tab.pageName)}>
+        <Button
+          type="Button"
+          variant={tab.pageName === tabValue ? "primary" : "warning"}
+          onClick={() => setPage(tab.pageName)}
+        >
           {tab.label}
         </Button>
       ))}
