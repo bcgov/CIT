@@ -19,7 +19,7 @@ export default function UserStory() {
   const [who, setwho] = useState("");
   const [isYesButton, setIsYesButton] = useState(false);
   const [isNoButton, setIsNoButton] = useState(false);
-  const [redirectURL, setRedirectURL] = useState("");
+  const [redirectUrl, setRedirectUrl] = useState("");
   const [areaType, setAreaType] = useState("");
   const [areaFilterId, setAreaFilterId] = useState("");
   const [areaSearchFilter, setAreaSearchFilter] = useState("");
@@ -34,12 +34,12 @@ export default function UserStory() {
 
   const userName = keycloak ? keycloak.firstName : "";
 
-  const redirectPage = () => {
-    let path = redirectURL;
+  const redirectPage = (urlPath) => {
+    let path = urlPath;
 
-    if (redirectURL.includes("reportfilter")) {
+    if (urlPath && urlPath.includes("reportfilter")) {
       const areaFilter = encodeURIComponent(areaSearchFilter);
-      path = `${redirectURL}?${areaFilterId}=${areaFilter}`;
+      path = `${urlPath}?${areaFilterId}=${areaFilter}`;
 
       if (powerBiReports.length > 0) {
         const powerBiqs = `powerbi=${powerBiReports.join(",")}`;
@@ -116,9 +116,14 @@ export default function UserStory() {
       setAreaSearchFilter(param.label);
     }
 
+    if (param.code === "VIEWING-YES" || param.code === "DISCOVERING-YES") {
+      redirectPage(param.url);
+    }
+
     if (param && param.group === "who") {
       setwho(param);
     }
+
     const groupIndex = userOptions.findIndex((x) => x.group === param.group);
 
     let newUserOptions = [];
@@ -159,7 +164,7 @@ export default function UserStory() {
     if (userOption.code.includes("-YES") || isLastOption) {
       setIsYesButton(true);
       setIsNoButton(false);
-      setRedirectURL(param.url);
+      setRedirectUrl(param.url);
     } else {
       setIsYesButton(false);
       setIsNoButton(false);
@@ -220,7 +225,7 @@ export default function UserStory() {
       variant="primary"
       active
       className="bcgov-normal-blue user-story-button"
-      onClick={redirectPage}
+      onClick={() => redirectPage(redirectUrl)}
     >
       Let&apos;s Go <ArrowRight />
     </Button>
