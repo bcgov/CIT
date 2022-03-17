@@ -258,12 +258,7 @@ function App() {
                   title="Community Information Tool"
                   component={UserStory}
                 />
-                <AppRoute
-                  exact
-                  path="/reports/publicreport"
-                  title="Community Information Tool"
-                  component={PublicReport}
-                />
+
                 <AppRoute
                   exact
                   path="/reports/Compare"
@@ -275,6 +270,11 @@ function App() {
                   path="/reports/criteriasearch"
                   title="Community Information Tool"
                   component={CriteriaSearch}
+                />
+                <AppRoute
+                  path="/reports/publicreport"
+                  title="Community Information Tool"
+                  component={PublicReport}
                 />
                 <AppRoute
                   path="/datasources"
