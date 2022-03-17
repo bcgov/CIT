@@ -116,7 +116,11 @@ export default function UserStory() {
       setAreaSearchFilter(param.label);
     }
 
-    if (param.code === "VIEWING-YES" || param.code === "DISCOVERING-YES") {
+    if (
+      param.code === "VIEWING-YES" ||
+      param.code === "DISCOVERING-YES" ||
+      param.code === "PROMOTING-YES"
+    ) {
       redirectPage(param.url);
     }
 
