@@ -2,9 +2,9 @@
 
 name: User Tracking Email
 on:
-  push:
-    branches:
-      - CIT-121
+  schedule: 
+  # Every Month on the 1st 1am PST
+    - cron: "0 8 1 * *"
 jobs:
   run-prod-user-tracking:
     runs-on: ubuntu-latest
