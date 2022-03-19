@@ -10,7 +10,7 @@ from pipeline.importers.projects import import_projects
 from pipeline.importers.utils import (import_data_into_point_model, read_csv,
                                       import_civic_leaders_from_csv, get_databc_last_modified_date,
                                       import_services, get_openca_last_modified_date,
-                                      import_bc_assessment_data,import_housing)
+                                      import_bc_assessment_data,import_housing,import_nbdphhspeeds,import_phdemographicdistribution)
 
 FILES_DIR = settings.BASE_DIR
 
@@ -55,6 +55,10 @@ def import_resource(resource_type):
         import_projects(file_path)
     elif resource_type == "Housing_Data":
         import_housing(URL) 
+    elif resource_type == "phdemographicdistribution":
+        import_phdemographicdistribution(URL)    
+    elif resource_type == "NBDPHHSpeeds":
+        import_nbdphhspeeds(URL)
     elif resource_type in bca_resources:
         model_class = apps.get_model("pipeline", data_source.model_name)
         import_bc_assessment_data(file_path, model_class, resource_type)

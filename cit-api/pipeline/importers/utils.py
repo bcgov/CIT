@@ -28,10 +28,14 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from sqlalchemy import create_engine
 from pipeline.models.Housing_Data import Housing_Data
+from pipeline.models.general import NBDPHHSpeeds,PHDemographicDistribution
 from sqlalchemy.sql.expression import false
 import requests
 import io
 import pandas as pd
+from io import BytesIO
+from zipfile import ZipFile
+from urllib.request import urlopen
 
 RETRY_STRATEGY = Retry(total=3)
 ADAPTER = HTTPAdapter(max_retries=RETRY_STRATEGY)
@@ -716,7 +720,7 @@ def import_housing(URL):
             data.rename(columns={data.columns[0]:'census_subdivision_id'}, inplace=True)
             data.drop(data.columns[1], axis=1,inplace=True)
             data=data[(data['census_subdivision_id'].str.contains("[a-zA-Z]")==False) & (data['census_subdivision_id'].str.len() > 4)] 
-            data = data.melt(id_vars=['census_subdivision_id'], var_name='yearmonth', value_name='total_building_permits ')
+            data = data.melt(id_vars=['census_subdivision_id'], var_name='yearmonth', value_name='total_building_permits')
             data['census_subdivision_id'] = data['census_subdivision_id'].astype(str).astype(int64)
             data['month'] = data['yearmonth'].str.split('-').str[1]
             data['year'] = data['yearmonth'].str.split('-').str[0]
@@ -736,3 +740,58 @@ def import_housing(URL):
 
         except Exception as e:
             print(e)
+def import_phdemographicdistribution(URL):
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', "Upgrade-Insecure-Requests": "1","DNT": "1","Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","Accept-Language": "en-US,en;q=0.5","Accept-Encoding": "gzip, deflate"}
+    url = URL
+    s = requests.get(url,headers=headers)
+    if s.ok:
+        data1 = s.content.decode('utf8')
+        data = pd.read_csv(io.StringIO(data1))
+        data.drop('Pruid_Pridu', axis=1, inplace=True)
+        data.rename(
+    columns={data.columns[0]:"phh_id",data.columns[1]:"phh_type",
+            data.columns[2]:"population",data.columns[3]:"total_private_dwellings",
+            data.columns[4]:"private_dwellings_usual_residents_occupied",
+            data.columns[5]:"dbuid_ididu",
+            data.columns[6]:"hexuid_iduhex",
+            data.columns[7]:"Latitude",
+            data.columns[8]:"Longitude"}
+          ,inplace=True)
+        ##To Do create a function for database url
+        user = settings.DATABASES['default']['USER']
+        password = settings.DATABASES['default']['PASSWORD']
+        database_name = settings.DATABASES['default']['NAME']
+        Host = settings.DATABASES['default']['HOST']
+    
+        database_url = 'postgresql://{user}:{password}@{Host}:5432/{database_name}'.format(user=user,password=password,Host=Host,database_name=database_name )
+        engine = create_engine(database_url)
+        data.to_sql(PHDemographicDistribution._meta.db_table,if_exists = 'replace',con=engine,index=False)
+
+def import_nbdphhspeeds(URL):
+    url = URL
+    s = requests.get(url)
+    if s.ok:
+        resp = urlopen(url)
+        zipfile = ZipFile(BytesIO(resp.read()))
+        with zipfile.open("PHH_Speeds_Current-PHH_Vitesses_Actuelles_BC.csv") as f:
+            fields = ['PHH_ID','Combined_lt5_1_Combine','Combined_5_1_Combine','Combined_10_2_Combine','Combined_25_5_Combine','Combined_50_10_Combine']
+            PHH_BC = pd.read_csv(f, header=0, delimiter=",",usecols=fields)
+            PHH_BC.rename(
+    columns={PHH_BC.columns[0]:"phh_id",PHH_BC.columns[1]:"combined_lt5_1",PHH_BC.columns[2]:"combined_5_1",
+            PHH_BC.columns[3]:"combined_10_2",PHH_BC.columns[4]:"Combined_25_5",PHH_BC.columns[5]:"combined_50_10",}
+          ,inplace=True)
+        with zipfile.open("PHH_Speeds_Government_Support-PHH_Vitesses_Appui_Gouvernement_BC.csv") as f:
+            fields = ['PHH_ID','Combined_5_1_Combine']
+            PHH_Gov_Suup = pd.read_csv(f, delimiter=",",usecols=fields)
+            PHH_Gov_Suup.rename(
+    columns={PHH_Gov_Suup.columns[0]:"phh_id",PHH_Gov_Suup.columns[1]:"combined_5_1_gov_supp"}
+          ,inplace=True)
+        nbdphhspeeds =PHH_BC.merge(PHH_Gov_Suup, on='phh_id', how='left')
+        user = settings.DATABASES['default']['USER']
+        password = settings.DATABASES['default']['PASSWORD']
+        database_name = settings.DATABASES['default']['NAME']
+        Host = settings.DATABASES['default']['HOST']
+    
+        database_url = 'postgresql://{user}:{password}@{Host}:5432/{database_name}'.format(user=user,password=password,Host=Host,database_name=database_name )
+        engine = create_engine(database_url)
+        nbdphhspeeds.to_sql(NBDPHHSpeeds._meta.db_table,if_exists = 'replace',con=engine,index=False)
