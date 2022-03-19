@@ -41,7 +41,7 @@ class Command(BaseCommand):
         import_data_sources()
         #Ensure that the data sources are updated
         data_resources = DataSource.objects.filter(name__in=[
-            'tourism_regions', 'Housing_Data', 'municipalities',  'regional_districts', 'school_districts', 'tsunami_zones', 'wildfires_zones'
+            'NBDPHHSpeeds','phdemographicdistribution','tourism_regions', 'Housing_Data', 'municipalities',  'regional_districts', 'school_districts', 'tsunami_zones', 'wildfires_zones'
         ])
 
         for resource in data_resources:
