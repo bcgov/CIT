@@ -251,10 +251,6 @@ export default function PowerBi() {
         window.report
           .getPages()
           .then((data) => {
-            // const visuals = data[0].getVisuals().then((v) => {
-            //   const myVisuals = v;
-            //   console.log(myVisuals);
-            // });
             const commReport = data.filter(
               (report) => report.displayName === "Community Overview"
             );
@@ -404,7 +400,16 @@ export default function PowerBi() {
     ],
   ]);
 
-  const powerBiSettings1 = {
+  const powerBiSettings = {
+    layoutType: models.LayoutType.Custom,
+    customLayout: {
+      pageSize: {
+        type: models.PageSizeType.Custom,
+        width: "100%",
+        height: "100%",
+      },
+      displayOption: models.DisplayOption.FitToWidth,
+    },
     panes: {
       filters: {
         visible: false,
@@ -415,13 +420,13 @@ export default function PowerBi() {
     },
   };
 
-  const powerBiSettings = {
+  const powerBiSettingsCompare = {
     layoutType: models.LayoutType.Custom,
     customLayout: {
       pageSize: {
         type: models.PageSizeType.Custom,
-        width: "100%",
-        height: "100%",
+        width: 1280,
+        height: 2905,
       },
       displayOption: models.DisplayOption.FitToWidth,
     },
@@ -496,7 +501,7 @@ export default function PowerBi() {
 
   return embedToken && places ? (
     <>
-      <div id="embed-container">
+      <div>
         <div className="no-print cit-header">
           <ButtonLink
             variant="link"
@@ -514,71 +519,65 @@ export default function PowerBi() {
           </button>
         </div>
         <br />
-        <Container className="my-4">
+        <div className="report-container">
           {isCompareArea && (
             <>
-              <Row>
-                <PowerBIEmbed
-                  embedConfig={{
-                    type: "report",
-                    id: reportConfig.id,
-                    embedUrl: reportConfig.embedUrl,
-                    accessToken: embedToken,
-                    tokenType: models.TokenType.Embed,
-                    settings: { ...powerBiSettings },
-                  }}
-                  eventHandlers={socialEventHandlers}
-                  cssClassName="report-compare report-iframe"
-                  getEmbeddedComponent={(embeddedReport) => {
-                    window.report = embeddedReport;
-                  }}
-                />
-              </Row>
+              <PowerBIEmbed
+                embedConfig={{
+                  type: "report",
+                  id: reportConfig.id,
+                  embedUrl: reportConfig.embedUrl,
+                  accessToken: embedToken,
+                  tokenType: models.TokenType.Embed,
+                  settings: { ...powerBiSettingsCompare },
+                }}
+                eventHandlers={socialEventHandlers}
+                cssClassName="report-compare report-iframe"
+                getEmbeddedComponent={(embeddedReport) => {
+                  window.report = embeddedReport;
+                }}
+              />
             </>
           )}
           {isCriteriaSearch && (
             <>
-              <Row>
-                <PowerBIEmbed
-                  embedConfig={{
-                    type: "report",
-                    id: reportConfig.id,
-                    embedUrl: reportConfig.embedUrl,
-                    accessToken: embedToken,
-                    tokenType: models.TokenType.Embed,
-                    settings: { ...powerBiSettings },
-                  }}
-                  eventHandlers={economicEventHandlers}
-                  cssClassName="report-criteria-search report-iframe"
-                  getEmbeddedComponent={(embeddedReport) => {
-                    window.report = embeddedReport;
-                  }}
-                />
-              </Row>
+              <PowerBIEmbed
+                embedConfig={{
+                  type: "report",
+                  id: reportConfig.id,
+                  embedUrl: reportConfig.embedUrl,
+                  accessToken: embedToken,
+                  tokenType: models.TokenType.Embed,
+                  settings: { ...powerBiSettings },
+                }}
+                eventHandlers={economicEventHandlers}
+                cssClassName="report-criteria-search report-iframe"
+                getEmbeddedComponent={(embeddedReport) => {
+                  window.report = embeddedReport;
+                }}
+              />
             </>
           )}
           {!isCompareArea && !isCriteriaSearch && (
             <>
-              <Row>
-                <PowerBIEmbed
-                  embedConfig={{
-                    type: "report",
-                    id: reportConfig.id,
-                    embedUrl: reportConfig.embedUrl,
-                    accessToken: embedToken,
-                    tokenType: models.TokenType.Embed,
-                    settings: { ...powerBiSettingsWithTabs },
-                  }}
-                  eventHandlers={withTabsEventHandlers}
-                  cssClassName="report-with-tabs report-iframe"
-                  getEmbeddedComponent={(embeddedReport) => {
-                    window.report = embeddedReport;
-                  }}
-                />
-              </Row>
+              <PowerBIEmbed
+                embedConfig={{
+                  type: "report",
+                  id: reportConfig.id,
+                  embedUrl: reportConfig.embedUrl,
+                  accessToken: embedToken,
+                  tokenType: models.TokenType.Embed,
+                  settings: { ...powerBiSettingsWithTabs },
+                }}
+                eventHandlers={withTabsEventHandlers}
+                cssClassName="report-with-tabs report-iframe"
+                getEmbeddedComponent={(embeddedReport) => {
+                  window.report = embeddedReport;
+                }}
+              />
             </>
           )}
-        </Container>
+        </div>
       </div>
       <Modal
         show={show}

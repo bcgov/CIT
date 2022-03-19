@@ -16,6 +16,7 @@ from django.utils.timezone import make_aware
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 
 from pipeline.constants import WGS84_SRID
+from pipeline.models.tourism_region import TourismRegion
 from pipeline.models.community import Community
 from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.models.census_economic_region import CensusEconomicRegion
@@ -111,6 +112,10 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
     elif resource_type == 'Census Division':
         instance, created = Model.objects.get_or_create(
             census_division_id=row['CENSUS_DIVISION_ID'])
+
+    elif resource_type == 'Tourism Regions':
+        instance, created = Model.objects.get_or_create(
+            tourism_region_id=row['TOURISM_REGION_ID'])
     else:
         name_fields = Model.NAME_FIELD.split(",")
         name = ", ".join([str(row[name_field]) for name_field in name_fields])

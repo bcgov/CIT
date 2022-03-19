@@ -3,21 +3,23 @@ import { Container, Button, Row, Col } from "react-bootstrap";
 import { ArrowRight } from "react-bootstrap-icons";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+
 import "../HomePage/HomePage.scss";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getOptions, setOptions } from "../../../store/actions/options";
 import { userStoryPaths } from "../../../data/userStoryPaths.json";
-
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import "./UserStory.css";
 import UserStoryItem from "../../UserStoryItem/UserStoryItem";
 
 export default function UserStory() {
   let loading = false;
   const [userOptions, setAllOptions] = useState([]);
+  const [who, setwho] = useState("");
   const [isYesButton, setIsYesButton] = useState(false);
   const [isNoButton, setIsNoButton] = useState(false);
-  const [redirectURL, setRedirectURL] = useState("");
+  const [redirectUrl, setRedirectUrl] = useState("");
   const [areaType, setAreaType] = useState("");
   const [areaFilterId, setAreaFilterId] = useState("");
   const [areaSearchFilter, setAreaSearchFilter] = useState("");
@@ -25,15 +27,19 @@ export default function UserStory() {
   const [communities, setCommunities] = useState(null);
   const [regionals, setRegionals] = useState(null);
 
+  const keycloak = useKeycloakWrapper();
+
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const redirectPage = () => {
-    let path = redirectURL;
+  const userName = keycloak ? keycloak.firstName : "";
 
-    if (redirectURL.includes("reportfilter")) {
+  const redirectPage = (urlPath) => {
+    let path = urlPath;
+
+    if (urlPath && urlPath.includes("reportfilter")) {
       const areaFilter = encodeURIComponent(areaSearchFilter);
-      path = `${redirectURL}?${areaFilterId}=${areaFilter}}`;
+      path = `${urlPath}?${areaFilterId}=${areaFilter}`;
 
       if (powerBiReports.length > 0) {
         const powerBiqs = `powerbi=${powerBiReports.join(",")}`;
@@ -110,6 +116,18 @@ export default function UserStory() {
       setAreaSearchFilter(param.label);
     }
 
+    if (
+      param.code === "VIEWING-YES" ||
+      param.code === "DISCOVERING-YES" ||
+      param.code === "PROMOTING-YES"
+    ) {
+      redirectPage(param.url);
+    }
+
+    if (param && param.group === "who") {
+      setwho(param);
+    }
+
     const groupIndex = userOptions.findIndex((x) => x.group === param.group);
 
     let newUserOptions = [];
@@ -135,7 +153,10 @@ export default function UserStory() {
     }
 
     let replaceText = userOption.preText;
-    replaceText = replaceText.replace("{AREA-TYPE-1}", userOption.label);
+    replaceText = replaceText.replace(
+      "{AREA-TYPE-1}",
+      userOption.label.slice(0, -1)
+    );
     replaceText = replaceText.replace("{AREA-TYPE-2}", areaType);
     replaceText = replaceText.replace("{AREA-SEARCH-FILTER}", param.label);
     userOption.postText = replaceText;
@@ -146,56 +167,71 @@ export default function UserStory() {
 
     if (userOption.code.includes("-YES") || isLastOption) {
       setIsYesButton(true);
-      setIsNoButton(true);
-      setRedirectURL(param.url);
+      setIsNoButton(false);
+      setRedirectUrl(param.url);
     } else {
       setIsYesButton(false);
       setIsNoButton(false);
     }
     if (userOption.code.includes("-NO")) {
-      setIsNoButton(true);
-      setIsYesButton(false);
+      const isNo = userOption.user_story_paths.find((x) =>
+        x.code.includes("-NO")
+      );
+      if (isNo) {
+        setIsNoButton(true);
+        setIsYesButton(false);
+      }
     }
+  };
+
+  const handleIsNo = () => {
+    handleUserStoryChange(who);
   };
 
   const header = (
     <>
-      <h3>Hi, welcome to our Community Information Tool</h3>
+      <h3>
+        Hi{userName ? " " : ""}
+        {userName}, welcome to our Community Information Tool
+      </h3>
       <p>
         The Community Information Tool offers insight into communities across
         B.C. with integrated socio-economic data, infrastructure, and community
         assets data. The Tool supports community, regional, and province-wide
         planning, which is essential to building thriving, healthy communities.
       </p>
-      <h3>
-        Tell us a bit more about you and we will help you get to info that is
-        relevant to you
-      </h3>
     </>
+  );
+
+  const resetButton = (
+    <Button
+      variant="outline-primary"
+      className="user-story-button"
+      onClick={resetUserStory}
+    >
+      Reset Search Criteria
+    </Button>
   );
 
   const noButton = (
     <Button
       variant="outline-primary"
-      size="lg"
-      className="mr-4"
-      onClick={resetUserStory}
+      className="user-story-button"
+      onClick={handleIsNo}
+      active
     >
-      {" "}
-      Reset Search Criteria
+      Ok
     </Button>
   );
 
   const yesButton = (
     <Button
       variant="primary"
-      size="lg"
       active
-      className="mr-5 bcgov-normal-blue modal-save-button btn"
-      onClick={redirectPage}
+      className="bcgov-normal-blue user-story-button"
+      onClick={() => redirectPage(redirectUrl)}
     >
-      {" "}
-      View Results <ArrowRight />
+      Let&apos;s Go <ArrowRight />
     </Button>
   );
 
@@ -205,12 +241,9 @@ export default function UserStory() {
         <Row>
           <Col sm={12}>{header}</Col>
         </Row>
-      </Container>
-
-      <Container className="mt-2 your-story your-story-elements">
         <Row>
           <Col sm={9}>
-            <Container className="mt-2 your-story your-story-elements">
+            <Container className="your-story your-story-elements">
               <Row>
                 {userOptions.map((story) => (
                   <UserStoryItem
@@ -220,12 +253,16 @@ export default function UserStory() {
                   />
                 ))}
               </Row>
-              {(isNoButton || isYesButton) && (
+              {isYesButton && (
                 <>
-                  <Row className="mt-5">
-                    {isNoButton && noButton}
-                    {isYesButton && yesButton}
+                  <Row className="section-break">
+                    {resetButton} {yesButton}
                   </Row>
+                </>
+              )}
+              {isNoButton && (
+                <>
+                  <Row className="section-break">{noButton}</Row>
                 </>
               )}
             </Container>

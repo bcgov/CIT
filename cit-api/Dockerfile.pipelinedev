@@ -1,0 +1,92 @@
+FROM mcr.microsoft.com/azure-cli AS az
+
+ARG AZURE_STORAGE_ACCOUNT_KEY
+RUN mkdir /datafiles
+WORKDIR /datafiles
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data \
+             --name census_divisions.zip \
+             --file census_divisions.zip \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data \
+             --name BC_Roads.zip \
+             --file BC_Roads.zip \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data \
+             --name hexbc.kml \
+             --file hexbc.kml \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data \
+             --name COMMUNITIES_V6.csv \
+             --file COMMUNITIES_V6.csv \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data \
+             --name ISP_Hex_FSI.csv \
+             --file ISP_Hex_FSI.csv \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data \
+             --name FNHA_data.csv \
+             --file FNHA_data.csv \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data/bc_assessment \
+             --name bca_summary_by_cd_use.csv \
+             --file bca_summary_by_cd_use.csv \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data/bc_assessment \
+             --name bca_summary_by_csd_use.csv \
+             --file bca_summary_by_csd_use.csv \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data/bc_assessment \
+             --name bca_summary_by_er_use.csv \
+             --file bca_summary_by_er_use.csv \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
+FROM python:3.6
+ENV PYTHONUNBUFFERED 1
+
+RUN apt-get update && apt-get install -y libproj-dev gdal-bin libpq-dev libpython3-dev build-essential
+
+RUN mkdir /code
+WORKDIR /code
+COPY requirements.txt /code/
+RUN pip install -r requirements.txt
+COPY . .
+
+COPY --from=az datafiles /code/data
+RUN python3 manage.py collectstatic --noinput
+
+CMD /bin/sh ./entrypoint.pipeline.sh

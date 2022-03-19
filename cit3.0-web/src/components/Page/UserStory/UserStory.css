@@ -29,21 +29,41 @@
 }
 
 h3 {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    flex-basis: 100%;
     font-size:1em; 
     line-height: 1.4;
+    font-weight: bold;
+    margin-top: 8px;
 }
 
 p {
     margin-top: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 2px;
+    line-height: 1.4;
 }
 
 .break {
     flex-basis: 100%;
     height: 0;
+    margin: 0;
   }
+
+.line-break {
+    flex-basis: 100%;
+    margin-top: 2px;
+}
+
+.select-break {
+    flex-basis: 100%;
+    margin-top: 12px;
+}
+
+.section-break {
+    flex-basis: 100%;
+    margin-top: 18px;
+}
+
+
   
 .user-story-label {
     margin-top: 6px;
@@ -54,4 +74,22 @@ p {
     color: #376fa3 !important;
     font-weight: bold;
     font-size: 1.2rem;
+}
+
+button {
+	border: 0;
+	border-radius: 5px;
+	color: #FFFFFF;
+	font-size: medium;
+	margin-right: 15px;
+    height: 40px;
+    font-weight: bold;
+}
+
+.user-story-button {
+    height: 40px;
+    font-weight: bold !important;
+    font-size: 16px;
+    padding-right: 15px;
+    padding-left: 15px;
 }

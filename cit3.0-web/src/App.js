@@ -33,6 +33,8 @@ import UserManagementDashboard from "./components/Page/UserManagement/UserManage
 
 import PowerBi from "./components/Page/PowerBi/PowerBi";
 import PublicReport from "./components/Page/PowerBi/PublicReport";
+import Compare from "./components/Page/PowerBi/Compare";
+import CriteriaSearch from "./components/Page/PowerBi/CriteriaSearch";
 import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
 import HomePage from "./components/Page/HomePage/HomePage";
@@ -255,6 +257,19 @@ function App() {
                   path="/userstory"
                   title="Community Information Tool"
                   component={UserStory}
+                />
+
+                <AppRoute
+                  exact
+                  path="/reports/Compare"
+                  title="Community Information Tool"
+                  component={Compare}
+                />
+                <AppRoute
+                  exact
+                  path="/reports/criteriasearch"
+                  title="Community Information Tool"
+                  component={CriteriaSearch}
                 />
                 <AppRoute
                   path="/reports/publicreport"

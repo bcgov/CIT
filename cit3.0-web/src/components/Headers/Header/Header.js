@@ -24,6 +24,9 @@ const Header = () => {
     if (location.pathname.includes("/userstory")) {
       return "Community Information Tool";
     }
+    if (location.pathname.includes("/reports")) {
+      return "Community Information Tool";
+    }
     return "";
   };
 

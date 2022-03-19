@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Button } from "react-bootstrap";
+import { Container, Button, ButtonGroup, ToggleButton } from "react-bootstrap";
 import Config from "../../../Config";
 import "./PowerBi.css";
 
@@ -16,16 +16,18 @@ export default function PublicReport() {
   const groupId = Config.pbiGroupId;
   const reportId = Config.pbiReportIdPublic;
 
+  const [tabValue, setTabValue] = useState("Connectivity");
+
   const reportTabs = [
     {
       pageName: "Connectivity",
       label: "Connectivity",
       isLoginRequired: null,
-      isDefault: null,
+      isDefault: true,
     },
     {
       pageName: "Assets & Infrastructure",
-      label: "Assets and Insfrastracture",
+      label: "Infrastructure",
       isLoginRequired: null,
       isDefault: null,
     },
@@ -36,21 +38,9 @@ export default function PublicReport() {
       isDefault: null,
     },
     {
-      pageName: "Census",
-      label: "Census",
-      isLoginRequired: null,
-      isDefault: true,
-    },
-    {
       pageName: "Social",
       label: "Social",
       isLoginRequired: null,
-      isDefault: null,
-    },
-    {
-      pageName: "BC Assessment",
-      label: "BC Assessment",
-      isLoginRequired: true,
       isDefault: null,
     },
   ];
@@ -60,9 +50,10 @@ export default function PublicReport() {
     customLayout: {
       pageSize: {
         type: models.PageSizeType.Custom,
-        width: 1280,
+        width: 1200,
+        height: "100%",
       },
-      displayOption: models.DisplayOption.FitToWidth,
+      displayOption: models.DisplayOption.FitToPage,
     },
     panes: {
       filters: {
@@ -87,24 +78,24 @@ export default function PublicReport() {
   );
 
   const getReportConfig = async () => {
-    const reportConfigResponse = await axios.get(
+    const response = await axios.get(
       `https://api.powerbi.com/v1.0/myorg/groups/${groupId}/reports/${reportId}`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    return reportConfigResponse.data;
+    return response.data;
   };
 
   const getReportToken = async () => {
-    const reportToken = await axios.post(
+    const response = await axios.post(
       `https://api.powerbi.com/v1.0/myorg/groups/${groupId}/reports/${reportId}/GenerateToken`,
       { accessLevel: "view" },
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
-    return reportToken.data.token;
+    return response.data.token;
   };
 
   const eventHandlersMap = new Map([
@@ -140,7 +131,7 @@ export default function PublicReport() {
 
   const setPage = async (pageName) => {
     if (!report) return;
-
+    setTabValue(pageName);
     const pages = await report.getPages();
     const newPage = pages.find((page) => page.displayName === pageName);
 
@@ -156,7 +147,7 @@ export default function PublicReport() {
 
   const querystring = useQuery();
 
-  const zoneFilter = () => {
+  const reportFilter = () => {
     const regionalDistrictsFilter = querystring.get("regionaldistricts");
 
     if (!regionalDistrictsFilter || regionalDistrictsFilter.length === 0)
@@ -192,13 +183,17 @@ export default function PublicReport() {
   const setReportFilter = async () => {
     if (!report) return;
 
-    await report.setFilters(zoneFilter());
+    await report.setFilters(reportFilter());
   };
 
   const reportButtons = (
     <div className="d-flex justify-content-center report-buttons my-4">
       {reportTabs.map((tab) => (
-        <Button type="Button" onClick={() => setPage(tab.pageName)}>
+        <Button
+          type="Button"
+          variant={tab.pageName === tabValue ? "primary" : "warning"}
+          onClick={() => setPage(tab.pageName)}
+        >
           {tab.label}
         </Button>
       ))}
@@ -226,17 +221,17 @@ export default function PublicReport() {
 
   return (
     <>
-      <div className={showReport ? "" : "hide-section"}>
+      <Container className={showReport ? "" : "hide-section"} fluid>
         {reportButtons}
         <PowerBIEmbed
           embedConfig={embedReportConfig}
           eventHandlers={eventHandlersMap}
-          cssClassName="report-style"
+          cssClassName="report-container report-iframe"
           getEmbeddedComponent={(embedObject) => {
             setReport(embedObject);
           }}
         />
-      </div>
+      </Container>
     </>
   );
 }
