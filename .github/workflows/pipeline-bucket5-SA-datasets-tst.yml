@@ -1,10 +1,7 @@
-name: Data Pipeline - Bucket 5 semiannually
+name: Data Pipeline - Bucket 5 semiannually Test
 on:
-  #schedule:
-  #  - cron: "0 0 1 */6 *" 
-  push:
-    branches:
-      - CIT-77-bucket5-refactor
+  schedule:
+    - cron: "0 0 1 */6 *"
 env: 
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
@@ -64,6 +61,7 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build
+        
   run-customs-port-of-entry:
     runs-on: ubuntu-latest
     steps:
