@@ -10,7 +10,7 @@ from pipeline.importers.projects import import_projects
 from pipeline.importers.utils import (import_data_into_point_model, read_csv,
                                       import_civic_leaders_from_csv, get_databc_last_modified_date,
                                       import_services, get_openca_last_modified_date,
-                                      import_bc_assessment_data,import_housing,import_nbdphhspeeds,import_phdemographicdistribution)
+                                      import_bc_assessment_data,import_housing,import_census_subdivision_linkage,import_nbdphhspeeds,import_phdemographicdistribution)
 
 FILES_DIR = settings.BASE_DIR
 
@@ -53,6 +53,8 @@ def import_resource(resource_type):
         import_services(file_path)
     elif resource_type == "projects":
         import_projects(file_path)
+    elif resource_type == "LinkageWithCensus":
+        import_census_subdivision_linkage(file_path)
     elif resource_type == "Housing_Data":
         import_housing(URL) 
     elif resource_type == "phdemographicdistribution":

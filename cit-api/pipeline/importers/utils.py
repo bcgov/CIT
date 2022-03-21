@@ -16,6 +16,7 @@ from django.utils.timezone import make_aware
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 
 from pipeline.constants import WGS84_SRID
+from pipeline.models import LinkageWithCensus
 from pipeline.models.tourism_region import TourismRegion
 from pipeline.models.community import Community
 from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
@@ -641,6 +642,28 @@ def import_community_descriptions():
 
             community.save()
 
+def write_to_db(Model, data):
+    user = settings.DATABASES['default']['USER']
+    password = settings.DATABASES['default']['PASSWORD']
+    database_name = settings.DATABASES['default']['NAME']
+    Host = settings.DATABASES['default']['HOST']
+    database_url = 'postgresql://{user}:{password}@{Host}:5432/{database_name}'.format(user=user,password=password,Host=Host,database_name=database_name )
+    engine = create_engine(database_url)
+    data.to_sql(Model._meta.db_table,if_exists = 'replace',con=engine,index=False)
+
+def import_census_subdivision_linkage(linkage_file):
+    data = pd.read_csv(linkage_file)
+    data.rename(
+    columns={data.columns[0]:"census_subdivision_id",
+             data.columns[1]:"tourism_region_id",
+             data.columns[2]:"regional_district_id",
+             data.columns[3]:"economic_region_id",
+             data.columns[4]:"bc_fire_zone_id",
+             data.columns[5]:"tsunami_notification_zone_id",
+             data.columns[7]:"health_authority_id",
+             data.columns[8]:"school_district_id"},inplace=True)
+    data.drop('LOCAL_HLTH_AREA_CODE', axis=1, inplace=True)
+    write_to_db(LinkageWithCensus, data)
 
 def _generate_geom(feat, srid=None):
     """
