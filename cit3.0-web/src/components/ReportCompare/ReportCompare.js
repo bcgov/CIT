@@ -111,7 +111,7 @@ export default function ReportCompare() {
         <PowerBIEmbed
           embedConfig={embedReportConfig}
           eventHandlers={eventHandlersMap}
-          cssClassName="report-container"
+          cssClassName="report-compare-container"
           getEmbeddedComponent={(embedObject) => {
             setReport(embedObject);
           }}

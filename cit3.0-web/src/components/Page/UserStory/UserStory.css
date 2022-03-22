@@ -28,7 +28,6 @@
     margin: 0;
 }
 
-
 .user-story-image {
     min-height: 100vh !important;
     width: 50vw;
@@ -38,7 +37,8 @@
 .x-smaller-section-border  {
     border: solid 1px #FCBA19;
     border-radius: 5px;
-    padding: 0px 20px ;
+    padding: 1px 20px ;
+    margin: 1px;
 }
 
 .x-smaller-section, .x-smaller-section div.section-break, .x-smaller-section div.select-break  {
@@ -73,7 +73,6 @@ p, h3 {
     display:flex;
     flex-wrap: wrap;
 }
-
 
 .line-break  p,   .line-break div {
     flex-basis: 100%;

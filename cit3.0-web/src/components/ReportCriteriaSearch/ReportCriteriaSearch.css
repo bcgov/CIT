@@ -1,14 +1,17 @@
-.report-container {
-    height: calc(100vh - 120em);
-    width: 99vw;
-    padding: 0!important;
-    margin: 0 auto !important;
+.report-criteria-search-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 99vh !important;
+    width: 99% !important;;
+    min-width: 960px;
+    max-width: 1340px;
+    margin:0 auto;
 }
 
-.report-container iframe {
-    position: absolute;
-    top:0;
-    bottom:0;
+.report-criteria-search-container iframe {
+    height: 99vh !important;
+    width: 99% !important;
     border: none;
     padding: 4px 2px !important;
     margin: 2px 2px !important;

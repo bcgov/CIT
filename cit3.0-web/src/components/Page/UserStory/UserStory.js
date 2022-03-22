@@ -241,7 +241,7 @@ export default function UserStoryV2() {
 
   return (
     <>
-      <div className="my-4 top-container">
+      <Container className="my-4 top-container">
         <div className={showReport ? "x-smaller-section-border" : ""}>
           <div className={showReport ? "x-smaller-section" : ""}>
             {showUserStoryText && <Row>{header}</Row>}
@@ -293,7 +293,7 @@ export default function UserStoryV2() {
             </div>
           </>
         )}
-      </div>
+      </Container>
     </>
   );
 }

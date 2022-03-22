@@ -111,7 +111,7 @@ export default function ReportCriteriaSearch() {
         <PowerBIEmbed
           embedConfig={embedReportConfig}
           eventHandlers={eventHandlersMap}
-          cssClassName="report-overview-container"
+          cssClassName="report-criteria-search-container"
           getEmbeddedComponent={(embedObject) => {
             setReport(embedObject);
           }}

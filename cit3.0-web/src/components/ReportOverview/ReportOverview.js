@@ -221,7 +221,7 @@ export default function ReportOverview() {
 
   return (
     <>
-      <div className="powerbi-container">
+      <div className="powerbi-overview-container">
         <div>{reportButtons}</div>
         <PowerBIEmbed
           embedConfig={embedReportConfig}
