@@ -1,10 +1,14 @@
-# This workflow will build a new container running the census dataset
+# This workflow will build a new container running the datasets in Bucket 7
 
-name: Data Pipeline Bucket 1 - Census
+name: Data Pipeline Bucket 7 - 
+#on:
+#  workflow_dispatch:
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - data-pipeline-cleanup
 env: 
-  BUCKET_COMMAND: bucket_1
+  BUCKET_COMMAND: bucket_7
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   run-test:
@@ -13,7 +17,7 @@ jobs:
       # checkout the repo
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master
-
+        
       - name: "Generate env file"
         run: |
             echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
@@ -25,6 +29,7 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+
   run-prod:
     runs-on: ubuntu-latest
     steps:
