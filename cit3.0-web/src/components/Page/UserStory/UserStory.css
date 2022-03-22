@@ -1,42 +1,63 @@
-.your-story {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-left: auto;
-    margin-right: auto;
+.top-container {
     font-family: BCSans;
-    font-size:1em; 
-    min-width: 0;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 99%;
+    min-width: 960px;
+    max-width: 1340px;
+    margin:0 auto;
 }
 
-.your-story-image {
+.user-story-container {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    font-family: BCSans;
+    width: 99%;
+    min-width: 960px;
+    max-width: 1340px;
+    margin:0 auto;
+    font-size:1em; 
+}
+
+.report-section  {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+}
+
+
+.user-story-image {
     min-height: 100vh !important;
     width: 50vw;
     margin-right: 0;
 }
 
-.smaller-page {
-    -webkit-transform:scale(0.67);
-    -moz-transform:scale(0.67);
-    -ms-transform:scale(0.67);
-    transform:scale(0.67);
-    -ms-transform-origin:0 0;
-    -webkit-transform-origin:0 0;
-    -moz-transform-origin:0 0;
-    transform-origin:0 0;
+.x-smaller-section-border  {
+    border: solid 1px #FCBA19;
+    border-radius: 5px;
+    padding: 0px 20px ;
+}
+
+.x-smaller-section, .x-smaller-section div.section-break, .x-smaller-section div.select-break  {
+    margin: 1px 2px  !important;
+    padding: 1px 2px !important;
+    font-size: smaller;
+}
+
+.x-smaller-section button {
+    height: 28px;
+    font-size: smaller;
 }
 
 h3 {
     flex-basis: 100%;
-    font-size:1em; 
-    line-height: 1.4;
-    font-weight: bold;
-    margin-top: 8px;
 }
 
-p {
+p, h3 {
+    font-size:1em; 
     margin-top: 8px;
     margin-bottom: 2px;
     line-height: 1.4;
@@ -47,8 +68,14 @@ p {
     height: 0;
     margin: 0;
   }
-
+  
 .line-break {
+    display:flex;
+    flex-wrap: wrap;
+}
+
+
+.line-break  p,   .line-break div {
     flex-basis: 100%;
     margin-top: 2px;
 }
@@ -63,8 +90,6 @@ p {
     margin-top: 18px;
 }
 
-
-  
 .user-story-label {
     margin-top: 6px;
     margin-right: 6px;
@@ -93,3 +118,4 @@ button {
     padding-right: 15px;
     padding-left: 15px;
 }
+

@@ -1,0 +1,18 @@
+.report-container {
+    height: calc(100vh - 120em);
+    width: 99vw;
+    padding: 0!important;
+    margin: 0 auto !important;
+}
+
+.report-container iframe {
+    position: absolute;
+    top:0;
+    bottom:0;
+    border: none;
+    padding: 4px 2px !important;
+    margin: 2px 2px !important;
+}
+
+
+

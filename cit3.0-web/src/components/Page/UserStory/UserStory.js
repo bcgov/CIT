@@ -3,6 +3,7 @@ import { Container, Button, Row, Col } from "react-bootstrap";
 import { ArrowRight } from "react-bootstrap-icons";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import ReactHtmlParser from "react-html-parser";
 
 import "../HomePage/HomePage.scss";
 
@@ -12,18 +13,23 @@ import { userStoryPaths } from "../../../data/userStoryPaths.json";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import "./UserStory.css";
 import UserStoryItem from "../../UserStoryItem/UserStoryItem";
+import ReportOverview from "../../ReportOverview/ReportOverview";
+import ReportCompare from "../../ReportCompare/ReportCompare";
+import ReportCriteriaSearch from "../../ReportCriteriaSearch/ReportCriteriaSearch";
 
-export default function UserStory() {
+export default function UserStoryV2() {
   let loading = false;
   const [userOptions, setAllOptions] = useState([]);
-  const [who, setwho] = useState("");
-  const [isYesButton, setIsYesButton] = useState(false);
-  const [isNoButton, setIsNoButton] = useState(false);
+  const [showUserStoryText, setShowUserStoryText] = useState(true);
+  const [showReport, setShowReport] = useState(false);
+  const [who, setWho] = useState("");
+  const [isGoButton, setIsGoButton] = useState(false);
+  const [isOkButton, setIsOkButton] = useState(false);
   const [redirectUrl, setRedirectUrl] = useState("");
   const [areaType, setAreaType] = useState("");
   const [areaFilterId, setAreaFilterId] = useState("");
   const [areaSearchFilter, setAreaSearchFilter] = useState("");
-  const [powerBiReports, setPowerBiReports] = useState([]);
+  const [powerBiReport, setPowerBiReport] = useState(null);
   const [communities, setCommunities] = useState(null);
   const [regionals, setRegionals] = useState(null);
 
@@ -34,19 +40,16 @@ export default function UserStory() {
 
   const userName = keycloak ? keycloak.firstName : "";
 
-  const redirectPage = (urlPath) => {
-    let path = urlPath;
+  const showResult = (urlPath) => {
+    if (!urlPath) return;
 
-    if (urlPath && urlPath.includes("reportfilter")) {
-      const areaFilter = encodeURIComponent(areaSearchFilter);
-      path = `${urlPath}?${areaFilterId}=${areaFilter}`;
-
-      if (powerBiReports.length > 0) {
-        const powerBiqs = `powerbi=${powerBiReports.join(",")}`;
-        path = `${path}&${powerBiqs}`;
-      }
+    if (urlPath && urlPath.includes("powerbi")) {
+      setPowerBiReport(urlPath);
+      setShowUserStoryText(false);
+      setShowReport(true);
+      return;
     }
-    history.push(path);
+    history.push(urlPath);
   };
 
   const regionalDistricts = useSelector(
@@ -82,50 +85,44 @@ export default function UserStory() {
 
   useEffect(() => {
     const option = userStoryPaths.find((x) => x.code === "START");
-    option.postText = option.preText;
+    option.preTextLabel = option.preText;
     setAllOptions([option]);
   }, []);
 
   const resetUserStory = () => {
     const options = userStoryPaths.find((x) => x.code === "START");
     setAllOptions([options]);
-    setIsNoButton(false);
-    setIsYesButton(false);
+    setIsOkButton(false);
+    setIsGoButton(false);
   };
 
   const handleUserStoryChange = (e) => {
     let param;
 
     if (e.length === 0) {
-      setIsNoButton(false);
-      setIsYesButton(false);
+      setIsOkButton(false);
+      setIsGoButton(false);
       return;
     }
 
     if (Array.isArray(e)) {
-      setPowerBiReports(e.map((x) => x.value.toLowerCase()));
       param = e.find((x, index) => index < 1);
     } else {
       param = e;
     }
 
     if (param && !param.code) {
-      param.code = "AREA-TYPE-LIST-YES";
-      param.group = "area-type-list";
-      param.url = "reports/publicreport/reportfilter";
+      const zone = userStoryPaths.find((x) => x.group === "zone-type-list");
+      if (zone) {
+        param.code = zone.code;
+        param.group = zone.group;
+        param.url = zone.url;
+      }
       setAreaSearchFilter(param.label);
     }
 
-    if (
-      param.code === "VIEWING-YES" ||
-      param.code === "DISCOVERING-YES" ||
-      param.code === "PROMOTING-YES"
-    ) {
-      redirectPage(param.url);
-    }
-
     if (param && param.group === "who") {
-      setwho(param);
+      setWho(param);
     }
 
     const groupIndex = userOptions.findIndex((x) => x.group === param.group);
@@ -139,7 +136,7 @@ export default function UserStory() {
 
     const userOption = userStoryPaths.find((x) => x.code === param.code);
 
-    if (param.group === "area") {
+    if (param.group === "zone") {
       setAreaType(userOption.label);
       setAreaFilterId(userOption.code.toLowerCase());
     }
@@ -154,37 +151,44 @@ export default function UserStory() {
 
     let replaceText = userOption.preText;
     replaceText = replaceText.replace(
-      "{AREA-TYPE-1}",
+      "{ZONE-TYPE-1}",
       userOption.label.slice(0, -1)
     );
-    replaceText = replaceText.replace("{AREA-TYPE-2}", areaType);
-    replaceText = replaceText.replace("{AREA-SEARCH-FILTER}", param.label);
-    userOption.postText = replaceText;
+    replaceText = replaceText.replace("{ZONE-TYPE-2}", areaType);
+    replaceText = replaceText.replace("{ZONE-SEARCH-FILTER}", param.label);
+    userOption.preTextLabel = replaceText;
 
     setAllOptions([...newUserOptions, userOption]);
 
+    if (param.code.includes("-YES")) {
+      setIsOkButton(false);
+      showResult(param.url);
+      return;
+    }
+
     const isLastOption = userOption.user_story_paths.length < 2;
 
-    if (userOption.code.includes("-YES") || isLastOption) {
-      setIsYesButton(true);
-      setIsNoButton(false);
+    if (userOption.code.includes("-GO") || isLastOption) {
+      setIsGoButton(true);
+      setIsOkButton(false);
       setRedirectUrl(param.url);
     } else {
-      setIsYesButton(false);
-      setIsNoButton(false);
+      setIsGoButton(false);
+      setIsOkButton(false);
     }
+
     if (userOption.code.includes("-NO")) {
       const isNo = userOption.user_story_paths.find((x) =>
         x.code.includes("-NO")
       );
       if (isNo) {
-        setIsNoButton(true);
-        setIsYesButton(false);
+        setIsOkButton(true);
+        setIsGoButton(false);
       }
     }
   };
 
-  const handleIsNo = () => {
+  const handleIsOk = () => {
     handleUserStoryChange(who);
   };
 
@@ -213,23 +217,23 @@ export default function UserStory() {
     </Button>
   );
 
-  const noButton = (
+  const okButton = (
     <Button
       variant="outline-primary"
       className="user-story-button"
-      onClick={handleIsNo}
+      onClick={handleIsOk}
       active
     >
       Ok
     </Button>
   );
 
-  const yesButton = (
+  const goButton = (
     <Button
       variant="primary"
       active
-      className="bcgov-normal-blue user-story-button"
-      onClick={() => redirectPage(redirectUrl)}
+      className="user-story-button"
+      onClick={() => showResult(redirectUrl)}
     >
       Let&apos;s Go <ArrowRight />
     </Button>
@@ -237,47 +241,59 @@ export default function UserStory() {
 
   return (
     <>
-      <Container className="mt-4 your-story your-story-elements">
-        <Row>
-          <Col sm={12}>{header}</Col>
-        </Row>
-        <Row>
-          <Col sm={9}>
-            <Container className="your-story your-story-elements">
-              <Row>
-                {userOptions.map((story) => (
-                  <UserStoryItem
-                    key={story.id}
-                    userStory={story}
-                    onUserStoryChange={handleUserStoryChange}
-                  />
-                ))}
-              </Row>
-              {isYesButton && (
-                <>
+      <div className="my-4 top-container">
+        <div className={showReport ? "x-smaller-section-border" : ""}>
+          <div className={showReport ? "x-smaller-section" : ""}>
+            {showUserStoryText && <Row>{header}</Row>}
+            <Row>
+              <Col sm={9}>
+                <Row>
+                  {userOptions.map((story) => (
+                    <>
+                      {showUserStoryText && story.preTextLabel && (
+                        <>{ReactHtmlParser(story.preTextLabel)}</>
+                      )}
+                      <UserStoryItem
+                        key={story.id}
+                        userStory={story}
+                        onUserStoryChange={handleUserStoryChange}
+                      />
+                    </>
+                  ))}
+                </Row>
+                {isGoButton && (
                   <Row className="section-break">
-                    {resetButton} {yesButton}
+                    {resetButton} {goButton}
                   </Row>
-                </>
+                )}
+                {isOkButton && <Row className="section-break">{okButton}</Row>}
+              </Col>
+              {showUserStoryText && (
+                <Col sm={3} className="svg-box pt-3 user-story-image">
+                  <img
+                    className="add-opp-img"
+                    src="/images/CIT_logo.svg"
+                    height="100%"
+                    width="100%"
+                    alt="cit logo mountains"
+                  />
+                </Col>
               )}
-              {isNoButton && (
-                <>
-                  <Row className="section-break">{noButton}</Row>
-                </>
+            </Row>
+          </div>
+        </div>
+        {showReport && (
+          <>
+            <div className="report-section">
+              {powerBiReport.includes("overview") && <ReportOverview />}
+              {powerBiReport.includes("compare") && <ReportCompare />}
+              {powerBiReport.includes("criteriaSearch") && (
+                <ReportCriteriaSearch />
               )}
-            </Container>
-          </Col>
-          <Col sm={3} className="svg-box pt-3 your-story-image">
-            <img
-              className="add-opp-img"
-              src="/images/CIT_logo.svg"
-              height="100%"
-              width="100%"
-              alt="cit logo mountains"
-            />
-          </Col>
-        </Row>
-      </Container>
+            </div>
+          </>
+        )}
+      </div>
     </>
   );
 }

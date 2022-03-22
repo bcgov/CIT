@@ -76,7 +76,7 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
   return (
     <>
       <div className="select-container">
-        {userStory.postText && <>{ReactHtmlParser(userStory.postText)}</>}
+        {userStory.text && <>{ReactHtmlParser(userStory.text)}</>}
         {userStory.user_story_paths &&
           userStory.user_story_paths.length > 1 &&
           userStoryYes && (
