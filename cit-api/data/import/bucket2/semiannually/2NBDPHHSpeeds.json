@@ -1,15 +1,16 @@
-[{
-  "name": "NBDPHHSpeeds",
-  "display_name": "NBD PHH Data for BC",
-  "model_name": "NBDPHHSpeeds",
-  "source": "statscan",
-  "source_type": "csv",
-  "source_file_path": "",
-  "resource_id": "",
-  "sub_resource_id": "",
-  "external_url": "https://www.ic.gc.ca/eic/site/720.nsf/vwapj/NBD_PHH_Speeds.zip/$file/NBD_PHH_Speeds.zip",
-  "import_order": 2
-}    
+[
+  {
+    "name": "NBDPHHSpeeds",
+    "display_name": "NBD PHH Data for BC",
+    "model_name": "NBDPHHSpeeds",
+    "source": "statscan",
+    "source_type": "csv",
+    "source_file_path": "NBDPHHSpeeds",
+    "resource_id": "NULL",
+    "sub_resource_id": "NULL",
+    "external_url": "https://www.ic.gc.ca/eic/site/720.nsf/vwapj/NBD_PHH_Speeds.zip/$file/NBD_PHH_Speeds.zip",
+    "import_order": 2
+  }
 ]
   
   
