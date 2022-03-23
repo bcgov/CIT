@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 99vh !important;
+    height: 67vh !important;
     width: 99% !important;;
     min-width: 960px;
     max-width: 1340px;
@@ -10,7 +10,7 @@
 }
 
 .report-criteria-search-container iframe {
-    height: 99vh !important;
+    height: 67vh !important;
     width: 99% !important;
     border: none;
     padding: 4px 2px !important;

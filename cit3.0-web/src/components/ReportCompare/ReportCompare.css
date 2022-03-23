@@ -2,15 +2,16 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 99vh !important;
+    height: 65vh !important;
     width: 99% !important;;
     min-width: 960px;
     max-width: 1340px;
     margin:0 auto;
+    border: 1px solid gainsboro;
 }
 
 .report-compare-container iframe {
-    height: 99vh !important;
+    height: 65vh !important;
     width: 99% !important;
     border: none;
     padding: 4px 2px !important;

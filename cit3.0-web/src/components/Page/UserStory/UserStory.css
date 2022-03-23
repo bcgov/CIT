@@ -21,11 +21,11 @@
 }
 
 .report-section  {
-    position: relative;
     display: flex;
     flex-direction: column;
-    padding: 0;
-    margin: 0;
+    align-items: flex-start;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .user-story-image {
@@ -37,8 +37,8 @@
 .x-smaller-section-border  {
     border: solid 1px #FCBA19;
     border-radius: 5px;
-    padding: 1px 20px ;
-    margin: 1px;
+    padding: 8px 20px ;
+    margin: 8px;
 }
 
 .x-smaller-section, .x-smaller-section div.section-break, .x-smaller-section div.select-break  {
@@ -48,8 +48,8 @@
 }
 
 .x-smaller-section button {
-    height: 28px;
-    font-size: smaller;
+    height: 32px;
+    font-size: 10pt;
 }
 
 h3 {
