@@ -23,7 +23,22 @@ on:
         - bucket_4_monthly
         - bucket_4_semiannually
         - bucket_5_monthly
-        - bucket_5_semiannually
+        - bucket_5_airports
+        - bucket_5_civic_facilities
+        - bucket_5_clinics
+        - bucket_5_customs_port_of_entry
+        - bucket_5_diagnostic_facilities
+        - bucket_5_emergency_social_service_facilities
+        - bucket_5_first_nations_health_authority
+        - bucket_5_hospitals
+        - bucket_5_laboratory_services
+        - bucket_5_local_govt_offices
+        - bucket_5_pharmacies
+        - bucket_5_port_and_terminal
+        - bucket_5_public_library
+        - bucket_5_schools
+        - bucket_5_servicebc_locations
+        - bucket_5_timber_facilities
         - bucket_6
 env: 
   BUCKET_COMMAND: ${{ github.event.inputs.buckets }}
@@ -74,4 +89,4 @@ jobs:
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline

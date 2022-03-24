@@ -3,19 +3,15 @@ import os
 from pathlib import Path
 from django.core.management.base import BaseCommand
 from azure.storage.blob import BlobServiceClient
-
-
-from pipeline.importers.databc_resource import import_wms_resource
-from pipeline.importers.bucket2_semiannually import import_data_sources
 from pipeline.importers.csv_resource import import_csv_resources
+
 from pipeline.importers.databc_resource import import_wms_resource
-from pipeline.importers.shp_resource import import_shp_resources
+from pipeline.importers.bucket7 import import_data_sources
 from pipeline.models.general import DataSource
 from admin import settings
 
 
 class Command(BaseCommand):
-
     def handle(self, *args, **options):
         #If in test or prod make sure the most recent static files are fetched.
         if settings.ENV_LEVEL in ['test', 'prod']:
@@ -39,20 +35,12 @@ class Command(BaseCommand):
         #Ensure that the data sources are updated
         print("Importing newest list of data sources.")
         import_data_sources()
-        #Ensure that the data sources are updated
-        data_resources = DataSource.objects.filter(name__in=[
-            'NBDPHHSpeeds','phdemographicdistribution','tourism_regions', 'Housing_Data', 'municipalities',  'regional_districts', 'school_districts', 'tsunami_zones', 'wildfires_zones'
-        ])
+        bca_resources = DataSource.objects.filter(name__in=[
+            'LinkageWithCensus'
+        ]).order_by('import_order')
 
-        for resource in data_resources:
-            if resource.source_type == "wms":
-                print(f'Importing {resource.display_name}...')
-                import_wms_resource(resource)
-            if resource.source_type == "csv":
-                print(f'Importing {resource.display_name}...')
-                import_csv_resources(resource.name)
-            if resource.source_type == "shp":
-                print(f'Importing {resource.display_name}...')
-                import_shp_resources(resource.name)
+        for resource in bca_resources:
+            print(f'Importing {resource.display_name}...')
+            import_csv_resources(resource.name)
 
-        print("Import process for bucket2_semiannually completed!")
+        print("Import process for bucket7 completed!")

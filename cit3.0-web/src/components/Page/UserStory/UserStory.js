@@ -10,7 +10,7 @@ import "../HomePage/HomePage.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { getOptions, setOptions } from "../../../store/actions/options";
 import { userStoryPaths } from "../../../data/userStoryPaths.json";
-import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+
 import "./UserStory.css";
 import UserStoryItem from "../../UserStoryItem/UserStoryItem";
 import ReportOverview from "../../ReportOverview/ReportOverview";
@@ -213,10 +213,7 @@ export default function UserStoryV2() {
 
   const header = (
     <>
-      <h3>
-        Hi{userName ? " " : ""}
-        {userName}, welcome to our Community Information Tool
-      </h3>
+      <h3>Hi, welcome to our Community Information Tool</h3>
       <p>
         The Community Information Tool offers insight into communities across
         B.C. with integrated socio-economic data, infrastructure, and community
@@ -226,7 +223,7 @@ export default function UserStoryV2() {
     </>
   );
 
-  const resetButton = (
+  const noButton = (
     <Button
       variant="outline-primary"
       className="user-story-button"

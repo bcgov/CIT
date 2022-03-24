@@ -1,11 +1,11 @@
-# This workflow will build a new container semiannually running the datasets in Bucket 5 semiannually
+# This workflow will build a new container running the datasets in Bucket 7.
+# The datasets included in this bucket are, linkage_csd
 
-name: Data Pipeline - Bucket 5 semiannually
+name: Data Pipeline Bucket 7 - 
 on:
-  schedule:
-    - cron: "0 0 1 */6 *" 
+  workflow_dispatch:
 env: 
-  BUCKET_COMMAND: bucket_5_semiannually
+  BUCKET_COMMAND: bucket_7
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   run-test:
@@ -25,7 +25,7 @@ jobs:
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
 
   run-prod:
     runs-on: ubuntu-latest
@@ -43,4 +43,4 @@ jobs:
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline

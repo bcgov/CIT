@@ -75,7 +75,6 @@ p, h3 {
 .break {
     flex-basis: 100%;
     height: 0;
-    margin: 0;
   }
   
 .line-break {
@@ -95,7 +94,7 @@ p, h3 {
 
 .section-break {
     flex-basis: 100%;
-    margin-top: 18px;
+    margin-top: 28px;
 }
 
 .user-story-label {

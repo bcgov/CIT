@@ -1,4 +1,5 @@
 # This workflow will build a new container weekly running the datasets in Bucket 2 weekly
+# The datasets included in this bucket are, hexes and roads
 
 name: Data Pipeline - Bucket 2 Weekly
 on:
@@ -26,7 +27,7 @@ jobs:
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
 
   run-prod:
     runs-on: ubuntu-latest
@@ -44,4 +45,4 @@ jobs:
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline

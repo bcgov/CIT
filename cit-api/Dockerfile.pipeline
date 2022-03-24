@@ -50,7 +50,13 @@ RUN az storage blob download \
              --file FNHA_data.csv \
              --account-key $AZURE_STORAGE_ACCOUNT_KEY \
              --auth-mode key
-
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data \
+             --name csd_linkage.csv \
+             --file csd_linkage.csv \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
 RUN az storage blob download \
              --account-name citpipelinedata \
              --container-name data/bc_assessment \

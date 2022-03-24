@@ -1,4 +1,9 @@
 # This workflow will build a new container semiannually running the datasets in Bucket 4 semiannually
+# The datasets included in this bucket are, census economic region, courts, 
+# health authority boundaries, indian reserve and band name, lakes, natural resource regions,
+# post secondary institutions, provincial electoral district, railways, research centres, rivers, 
+# road and highways, services
+
 
 name: Data Pipeline - Bucket 4 semiannually
 on:
@@ -25,7 +30,7 @@ jobs:
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
 
   run-prod:
     runs-on: ubuntu-latest
@@ -43,4 +48,4 @@ jobs:
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
