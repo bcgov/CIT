@@ -3,14 +3,13 @@ import { useLocation } from "react-router-dom";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Container, Button, ButtonGroup, ToggleButton } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import Config from "../../Config";
 import "./ReportOverview.css";
 
 export default function ReportOverview() {
   const [report, setReport] = useState();
   const [token, setToken] = useState("");
-  const [showReport, setShowReport] = useState(false);
   const [isReportLoaded, SetIsReportLoaded] = useState(false);
 
   const groupId = Config.pbiGroupId;
@@ -101,14 +100,14 @@ export default function ReportOverview() {
   const eventHandlersMap = new Map([
     [
       "loaded",
-      function () {
+      function reportLoaded() {
         SetIsReportLoaded(true);
       },
     ],
-    ["rendered", function () {}],
+    ["rendered", function reportRendered() {}],
     [
       "error",
-      function (event) {
+      function reportErrored(event) {
         if (event) {
           console.error(event.detail);
         }
@@ -126,7 +125,6 @@ export default function ReportOverview() {
       embedUrl: reportConfig.embedUrl,
       accessToken: reportToken,
     });
-    setShowReport(true);
   };
 
   const setPage = async (pageName) => {

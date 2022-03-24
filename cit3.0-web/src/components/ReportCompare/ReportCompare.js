@@ -67,11 +67,11 @@ export default function ReportCompare() {
   };
 
   const eventHandlersMap = new Map([
-    ["loaded", function () {}],
-    ["rendered", function () {}],
+    ["loaded", function reportLoaded() {}],
+    ["rendered", function reportRendered() {}],
     [
       "error",
-      function (event) {
+      function reportErrored(event) {
         if (event) {
           console.error(event.detail);
         }

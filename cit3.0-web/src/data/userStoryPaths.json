@@ -1,25 +1,17 @@
 {
     "userStoryPaths": [
       {
-        "id": "4650",
+        "id": "4809",
         "code": "START",
         "group": "start",
         "value": "START",
         "label": "",
-        "preText": "<div class='section-break'></div>\n<p><b>Tell us a bit more about you and we will help you get to info that is relevant to you<b></p><div class='section-break'></div>",
+        "longText": "<div class='section-break'></div>\n<p><b>Tell us a bit more about you and we will help you get to info that is relevant to you<b></p><div class='section-break'></div>",
         "text": "<p>I am</p>",
         "url": "",
         "user_story_paths": [
           {
-            "id": "4651",
-            "code": "FIRSTNATION",
-            "group": "who",
-            "value": "1-FIRSTNATION",
-            "label": "a First Nation Representative",
-            "url": ""
-          },
-          {
-            "id": "4652",
+            "id": "4810",
             "code": "PUBLIC",
             "group": "who",
             "value": "2-PUBLIC",
@@ -27,7 +19,7 @@
             "url": ""
           },
           {
-            "id": "4653",
+            "id": "4811",
             "code": "INVESTOR",
             "group": "who",
             "value": "3-INVESTOR",
@@ -35,7 +27,7 @@
             "url": ""
           },
           {
-            "id": "4654",
+            "id": "4812",
             "code": "COMMUNITYREP",
             "group": "who",
             "value": "4-COMMUNITYREP",
@@ -43,7 +35,7 @@
             "url": ""
           },
           {
-            "id": "4655",
+            "id": "4813",
             "code": "RESEARCHER",
             "group": "who",
             "value": "5-RESEARCHER",
@@ -51,7 +43,7 @@
             "url": ""
           },
           {
-            "id": "4656",
+            "id": "4814",
             "code": "BCGOV",
             "group": "who",
             "value": "6-BCGOV",
@@ -61,61 +53,17 @@
         ]
       },
       {
-        "id": "4651",
-        "code": "FIRSTNATION",
-        "group": "who",
-        "value": "1-FIRSTNATION",
-        "label": "a First Nation Representative",
-        "preText": "",
-        "text": "<p>and I'm interested in</p>",
-        "url": "",
-        "user_story_paths": [
-          {
-            "id": "4658",
-            "code": "LEARNING",
-            "group": "what",
-            "value": "2-LEARNING",
-            "label": "learning more about the province or a specific area of B.C.",
-            "url": ""
-          },
-          {
-            "id": "4659",
-            "code": "DISCOVERING",
-            "group": "what",
-            "value": "2-DISCOVERING",
-            "label": "discovering insights and patterns among BC communities",
-            "url": "powerbi-criteriaSearch"
-          },
-          {
-            "id": "4660",
-            "code": "COMPARING",
-            "group": "what",
-            "value": "3-COMPARING",
-            "label": "comparing an area to another one",
-            "url": "powerbi-compare"
-          },
-          {
-            "id": "4661",
-            "code": "PROMOTING",
-            "group": "what",
-            "value": "4-PROMOTING",
-            "label": "promoting an investment opportunity in my community",
-            "url": "investmentopportunities/home"
-          }
-        ]
-      },
-      {
-        "id": "4652",
+        "id": "4810",
         "code": "PUBLIC",
         "group": "who",
         "value": "2-PUBLIC",
         "label": "a Member of the Public",
-        "preText": "",
+        "longText": "",
         "text": "<p>and I'm interested in</p>",
         "url": "",
         "user_story_paths": [
           {
-            "id": "4658",
+            "id": "4816",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -123,7 +71,7 @@
             "url": ""
           },
           {
-            "id": "4659",
+            "id": "4817",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -131,7 +79,7 @@
             "url": "powerbi-criteriaSearch"
           },
           {
-            "id": "4660",
+            "id": "4818",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
@@ -141,17 +89,17 @@
         ]
       },
       {
-        "id": "4653",
+        "id": "4811",
         "code": "INVESTOR",
         "group": "who",
         "value": "3-INVESTOR",
         "label": "an Investor",
-        "preText": "",
+        "longText": "",
         "text": "<p>and I'm interested in</p>",
         "url": "",
         "user_story_paths": [
           {
-            "id": "4657",
+            "id": "4815",
             "code": "VIEWING",
             "group": "what",
             "value": "1-VIEWING",
@@ -159,7 +107,7 @@
             "url": "investmentopportunities/home"
           },
           {
-            "id": "4658",
+            "id": "4816",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -167,7 +115,7 @@
             "url": ""
           },
           {
-            "id": "4659",
+            "id": "4817",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -175,7 +123,7 @@
             "url": "powerbi-criteriaSearch"
           },
           {
-            "id": "4660",
+            "id": "4818",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
@@ -183,7 +131,7 @@
             "url": "powerbi-compare"
           },
           {
-            "id": "4661",
+            "id": "4819",
             "code": "PROMOTING",
             "group": "what",
             "value": "4-PROMOTING",
@@ -193,17 +141,17 @@
         ]
       },
       {
-        "id": "4654",
+        "id": "4812",
         "code": "COMMUNITYREP",
         "group": "who",
         "value": "4-COMMUNITYREP",
         "label": "a Representative for my Community",
-        "preText": "",
+        "longText": "",
         "text": "<p>and I'm interested in</p>",
         "url": "",
         "user_story_paths": [
           {
-            "id": "4657",
+            "id": "4815",
             "code": "VIEWING",
             "group": "what",
             "value": "1-VIEWING",
@@ -211,7 +159,7 @@
             "url": "investmentopportunities/home"
           },
           {
-            "id": "4658",
+            "id": "4816",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -219,7 +167,7 @@
             "url": ""
           },
           {
-            "id": "4659",
+            "id": "4817",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -227,7 +175,7 @@
             "url": "powerbi-criteriaSearch"
           },
           {
-            "id": "4660",
+            "id": "4818",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
@@ -235,7 +183,7 @@
             "url": "powerbi-compare"
           },
           {
-            "id": "4661",
+            "id": "4819",
             "code": "PROMOTING",
             "group": "what",
             "value": "4-PROMOTING",
@@ -245,17 +193,17 @@
         ]
       },
       {
-        "id": "4655",
+        "id": "4813",
         "code": "RESEARCHER",
         "group": "who",
         "value": "5-RESEARCHER",
         "label": "a Researcher",
-        "preText": "",
+        "longText": "",
         "text": "<p>and I'm interested in</p>",
         "url": "",
         "user_story_paths": [
           {
-            "id": "4658",
+            "id": "4816",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -263,7 +211,7 @@
             "url": ""
           },
           {
-            "id": "4659",
+            "id": "4817",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -271,7 +219,7 @@
             "url": "powerbi-criteriaSearch"
           },
           {
-            "id": "4660",
+            "id": "4818",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
@@ -281,17 +229,17 @@
         ]
       },
       {
-        "id": "4656",
+        "id": "4814",
         "code": "BCGOV",
         "group": "who",
         "value": "6-BCGOV",
         "label": "a B.C. Government Employee",
-        "preText": "",
+        "longText": "",
         "text": "<p>and I'm interested in</p>",
         "url": "",
         "user_story_paths": [
           {
-            "id": "4658",
+            "id": "4816",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -299,7 +247,7 @@
             "url": ""
           },
           {
-            "id": "4659",
+            "id": "4817",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -307,7 +255,7 @@
             "url": "powerbi-criteriaSearch"
           },
           {
-            "id": "4660",
+            "id": "4818",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
@@ -317,17 +265,17 @@
         ]
       },
       {
-        "id": "4657",
+        "id": "4815",
         "code": "VIEWING",
         "group": "what",
         "value": "1-VIEWING",
         "label": "viewing Investment Opportunity matching my criteria",
-        "preText": "<div class='select-break'></div><p><b>We have a tool you might like to check out: our Community Investment Opportunity Tool. Our tool helps you find properties that meet your site selection criteria for your next investment into B.C. You can search for industrial, commercial, and agricultural properties by size, site servicing, labour force, and more.</b></p>",
+        "longText": "<div class='select-break'></div><p><b>We have a tool you might like to check out: our Community Investment Opportunity Tool. Our tool helps you find properties that meet your site selection criteria for your next investment into B.C. You can search for industrial, commercial, and agricultural properties by size, site servicing, labour force, and more.</b></p>",
         "text": "<p class='line-break'><b>Would you like to go to the Community Investment Opportunity Tool?</b></p><div class='section-break'></div>",
         "url": "investmentopportunities/home",
         "user_story_paths": [
           {
-            "id": "4674",
+            "id": "4832",
             "code": "VIEWING-YES",
             "group": "viewing-yesno",
             "value": "1-VIEWING-YES",
@@ -335,7 +283,7 @@
             "url": "investmentopportunities/home"
           },
           {
-            "id": "4675",
+            "id": "4833",
             "code": "VIEWING-NO",
             "group": "viewing-yesno",
             "value": "2-VIEWING-NO",
@@ -345,17 +293,17 @@
         ]
       },
       {
-        "id": "4658",
+        "id": "4816",
         "code": "LEARNING",
         "group": "what",
         "value": "2-LEARNING",
         "label": "learning more about the province or a specific area of B.C.",
-        "preText": "<div class='select-break'></div><p><b>Great! You can choose between different types of areas from Communities and Unincorporated Areas, First Nations land and Reserves, Regional District to larger Economic Regions or Tourism Regions.</b></p><div class='section-break'></div><p><b>What kind of area would you like to look at?</b></p><div class='section-break'></div>",
+        "longText": "<div class='select-break'></div><p><b>Great! You can choose between different types of areas from Communities and Unincorporated Areas, First Nations land and Reserves, Regional District to larger Economic Regions or Tourism Regions.</b></p><div class='section-break'></div><p><b>What kind of area would you like to look at?</b></p><div class='section-break'></div>",
         "text": "<p>I would like to like at</p>",
         "url": "",
         "user_story_paths": [
           {
-            "id": "4662",
+            "id": "4820",
             "code": "ALLBC",
             "group": "zone",
             "value": "ALLBC",
@@ -363,7 +311,7 @@
             "url": "powerbi-overview"
           },
           {
-            "id": "4663",
+            "id": "4821",
             "code": "COMMUNITYAREA",
             "group": "zone",
             "value": "COMMUNITYAREA",
@@ -371,15 +319,7 @@
             "url": ""
           },
           {
-            "id": "4664",
-            "code": "FIRSTNATIONS",
-            "group": "zone",
-            "value": "FIRSTNATIONS",
-            "label": "First Nations",
-            "url": ""
-          },
-          {
-            "id": "4665",
+            "id": "4823",
             "code": "REGIONALDISTRICTS",
             "group": "zone",
             "value": "REGIONALDISTRICTS",
@@ -387,7 +327,7 @@
             "url": ""
           },
           {
-            "id": "4666",
+            "id": "4824",
             "code": "ECONOMICREGIONS",
             "group": "zone",
             "value": "ECONOMICREGIONS",
@@ -395,7 +335,7 @@
             "url": ""
           },
           {
-            "id": "4667",
+            "id": "4825",
             "code": "TOURISMREGIONS",
             "group": "zone",
             "value": "TOURISMREGIONS",
@@ -403,7 +343,7 @@
             "url": ""
           },
           {
-            "id": "4668",
+            "id": "4826",
             "code": "WILDFIREZONES",
             "group": "zone",
             "value": "WILDFIREZONES",
@@ -411,7 +351,7 @@
             "url": ""
           },
           {
-            "id": "4669",
+            "id": "4827",
             "code": "TSUNAMINOTIFICATIONZONES",
             "group": "zone",
             "value": "TSUNAMINOTIFICATIONZONES",
@@ -419,7 +359,7 @@
             "url": ""
           },
           {
-            "id": "4670",
+            "id": "4828",
             "code": "NATURALRESOURCEREGIONS",
             "group": "zone",
             "value": "NATURALRESOURCEREGIONS",
@@ -429,17 +369,17 @@
         ]
       },
       {
-        "id": "4659",
+        "id": "4817",
         "code": "DISCOVERING",
         "group": "what",
         "value": "2-DISCOVERING",
         "label": "discovering insights and patterns among BC communities",
-        "preText": "<div class='select-break'></div><p><b>We have a criteria search that has many types of filters to help you narrow down specific areas of BC that matches your criteria.</b></p>",
-        "text": "<div class='line-break'><p><b>Would you like to try it?</b></p></div><div class='section-break'></div>",
+        "longText": "<div class='select-break'></div><p><b>We have a criteria search that has many types of filters to help you narrow down specific areas of BC that matches your criteria.   </b></p>",
+        "text": "<div class='line-break'></div><p><b>Would you like to try it?</b></p>",
         "url": "powerbi-criteriaSearch",
         "user_story_paths": [
           {
-            "id": "4672",
+            "id": "4830",
             "code": "DISCOVERING-YES",
             "group": "discovering-yesno",
             "value": "1-DISCOVERING-YES",
@@ -447,7 +387,7 @@
             "url": "powerbi-criteriaSearch"
           },
           {
-            "id": "4673",
+            "id": "4831",
             "code": "DISCOVERING-NO",
             "group": "discovering-yesno",
             "value": "2-DISCOVERING-NO",
@@ -457,17 +397,17 @@
         ]
       },
       {
-        "id": "4660",
+        "id": "4818",
         "code": "COMPARING",
         "group": "what",
         "value": "3-COMPARING",
         "label": "comparing an area to another one",
-        "preText": "<div class='select-break'></div><p><b>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</b></p><div class='select-break'></div>",
+        "longText": "<div class='select-break'></div><p><b>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</b></p><div class='select-break'></div>",
         "text": "",
         "url": "powerbi-compare",
         "user_story_paths": [
           {
-            "id": "4676",
+            "id": "4834",
             "code": "COMPARING-GO",
             "group": "comparing-yesno",
             "value": "1-COMPARING-GO",
@@ -477,17 +417,17 @@
         ]
       },
       {
-        "id": "4661",
+        "id": "4819",
         "code": "PROMOTING",
         "group": "what",
         "value": "4-PROMOTING",
         "label": "promoting an investment opportunity in my community",
-        "preText": "",
+        "longText": "",
         "text": "<p class='line-break'><b>Would you like to go to the Community Investment Opportunity Tool?</b></p></b></p><div class='section-break'></div>",
         "url": "investmentopportunities/home",
         "user_story_paths": [
           {
-            "id": "4677",
+            "id": "4835",
             "code": "PROMOTING-YES",
             "group": "promoting-yesno",
             "value": "1-PROMOTING-YES",
@@ -495,7 +435,7 @@
             "url": "investmentopportunities/home"
           },
           {
-            "id": "4678",
+            "id": "4836",
             "code": "PROMOTING-NO",
             "group": "promoting-yesno",
             "value": "2-PROMOTING-NO",
@@ -505,17 +445,17 @@
         ]
       },
       {
-        "id": "4662",
+        "id": "4820",
         "code": "ALLBC",
         "group": "zone",
         "value": "ALLBC",
         "label": "All of British Columbia",
-        "preText": "<div class='section-break'></div><p><b>Ok, let's learn more about the province of British Columbia.</b></p>",
+        "longText": "<div class='section-break'></div><p><b>Ok, let's learn more about the province of British Columbia.</b></p>",
         "text": "",
         "url": "powerbi-overview",
         "user_story_paths": [
           {
-            "id": "4679",
+            "id": "4837",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -525,105 +465,105 @@
         ]
       },
       {
-        "id": "4663",
+        "id": "4821",
         "code": "COMMUNITYAREA",
         "group": "zone",
         "value": "COMMUNITYAREA",
         "label": "Communities & Unincorporated areas",
-        "preText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
+        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
         "user_story_paths": []
       },
       {
-        "id": "4664",
+        "id": "4822",
         "code": "FIRSTNATIONS",
         "group": "zone",
         "value": "FIRSTNATIONS",
         "label": "First Nations",
-        "preText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
+        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
         "user_story_paths": []
       },
       {
-        "id": "4665",
+        "id": "4823",
         "code": "REGIONALDISTRICTS",
         "group": "zone",
         "value": "REGIONALDISTRICTS",
         "label": "Regional Districts",
-        "preText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
+        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
         "user_story_paths": []
       },
       {
-        "id": "4666",
+        "id": "4824",
         "code": "ECONOMICREGIONS",
         "group": "zone",
         "value": "ECONOMICREGIONS",
         "label": "Economic Regions",
-        "preText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
+        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
         "user_story_paths": []
       },
       {
-        "id": "4667",
+        "id": "4825",
         "code": "TOURISMREGIONS",
         "group": "zone",
         "value": "TOURISMREGIONS",
         "label": "Tourism Regions",
-        "preText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
+        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
         "user_story_paths": []
       },
       {
-        "id": "4668",
+        "id": "4826",
         "code": "WILDFIREZONES",
         "group": "zone",
         "value": "WILDFIREZONES",
         "label": "Wildfire Zones ",
-        "preText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
+        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
         "user_story_paths": []
       },
       {
-        "id": "4669",
+        "id": "4827",
         "code": "TSUNAMINOTIFICATIONZONES",
         "group": "zone",
         "value": "TSUNAMINOTIFICATIONZONES",
         "label": "Tsunami Notification Zones",
-        "preText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
+        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
         "user_story_paths": []
       },
       {
-        "id": "4670",
+        "id": "4828",
         "code": "NATURALRESOURCEREGIONS",
         "group": "zone",
         "value": "NATURALRESOURCEREGIONS",
         "label": "Natural Resource Regions",
-        "preText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
+        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
         "user_story_paths": []
       },
       {
-        "id": "4671",
+        "id": "4829",
         "code": "ZONE-TYPE-LIST-GO",
         "group": "zone-type-list",
         "value": "ZONE-TYPE-LIST-GO",
         "label": "",
-        "preText": "",
+        "longText": "",
         "text": "",
         "url": "powerbi-overview/reportfilter",
         "user_story_paths": [
           {
-            "id": "4679",
+            "id": "4837",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -633,17 +573,17 @@
         ]
       },
       {
-        "id": "4672",
+        "id": "4830",
         "code": "DISCOVERING-YES",
         "group": "discovering-yesno",
         "value": "1-DISCOVERING-YES",
         "label": "Yes",
-        "preText": "",
+        "longText": "",
         "text": "",
         "url": "powerbi-criteriaSearch",
         "user_story_paths": [
           {
-            "id": "4679",
+            "id": "4837",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -653,17 +593,17 @@
         ]
       },
       {
-        "id": "4673",
+        "id": "4831",
         "code": "DISCOVERING-NO",
         "group": "discovering-yesno",
         "value": "2-DISCOVERING-NO",
         "label": "No",
-        "preText": "",
+        "longText": "",
         "text": "<div class='section-break'></div><p><b>Ok, maybe you can come back and have a look at it another day. Tell us what you would like to see now.</b></p>",
         "url": "",
         "user_story_paths": [
           {
-            "id": "4681",
+            "id": "4839",
             "code": "GENERIC-NO",
             "group": "generic-no",
             "value": "99-GENERIC-NO",
@@ -673,17 +613,17 @@
         ]
       },
       {
-        "id": "4674",
+        "id": "4832",
         "code": "VIEWING-YES",
         "group": "viewing-yesno",
         "value": "1-VIEWING-YES",
         "label": "Yes",
-        "preText": "",
+        "longText": "",
         "text": "",
         "url": "investmentopportunities/home",
         "user_story_paths": [
           {
-            "id": "4679",
+            "id": "4837",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -693,17 +633,17 @@
         ]
       },
       {
-        "id": "4675",
+        "id": "4833",
         "code": "VIEWING-NO",
         "group": "viewing-yesno",
         "value": "2-VIEWING-NO",
         "label": "No",
-        "preText": "",
+        "longText": "",
         "text": "<div class='section-break'></div><p><b>Ok, maybe you can come back and have a look at it another day. Tell us what you would like to see now.</b></p>",
         "url": "",
         "user_story_paths": [
           {
-            "id": "4681",
+            "id": "4839",
             "code": "GENERIC-NO",
             "group": "generic-no",
             "value": "99-GENERIC-NO",
@@ -713,17 +653,17 @@
         ]
       },
       {
-        "id": "4676",
+        "id": "4834",
         "code": "COMPARING-GO",
         "group": "comparing-yesno",
         "value": "1-COMPARING-GO",
         "label": "Yes",
-        "preText": "<div class='section-break'></div><p><b>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</b></p>",
+        "longText": "<div class='section-break'></div><p><b>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area (such as Communities, Reserves, Regional Districts, Economic Regions, and much more) and the specific areas you want to compare.</b></p>",
         "text": "",
         "url": "powerbi-criteriaSearch",
         "user_story_paths": [
           {
-            "id": "4679",
+            "id": "4837",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -733,17 +673,17 @@
         ]
       },
       {
-        "id": "4677",
+        "id": "4835",
         "code": "PROMOTING-YES",
         "group": "promoting-yesno",
         "value": "1-PROMOTING-YES",
         "label": "Yes",
-        "preText": "",
+        "longText": "",
         "text": "",
         "url": "investmentopportunities/home",
         "user_story_paths": [
           {
-            "id": "4679",
+            "id": "4837",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -753,17 +693,17 @@
         ]
       },
       {
-        "id": "4678",
+        "id": "4836",
         "code": "PROMOTING-NO",
         "group": "promoting-yesno",
         "value": "2-PROMOTING-NO",
         "label": "No",
-        "preText": "",
+        "longText": "",
         "text": "<div class='section-break'></div><p><b>Ok, maybe you can come back and have a look at it another day. Tell us what you would like to see now.</b></p>",
         "url": "",
         "user_story_paths": [
           {
-            "id": "4681",
+            "id": "4839",
             "code": "GENERIC-NO",
             "group": "generic-no",
             "value": "99-GENERIC-NO",
@@ -773,17 +713,17 @@
         ]
       },
       {
-        "id": "4679",
+        "id": "4837",
         "code": "END",
         "group": "end",
         "value": "99-END",
         "label": "GO",
-        "preText": "",
+        "longText": "",
         "text": "",
         "url": "",
         "user_story_paths": [
           {
-            "id": "4679",
+            "id": "4837",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -793,17 +733,17 @@
         ]
       },
       {
-        "id": "4680",
+        "id": "4838",
         "code": "RESET-NO",
         "group": "reset",
         "value": "99-RESET-NO",
         "label": "reset",
-        "preText": "",
+        "longText": "",
         "text": "",
         "url": "",
         "user_story_paths": [
           {
-            "id": "4679",
+            "id": "4837",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -813,17 +753,17 @@
         ]
       },
       {
-        "id": "4681",
+        "id": "4839",
         "code": "GENERIC-NO",
         "group": "generic-no",
         "value": "99-GENERIC-NO",
         "label": "No",
-        "preText": "",
+        "longText": "",
         "text": "",
         "url": "",
         "user_story_paths": [
           {
-            "id": "4679",
+            "id": "4837",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -833,4 +773,4 @@
         ]
       }
     ]
-  }
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Container, Button, Row, Col } from "react-bootstrap";
-import { ArrowRight } from "react-bootstrap-icons";
+import { ArrowRight, ChevronRight } from "react-bootstrap-icons";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import ReactHtmlParser from "react-html-parser";
@@ -20,7 +20,7 @@ import ReportCriteriaSearch from "../../ReportCriteriaSearch/ReportCriteriaSearc
 export default function UserStoryV2() {
   let loading = false;
   const [userOptions, setAllOptions] = useState([]);
-  const [showUserStoryText, setShowUserStoryText] = useState(true);
+  const [isLongVersion, setIsLongVersion] = useState(true);
   const [showReport, setShowReport] = useState(false);
   const [who, setWho] = useState("");
   const [isGoButton, setIsGoButton] = useState(false);
@@ -29,7 +29,7 @@ export default function UserStoryV2() {
   const [areaType, setAreaType] = useState("");
   const [areaFilterId, setAreaFilterId] = useState("");
   const [areaSearchFilter, setAreaSearchFilter] = useState("");
-  const [powerBiReport, setPowerBiReport] = useState(null);
+  const [powerBiReport, setPowerBiReport] = useState("compare");
   const [communities, setCommunities] = useState(null);
   const [regionals, setRegionals] = useState(null);
 
@@ -45,7 +45,7 @@ export default function UserStoryV2() {
 
     if (urlPath && urlPath.includes("powerbi")) {
       setPowerBiReport(urlPath);
-      setShowUserStoryText(false);
+      setIsLongVersion(false);
       setShowReport(true);
       return;
     }
@@ -85,7 +85,7 @@ export default function UserStoryV2() {
 
   useEffect(() => {
     const option = userStoryPaths.find((x) => x.code === "START");
-    option.preTextLabel = option.preText;
+    option.longTextLabel = option.longText;
     setAllOptions([option]);
   }, []);
 
@@ -149,14 +149,14 @@ export default function UserStoryV2() {
       userOption.user_story_paths = communities;
     }
 
-    let replaceText = userOption.preText;
+    let replaceText = userOption.longText;
     replaceText = replaceText.replace(
       "{ZONE-TYPE-1}",
       userOption.label.slice(0, -1)
     );
     replaceText = replaceText.replace("{ZONE-TYPE-2}", areaType);
     replaceText = replaceText.replace("{ZONE-SEARCH-FILTER}", param.label);
-    userOption.preTextLabel = replaceText;
+    userOption.longTextLabel = replaceText;
 
     setAllOptions([...newUserOptions, userOption]);
 
@@ -235,40 +235,47 @@ export default function UserStoryV2() {
       className="user-story-button"
       onClick={() => showResult(redirectUrl)}
     >
-      Let&apos;s Go <ArrowRight />
+      {isLongVersion ? "Let's Go" : "View Results For Your New Search"}{" "}
+      {isLongVersion ? <ArrowRight /> : <ChevronRight />}
     </Button>
   );
 
   return (
     <>
       <Container className="my-4 top-container">
-        <div className={showReport ? "x-smaller-section-border" : ""}>
+        <div className={showReport ? "x-smaller-section-container" : ""}>
           <div className={showReport ? "x-smaller-section" : ""}>
-            {showUserStoryText && <Row>{header}</Row>}
+            {isLongVersion && <Row>{header}</Row>}
             <Row>
-              <Col sm={9}>
-                <Row>
+              <Col sm={isLongVersion ? 9 : 12}>
+                <Row className="options-container">
                   {userOptions.map((story) => (
                     <>
-                      {showUserStoryText && story.preTextLabel && (
-                        <>{ReactHtmlParser(story.preTextLabel)}</>
+                      {isLongVersion && story.longTextLabel && (
+                        <>{ReactHtmlParser(story.longTextLabel)}</>
                       )}
                       <UserStoryItem
                         key={story.id}
                         userStory={story}
+                        isLongVersion={isLongVersion}
                         onUserStoryChange={handleUserStoryChange}
                       />
                     </>
                   ))}
                 </Row>
-                {isGoButton && (
-                  <Row className="section-break">
-                    {resetButton} {goButton}
+                {(isGoButton || showReport) && (
+                  <Row
+                    className={`user-story-buttons ${
+                      showReport ? "short-version-button-location" : ""
+                    }`}
+                  >
+                    {isGoButton || showReport ? resetButton : null}{" "}
+                    {isGoButton ? goButton : null}
                   </Row>
                 )}
                 {isOkButton && <Row className="section-break">{okButton}</Row>}
               </Col>
-              {showUserStoryText && (
+              {isLongVersion && (
                 <Col sm={3} className="svg-box pt-3 user-story-image">
                   <img
                     className="add-opp-img"

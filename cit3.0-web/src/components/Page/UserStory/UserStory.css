@@ -1,6 +1,7 @@
 .top-container {
     font-family: BCSans;
     display: flex;
+    flex-wrap: wrap ;
     flex-direction: column;
     width: 99%;
     min-width: 960px;
@@ -20,6 +21,11 @@
     font-size:1em; 
 }
 
+.options-container {
+    display: flex;
+    flex-wrap: wrap 
+}
+
 .report-section  {
     display: flex;
     flex-direction: column;
@@ -34,22 +40,25 @@
     margin-right: 0;
 }
 
-.x-smaller-section-border  {
-    border: solid 1px #FCBA19;
+.x-smaller-section-container  {
+    border: solid 1px #f2f2f2;
     border-radius: 5px;
     padding: 8px 20px ;
     margin: 8px;
+    background-color: #f2f2f2;
 }
 
 .x-smaller-section, .x-smaller-section div.section-break, .x-smaller-section div.select-break  {
     margin: 1px 2px  !important;
     padding: 1px 2px !important;
-    font-size: smaller;
 }
 
-.x-smaller-section button {
-    height: 32px;
-    font-size: 10pt;
+.user-story-buttons {
+    margin-top: 40px !important;
+}
+
+.short-version-button-location {
+    justify-content: end;
 }
 
 h3 {
@@ -70,11 +79,11 @@ p, h3 {
   }
   
 .line-break {
-    display:flex;
-    flex-wrap: wrap;
+    flex-basis: 100%;
+    flex-direction: column;
 }
 
-.line-break  p,   .line-break div {
+.line-break  p, .line-break div {
     flex-basis: 100%;
     margin-top: 2px;
 }

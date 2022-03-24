@@ -9,7 +9,7 @@ import "./PowerBi.css";
 
 export default function PublicReport() {
   const [report, setReport] = useState();
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(null);
   const [showReport, setShowReport] = useState(false);
   const [isReportLoaded, SetIsReportLoaded] = useState(false);
 
@@ -210,7 +210,7 @@ export default function PublicReport() {
   }, []);
 
   useEffect(() => {
-    loadReport();
+    if (token) loadReport();
   }, [token]);
 
   useEffect(() => {
@@ -219,9 +219,16 @@ export default function PublicReport() {
     setReportFilter();
   }, [isReportLoaded]);
 
+  const handlePrint = () => {
+    console.log("handle print");
+  };
+
   return (
     <>
       <Container className={showReport ? "" : "hide-section"} fluid>
+        <Button id="testprint" type="button" onClick={handlePrint}>
+          Print
+        </Button>
         {reportButtons}
         <PowerBIEmbed
           embedConfig={embedReportConfig}

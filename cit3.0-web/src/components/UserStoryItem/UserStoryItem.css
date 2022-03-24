@@ -17,3 +17,12 @@
     margin-top: 12px;
     margin-bottom: 2px;
 }
+
+.line-break {
+    flex-basis: 100%;
+}
+
+.line-break  p, .line-break div {
+    flex-basis: 100%;
+    margin-top: 2px;
+}
