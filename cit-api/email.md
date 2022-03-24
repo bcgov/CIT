@@ -17,3 +17,7 @@ To configure email notifications from the application, you must configure severa
 There are three types of email notifications sent out by the application using this service. The first two are an email notification sent to all admins on submission of a new opportunity, and an email notification sent to an EDO when their opportunity is published by an admin. These are both sent through calls to their corresponding API endpoints in the back end.
 
 The third type of notification is a recurring notification sent to EDOs with opportunities that have not been modified in over 90 days. This is done through the [`send-reminders.sh`](./send-email-reminders.sh). When run, this script uses `manage.py` to run a python script that checks the last modified date for all opportunities in the database, and sends email notifications to the EDOs with submitted opportunities that have not been modified for 90 days. This script is run weekly in an Azure container that is started via an Azure Logic App to help ensure EDOs are keeping their opportunity information current.
+
+CIT-4.0 Update
+
+The send-reminders.sh script is now run weekly through a Github Action. The script for this action is under the .github/workflows folder and is called user-tracking-email.yml. The Azure Logic App that was previously running the script, can be decomissioned. 

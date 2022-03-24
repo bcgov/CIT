@@ -1,13 +1,11 @@
-# This workflow will build a new container running the datasets in Bucket 6
-# The datasets included in this bucket are, bc_assessment
+# This workflow will build a new container running the datasets in Bucket 7.
+# The datasets included in this bucket are, linkage_csd
 
-name: Data Pipeline Bucket 6 - BC Assessment
+name: Data Pipeline Bucket 7 - 
 on:
-  schedule:
-  # Every Wednesday at 1PM UTC (9AM EST)
-    - cron: "0 13 * * 3"
+  workflow_dispatch:
 env: 
-  BUCKET_COMMAND: bucket_6
+  BUCKET_COMMAND: bucket_7
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   run-test:
