@@ -1,0 +1,21 @@
+.report-criteria-search-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 67vh !important;
+    width: 99% !important;;
+    min-width: 960px;
+    max-width: 1340px;
+    margin:0 auto;
+}
+
+.report-criteria-search-container iframe {
+    height: 67vh !important;
+    width: 99% !important;
+    border: none;
+    padding: 4px 2px !important;
+    margin: 2px 2px !important;
+}
+
+
+

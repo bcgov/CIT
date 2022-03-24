@@ -1,46 +1,65 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Container, Button, Row, Col } from "react-bootstrap";
-import { ArrowRight } from "react-bootstrap-icons";
+import { ArrowRight, ChevronRight } from "react-bootstrap-icons";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import ReactHtmlParser from "react-html-parser";
+
 import "../HomePage/HomePage.scss";
 
 import { useDispatch, useSelector } from "react-redux";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import { getOptions, setOptions } from "../../../store/actions/options";
 import { userStoryPaths } from "../../../data/userStoryPaths.json";
 
 import "./UserStory.css";
 import UserStoryItem from "../../UserStoryItem/UserStoryItem";
+import ReportOverview from "../../ReportOverview/ReportOverview";
+import ReportCompare from "../../ReportCompare/ReportCompare";
+import ReportCriteriaSearch from "../../ReportCriteriaSearch/ReportCriteriaSearch";
 
-export default function UserStory() {
+export default function UserStoryV2() {
   let loading = false;
-  const [userOptions, setAllOptions] = useState([]);
-  const [isYesButton, setIsYesButton] = useState(false);
-  const [isNoButton, setIsNoButton] = useState(false);
-  const [redirectURL, setRedirectURL] = useState("");
+  const [userOptions, setUserOptions] = useState([]);
+  const [isLongVersion, setIsLongVersion] = useState(true);
+  const [showReport, setShowReport] = useState(false);
+  const [who, setWho] = useState("");
+  const [isGoButton, setIsGoButton] = useState(false);
+  const [isOkButton, setIsOkButton] = useState(false);
   const [areaType, setAreaType] = useState("");
-  const [areaFilterId, setAreaFilterId] = useState("");
-  const [areaSearchFilter, setAreaSearchFilter] = useState("");
-  const [powerBiReports, setPowerBiReports] = useState([]);
+  const [powerBiReport, setPowerBiReport] = useState("");
+  const [reportFilter, setReportFilter] = useState("");
   const [communities, setCommunities] = useState(null);
   const [regionals, setRegionals] = useState(null);
+
+  const zoneType = useRef();
+  const zoneName = useRef();
+  const redirectUrl = useRef();
+
+  const keycloak = useKeycloakWrapper();
 
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const redirectPage = () => {
-    let path = redirectURL;
+  const userName = keycloak ? keycloak.firstName : "";
 
-    if (redirectURL.includes("reportfilter")) {
-      const areaFilter = encodeURIComponent(areaSearchFilter);
-      path = `${redirectURL}?${areaFilterId}=${areaFilter}`;
+  const showResult = (urlPath) => {
+    if (!urlPath) return;
 
-      if (powerBiReports.length > 0) {
-        const powerBiqs = `powerbi=${powerBiReports.join(",")}`;
-        path = `${path}&${powerBiqs}`;
+    if (urlPath && urlPath.includes("powerbi")) {
+      setPowerBiReport(urlPath);
+      setIsLongVersion(false);
+      if (zoneType.current || zoneName.current) {
+        const zoneFilter = {
+          zoneType: zoneType.current,
+          zoneName: zoneName.current,
+        };
+        setReportFilter(zoneFilter);
       }
+      setShowReport(true);
+      return;
     }
-    history.push(path);
+    history.push(urlPath);
   };
 
   const regionalDistricts = useSelector(
@@ -76,38 +95,44 @@ export default function UserStory() {
 
   useEffect(() => {
     const option = userStoryPaths.find((x) => x.code === "START");
-    option.postText = option.preText;
-    setAllOptions([option]);
+    option.longTextLabel = option.longText;
+    setUserOptions([option]);
   }, []);
 
   const resetUserStory = () => {
-    const options = userStoryPaths.find((x) => x.code === "START");
-    setAllOptions([options]);
-    setIsNoButton(false);
-    setIsYesButton(false);
+    const option = userStoryPaths.find((x) => x.code === "START");
+    setUserOptions([option]);
+    setIsOkButton(false);
+    setIsGoButton(false);
   };
 
   const handleUserStoryChange = (e) => {
     let param;
 
     if (e.length === 0) {
-      setIsNoButton(false);
-      setIsYesButton(false);
+      setIsOkButton(false);
+      setIsGoButton(false);
       return;
     }
 
     if (Array.isArray(e)) {
-      setPowerBiReports(e.map((x) => x.value.toLowerCase()));
       param = e.find((x, index) => index < 1);
     } else {
       param = e;
     }
 
     if (param && !param.code) {
-      param.code = "AREA-TYPE-LIST-YES";
-      param.group = "area-type-list";
-      param.url = "reports/publicreport/reportfilter";
-      setAreaSearchFilter(param.label);
+      const zone = userStoryPaths.find((x) => x.group === "zone-type-list");
+      if (zone) {
+        param.code = zone.code;
+        param.group = zone.group;
+        param.url = zone.url;
+      }
+      zoneName.current = param.label;
+    }
+
+    if (param && param.group === "who") {
+      setWho(param);
     }
 
     const groupIndex = userOptions.findIndex((x) => x.group === param.group);
@@ -120,45 +145,71 @@ export default function UserStory() {
     }
 
     const userOption = userStoryPaths.find((x) => x.code === param.code);
-
-    if (param.group === "area") {
-      setAreaType(userOption.label);
-      setAreaFilterId(userOption.code.toLowerCase());
+    // skip yes and no on the short version
+    if (!isLongVersion && userOption && userOption.group !== "zone") {
+      const isYes = userOption.user_story_paths.find((x) =>
+        x.code.includes("-YES")
+      );
+      if (isYes) {
+        userOption.user_story_paths = [isYes];
+      }
     }
 
+    if (param.group === "zone") {
+      setAreaType(userOption.label);
+      zoneType.current = userOption.code.toLowerCase();
+    }
+    // zone list
     if (userOption.code.includes("REGIONALDISTRICTS")) {
       userOption.user_story_paths = regionals;
+      zoneType.current = "Regional Districts";
     }
 
     if (userOption.code.includes("COMMUNITYAREA")) {
       userOption.user_story_paths = communities;
     }
 
-    let replaceText = userOption.preText;
+    let replaceText = userOption.longText;
     replaceText = replaceText.replace(
-      "{AREA-TYPE-1}",
+      "{ZONE-TYPE-1}",
       userOption.label.slice(0, -1)
     );
-    replaceText = replaceText.replace("{AREA-TYPE-2}", areaType);
-    replaceText = replaceText.replace("{AREA-SEARCH-FILTER}", param.label);
-    userOption.postText = replaceText;
+    replaceText = replaceText.replace("{ZONE-TYPE-2}", areaType);
+    replaceText = replaceText.replace("{ZONE-SEARCH-FILTER}", param.label);
+    userOption.longTextLabel = replaceText;
 
-    setAllOptions([...newUserOptions, userOption]);
+    setUserOptions([...newUserOptions, userOption]);
+
+    if (param.code.includes("-YES") && isLongVersion) {
+      setIsOkButton(false);
+      showResult(param.url);
+      return;
+    }
 
     const isLastOption = userOption.user_story_paths.length < 2;
 
-    if (userOption.code.includes("-YES") || isLastOption) {
-      setIsYesButton(true);
-      setIsNoButton(true);
-      setRedirectURL(param.url);
+    if (userOption.code.includes("-GO") || isLastOption) {
+      setIsGoButton(true);
+      setIsOkButton(false);
+      redirectUrl.current = param.url;
     } else {
-      setIsYesButton(false);
-      setIsNoButton(false);
+      setIsGoButton(false);
+      setIsOkButton(false);
     }
+
     if (userOption.code.includes("-NO")) {
-      setIsNoButton(true);
-      setIsYesButton(false);
+      const isNo = userOption.user_story_paths.find((x) =>
+        x.code.includes("-NO")
+      );
+      if (isNo) {
+        setIsOkButton(true);
+        setIsGoButton(false);
+      }
     }
+  };
+
+  const handleIsOk = () => {
+    handleUserStoryChange(who);
   };
 
   const header = (
@@ -173,7 +224,7 @@ export default function UserStory() {
     </>
   );
 
-  const noButton = (
+  const resetButton = (
     <Button
       variant="outline-primary"
       className="user-story-button"
@@ -183,55 +234,91 @@ export default function UserStory() {
     </Button>
   );
 
-  const yesButton = (
+  const okButton = (
+    <Button
+      variant="outline-primary"
+      className="user-story-button"
+      onClick={handleIsOk}
+      active
+    >
+      Ok
+    </Button>
+  );
+
+  const goButton = (
     <Button
       variant="primary"
       active
-      className="bcgov-normal-blue user-story-button"
-      onClick={redirectPage}
+      className="user-story-button"
+      onClick={() => showResult(redirectUrl.current)}
     >
-      Let&apos;s Go <ArrowRight />
+      {isLongVersion ? "Let's Go" : "View Results For Your New Search"}{" "}
+      {isLongVersion ? <ArrowRight /> : <ChevronRight />}
     </Button>
   );
 
   return (
     <>
-      <Container className="mt-4 your-story your-story-elements">
-        <Row>
-          <Col sm={12}>{header}</Col>
-        </Row>
-        <Row>
-          <Col sm={9}>
-            <Container className="your-story your-story-elements">
-              <Row>
-                {userOptions.map((story) => (
-                  <UserStoryItem
-                    key={story.id}
-                    userStory={story}
-                    onUserStoryChange={handleUserStoryChange}
-                  />
-                ))}
-              </Row>
-              {(isNoButton || isYesButton) && (
-                <>
-                  <Row className="section-break">
-                    {isNoButton && noButton}
-                    {isYesButton && yesButton}
+      <Container className="my-4 top-container">
+        <div className={showReport ? "x-smaller-section-container" : ""}>
+          <div className={showReport ? "x-smaller-section" : ""}>
+            {isLongVersion && <Row>{header}</Row>}
+            <Row>
+              <Col sm={isLongVersion ? 9 : 12}>
+                <Row className="options-container">
+                  {userOptions.map((story) => (
+                    <>
+                      {isLongVersion && story.longTextLabel && (
+                        <>{ReactHtmlParser(story.longTextLabel)}</>
+                      )}
+                      <UserStoryItem
+                        key={story.id}
+                        userStory={story}
+                        isLongVersion={isLongVersion}
+                        onUserStoryChange={handleUserStoryChange}
+                      />
+                    </>
+                  ))}
+                </Row>
+                {(isGoButton || showReport) && (
+                  <Row
+                    className={`user-story-buttons ${
+                      showReport ? "short-version-button-location" : ""
+                    }`}
+                  >
+                    {isGoButton || showReport ? resetButton : null}{" "}
+                    {isGoButton ? goButton : null}
                   </Row>
-                </>
+                )}
+                {isOkButton && <Row className="section-break">{okButton}</Row>}
+              </Col>
+              {isLongVersion && (
+                <Col sm={3} className="svg-box pt-3 user-story-image">
+                  <img
+                    className="add-opp-img"
+                    src="/images/CIT_logo.svg"
+                    height="100%"
+                    width="100%"
+                    alt="cit logo mountains"
+                  />
+                </Col>
               )}
-            </Container>
-          </Col>
-          <Col sm={3} className="svg-box pt-3 your-story-image">
-            <img
-              className="add-opp-img"
-              src="/images/CIT_logo.svg"
-              height="100%"
-              width="100%"
-              alt="cit logo mountains"
-            />
-          </Col>
-        </Row>
+            </Row>
+          </div>
+        </div>
+        {showReport && (
+          <>
+            <div className="report-section">
+              {powerBiReport.includes("overview") && (
+                <ReportOverview reportFilter={reportFilter} />
+              )}
+              {powerBiReport.includes("compare") && <ReportCompare />}
+              {powerBiReport.includes("criteriaSearch") && (
+                <ReportCriteriaSearch />
+              )}
+            </div>
+          </>
+        )}
       </Container>
     </>
   );
