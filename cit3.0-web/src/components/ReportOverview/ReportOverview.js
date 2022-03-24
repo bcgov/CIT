@@ -116,30 +116,6 @@ export default function ReportOverview({ reportFilter }) {
     ],
   ]);
 
-  const loadReport = async () => {
-    console.log("load report");
-    const reportConfig = await getReportConfig();
-    const reportToken = await getReportToken();
-
-    setEmbedReportConfig({
-      ...embedReportConfig,
-      id: reportConfig.id,
-      embedUrl: reportConfig.embedUrl,
-      accessToken: reportToken,
-    });
-  };
-
-  const setPage = async (pageName) => {
-    if (!report) return;
-    setTabValue(pageName);
-    const pages = await report.getPages();
-    const newPage = pages.find((page) => page.displayName === pageName);
-
-    if (newPage) {
-      report.setPage(newPage.name);
-    }
-  };
-
   const getReportFilter = () => {
     if (!reportFilter) return null;
 
@@ -164,6 +140,31 @@ export default function ReportOverview({ reportFilter }) {
     };
 
     return [zoneTypeFilter, zoneNameFilter];
+  };
+
+  const loadReport = async () => {
+    console.log("load report");
+    const reportConfig = await getReportConfig();
+    const reportToken = await getReportToken();
+
+    setEmbedReportConfig({
+      ...embedReportConfig,
+      id: reportConfig.id,
+      filters: getReportFilter(),
+      embedUrl: reportConfig.embedUrl,
+      accessToken: reportToken,
+    });
+  };
+
+  const setPage = async (pageName) => {
+    if (!report) return;
+    setTabValue(pageName);
+    const pages = await report.getPages();
+    const newPage = pages.find((page) => page.displayName === pageName);
+
+    if (newPage) {
+      report.setPage(newPage.name);
+    }
   };
 
   const setReportFilter = async () => {
