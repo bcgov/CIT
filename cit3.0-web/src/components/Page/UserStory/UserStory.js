@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Container, Button, Row, Col } from "react-bootstrap";
 import { ArrowRight, ChevronRight } from "react-bootstrap-icons";
 import axios from "axios";
@@ -19,19 +19,21 @@ import ReportCriteriaSearch from "../../ReportCriteriaSearch/ReportCriteriaSearc
 
 export default function UserStoryV2() {
   let loading = false;
-  const [userOptions, setAllOptions] = useState([]);
+  const [userOptions, setUserOptions] = useState([]);
   const [isLongVersion, setIsLongVersion] = useState(true);
   const [showReport, setShowReport] = useState(false);
   const [who, setWho] = useState("");
   const [isGoButton, setIsGoButton] = useState(false);
   const [isOkButton, setIsOkButton] = useState(false);
-  const [redirectUrl, setRedirectUrl] = useState("");
   const [areaType, setAreaType] = useState("");
-  const [areaFilterId, setAreaFilterId] = useState("");
-  const [areaSearchFilter, setAreaSearchFilter] = useState("");
-  const [powerBiReport, setPowerBiReport] = useState("compare");
+  const [powerBiReport, setPowerBiReport] = useState("");
+  const [reportFilter, setReportFilter] = useState("");
   const [communities, setCommunities] = useState(null);
   const [regionals, setRegionals] = useState(null);
+
+  const zoneType = useRef();
+  const zoneName = useRef();
+  const redirectUrl = useRef();
 
   const keycloak = useKeycloakWrapper();
 
@@ -46,6 +48,13 @@ export default function UserStoryV2() {
     if (urlPath && urlPath.includes("powerbi")) {
       setPowerBiReport(urlPath);
       setIsLongVersion(false);
+      if (zoneType.current || zoneName.current) {
+        const zoneFilter = {
+          zoneType: zoneType.current,
+          zoneName: zoneName.current,
+        };
+        setReportFilter(zoneFilter);
+      }
       setShowReport(true);
       return;
     }
@@ -86,12 +95,12 @@ export default function UserStoryV2() {
   useEffect(() => {
     const option = userStoryPaths.find((x) => x.code === "START");
     option.longTextLabel = option.longText;
-    setAllOptions([option]);
+    setUserOptions([option]);
   }, []);
 
   const resetUserStory = () => {
-    const options = userStoryPaths.find((x) => x.code === "START");
-    setAllOptions([options]);
+    const option = userStoryPaths.find((x) => x.code === "START");
+    setUserOptions([option]);
     setIsOkButton(false);
     setIsGoButton(false);
   };
@@ -118,7 +127,7 @@ export default function UserStoryV2() {
         param.group = zone.group;
         param.url = zone.url;
       }
-      setAreaSearchFilter(param.label);
+      zoneName.current = param.label;
     }
 
     if (param && param.group === "who") {
@@ -135,14 +144,24 @@ export default function UserStoryV2() {
     }
 
     const userOption = userStoryPaths.find((x) => x.code === param.code);
+    // skip yes and no on the short version
+    if (!isLongVersion && userOption && userOption.group !== "zone") {
+      const isYes = userOption.user_story_paths.find((x) =>
+        x.code.includes("-YES")
+      );
+      if (isYes) {
+        userOption.user_story_paths = [isYes];
+      }
+    }
 
     if (param.group === "zone") {
       setAreaType(userOption.label);
-      setAreaFilterId(userOption.code.toLowerCase());
+      zoneType.current = userOption.code.toLowerCase();
     }
-
+    // zone list
     if (userOption.code.includes("REGIONALDISTRICTS")) {
       userOption.user_story_paths = regionals;
+      zoneType.current = "Regional Districts";
     }
 
     if (userOption.code.includes("COMMUNITYAREA")) {
@@ -158,9 +177,9 @@ export default function UserStoryV2() {
     replaceText = replaceText.replace("{ZONE-SEARCH-FILTER}", param.label);
     userOption.longTextLabel = replaceText;
 
-    setAllOptions([...newUserOptions, userOption]);
+    setUserOptions([...newUserOptions, userOption]);
 
-    if (param.code.includes("-YES")) {
+    if (param.code.includes("-YES") && isLongVersion) {
       setIsOkButton(false);
       showResult(param.url);
       return;
@@ -171,7 +190,7 @@ export default function UserStoryV2() {
     if (userOption.code.includes("-GO") || isLastOption) {
       setIsGoButton(true);
       setIsOkButton(false);
-      setRedirectUrl(param.url);
+      redirectUrl.current = param.url;
     } else {
       setIsGoButton(false);
       setIsOkButton(false);
@@ -233,7 +252,7 @@ export default function UserStoryV2() {
       variant="primary"
       active
       className="user-story-button"
-      onClick={() => showResult(redirectUrl)}
+      onClick={() => showResult(redirectUrl.current)}
     >
       {isLongVersion ? "Let's Go" : "View Results For Your New Search"}{" "}
       {isLongVersion ? <ArrowRight /> : <ChevronRight />}
@@ -292,7 +311,9 @@ export default function UserStoryV2() {
         {showReport && (
           <>
             <div className="report-section">
-              {powerBiReport.includes("overview") && <ReportOverview />}
+              {powerBiReport.includes("overview") && (
+                <ReportOverview reportFilter={reportFilter} />
+              )}
               {powerBiReport.includes("compare") && <ReportCompare />}
               {powerBiReport.includes("criteriaSearch") && (
                 <ReportCriteriaSearch />

@@ -86,7 +86,8 @@ export default function UserStoryItem({
         {userStory.text && <>{ReactHtmlParser(userStory.text)}</>}
         {userStory.user_story_paths &&
           userStory.user_story_paths.length > 1 &&
-          userStoryYes && (
+          userStoryYes &&
+          isLongVersion && (
             <>
               <Button
                 variant="primary"

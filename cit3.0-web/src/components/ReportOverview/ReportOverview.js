@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
+import PropTypes from "prop-types";
 import { useLocation } from "react-router-dom";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
@@ -7,7 +8,7 @@ import { Button } from "react-bootstrap";
 import Config from "../../Config";
 import "./ReportOverview.css";
 
-export default function ReportOverview() {
+export default function ReportOverview({ reportFilter }) {
   const [report, setReport] = useState();
   const [token, setToken] = useState("");
   const [isReportLoaded, SetIsReportLoaded] = useState(false);
@@ -116,6 +117,7 @@ export default function ReportOverview() {
   ]);
 
   const loadReport = async () => {
+    console.log("load report");
     const reportConfig = await getReportConfig();
     const reportToken = await getReportToken();
 
@@ -138,56 +140,43 @@ export default function ReportOverview() {
     }
   };
 
-  const useQuery = () => {
-    const { search } = useLocation();
-    return useMemo(() => new URLSearchParams(search), [search]);
-  };
+  const getReportFilter = () => {
+    if (!reportFilter) return null;
 
-  const querystring = useQuery();
-
-  const reportFilter = () => {
-    const regionalDistrictsFilter = querystring.get("regionaldistricts");
-
-    if (!regionalDistrictsFilter || regionalDistrictsFilter.length === 0)
-      return null;
-
-    const zoneType = {
+    const zoneTypeFilter = {
       $schema: "http://powerbi.com/product/schema#basic",
       target: {
         column: "zone_type",
         table: "Region Distribution",
       },
       operator: "In",
-      values: [],
+      values: [reportFilter.zoneType],
     };
 
-    zoneType.values = ["Regional Districts"];
-
-    const zoneName = {
+    const zoneNameFilter = {
       $schema: "http://powerbi.com/product/schema#basic",
       target: {
         column: "zone_name",
         table: "Region Distribution",
       },
       operator: "In",
-      values: [],
+      values: [reportFilter.zoneName],
     };
 
-    zoneName.values = regionalDistrictsFilter.split(",");
-
-    return [zoneType, zoneName];
+    return [zoneTypeFilter, zoneNameFilter];
   };
 
   const setReportFilter = async () => {
     if (!report) return;
 
-    await report.setFilters(reportFilter());
+    await report.setFilters(getReportFilter());
   };
 
   const reportButtons = (
     <div className="d-flex justify-content-center report-buttons my-4">
       {reportTabs.map((tab) => (
         <Button
+          key={tab.pageName}
           type="Button"
           variant={tab.pageName === tabValue ? "primary" : "warning"}
           onClick={() => setPage(tab.pageName)}
@@ -209,12 +198,15 @@ export default function ReportOverview() {
 
   useEffect(() => {
     if (token) loadReport();
-  }, [token]);
+  }, [token, reportFilter]);
+
+  useEffect(() => {
+    if (report) setReportFilter();
+  }, [reportFilter]);
 
   useEffect(() => {
     const defaultPage = reportTabs.find((tab) => tab.isDefault);
     if (defaultPage) setPage(defaultPage.pageName);
-    setReportFilter();
   }, [isReportLoaded]);
 
   return (
@@ -234,6 +226,10 @@ export default function ReportOverview() {
   );
 }
 
-ReportOverview.propTypes = {};
+ReportOverview.propTypes = {
+  reportFilter: PropTypes.objectOf(PropTypes.any),
+};
 
-ReportOverview.defaultProps = {};
+ReportOverview.defaultProps = {
+  reportFilter: null,
+};
