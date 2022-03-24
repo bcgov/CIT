@@ -8,6 +8,7 @@ import ReactHtmlParser from "react-html-parser";
 import "../HomePage/HomePage.scss";
 
 import { useDispatch, useSelector } from "react-redux";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import { getOptions, setOptions } from "../../../store/actions/options";
 import { userStoryPaths } from "../../../data/userStoryPaths.json";
 
@@ -223,7 +224,7 @@ export default function UserStoryV2() {
     </>
   );
 
-  const noButton = (
+  const resetButton = (
     <Button
       variant="outline-primary"
       className="user-story-button"
