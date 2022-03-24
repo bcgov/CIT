@@ -1,12 +1,9 @@
-# This workflow will build a new container running the datasets in Bucket 7
+# This workflow will build a new container running the datasets in Bucket 7.
+# The datasets included in this bucket are, linkage_csd
 
 name: Data Pipeline Bucket 7 - 
-#on:
-#  workflow_dispatch:
 on:
-  push:
-    branches:
-      - data-pipeline-cleanup
+  workflow_dispatch:
 env: 
   BUCKET_COMMAND: bucket_7
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
@@ -47,23 +44,3 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-      
-      - name: Send mail
-        if: always()
-        uses: dawidd6/action-send-mail@v2
-        with:
-          # mail server settings
-          server_address: smtp.gmail.com
-          server_port: 465
-          # user credentials
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
-          # email subject
-          subject: ${{ github.job }} job of ${{ github.repository }} has had ${{ job.status }}
-          # email body as text
-          body: ${{ github.job }} job in work
-          flow ${{ github.workflow }} of ${{ github.repository }} has had ${{ job.status }}
-          # comma-separated string, send email to
-          to: jessica.stratton@nttdata.com
-          # from email name
-          from: Github Action

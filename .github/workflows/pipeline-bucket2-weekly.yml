@@ -1,4 +1,5 @@
 # This workflow will build a new container weekly running the datasets in Bucket 2 weekly
+# The datasets included in this bucket are, hexes and roads
 
 name: Data Pipeline - Bucket 2 Weekly
 on:

@@ -1,4 +1,5 @@
 # This workflow will build a new container monthly running the datasets in Bucket 5 monthly
+# The datasets included in this bucket are, economic projects, first responders
 
 name: Data Pipeline - Bucket 5 monthly
 on:

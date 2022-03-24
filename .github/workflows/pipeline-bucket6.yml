@@ -1,4 +1,5 @@
 # This workflow will build a new container running the datasets in Bucket 6
+# The datasets included in this bucket are, bc_assessment
 
 name: Data Pipeline Bucket 6 - BC Assessment
 on:
