@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
 import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
@@ -143,7 +142,6 @@ export default function ReportOverview({ reportFilter }) {
   };
 
   const loadReport = async () => {
-    console.log("load report");
     const reportConfig = await getReportConfig();
     const reportToken = await getReportToken();
 

@@ -18,7 +18,7 @@ import ReportOverview from "../../ReportOverview/ReportOverview";
 import ReportCompare from "../../ReportCompare/ReportCompare";
 import ReportCriteriaSearch from "../../ReportCriteriaSearch/ReportCriteriaSearch";
 
-export default function UserStoryV2() {
+export default function UserStory() {
   let loading = false;
   const [userOptions, setUserOptions] = useState([]);
   const [isLongVersion, setIsLongVersion] = useState(true);
@@ -269,7 +269,9 @@ export default function UserStoryV2() {
                   {userOptions.map((story) => (
                     <>
                       {isLongVersion && story.longTextLabel && (
-                        <>{ReactHtmlParser(story.longTextLabel)}</>
+                        <div key={`label-${story.id}`}>
+                          {ReactHtmlParser(story.longTextLabel)}
+                        </div>
                       )}
                       <UserStoryItem
                         key={story.id}
