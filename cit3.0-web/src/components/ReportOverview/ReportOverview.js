@@ -235,7 +235,7 @@ export default function ReportOverview({ reportFilter }) {
 
   return (
     <>
-      <div className="powerbi-overview-container">
+      <div className="powerbi-container">
         <div>{reportButtons}</div>
         <div>{printButtons}</div>
         <PowerBIEmbed

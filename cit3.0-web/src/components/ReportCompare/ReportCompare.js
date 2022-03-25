@@ -105,11 +105,9 @@ export default function ReportCompare() {
 
   const printButtons = (
     <div className="d-flex flex-row-reverse">
-      <div>
-        <Button type="button" variant="light" onClick={handlePrint}>
-          <Printer /> Print
-        </Button>
-      </div>
+      <Button type="button" variant="light" onClick={handlePrint}>
+        <Printer /> Print
+      </Button>
     </div>
   );
 
@@ -117,14 +115,16 @@ export default function ReportCompare() {
     <>
       {showReport && (
         <>
-          <PowerBIEmbed
-            embedConfig={embedReportConfig}
-            eventHandlers={eventHandlersMap}
-            cssClassName="report-compare-container"
-            getEmbeddedComponent={(embedObject) => {
-              setReport(embedObject);
-            }}
-          />
+          <div className="powerbi-container">
+            <PowerBIEmbed
+              embedConfig={embedReportConfig}
+              eventHandlers={eventHandlersMap}
+              cssClassName="report-compare-container"
+              getEmbeddedComponent={(embedObject) => {
+                setReport(embedObject);
+              }}
+            />
+          </div>
         </>
       )}
     </>

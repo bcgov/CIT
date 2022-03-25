@@ -3,7 +3,6 @@ import { Container, Button, Row, Col } from "react-bootstrap";
 import { ArrowRight, ChevronRight } from "react-bootstrap-icons";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import ReactHtmlParser from "react-html-parser";
 
 import "../HomePage/HomePage.scss";
 
@@ -15,8 +14,8 @@ import { userStoryPaths } from "../../../data/userStoryPaths.json";
 import "./UserStory.css";
 import UserStoryItem from "../../UserStoryItem/UserStoryItem";
 import ReportOverview from "../../ReportOverview/ReportOverview";
-import ReportCompare from "../../ReportCompare/ReportCompare";
 import ReportCriteriaSearch from "../../ReportCriteriaSearch/ReportCriteriaSearch";
+import ReportCompare from "../../ReportCompare/ReportCompare";
 
 export default function UserStory() {
   let loading = false;
@@ -268,11 +267,6 @@ export default function UserStory() {
                 <Row className="options-container">
                   {userOptions.map((story) => (
                     <>
-                      {isLongVersion && story.longTextLabel && (
-                        <div key={`label-${story.id}`}>
-                          {ReactHtmlParser(story.longTextLabel)}
-                        </div>
-                      )}
                       <UserStoryItem
                         key={story.id}
                         userStory={story}
@@ -310,15 +304,13 @@ export default function UserStory() {
         </div>
         {showReport && (
           <>
-            <div className="report-section">
-              {powerBiReport.includes("overview") && (
-                <ReportOverview reportFilter={reportFilter} />
-              )}
-              {powerBiReport.includes("compare") && <ReportCompare />}
-              {powerBiReport.includes("criteriaSearch") && (
-                <ReportCriteriaSearch />
-              )}
-            </div>
+            {powerBiReport.includes("overview") && (
+              <ReportOverview reportFilter={reportFilter} />
+            )}
+            {powerBiReport.includes("compare") && <ReportCompare />}
+            {powerBiReport.includes("criteriaSearch") && (
+              <ReportCriteriaSearch />
+            )}
           </>
         )}
       </Container>
