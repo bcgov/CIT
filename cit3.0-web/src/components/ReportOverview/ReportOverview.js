@@ -237,15 +237,16 @@ export default function ReportOverview({ reportFilter }) {
     <>
       <div className="powerbi-container">
         <div>{reportButtons}</div>
-        <div>{printButtons}</div>
-        <PowerBIEmbed
-          embedConfig={embedReportConfig}
-          eventHandlers={eventHandlersMap}
-          cssClassName="report-overview-container"
-          getEmbeddedComponent={(embedObject) => {
-            setReport(embedObject);
-          }}
-        />
+        <div>
+          <PowerBIEmbed
+            embedConfig={embedReportConfig}
+            eventHandlers={eventHandlersMap}
+            cssClassName="report-overview-container"
+            getEmbeddedComponent={(embedObject) => {
+              setReport(embedObject);
+            }}
+          />
+        </div>
       </div>
     </>
   );
