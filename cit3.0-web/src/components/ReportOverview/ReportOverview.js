@@ -4,7 +4,7 @@ import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
 import { Button } from "react-bootstrap";
-import { Printer } from "react-bootstrap-icons";
+import { DeviceHdd, Printer } from "react-bootstrap-icons";
 import Config from "../../Config";
 import "./ReportOverview.css";
 
@@ -225,7 +225,7 @@ export default function ReportOverview({ reportFilter }) {
     if (defaultPage) setPage(defaultPage.pageName);
   }, [isReportLoaded]);
 
-  const printButtons = (
+  const printButton = (
     <div className="d-flex flex-row-reverse print-container">
       <Button type="button" variant="light" onClick={handlePrint}>
         <Printer /> Print
@@ -235,9 +235,9 @@ export default function ReportOverview({ reportFilter }) {
 
   return (
     <>
-      <div className="powerbi-container">
+      <div>
         <div>{reportButtons}</div>
-        <div>
+        <div className="powerbi-container">
           <PowerBIEmbed
             embedConfig={embedReportConfig}
             eventHandlers={eventHandlersMap}
