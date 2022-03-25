@@ -27,15 +27,15 @@ jobs:
             echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
-      - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+      #- name: Start containers
+      #  run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
 
       - name: Send mail
         if: always()
         uses: dawidd6/action-send-mail@v2
         with:
           # mail server settings
-          server_address: ${{ secrets.EMAIL_SERVICE_HOST_PROD }}
+          server_address: ${{ secrets.EMAIL_AUTH_HOST_PROD }}
           server_port: 8888
           # user credentials
           username: ${{ secrets.EMAIL_CLIENT_ID_PROD }}
