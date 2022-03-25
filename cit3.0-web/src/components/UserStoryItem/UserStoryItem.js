@@ -83,6 +83,10 @@ export default function UserStoryItem({
   return (
     <>
       <div className="select-container">
+        {isLongVersion && userStory.longTextLabel && (
+          <>{ReactHtmlParser(userStory.longTextLabel)}</>
+        )}
+
         {userStory.text && <>{ReactHtmlParser(userStory.text)}</>}
         {userStory.user_story_paths &&
           userStory.user_story_paths.length > 1 &&

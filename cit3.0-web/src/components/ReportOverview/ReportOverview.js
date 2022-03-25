@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
 import { Button } from "react-bootstrap";
+import { DeviceHdd, Printer } from "react-bootstrap-icons";
 import Config from "../../Config";
 import "./ReportOverview.css";
 
@@ -15,8 +15,7 @@ export default function ReportOverview({ reportFilter }) {
 
   const groupId = Config.pbiGroupId;
   const reportId = Config.pbiReportIdPublic;
-
-  const [tabValue, setTabValue] = useState("Connectivity");
+  const [activePage, setActivePage] = useState("Connectivity");
 
   const reportTabs = [
     {
@@ -45,16 +44,19 @@ export default function ReportOverview({ reportFilter }) {
     },
   ];
 
-  const layoutSettings = {
-    layoutType: models.LayoutType.Custom,
-    customLayout: {
-      pageSize: {
-        type: models.PageSizeType.Custom,
-        width: "100%",
-        height: "100%",
+  const printSettings = {
+    layoutType: models.LayoutType.Printer,
+    panes: {
+      filters: {
+        visible: false,
       },
-      displayOption: models.DisplayOption.FitToWidth,
+      pageNavigation: {
+        visible: false,
+      },
     },
+  };
+
+  const layoutSettings = {
     panes: {
       filters: {
         visible: false,
@@ -116,30 +118,6 @@ export default function ReportOverview({ reportFilter }) {
     ],
   ]);
 
-  const loadReport = async () => {
-    console.log("load report");
-    const reportConfig = await getReportConfig();
-    const reportToken = await getReportToken();
-
-    setEmbedReportConfig({
-      ...embedReportConfig,
-      id: reportConfig.id,
-      embedUrl: reportConfig.embedUrl,
-      accessToken: reportToken,
-    });
-  };
-
-  const setPage = async (pageName) => {
-    if (!report) return;
-    setTabValue(pageName);
-    const pages = await report.getPages();
-    const newPage = pages.find((page) => page.displayName === pageName);
-
-    if (newPage) {
-      report.setPage(newPage.name);
-    }
-  };
-
   const getReportFilter = () => {
     if (!reportFilter) return null;
 
@@ -166,10 +144,48 @@ export default function ReportOverview({ reportFilter }) {
     return [zoneTypeFilter, zoneNameFilter];
   };
 
+  const loadReport = async () => {
+    const reportConfig = await getReportConfig();
+    const reportToken = await getReportToken();
+
+    setEmbedReportConfig({
+      ...embedReportConfig,
+      id: reportConfig.id,
+      filters: getReportFilter(),
+      embedUrl: reportConfig.embedUrl,
+      accessToken: reportToken,
+    });
+  };
+
+  const setPage = async (displayName) => {
+    if (!report) return;
+    setActivePage(displayName);
+    const pages = await report.getPages();
+    const newPage = pages.find((page) => page.displayName === displayName);
+
+    if (newPage) {
+      report.setPage(newPage.name);
+    }
+  };
+
   const setReportFilter = async () => {
     if (!report) return;
 
     await report.setFilters(getReportFilter());
+  };
+
+  const handlePrint = async () => {
+    if (!report) return;
+    const pages = await report.getPages();
+    console.log(pages);
+    const reportPage = pages.find((page) => page.displayName === "Print");
+
+    if (reportPage) {
+      await report.setPage(reportPage.name);
+      await report.print();
+    }
+
+    await setPage(activePage);
   };
 
   const reportButtons = (
@@ -178,7 +194,7 @@ export default function ReportOverview({ reportFilter }) {
         <Button
           key={tab.pageName}
           type="Button"
-          variant={tab.pageName === tabValue ? "primary" : "warning"}
+          variant={tab.pageName === activePage ? "primary" : "warning"}
           onClick={() => setPage(tab.pageName)}
         >
           {tab.label}
@@ -209,18 +225,28 @@ export default function ReportOverview({ reportFilter }) {
     if (defaultPage) setPage(defaultPage.pageName);
   }, [isReportLoaded]);
 
+  const printButton = (
+    <div className="d-flex flex-row-reverse print-container">
+      <Button type="button" variant="light" onClick={handlePrint}>
+        <Printer /> Print
+      </Button>
+    </div>
+  );
+
   return (
     <>
-      <div className="powerbi-overview-container">
+      <div>
         <div>{reportButtons}</div>
-        <PowerBIEmbed
-          embedConfig={embedReportConfig}
-          eventHandlers={eventHandlersMap}
-          cssClassName="report-overview-container"
-          getEmbeddedComponent={(embedObject) => {
-            setReport(embedObject);
-          }}
-        />
+        <div className="powerbi-container">
+          <PowerBIEmbed
+            embedConfig={embedReportConfig}
+            eventHandlers={eventHandlersMap}
+            cssClassName="report-overview-container"
+            getEmbeddedComponent={(embedObject) => {
+              setReport(embedObject);
+            }}
+          />
+        </div>
       </div>
     </>
   );
