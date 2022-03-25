@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
+import { Button } from "react-bootstrap";
+import { Printer } from "react-bootstrap-icons";
 import Config from "../../Config";
 import "./ReportCompare.css";
 
@@ -14,15 +16,6 @@ export default function ReportCompare() {
   const reportId = Config.pbiReportIdCompare;
 
   const layoutSettings = {
-    layoutType: models.LayoutType.Custom,
-    customLayout: {
-      pageSize: {
-        type: models.PageSizeType.Custom,
-        width: "100%",
-        height: "100%",
-      },
-      displayOption: models.DisplayOption.FitToWidth,
-    },
     panes: {
       filters: {
         visible: false,
@@ -92,6 +85,11 @@ export default function ReportCompare() {
     setShowReport(true);
   };
 
+  const handlePrint = async () => {
+    if (!report) return;
+    await report.print();
+  };
+
   useEffect(() => {
     async function getToken() {
       const response = await axios.get("/api/token/");
@@ -105,17 +103,29 @@ export default function ReportCompare() {
     if (token) loadReport();
   }, [token]);
 
+  const printButtons = (
+    <div className="d-flex flex-row-reverse">
+      <div>
+        <Button type="button" variant="light" onClick={handlePrint}>
+          <Printer /> Print
+        </Button>
+      </div>
+    </div>
+  );
+
   return (
     <>
       {showReport && (
-        <PowerBIEmbed
-          embedConfig={embedReportConfig}
-          eventHandlers={eventHandlersMap}
-          cssClassName="report-compare-container"
-          getEmbeddedComponent={(embedObject) => {
-            setReport(embedObject);
-          }}
-        />
+        <>
+          <PowerBIEmbed
+            embedConfig={embedReportConfig}
+            eventHandlers={eventHandlersMap}
+            cssClassName="report-compare-container"
+            getEmbeddedComponent={(embedObject) => {
+              setReport(embedObject);
+            }}
+          />
+        </>
       )}
     </>
   );

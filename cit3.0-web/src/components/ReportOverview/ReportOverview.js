@@ -1,9 +1,10 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
 import { Button } from "react-bootstrap";
+import { Printer } from "react-bootstrap-icons";
 import Config from "../../Config";
 import "./ReportOverview.css";
 
@@ -14,8 +15,7 @@ export default function ReportOverview({ reportFilter }) {
 
   const groupId = Config.pbiGroupId;
   const reportId = Config.pbiReportIdPublic;
-
-  const [tabValue, setTabValue] = useState("Connectivity");
+  const [activePage, setActivePage] = useState("Connectivity");
 
   const reportTabs = [
     {
@@ -44,16 +44,19 @@ export default function ReportOverview({ reportFilter }) {
     },
   ];
 
-  const layoutSettings = {
-    layoutType: models.LayoutType.Custom,
-    customLayout: {
-      pageSize: {
-        type: models.PageSizeType.Custom,
-        width: "100%",
-        height: "100%",
+  const printSettings = {
+    layoutType: models.LayoutType.Printer,
+    panes: {
+      filters: {
+        visible: false,
       },
-      displayOption: models.DisplayOption.FitToWidth,
+      pageNavigation: {
+        visible: false,
+      },
     },
+  };
+
+  const layoutSettings = {
     panes: {
       filters: {
         visible: false,
@@ -154,11 +157,11 @@ export default function ReportOverview({ reportFilter }) {
     });
   };
 
-  const setPage = async (pageName) => {
+  const setPage = async (displayName) => {
     if (!report) return;
-    setTabValue(pageName);
+    setActivePage(displayName);
     const pages = await report.getPages();
-    const newPage = pages.find((page) => page.displayName === pageName);
+    const newPage = pages.find((page) => page.displayName === displayName);
 
     if (newPage) {
       report.setPage(newPage.name);
@@ -171,13 +174,27 @@ export default function ReportOverview({ reportFilter }) {
     await report.setFilters(getReportFilter());
   };
 
+  const handlePrint = async () => {
+    if (!report) return;
+    const pages = await report.getPages();
+    console.log(pages);
+    const reportPage = pages.find((page) => page.displayName === "Print");
+
+    if (reportPage) {
+      await report.setPage(reportPage.name);
+      await report.print();
+    }
+
+    await setPage(activePage);
+  };
+
   const reportButtons = (
     <div className="d-flex justify-content-center report-buttons my-4">
       {reportTabs.map((tab) => (
         <Button
           key={tab.pageName}
           type="Button"
-          variant={tab.pageName === tabValue ? "primary" : "warning"}
+          variant={tab.pageName === activePage ? "primary" : "warning"}
           onClick={() => setPage(tab.pageName)}
         >
           {tab.label}
@@ -208,10 +225,19 @@ export default function ReportOverview({ reportFilter }) {
     if (defaultPage) setPage(defaultPage.pageName);
   }, [isReportLoaded]);
 
+  const printButtons = (
+    <div className="d-flex flex-row-reverse print-container">
+      <Button type="button" variant="light" onClick={handlePrint}>
+        <Printer /> Print
+      </Button>
+    </div>
+  );
+
   return (
     <>
       <div className="powerbi-overview-container">
         <div>{reportButtons}</div>
+        <div>{printButtons}</div>
         <PowerBIEmbed
           embedConfig={embedReportConfig}
           eventHandlers={eventHandlersMap}
