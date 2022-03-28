@@ -40,6 +40,7 @@ on:
         - bucket_5_servicebc_locations
         - bucket_5_timber_facilities
         - bucket_6
+        - bucket_7
 env: 
   BUCKET_COMMAND: ${{ github.event.inputs.buckets }}
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
@@ -66,7 +67,7 @@ jobs:
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
   run-prod:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.environment == 'prod' }}
