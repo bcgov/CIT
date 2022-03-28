@@ -1,11 +1,12 @@
-.top-container {
+.user-story-top-container {
     font-family: BCSans;
     display: flex;
     flex-wrap: wrap ;
     flex-direction: column;
-    width: 99%;
+    width: 98%;
     min-width: 960px;
     max-width: 1340px;
+    padding:0 auto;
     margin:0 auto;
 }
 
@@ -62,11 +63,11 @@
     justify-content: end;
 }
 
-h3 {
+.user-story-top-container h3 {
     flex-basis: 100%;
 }
 
-p, h3 {
+.user-story-top-container p, .user-story-top-container h3 {
     font-size:1em; 
     margin-top: 8px;
     margin-bottom: 2px;
@@ -95,7 +96,7 @@ p, h3 {
 
 .section-break {
     flex-basis: 100%;
-    margin-top: 28px;
+    margin-top: 18px;
 }
 
 .user-story-label {
@@ -130,13 +131,12 @@ button {
 .powerbi-container {
     display: flex;
     align-items: center;
-    flex-direction: column;
-    height: 100vh;
     width: 100%;
     min-width: 960px;
     max-width: 1340px;
-    margin:0;
-    padding: 0;
+    margin:2px;
+    padding: 2px;
+    border-radius: 5px;
 }
 
 .print-container {

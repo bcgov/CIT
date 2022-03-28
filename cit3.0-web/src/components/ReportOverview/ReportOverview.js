@@ -1,17 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
 import { Button } from "react-bootstrap";
-import { DeviceHdd, Printer } from "react-bootstrap-icons";
+import { Printer } from "react-bootstrap-icons";
 import Config from "../../Config";
 import "./ReportOverview.css";
 
 export default function ReportOverview({ reportFilter }) {
   const [report, setReport] = useState();
   const [token, setToken] = useState("");
-  const [isReportLoaded, SetIsReportLoaded] = useState(false);
+  const [showReport, setShowReport] = useState(false);
 
   const groupId = Config.pbiGroupId;
   const reportId = Config.pbiReportIdPublic;
@@ -104,7 +104,7 @@ export default function ReportOverview({ reportFilter }) {
     [
       "loaded",
       function reportLoaded() {
-        SetIsReportLoaded(true);
+        setShowReport(true);
       },
     ],
     ["rendered", function reportRendered() {}],
@@ -223,10 +223,10 @@ export default function ReportOverview({ reportFilter }) {
   useEffect(() => {
     const defaultPage = reportTabs.find((tab) => tab.isDefault);
     if (defaultPage) setPage(defaultPage.pageName);
-  }, [isReportLoaded]);
+  }, [showReport]);
 
   const printButton = (
-    <div className="d-flex flex-row-reverse print-container">
+    <div className="d-flex flex-row-reverse my-2 print-container">
       <Button type="button" variant="light" onClick={handlePrint}>
         <Printer /> Print
       </Button>
@@ -236,7 +236,13 @@ export default function ReportOverview({ reportFilter }) {
   return (
     <>
       <div>
-        <div>{reportButtons}</div>
+        {showReport && (
+          <>
+            <div>{reportButtons}</div>
+            <div>{printButton}</div>
+          </>
+        )}
+
         <div className="powerbi-container">
           <PowerBIEmbed
             embedConfig={embedReportConfig}

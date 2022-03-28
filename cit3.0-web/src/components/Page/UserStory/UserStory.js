@@ -258,7 +258,7 @@ export default function UserStory() {
 
   return (
     <>
-      <Container className="my-4 top-container">
+      <Container className="my-4 user-story-top-container">
         <div className={showReport ? "x-smaller-section-container" : ""}>
           <div className={showReport ? "x-smaller-section" : ""}>
             {isLongVersion && <Row>{header}</Row>}
