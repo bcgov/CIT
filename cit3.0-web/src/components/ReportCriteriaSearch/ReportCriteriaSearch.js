@@ -60,7 +60,12 @@ export default function ReportCriteriaSearch() {
   };
 
   const eventHandlersMap = new Map([
-    ["loaded", function reportLoaded() {}],
+    [
+      "loaded",
+      function reportLoaded() {
+        setShowReport(true);
+      },
+    ],
     ["rendered", function reportRendered() {}],
     [
       "error",
@@ -82,7 +87,6 @@ export default function ReportCriteriaSearch() {
       embedUrl: reportConfig.embedUrl,
       accessToken: reportToken,
     });
-    setShowReport(true);
   };
 
   const handlePrint = async () => {
@@ -103,8 +107,8 @@ export default function ReportCriteriaSearch() {
     if (token) loadReport();
   }, [token]);
 
-  const printButtons = (
-    <div className="d-flex flex-row-reverse">
+  const printButton = (
+    <div className="d-flex flex-row-reverse my-2 print-container">
       <Button type="button" variant="light" onClick={handlePrint}>
         <Printer /> Print
       </Button>
@@ -113,20 +117,23 @@ export default function ReportCriteriaSearch() {
 
   return (
     <>
-      {showReport && (
-        <>
-          <div className="powerbi-container">
-            <PowerBIEmbed
-              embedConfig={embedReportConfig}
-              eventHandlers={eventHandlersMap}
-              cssClassName="report-criteria-search-container"
-              getEmbeddedComponent={(embedObject) => {
-                setReport(embedObject);
-              }}
-            />
-          </div>
-        </>
-      )}
+      <div>
+        {showReport && (
+          <>
+            <div>{printButton}</div>
+          </>
+        )}
+        <div className="powerbi-container">
+          <PowerBIEmbed
+            embedConfig={embedReportConfig}
+            eventHandlers={eventHandlersMap}
+            cssClassName="report-criteria-search-container"
+            getEmbeddedComponent={(embedObject) => {
+              setReport(embedObject);
+            }}
+          />
+        </div>
+      </div>
     </>
   );
 }
