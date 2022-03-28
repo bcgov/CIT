@@ -1,6 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import { Container, Button, Row, Col } from "react-bootstrap";
-import { ArrowRight, ChevronRight } from "react-bootstrap-icons";
+import { Container, Button, Row, Col, Collapse } from "react-bootstrap";
+import {
+  ArrowRight,
+  ChevronRight,
+  ChevronDown,
+  ChevronUp,
+} from "react-bootstrap-icons";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
@@ -30,6 +35,7 @@ export default function UserStory() {
   const [reportFilter, setReportFilter] = useState("");
   const [communities, setCommunities] = useState(null);
   const [regionals, setRegionals] = useState(null);
+  const [collapse, setCollapse] = useState(true);
 
   const zoneType = useRef();
   const zoneName = useRef();
@@ -256,52 +262,81 @@ export default function UserStory() {
     </Button>
   );
 
+  const storyResultLink = (
+    <>
+      <div className="collapse-link">
+        <p>
+          Based on
+          <button
+            type="button"
+            aria-controls="user story collapse text"
+            aria-expanded={collapse}
+            onClick={() => setCollapse(!collapse)}
+          >
+            your story{" "}
+            {collapse ? (
+              <ChevronUp size={20} className="chevron-icon" />
+            ) : (
+              <ChevronDown size={20} className="chevron-icon" />
+            )}
+          </button>
+          here are your results
+        </p>
+      </div>
+    </>
+  );
+
   return (
     <>
       <Container className="my-4 user-story-top-container">
-        <div className={showReport ? "x-smaller-section-container" : ""}>
-          <div className={showReport ? "x-smaller-section" : ""}>
-            {isLongVersion && <Row>{header}</Row>}
-            <Row>
-              <Col sm={isLongVersion ? 9 : 12}>
-                <Row className="options-container">
-                  {userOptions.map((story) => (
-                    <>
-                      <UserStoryItem
-                        key={story.id}
-                        userStory={story}
-                        isLongVersion={isLongVersion}
-                        onUserStoryChange={handleUserStoryChange}
-                      />
-                    </>
-                  ))}
-                </Row>
-                {(isGoButton || showReport) && (
-                  <Row
-                    className={`user-story-buttons ${
-                      showReport ? "short-version-button-location" : ""
-                    }`}
-                  >
-                    {isGoButton || showReport ? resetButton : null}{" "}
-                    {isGoButton ? goButton : null}
+        <div>{!isLongVersion && <>{storyResultLink}</>}</div>
+        <Collapse in={collapse}>
+          <div className={showReport ? "x-smaller-section-container" : ""}>
+            <div className={showReport ? "x-smaller-section" : ""}>
+              {isLongVersion && <Row>{header}</Row>}
+              <Row>
+                <Col sm={isLongVersion ? 9 : 12}>
+                  <Row className="options-container">
+                    {userOptions.map((story) => (
+                      <>
+                        <UserStoryItem
+                          key={story.id}
+                          userStory={story}
+                          isLongVersion={isLongVersion}
+                          onUserStoryChange={handleUserStoryChange}
+                        />
+                      </>
+                    ))}
                   </Row>
-                )}
-                {isOkButton && <Row className="section-break">{okButton}</Row>}
-              </Col>
-              {isLongVersion && (
-                <Col sm={3} className="svg-box pt-3 user-story-image">
-                  <img
-                    className="add-opp-img"
-                    src="/images/CIT_logo.svg"
-                    height="100%"
-                    width="100%"
-                    alt="cit logo mountains"
-                  />
+                  {(isGoButton || showReport) && (
+                    <Row
+                      className={`user-story-buttons ${
+                        showReport ? "short-version-button-location" : ""
+                      }`}
+                    >
+                      {isGoButton || showReport ? resetButton : null}{" "}
+                      {isGoButton ? goButton : null}
+                    </Row>
+                  )}
+                  {isOkButton && (
+                    <Row className="section-break">{okButton}</Row>
+                  )}
                 </Col>
-              )}
-            </Row>
+                {isLongVersion && (
+                  <Col sm={3} className="svg-box pt-3 user-story-image">
+                    <img
+                      className="add-opp-img"
+                      src="/images/CIT_logo.svg"
+                      height="100%"
+                      width="100%"
+                      alt="cit logo mountains"
+                    />
+                  </Col>
+                )}
+              </Row>
+            </div>
           </div>
-        </div>
+        </Collapse>
         {showReport && (
           <>
             {powerBiReport.includes("overview") && (

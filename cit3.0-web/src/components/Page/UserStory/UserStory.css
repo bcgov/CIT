@@ -22,7 +22,7 @@
     font-size:1em; 
 }
 
-.options-container {
+.options-container, options-container div {
     display: flex;
     flex-wrap: wrap 
 }
@@ -142,3 +142,21 @@ button {
 .print-container {
     background-color: "#ffffff" !important;
  }
+
+ .collapse-link button {
+     font-weight: bold;
+     color: #376fa3;
+     border: none;
+     background-color: #fff;
+     padding: 3px;
+     margin: 3px;
+     text-decoration: none !important;
+     border-bottom: 2px solid #376fa3;
+     border-radius: 0;
+     outline: 0 !important;
+ }
+
+ .chevron-icon {
+    font-weight: bold;
+    color: #fcba19
+}
