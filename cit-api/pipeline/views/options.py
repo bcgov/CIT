@@ -36,6 +36,7 @@ class CommunityOptions(APIView):
     def get(self, request, format=None):
         options =  Community.objects.all().values("id", "place_name")
         return Response(dict(data=options))
+        
 class RegionalDistrictOptions(APIView):
     def get(self, request, format=None):
         options =  RegionalDistrict.objects.all().values('id', 'area_id', 'name')
@@ -45,7 +46,7 @@ class TourismRegionOptions(APIView):
     def get(self, request, format=None):
         options =  TourismRegion.objects.all().values('tourism_region_id', 'tourism_region_name')
         return Response(dict(data=options))
-        
+
 class CensusEconomicRegionOptions(APIView):
     def get(self, request, format=None):
         options =  CensusEconomicRegion.objects.all().values('census_year', 'economic_region_id', 'name')
