@@ -1,29 +1,38 @@
 import { useState, useEffect, useRef } from "react";
-import { Container, Button, Row, Col, Collapse } from "react-bootstrap";
+import {
+  Container,
+  Button,
+  Row,
+  Col,
+  Collapse,
+  Spinner,
+} from "react-bootstrap";
 import {
   ArrowRight,
   ChevronRight,
   ChevronDown,
   ChevronUp,
 } from "react-bootstrap-icons";
-import axios from "axios";
 import { useHistory } from "react-router-dom";
-
-import "../HomePage/HomePage.scss";
-
-import { useDispatch, useSelector } from "react-redux";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
-import { getOptions, setOptions } from "../../../store/actions/options";
-import { userStoryPaths } from "../../../data/userStoryPaths.json";
-
-import "./UserStory.css";
 import UserStoryItem from "../../UserStoryItem/UserStoryItem";
 import ReportOverview from "../../ReportOverview/ReportOverview";
 import ReportCriteriaSearch from "../../ReportCriteriaSearch/ReportCriteriaSearch";
 import ReportCompare from "../../ReportCompare/ReportCompare";
+import {
+  getCensusEconomicRegions,
+  getCommunities,
+  getNaturalResourceRegions,
+  getRegionalDistricts,
+  getTourismRegions,
+} from "../../../helpers/userStoryData";
+
+import { userStoryPaths } from "../../../data/userStoryPaths.json";
+import "../HomePage/HomePage.scss";
+import "./UserStory.css";
 
 export default function UserStory() {
-  let loading = false;
+  const [isLoading, setIsLoading] = useState(true);
   const [userOptions, setUserOptions] = useState([]);
   const [isLongVersion, setIsLongVersion] = useState(true);
   const [showReport, setShowReport] = useState(false);
@@ -34,7 +43,11 @@ export default function UserStory() {
   const [powerBiReport, setPowerBiReport] = useState("");
   const [reportFilter, setReportFilter] = useState("");
   const [communities, setCommunities] = useState(null);
-  const [regionals, setRegionals] = useState(null);
+  const [regionalDistricts, setRegionalDistricts] = useState(null);
+  const [tourismRegions, setTourismRegions] = useState(null);
+  const [economicRegions, setEconomicRegions] = useState(null);
+  const [naturalResourceRegions, setNaturalResourceRegions] = useState(null);
+
   const [collapse, setCollapse] = useState(true);
 
   const zoneType = useRef();
@@ -44,7 +57,6 @@ export default function UserStory() {
   const keycloak = useKeycloakWrapper();
 
   const history = useHistory();
-  const dispatch = useDispatch();
 
   const userName = keycloak ? keycloak.firstName : "";
 
@@ -67,34 +79,20 @@ export default function UserStory() {
     history.push(urlPath);
   };
 
-  const regionalDistricts = useSelector(
-    (state) => state.options.regionalDistricts
-  );
-
-  const statuses = useSelector((state) => state.options.statuses);
-  if (!loading && (!statuses.length || !regionalDistricts.length)) {
-    loading = true;
-    getOptions().then((response) => {
-      dispatch(setOptions(response.data));
-      loading = false;
-    });
-  }
-
   useEffect(() => {
-    axios.get("/api/opportunity/options").then((data) => {
-      const commNames = data.data.communities.map((x) => ({
-        value: x.id,
-        label: x.place_name,
-      }));
-
-      setCommunities(commNames);
-
-      const regNames = data.data.regionalDistricts.map((x) => ({
-        value: x.id,
-        label: x.name,
-      }));
-
-      setRegionals(regNames);
+    Promise.all([
+      getCensusEconomicRegions(),
+      getCommunities(),
+      getNaturalResourceRegions(),
+      getRegionalDistricts(),
+      getTourismRegions(),
+    ]).then((response) => {
+      setEconomicRegions(response[0]);
+      setCommunities(response[1]);
+      setNaturalResourceRegions(response[2]);
+      setRegionalDistricts(response[3]);
+      setTourismRegions(response[4]);
+      setIsLoading(false);
     });
   }, []);
 
@@ -125,7 +123,6 @@ export default function UserStory() {
     } else {
       param = e;
     }
-
     if (param && !param.code) {
       const zone = userStoryPaths.find((x) => x.group === "zone-type-list");
       if (zone) {
@@ -133,7 +130,6 @@ export default function UserStory() {
         param.group = zone.group;
         param.url = zone.url;
       }
-      zoneName.current = param.label;
     }
 
     if (param && param.group === "who") {
@@ -150,7 +146,7 @@ export default function UserStory() {
     }
 
     const userOption = userStoryPaths.find((x) => x.code === param.code);
-    // skip yes and no on the short version
+
     if (!isLongVersion && userOption && userOption.group !== "zone") {
       const isYes = userOption.user_story_paths.find((x) =>
         x.code.includes("-YES")
@@ -160,18 +156,36 @@ export default function UserStory() {
       }
     }
 
+    if (param.group === "zone-type-list") zoneName.current = param.label;
+
     if (param.group === "zone") {
       setAreaType(userOption.label);
-      zoneType.current = userOption.code.toLowerCase();
-    }
-    // zone list
-    if (userOption.code.includes("REGIONALDISTRICTS")) {
-      userOption.user_story_paths = regionals;
-      zoneType.current = "Regional Districts";
-    }
 
-    if (userOption.code.includes("COMMUNITYAREA")) {
-      userOption.user_story_paths = communities;
+      switch (userOption.code) {
+        case "REGIONALDISTRICTS":
+          userOption.user_story_paths = regionalDistricts;
+          zoneType.current = "Regional Districts";
+          break;
+        case "COMMUNITYAREA":
+          userOption.user_story_paths = communities;
+          zoneType.current = "Communities and Unincorporated Areas";
+          break;
+        case "ECONOMICREGIONS":
+          userOption.user_story_paths = economicRegions;
+          zoneType.current = "Economic Region";
+          break;
+        case "NATURALRESOURCEREGIONS":
+          userOption.user_story_paths = naturalResourceRegions;
+          zoneType.current = null;
+          break;
+        case "TOURISMREGIONS":
+          userOption.user_story_paths = tourismRegions;
+          zoneType.current = "Tourism Region";
+          break;
+        default:
+          zoneType.current = null;
+          zoneName.current = null;
+      }
     }
 
     let replaceText = userOption.longText;
@@ -179,6 +193,7 @@ export default function UserStory() {
       "{ZONE-TYPE-1}",
       userOption.label.slice(0, -1)
     );
+
     replaceText = replaceText.replace("{ZONE-TYPE-2}", areaType);
     replaceText = replaceText.replace("{ZONE-SEARCH-FILTER}", param.label);
     userOption.longTextLabel = replaceText;
@@ -219,7 +234,10 @@ export default function UserStory() {
 
   const header = (
     <>
-      <h3>Hi, welcome to our Community Information Tool</h3>
+      <h3>
+        Hi{userName ? " " : ""}
+        {userName}, welcome to our Community Information Tool
+      </h3>
       <p>
         The Community Information Tool offers insight into communities across
         B.C. with integrated socio-economic data, infrastructure, and community
@@ -288,67 +306,76 @@ export default function UserStory() {
 
   return (
     <>
-      <Container className="my-4 user-story-top-container">
-        <div>{!isLongVersion && <>{storyResultLink}</>}</div>
-        <Collapse in={collapse}>
-          <div className={showReport ? "x-smaller-section-container" : ""}>
-            <div className={showReport ? "x-smaller-section" : ""}>
-              {isLongVersion && <Row>{header}</Row>}
-              <Row>
-                <Col sm={isLongVersion ? 9 : 12}>
-                  <Row className="options-container">
-                    {userOptions.map((story) => (
-                      <>
-                        <UserStoryItem
-                          key={story.id}
-                          userStory={story}
-                          isLongVersion={isLongVersion}
-                          onUserStoryChange={handleUserStoryChange}
-                        />
-                      </>
-                    ))}
-                  </Row>
-                  {(isGoButton || showReport) && (
-                    <Row
-                      className={`user-story-buttons ${
-                        showReport ? "short-version-button-location" : ""
-                      }`}
-                    >
-                      {isGoButton || showReport ? resetButton : null}{" "}
-                      {isGoButton ? goButton : null}
-                    </Row>
-                  )}
-                  {isOkButton && (
-                    <Row className="section-break">{okButton}</Row>
-                  )}
-                </Col>
-                {isLongVersion && (
-                  <Col sm={3} className="svg-box pt-3 user-story-image">
-                    <img
-                      className="add-opp-img"
-                      src="/images/CIT_logo.svg"
-                      height="100%"
-                      width="100%"
-                      alt="cit logo mountains"
-                    />
-                  </Col>
-                )}
-              </Row>
-            </div>
+      {isLoading && (
+        <>
+          <div className="center-spinner">
+            <Spinner animation="border" />
           </div>
-        </Collapse>
-        {showReport && (
-          <>
-            {powerBiReport.includes("overview") && (
-              <ReportOverview reportFilter={reportFilter} />
-            )}
-            {powerBiReport.includes("compare") && <ReportCompare />}
-            {powerBiReport.includes("criteriaSearch") && (
-              <ReportCriteriaSearch />
-            )}
-          </>
-        )}
-      </Container>
+        </>
+      )}
+      {!isLoading && (
+        <Container className="my-4 user-story-top-container">
+          <div>{!isLongVersion && <>{storyResultLink}</>}</div>
+          <Collapse in={collapse}>
+            <div className={showReport ? "x-smaller-section-container" : ""}>
+              <div className={showReport ? "x-smaller-section" : ""}>
+                {isLongVersion && <Row>{header}</Row>}
+                <Row>
+                  <Col sm={isLongVersion ? 9 : 12}>
+                    <Row className="options-container">
+                      {userOptions.map((story) => (
+                        <>
+                          <UserStoryItem
+                            key={story.id}
+                            userStory={story}
+                            isLongVersion={isLongVersion}
+                            onUserStoryChange={handleUserStoryChange}
+                          />
+                        </>
+                      ))}
+                    </Row>
+                    {(isGoButton || showReport) && (
+                      <Row
+                        className={`user-story-buttons ${
+                          showReport ? "short-version-button-location" : ""
+                        }`}
+                      >
+                        {isGoButton || showReport ? resetButton : null}{" "}
+                        {isGoButton ? goButton : null}
+                      </Row>
+                    )}
+                    {isOkButton && (
+                      <Row className="section-break">{okButton}</Row>
+                    )}
+                  </Col>
+                  {isLongVersion && (
+                    <Col sm={3} className="svg-box pt-3 user-story-image">
+                      <img
+                        className="add-opp-img"
+                        src="/images/CIT_logo.svg"
+                        height="100%"
+                        width="100%"
+                        alt="cit logo mountains"
+                      />
+                    </Col>
+                  )}
+                </Row>
+              </div>
+            </div>
+          </Collapse>
+          {showReport && (
+            <>
+              {powerBiReport.includes("overview") && (
+                <ReportOverview reportFilter={reportFilter} />
+              )}
+              {powerBiReport.includes("compare") && <ReportCompare />}
+              {powerBiReport.includes("criteriaSearch") && (
+                <ReportCriteriaSearch />
+              )}
+            </>
+          )}
+        </Container>
+      )}
     </>
   );
 }

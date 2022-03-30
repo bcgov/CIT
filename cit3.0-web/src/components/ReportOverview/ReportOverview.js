@@ -59,7 +59,7 @@ export default function ReportOverview({ reportFilter }) {
   const layoutSettings = {
     panes: {
       filters: {
-        visible: false,
+        visible: true,
       },
       pageNavigation: {
         visible: false,
@@ -118,40 +118,45 @@ export default function ReportOverview({ reportFilter }) {
     ],
   ]);
 
-  const getReportFilter = () => {
-    if (!reportFilter) return null;
+  const getReportFilter = (filter) => {
+    const zoneFilter = [];
+    if (filter && filter.zoneType) {
+      const zoneTypeFilter = {
+        $schema: "http://powerbi.com/product/schema#basic",
+        target: {
+          column: "zone_type",
+          table: "Region Distribution",
+        },
+        operator: "In",
+        values: [filter.zoneType],
+      };
+      zoneFilter.push(zoneTypeFilter);
+    }
+    if (filter && filter.zoneName) {
+      const zoneNameFilter = {
+        $schema: "http://powerbi.com/product/schema#basic",
+        target: {
+          column: "zone_name",
+          table: "Region Distribution",
+        },
+        operator: "In",
+        values: [filter.zoneName],
+      };
+      zoneFilter.push(zoneNameFilter);
+    }
 
-    const zoneTypeFilter = {
-      $schema: "http://powerbi.com/product/schema#basic",
-      target: {
-        column: "zone_type",
-        table: "Region Distribution",
-      },
-      operator: "In",
-      values: [reportFilter.zoneType],
-    };
-
-    const zoneNameFilter = {
-      $schema: "http://powerbi.com/product/schema#basic",
-      target: {
-        column: "zone_name",
-        table: "Region Distribution",
-      },
-      operator: "In",
-      values: [reportFilter.zoneName],
-    };
-
-    return [zoneTypeFilter, zoneNameFilter];
+    return zoneFilter;
   };
 
   const loadReport = async () => {
     const reportConfig = await getReportConfig();
     const reportToken = await getReportToken();
+    const filter = getReportFilter(reportFilter);
 
     setEmbedReportConfig({
       ...embedReportConfig,
       id: reportConfig.id,
-      filters: getReportFilter(),
+      filters: filter,
       embedUrl: reportConfig.embedUrl,
       accessToken: reportToken,
     });
@@ -170,8 +175,9 @@ export default function ReportOverview({ reportFilter }) {
 
   const setReportFilter = async () => {
     if (!report) return;
+    const filter = getReportFilter(reportFilter);
 
-    await report.setFilters(getReportFilter());
+    await report.setFilters(filter);
   };
 
   const handlePrint = async () => {
@@ -215,10 +221,6 @@ export default function ReportOverview({ reportFilter }) {
   useEffect(() => {
     if (token) loadReport();
   }, [token, reportFilter]);
-
-  useEffect(() => {
-    if (report) setReportFilter();
-  }, [reportFilter]);
 
   useEffect(() => {
     const defaultPage = reportTabs.find((tab) => tab.isDefault);
