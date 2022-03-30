@@ -9,6 +9,8 @@ class CEN_PROF_DETAILED_CSD_ATTRS_SP(models.Model):
 
     census_subdivision_id = models.IntegerField(primary_key=True, null=False, blank=False)
     census_subdivision_name = models.CharField(max_length=127)
+    census_subdivision_type_code = models.CharField(max_length=12)
+    census_subdivision_type_desc = models.CharField(max_length=127)
     census_year = models.IntegerField(null=True)
     geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
@@ -47,6 +49,8 @@ class CEN_PROF_DETAILED_CSD_ATTRS_SP(models.Model):
     pop_total_2016 = models.IntegerField(null=True)
     pop_total_2011 = models.IntegerField(null=True)
     pop_2011_2016_pct_change = models.FloatField(null=True)
+    pop_total_2021 = models.IntegerField(null=True)
+    pop_2016_2021_pct_change = models.FloatField(null=True)
     pop_density_per_sq_km = models.IntegerField(null=True)
     land_area_sq_km = models.IntegerField(null=True)
     aboriginal_identity = models.IntegerField(null=True)
