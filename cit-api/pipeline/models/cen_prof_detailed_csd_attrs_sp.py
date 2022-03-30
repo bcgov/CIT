@@ -9,8 +9,8 @@ class CEN_PROF_DETAILED_CSD_ATTRS_SP(models.Model):
 
     census_subdivision_id = models.IntegerField(primary_key=True, null=False, blank=False)
     census_subdivision_name = models.CharField(max_length=127)
-    census_subdivision_type_code = models.CharField(max_length=12)
-    census_subdivision_type_desc = models.CharField(max_length=127)
+    census_subdivision_type_code = models.CharField(max_length=12, null=True)
+    census_subdivision_type_desc = models.CharField(max_length=127, null=True)
     census_year = models.IntegerField(null=True)
     geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
