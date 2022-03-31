@@ -118,7 +118,7 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
     elif resource_type == 'Census Division 2016':
         instance, created = Model.objects.get_or_create(
             census_division_id=row['CENSUS_DIVISION_ID'])
-    elif resource_type == 'Census Subivisions 2016':
+    elif resource_type == 'Census Subdivisions 2016':
         instance, created = Model.objects.get_or_create(
             census_subdivision_id=row['CENSUS_SUBDIVISION_ID'])
 

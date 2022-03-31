@@ -48,7 +48,7 @@ class CEN_PROF_DETAILED_CD_ATTRS_SP(models.Model):
     education_25_64_univ_doctor = models.IntegerField(null=True)
     pop_total_2016 = models.IntegerField(null=True)
     pop_total_2011 = models.IntegerField(null=True)
-    #pop_2011_2016_pct_change = models.FloatField(null=True)
+    pop_2011_2016_pct_change = models.FloatField(null=True)
     pop_total_2021 = models.IntegerField(null=True)
     #pop_2016_2021_pct_change = models.FloatField(null=True)
     pop_density_per_sq_km = models.IntegerField(null=True)
