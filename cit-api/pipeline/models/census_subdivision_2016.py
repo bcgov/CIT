@@ -5,7 +5,7 @@ from django.contrib.gis.geos import Point
 from pipeline.constants import WGS84_SRID
 
 
-class CEN_PROF_DETAILED_CSD_ATTRS_SP(models.Model):
+class census_subdivision_2016(models.Model):
 
     census_subdivision_id = models.IntegerField(primary_key=True, null=False, blank=False)
     census_subdivision_name = models.CharField(max_length=127)
@@ -49,8 +49,6 @@ class CEN_PROF_DETAILED_CSD_ATTRS_SP(models.Model):
     pop_total_2016 = models.IntegerField(null=True)
     pop_total_2011 = models.IntegerField(null=True)
     pop_2011_2016_pct_change = models.FloatField(null=True)
-    pop_total_2021 = models.IntegerField(null=True)
-    #pop_2016_2021_pct_change = models.FloatField(null=True)
     pop_density_per_sq_km = models.IntegerField(null=True)
     land_area_sq_km = models.IntegerField(null=True)
     aboriginal_identity = models.IntegerField(null=True)

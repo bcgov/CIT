@@ -5,13 +5,13 @@ from django.contrib.gis.geos import Point
 from pipeline.constants import WGS84_SRID
 
 
-class CEN_PROF_DETAILED_CSD_ATTRS_SP(models.Model):
+class census_division_2016(models.Model):
 
-    census_subdivision_id = models.IntegerField(primary_key=True, null=False, blank=False)
-    census_subdivision_name = models.CharField(max_length=127)
-    census_subdivision_type_code = models.CharField(max_length=12, null=True)
-    census_subdivision_type_desc = models.CharField(max_length=127, null=True)
     census_year = models.IntegerField(null=True)
+    census_division_id = models.IntegerField(primary_key=True, null=False, blank=False)
+    census_division_name = models.CharField(max_length=127)
+    census_division_type_code = models.CharField(max_length=12, null=True)
+    census_division_type_desc = models.CharField(max_length=127, null=True)
     geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     global_nonresp_sf_pct = models.FloatField(null=True)
@@ -49,8 +49,6 @@ class CEN_PROF_DETAILED_CSD_ATTRS_SP(models.Model):
     pop_total_2016 = models.IntegerField(null=True)
     pop_total_2011 = models.IntegerField(null=True)
     pop_2011_2016_pct_change = models.FloatField(null=True)
-    pop_total_2021 = models.IntegerField(null=True)
-    #pop_2016_2021_pct_change = models.FloatField(null=True)
     pop_density_per_sq_km = models.IntegerField(null=True)
     land_area_sq_km = models.IntegerField(null=True)
     aboriginal_identity = models.IntegerField(null=True)
@@ -518,7 +516,7 @@ class CEN_PROF_DETAILED_CSD_ATTRS_SP(models.Model):
     feature_length_m = models.FloatField(null=True)
 
     class Meta:
-        ordering = ("census_subdivision_id", )
+        ordering = ("census_division_id", )
 
     def __str__(self):
-        return self.census_subdivision_name
+        return self.census_division_name
