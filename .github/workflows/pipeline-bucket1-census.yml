@@ -17,7 +17,7 @@ jobs:
 
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST_2 }}' >> .env 
+            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
             echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
             echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
             echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
@@ -29,7 +29,7 @@ jobs:
   run-prod:
     runs-on: ubuntu-latest
     steps:
-      checkout the repo
+      # checkout the repo
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master
 
