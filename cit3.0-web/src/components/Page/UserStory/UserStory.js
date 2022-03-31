@@ -249,6 +249,7 @@ export default function UserStory() {
 
   const resetButton = (
     <Button
+      type="button"
       variant="outline-primary"
       className="user-story-button"
       onClick={resetUserStory}
@@ -324,14 +325,14 @@ export default function UserStory() {
                   <Col sm={isLongVersion ? 9 : 12}>
                     <Row className="options-container">
                       {userOptions.map((story) => (
-                        <>
+                        <div key={story.id}>
                           <UserStoryItem
                             key={story.id}
                             userStory={story}
                             isLongVersion={isLongVersion}
                             onUserStoryChange={handleUserStoryChange}
                           />
-                        </>
+                        </div>
                       ))}
                     </Row>
                     {(isGoButton || showReport) && (
