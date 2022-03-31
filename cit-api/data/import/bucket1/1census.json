@@ -5,7 +5,7 @@
     "model_name": "CEN_PROF_DETAILED_CSD_ATTRS_SP",
     "source": "databc",
     "source_type": "wms",
-    "permalink_id": "d318a079-d1e1-4695-9dc6-7f134f7f7c42",
+    "permalink_id": "42b3f57e-8879-4e5c-97e0-cdad8410da47",
     "dataset": "census-profiles-for-bc-census-subdivisions-2021-census",
     "import_order": 0
   },
@@ -15,8 +15,28 @@
     "model_name": "CEN_PROF_DETAILED_CD_ATTRS_SP",
     "source": "databc",
     "source_type": "wms",
-    "permalink_id": "a7627a6a-9b36-489b-ae58-edf2620083c6",
+    "permalink_id": "ee79424b-15a6-4b8a-8634-e83c0b635585",
     "dataset": "census-profiles-for-bc-census-divisions-2021-census",
     "import_order": 1
+  },
+  {
+    "name": "census_subdivisions_2016",
+    "display_name": "Census Subdivisions 2016",
+    "model_name": "census_subdivision_2016",
+    "source": "databc",
+    "source_type": "wms",
+    "permalink_id": "b3b986e5-33bf-46c2-82a7-0b7023d9f9fa",
+    "dataset": "census-profiles-for-bc-census-subdivisions-2016-census",
+    "import_order": 2
+  },
+  {
+    "name": "census_divisions_2016",
+    "display_name": "Census Division 2016",
+    "model_name": "census_division_2016",
+    "source": "databc",
+    "source_type": "wms",
+    "permalink_id": "65b6fbc6-abe9-4f5d-977a-0cd353fa08c2",
+    "dataset": "census-profiles-for-bc-census-divisions-2016-census1",
+    "import_order": 3
   }
 ]

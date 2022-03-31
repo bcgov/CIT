@@ -24,6 +24,8 @@ from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.general import (DataSource, LocationDistance, SchoolDistrict, Municipality,
                                       Hex, Service, ISP, RegionalDistrict)
 from pipeline.models.location_assets import School, Hospital
+from pipeline.models.census_division_2016 import *
+from pipeline.models.census_subdivision_2016 import *
 from pipeline.constants import LOCATION_TYPES
 
 from requests.adapters import HTTPAdapter
@@ -113,6 +115,12 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
     elif resource_type == 'Census Division':
         instance, created = Model.objects.get_or_create(
             census_division_id=row['CENSUS_DIVISION_ID'])
+    elif resource_type == 'Census Division 2016':
+        instance, created = Model.objects.get_or_create(
+            census_division_id=row['CENSUS_DIVISION_ID'])
+    elif resource_type == 'Census Subivisions 2016':
+        instance, created = Model.objects.get_or_create(
+            census_subdivision_id=row['CENSUS_SUBDIVISION_ID'])
 
     elif resource_type == 'Tourism Regions':
         instance, created = Model.objects.get_or_create(
