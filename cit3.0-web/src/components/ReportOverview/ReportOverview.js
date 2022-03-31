@@ -59,7 +59,7 @@ export default function ReportOverview({ reportFilter }) {
   const layoutSettings = {
     panes: {
       filters: {
-        visible: true,
+        visible: false,
       },
       pageNavigation: {
         visible: false,
