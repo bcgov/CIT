@@ -44,7 +44,7 @@ def send_pipeline_status_email():
                 "encoding": "utf-8",
                 "from": os.environ.get("EMAIL_SENDING_ADDRESS"),
                 "priority": "normal",
-                "subject": construct_email_subject,
+                "subject": construct_email_subject(),
                 "to": [os.environ.get("USER_TRACKING_TO_EMAIL")],
                 "tag": "CIT_Pipeline_Notification",
             }
