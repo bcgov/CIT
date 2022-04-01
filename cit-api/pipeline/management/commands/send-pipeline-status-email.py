@@ -50,8 +50,9 @@ def send_pipeline_status_email():
                 "to": [os.environ.get("USER_TRACKING_TO_EMAIL")],
                 "tag": "CIT_Pipeline_Notification",
             }
-            email_config_json = json.dumps(email_config)
-            response = requests.post(os.environ.get("EMAIL_SERVICE_HOST") + "/api/v1/email", data=email_config_json, headers=headers)
+            #email_config_json = json.dumps(email_config)
+            #data=email_config_json
+            response = requests.post(os.environ.get("EMAIL_SERVICE_HOST") + "/api/v1/email", headers=headers)
         return response
     else:
         print(response.text)
