@@ -22,7 +22,7 @@ class Command(BaseCommand):
                 print(response.text)
             print("Status report could not send!")
 
-def send_tracking_email():
+def send_pipeline_status_email():
     token_request_body = {'grant_type': 'client_credentials'}
     response = requests.post(os.environ.get("EMAIL_AUTH_HOST") + "/auth/realms/jbd6rnxw/protocol/openid-connect/token",
                              data=token_request_body, auth=HTTPBasicAuth(os.environ.get("EMAIL_CLIENT_ID"), os.environ.get("EMAIL_CLIENT_SECRET")))
@@ -57,7 +57,7 @@ def send_tracking_email():
         print(response.text)
 
 def construct_email_body():
-    return f"The data import pipeline " + os.environ.get("BUCKET_COMMAND") + "has completed. The status was: " + os.environ.get("GITHUB_JOB_STATUS")
+    return f"The data import pipeline has completed. It was successful"
 
 def construct_email_subject():
-    return f"The" + os.environ.get("BUCKET_COMMAND") + "was a" + os.environ.get("GITHUB_JOB_STATUS");
+    return f"The job was a success"
