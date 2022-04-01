@@ -13,4 +13,4 @@ RUN pip install -r requirements.txt
 COPY . .
 RUN python3 manage.py collectstatic --noinput
 
-CMD /bin/sh ./entrypoint.usertracking.sh
+CMD /bin/sh ./entrypoint.email.sh

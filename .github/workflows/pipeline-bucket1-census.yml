@@ -10,6 +10,7 @@ on:
 env: 
   BUCKET_COMMAND: bucket_1
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
+  EMAIL_TYPE: send-pipeline-status-email
 jobs:
   run-test:
     runs-on: ubuntu-latest
@@ -36,12 +37,11 @@ jobs:
             echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
             echo 'ENV_LEVEL = test' >> .env
             
-
       - name: Send email
         if: ${{ success() }}
         run: |
             echo 'echo 'GITHUB_JOB_STATUS = success' >> .env'
-            python3 cit-api/manage.py send-pipeline-status-email
+            docker-compose -f cit-api/docker-compose.yml up --build cit-email
 
       #- name: Start containers
       #  run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
