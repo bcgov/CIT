@@ -38,7 +38,7 @@ jobs:
             
 
       - name: Send email
-        if: ${{ success }}
+        if: ${{ success() }}
         run: |
             echo 'echo 'GITHUB_JOB_STATUS = success' >> .env'
             python3 cit-api/manage.py send-pipeline-status-email
