@@ -37,10 +37,16 @@ jobs:
             echo 'ENV_LEVEL = test' >> .env
             echo 'EMAIL_TYPE = send-pipeline-status-email' >> .env
             
-      - name: Send email
+      - name: Send email success
         if: ${{ success() }}
         run: |
             echo 'echo 'JOB_STATUS = successful' >> .env'
+            docker-compose -f cit-api/docker-compose.yml up --build cit-email
+      
+      - name: Send email failure
+        if: ${{ failure() }}
+        run: |
+            echo 'echo 'JOB_STATUS = failure' >> .env'
             docker-compose -f cit-api/docker-compose.yml up --build cit-email
 
       #- name: Start containers
