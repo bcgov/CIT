@@ -52,7 +52,7 @@ def send_pipeline_status_email():
             }
             #email_config_json = json.dumps(email_config)
             #data=email_config_json
-            response = requests.post(os.environ.get("EMAIL_SERVICE_HOST") + "/api/v1/email", headers=headers)
+            response = requests.post(os.environ.get("EMAIL_SERVICE_HOST") + "/api/v1/email", email_config, headers=headers)
         return response
     else:
         print(response.text)
