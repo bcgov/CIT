@@ -44,11 +44,11 @@ def send_pipeline_status_email():
                 "cc": [],
                 "delayTS": 0,
                 "encoding": "utf-8",
-                "from": os.environ.get("PIPELINE_EMAIL_SENDING_ADDRESS"),
+                "from": os.environ.get("EMAIL_SENDING_ADDRESS"),
                 "priority": "normal",
                 "subject": construct_email_subject,
-                "to": [os.environ.get("PIPELINE_STATUS_TO_EMAIL")],
-                "tag": "CIT_Admin_Notification",
+                "to": [os.environ.get("USER_TRACKING_TO_EMAIL")],
+                "tag": "CIT_Pipeline_Notification",
             }
             email_config_json = json.dumps(email_config)
             response = requests.post(os.environ.get("EMAIL_SERVICE_HOST") + "/api/v1/email", data=email_config_json, headers=headers)
