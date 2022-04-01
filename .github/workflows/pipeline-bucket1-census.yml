@@ -10,7 +10,6 @@ on:
 env: 
   BUCKET_COMMAND: bucket_1
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
-  EMAIL_TYPE: send-pipeline-status-email
 jobs:
   run-test:
     runs-on: ubuntu-latest
@@ -36,6 +35,7 @@ jobs:
             echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_TEST }}' >> .env
             echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
             echo 'ENV_LEVEL = test' >> .env
+            echo 'EMAIL_TYPE = send-pipeline-status-email' >> .env
             
       - name: Send email
         if: ${{ success() }}
