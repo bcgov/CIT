@@ -55,7 +55,9 @@ def send_pipeline_status_email():
         print(response.text)
 
 def construct_email_body():
-    return "The data import pipeline"+ os.environ.get("BUCKET_COMMAND")+ "has completed"+ os.environ.get("JOB_STATUS")
+    string= "The data import pipeline"+ os.environ.get("BUCKET_COMMAND")+ "has completed"+ os.environ.get("JOB_STATUS")
+    return string
 
 def construct_email_subject():
-    return "The scheduled job " + os.environ.get("BUCKET_COMMAND") +" was " + os.environ.get("JOB_STATUS")
+    string = "The scheduled job " + os.environ.get("BUCKET_COMMAND") +" was " + os.environ.get("JOB_STATUS")
+    return string
