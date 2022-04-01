@@ -14,7 +14,7 @@ import base64
 class Command(BaseCommand):
     def handle(self, *args, **options):
         print("Status of data import pipeline getting ready to send...")
-        response = send_tracking_email()
+        response = send_pipeline_status_email()
         if response is not None and response.status_code == 201:
             print("Status report sent!")
         else:
