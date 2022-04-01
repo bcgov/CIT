@@ -40,7 +40,7 @@ jobs:
       - name: Send email
         if: ${{ success() }}
         run: |
-            echo 'echo 'GITHUB_JOB_STATUS = success' >> .env'
+            echo 'echo 'JOB_STATUS = successful' >> .env'
             docker-compose -f cit-api/docker-compose.yml up --build cit-email
 
       #- name: Start containers
