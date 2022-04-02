@@ -833,8 +833,7 @@ def import_phdemographicdistribution(url, linkage_file):
           ,inplace=True)
         linkage = pd.read_csv(linkage_file)
         linkage.rename(columns={linkage.columns[0]:"dbuid_ididu",linkage.columns[1]:"census_subdivision_id"},inplace=True)
-        df_all_rows=df_all_rows.reset_index(drop=True)
-        df_all_rows = pd.concat([data, linkage], ignore_index=True)
+        df_all_rows = pd.merge(data, linkage, how='left')
         write_to_db(PHDemographicDistribution, df_all_rows)
 
 def import_nbdphhspeeds(URL):
