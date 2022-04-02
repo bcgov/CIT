@@ -1,28 +1,16 @@
 [
     {
-      "name": "businesses_by_csd",
+      "name": "BusinessesByCSD",
       "display_name": "Businesses by Census Subdivision",
       "model_name": "BusinessesByCSD",
       "source": "statscan",
       "source_type": "csv",
-      "source_file_path": "businesses_by_csd",
+      "source_file_path": "data/Tourism NAICS.xlsx",
       "resource_id": "NULL",
       "sub_resource_id": "NULL",
       "external_url": "https://agriculture.canada.ca/atlas/data_donnees/soc/businessesByCSD/csv/businesses_by_census_subdivision.zip",
       "import_order": 1
-    },
-    {
-        "name": "tourism_by_naics",
-        "display_name": "Tourism By NAICS",
-        "model_name": "",
-        "source": "statscan",
-        "source_type": "csv",
-        "source_file_path": "data/TourismNAICS.csv",
-        "resource_id": "",
-        "sub_resource_id": "",
-        "external_url": "",
-        "import_order": 2
-      }   
+    }
   ]
     
     

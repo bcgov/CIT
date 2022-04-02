@@ -4,6 +4,9 @@
 
 name: Data Pipeline - Bucket 2 semiannually
 on:
+push:
+  branches:
+    - cit-98
   schedule:
     - cron: "0 0 1 */6 *" 
 env: 
@@ -19,7 +22,7 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
+            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST_2 }}' >> .env 
             echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
             echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
             echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
@@ -29,20 +32,20 @@ jobs:
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
 
-  run-prod:
-    runs-on: ubuntu-latest
-    steps:
+  #run-prod:
+    #runs-on: ubuntu-latest
+    #steps:
       # checkout the repo
-      - name: "Checkout GitHub Action"
-        uses: actions/checkout@master
+      #- name: "Checkout GitHub Action"
+        #uses: actions/checkout@master
 
-      - name: "Generate env file"
-        run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env 
-            echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
+      #- name: "Generate env file"
+        #run: |
+            #echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+            #echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+            #echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+            #echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env 
+            #echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
-      - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+      #- name: Start containers
+        #run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
