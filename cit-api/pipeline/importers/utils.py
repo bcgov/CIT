@@ -856,10 +856,10 @@ def import_nbdphhspeeds(URL):
             PHH_BC.columns[3]:"combined_10_2",PHH_BC.columns[4]:"Combined_25_5",PHH_BC.columns[5]:"combined_50_10",}
           ,inplace=True)
         with zipfile.open("PHH_Speeds_Government_Support-PHH_Vitesses_Appui_Gouvernement_BC.csv") as f:
-            fields = ['PHH_ID','Combined_5_1_Combine']
+            fields = ['PHH_ID','Combined_50_10_Combine']
             PHH_Gov_Suup = pd.read_csv(f, delimiter=",",usecols=fields)
             PHH_Gov_Suup.rename(
-    columns={PHH_Gov_Suup.columns[0]:"phh_id",PHH_Gov_Suup.columns[1]:"combined_5_1_gov_supp"}
+    columns={PHH_Gov_Suup.columns[0]:"phh_id",PHH_Gov_Suup.columns[1]:"combined_50_10_gov_supp"}
           ,inplace=True)
         nbdphhspeeds =PHH_BC.merge(PHH_Gov_Suup, on='phh_id', how='left')
         user = settings.DATABASES['default']['USER']

@@ -266,4 +266,4 @@ class NBDPHHSpeeds(models.Model):
     combined_10_2 = models.BooleanField(default=False)
     combined_25_5 = models.BooleanField(default=False)
     combined_50_10 = models.BooleanField(default=False)
-    combined_5_1_gov_supp = models.BooleanField(default=False)
+    combined_50_10_gov_supp = models.BooleanField(default=False)
