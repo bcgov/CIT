@@ -1,6 +1,7 @@
 from django.contrib.gis.db import models
 
 from pipeline.utils import serialize_regional_district_fields
+from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.constants import WGS84_SRID
 
 
@@ -258,6 +259,7 @@ class PHDemographicDistribution(models.Model):
     hexuid_iduhex = models.TextField()          # Hexagon identifier
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
+    census_subdivision = models.ForeignKey(CEN_PROF_DETAILED_CSD_ATTRS_SP, null=True, on_delete=models.SET_NULL)
 
 class NBDPHHSpeeds(models.Model):
     phh_id = models.IntegerField(primary_key=True, max_length=12)
