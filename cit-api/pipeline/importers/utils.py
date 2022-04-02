@@ -682,7 +682,8 @@ def import_businesses_by_cid(tourism_file, url):
                 businesses.rename(columns={businesses.columns[0]:"census_subdivision_id",businesses.columns[1]:"naics_code",businesses.columns[2]:"employee_class",businesses.columns[3]:"number_of_businesses",},inplace=True)
 
             #businesses.head(10)
-            data = pd.read_excel(tourism_file, skiprows = 1)
+            #data = pd.read_excel(tourism_file, skiprows = 1)
+            data =  pd.read_excel(tourism_file,engine='openpyxl',skiprows = 1)
             tourism_list = data['NAICS'].tolist()
             sectors = []
             for index, row in businesses.iterrows():
