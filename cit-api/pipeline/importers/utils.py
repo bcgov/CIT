@@ -669,8 +669,8 @@ def exists(lst, element):
   return 0
 
 def import_businesses_by_cid(tourism_file, url):
-    url ='https://agriculture.canada.ca/atlas/data_donnees/soc/businessesByCSD/csv/businesses_by_census_subdivision.zip'
-    tourism_file = "data/Tourism NAICS.xlsx"
+    #url ='https://agriculture.canada.ca/atlas/data_donnees/soc/businessesByCSD/csv/businesses_by_census_subdivision.zip'
+    #tourism_file = "data/Tourism NAICS.xlsx"
     s = requests.get(url)
     if s.ok:
         try:
