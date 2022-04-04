@@ -20,5 +20,6 @@ class Migration(migrations.Migration):
             model_name='phdemographicdistribution',
             name='census_subdivision',
             field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='pipeline.CEN_PROF_DETAILED_CSD_ATTRS_SP'),
-        )
+        ),
+        
     ]
