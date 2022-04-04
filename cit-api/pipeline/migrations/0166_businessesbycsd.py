@@ -14,8 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BusinessesByCSD',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('naics_code', models.IntegerField()),
+                ('naics_code', models.IntegerField(primary_key=True)),
                 ('employee_class', models.IntegerField()),
                 ('number_of_businesses', models.IntegerField()),
                 ('sector', models.CharField(max_length=127, null=True)),
