@@ -5,7 +5,11 @@ import { Button } from "react-bootstrap";
 import ReactHtmlParser from "react-html-parser";
 import "./UserStoryItem.css";
 
-export default function UserStoryItem({ userStory, onUserStoryChange }) {
+export default function UserStoryItem({
+  userStory,
+  isLongVersion,
+  onUserStoryChange,
+}) {
   const userStoryYes = userStory.user_story_paths.find(
     (x) => x.label === "Yes"
   );
@@ -39,11 +43,13 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
     }),
     singleValue: (base) => ({
       ...base,
-      color: "#3288D9",
+      color: isLongVersion ? "#3288D9" : "#000000",
     }),
     valueContainer: (base) => ({
       ...base,
-      color: "#3288D9",
+      color: isLongVersion ? "#3288D9" : "#000000",
+      backgroundColor: isLongVersion ? "#ffffff" : "#f2f2f2",
+      fontWeight: isLongVersion ? "normal" : "bold",
     }),
     multiValue: (base) => ({
       ...base,
@@ -66,6 +72,7 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
     dropdownIndicator: (base) => ({
       ...base,
       color: "#3288d9",
+      backgroundColor: isLongVersion ? "#ffffff" : "#f2f2f2",
     }),
     placeholder: (base) => ({
       ...base,
@@ -76,10 +83,15 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
   return (
     <>
       <div className="select-container">
-        {userStory.postText && <>{ReactHtmlParser(userStory.postText)}</>}
+        {isLongVersion && userStory.longTextLabel && (
+          <>{ReactHtmlParser(userStory.longTextLabel)}</>
+        )}
+
+        {userStory.text && <>{ReactHtmlParser(userStory.text)}</>}
         {userStory.user_story_paths &&
           userStory.user_story_paths.length > 1 &&
-          userStoryYes && (
+          userStoryYes &&
+          isLongVersion && (
             <>
               <Button
                 variant="primary"
@@ -118,9 +130,11 @@ export default function UserStoryItem({ userStory, onUserStoryChange }) {
 
 UserStoryItem.propTypes = {
   userStory: PropTypes.shape().isRequired,
+  isLongVersion: PropTypes.bool,
   onUserStoryChange: PropTypes.func,
 };
 
 UserStoryItem.defaultProps = {
+  isLongVersion: true,
   onUserStoryChange: null,
 };

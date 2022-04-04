@@ -19,11 +19,14 @@ from pipeline.constants import WGS84_SRID
 from pipeline.models import LinkageWithCensus
 from pipeline.models.tourism_region import TourismRegion
 from pipeline.models.community import Community
+from pipeline.models.business_by_census_subdivions import BusinessesByCSD
 from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.general import (DataSource, LocationDistance, SchoolDistrict, Municipality,
                                       Hex, Service, ISP, RegionalDistrict)
 from pipeline.models.location_assets import School, Hospital
+from pipeline.models.census_division_2016 import *
+from pipeline.models.census_subdivision_2016 import *
 from pipeline.constants import LOCATION_TYPES
 
 from requests.adapters import HTTPAdapter
@@ -38,6 +41,7 @@ import pandas as pd
 from io import BytesIO
 from zipfile import ZipFile
 from urllib.request import urlopen
+
 
 RETRY_STRATEGY = Retry(total=3)
 ADAPTER = HTTPAdapter(max_retries=RETRY_STRATEGY)
@@ -113,6 +117,12 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
     elif resource_type == 'Census Division':
         instance, created = Model.objects.get_or_create(
             census_division_id=row['CENSUS_DIVISION_ID'])
+    elif resource_type == 'Census Division 2016':
+        instance, created = Model.objects.get_or_create(
+            census_division_id=row['CENSUS_DIVISION_ID'])
+    elif resource_type == 'Census Subdivisions 2016':
+        instance, created = Model.objects.get_or_create(
+            census_subdivision_id=row['CENSUS_SUBDIVISION_ID'])
 
     elif resource_type == 'Tourism Regions':
         instance, created = Model.objects.get_or_create(
@@ -650,6 +660,43 @@ def write_to_db(Model, data):
     database_url = 'postgresql://{user}:{password}@{Host}:5432/{database_name}'.format(user=user,password=password,Host=Host,database_name=database_name )
     engine = create_engine(database_url)
     data.to_sql(Model._meta.db_table,if_exists = 'replace',con=engine,index=False)
+
+def exists(lst, element):
+  for i in lst:
+    if i == element:
+      return 1
+    continue
+  return 0
+
+def import_businesses_by_cid(tourism_file, url):
+    #url ='https://agriculture.canada.ca/atlas/data_donnees/soc/businessesByCSD/csv/businesses_by_census_subdivision.zip'
+    #tourism_file = "data/Tourism NAICS.xlsx"
+    s = requests.get(url)
+    if s.ok:
+        try:
+            resp = urlopen(url)
+            zipfile = ZipFile(BytesIO(resp.read()))
+            with zipfile.open("businesses_by_census_subdivision_2021.csv") as f:
+                fields = ['CSD_ID','NAICS_CODE','EMPLOYEE_CLASS','FREQUENCY']
+                businesses = pd.read_csv(f, header=0, delimiter=",",usecols=fields)
+                businesses.rename(columns={businesses.columns[0]:"census_subdivision_id",businesses.columns[1]:"naics_code",businesses.columns[2]:"employee_class",businesses.columns[3]:"number_of_businesses",},inplace=True)
+
+            #businesses.head(10)
+            #data = pd.read_excel(tourism_file, skiprows = 1)
+            data =  pd.read_excel(tourism_file,engine='openpyxl',skiprows = 1)
+            tourism_list = data['NAICS'].tolist()
+            sectors = []
+            for index, row in businesses.iterrows():
+                if exists(tourism_list, row['naics_code']) == 1:
+                    sectors.append('tourism')
+                if exists(tourism_list, row['naics_code']) == 0:
+                    sectors.append("")
+            businesses['sector'] = sectors
+            businesses.head(10)
+            write_to_db(BusinessesByCSD, businesses)
+
+        except Exception as e:
+            print(e)
 
 def import_census_subdivision_linkage(linkage_file):
     data = pd.read_csv(linkage_file)

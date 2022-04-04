@@ -1,113 +1,139 @@
-import { useState, useEffect } from "react";
-import { Container, Button, Row, Col } from "react-bootstrap";
-import { ArrowRight } from "react-bootstrap-icons";
-import axios from "axios";
+import { useState, useEffect, useRef } from "react";
+import {
+  Container,
+  Button,
+  Row,
+  Col,
+  Collapse,
+  Spinner,
+} from "react-bootstrap";
+import {
+  ArrowRight,
+  ChevronRight,
+  ChevronDown,
+  ChevronUp,
+} from "react-bootstrap-icons";
 import { useHistory } from "react-router-dom";
-import "../HomePage/HomePage.scss";
-
-import { useDispatch, useSelector } from "react-redux";
-import { getOptions, setOptions } from "../../../store/actions/options";
-import { userStoryPaths } from "../../../data/userStoryPaths.json";
-
-import "./UserStory.css";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import UserStoryItem from "../../UserStoryItem/UserStoryItem";
+import ReportOverview from "../../ReportOverview/ReportOverview";
+import ReportCriteriaSearch from "../../ReportCriteriaSearch/ReportCriteriaSearch";
+import ReportCompare from "../../ReportCompare/ReportCompare";
+import {
+  getCensusEconomicRegions,
+  getCommunities,
+  getNaturalResourceRegions,
+  getRegionalDistricts,
+  getTourismRegions,
+} from "../../../helpers/userStoryData";
+
+import { userStoryPaths } from "../../../data/userStoryPaths.json";
+import "../HomePage/HomePage.scss";
+import "./UserStory.css";
 
 export default function UserStory() {
-  let loading = false;
-  const [userOptions, setAllOptions] = useState([]);
-  const [isYesButton, setIsYesButton] = useState(false);
-  const [isNoButton, setIsNoButton] = useState(false);
-  const [redirectURL, setRedirectURL] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [userOptions, setUserOptions] = useState([]);
+  const [isLongVersion, setIsLongVersion] = useState(true);
+  const [showReport, setShowReport] = useState(false);
+  const [who, setWho] = useState("");
+  const [isGoButton, setIsGoButton] = useState(false);
+  const [isOkButton, setIsOkButton] = useState(false);
   const [areaType, setAreaType] = useState("");
-  const [areaFilterId, setAreaFilterId] = useState("");
-  const [areaSearchFilter, setAreaSearchFilter] = useState("");
-  const [powerBiReports, setPowerBiReports] = useState([]);
+  const [powerBiReport, setPowerBiReport] = useState("");
+  const [reportFilter, setReportFilter] = useState("");
   const [communities, setCommunities] = useState(null);
-  const [regionals, setRegionals] = useState(null);
+  const [regionalDistricts, setRegionalDistricts] = useState(null);
+  const [tourismRegions, setTourismRegions] = useState(null);
+  const [economicRegions, setEconomicRegions] = useState(null);
+  const [naturalResourceRegions, setNaturalResourceRegions] = useState(null);
+
+  const [collapse, setCollapse] = useState(true);
+
+  const zoneType = useRef();
+  const zoneName = useRef();
+  const redirectUrl = useRef();
+
+  const keycloak = useKeycloakWrapper();
 
   const history = useHistory();
-  const dispatch = useDispatch();
 
-  const redirectPage = () => {
-    let path = redirectURL;
+  const userName = keycloak ? keycloak.firstName : "";
 
-    if (redirectURL.includes("reportfilter")) {
-      const areaFilter = encodeURIComponent(areaSearchFilter);
-      path = `${redirectURL}?${areaFilterId}=${areaFilter}`;
+  const showResult = (urlPath) => {
+    if (!urlPath) return;
 
-      if (powerBiReports.length > 0) {
-        const powerBiqs = `powerbi=${powerBiReports.join(",")}`;
-        path = `${path}&${powerBiqs}`;
+    if (urlPath && urlPath.includes("powerbi")) {
+      setPowerBiReport(urlPath);
+      setIsLongVersion(false);
+      if (zoneType.current || zoneName.current) {
+        const zoneFilter = {
+          zoneType: zoneType.current,
+          zoneName: zoneName.current,
+        };
+        setReportFilter(zoneFilter);
       }
+      setShowReport(true);
+      return;
     }
-    history.push(path);
+    history.push(urlPath);
   };
 
-  const regionalDistricts = useSelector(
-    (state) => state.options.regionalDistricts
-  );
-
-  const statuses = useSelector((state) => state.options.statuses);
-  if (!loading && (!statuses.length || !regionalDistricts.length)) {
-    loading = true;
-    getOptions().then((response) => {
-      dispatch(setOptions(response.data));
-      loading = false;
-    });
-  }
-
   useEffect(() => {
-    axios.get("/api/opportunity/options").then((data) => {
-      const commNames = data.data.communities.map((x) => ({
-        value: x.id,
-        label: x.place_name,
-      }));
-
-      setCommunities(commNames);
-
-      const regNames = data.data.regionalDistricts.map((x) => ({
-        value: x.id,
-        label: x.name,
-      }));
-
-      setRegionals(regNames);
+    Promise.all([
+      getCensusEconomicRegions(),
+      getCommunities(),
+      getNaturalResourceRegions(),
+      getRegionalDistricts(),
+      getTourismRegions(),
+    ]).then((response) => {
+      setEconomicRegions(response[0]);
+      setCommunities(response[1]);
+      setNaturalResourceRegions(response[2]);
+      setRegionalDistricts(response[3]);
+      setTourismRegions(response[4]);
+      setIsLoading(false);
     });
   }, []);
 
   useEffect(() => {
     const option = userStoryPaths.find((x) => x.code === "START");
-    option.postText = option.preText;
-    setAllOptions([option]);
+    option.longTextLabel = option.longText;
+    setUserOptions([option]);
   }, []);
 
   const resetUserStory = () => {
-    const options = userStoryPaths.find((x) => x.code === "START");
-    setAllOptions([options]);
-    setIsNoButton(false);
-    setIsYesButton(false);
+    const option = userStoryPaths.find((x) => x.code === "START");
+    setUserOptions([option]);
+    setIsOkButton(false);
+    setIsGoButton(false);
   };
 
   const handleUserStoryChange = (e) => {
     let param;
 
     if (e.length === 0) {
-      setIsNoButton(false);
-      setIsYesButton(false);
+      setIsOkButton(false);
+      setIsGoButton(false);
       return;
     }
 
     if (Array.isArray(e)) {
-      setPowerBiReports(e.map((x) => x.value.toLowerCase()));
       param = e.find((x, index) => index < 1);
     } else {
       param = e;
     }
-
     if (param && !param.code) {
-      param.code = "AREA-TYPE-LIST-YES";
-      param.group = "area-type-list";
-      param.url = "reports/publicreport/reportfilter";
-      setAreaSearchFilter(param.label);
+      const zone = userStoryPaths.find((x) => x.group === "zone-type-list");
+      if (zone) {
+        param.code = zone.code;
+        param.group = zone.group;
+        param.url = zone.url;
+      }
+    }
+
+    if (param && param.group === "who") {
+      setWho(param);
     }
 
     const groupIndex = userOptions.findIndex((x) => x.group === param.group);
@@ -121,49 +147,97 @@ export default function UserStory() {
 
     const userOption = userStoryPaths.find((x) => x.code === param.code);
 
-    if (param.group === "area") {
+    if (!isLongVersion && userOption && userOption.group !== "zone") {
+      const isYes = userOption.user_story_paths.find((x) =>
+        x.code.includes("-YES")
+      );
+      if (isYes) {
+        userOption.user_story_paths = [isYes];
+      }
+    }
+
+    if (param.group === "zone-type-list") zoneName.current = param.label;
+
+    if (param.group === "zone") {
       setAreaType(userOption.label);
-      setAreaFilterId(userOption.code.toLowerCase());
+
+      switch (userOption.code) {
+        case "REGIONALDISTRICTS":
+          userOption.user_story_paths = regionalDistricts;
+          zoneType.current = "Regional Districts";
+          break;
+        case "COMMUNITYAREA":
+          userOption.user_story_paths = communities;
+          zoneType.current = "Communities and Unincorporated Areas";
+          break;
+        case "ECONOMICREGIONS":
+          userOption.user_story_paths = economicRegions;
+          zoneType.current = "Economic Region";
+          break;
+        case "NATURALRESOURCEREGIONS":
+          userOption.user_story_paths = naturalResourceRegions;
+          zoneType.current = null;
+          break;
+        case "TOURISMREGIONS":
+          userOption.user_story_paths = tourismRegions;
+          zoneType.current = "Tourism Region";
+          break;
+        default:
+          zoneType.current = null;
+          zoneName.current = null;
+      }
     }
 
-    if (userOption.code.includes("REGIONALDISTRICTS")) {
-      userOption.user_story_paths = regionals;
-    }
-
-    if (userOption.code.includes("COMMUNITYAREA")) {
-      userOption.user_story_paths = communities;
-    }
-
-    let replaceText = userOption.preText;
+    let replaceText = userOption.longText;
     replaceText = replaceText.replace(
-      "{AREA-TYPE-1}",
+      "{ZONE-TYPE-1}",
       userOption.label.slice(0, -1)
     );
-    replaceText = replaceText.replace("{AREA-TYPE-2}", areaType);
-    replaceText = replaceText.replace("{AREA-SEARCH-FILTER}", param.label);
-    userOption.postText = replaceText;
 
-    setAllOptions([...newUserOptions, userOption]);
+    replaceText = replaceText.replace("{ZONE-TYPE-2}", areaType);
+    replaceText = replaceText.replace("{ZONE-SEARCH-FILTER}", param.label);
+    userOption.longTextLabel = replaceText;
+
+    setUserOptions([...newUserOptions, userOption]);
+
+    if (param.code.includes("-YES") && isLongVersion) {
+      setIsOkButton(false);
+      showResult(param.url);
+      return;
+    }
 
     const isLastOption = userOption.user_story_paths.length < 2;
 
-    if (userOption.code.includes("-YES") || isLastOption) {
-      setIsYesButton(true);
-      setIsNoButton(true);
-      setRedirectURL(param.url);
+    if (userOption.code.includes("-GO") || isLastOption) {
+      setIsGoButton(true);
+      setIsOkButton(false);
+      redirectUrl.current = param.url;
     } else {
-      setIsYesButton(false);
-      setIsNoButton(false);
+      setIsGoButton(false);
+      setIsOkButton(false);
     }
+
     if (userOption.code.includes("-NO")) {
-      setIsNoButton(true);
-      setIsYesButton(false);
+      const isNo = userOption.user_story_paths.find((x) =>
+        x.code.includes("-NO")
+      );
+      if (isNo) {
+        setIsOkButton(true);
+        setIsGoButton(false);
+      }
     }
+  };
+
+  const handleIsOk = () => {
+    handleUserStoryChange(who);
   };
 
   const header = (
     <>
-      <h3>Hi, welcome to our Community Information Tool</h3>
+      <h3>
+        Hi{userName ? " " : ""}
+        {userName}, welcome to our Community Information Tool
+      </h3>
       <p>
         The Community Information Tool offers insight into communities across
         B.C. with integrated socio-economic data, infrastructure, and community
@@ -173,8 +247,9 @@ export default function UserStory() {
     </>
   );
 
-  const noButton = (
+  const resetButton = (
     <Button
+      type="button"
       variant="outline-primary"
       className="user-story-button"
       onClick={resetUserStory}
@@ -183,56 +258,125 @@ export default function UserStory() {
     </Button>
   );
 
-  const yesButton = (
+  const okButton = (
+    <Button
+      variant="outline-primary"
+      className="user-story-button"
+      onClick={handleIsOk}
+      active
+    >
+      Ok
+    </Button>
+  );
+
+  const goButton = (
     <Button
       variant="primary"
       active
-      className="bcgov-normal-blue user-story-button"
-      onClick={redirectPage}
+      className="user-story-button"
+      onClick={() => showResult(redirectUrl.current)}
     >
-      Let&apos;s Go <ArrowRight />
+      {isLongVersion ? "Let's Go" : "View Results For Your New Search"}{" "}
+      {isLongVersion ? <ArrowRight /> : <ChevronRight />}
     </Button>
+  );
+
+  const storyResultLink = (
+    <>
+      <div className="collapse-link">
+        <p>
+          Based on
+          <button
+            type="button"
+            aria-controls="user story collapse text"
+            aria-expanded={collapse}
+            onClick={() => setCollapse(!collapse)}
+          >
+            your story{" "}
+            {collapse ? (
+              <ChevronUp size={20} className="chevron-icon" />
+            ) : (
+              <ChevronDown size={20} className="chevron-icon" />
+            )}
+          </button>
+          here are your results
+        </p>
+      </div>
+    </>
   );
 
   return (
     <>
-      <Container className="mt-4 your-story your-story-elements">
-        <Row>
-          <Col sm={12}>{header}</Col>
-        </Row>
-        <Row>
-          <Col sm={9}>
-            <Container className="your-story your-story-elements">
-              <Row>
-                {userOptions.map((story) => (
-                  <UserStoryItem
-                    key={story.id}
-                    userStory={story}
-                    onUserStoryChange={handleUserStoryChange}
-                  />
-                ))}
-              </Row>
-              {(isNoButton || isYesButton) && (
-                <>
-                  <Row className="section-break">
-                    {isNoButton && noButton}
-                    {isYesButton && yesButton}
-                  </Row>
-                </>
+      {isLoading && (
+        <>
+          <div className="center-spinner">
+            <Spinner animation="border" />
+          </div>
+        </>
+      )}
+      {!isLoading && (
+        <Container className="my-4 user-story-top-container">
+          <div>{!isLongVersion && <>{storyResultLink}</>}</div>
+          <Collapse in={collapse}>
+            <div className={showReport ? "x-smaller-section-container" : ""}>
+              <div className={showReport ? "x-smaller-section" : ""}>
+                {isLongVersion && <Row>{header}</Row>}
+                <Row>
+                  <Col sm={isLongVersion ? 9 : 12}>
+                    <Row className="options-container">
+                      {userOptions.map((story) => (
+                        <div key={story.id}>
+                          <UserStoryItem
+                            key={story.id}
+                            userStory={story}
+                            isLongVersion={isLongVersion}
+                            onUserStoryChange={handleUserStoryChange}
+                          />
+                        </div>
+                      ))}
+                    </Row>
+                    {(isGoButton || showReport) && (
+                      <Row
+                        className={`user-story-buttons ${
+                          showReport ? "short-version-button-location" : ""
+                        }`}
+                      >
+                        {isGoButton || showReport ? resetButton : null}{" "}
+                        {isGoButton ? goButton : null}
+                      </Row>
+                    )}
+                    {isOkButton && (
+                      <Row className="section-break">{okButton}</Row>
+                    )}
+                  </Col>
+                  {isLongVersion && (
+                    <Col sm={3} className="svg-box pt-3 user-story-image">
+                      <img
+                        className="add-opp-img"
+                        src="/images/CIT_logo.svg"
+                        height="100%"
+                        width="100%"
+                        alt="cit logo mountains"
+                      />
+                    </Col>
+                  )}
+                </Row>
+              </div>
+            </div>
+          </Collapse>
+          {showReport && (
+            <>
+              {powerBiReport.includes("overview") && (
+                <ReportOverview reportFilter={reportFilter} />
               )}
-            </Container>
-          </Col>
-          <Col sm={3} className="svg-box pt-3 your-story-image">
-            <img
-              className="add-opp-img"
-              src="/images/CIT_logo.svg"
-              height="100%"
-              width="100%"
-              alt="cit logo mountains"
-            />
-          </Col>
-        </Row>
-      </Container>
+              {powerBiReport.includes("compare") && <ReportCompare />}
+              {powerBiReport.includes("criteriaSearch") && (
+                <ReportCriteriaSearch />
+              )}
+            </>
+          )}
+        </Container>
+      )}
     </>
   );
 }

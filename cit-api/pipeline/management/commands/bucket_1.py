@@ -39,7 +39,7 @@ class Command(BaseCommand):
         import_data_sources()
         #Ensure that the data sources are updated
         data_resources = DataSource.objects.filter(name__in=[
-            'census_subdivisions', 'census_divisions'
+            'census_subdivisions', 'census_divisions', 'census_subdivisions_2016', 'census_divisions_2016'
         ]).order_by('import_order')
 
         for resource in data_resources:
