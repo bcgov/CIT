@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.db import connection
 from datetime import date, timedelta
-from dotenv import load_dotenv
 import csv
 import os
 import requests
@@ -57,11 +56,11 @@ def send_pipeline_status_email():
         print(response.text)
 
 def construct_email_body():
-    jobStatus= os.getenv('JOB_STATUS')
+    jobStatus= os.environ.get('JOB_STATUS')
     message = str("The scheduled job has " + jobStatus)
     return message
 
 def construct_email_subject():
-    jobStatus= os.getenv('JOB_STATUS')
+    jobStatus= os.environ.get('JOB_STATUS')
     message = str("The scheduled job has " + jobStatus)
     return message
