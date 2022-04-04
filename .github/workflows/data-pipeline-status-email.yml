@@ -1,6 +1,6 @@
 on:
   workflow_run:
-    workflows: [pipeline-bucket1-census.yml]
+    workflows: [Data Pipeline Bucket 1 - Census]
     types: [completed]
 
 jobs:
