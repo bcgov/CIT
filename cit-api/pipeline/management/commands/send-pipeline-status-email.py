@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db import connection
 from datetime import date, timedelta
+from dotenv import load_dotenv
 import csv
 import os
 import requests
@@ -9,6 +10,7 @@ from io import StringIO
 from requests.auth import HTTPBasicAuth
 import calendar
 import base64
+
 
 
 class Command(BaseCommand):
@@ -55,9 +57,11 @@ def send_pipeline_status_email():
         print(response.text)
 
 def construct_email_body():
-    string= str("The data import pipeline"+ os.environ.get("BUCKET_COMMAND")+ "has completed"+ os.environ.get("JOB_STATUS"))
-    return string
+    jobStatus= os.getenv('JOB_STATUS')
+    message = str("The scheduled job has " + jobStatus)
+    return message
 
 def construct_email_subject():
-    string = str("The scheduled job " + os.environ.get("BUCKET_COMMAND") +" was " + os.environ.get("JOB_STATUS"))
-    return string
+    jobStatus= os.getenv('JOB_STATUS')
+    message = str("The scheduled job has " + jobStatus)
+    return message

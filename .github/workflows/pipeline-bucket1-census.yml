@@ -6,7 +6,7 @@ on:
   push:
     branches:
         - CIT-168
-  workflow_dispatch:
+  #workflow_dispatch:
 env: 
   BUCKET_COMMAND: bucket_1
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
@@ -26,6 +26,28 @@ jobs:
             echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
             echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
+            echo 'EMAIL_NOTIFICATIONS_ENABLED = ${{ secrets.EMAIL_NOTIFICATIONS_ENABLED }}' >> .env
+            echo 'EMAIL_AUTH_HOST = ${{ secrets.EMAIL_AUTH_HOST_TEST }}' >> .env
+            echo 'EMAIL_SERVICE_HOST = ${{ secrets.EMAIL_SERVICE_HOST_TEST }}' >> .env
+            echo 'EMAIL_CLIENT_ID = ${{ secrets.EMAIL_CLIENT_ID_TEST }}' >> .env
+            echo 'EMAIL_CLIENT_SECRET = ${{ secrets.EMAIL_CLIENT_SECRET_TEST }}' >> .env
+            echo 'EMAIL_SENDING_ADDRESS = ${{ secrets.EMAIL_SENDING_ADDRESS_TEST }}' >> .env
+            echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_TEST }}' >> .env
+            echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
+            echo 'ENV_LEVEL = test' >> .env
+            echo 'EMAIL_TYPE = send-pipeline-status-email' >> .env
+            
+      - name: Send email success
+        if: ${{ success() }}
+        run: |
+            echo 'JOB_STATUS = succeeded' >> .env
+            docker-compose -f cit-api/docker-compose.yml up --build cit-email
+      
+      - name: Send email failure
+        if: ${{ failure() }}
+        run: |
+            echo 'JOB_STATUS = failed' >> .env
+            docker-compose -f cit-api/docker-compose.yml up --build cit-email
 
       #- name: Start containers
       #  run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
