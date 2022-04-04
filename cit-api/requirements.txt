@@ -17,3 +17,4 @@ bcdata==0.4.3
 whitenoise==5.2.0
 python-keycloak==0.24.0
 azure-storage-blob==12.8.0 
+openpyxl == 3.0.9
