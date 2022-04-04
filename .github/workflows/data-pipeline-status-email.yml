@@ -1,0 +1,55 @@
+on:
+  workflow_run:
+    workflows: [pipeline-bucket1-census.yml]
+    types: [completed]
+
+jobs:
+  on-success:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - run: echo 'The triggering workflow passed'
+
+      - name: "Generate env file"
+        run: |
+            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+            echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
+            echo 'EMAIL_NOTIFICATIONS_ENABLED = ${{ secrets.EMAIL_NOTIFICATIONS_ENABLED }}' >> .env
+            echo 'EMAIL_AUTH_HOST = ${{ secrets.EMAIL_AUTH_HOST_TEST }}' >> .env
+            echo 'EMAIL_SERVICE_HOST = ${{ secrets.EMAIL_SERVICE_HOST_TEST }}' >> .env
+            echo 'EMAIL_CLIENT_ID = ${{ secrets.EMAIL_CLIENT_ID_TEST }}' >> .env
+            echo 'EMAIL_CLIENT_SECRET = ${{ secrets.EMAIL_CLIENT_SECRET_TEST }}' >> .env
+            echo 'EMAIL_SENDING_ADDRESS = ${{ secrets.EMAIL_SENDING_ADDRESS_TEST }}' >> .env
+            echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_TEST }}' >> .env
+            echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
+            echo 'ENV_LEVEL = test' >> .env
+            echo 'EMAIL_TYPE = send-pipeline-status-email' >> .env
+            echo 'JOB_STATUS = successful' >> .env
+
+      - name: Send email success
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-email
+
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering workflow failed'
+
+      - name: "Generate env file"
+        run: |
+            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+            echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
+            echo 'EMAIL_NOTIFICATIONS_ENABLED = ${{ secrets.EMAIL_NOTIFICATIONS_ENABLED }}' >> .env
+            echo 'EMAIL_AUTH_HOST = ${{ secrets.EMAIL_AUTH_HOST_TEST }}' >> .env
+            echo 'EMAIL_SERVICE_HOST = ${{ secrets.EMAIL_SERVICE_HOST_TEST }}' >> .env
+            echo 'EMAIL_CLIENT_ID = ${{ secrets.EMAIL_CLIENT_ID_TEST }}' >> .env
+            echo 'EMAIL_CLIENT_SECRET = ${{ secrets.EMAIL_CLIENT_SECRET_TEST }}' >> .env
+            echo 'EMAIL_SENDING_ADDRESS = ${{ secrets.EMAIL_SENDING_ADDRESS_TEST }}' >> .env
+            echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_TEST }}' >> .env
+            echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
+            echo 'ENV_LEVEL = test' >> .env
+            echo 'EMAIL_TYPE = send-pipeline-status-email' >> .env
+            echo 'JOB_STATUS = failure' >> .env
+
+      - name: Send email failure
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-email
