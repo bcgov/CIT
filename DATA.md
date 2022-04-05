@@ -5,7 +5,7 @@ python3 manage.py 'bucket_command' ex. python3 manage.py bucket_1
 
 Most buckets have been grouped together based on a certain schedule that they should be run at. Weekly, Monthly, Semi-Annually etc. 
 
-Github Actions have been created to run each bucket on its determined schedule. Sending an email when its been run successfully or not. A Github Action has also been created to run any bucket manually where the user will be given a choice of what environment they would like to run it in and which bucket to run.
+Github Actions have been created to run each bucket on its determined schedule. An email will be sent when its been run successfully or not. A Github Action has also been created to run any bucket manually where the user will be given a choice of what environment they would like to run it in and which bucket to run.
 
 This has cut down the time it takes to import the data significantly, however further decoupling could take place to have each dataset entirely decoupled and able to be run on their own. 
 
@@ -21,6 +21,10 @@ Bucket 5 Monthly - economic projects, first responders
 Bucket 5 Semiannually (fully decoupled datasets with their own commands) - airports, civic facilities, clinics, customs ports of entry, diagnostic facilities, emergency social service facilities, first nations health authority, hospitals, laboratory services, pharmacies, port and terminal, public library, schools, servicebc locations, timber facilities
 Bucket 6 - bc assessment
 Bucket 7 - linkage csd
+
+If a new "Bucket" is added, this needs to be added to the list of manual run buckets in the manual-pipeline-run.yml file. 
+
+If any new data files are added to the Azure storage container, it will also need to be added to the Dockerfile.pipeline file (there is a section pulling each datafile from storage into the container) - definitely room for improvement here, it would be better if we could pull the whole folder instead of individual files.
 
 # Data Sources and Importing Data
 
