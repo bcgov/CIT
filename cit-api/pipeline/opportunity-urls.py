@@ -8,12 +8,13 @@ from pipeline.views.opportunity.edit import OpportunityView
 from pipeline.views.opportunity.get import OpportunityGetView
 from pipeline.views.opportunity.list import OpportunitiesList
 from pipeline.views.opportunity.export import OpportunitiesListExport
-from  pipeline.views.options import OptionsView
-from  pipeline.views.options import CommunityOptions
-from  pipeline.views.options import RegionalDistrictOptions
-from  pipeline.views.options import CensusEconomicRegionOptions
-from  pipeline.views.options import TourismRegionOptions
-from  pipeline.views.options import NaturalResourceRegionOptions
+from pipeline.views.options import OptionsView
+from pipeline.views.options import CommunityOptions
+from pipeline.views.options import RegionalDistrictOptions
+from pipeline.views.options import CensusEconomicRegionOptions
+from pipeline.views.options import TourismRegionOptions
+from pipeline.views.options import NaturalResourceRegionOptions
+from pipeline.views.options import CensusSubdivisionOptions
 import pipeline.views.proximity
 import pipeline.views.users.user
 import pipeline.views.users.tracking
@@ -33,6 +34,7 @@ urlpatterns = [
     url(r"^options/census-economic-regions/$", CensusEconomicRegionOptions.as_view()),
     url(r"^options/tourism-regions/$", TourismRegionOptions.as_view()),
     url(r"^options/natural-resource-regions/$", NaturalResourceRegionOptions.as_view()),
+    url(r"^options/census-subdivisions/$", CensusSubdivisionOptions.as_view()),
     url(r"^proximity/$", pipeline.views.proximity.ProximityView.as_view()),
     url(r"^users/$", pipeline.views.users.user.UserListView.as_view()),
     url(r"^user/$", pipeline.views.users.user.UserView.as_view()),
