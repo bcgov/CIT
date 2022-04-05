@@ -8,6 +8,7 @@ on:
 env: 
   WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
   WORKFLOW_STATUS: ${{ github.event.workflow_run.conclusion }}
+  WORKFLOW_URL: ${{ github.event.workflow_run.html_url }}
 jobs:
   on-success:
     runs-on: ubuntu-latest
@@ -20,16 +21,17 @@ jobs:
             echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
             echo 'EMAIL_NOTIFICATIONS_ENABLED = ${{ secrets.EMAIL_NOTIFICATIONS_ENABLED }}' >> .env
-            echo 'EMAIL_AUTH_HOST = ${{ secrets.EMAIL_AUTH_HOST_TEST }}' >> .env
-            echo 'EMAIL_SERVICE_HOST = ${{ secrets.EMAIL_SERVICE_HOST_TEST }}' >> .env
-            echo 'EMAIL_CLIENT_ID = ${{ secrets.EMAIL_CLIENT_ID_TEST }}' >> .env
-            echo 'EMAIL_CLIENT_SECRET = ${{ secrets.EMAIL_CLIENT_SECRET_TEST }}' >> .env
-            echo 'EMAIL_SENDING_ADDRESS = ${{ secrets.EMAIL_SENDING_ADDRESS_TEST }}' >> .env
-            echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_TEST }}' >> .env
-            echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
+            echo 'EMAIL_AUTH_HOST = ${{ secrets.EMAIL_AUTH_HOST_PROD }}' >> .env
+            echo 'EMAIL_SERVICE_HOST = ${{ secrets.EMAIL_SERVICE_HOST_PROD }}' >> .env
+            echo 'EMAIL_CLIENT_ID = ${{ secrets.EMAIL_CLIENT_ID_PROD }}' >> .env
+            echo 'EMAIL_CLIENT_SECRET = ${{ secrets.EMAIL_CLIENT_SECRET_PROD }}' >> .env
+            echo 'EMAIL_SENDING_ADDRESS = ${{ secrets.EMAIL_SENDING_ADDRESS_PROD }}' >> .env
+            echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_PROD }}' >> .env
+            echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.CIT_PIPELINE_STATUS_USER }}' >> .env
             echo 'EMAIL_TYPE = send-pipeline-status-email' >> .env
             echo 'WORKFLOW_STATUS = ${{ env.WORKFLOW_STATUS }}' >> .env
             echo 'WORKFLOW_NAME = ${{ env.WORKFLOW_NAME }}' >> .env
+            echo 'WORKFLOW_URL = ${{ env.WORKFLOW_URL }}' >> .env
 
       - name: Send email success
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-email
@@ -45,16 +47,17 @@ jobs:
             echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
             echo 'EMAIL_NOTIFICATIONS_ENABLED = ${{ secrets.EMAIL_NOTIFICATIONS_ENABLED }}' >> .env
-            echo 'EMAIL_AUTH_HOST = ${{ secrets.EMAIL_AUTH_HOST_TEST }}' >> .env
-            echo 'EMAIL_SERVICE_HOST = ${{ secrets.EMAIL_SERVICE_HOST_TEST }}' >> .env
-            echo 'EMAIL_CLIENT_ID = ${{ secrets.EMAIL_CLIENT_ID_TEST }}' >> .env
-            echo 'EMAIL_CLIENT_SECRET = ${{ secrets.EMAIL_CLIENT_SECRET_TEST }}' >> .env
-            echo 'EMAIL_SENDING_ADDRESS = ${{ secrets.EMAIL_SENDING_ADDRESS_TEST }}' >> .env
-            echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_TEST }}' >> .env
-            echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
+            echo 'EMAIL_AUTH_HOST = ${{ secrets.EMAIL_AUTH_HOST_PROD }}' >> .env
+            echo 'EMAIL_SERVICE_HOST = ${{ secrets.EMAIL_SERVICE_HOST_PROD }}' >> .env
+            echo 'EMAIL_CLIENT_ID = ${{ secrets.EMAIL_CLIENT_ID_PROD }}' >> .env
+            echo 'EMAIL_CLIENT_SECRET = ${{ secrets.EMAIL_CLIENT_SECRET_PROD }}' >> .env
+            echo 'EMAIL_SENDING_ADDRESS = ${{ secrets.EMAIL_SENDING_ADDRESS_PROD }}' >> .env
+            echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_PROD }}' >> .env
+            echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.CIT_PIPELINE_STATUS_USER }}' >> .env
             echo 'EMAIL_TYPE = send-pipeline-status-email' >> .env
             echo 'WORKFLOW_STATUS = ${{ env.WORKFLOW_STATUS }}' >> .env
             echo 'WORKFLOW_NAME = ${{ env.WORKFLOW_NAME }}' >> .env
+            echo 'WORKFLOW_URL = ${{ env.WORKFLOW_URL }}' >> .env
 
       - name: Send email failure
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-email
