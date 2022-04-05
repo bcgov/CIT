@@ -25,6 +25,7 @@ import {
   getNaturalResourceRegions,
   getRegionalDistricts,
   getTourismRegions,
+  getCensusSubdivisions,
 } from "../../../helpers/userStoryData";
 
 import { userStoryPaths } from "../../../data/userStoryPaths.json";
@@ -46,6 +47,7 @@ export default function UserStory() {
   const [regionalDistricts, setRegionalDistricts] = useState(null);
   const [tourismRegions, setTourismRegions] = useState(null);
   const [economicRegions, setEconomicRegions] = useState(null);
+  const [censusSubdivisions, setCensusSubdivisions] = useState(null);
   const [naturalResourceRegions, setNaturalResourceRegions] = useState(null);
 
   const [collapse, setCollapse] = useState(true);
@@ -86,12 +88,14 @@ export default function UserStory() {
       getNaturalResourceRegions(),
       getRegionalDistricts(),
       getTourismRegions(),
+      getCensusSubdivisions(),
     ]).then((response) => {
       setEconomicRegions(response[0]);
       setCommunities(response[1]);
       setNaturalResourceRegions(response[2]);
       setRegionalDistricts(response[3]);
       setTourismRegions(response[4]);
+      setCensusSubdivisions(response[5]);
       setIsLoading(false);
     });
   }, []);
@@ -166,8 +170,12 @@ export default function UserStory() {
           userOption.user_story_paths = regionalDistricts;
           zoneType.current = "Regional Districts";
           break;
-        case "COMMUNITYAREA":
+        case "COMMUNITY":
           userOption.user_story_paths = communities;
+          zoneType.current = "Communities";
+          break;
+        case "COMMUNITYAREA":
+          userOption.user_story_paths = censusSubdivisions;
           zoneType.current = "Communities and Unincorporated Areas";
           break;
         case "ECONOMICREGIONS":

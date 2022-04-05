@@ -299,7 +299,7 @@
       "value": "2-LEARNING",
       "label": "learning more about the province or a specific area of B.C.",
       "longText": "<div class='select-break'></div><p><b>Great! You can choose between different types of areas from Communities and Unincorporated Areas, First Nations land and Reserves, Regional District to larger Economic Regions or Tourism Regions.</b></p><div class='section-break'></div><p><b>What kind of area would you like to look at?</b></p><div class='section-break'></div>",
-      "text": "<p>I would like to like at</p>",
+      "text": "<p>I would like to look at</p>",
       "url": "",
       "user_story_paths": [
         {

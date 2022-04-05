@@ -12,6 +12,18 @@ export async function getCensusEconomicRegions() {
   return result;
 }
 
+export async function getCensusSubdivisions() {
+  const url = "/api/opportunity/options/census-subdivisions";
+
+  const response = await axios.get(url);
+  const result = response.data.data.map((x) => ({
+    value: x.census_subdivision_id,
+    label: x.census_subdivision_name,
+  }));
+
+  return result;
+}
+
 export async function getCommunities() {
   const url = "/api/opportunity/options/communities";
 
