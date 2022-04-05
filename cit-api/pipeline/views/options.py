@@ -12,6 +12,7 @@ from pipeline.models.tourism_region import TourismRegion
 from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.community import Community
 from pipeline.models.natural_resource_region import NaturalResourceRegion
+from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 
 class OptionsView(APIView):
     def get(self, request, format=None):
@@ -56,3 +57,8 @@ class NaturalResourceRegionOptions(APIView):
     def get(self, request, format=None):
         options =  NaturalResourceRegion.objects.all().values('org_unit', 'name')
         return Response(dict(data=options))    
+
+class CensusSubdivisionOptions(APIView):
+    def get(self, request, format=None):
+        options =  CEN_PROF_DETAILED_CSD_ATTRS_SP.objects.all().values('census_subdivision_id', 'census_subdivision_name')
+        return Response(dict(data=options)) 
