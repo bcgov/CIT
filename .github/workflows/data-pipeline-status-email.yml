@@ -1,4 +1,4 @@
-# This workflow will ask for input from the user, running the chosen bucket of datasets in the chosen environment
+# This workflow will be triggered by any of the data pipeline workflows that run. It will send an email with the outcome of the workflow that triggered it. 
 
 name: Data Pipeline Status Emails
 on:
