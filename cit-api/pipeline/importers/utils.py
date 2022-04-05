@@ -815,9 +815,8 @@ def import_housing(URL):
 
         except Exception as e:
             print(e)
-def import_phdemographicdistribution(URL):
+def import_phdemographicdistribution(url, linkage_file):
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', "Upgrade-Insecure-Requests": "1","DNT": "1","Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","Accept-Language": "en-US,en;q=0.5","Accept-Encoding": "gzip, deflate"}
-    url = URL
     s = requests.get(url,headers=headers)
     if s.ok:
         data1 = s.content.decode('utf8')
@@ -832,15 +831,10 @@ def import_phdemographicdistribution(URL):
             data.columns[7]:"Latitude",
             data.columns[8]:"Longitude"}
           ,inplace=True)
-        ##To Do create a function for database url
-        user = settings.DATABASES['default']['USER']
-        password = settings.DATABASES['default']['PASSWORD']
-        database_name = settings.DATABASES['default']['NAME']
-        Host = settings.DATABASES['default']['HOST']
-    
-        database_url = 'postgresql://{user}:{password}@{Host}:5432/{database_name}'.format(user=user,password=password,Host=Host,database_name=database_name )
-        engine = create_engine(database_url)
-        data.to_sql(PHDemographicDistribution._meta.db_table,if_exists = 'replace',con=engine,index=False)
+        linkage = pd.read_csv(linkage_file)
+        linkage.rename(columns={linkage.columns[0]:"dbuid_ididu",linkage.columns[1]:"census_subdivision_id"},inplace=True)
+        df_all_rows = pd.merge(data, linkage, how='left')
+        write_to_db(PHDemographicDistribution, df_all_rows)
 
 def import_nbdphhspeeds(URL):
     url = URL
@@ -856,10 +850,10 @@ def import_nbdphhspeeds(URL):
             PHH_BC.columns[3]:"combined_10_2",PHH_BC.columns[4]:"Combined_25_5",PHH_BC.columns[5]:"combined_50_10",}
           ,inplace=True)
         with zipfile.open("PHH_Speeds_Government_Support-PHH_Vitesses_Appui_Gouvernement_BC.csv") as f:
-            fields = ['PHH_ID','Combined_5_1_Combine']
+            fields = ['PHH_ID','Combined_50_10_Combine']
             PHH_Gov_Suup = pd.read_csv(f, delimiter=",",usecols=fields)
             PHH_Gov_Suup.rename(
-    columns={PHH_Gov_Suup.columns[0]:"phh_id",PHH_Gov_Suup.columns[1]:"combined_5_1_gov_supp"}
+    columns={PHH_Gov_Suup.columns[0]:"phh_id",PHH_Gov_Suup.columns[1]:"combined_50_10_gov_supp"}
           ,inplace=True)
         nbdphhspeeds =PHH_BC.merge(PHH_Gov_Suup, on='phh_id', how='left')
         user = settings.DATABASES['default']['USER']

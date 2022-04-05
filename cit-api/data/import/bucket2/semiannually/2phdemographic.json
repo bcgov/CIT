@@ -5,7 +5,7 @@
     "model_name": "phdemographicdistribution",
     "source": "statscan",
     "source_type": "csv",
-    "source_file_path": "phdemographicdistribution",
+    "source_file_path": "data/dbuid_csduid.csv",
     "resource_id": "",
     "sub_resource_id": "",
     "external_url": "https://www.ic.gc.ca/eic/site/720.nsf/vwapj/PHH-BC.csv/$file/PHH-BC.csv",

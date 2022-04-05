@@ -58,7 +58,7 @@ def import_resource(resource_type):
     elif resource_type == "Housing_Data":
         import_housing(URL) 
     elif resource_type == "phdemographicdistribution":
-        import_phdemographicdistribution(URL)    
+        import_phdemographicdistribution(URL, file_path)    
     elif resource_type == "NBDPHHSpeeds":
         import_nbdphhspeeds(URL)
     elif resource_type == 'BusinessesByCSD':
