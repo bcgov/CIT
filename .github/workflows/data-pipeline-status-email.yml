@@ -6,11 +6,12 @@ on:
     workflows: [Manual pipeline run, Data Pipeline Bucket 1 - Census, Data Pipeline - Bucket 2 semiannually, Data Pipeline - Bucket 2 Weekly, Data Pipeline Bucket 3 - Communities, Data Pipeline - Bucket 4 monthly, Data Pipeline - Bucket 4 semiannually, Data Pipeline - Bucket 5 monthly, Data Pipeline - Bucket 5 semiannually Test, Data Pipeline - Bucket 5 semiannually Prod, Data Pipeline Bucket 6 - BC Assessment, Data Pipeline Bucket 7]
     types: [completed]
 env: 
-  WORKFLOW_NAME: ${{ github.event.workflow_run.name}}
+  WORKFLOW_NAME: ${{ github.event.workflow_run.name }}
+  WORKFLOW_STATUS: ${{ github.event.workflow_run.conclusion }}
 jobs:
   on-success:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ env.WORKFLOW_STATUS == 'success' }}
     steps:
       - run: echo 'The triggering workflow passed'
 
@@ -27,7 +28,7 @@ jobs:
             echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_TEST }}' >> .env
             echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
             echo 'EMAIL_TYPE = send-pipeline-status-email' >> .env
-            echo 'WORKFLOW_STATUS = successful' >> .env
+            echo 'WORKFLOW_STATUS = ${{ env.WORKFLOW_STATUS }}' >> .env
             echo 'WORKFLOW_NAME = ${{ env.WORKFLOW_NAME }}' >> .env
 
       - name: Send email success
@@ -35,7 +36,7 @@ jobs:
 
   on-failure:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    if: ${{ env.WORKFLOW_STATUS == 'failure' }}
     steps:
       - run: echo 'The triggering workflow failed'
 
@@ -52,7 +53,7 @@ jobs:
             echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_TEST }}' >> .env
             echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
             echo 'EMAIL_TYPE = send-pipeline-status-email' >> .env
-            echo 'WORKFLOW_STATUS = successful' >> .env
+            echo 'WORKFLOW_STATUS = ${{ env.WORKFLOW_STATUS }}' >> .env
             echo 'WORKFLOW_NAME = ${{ env.WORKFLOW_NAME }}' >> .env
 
       - name: Send email failure
