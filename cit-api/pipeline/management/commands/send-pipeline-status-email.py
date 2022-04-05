@@ -39,7 +39,7 @@ def send_pipeline_status_email():
             email_config = {
                 "bcc": [],
                 "bodyType": "html",
-                "body": construct_email_body(),
+                "body": construct_email_subject(),
                 "cc": [],
                 "delayTS": 0,
                 "encoding": "utf-8",
@@ -55,12 +55,8 @@ def send_pipeline_status_email():
     else:
         print(response.text)
 
-def construct_email_body():
-    jobStatus= os.environ.get('JOB_STATUS')
-    message = str("The scheduled job has " + jobStatus)
-    return message
-
 def construct_email_subject():
-    jobStatus= os.environ.get('JOB_STATUS')
-    message = str("The scheduled job has " + jobStatus)
+    workflowStatus= os.environ.get('WORKFLOW_STATUS')
+    workflowName= os.environ.get('WORKFLOW_NAME')
+    message = str("The scheduled job " + workflowName + "was a " + workflowStatus)
     return message

@@ -16,7 +16,7 @@ jobs:
       - name: "Generate env file"
         run: |
             echo 'ENV_LEVEL = prod' >> .env
-            echo 'EMAIL_TYPE = user-tracking-email' >> .env
+            echo 'EMAIL_TYPE = send-user-tracking' >> .env
             echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
             echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
             echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 

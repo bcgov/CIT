@@ -40,7 +40,8 @@ jobs:
       - name: Send email success
         if: ${{ success() }}
         run: |
-            echo 'JOB_STATUS = succeeded' >> .env
+            echo 'WORKFLOW_STATUS = ${{ github.event.workflow_run.concluesion}}' >> .env
+            echo 'WORKFLOW_NAME =${{ github.event.workflow_run.name}}' >> .env
             docker-compose -f cit-api/docker-compose.yml up --build cit-email
       
       - name: Send email failure

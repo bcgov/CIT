@@ -5,7 +5,8 @@ on:
   workflow_run:
     workflows: [Manual pipeline run, Data Pipeline Bucket 1 - Census, Data Pipeline - Bucket 2 semiannually, Data Pipeline - Bucket 2 Weekly, Data Pipeline Bucket 3 - Communities, Data Pipeline - Bucket 4 monthly, Data Pipeline - Bucket 4 semiannually, Data Pipeline - Bucket 5 monthly, Data Pipeline - Bucket 5 semiannually Test, Data Pipeline - Bucket 5 semiannually Prod, Data Pipeline Bucket 6 - BC Assessment, Data Pipeline Bucket 7]
     types: [completed]
-
+env: 
+  WORKFLOW_NAME: ${{ github.event.workflow_run.name}}
 jobs:
   on-success:
     runs-on: ubuntu-latest
@@ -26,7 +27,8 @@ jobs:
             echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_TEST }}' >> .env
             echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
             echo 'EMAIL_TYPE = send-pipeline-status-email' >> .env
-            echo 'JOB_STATUS = successful' >> .env
+            echo 'WORKFLOW_STATUS = successful' >> .env
+            echo 'WORKFLOW_NAME = ${{ env.WORKFLOW_NAME }}' >> .env
 
       - name: Send email success
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-email
@@ -50,7 +52,8 @@ jobs:
             echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_TEST }}' >> .env
             echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
             echo 'EMAIL_TYPE = send-pipeline-status-email' >> .env
-            echo 'JOB_STATUS = failure' >> .env
+            echo 'WORKFLOW_STATUS = successful' >> .env
+            echo 'WORKFLOW_NAME = ${{ env.WORKFLOW_NAME }}' >> .env
 
       - name: Send email failure
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-email
