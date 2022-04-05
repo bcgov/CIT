@@ -1,7 +1,7 @@
 # This workflow will build a new container running the datasets in Bucket 7.
 # The datasets included in this bucket are, linkage_csd
 
-name: Data Pipeline Bucket 7 - 
+name: Data Pipeline Bucket 7
 on:
   workflow_dispatch:
 env: 

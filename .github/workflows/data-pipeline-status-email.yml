@@ -1,6 +1,9 @@
+# This workflow will ask for input from the user, running the chosen bucket of datasets in the chosen environment
+
+name: Data Pipeline Status Emails
 on:
   workflow_run:
-    workflows: [Data Pipeline Bucket 1 - Census]
+    workflows: [Manual pipeline run, Data Pipeline Bucket 1 - Census, Data Pipeline - Bucket 2 semiannually, Data Pipeline - Bucket 2 Weekly, Data Pipeline Bucket 3 - Communities, Data Pipeline - Bucket 4 monthly, Data Pipeline - Bucket 4 semiannually, Data Pipeline - Bucket 5 monthly, Data Pipeline - Bucket 5 semiannually Test, Data Pipeline - Bucket 5 semiannually Prod, Data Pipeline Bucket 6 - BC Assessment, Data Pipeline Bucket 7]
     types: [completed]
 
 jobs:
@@ -22,7 +25,6 @@ jobs:
             echo 'EMAIL_SENDING_ADDRESS = ${{ secrets.EMAIL_SENDING_ADDRESS_TEST }}' >> .env
             echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_TEST }}' >> .env
             echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
-            echo 'ENV_LEVEL = test' >> .env
             echo 'EMAIL_TYPE = send-pipeline-status-email' >> .env
             echo 'JOB_STATUS = successful' >> .env
 
@@ -47,7 +49,6 @@ jobs:
             echo 'EMAIL_SENDING_ADDRESS = ${{ secrets.EMAIL_SENDING_ADDRESS_TEST }}' >> .env
             echo 'EMAIL_OPPORTUNITY_LINK_HOST = ${{ secrets.EMAIL_OPPORTUNITY_LINK_HOST_TEST }}' >> .env
             echo 'USER_TRACKING_TO_EMAIL = ${{ secrets.USER_TRACKING_TO_EMAIL_TEST }}' >> .env
-            echo 'ENV_LEVEL = test' >> .env
             echo 'EMAIL_TYPE = send-pipeline-status-email' >> .env
             echo 'JOB_STATUS = failure' >> .env
 
