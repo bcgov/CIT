@@ -81,6 +81,21 @@ RUN az storage blob download \
              --account-key $AZURE_STORAGE_ACCOUNT_KEY \
              --auth-mode key
 
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data/Tourism_NAICS.xlsx \
+             --name Tourism_NAICS.xlsx \
+             --file Tourism_NAICS.xlsx \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data/dbuid_csduid.csv \
+             --name dbuid_csduid.csv \
+             --file dbuid_csduid.csv \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
 FROM python:3.6
 ENV PYTHONUNBUFFERED 1
 
