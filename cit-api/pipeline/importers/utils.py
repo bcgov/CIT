@@ -709,7 +709,7 @@ def import_census_subdivision_linkage(linkage_file):
              data.columns[5]:"tsunami_notification_zone_id",
              data.columns[7]:"health_authority_id",
              data.columns[8]:"school_district_id"},inplace=True)
-    data.drop('LOCAL_HLTH_AREA_CODE', axis=1, inplace=True)
+    #data.drop('LOCAL_HLTH_AREA_CODE', axis=1, inplace=True)
     write_to_db(LinkageWithCensus, data)
 
 def _generate_geom(feat, srid=None):
