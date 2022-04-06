@@ -35,30 +35,30 @@ class OptionsView(APIView):
 
 class CommunityOptions(APIView):
     def get(self, request, format=None):
-        options =  Community.objects.all().values("id", "place_name")
+        options =  Community.objects.all().values("id", "place_name").order_by('place_name')
         return Response(dict(data=options))
         
 class RegionalDistrictOptions(APIView):
     def get(self, request, format=None):
-        options =  RegionalDistrict.objects.all().values('id', 'area_id', 'name')
+        options =  RegionalDistrict.objects.all().values('id', 'area_id', 'name').order_by('name')
         return Response(dict(data=options))
 
 class TourismRegionOptions(APIView):
     def get(self, request, format=None):
-        options =  TourismRegion.objects.all().values('tourism_region_id', 'tourism_region_name')
+        options =  TourismRegion.objects.all().values('tourism_region_id', 'tourism_region_name').order_by('tourism_region_name')
         return Response(dict(data=options))
 
 class CensusEconomicRegionOptions(APIView):
     def get(self, request, format=None):
-        options =  CensusEconomicRegion.objects.all().values('census_year', 'economic_region_id', 'name')
+        options =  CensusEconomicRegion.objects.all().values('census_year', 'economic_region_id', 'name').order_by('name')
         return Response(dict(data=options))       
 
 class NaturalResourceRegionOptions(APIView):
     def get(self, request, format=None):
-        options =  NaturalResourceRegion.objects.all().values('org_unit', 'name')
+        options =  NaturalResourceRegion.objects.all().values('org_unit', 'name').order_by('name')
         return Response(dict(data=options))    
 
 class CensusSubdivisionOptions(APIView):
     def get(self, request, format=None):
-        options =  CEN_PROF_DETAILED_CSD_ATTRS_SP.objects.all().values('census_subdivision_id', 'census_subdivision_name')
+        options =  CEN_PROF_DETAILED_CSD_ATTRS_SP.objects.all().values('census_subdivision_id', 'census_subdivision_name').order_by('census_subdivision_name')
         return Response(dict(data=options)) 
