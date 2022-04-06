@@ -16,6 +16,10 @@ jobs:
     steps:
       - run: echo 'The triggering workflow passed'
 
+      # checkout the repo
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@master
+
       - name: "Generate env file"
         run: |
             echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
@@ -41,6 +45,10 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
       - run: echo 'The triggering workflow failed'
+
+      # checkout the repo
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@master
 
       - name: "Generate env file"
         run: |
