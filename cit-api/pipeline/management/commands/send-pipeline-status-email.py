@@ -58,12 +58,12 @@ def send_pipeline_status_email():
 def construct_email_subject():
     workflowStatus= os.environ.get('WORKFLOW_STATUS')
     workflowName= os.environ.get('WORKFLOW_NAME')
-    message = str("The scheduled job " + workflowName + "was a " + workflowStatus)
+    message = str("The scheduled job " + workflowName + " was a " + workflowStatus)
     return message
 
 def construct_email_body():
     workflowStatus= os.environ.get('WORKFLOW_STATUS')
     workflowName= os.environ.get('WORKFLOW_NAME')
     workflowUrl= os.environ.get('WORKFLOW_URL')
-    message = str("The scheduled job " + workflowName + "was a " + workflowStatus + ", you can find more information here: " + workflowUrl)
+    message = str("The scheduled job " + workflowName + " was a " + workflowStatus + ", you can find more information here: " + workflowUrl)
     return message
