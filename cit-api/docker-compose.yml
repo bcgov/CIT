@@ -12,10 +12,10 @@ services:
       - ../.env
     ports:
       - 8000:8000
-  cit-user-tracking:
+  cit-email:
     build:
       context: ./
-      dockerfile: Dockerfile.usertracking
+      dockerfile: Dockerfile.email
     image: countable/cit
     env_file:
       - ../.env
