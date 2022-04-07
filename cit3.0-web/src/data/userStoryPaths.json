@@ -352,9 +352,9 @@
         },
         {
           "id": "4890",
-          "code": "TSUNAMINOTIFICATIONZONES",
+          "code": "TSUNAMIZONES",
           "group": "zone",
-          "value": "TSUNAMINOTIFICATIONZONES",
+          "value": "TSUNAMIZONES",
           "label": "Tsunami Notification Zones",
           "url": ""
         },
@@ -532,9 +532,9 @@
     },
     {
       "id": "4890",
-      "code": "TSUNAMINOTIFICATIONZONES",
+      "code": "TSUNAMIZONES",
       "group": "zone",
-      "value": "TSUNAMINOTIFICATIONZONES",
+      "value": "TSUNAMIZONES",
       "label": "Tsunami Notification Zones",
       "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
       "text": "<p>I am specifically interested in</p>",

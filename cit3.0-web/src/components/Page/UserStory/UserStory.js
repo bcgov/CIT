@@ -26,6 +26,8 @@ import {
   getRegionalDistricts,
   getTourismRegions,
   getCensusSubdivisions,
+  getTsunamiZones,
+  getWildfireZones,
 } from "../../../helpers/userStoryData";
 
 import { userStoryPaths } from "../../../data/userStoryPaths.json";
@@ -44,11 +46,13 @@ export default function UserStory() {
   const [powerBiReport, setPowerBiReport] = useState("");
   const [reportFilter, setReportFilter] = useState("");
   const [communities, setCommunities] = useState(null);
+  const [censusSubdivisions, setCensusSubdivisions] = useState(null);
+  const [economicRegions, setEconomicRegions] = useState(null);
+  const [naturalResourceRegions, setNaturalResourceRegions] = useState(null);
   const [regionalDistricts, setRegionalDistricts] = useState(null);
   const [tourismRegions, setTourismRegions] = useState(null);
-  const [economicRegions, setEconomicRegions] = useState(null);
-  const [censusSubdivisions, setCensusSubdivisions] = useState(null);
-  const [naturalResourceRegions, setNaturalResourceRegions] = useState(null);
+  const [tsunamiZones, setTsunamiZones] = useState(null);
+  const [wildfireZones, setWildfireZones] = useState(null);
 
   const [collapse, setCollapse] = useState(true);
 
@@ -89,6 +93,8 @@ export default function UserStory() {
       getRegionalDistricts(),
       getTourismRegions(),
       getCensusSubdivisions(),
+      getTsunamiZones(),
+      getWildfireZones(),
     ]).then((response) => {
       setEconomicRegions(response[0]);
       setCommunities(response[1]);
@@ -96,6 +102,8 @@ export default function UserStory() {
       setRegionalDistricts(response[3]);
       setTourismRegions(response[4]);
       setCensusSubdivisions(response[5]);
+      setTsunamiZones(response[6]);
+      setWildfireZones(response[7]);
       setIsLoading(false);
     });
   }, []);
@@ -166,10 +174,6 @@ export default function UserStory() {
       setAreaType(userOption.label);
 
       switch (userOption.code) {
-        case "REGIONALDISTRICTS":
-          userOption.user_story_paths = regionalDistricts;
-          zoneType.current = "Regional Districts";
-          break;
         case "COMMUNITY":
           userOption.user_story_paths = communities;
           zoneType.current = "Communities";
@@ -186,9 +190,22 @@ export default function UserStory() {
           userOption.user_story_paths = naturalResourceRegions;
           zoneType.current = null;
           break;
+        case "REGIONALDISTRICTS":
+          userOption.user_story_paths = regionalDistricts;
+          zoneType.current = "Regional Districts";
+          break;
         case "TOURISMREGIONS":
           userOption.user_story_paths = tourismRegions;
           zoneType.current = "Tourism Region";
+          break;
+        case "TSUNAMIZONES":
+          console.log({ tsunamiZones });
+          userOption.user_story_paths = tsunamiZones;
+          zoneType.current = "Tsunami Zone";
+          break;
+        case "WILDFIREZONES":
+          userOption.user_story_paths = wildfireZones;
+          zoneType.current = "Wildfire Zone";
           break;
         default:
           zoneType.current = null;

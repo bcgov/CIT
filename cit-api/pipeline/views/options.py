@@ -1,3 +1,4 @@
+import imp
 from django.http import HttpResponse
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,6 +14,9 @@ from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.community import Community
 from pipeline.models.natural_resource_region import NaturalResourceRegion
 from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
+from pipeline.models.general import WildfireZone
+from pipeline.models.general import TsunamiZone
+
 
 class OptionsView(APIView):
     def get(self, request, format=None):
@@ -62,3 +66,14 @@ class CensusSubdivisionOptions(APIView):
     def get(self, request, format=None):
         options =  CEN_PROF_DETAILED_CSD_ATTRS_SP.objects.all().values('census_subdivision_id', 'census_subdivision_name').order_by('census_subdivision_name')
         return Response(dict(data=options)) 
+
+class WildfireZoneOptions(APIView):
+    def get(self, request, format=None):
+        options =  WildfireZone.objects.all().values('id', 'name').order_by('name')
+        return Response(dict(data=options)) 
+
+class TsunamiZoneOptions(APIView):
+    def get(self, request, format=None):
+        options =  TsunamiZone.objects.all().values('id', 'name').order_by('name')
+        return Response(dict(data=options)) 
+
