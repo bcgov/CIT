@@ -72,8 +72,8 @@ export async function getTourismRegions() {
   return result;
 }
 
-export async function getTsunamiNotificationZones() {
-  const url = "/api/opportunity/options/tsunami-notification-zones";
+export async function getTsunamiZones() {
+  const url = "/api/opportunity/options/tsunami-zones";
 
   const response = await axios.get(url);
   const result = response.data.data.map((x) => ({
