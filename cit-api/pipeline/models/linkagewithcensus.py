@@ -13,5 +13,4 @@ class LinkageWithCensus(models.Model):
     bc_fire_zone = models.ForeignKey(WildfireZone, null=True, on_delete=models.SET_NULL)
     tsunami_notification_zone= models.ForeignKey(TsunamiZone, null=True, on_delete=models.SET_NULL)
     health_authority = models.ForeignKey(HealthAuthorityBoundary, null=True, on_delete=models.SET_NULL)
-    # health_authority_id = models.IntegerField() -- waiting for Stephen's confirmation
     school_district = models.ForeignKey(SchoolDistrict, null=True, on_delete=models.SET_NULL)
