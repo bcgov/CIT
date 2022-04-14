@@ -16,8 +16,8 @@ from pipeline.models.natural_resource_region import NaturalResourceRegion
 from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.models.general import WildfireZone
 from pipeline.models.general import TsunamiZone
-
-
+from pipeline.models.general import SchoolDistrict
+from pipeline.models.health_authority_boundary import  HealthAuthorityBoundary
 class OptionsView(APIView):
     def get(self, request, format=None):
         """
@@ -25,7 +25,7 @@ class OptionsView(APIView):
         """
         statuses = ApprovalStatus.objects.all().values()
         regional_districts = RegionalDistrict.objects.all().values('id', 'area_id', 'name')
-        preferred_development = PreferredDevelopment.objects.all().order_by('name').values()
+        preferred_development = PreferredDevelopment.objects.all().distinct().order_by('name').values()
         property_statuses = PropertyStatus.objects.all().values()
         land_use_zoning = LandUseZoning.objects.all().values()
         communities = Community.objects.all().values("id", "place_name")
@@ -39,41 +39,51 @@ class OptionsView(APIView):
 
 class CommunityOptions(APIView):
     def get(self, request, format=None):
-        options =  Community.objects.all().values("id", "place_name").order_by('place_name')
+        options =  Community.objects.all().values("id", "place_name").distinct().order_by('place_name')
         return Response(dict(data=options))
         
 class RegionalDistrictOptions(APIView):
     def get(self, request, format=None):
-        options =  RegionalDistrict.objects.all().values('id', 'area_id', 'name').order_by('name')
+        options =  RegionalDistrict.objects.all().values('id', 'area_id', 'name').distinct().order_by('name')
         return Response(dict(data=options))
 
 class TourismRegionOptions(APIView):
     def get(self, request, format=None):
-        options =  TourismRegion.objects.all().values('tourism_region_id', 'tourism_region_name').order_by('tourism_region_name')
+        options =  TourismRegion.objects.all().values('tourism_region_id', 'tourism_region_name').distinct().order_by('tourism_region_name')
         return Response(dict(data=options))
 
 class CensusEconomicRegionOptions(APIView):
     def get(self, request, format=None):
-        options =  CensusEconomicRegion.objects.all().values('census_year', 'economic_region_id', 'name').order_by('name')
+        options =  CensusEconomicRegion.objects.all().values('census_year', 'economic_region_id', 'name').distinct().order_by('name')
         return Response(dict(data=options))       
 
 class NaturalResourceRegionOptions(APIView):
     def get(self, request, format=None):
-        options =  NaturalResourceRegion.objects.all().values('org_unit', 'name').order_by('name')
+        options =  NaturalResourceRegion.objects.all().values('org_unit', 'name').distinct().order_by('name')
         return Response(dict(data=options))    
 
 class CensusSubdivisionOptions(APIView):
     def get(self, request, format=None):
-        options =  CEN_PROF_DETAILED_CSD_ATTRS_SP.objects.all().values('census_subdivision_id', 'census_subdivision_name').order_by('census_subdivision_name')
+        options =  CEN_PROF_DETAILED_CSD_ATTRS_SP.objects.all().values('census_subdivision_id', 'census_subdivision_name').distinct().order_by('census_subdivision_name')
         return Response(dict(data=options)) 
 
 class WildfireZoneOptions(APIView):
     def get(self, request, format=None):
-        options =  WildfireZone.objects.all().values('id', 'name').order_by('name')
+        options =  WildfireZone.objects.all().values('id', 'name').distinct().order_by('name')
         return Response(dict(data=options)) 
 
 class TsunamiZoneOptions(APIView):
     def get(self, request, format=None):
-        options =  TsunamiZone.objects.all().values('id', 'name').order_by('name')
+        options =  TsunamiZone.objects.all().values('id', 'name').distinct().order_by('name')
+        return Response(dict(data=options)) 
+
+class SchoolDistrictOptions(APIView):
+    def get(self, request, format=None):
+        options =  SchoolDistrict.objects.all().values('area_id', 'name').distinct().order_by('name')
+        return Response(dict(data=options)) 
+        
+class HealthAuthorityBoundaryOptions(APIView):
+    def get(self, request, format=None):
+        options =  HealthAuthorityBoundary.objects.all().values('id', 'name').distinct().order_by('name')
         return Response(dict(data=options)) 
 

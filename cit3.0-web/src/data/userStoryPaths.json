@@ -1,7 +1,7 @@
 {
     "userStoryPaths": [
       {
-        "id": "4996",
+        "id": "5151",
         "code": "START",
         "group": "start",
         "value": "START",
@@ -11,7 +11,7 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "4997",
+            "id": "5152",
             "code": "PUBLIC",
             "group": "who",
             "value": "2-PUBLIC",
@@ -19,7 +19,7 @@
             "url": ""
           },
           {
-            "id": "4998",
+            "id": "5153",
             "code": "INVESTOR",
             "group": "who",
             "value": "3-INVESTOR",
@@ -27,7 +27,7 @@
             "url": ""
           },
           {
-            "id": "4999",
+            "id": "5154",
             "code": "COMMUNITYREP",
             "group": "who",
             "value": "4-COMMUNITYREP",
@@ -35,7 +35,7 @@
             "url": ""
           },
           {
-            "id": "5000",
+            "id": "5155",
             "code": "RESEARCHER",
             "group": "who",
             "value": "5-RESEARCHER",
@@ -43,7 +43,7 @@
             "url": ""
           },
           {
-            "id": "5001",
+            "id": "5156",
             "code": "BCGOV",
             "group": "who",
             "value": "6-BCGOV",
@@ -53,7 +53,7 @@
         ]
       },
       {
-        "id": "4997",
+        "id": "5152",
         "code": "PUBLIC",
         "group": "who",
         "value": "2-PUBLIC",
@@ -63,7 +63,7 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5003",
+            "id": "5158",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -71,7 +71,7 @@
             "url": ""
           },
           {
-            "id": "5004",
+            "id": "5159",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -79,7 +79,7 @@
             "url": "powerbi-criteriaSearch"
           },
           {
-            "id": "5005",
+            "id": "5160",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
@@ -89,7 +89,7 @@
         ]
       },
       {
-        "id": "4998",
+        "id": "5153",
         "code": "INVESTOR",
         "group": "who",
         "value": "3-INVESTOR",
@@ -99,7 +99,7 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5002",
+            "id": "5157",
             "code": "VIEWING",
             "group": "what",
             "value": "1-VIEWING",
@@ -107,7 +107,7 @@
             "url": "investmentopportunities/home"
           },
           {
-            "id": "5003",
+            "id": "5158",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -115,7 +115,7 @@
             "url": ""
           },
           {
-            "id": "5004",
+            "id": "5159",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -123,7 +123,7 @@
             "url": "powerbi-criteriaSearch"
           },
           {
-            "id": "5005",
+            "id": "5160",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
@@ -131,7 +131,7 @@
             "url": "powerbi-compare"
           },
           {
-            "id": "5006",
+            "id": "5161",
             "code": "PROMOTING",
             "group": "what",
             "value": "4-PROMOTING",
@@ -141,7 +141,7 @@
         ]
       },
       {
-        "id": "4999",
+        "id": "5154",
         "code": "COMMUNITYREP",
         "group": "who",
         "value": "4-COMMUNITYREP",
@@ -151,7 +151,7 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5002",
+            "id": "5157",
             "code": "VIEWING",
             "group": "what",
             "value": "1-VIEWING",
@@ -159,7 +159,7 @@
             "url": "investmentopportunities/home"
           },
           {
-            "id": "5003",
+            "id": "5158",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -167,7 +167,7 @@
             "url": ""
           },
           {
-            "id": "5004",
+            "id": "5159",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -175,7 +175,7 @@
             "url": "powerbi-criteriaSearch"
           },
           {
-            "id": "5005",
+            "id": "5160",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
@@ -183,7 +183,7 @@
             "url": "powerbi-compare"
           },
           {
-            "id": "5006",
+            "id": "5161",
             "code": "PROMOTING",
             "group": "what",
             "value": "4-PROMOTING",
@@ -193,7 +193,7 @@
         ]
       },
       {
-        "id": "5000",
+        "id": "5155",
         "code": "RESEARCHER",
         "group": "who",
         "value": "5-RESEARCHER",
@@ -203,7 +203,7 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5003",
+            "id": "5158",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -211,7 +211,7 @@
             "url": ""
           },
           {
-            "id": "5004",
+            "id": "5159",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -219,7 +219,7 @@
             "url": "powerbi-criteriaSearch"
           },
           {
-            "id": "5005",
+            "id": "5160",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
@@ -229,7 +229,7 @@
         ]
       },
       {
-        "id": "5001",
+        "id": "5156",
         "code": "BCGOV",
         "group": "who",
         "value": "6-BCGOV",
@@ -239,7 +239,7 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5003",
+            "id": "5158",
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
@@ -247,7 +247,7 @@
             "url": ""
           },
           {
-            "id": "5004",
+            "id": "5159",
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
@@ -255,7 +255,7 @@
             "url": "powerbi-criteriaSearch"
           },
           {
-            "id": "5005",
+            "id": "5160",
             "code": "COMPARING",
             "group": "what",
             "value": "3-COMPARING",
@@ -265,7 +265,7 @@
         ]
       },
       {
-        "id": "5002",
+        "id": "5157",
         "code": "VIEWING",
         "group": "what",
         "value": "1-VIEWING",
@@ -275,7 +275,7 @@
         "url": "investmentopportunities/home",
         "user_story_paths": [
           {
-            "id": "5019",
+            "id": "5174",
             "code": "VIEWING-YES",
             "group": "viewing-yesno",
             "value": "1-VIEWING-YES",
@@ -283,7 +283,7 @@
             "url": "investmentopportunities/home"
           },
           {
-            "id": "5020",
+            "id": "5175",
             "code": "VIEWING-NO",
             "group": "viewing-yesno",
             "value": "2-VIEWING-NO",
@@ -293,7 +293,7 @@
         ]
       },
       {
-        "id": "5003",
+        "id": "5158",
         "code": "LEARNING",
         "group": "what",
         "value": "2-LEARNING",
@@ -303,7 +303,7 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5007",
+            "id": "5162",
             "code": "ALLBC",
             "group": "zone",
             "value": "ALLBC",
@@ -311,7 +311,7 @@
             "url": "powerbi-overview"
           },
           {
-            "id": "5008",
+            "id": "5163",
             "code": "COMMUNITYAREA",
             "group": "zone",
             "value": "COMMUNITYAREA",
@@ -319,7 +319,7 @@
             "url": ""
           },
           {
-            "id": "5009",
+            "id": "5164",
             "code": "ECONOMICREGIONS",
             "group": "zone",
             "value": "ECONOMICREGIONS",
@@ -327,15 +327,15 @@
             "url": ""
           },
           {
-            "id": "5011",
-            "code": "NATURALRESOURCEREGIONS",
+            "id": "5165",
+            "code": "HEALTHAUTHORITY",
             "group": "zone",
-            "value": "NATURALRESOURCEREGIONS",
-            "label": "Natural Resource Regions",
+            "value": "HEALTHAUTHORITY",
+            "label": "Health Authorities",
             "url": ""
           },
           {
-            "id": "5012",
+            "id": "5166",
             "code": "REGIONALDISTRICTS",
             "group": "zone",
             "value": "REGIONALDISTRICTS",
@@ -343,7 +343,15 @@
             "url": ""
           },
           {
-            "id": "5013",
+            "id": "5167",
+            "code": "SCHOOLDISTRICTS",
+            "group": "zone",
+            "value": "SCHOOLDISTRICTS",
+            "label": "School Districts",
+            "url": ""
+          },
+          {
+            "id": "5168",
             "code": "TOURISMREGIONS",
             "group": "zone",
             "value": "TOURISMREGIONS",
@@ -351,7 +359,7 @@
             "url": ""
           },
           {
-            "id": "5014",
+            "id": "5169",
             "code": "TSUNAMIZONES",
             "group": "zone",
             "value": "TSUNAMIZONES",
@@ -359,7 +367,7 @@
             "url": ""
           },
           {
-            "id": "5015",
+            "id": "5170",
             "code": "WILDFIREZONES",
             "group": "zone",
             "value": "WILDFIREZONES",
@@ -369,7 +377,7 @@
         ]
       },
       {
-        "id": "5004",
+        "id": "5159",
         "code": "DISCOVERING",
         "group": "what",
         "value": "2-DISCOVERING",
@@ -379,7 +387,7 @@
         "url": "powerbi-criteriaSearch",
         "user_story_paths": [
           {
-            "id": "5017",
+            "id": "5172",
             "code": "DISCOVERING-YES",
             "group": "discovering-yesno",
             "value": "1-DISCOVERING-YES",
@@ -387,7 +395,7 @@
             "url": "powerbi-criteriaSearch"
           },
           {
-            "id": "5018",
+            "id": "5173",
             "code": "DISCOVERING-NO",
             "group": "discovering-yesno",
             "value": "2-DISCOVERING-NO",
@@ -397,7 +405,7 @@
         ]
       },
       {
-        "id": "5005",
+        "id": "5160",
         "code": "COMPARING",
         "group": "what",
         "value": "3-COMPARING",
@@ -407,7 +415,7 @@
         "url": "powerbi-compare",
         "user_story_paths": [
           {
-            "id": "5021",
+            "id": "5176",
             "code": "COMPARING-GO",
             "group": "comparing-yesno",
             "value": "1-COMPARING-GO",
@@ -417,7 +425,7 @@
         ]
       },
       {
-        "id": "5006",
+        "id": "5161",
         "code": "PROMOTING",
         "group": "what",
         "value": "4-PROMOTING",
@@ -427,7 +435,7 @@
         "url": "investmentopportunities/home",
         "user_story_paths": [
           {
-            "id": "5022",
+            "id": "5177",
             "code": "PROMOTING-YES",
             "group": "promoting-yesno",
             "value": "1-PROMOTING-YES",
@@ -435,7 +443,7 @@
             "url": "investmentopportunities/home"
           },
           {
-            "id": "5023",
+            "id": "5178",
             "code": "PROMOTING-NO",
             "group": "promoting-yesno",
             "value": "2-PROMOTING-NO",
@@ -445,7 +453,7 @@
         ]
       },
       {
-        "id": "5007",
+        "id": "5162",
         "code": "ALLBC",
         "group": "zone",
         "value": "ALLBC",
@@ -455,7 +463,7 @@
         "url": "powerbi-overview",
         "user_story_paths": [
           {
-            "id": "5024",
+            "id": "5179",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -465,7 +473,7 @@
         ]
       },
       {
-        "id": "5008",
+        "id": "5163",
         "code": "COMMUNITYAREA",
         "group": "zone",
         "value": "COMMUNITYAREA",
@@ -476,7 +484,7 @@
         "user_story_paths": []
       },
       {
-        "id": "5009",
+        "id": "5164",
         "code": "ECONOMICREGIONS",
         "group": "zone",
         "value": "ECONOMICREGIONS",
@@ -487,29 +495,18 @@
         "user_story_paths": []
       },
       {
-        "id": "5010",
-        "code": "FIRSTNATIONS",
+        "id": "5165",
+        "code": "HEALTHAUTHORITY",
         "group": "zone",
-        "value": "FIRSTNATIONS",
-        "label": "First Nations",
+        "value": "HEALTHAUTHORITY",
+        "label": "Health Authorities",
         "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
         "user_story_paths": []
       },
       {
-        "id": "5011",
-        "code": "NATURALRESOURCEREGIONS",
-        "group": "zone",
-        "value": "NATURALRESOURCEREGIONS",
-        "label": "Natural Resource Regions",
-        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
-        "text": "<p>I am specifically interested in</p>",
-        "url": "",
-        "user_story_paths": []
-      },
-      {
-        "id": "5012",
+        "id": "5166",
         "code": "REGIONALDISTRICTS",
         "group": "zone",
         "value": "REGIONALDISTRICTS",
@@ -520,7 +517,18 @@
         "user_story_paths": []
       },
       {
-        "id": "5013",
+        "id": "5167",
+        "code": "SCHOOLDISTRICTS",
+        "group": "zone",
+        "value": "SCHOOLDISTRICTS",
+        "label": "School Districts",
+        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
+        "text": "<p>I am specifically interested in</p>",
+        "url": "",
+        "user_story_paths": []
+      },
+      {
+        "id": "5168",
         "code": "TOURISMREGIONS",
         "group": "zone",
         "value": "TOURISMREGIONS",
@@ -531,7 +539,7 @@
         "user_story_paths": []
       },
       {
-        "id": "5014",
+        "id": "5169",
         "code": "TSUNAMIZONES",
         "group": "zone",
         "value": "TSUNAMIZONES",
@@ -542,7 +550,7 @@
         "user_story_paths": []
       },
       {
-        "id": "5015",
+        "id": "5170",
         "code": "WILDFIREZONES",
         "group": "zone",
         "value": "WILDFIREZONES",
@@ -553,7 +561,7 @@
         "user_story_paths": []
       },
       {
-        "id": "5016",
+        "id": "5171",
         "code": "ZONE-TYPE-LIST-GO",
         "group": "zone-type-list",
         "value": "ZONE-TYPE-LIST-GO",
@@ -563,7 +571,7 @@
         "url": "powerbi-overview/reportfilter",
         "user_story_paths": [
           {
-            "id": "5024",
+            "id": "5179",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -573,7 +581,7 @@
         ]
       },
       {
-        "id": "5017",
+        "id": "5172",
         "code": "DISCOVERING-YES",
         "group": "discovering-yesno",
         "value": "1-DISCOVERING-YES",
@@ -583,7 +591,7 @@
         "url": "powerbi-criteriaSearch",
         "user_story_paths": [
           {
-            "id": "5024",
+            "id": "5179",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -593,7 +601,7 @@
         ]
       },
       {
-        "id": "5018",
+        "id": "5173",
         "code": "DISCOVERING-NO",
         "group": "discovering-yesno",
         "value": "2-DISCOVERING-NO",
@@ -603,7 +611,7 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5026",
+            "id": "5181",
             "code": "GENERIC-NO",
             "group": "generic-no",
             "value": "99-GENERIC-NO",
@@ -613,7 +621,7 @@
         ]
       },
       {
-        "id": "5019",
+        "id": "5174",
         "code": "VIEWING-YES",
         "group": "viewing-yesno",
         "value": "1-VIEWING-YES",
@@ -623,7 +631,7 @@
         "url": "investmentopportunities/home",
         "user_story_paths": [
           {
-            "id": "5024",
+            "id": "5179",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -633,7 +641,7 @@
         ]
       },
       {
-        "id": "5020",
+        "id": "5175",
         "code": "VIEWING-NO",
         "group": "viewing-yesno",
         "value": "2-VIEWING-NO",
@@ -643,7 +651,7 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5026",
+            "id": "5181",
             "code": "GENERIC-NO",
             "group": "generic-no",
             "value": "99-GENERIC-NO",
@@ -653,7 +661,7 @@
         ]
       },
       {
-        "id": "5021",
+        "id": "5176",
         "code": "COMPARING-GO",
         "group": "comparing-yesno",
         "value": "1-COMPARING-GO",
@@ -663,7 +671,7 @@
         "url": "powerbi-criteriaSearch",
         "user_story_paths": [
           {
-            "id": "5024",
+            "id": "5179",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -673,7 +681,7 @@
         ]
       },
       {
-        "id": "5022",
+        "id": "5177",
         "code": "PROMOTING-YES",
         "group": "promoting-yesno",
         "value": "1-PROMOTING-YES",
@@ -683,7 +691,7 @@
         "url": "investmentopportunities/home",
         "user_story_paths": [
           {
-            "id": "5024",
+            "id": "5179",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -693,7 +701,7 @@
         ]
       },
       {
-        "id": "5023",
+        "id": "5178",
         "code": "PROMOTING-NO",
         "group": "promoting-yesno",
         "value": "2-PROMOTING-NO",
@@ -703,7 +711,7 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5026",
+            "id": "5181",
             "code": "GENERIC-NO",
             "group": "generic-no",
             "value": "99-GENERIC-NO",
@@ -713,7 +721,7 @@
         ]
       },
       {
-        "id": "5024",
+        "id": "5179",
         "code": "END",
         "group": "end",
         "value": "99-END",
@@ -723,7 +731,7 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5024",
+            "id": "5179",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -733,7 +741,7 @@
         ]
       },
       {
-        "id": "5025",
+        "id": "5180",
         "code": "RESET-NO",
         "group": "reset",
         "value": "99-RESET-NO",
@@ -743,7 +751,7 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5024",
+            "id": "5179",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -753,7 +761,7 @@
         ]
       },
       {
-        "id": "5026",
+        "id": "5181",
         "code": "GENERIC-NO",
         "group": "generic-no",
         "value": "99-GENERIC-NO",
@@ -763,7 +771,7 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5024",
+            "id": "5179",
             "code": "END",
             "group": "end",
             "value": "99-END",
@@ -773,4 +781,4 @@
         ]
       }
     ]
-  }
+}
