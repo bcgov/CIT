@@ -22,8 +22,10 @@ import ReportCompare from "../../ReportCompare/ReportCompare";
 import {
   getCensusEconomicRegions,
   getCommunities,
+  getHealthAuthorityBoundaries,
   getNaturalResourceRegions,
   getRegionalDistricts,
+  getSchoolDistricts,
   getTourismRegions,
   getCensusSubdivisions,
   getTsunamiZones,
@@ -53,6 +55,10 @@ export default function UserStory() {
   const [tourismRegions, setTourismRegions] = useState(null);
   const [tsunamiZones, setTsunamiZones] = useState(null);
   const [wildfireZones, setWildfireZones] = useState(null);
+  const [schoolDistricts, setSchoolDistricts] = useState(null);
+  const [healthAuthorityBoundaries, setHealthAuthorityBoundaries] = useState(
+    null
+  );
 
   const [collapse, setCollapse] = useState(true);
 
@@ -95,6 +101,8 @@ export default function UserStory() {
       getCensusSubdivisions(),
       getTsunamiZones(),
       getWildfireZones(),
+      getHealthAuthorityBoundaries(),
+      getSchoolDistricts(),
     ]).then((response) => {
       setEconomicRegions(response[0]);
       setCommunities(response[1]);
@@ -104,6 +112,8 @@ export default function UserStory() {
       setCensusSubdivisions(response[5]);
       setTsunamiZones(response[6]);
       setWildfireZones(response[7]);
+      setHealthAuthorityBoundaries(response[8]);
+      setSchoolDistricts(response[9]);
       setIsLoading(false);
     });
   }, []);
@@ -186,6 +196,10 @@ export default function UserStory() {
           userOption.user_story_paths = economicRegions;
           zoneType.current = "Economic Region";
           break;
+        case "HEALTHAUTHORITY":
+          userOption.user_story_paths = healthAuthorityBoundaries;
+          zoneType.current = "Health Authority";
+          break;
         case "NATURALRESOURCEREGIONS":
           userOption.user_story_paths = naturalResourceRegions;
           zoneType.current = null;
@@ -193,6 +207,10 @@ export default function UserStory() {
         case "REGIONALDISTRICTS":
           userOption.user_story_paths = regionalDistricts;
           zoneType.current = "Regional Districts";
+          break;
+        case "SCHOOLDISTRICTS":
+          userOption.user_story_paths = schoolDistricts;
+          zoneType.current = "School District";
           break;
         case "TOURISMREGIONS":
           userOption.user_story_paths = tourismRegions;
