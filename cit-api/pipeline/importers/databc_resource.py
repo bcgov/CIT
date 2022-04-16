@@ -1,5 +1,6 @@
 import requests
 import bcdata
+import pandas as pd
 
 from django.apps import apps
 
@@ -85,8 +86,16 @@ def import_wms_resource(resource):
             geos_geom_out, geos_geom_simplified = _generate_bcdata_geom(row, WGS84_SRID)
             instance.geom = geos_geom_out
             instance.geom_simplified = geos_geom_simplified
-
+            if resource.name == 'tsunami_zones':
+              instance.tsunami_zone_name  = import_tsunami_full_description(instance.name, resource.source_file_path)
         if resource.name == 'agricultural_land_reserve':
             calculate_muni_or_rd(instance)
-
         instance.save()
+
+def import_tsunami_full_description(zone_classification, file_path):
+    data =  pd.read_excel(file_path,engine='openpyxl',skiprows = 1)
+    for index, row in data.iterrows():
+        if row['TSUNAMI_ZONE_CLASSIFICATION'] == zone_classification:
+            return row['TSUNAMI_ZONE_NAME']
+        else:
+            return ''

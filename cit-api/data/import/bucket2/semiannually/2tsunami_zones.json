@@ -6,6 +6,7 @@
     "model_name": "TsunamiZone",
     "source": "databc",
     "source_type": "wms",
+    "source_file_path": "data/Tsunami_Zone_Names.xls",
     "resource_id": "2551b4de-6d79-4ea6-bdb9-a802364208c2",
     "permalink_id": "d9bafe48-5bf7-461b-a8d6-ba6d1e2245f0",
     "dataset": "tsunami-notification-zones-for-bc",

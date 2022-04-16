@@ -222,6 +222,7 @@ class TsunamiZone(models.Model):
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
+    tsunami_zone_name = models.CharField(max_length=127, null=True)
     geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     zone_class = models.CharField(
