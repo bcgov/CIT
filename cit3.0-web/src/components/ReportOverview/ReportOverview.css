@@ -10,8 +10,8 @@
 
 .report-overview-container iframe {
     border:none;
-    padding: 4px 2px !important;
-    margin: 2px 2px !important;
+    padding: 0 !important;
+    margin: 0 !important;
 }
 
 .report-buttons button {
@@ -19,6 +19,65 @@
     height: 44px;
     font-weight: bold !important;
     font-size: 16px;
-    padding-right: 15px;
-    padding-left: 15px;
+    padding-right: 4px;
+    padding-left: 4px;
+    border-top-left-radius: .25rem !important;
+    border-top-right-radius: .25rem !important;
 }
+
+.tabs-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+    min-width: 960px;
+    max-width: 1340px;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+
+.tabs-container button {
+	border: 0;
+	color: #FFFFFF;
+	font-size: medium;
+	margin: 0 2px;
+    padding: 0 1px;
+    height: 40px;
+    font-weight: bold;
+    border-top-left-radius: .25rem !important;
+    border-top-right-radius: .25rem !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+.report-tabs {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  }
+  
+  /* Style the buttons that are used to open the tab content */
+  .report-tabs button {
+    border: 1px solid transparent;
+    border-top-left-radius: .25rem !important;
+    border-top-right-radius: .25rem !important;
+  }
+  
+  /* Change background color of buttons on hover */
+  .report-tabs button:hover {
+    background-color: #ddd;
+  }
+  
+  /* Create an active/current tablink class */
+  .report-tabs button.active {
+    background-color: #ccc;
+  }
+  
+  /* Style the tab content */
+  .tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+  }

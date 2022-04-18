@@ -112,7 +112,6 @@
 
 button {
 	border: 0;
-	border-radius: 5px;
 	color: #FFFFFF;
 	font-size: medium;
 	margin-right: 15px;
@@ -131,16 +130,22 @@ button {
 .powerbi-container {
     display: flex;
     align-items: center;
+    flex-direction: column;
     width: 100%;
     min-width: 960px;
     max-width: 1340px;
-    margin:2px;
-    padding: 2px;
-    border-radius: 5px;
+    margin: 0px 2px;
+    padding: 0px  2px;
+    border-radius: 2px;
 }
 
-.print-container {
+.print-container button {
     background-color: "#ffffff" !important;
+    color: black !important;
+    font-weight: bold;
+    padding: 8px;
+    margin: 0px;
+    border-radius: 0.25rem;
  }
 
  .collapse-link button {

@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Button } from "react-bootstrap";
+import { Button, Tabs, Tab } from "react-bootstrap";
 import { Printer } from "react-bootstrap-icons";
 import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../hooks/useConfiguration";
@@ -30,7 +30,6 @@ export default function ReportOverview({ reportFilter }) {
   const publicUrl = "/cit-dashboard/public";
   const privateUrl = "/cit-dashboard/internal";
   const searchRoute = "/search-communities";
-  console.log({ loggedInWithIdir });
 
   const handleLogin = () => {
     // login with IDIR only and redirect to private report
@@ -248,8 +247,12 @@ export default function ReportOverview({ reportFilter }) {
     setActivePage(displayName);
   };
 
+  const handleSelect = async (displayName) => {
+    setPage(displayName);
+  };
+
   const reportButtons = (
-    <div className="d-flex justify-content-center report-buttons my-4">
+    <div className="d-flex justify-content-left btn-group report-buttons my-0 mr-3 ml-10">
       {reportTabs
         .filter((t) => !t.isLoginRequired)
         .map((tab) => (
@@ -299,7 +302,7 @@ export default function ReportOverview({ reportFilter }) {
   const printButton = (
     <div className="d-flex flex-row-reverse my-2 print-container">
       <Button type="button" variant="light" onClick={handlePrint}>
-        <Printer /> Print
+        <Printer />
       </Button>
     </div>
   );
@@ -307,14 +310,15 @@ export default function ReportOverview({ reportFilter }) {
   return (
     <>
       <div>
-        {showReport && (
-          <>
-            <div>{reportButtons}</div>
-            <div>{printButton}</div>
-          </>
-        )}
-
         <div className="powerbi-container">
+          <div className="tabs-container">
+            {showReport && (
+              <>
+                <div className="tabs-container-button">{reportButtons}</div>
+                <div>{printButton}</div>
+              </>
+            )}
+          </div>
           <PowerBIEmbed
             embedConfig={embedReportConfig}
             eventHandlers={eventHandlersMap}
