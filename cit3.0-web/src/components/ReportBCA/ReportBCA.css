@@ -1,0 +1,24 @@
+.repoer-bca-container {
+    display: flex;
+    flex-direction: column;
+    height: 75vh ;
+    width: 100% !important;
+    min-width: 960px;
+    max-width: 1340px;
+    margin:0 auto;
+}
+
+.repoer-bca-container iframe {
+    border:none;
+    padding: 4px 2px !important;
+    margin: 2px 2px !important;
+}
+
+.report-buttons button {
+	width: 180px;
+    height: 44px;
+    font-weight: bold !important;
+    font-size: 16px;
+    padding-right: 15px;
+    padding-left: 15px;
+}

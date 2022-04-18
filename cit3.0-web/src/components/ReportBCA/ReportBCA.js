@@ -1,56 +1,21 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import { Printer } from "react-bootstrap-icons";
-import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
-import useConfiguration from "../../hooks/useConfiguration";
 import Config from "../../Config";
-import "./ReportOverview.css";
+import "./ReportBCA.css";
 
-let reportId = Config.pbiReportIdPublic;
-export default function ReportOverview({ reportFilter }) {
-  const history = useHistory();
-  const keycloak = useKeycloakWrapper();
-  const configuration = useConfiguration();
-
-  const [loggedInWithIdir] = useState(keycloak.idp === "idir");
-
+export default function ReportBCA({ reportFilter }) {
   const [report, setReport] = useState();
   const [token, setToken] = useState("");
   const [showReport, setShowReport] = useState(false);
 
   const groupId = Config.pbiGroupId;
-
+  const reportId = Config.pbiReportIdPublic;
   const [activePage, setActivePage] = useState("Connectivity");
-
-  const publicUrl = "/cit-dashboard/public";
-  const privateUrl = "/cit-dashboard/internal";
-  const searchRoute = "/search-communities";
-  console.log({ loggedInWithIdir });
-
-  const handleLogin = () => {
-    // login with IDIR only and redirect to private report
-    let loginWithIdir;
-    if (loggedInWithIdir) {
-      loginWithIdir = keycloak.obj.createLoginUrl({
-        idpHint: "idir",
-        redirectUri: encodeURI(
-          `${configuration.baseUrl}${privateUrl}${searchRoute}`
-        ),
-      });
-    } else {
-      loginWithIdir = keycloak.obj.createLoginUrl({
-        idpHint: "idir",
-        redirectUri: encodeURI(`${configuration.baseUrl}${privateUrl}`),
-      });
-    }
-
-    window.location.href = loginWithIdir;
-  };
 
   const reportTabs = [
     {
@@ -75,12 +40,6 @@ export default function ReportOverview({ reportFilter }) {
       pageName: "Social",
       label: "Social",
       isLoginRequired: null,
-      isDefault: null,
-    },
-    {
-      pageName: "BC Assessment",
-      label: "BC Assessment",
-      isLoginRequired: true,
       isDefault: null,
     },
   ];
@@ -204,13 +163,6 @@ export default function ReportOverview({ reportFilter }) {
   };
 
   const setPage = async (displayName) => {
-    console.log({ reportId });
-    if (reportId !== Config.pbiReportIdPublic) {
-      reportId = Config.pbiReportIdPublic;
-      await loadReport();
-      console.log({ report });
-    }
-
     if (!report) return;
     setActivePage(displayName);
     const pages = await report.getPages();
@@ -242,39 +194,18 @@ export default function ReportOverview({ reportFilter }) {
     await setPage(activePage);
   };
 
-  const handleBcaReport = async (displayName) => {
-    reportId = Config.pbiReportIdInternal;
-    await loadReport();
-    setActivePage(displayName);
-  };
-
   const reportButtons = (
     <div className="d-flex justify-content-center report-buttons my-4">
-      {reportTabs
-        .filter((t) => !t.isLoginRequired)
-        .map((tab) => (
-          <Button
-            key={tab.pageName}
-            type="Button"
-            variant={tab.pageName === activePage ? "primary" : "warning"}
-            onClick={() => setPage(tab.pageName)}
-          >
-            {tab.label}
-          </Button>
-        ))}
-      {loggedInWithIdir &&
-        reportTabs
-          .filter((t) => t.isLoginRequired)
-          .map((tab) => (
-            <Button
-              key={tab.pageName}
-              type="Button"
-              variant={tab.pageName === activePage ? "primary" : "warning"}
-              onClick={() => handleBcaReport(tab.pageName)}
-            >
-              {tab.label}
-            </Button>
-          ))}
+      {reportTabs.map((tab) => (
+        <Button
+          key={tab.pageName}
+          type="Button"
+          variant={tab.pageName === activePage ? "primary" : "warning"}
+          onClick={() => setPage(tab.pageName)}
+        >
+          {tab.label}
+        </Button>
+      ))}
     </div>
   );
 
@@ -318,7 +249,7 @@ export default function ReportOverview({ reportFilter }) {
           <PowerBIEmbed
             embedConfig={embedReportConfig}
             eventHandlers={eventHandlersMap}
-            cssClassName="report-overview-container"
+            cssClassName="report-bca-container"
             getEmbeddedComponent={(embedObject) => {
               setReport(embedObject);
             }}
@@ -329,10 +260,10 @@ export default function ReportOverview({ reportFilter }) {
   );
 }
 
-ReportOverview.propTypes = {
+ReportBCA.propTypes = {
   reportFilter: PropTypes.objectOf(PropTypes.any),
 };
 
-ReportOverview.defaultProps = {
+ReportBCA.defaultProps = {
   reportFilter: null,
 };
