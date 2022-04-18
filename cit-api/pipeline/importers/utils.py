@@ -33,6 +33,7 @@ from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from sqlalchemy import create_engine
 from pipeline.models.Housing_Data import Housing_Data
+from pipeline.models.connectivity_infrastructure_projects import ConnectivityInfrastructureProjects
 from pipeline.models.general import NBDPHHSpeeds,PHDemographicDistribution
 from sqlalchemy.sql.expression import false
 import requests
@@ -695,6 +696,47 @@ def import_businesses_by_cid(tourism_file, url):
             businesses.head(10)
             write_to_db(BusinessesByCSD, businesses)
 
+        except Exception as e:
+            print(e)
+
+def import_connectivity_project(url):
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', "Upgrade-Insecure-Requests": "1","DNT": "1","Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","Accept-Language": "en-US,en;q=0.5","Accept-Encoding": "gzip, deflate"}
+    s = requests.get(url,headers=headers)
+    if s.ok:
+        try:
+            data1 = s.content.decode('utf8')
+            data = pd.read_csv(io.StringIO(data1))
+            data.rename(
+            columns={data.columns[0]:"project",
+                    data.columns[1]:"project_name",
+                    data.columns[2]:"proponent",
+                    data.columns[3]:"place_id",
+                    data.columns[4]:"community_name",
+                    data.columns[5]:"latitude",
+                    data.columns[6]:"longitude",
+                    data.columns[7]:"phase",
+                    data.columns[8]:"num_housesholds_served",
+                    data.columns[9]:"speed",
+                    data.columns[10]:"status",
+                    data.columns[11]:"type_of_project",
+                    data.columns[12]:"project_description",
+                    data.columns[13]:"bc_funding",
+                    data.columns[14]:"estimated_start_date",
+                    data.columns[15]:"estimated_completion_date",
+                    data.columns[16]:"primary_news_release",
+                    data.columns[17]:"economic_region",
+                    data.columns[18]:"electoral_name",
+                    data.columns[19]:"place_type",
+                    data.columns[20]:"reserve_name",
+                    data.columns[21]:"nation"
+                    },inplace=True)
+            data['estimated_start_date'] = data['estimated_start_date'].str[1:]
+            data['estimated_completion_date'] = data['estimated_completion_date'].str[1:]
+            data['estimated_start_date'] = pd.to_datetime(data['estimated_start_date'],format='%Y-%m-%d')
+            data['estimated_completion_date'] = pd.to_datetime(data['estimated_completion_date'],format='%Y-%m-%d')
+            data.drop('Nation', axis=1, inplace=True)
+            data.drop('Unnamed: 23', axis=1, inplace=True)
+            write_to_db(ConnectivityInfrastructureProjects, data)
         except Exception as e:
             print(e)
 
