@@ -23,7 +23,7 @@ from pipeline.models.business_by_census_subdivions import BusinessesByCSD
 from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.general import (DataSource, LocationDistance, SchoolDistrict, Municipality,
-                                      Hex, Service, ISP, RegionalDistrict)
+                                      Hex, Service, ISP, RegionalDistrict, TsunamiZone)
 from pipeline.models.location_assets import School, Hospital
 from pipeline.models.census_division_2016 import *
 from pipeline.models.census_subdivision_2016 import *
@@ -772,6 +772,12 @@ def _coerce_to_multilinestring(geom, srid=WGS84_SRID):
     else:
         raise Exception("Bad geometry type: {}, skipping.".format(geom.__class__))
 
+def import_tsunami_full_description(instance, file_path):
+    data =  pd.read_csv(file_path)
+    for index, row in data.iterrows():
+        if str(instance.name) == str(row['TSUNAMI_NOTIFY_ZONE_ID']):
+            instance.tsunami_zone_name = row['TSUNAMI_ZONE_NAME']
+    instance.save()
 
 def calculate_muni_or_rd(instance):
     muni = Municipality.objects.filter(geom__covers=instance.geom).first()

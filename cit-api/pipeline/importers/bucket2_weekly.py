@@ -5,7 +5,7 @@ import urllib.request
 
 # need 5 pipelines with each own command for DevOps to build script batch. Regroup the json files to consider the schedule as well.
 def import_data_sources():
-    DATA_SOURCES = ['data/import/bucket2/weekly/2hexes.json', 'data/import/bucket2/weekly/2roads.json']
+    DATA_SOURCES = ['data/import/bucket2/weekly/2roads.json']
     with concurrent.futures.ThreadPoolExecutor(2) as executor:
         future_to_url = {executor.submit(import_data, url): url for url in DATA_SOURCES}
         for future in concurrent.futures.as_completed(future_to_url):

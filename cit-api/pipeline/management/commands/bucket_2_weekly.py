@@ -37,7 +37,7 @@ class Command(BaseCommand):
         import_data_sources()
         #Ensure that the data sources are updated
         data_resources = DataSource.objects.filter(name__in=[
-            'hexes', 'roads'
+            'roads'
         ])
 
         for resource in data_resources:
