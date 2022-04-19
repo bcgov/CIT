@@ -21,8 +21,7 @@
     font-size: 16px;
     padding-right: 4px;
     padding-left: 4px;
-    border-top-left-radius: .25rem !important;
-    border-top-right-radius: .25rem !important;
+    border-radius: .25rem !important;
 }
 
 .tabs-container {
@@ -34,6 +33,7 @@
     max-width: 1340px;
     margin: 0px !important;
     padding: 0px !important;
+   
 }
 
 .tabs-container button {
@@ -41,13 +41,10 @@
 	color: #FFFFFF;
 	font-size: medium;
 	margin: 0 2px;
-    padding: 0 1px;
-    height: 40px;
-    font-weight: bold;
-    border-top-left-radius: .25rem !important;
-    border-top-right-radius: .25rem !important;
-    border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
+  padding: 0 1px;
+  height: 40px;
+  font-weight: bold;
+  border-radius: 0 !important;
 }
 
 .report-tabs {

@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Button, Tabs, Tab } from "react-bootstrap";
+import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Printer, LockFill } from "react-bootstrap-icons";
 import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../hooks/useConfiguration";
@@ -274,6 +274,9 @@ export default function ReportOverview({ reportFilter, user }) {
               type="Button"
               variant={tab.pageName === activePage ? "primary" : "warning"}
               onClick={() => handleBcaReport(tab.pageName)}
+              title={
+                !loggedInWithIdir && "Please login with IDIR to view report."
+              }
             >
               {tab.label} {!loggedInWithIdir && <LockFill />}
             </Button>
