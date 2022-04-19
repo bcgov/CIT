@@ -410,7 +410,7 @@ export default function UserStory() {
           {showReport && (
             <>
               {powerBiReport.includes("overview") && (
-                <ReportOverview reportFilter={reportFilter} />
+                <ReportOverview reportFilter={reportFilter} user={who.code} />
               )}
               {powerBiReport.includes("compare") && <ReportCompare />}
               {powerBiReport.includes("criteriaSearch") && (

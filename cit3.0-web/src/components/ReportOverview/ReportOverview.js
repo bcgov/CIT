@@ -4,15 +4,15 @@ import { useHistory } from "react-router-dom";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Button, Tabs, Tab } from "react-bootstrap";
-import { Printer } from "react-bootstrap-icons";
+import { Button } from "react-bootstrap";
+import { Printer, LockFill } from "react-bootstrap-icons";
 import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../hooks/useConfiguration";
 import Config from "../../Config";
 import "./ReportOverview.css";
 
 let reportId = Config.pbiReportIdPublic;
-export default function ReportOverview({ reportFilter }) {
+export default function ReportOverview({ reportFilter, user }) {
   const history = useHistory();
   const keycloak = useKeycloakWrapper();
   const configuration = useConfiguration();
@@ -203,7 +203,6 @@ export default function ReportOverview({ reportFilter }) {
   };
 
   const setPage = async (displayName) => {
-    console.log({ reportId });
     if (reportId !== Config.pbiReportIdPublic) {
       reportId = Config.pbiReportIdPublic;
       await loadReport();
@@ -265,17 +264,21 @@ export default function ReportOverview({ reportFilter }) {
             {tab.label}
           </Button>
         ))}
-      {loggedInWithIdir &&
+      {user === "BCGOV" &&
         reportTabs
           .filter((t) => t.isLoginRequired)
           .map((tab) => (
             <Button
               key={tab.pageName}
+              disabled={!loggedInWithIdir}
               type="Button"
               variant={tab.pageName === activePage ? "primary" : "warning"}
               onClick={() => handleBcaReport(tab.pageName)}
+              title={
+                !loggedInWithIdir && "Please login with IDIR to view report."
+              }
             >
-              {tab.label}
+              {tab.label} {!loggedInWithIdir && <LockFill />}
             </Button>
           ))}
     </div>
@@ -335,8 +338,10 @@ export default function ReportOverview({ reportFilter }) {
 
 ReportOverview.propTypes = {
   reportFilter: PropTypes.objectOf(PropTypes.any),
+  user: PropTypes.string,
 };
 
 ReportOverview.defaultProps = {
   reportFilter: null,
+  user: null,
 };
