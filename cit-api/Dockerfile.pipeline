@@ -18,14 +18,14 @@ RUN az storage blob download \
              --file BC_Roads.zip \
              --account-key $AZURE_STORAGE_ACCOUNT_KEY \
              --auth-mode key
-
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data \
-             --name hexbc.kml \
-             --file hexbc.kml \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
+#commented out until file is restored
+#RUN az storage blob download \
+#             --account-name citpipelinedata \
+#             --container-name data \
+#             --name hexbc.kml \
+#             --file hexbc.kml \
+#             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+#             --auth-mode key
 
 RUN az storage blob download \
              --account-name citpipelinedata \
