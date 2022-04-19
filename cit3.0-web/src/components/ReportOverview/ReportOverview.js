@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Printer, LockFill } from "react-bootstrap-icons";
 import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../hooks/useConfiguration";
