@@ -96,6 +96,15 @@ RUN az storage blob download \
              --file dbuid_csduid.csv \
              --account-key $AZURE_STORAGE_ACCOUNT_KEY \
              --auth-mode key
+
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data \
+             --name Tsunami_Zone_Names.csv \
+             --file Tsunami_Zone_Names.csv \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+             
 FROM python:3.6
 ENV PYTHONUNBUFFERED 1
 
