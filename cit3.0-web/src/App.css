@@ -10,6 +10,7 @@
 }
 
 main {
+  font-family: BCSans;
   padding: 0;
   flex: 1;
 }
