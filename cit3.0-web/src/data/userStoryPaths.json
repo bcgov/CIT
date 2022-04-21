@@ -410,7 +410,7 @@
         "group": "what",
         "value": "3-COMPARING",
         "label": "comparing an area to another one",
-        "longText": "<div class='select-break'></div><p><b>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area such as Census Subdivisions (Municipalities, Electoral Areas, First Nations Reserves), Tourism Regions, Economic Regions  and the specific area you want to compare.</b></p><div class='select-break'></div>",
+        "longText": "<div class='select-break'></div><p><b>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area such as Census Subdivisions (Municipalities, Electoral Areas, First Nations Reserves), Tourism Regions, Economic Regions and the specific area you want to compare.</b></p><div class='select-break'></div>",
         "text": "",
         "url": "powerbi-compare",
         "user_story_paths": [
@@ -666,7 +666,7 @@
         "group": "comparing-yesno",
         "value": "1-COMPARING-GO",
         "label": "Yes",
-        "longText": "<div class='section-break'></div><p><b>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area such as Census Subdivisions (Municipalities, Electoral Areas, First Nations Reserves), Tourism Regions, Economic Regions  and the specific area you want to compare.</b></p>",
+        "longText": "<div class='section-break'></div><p><b>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area such as Census Subdivisions (Municipalities, Electoral Areas, First Nations Reserves), Tourism Regions, Economic Regions and the specific area you want to compare.</b></p>",
         "text": "",
         "url": "powerbi-criteriaSearch",
         "user_story_paths": [
