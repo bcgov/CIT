@@ -84,6 +84,8 @@ export default function UserStory() {
           zoneName: zoneName.current,
         };
         setReportFilter(zoneFilter);
+      } else {
+        setReportFilter(null);
       }
       setShowReport(true);
       return;

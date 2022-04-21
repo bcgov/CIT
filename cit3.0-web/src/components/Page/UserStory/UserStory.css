@@ -1,5 +1,4 @@
 .user-story-top-container {
-    font-family: BCSans;
     display: flex;
     flex-wrap: wrap ;
     flex-direction: column;
@@ -14,7 +13,6 @@
     display: flex;
     align-items: flex-start;
     flex-direction: column;
-    font-family: BCSans;
     width: 99%;
     min-width: 960px;
     max-width: 1340px;
