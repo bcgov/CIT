@@ -204,6 +204,7 @@ class WildfireZone(models.Model):
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
+    #zone_name = models.CharField(max_length=127, null=True)
     geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     risk_class = models.CharField(
@@ -215,6 +216,17 @@ class WildfireZone(models.Model):
 
     def __str__(self):
         return self.name
+
+class BCWildfireZone(models.Model):
+    zone_id = models.IntegerField(null=True)
+    centre_name = models.CharField(max_length=127, null=True)
+    zone_name = models.CharField(max_length=127, null=True)
+    headquarter_city_name = models.CharField(max_length=127, null=True)
+    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
+    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
+
+    def __str__(self):
+        return self.zone_name
 
 
 class TsunamiZone(models.Model):

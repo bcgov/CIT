@@ -128,6 +128,11 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
     elif resource_type == 'Tourism Regions':
         instance, created = Model.objects.get_or_create(
             tourism_region_id=row['TOURISM_REGION_ID'])
+    
+    elif resource_type == 'BC Wildfire Fire Zones':
+        instance, created = Model.objects.get_or_create(
+            zone_id=row['MOF_FIRE_ZONE_ID'])
+        print("Done")
     else:
         name_fields = Model.NAME_FIELD.split(",")
         name = ", ".join([str(row[name_field]) for name_field in name_fields])
@@ -145,7 +150,7 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
             name = f'{row[Model.NAME_FIELD]}, {row[Model.ID_FIELD]}'
         instance, created = Model.objects.get_or_create(name=name)
 
-    print("instance", instance)
+    #print("instance", instance)
     if hasattr(Model, 'ID_FIELD'):
         instance.area_id = row[Model.ID_FIELD]
 
