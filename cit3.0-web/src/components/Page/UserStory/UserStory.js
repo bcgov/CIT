@@ -192,7 +192,7 @@ export default function UserStory() {
           break;
         case "COMMUNITYAREA":
           userOption.user_story_paths = censusSubdivisions;
-          zoneType.current = "Communities and Unincorporated Areas";
+          zoneType.current = "Census Subdivision";
           break;
         case "ECONOMICREGIONS":
           userOption.user_story_paths = economicRegions;
