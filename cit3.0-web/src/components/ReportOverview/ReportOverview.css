@@ -77,3 +77,7 @@
     border: 1px solid #ccc;
     border-top: none;
   }
+
+  .btn-primary {
+    background-color: #1a5a96 !important;
+  }
