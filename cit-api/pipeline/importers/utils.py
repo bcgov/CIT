@@ -34,6 +34,7 @@ from requests.packages.urllib3.util.retry import Retry
 from sqlalchemy import create_engine
 from pipeline.models.Housing_Data import Housing_Data
 from pipeline.models.connectivity_infrastructure_projects import ConnectivityInfrastructureProjects
+from pipeline.models import NAICSCodes
 from pipeline.models.general import NBDPHHSpeeds,PHDemographicDistribution
 from sqlalchemy.sql.expression import false
 import requests
@@ -128,6 +129,11 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
     elif resource_type == 'Tourism Regions':
         instance, created = Model.objects.get_or_create(
             tourism_region_id=row['TOURISM_REGION_ID'])
+    
+    elif resource_type == 'BC Wildfire Fire Zones':
+        instance, created = Model.objects.get_or_create(
+            zone_id=row['MOF_FIRE_ZONE_ID'])
+        print("Done")
     else:
         name_fields = Model.NAME_FIELD.split(",")
         name = ", ".join([str(row[name_field]) for name_field in name_fields])
@@ -145,7 +151,7 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
             name = f'{row[Model.NAME_FIELD]}, {row[Model.ID_FIELD]}'
         instance, created = Model.objects.get_or_create(name=name)
 
-    print("instance", instance)
+    #print("instance", instance)
     if hasattr(Model, 'ID_FIELD'):
         instance.area_id = row[Model.ID_FIELD]
 
@@ -696,6 +702,27 @@ def import_businesses_by_cid(tourism_file, url):
             businesses.head(10)
             write_to_db(BusinessesByCSD, businesses)
 
+        except Exception as e:
+            print(e)
+
+def import_naics_codes(url):
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', "Upgrade-Insecure-Requests": "1","DNT": "1","Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","Accept-Language": "en-US,en;q=0.5","Accept-Encoding": "gzip, deflate"}
+    #url = "https://www.statcan.gc.ca/eng/statistical-programs/document/naics-scian-2022-structure-v1-eng.csv"
+    s = requests.get(url,headers=headers)
+    if s.ok:
+        try:
+            data1 = s.content.decode('utf8')
+            data = pd.read_csv(io.StringIO(data1))
+            data.rename(
+            columns={data.columns[0]:"level",
+                    data.columns[1]:"hierarchical_structure",
+                    data.columns[2]:"code",
+                    data.columns[3]:"parent",
+                    data.columns[4]:"class_title",
+                    },inplace=True)
+            data.drop('Superscript', axis=1, inplace=True)
+            data.drop('Class definition', axis=1, inplace=True)
+            write_to_db(NAICSCodes, data)
         except Exception as e:
             print(e)
 

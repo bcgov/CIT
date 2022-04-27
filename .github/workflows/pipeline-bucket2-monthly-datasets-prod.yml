@@ -1,15 +1,14 @@
 # This workflow will build a new container monthly running the datasets in Bucket 2 monthly
-# The datasets included in this bucket are, connectivity infrastructure projects
+# The datasets included in this bucket are connectivity projects and NAICS codes
 
-name: Data Pipeline - Bucket 2 monthly
+name: Data Pipeline - Bucket 2 monthly Prod
 on:
   schedule:
     - cron: "0 0 1 * *"
 env: 
-  BUCKET_COMMAND: bucket_2_connectivity_projects
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
-  run-test:
+  run-connectivity-projects:
     runs-on: ubuntu-latest
     steps:
       # checkout the repo
@@ -18,31 +17,31 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
+            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
             echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
+            echo 'BUCKET_COMMAND = bucket_2_connectivity_projects' >> .env
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
 
-  run-prod:
+  run-naics-codes:
     runs-on: ubuntu-latest
     steps:
       # checkout the repo
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master
-
+        
       - name: "Generate env file"
         run: |
             echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
             echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
             echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
             echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env
-            echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
+            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+            echo 'BUCKET_COMMAND = bucket_2_naics_codes' >> .env
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline

@@ -8,6 +8,17 @@
     "resource_id": "8eafea9f-3e84-4a9b-bd60-522c0059b74b",
     "permalink_id": "3c71551e-c1aa-4272-9c89-64fbd22a910d",
     "dataset": "bc-wildfire-wildland-urban-interface-risk-class",
-    "import_order": 5
+    "import_order": 1
+  },
+  {
+    "name": "bc_wildfires_zones",
+    "display_name": "BC Wildfire Fire Zones",
+    "model_name": "BCWildfireZone",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": "502a90107-914d-4d2e-a0fb-5dcac6c6b34a",
+    "permalink_id": "3c71551e-c1aa-4272-9c89-64fbd22a910d",
+    "dataset": "bc-wildfire-fire-zones",
+    "import_order": 2
   }
 ]

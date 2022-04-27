@@ -86,8 +86,6 @@ def import_wms_resource(resource):
             geos_geom_out, geos_geom_simplified = _generate_bcdata_geom(row, WGS84_SRID)
             instance.geom = geos_geom_out
             instance.geom_simplified = geos_geom_simplified
-            if resource.name == 'tsunami_zones':
-                import_tsunami_full_description(instance, resource.source_file_path)
         if resource.name == 'agricultural_land_reserve':
             calculate_muni_or_rd(instance)
         instance.save()
