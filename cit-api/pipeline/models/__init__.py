@@ -29,3 +29,4 @@ from .census_division_2016 import *
 from .census_subdivision_2016 import *
 from .business_by_census_subdivions import *
 from .connectivity_infrastructure_projects import *
+from .naics_codes import *
