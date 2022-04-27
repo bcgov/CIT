@@ -19,6 +19,7 @@ on:
         - bucket_1
         - bucket_2_weekly
         - bucket_2_semiannually
+        - bucket_2_connectivity_projects
         - bucket_3
         - bucket_4_monthly
         - bucket_4_semiannually

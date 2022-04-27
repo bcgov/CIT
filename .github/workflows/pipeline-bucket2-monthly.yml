@@ -1,13 +1,12 @@
-# This workflow will build a new container weekly running the datasets in Bucket 2 weekly
-# The datasets included in this bucket are, hexes and roads
+# This workflow will build a new container monthly running the datasets in Bucket 2 monthly
+# The datasets included in this bucket are, connectivity infrastructure projects
 
-name: Data Pipeline - Bucket 2 Weekly
+name: Data Pipeline - Bucket 2 monthly
 on:
   schedule:
-  # Every Monday at 1PM UTC (9AM EST)
-    - cron: "0 13 * * 1"
+    - cron: "0 0 1 * *"
 env: 
-  BUCKET_COMMAND: bucket_2_weekly
+  BUCKET_COMMAND: bucket_2_connectivity_projects
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   run-test:
