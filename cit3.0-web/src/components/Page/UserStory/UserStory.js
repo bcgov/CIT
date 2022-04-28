@@ -208,7 +208,7 @@ export default function UserStory() {
           break;
         case "REGIONALDISTRICTS":
           userOption.user_story_paths = regionalDistricts;
-          zoneType.current = "Regional Districts";
+          zoneType.current = "Regional District";
           break;
         case "SCHOOLDISTRICTS":
           userOption.user_story_paths = schoolDistricts;

@@ -74,7 +74,7 @@ class WildfireZoneOptions(APIView):
 
 class TsunamiZoneOptions(APIView):
     def get(self, request, format=None):
-        options =  TsunamiZone.objects.all().values('id', 'name').distinct().order_by('name')
+        options =  TsunamiZone.objects.all().values('id', 'tsunami_zone_name').distinct().order_by('tsunami_zone_name')
         return Response(dict(data=options)) 
 
 class SchoolDistrictOptions(APIView):

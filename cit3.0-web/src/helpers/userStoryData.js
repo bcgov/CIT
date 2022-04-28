@@ -90,7 +90,7 @@ export async function getTsunamiZones() {
   const response = await axios.get(url);
   const result = response.data.data.map((x) => ({
     value: x.id,
-    label: x.name,
+    label: x.tsunami_zone_name,
   }));
 
   return result;
