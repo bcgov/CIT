@@ -48,6 +48,18 @@ export async function getNaturalResourceRegions() {
   return result;
 }
 
+export async function getHealthAuthorityBoundaries() {
+  const url = "/api/opportunity/options/health-authority-boundaries";
+
+  const response = await axios.get(url);
+  const result = response.data.data.map((x) => ({
+    value: x.id,
+    label: x.name,
+  }));
+
+  return result;
+}
+
 export async function getRegionalDistricts() {
   const url = "/api/opportunity/options/regional-districts";
 
@@ -78,7 +90,7 @@ export async function getTsunamiZones() {
   const response = await axios.get(url);
   const result = response.data.data.map((x) => ({
     value: x.id,
-    label: x.name,
+    label: x.tsunami_zone_name,
   }));
 
   return result;
@@ -90,6 +102,18 @@ export async function getWildfireZones() {
   const response = await axios.get(url);
   const result = response.data.data.map((x) => ({
     value: x.id,
+    label: x.name,
+  }));
+
+  return result;
+}
+
+export async function getSchoolDistricts() {
+  const url = "/api/opportunity/options/school-districts";
+
+  const response = await axios.get(url);
+  const result = response.data.data.map((x) => ({
+    value: x.area_id,
     label: x.name,
   }));
 

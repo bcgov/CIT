@@ -22,8 +22,10 @@ import ReportCompare from "../../ReportCompare/ReportCompare";
 import {
   getCensusEconomicRegions,
   getCommunities,
+  getHealthAuthorityBoundaries,
   getNaturalResourceRegions,
   getRegionalDistricts,
+  getSchoolDistricts,
   getTourismRegions,
   getCensusSubdivisions,
   getTsunamiZones,
@@ -53,6 +55,10 @@ export default function UserStory() {
   const [tourismRegions, setTourismRegions] = useState(null);
   const [tsunamiZones, setTsunamiZones] = useState(null);
   const [wildfireZones, setWildfireZones] = useState(null);
+  const [schoolDistricts, setSchoolDistricts] = useState(null);
+  const [healthAuthorityBoundaries, setHealthAuthorityBoundaries] = useState(
+    null
+  );
 
   const [collapse, setCollapse] = useState(true);
 
@@ -78,6 +84,8 @@ export default function UserStory() {
           zoneName: zoneName.current,
         };
         setReportFilter(zoneFilter);
+      } else {
+        setReportFilter(null);
       }
       setShowReport(true);
       return;
@@ -95,6 +103,8 @@ export default function UserStory() {
       getCensusSubdivisions(),
       getTsunamiZones(),
       getWildfireZones(),
+      getHealthAuthorityBoundaries(),
+      getSchoolDistricts(),
     ]).then((response) => {
       setEconomicRegions(response[0]);
       setCommunities(response[1]);
@@ -104,6 +114,8 @@ export default function UserStory() {
       setCensusSubdivisions(response[5]);
       setTsunamiZones(response[6]);
       setWildfireZones(response[7]);
+      setHealthAuthorityBoundaries(response[8]);
+      setSchoolDistricts(response[9]);
       setIsLoading(false);
     });
   }, []);
@@ -180,11 +192,15 @@ export default function UserStory() {
           break;
         case "COMMUNITYAREA":
           userOption.user_story_paths = censusSubdivisions;
-          zoneType.current = "Communities and Unincorporated Areas";
+          zoneType.current = "Census Subdivision";
           break;
         case "ECONOMICREGIONS":
           userOption.user_story_paths = economicRegions;
           zoneType.current = "Economic Region";
+          break;
+        case "HEALTHAUTHORITY":
+          userOption.user_story_paths = healthAuthorityBoundaries;
+          zoneType.current = "Health Authority";
           break;
         case "NATURALRESOURCEREGIONS":
           userOption.user_story_paths = naturalResourceRegions;
@@ -192,7 +208,11 @@ export default function UserStory() {
           break;
         case "REGIONALDISTRICTS":
           userOption.user_story_paths = regionalDistricts;
-          zoneType.current = "Regional Districts";
+          zoneType.current = "Regional District";
+          break;
+        case "SCHOOLDISTRICTS":
+          userOption.user_story_paths = schoolDistricts;
+          zoneType.current = "School District";
           break;
         case "TOURISMREGIONS":
           userOption.user_story_paths = tourismRegions;
@@ -265,7 +285,7 @@ export default function UserStory() {
       </h3>
       <p>
         The Community Information Tool offers insight into communities across
-        B.C. with integrated socio-economic data, infrastructure, and community
+        B.C. with integrated socio-economic, infrastructure, and community
         assets data. The Tool supports community, regional, and province-wide
         planning, which is essential to building thriving, healthy communities.
       </p>
@@ -392,7 +412,7 @@ export default function UserStory() {
           {showReport && (
             <>
               {powerBiReport.includes("overview") && (
-                <ReportOverview reportFilter={reportFilter} />
+                <ReportOverview reportFilter={reportFilter} user={who.code} />
               )}
               {powerBiReport.includes("compare") && <ReportCompare />}
               {powerBiReport.includes("criteriaSearch") && (

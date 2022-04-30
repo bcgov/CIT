@@ -28,10 +28,10 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (location.pathname.includes("/cit-dashboard")) {
-      setIsPowerBI(true);
-    } else {
+    if (location.pathname.includes("/investmentopportunities")) {
       setIsPowerBI(false);
+    } else {
+      setIsPowerBI(true);
     }
   });
 
