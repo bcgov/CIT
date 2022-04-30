@@ -23,7 +23,7 @@ from pipeline.models.business_by_census_subdivions import BusinessesByCSD
 from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.general import (DataSource, LocationDistance, SchoolDistrict, Municipality,
-                                      Hex, Service, ISP, RegionalDistrict, TsunamiZone)
+                                      Hex, Service, ISP, RegionalDistrict, TsunamiZone, BCWildfireZone)
 from pipeline.models.location_assets import School, Hospital
 from pipeline.models.census_division_2016 import *
 from pipeline.models.census_subdivision_2016 import *
@@ -132,8 +132,11 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
     
     elif resource_type == 'BC Wildfire Fire Zones':
         instance, created = Model.objects.get_or_create(
-            zone_id=row['MOF_FIRE_ZONE_ID'])
-        print("Done")
+            zone_id=row['MOF_FIRE_ZONE_ID'],
+            centre_name = row['MOF_FIRE_CENTRE_NAME'],
+            zone_name=row['MOF_FIRE_ZONE_NAME'],
+            headquarter_city_name = row['HEADQUARTERS_CITY_NAME'])
+        
     else:
         name_fields = Model.NAME_FIELD.split(",")
         name = ", ".join([str(row[name_field]) for name_field in name_fields])
