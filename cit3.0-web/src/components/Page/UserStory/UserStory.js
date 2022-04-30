@@ -123,15 +123,11 @@ export default function UserStory() {
   useEffect(() => {
     const option = userStoryPaths.find((x) => x.code === "START");
     option.longTextLabel = option.longText;
+    // option.selectedCode = "PUBLIC";
+    // const savedStory = userStoryPaths.find((x) => x.code === "PUBLIC");
+    // console.log(option);
     setUserOptions([option]);
   }, []);
-
-  const resetUserStory = () => {
-    const option = userStoryPaths.find((x) => x.code === "START");
-    setUserOptions([option]);
-    setIsOkButton(false);
-    setIsGoButton(false);
-  };
 
   const handleUserStoryChange = (e) => {
     let param;
@@ -161,14 +157,21 @@ export default function UserStory() {
     }
 
     const groupIndex = userOptions.findIndex((x) => x.group === param.group);
+    console.log({ groupIndex });
 
-    let newUserOptions = [];
+    let currentUserOptions = [];
     if (groupIndex > 0) {
-      newUserOptions = userOptions.filter((x, index) => index < groupIndex);
+      currentUserOptions = userOptions.filter((x, index) => index < groupIndex);
     } else {
-      newUserOptions = userOptions;
+      currentUserOptions = userOptions;
     }
 
+    if (currentUserOptions.length > 0) {
+      currentUserOptions[currentUserOptions.length - 1].selectedCode =
+        param.code;
+    }
+
+    console.log({ currentUserOptions });
     const userOption = userStoryPaths.find((x) => x.code === param.code);
 
     if (!isLongVersion && userOption && userOption.group !== "zone") {
@@ -243,7 +246,7 @@ export default function UserStory() {
     replaceText = replaceText.replace("{ZONE-SEARCH-FILTER}", param.label);
     userOption.longTextLabel = replaceText;
 
-    setUserOptions([...newUserOptions, userOption]);
+    setUserOptions([...currentUserOptions, userOption]);
 
     if (param.code.includes("-YES") && isLongVersion) {
       setIsOkButton(false);
@@ -273,6 +276,10 @@ export default function UserStory() {
     }
   };
 
+  const handleReset = () => {
+    handleUserStoryChange(who);
+  };
+
   const handleIsOk = () => {
     handleUserStoryChange(who);
   };
@@ -297,7 +304,7 @@ export default function UserStory() {
       type="button"
       variant="outline-primary"
       className="user-story-button"
-      onClick={resetUserStory}
+      onClick={handleReset}
     >
       Reset Search Criteria
     </Button>

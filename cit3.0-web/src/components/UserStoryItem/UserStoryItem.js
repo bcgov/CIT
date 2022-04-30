@@ -116,6 +116,9 @@ export default function UserStoryItem({
           !userStoryYes && (
             <Select
               placeholder=""
+              value={userStory.user_story_paths.find(
+                (x) => x.code === userStory.selectedCode
+              )}
               options={userStory.user_story_paths}
               styles={selectStyle}
               onChange={onUserStoryChange}
