@@ -45,7 +45,8 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
   let BcAssessmentText = "BC Assesssment";
 
   if (isLoginWithIdir && !hasBcAssessmentRole) {
-    BcAssessmentText = "You are not authorized to view this report";
+    BcAssessmentText =
+      "You are not authorized to view this report.\nPlease email citinfo@gov.bc.ca to request access.";
   }
 
   if (!isLoginWithIdir) {
