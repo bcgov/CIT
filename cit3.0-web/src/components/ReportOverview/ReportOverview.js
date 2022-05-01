@@ -85,18 +85,6 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
     },
   ];
 
-  const printSettings = {
-    layoutType: models.LayoutType.Printer,
-    panes: {
-      filters: {
-        visible: false,
-      },
-      pageNavigation: {
-        visible: false,
-      },
-    },
-  };
-
   const layoutSettings = {
     panes: {
       filters: {
@@ -207,7 +195,6 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
     if (reportId !== Config.pbiReportIdPublic) {
       reportId = Config.pbiReportIdPublic;
       await loadReport();
-      console.log({ report });
     }
 
     if (!report) return;
@@ -220,17 +207,9 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
     }
   };
 
-  const setReportFilter = async () => {
-    if (!report) return;
-    const filter = getReportFilter(reportFilter);
-
-    await report.setFilters(filter);
-  };
-
   const handlePrint = async () => {
     if (!report) return;
     const pages = await report.getPages();
-    console.log(pages);
     const reportPage = pages.find((page) => page.displayName === "Print");
 
     if (reportPage) {
@@ -251,10 +230,6 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
     reportId = Config.pbiReportIdInternal;
     await loadReport();
     setActivePage(displayName);
-  };
-
-  const handleSelect = async (displayName) => {
-    setPage(displayName);
   };
 
   const reportButtons = (

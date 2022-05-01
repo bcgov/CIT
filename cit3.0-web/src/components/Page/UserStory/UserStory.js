@@ -13,10 +13,9 @@ import {
   ChevronDown,
   ChevronUp,
 } from "react-bootstrap-icons";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
-import Roles from "../../../constants/roles";
 
 import UserStoryItem from "../../UserStoryItem/UserStoryItem";
 import ReportOverview from "../../ReportOverview/ReportOverview";
@@ -107,7 +106,6 @@ export default function UserStory() {
 
     setReportFilter(zoneFilter.current);
     setShowReport(true);
-    // saveUserStory();
   };
 
   useEffect(() => {
