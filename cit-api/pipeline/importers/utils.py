@@ -922,6 +922,10 @@ def import_tsunami_full_description(instance, file_path):
             instance.tsunami_zone_name = row['TSUNAMI_ZONE_NAME']
     instance.save()
 
+def remove_french_description(instance):
+    instance.name = ((instance.name).split("/", 1))[0]
+    instance.save()
+
 def calculate_muni_or_rd(instance):
     muni = Municipality.objects.filter(geom__covers=instance.geom).first()
     rd = RegionalDistrict.objects.filter(geom__covers=instance.geom).first()

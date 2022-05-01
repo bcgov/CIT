@@ -8,7 +8,7 @@ from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA, BC_ALBERS_SRID, WGS
 from pipeline.models.general import DataSource
 from pipeline.importers.utils import (import_data_into_point_model, import_data_into_area_model,
                                       get_databc_last_modified_date, get_openca_last_modified_date,
-                                      _generate_geom, _generate_bcdata_geom, calculate_muni_or_rd, import_tsunami_full_description)
+                                      _generate_geom, _generate_bcdata_geom, calculate_muni_or_rd, import_tsunami_full_description, remove_french_description)
 
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}&limit=10000"
 LOCATION_RESOURCES = [
@@ -88,5 +88,7 @@ def import_wms_resource(resource):
             instance.geom_simplified = geos_geom_simplified
         if resource.name == 'agricultural_land_reserve':
             calculate_muni_or_rd(instance)
+        if resource.name == 'census_economic_region':
+            remove_french_description(instance)
         instance.save()
 
