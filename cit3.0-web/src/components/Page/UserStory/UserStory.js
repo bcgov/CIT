@@ -46,7 +46,7 @@ export default function UserStory() {
   const [isOkButton, setIsOkButton] = useState(false);
   const [areaType, setAreaType] = useState("");
   const [powerBiReport, setPowerBiReport] = useState("");
-  const [reportFilter, setReportFilter] = useState("");
+  const [reportFilter, setReportFilter] = useState(null);
   const [communities, setCommunities] = useState(null);
   const [censusSubdivisions, setCensusSubdivisions] = useState(null);
   const [economicRegions, setEconomicRegions] = useState(null);
@@ -62,6 +62,7 @@ export default function UserStory() {
 
   const [collapse, setCollapse] = useState(true);
 
+  const zoneFilter = useRef();
   const zoneType = useRef();
   const zoneName = useRef();
   const redirectUrl = useRef();
@@ -72,25 +73,33 @@ export default function UserStory() {
 
   const userName = keycloak ? keycloak.firstName : "";
 
+  const saveUserStory = () => {
+    const userStoryValues = {
+      userOptions,
+      reportFilter: zoneFilter.current,
+    };
+    localStorage.setItem("userStory", JSON.stringify(userStoryValues));
+  };
+
+  const loadUserStory = () => {
+    const saved = localStorage.getItem("userStory");
+    return JSON.parse(saved);
+  };
+
   const showResult = (urlPath) => {
     if (!urlPath) return;
 
-    if (urlPath && urlPath.includes("powerbi")) {
-      setPowerBiReport(urlPath);
-      setIsLongVersion(false);
-      if (zoneType.current || zoneName.current) {
-        const zoneFilter = {
-          zoneType: zoneType.current,
-          zoneName: zoneName.current,
-        };
-        setReportFilter(zoneFilter);
-      } else {
-        setReportFilter(null);
-      }
-      setShowReport(true);
+    if (urlPath && !urlPath.includes("powerbi")) {
+      history.push(urlPath);
       return;
     }
-    history.push(urlPath);
+
+    setPowerBiReport(urlPath);
+    setIsLongVersion(false);
+
+    setReportFilter(zoneFilter.current);
+    setShowReport(true);
+    // saveUserStory();
   };
 
   useEffect(() => {
@@ -121,12 +130,22 @@ export default function UserStory() {
   }, []);
 
   useEffect(() => {
-    const option = userStoryPaths.find((x) => x.code === "START");
-    option.longTextLabel = option.longText;
-    // option.selectedCode = "PUBLIC";
-    // const savedStory = userStoryPaths.find((x) => x.code === "PUBLIC");
-    // console.log(option);
-    setUserOptions([option]);
+    const options = loadUserStory();
+
+    if (options && options.userOptions && options.userOptions.length > 0) {
+      const urlPath = options.userOptions[options.userOptions.length - 1].url;
+      const user = options.userOptions.find((x) => x.group === "who");
+      setWho(user);
+      setIsLongVersion(false);
+      zoneFilter.current = options.reportFilter;
+      setUserOptions(options.userOptions);
+
+      showResult(urlPath);
+    } else {
+      const option = userStoryPaths.find((x) => x.code === "START");
+      option.longTextLabel = option.longText;
+      setUserOptions([option]);
+    }
   }, []);
 
   const handleUserStoryChange = (e) => {
@@ -157,7 +176,6 @@ export default function UserStory() {
     }
 
     const groupIndex = userOptions.findIndex((x) => x.group === param.group);
-    console.log({ groupIndex });
 
     let currentUserOptions = [];
     if (groupIndex > 0) {
@@ -166,12 +184,6 @@ export default function UserStory() {
       currentUserOptions = userOptions;
     }
 
-    if (currentUserOptions.length > 0) {
-      currentUserOptions[currentUserOptions.length - 1].selectedCode =
-        param.code;
-    }
-
-    console.log({ currentUserOptions });
     const userOption = userStoryPaths.find((x) => x.code === param.code);
 
     if (!isLongVersion && userOption && userOption.group !== "zone") {
@@ -222,7 +234,6 @@ export default function UserStory() {
           zoneType.current = "Tourism Region";
           break;
         case "TSUNAMIZONES":
-          console.log({ tsunamiZones });
           userOption.user_story_paths = tsunamiZones;
           zoneType.current = "Tsunami Zone";
           break;
@@ -236,6 +247,14 @@ export default function UserStory() {
       }
     }
 
+    zoneFilter.current = null;
+    if (zoneType.current || zoneName.current) {
+      zoneFilter.current = {
+        zoneType: zoneType.current,
+        zoneName: zoneName.current,
+      };
+    }
+
     let replaceText = userOption.longText;
     replaceText = replaceText.replace(
       "{ZONE-TYPE-1}",
@@ -245,6 +264,11 @@ export default function UserStory() {
     replaceText = replaceText.replace("{ZONE-TYPE-2}", areaType);
     replaceText = replaceText.replace("{ZONE-SEARCH-FILTER}", param.label);
     userOption.longTextLabel = replaceText;
+
+    if (currentUserOptions.length > 0) {
+      currentUserOptions[currentUserOptions.length - 1].selectedValue =
+        param.value;
+    }
 
     setUserOptions([...currentUserOptions, userOption]);
 
