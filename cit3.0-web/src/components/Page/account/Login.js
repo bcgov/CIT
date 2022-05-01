@@ -37,7 +37,6 @@ const Login = () => {
   const configuration = useConfiguration();
 
   const handleLogin = () => {
-    console.log(window.location.href);
     if (window.location.href.includes("cit-dashboard")) {
       const loginWithIdir = keycloak.createLoginUrl({
         idpHint: "idir",

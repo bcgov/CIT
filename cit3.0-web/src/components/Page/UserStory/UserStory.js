@@ -13,8 +13,11 @@ import {
   ChevronDown,
   ChevronUp,
 } from "react-bootstrap-icons";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import useConfiguration from "../../../hooks/useConfiguration";
+import Roles from "../../../constants/roles";
+
 import UserStoryItem from "../../UserStoryItem/UserStoryItem";
 import ReportOverview from "../../ReportOverview/ReportOverview";
 import ReportCriteriaSearch from "../../ReportCriteriaSearch/ReportCriteriaSearch";
@@ -37,6 +40,8 @@ import "../HomePage/HomePage.scss";
 import "./UserStory.css";
 
 export default function UserStory() {
+  const configuration = useConfiguration();
+  const keycloak = useKeycloakWrapper();
   const [isLoading, setIsLoading] = useState(true);
   const [userOptions, setUserOptions] = useState([]);
   const [isLongVersion, setIsLongVersion] = useState(true);
@@ -60,6 +65,9 @@ export default function UserStory() {
     null
   );
 
+  const [isLoginWithIdir] = useState(keycloak.idp === "idir");
+  const [isInternal] = useState(location.pathname.includes("internal"));
+
   const [collapse, setCollapse] = useState(true);
 
   const zoneFilter = useRef();
@@ -67,11 +75,11 @@ export default function UserStory() {
   const zoneName = useRef();
   const redirectUrl = useRef();
 
-  const keycloak = useKeycloakWrapper();
-
   const history = useHistory();
 
   const userName = keycloak ? keycloak.firstName : "";
+
+  const userStoryUrl = "/userstory/internal";
 
   const saveUserStory = () => {
     const userStoryValues = {
@@ -130,22 +138,24 @@ export default function UserStory() {
   }, []);
 
   useEffect(() => {
-    const options = loadUserStory();
+    if (isInternal && isLoginWithIdir) {
+      const options = loadUserStory();
+      if (options && options.userOptions && options.userOptions.length > 0) {
+        const urlPath = options.userOptions[options.userOptions.length - 1].url;
+        const user = options.userOptions.find((x) => x.group === "who");
+        setWho(user);
+        setIsLongVersion(false);
+        zoneFilter.current = options.reportFilter;
+        setUserOptions(options.userOptions);
 
-    if (options && options.userOptions && options.userOptions.length > 0) {
-      const urlPath = options.userOptions[options.userOptions.length - 1].url;
-      const user = options.userOptions.find((x) => x.group === "who");
-      setWho(user);
-      setIsLongVersion(false);
-      zoneFilter.current = options.reportFilter;
-      setUserOptions(options.userOptions);
-
-      showResult(urlPath);
-    } else {
-      const option = userStoryPaths.find((x) => x.code === "START");
-      option.longTextLabel = option.longText;
-      setUserOptions([option]);
+        showResult(urlPath);
+        return;
+      }
     }
+
+    const option = userStoryPaths.find((x) => x.code === "START");
+    option.longTextLabel = option.longText;
+    setUserOptions([option]);
   }, []);
 
   const handleUserStoryChange = (e) => {
@@ -300,6 +310,15 @@ export default function UserStory() {
     }
   };
 
+  const handleLogin = () => {
+    saveUserStory();
+    const loginWithIdir = keycloak.obj.createLoginUrl({
+      idpHint: "idir",
+      redirectUri: encodeURI(`${configuration.baseUrl}${userStoryUrl}`),
+    });
+    window.location.href = loginWithIdir;
+  };
+
   const handleReset = () => {
     handleUserStoryChange(who);
   };
@@ -443,7 +462,11 @@ export default function UserStory() {
           {showReport && (
             <>
               {powerBiReport.includes("overview") && (
-                <ReportOverview reportFilter={reportFilter} user={who.code} />
+                <ReportOverview
+                  reportFilter={reportFilter}
+                  user={who.code}
+                  handleLogin={handleLogin}
+                />
               )}
               {powerBiReport.includes("compare") && <ReportCompare />}
               {powerBiReport.includes("criteriaSearch") && (

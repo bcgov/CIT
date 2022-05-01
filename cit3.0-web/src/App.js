@@ -254,7 +254,14 @@ function App() {
                   component={citHome}
                 />
                 <AppRoute
+                  exact
                   path="/userstory"
+                  title="Community Information Tool"
+                  component={UserStory}
+                />
+                <AppRoute
+                  exact
+                  path="/userstory/internal"
                   title="Community Information Tool"
                   component={UserStory}
                 />
