@@ -12,14 +12,11 @@ from pipeline.views.options import OptionsView
 from pipeline.views.options import CensusEconomicRegionOptions
 from pipeline.views.options import CensusSubdivisionOptions
 from pipeline.views.options import CommunityOptions
-from pipeline.views.options import HealthAuthorityBoundaryOptions
 from pipeline.views.options import NaturalResourceRegionOptions
 from pipeline.views.options import RegionalDistrictOptions
-from pipeline.views.options import SchoolDistrictOptions
 from pipeline.views.options import TourismRegionOptions
 from pipeline.views.options import TsunamiZoneOptions
 from pipeline.views.options import WildfireZoneOptions
-
 import pipeline.views.proximity
 import pipeline.views.users.user
 import pipeline.views.users.tracking
@@ -37,10 +34,8 @@ urlpatterns = [
     url(r"^options/census-economic-regions/$", CensusEconomicRegionOptions.as_view()),
     url(r"^options/census-subdivisions/$", CensusSubdivisionOptions.as_view()),
     url(r"^options/communities/$", CommunityOptions.as_view()),
-    url(r"^options/health-authority-boundaries/$", HealthAuthorityBoundaryOptions.as_view()),
     url(r"^options/natural-resource-regions/$", NaturalResourceRegionOptions.as_view()),
     url(r"^options/regional-districts/$", RegionalDistrictOptions.as_view()),
-    url(r"^options/school-districts/$", SchoolDistrictOptions.as_view()),
     url(r"^options/tourism-regions/$", TourismRegionOptions.as_view()),
     url(r"^options/tsunami-zones/$", TsunamiZoneOptions.as_view()),
     url(r"^options/wildfire-zones/$", WildfireZoneOptions.as_view()),

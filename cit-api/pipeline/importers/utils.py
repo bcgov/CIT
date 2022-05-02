@@ -3,7 +3,7 @@ from numpy import int64
 import requests
 import copy
 import math
-
+from django.db import connection
 from django.apps import apps
 from django.conf import settings
 from django.contrib.gis.geos import Point
@@ -769,6 +769,74 @@ def import_connectivity_project(url):
         except Exception as e:
             print(e)
 
+def remove_dependencies():
+    with connection.cursor() as cursor:
+        cursor.execute(
+            f"DROP VIEW IF EXISTS public.cit_regions_distribution_vw;")
+
+def add_dependencies():
+    with connection.cursor() as cursor:
+        cursor.execute(
+            f"""CREATE OR REPLACE VIEW public.cit_regions_distribution_vw AS
+         SELECT DISTINCT 'All of British Columbia'::text AS zone_type,
+    'All of British Columbia'::text AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_cen_prof_detailed_csd_attrs_sp csd
+UNION
+ SELECT DISTINCT 'Regional District'::text AS zone_type,
+    rd.name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_regionaldistrict rd ON lk.regional_district_id = cast(rd.area_id as bigint)
+UNION
+ SELECT DISTINCT 'Census Subdivision'::text AS zone_type,
+    csd.census_subdivision_name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_cen_prof_detailed_csd_attrs_sp csd
+UNION
+ SELECT 'Tourism Region'::text AS zone_type,
+    tr.tourism_region_name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_tourismregion tr ON lk.tourism_region_id = tr.tourism_region_id::text
+UNION
+ SELECT 'Economic Region'::text AS zone_type,
+    split_part(er.name::text, '/'::text, 1) AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_censuseconomicregion er ON lk.economic_region_id = er.economic_region_id
+UNION
+ SELECT 'Wildfire Zone'::text AS zone_type,
+    wf.name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_wildfirezone wf ON lk.bc_fire_zone_id = wf.id
+UNION
+ SELECT 'Tsunami Zone'::text AS zone_type,
+    tz.tsunami_zone_name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_tsunamizone tz ON lk.tsunami_notification_zone_id = tz.name::bigint
+UNION
+ SELECT 'Health Authority'::text AS zone_type,
+    ha.name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_healthauthorityboundary ha ON lk.health_authority_id = ha.id
+UNION
+ SELECT 'School District'::text AS zone_type,
+    sd.name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_schooldistrict sd ON lk.school_district_id = sd.area_id;""")
+
 def import_census_subdivision_linkage(linkage_file):
     data = pd.read_csv(linkage_file)
     data.rename(
@@ -779,9 +847,12 @@ def import_census_subdivision_linkage(linkage_file):
              data.columns[4]:"bc_fire_zone_id",
              data.columns[5]:"tsunami_notification_zone_id",
              data.columns[7]:"health_authority_id",
-             data.columns[8]:"school_district_id"},inplace=True)
+             data.columns[8]:"school_district_id",
+             data.columns[9]:"natural_resource_region_id"},inplace=True)
     #data.drop('LOCAL_HLTH_AREA_CODE', axis=1, inplace=True)
+    remove_dependencies()
     write_to_db(LinkageWithCensus, data)
+    add_dependencies()
 
 def _generate_geom(feat, srid=None):
     """
