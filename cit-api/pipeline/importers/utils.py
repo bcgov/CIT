@@ -136,7 +136,6 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
             centre_name = row['MOF_FIRE_CENTRE_NAME'],
             zone_name=row['MOF_FIRE_ZONE_NAME'],
             headquarter_city_name = row['HEADQUARTERS_CITY_NAME'])
-        
     else:
         name_fields = Model.NAME_FIELD.split(",")
         name = ", ".join([str(row[name_field]) for name_field in name_fields])
