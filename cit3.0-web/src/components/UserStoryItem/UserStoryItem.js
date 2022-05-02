@@ -14,6 +14,7 @@ export default function UserStoryItem({
     (x) => x.label === "Yes"
   );
   const userStoryNo = userStory.user_story_paths.find((x) => x.label === "No");
+
   const selectStyle = {
     container: (base) => ({
       ...base,
@@ -116,6 +117,9 @@ export default function UserStoryItem({
           !userStoryYes && (
             <Select
               placeholder=""
+              value={userStory.user_story_paths.find(
+                (x) => x.value === userStory.selectedValue
+              )}
               options={userStory.user_story_paths}
               styles={selectStyle}
               onChange={onUserStoryChange}
