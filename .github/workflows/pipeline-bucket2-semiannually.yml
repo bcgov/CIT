@@ -1,6 +1,6 @@
 # This workflow will build a new container semiannually running the datasets in Bucket 2 semiannually
 # The datasets included in this bucket are, housing, municipalities, NBDPHHSpeeds, 
-# Northern Rockies Census Division, phdemographic, regional districts, tourism region, tsunami zones, wildfire zones
+# Northern Rockies Census Division, phdemographic, regional districts, tourism region, tsunami zones
 
 name: Data Pipeline - Bucket 2 semiannually
 on:
