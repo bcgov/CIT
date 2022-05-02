@@ -42,9 +42,5 @@ class Command(BaseCommand):
         for resource in data_resources:
             print(f'Importing {resource.display_name}...')
             import_wms_resource(resource)
-            
-
-        print("Import process for BC wildfire zones completed!")
-
+        
         print("Import process for BC wildfire zone completed!")
-

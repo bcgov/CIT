@@ -14,22 +14,6 @@ RUN az storage blob download \
 RUN az storage blob download \
              --account-name citpipelinedata \
              --container-name data \
-             --name BC_Roads.zip \
-             --file BC_Roads.zip \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
-
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data \
-             --name hexbc.kml \
-             --file hexbc.kml \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
-
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data \
              --name COMMUNITIES_V6.csv \
              --file COMMUNITIES_V6.csv \
              --account-key $AZURE_STORAGE_ACCOUNT_KEY \
@@ -46,17 +30,11 @@ RUN az storage blob download \
 RUN az storage blob download \
              --account-name citpipelinedata \
              --container-name data \
-             --name FNHA_data.csv \
-             --file FNHA_data.csv \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data \
              --name csd_linkage.csv \
              --file csd_linkage.csv \
              --account-key $AZURE_STORAGE_ACCOUNT_KEY \
              --auth-mode key
+             
 RUN az storage blob download \
              --account-name citpipelinedata \
              --container-name data/bc_assessment \
@@ -94,6 +72,14 @@ RUN az storage blob download \
              --container-name data \
              --name dbuid_csduid.csv \
              --file dbuid_csduid.csv \
+             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
+             --auth-mode key
+
+RUN az storage blob download \
+             --account-name citpipelinedata \
+             --container-name data \
+             --name Tsunami_Zone_Names.csv \
+             --file Tsunami_Zone_Names.csv \
              --account-key $AZURE_STORAGE_ACCOUNT_KEY \
              --auth-mode key
 FROM python:3.6
