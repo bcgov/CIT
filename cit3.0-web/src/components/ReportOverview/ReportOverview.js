@@ -327,8 +327,8 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4>
-              Please note that you must be logged in with an IDIR and have an
+            <h4 className="my-2">
+              Please note that you must be logged in with an IDIR and have
               approved permission to continue with BC Assessment Report.
             </h4>
           </Modal.Body>
