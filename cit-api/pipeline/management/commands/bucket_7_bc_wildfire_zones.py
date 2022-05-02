@@ -43,4 +43,4 @@ class Command(BaseCommand):
             print(f'Importing {resource.display_name}...')
             import_wms_resource(resource)
             
-        print("Import process for connectivity projects completed!")
+        print("Import process for BC wildfire zone completed!")
