@@ -15,6 +15,8 @@ import {
 } from "react-bootstrap-icons";
 import { useHistory } from "react-router-dom";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import useConfiguration from "../../../hooks/useConfiguration";
+
 import UserStoryItem from "../../UserStoryItem/UserStoryItem";
 import ReportOverview from "../../ReportOverview/ReportOverview";
 import ReportCriteriaSearch from "../../ReportCriteriaSearch/ReportCriteriaSearch";
@@ -37,6 +39,8 @@ import "../HomePage/HomePage.scss";
 import "./UserStory.css";
 
 export default function UserStory() {
+  const configuration = useConfiguration();
+  const keycloak = useKeycloakWrapper();
   const [isLoading, setIsLoading] = useState(true);
   const [userOptions, setUserOptions] = useState([]);
   const [isLongVersion, setIsLongVersion] = useState(true);
@@ -46,7 +50,7 @@ export default function UserStory() {
   const [isOkButton, setIsOkButton] = useState(false);
   const [areaType, setAreaType] = useState("");
   const [powerBiReport, setPowerBiReport] = useState("");
-  const [reportFilter, setReportFilter] = useState("");
+  const [reportFilter, setReportFilter] = useState(null);
   const [communities, setCommunities] = useState(null);
   const [censusSubdivisions, setCensusSubdivisions] = useState(null);
   const [economicRegions, setEconomicRegions] = useState(null);
@@ -60,37 +64,48 @@ export default function UserStory() {
     null
   );
 
+  const [isLoginWithIdir] = useState(keycloak.idp === "idir");
+  const [isInternal] = useState(location.pathname.includes("internal"));
+
   const [collapse, setCollapse] = useState(true);
 
+  const zoneFilter = useRef();
   const zoneType = useRef();
   const zoneName = useRef();
   const redirectUrl = useRef();
-
-  const keycloak = useKeycloakWrapper();
 
   const history = useHistory();
 
   const userName = keycloak ? keycloak.firstName : "";
 
+  const userStoryUrl = "/userstory/internal";
+
+  const saveUserStory = () => {
+    const userStoryValues = {
+      userOptions,
+      reportFilter: zoneFilter.current,
+    };
+    localStorage.setItem("userStory", JSON.stringify(userStoryValues));
+  };
+
+  const loadUserStory = () => {
+    const saved = localStorage.getItem("userStory");
+    return JSON.parse(saved);
+  };
+
   const showResult = (urlPath) => {
     if (!urlPath) return;
 
-    if (urlPath && urlPath.includes("powerbi")) {
-      setPowerBiReport(urlPath);
-      setIsLongVersion(false);
-      if (zoneType.current || zoneName.current) {
-        const zoneFilter = {
-          zoneType: zoneType.current,
-          zoneName: zoneName.current,
-        };
-        setReportFilter(zoneFilter);
-      } else {
-        setReportFilter(null);
-      }
-      setShowReport(true);
+    if (urlPath && !urlPath.includes("powerbi")) {
+      history.push(urlPath);
       return;
     }
-    history.push(urlPath);
+
+    setPowerBiReport(urlPath);
+    setIsLongVersion(false);
+
+    setReportFilter(zoneFilter.current);
+    setShowReport(true);
   };
 
   useEffect(() => {
@@ -121,17 +136,25 @@ export default function UserStory() {
   }, []);
 
   useEffect(() => {
+    if (isInternal && isLoginWithIdir) {
+      const options = loadUserStory();
+      if (options && options.userOptions && options.userOptions.length > 0) {
+        const urlPath = options.userOptions[options.userOptions.length - 1].url;
+        const user = options.userOptions.find((x) => x.group === "who");
+        setWho(user);
+        setIsLongVersion(false);
+        zoneFilter.current = options.reportFilter;
+        setUserOptions(options.userOptions);
+
+        showResult(urlPath);
+        return;
+      }
+    }
+
     const option = userStoryPaths.find((x) => x.code === "START");
     option.longTextLabel = option.longText;
     setUserOptions([option]);
   }, []);
-
-  const resetUserStory = () => {
-    const option = userStoryPaths.find((x) => x.code === "START");
-    setUserOptions([option]);
-    setIsOkButton(false);
-    setIsGoButton(false);
-  };
 
   const handleUserStoryChange = (e) => {
     let param;
@@ -162,11 +185,11 @@ export default function UserStory() {
 
     const groupIndex = userOptions.findIndex((x) => x.group === param.group);
 
-    let newUserOptions = [];
+    let currentUserOptions = [];
     if (groupIndex > 0) {
-      newUserOptions = userOptions.filter((x, index) => index < groupIndex);
+      currentUserOptions = userOptions.filter((x, index) => index < groupIndex);
     } else {
-      newUserOptions = userOptions;
+      currentUserOptions = userOptions;
     }
 
     const userOption = userStoryPaths.find((x) => x.code === param.code);
@@ -219,7 +242,6 @@ export default function UserStory() {
           zoneType.current = "Tourism Region";
           break;
         case "TSUNAMIZONES":
-          console.log({ tsunamiZones });
           userOption.user_story_paths = tsunamiZones;
           zoneType.current = "Tsunami Zone";
           break;
@@ -233,6 +255,14 @@ export default function UserStory() {
       }
     }
 
+    zoneFilter.current = null;
+    if (zoneType.current || zoneName.current) {
+      zoneFilter.current = {
+        zoneType: zoneType.current,
+        zoneName: zoneName.current,
+      };
+    }
+
     let replaceText = userOption.longText;
     replaceText = replaceText.replace(
       "{ZONE-TYPE-1}",
@@ -243,7 +273,12 @@ export default function UserStory() {
     replaceText = replaceText.replace("{ZONE-SEARCH-FILTER}", param.label);
     userOption.longTextLabel = replaceText;
 
-    setUserOptions([...newUserOptions, userOption]);
+    if (currentUserOptions.length > 0) {
+      currentUserOptions[currentUserOptions.length - 1].selectedValue =
+        param.value;
+    }
+
+    setUserOptions([...currentUserOptions, userOption]);
 
     if (param.code.includes("-YES") && isLongVersion) {
       setIsOkButton(false);
@@ -273,6 +308,19 @@ export default function UserStory() {
     }
   };
 
+  const handleLogin = () => {
+    saveUserStory();
+    const loginWithIdir = keycloak.obj.createLoginUrl({
+      idpHint: "idir",
+      redirectUri: encodeURI(`${configuration.baseUrl}${userStoryUrl}`),
+    });
+    window.location.href = loginWithIdir;
+  };
+
+  const handleReset = () => {
+    handleUserStoryChange(who);
+  };
+
   const handleIsOk = () => {
     handleUserStoryChange(who);
   };
@@ -297,7 +345,7 @@ export default function UserStory() {
       type="button"
       variant="outline-primary"
       className="user-story-button"
-      onClick={resetUserStory}
+      onClick={handleReset}
     >
       Reset Search Criteria
     </Button>
@@ -412,7 +460,11 @@ export default function UserStory() {
           {showReport && (
             <>
               {powerBiReport.includes("overview") && (
-                <ReportOverview reportFilter={reportFilter} user={who.code} />
+                <ReportOverview
+                  reportFilter={reportFilter}
+                  user={who.code}
+                  handleLogin={handleLogin}
+                />
               )}
               {powerBiReport.includes("compare") && <ReportCompare />}
               {powerBiReport.includes("criteriaSearch") && (

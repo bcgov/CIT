@@ -1,55 +1,57 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useHistory } from "react-router-dom";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Button } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import { Printer, LockFill } from "react-bootstrap-icons";
 import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
-import useConfiguration from "../../hooks/useConfiguration";
+import Roles from "../../constants/roles";
 import Config from "../../Config";
 import "./ReportOverview.css";
 
 let reportId = Config.pbiReportIdPublic;
-export default function ReportOverview({ reportFilter, user }) {
-  const history = useHistory();
-  const keycloak = useKeycloakWrapper();
-  const configuration = useConfiguration();
+export default function ReportOverview({ reportFilter, user, handleLogin }) {
+  const BcGovUser = "BCGOV";
 
-  const [loggedInWithIdir] = useState(keycloak.idp === "idir");
+  const keycloak = useKeycloakWrapper();
 
   const [report, setReport] = useState();
   const [token, setToken] = useState("");
   const [showReport, setShowReport] = useState(false);
 
+  const [show, setShow] = useState(false);
+  const handleShow = () => setShow(true);
+  const handleClose = () => setShow(false);
+
   const groupId = Config.pbiGroupId;
 
   const [activePage, setActivePage] = useState("Connectivity");
 
-  const publicUrl = "/cit-dashboard/public";
-  const privateUrl = "/cit-dashboard/internal";
-  const searchRoute = "/search-communities";
+  const [isLoginWithIdir] = useState(keycloak.idp === "idir");
 
-  const handleLogin = () => {
-    // login with IDIR only and redirect to private report
-    let loginWithIdir;
-    if (loggedInWithIdir) {
-      loginWithIdir = keycloak.obj.createLoginUrl({
-        idpHint: "idir",
-        redirectUri: encodeURI(
-          `${configuration.baseUrl}${privateUrl}${searchRoute}`
-        ),
-      });
-    } else {
-      loginWithIdir = keycloak.obj.createLoginUrl({
-        idpHint: "idir",
-        redirectUri: encodeURI(`${configuration.baseUrl}${privateUrl}`),
-      });
-    }
+  const [hasBcAssessmentRole] = useState(
+    keycloak.hasRole([
+      Roles.SUPER_ADMINISTRATOR,
+      Roles.SYSTEM_ADMINISTRATOR,
+      Roles.POWER_BI_VIEWER,
+    ])
+  );
 
-    window.location.href = loginWithIdir;
-  };
+  const [isInternalAuthorized] = useState(
+    isLoginWithIdir && hasBcAssessmentRole
+  );
+
+  let BcAssessmentText = "BC Assesssment";
+
+  if (isLoginWithIdir && !hasBcAssessmentRole) {
+    BcAssessmentText =
+      "You are not authorized to view this report.\nPlease email citinfo@gov.bc.ca to request access.";
+  }
+
+  if (!isLoginWithIdir) {
+    BcAssessmentText = "Please login with IDIR to view report";
+  }
 
   const reportTabs = [
     {
@@ -83,18 +85,6 @@ export default function ReportOverview({ reportFilter, user }) {
       isDefault: null,
     },
   ];
-
-  const printSettings = {
-    layoutType: models.LayoutType.Printer,
-    panes: {
-      filters: {
-        visible: false,
-      },
-      pageNavigation: {
-        visible: false,
-      },
-    },
-  };
 
   const layoutSettings = {
     panes: {
@@ -206,7 +196,6 @@ export default function ReportOverview({ reportFilter, user }) {
     if (reportId !== Config.pbiReportIdPublic) {
       reportId = Config.pbiReportIdPublic;
       await loadReport();
-      console.log({ report });
     }
 
     if (!report) return;
@@ -219,17 +208,9 @@ export default function ReportOverview({ reportFilter, user }) {
     }
   };
 
-  const setReportFilter = async () => {
-    if (!report) return;
-    const filter = getReportFilter(reportFilter);
-
-    await report.setFilters(filter);
-  };
-
   const handlePrint = async () => {
     if (!report) return;
     const pages = await report.getPages();
-    console.log(pages);
     const reportPage = pages.find((page) => page.displayName === "Print");
 
     if (reportPage) {
@@ -241,13 +222,15 @@ export default function ReportOverview({ reportFilter, user }) {
   };
 
   const handleBcaReport = async (displayName) => {
+    if (!isLoginWithIdir) {
+      handleShow();
+      return;
+    }
+    if (!hasBcAssessmentRole) return;
+
     reportId = Config.pbiReportIdInternal;
     await loadReport();
     setActivePage(displayName);
-  };
-
-  const handleSelect = async (displayName) => {
-    setPage(displayName);
   };
 
   const reportButtons = (
@@ -264,21 +247,19 @@ export default function ReportOverview({ reportFilter, user }) {
             {tab.label}
           </Button>
         ))}
-      {user === "BCGOV" &&
+      {user === BcGovUser &&
         reportTabs
           .filter((t) => t.isLoginRequired)
           .map((tab) => (
             <Button
               key={tab.pageName}
-              disabled={!loggedInWithIdir}
               type="Button"
+              disabled={isLoginWithIdir && !hasBcAssessmentRole}
               variant={tab.pageName === activePage ? "primary" : "warning"}
               onClick={() => handleBcaReport(tab.pageName)}
-              title={
-                !loggedInWithIdir && "Please login with IDIR to view report."
-              }
+              title={BcAssessmentText}
             >
-              {tab.label} {!loggedInWithIdir && <LockFill />}
+              {tab.label} {!isInternalAuthorized && <LockFill />}
             </Button>
           ))}
     </div>
@@ -332,6 +313,45 @@ export default function ReportOverview({ reportFilter, user }) {
           />
         </div>
       </div>
+      <div>
+        <Modal
+          show={show}
+          centered
+          onHide={handleClose}
+          keyboard={false}
+          size="lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>
+              <h2>Login with IDIR Required</h2>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h4 className="my-2">
+              Please note that you must be logged in with an IDIR and have
+              approved permission to continue with BC Assessment Report.
+            </h4>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              type="button"
+              variant="outline-primary"
+              className="user-story-button mr-auto"
+              onClick={handleClose}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="primary"
+              className="user-story-button ml-auto"
+              onClick={handleLogin}
+            >
+              Login with IDIR
+            </Button>
+          </Modal.Footer>
+        </Modal>
+      </div>
     </>
   );
 }
@@ -339,9 +359,11 @@ export default function ReportOverview({ reportFilter, user }) {
 ReportOverview.propTypes = {
   reportFilter: PropTypes.objectOf(PropTypes.any),
   user: PropTypes.string,
+  handleLogin: PropTypes.func,
 };
 
 ReportOverview.defaultProps = {
   reportFilter: null,
   user: null,
+  handleLogin: null,
 };
