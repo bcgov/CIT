@@ -24,6 +24,8 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
 
+  const [modalInfo, setModalInfo] = useState("");
+
   const groupId = Config.pbiGroupId;
 
   const [activePage, setActivePage] = useState("Connectivity");
@@ -41,17 +43,6 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
   const [isInternalAuthorized] = useState(
     isLoginWithIdir && hasBcAssessmentRole
   );
-
-  let BcAssessmentText = "BC Assesssment";
-
-  if (isLoginWithIdir && !hasBcAssessmentRole) {
-    BcAssessmentText =
-      "You are not authorized to view this report.\nPlease email citinfo@gov.bc.ca to request access.";
-  }
-
-  if (!isLoginWithIdir) {
-    BcAssessmentText = "Please login with IDIR to view report";
-  }
 
   const reportTabs = [
     {
@@ -223,14 +214,37 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
 
   const handleBcaReport = async (displayName) => {
     if (!isLoginWithIdir) {
+      setModalInfo({
+        title: "Login Required",
+        body:
+          "Please note that you must be logged in with an IDIR and have approved permission to continue with BC Assessment Report",
+      });
       handleShow();
       return;
     }
-    if (!hasBcAssessmentRole) return;
 
-    reportId = Config.pbiReportIdInternal;
-    await loadReport();
-    setActivePage(displayName);
+    if (hasBcAssessmentRole) {
+      reportId = Config.pbiReportIdInternal;
+      await loadReport();
+      setActivePage(displayName);
+      return;
+    }
+
+    setModalInfo({
+      title: "Not Authorized",
+      body: (
+        <>
+          <p>
+            You are not authorized to view this report.
+            <br />
+            <br />
+            Please contact citinfo@gov.bc.ca to request access.
+          </p>
+        </>
+      ),
+    });
+
+    handleShow();
   };
 
   const reportButtons = (
@@ -254,10 +268,8 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
             <Button
               key={tab.pageName}
               type="Button"
-              disabled={isLoginWithIdir && !hasBcAssessmentRole}
               variant={tab.pageName === activePage ? "primary" : "warning"}
               onClick={() => handleBcaReport(tab.pageName)}
-              title={BcAssessmentText}
             >
               {tab.label} {!isInternalAuthorized && <LockFill />}
             </Button>
@@ -323,15 +335,13 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
         >
           <Modal.Header closeButton>
             <Modal.Title>
-              <h2>Login with IDIR Required</h2>
+              <h2>{modalInfo.title}</h2>
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <h4 className="my-2">
-              Please note that you must be logged in with an IDIR and have
-              approved permission to continue with BC Assessment Report.
-            </h4>
+            <h4 className="my-2">{modalInfo.body}</h4>
           </Modal.Body>
+
           <Modal.Footer>
             <Button
               type="button"
@@ -341,14 +351,16 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
             >
               Cancel
             </Button>
-            <Button
-              type="button"
-              variant="primary"
-              className="user-story-button ml-auto"
-              onClick={handleLogin}
-            >
-              Login with IDIR
-            </Button>
+            {!isLoginWithIdir && (
+              <Button
+                type="button"
+                variant="primary"
+                className="user-story-button ml-auto"
+                onClick={handleLogin}
+              >
+                Login with IDIR
+              </Button>
+            )}
           </Modal.Footer>
         </Modal>
       </div>
