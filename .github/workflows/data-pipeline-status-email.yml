@@ -3,7 +3,7 @@
 name: Data Pipeline Status Emails
 on:
   workflow_run:
-    workflows: [Manual pipeline run, Data Pipeline Bucket 1 - Census, Data Pipeline - Bucket 2 semiannually, Data Pipeline - Bucket 2 Weekly, Data Pipeline Bucket 3 - Communities, Data Pipeline - Bucket 4 monthly, Data Pipeline - Bucket 4 semiannually, Data Pipeline - Bucket 5 monthly, Data Pipeline - Bucket 5 semiannually Test, Data Pipeline - Bucket 5 semiannually Prod, Data Pipeline Bucket 6 - BC Assessment, Data Pipeline Bucket 7]
+    workflows: [Manual pipeline run, Data Pipeline Bucket 1 - Census, Data Pipeline - Bucket 2 semiannually, Data Pipeline - Bucket 2 Weekly, Data Pipeline Bucket 3 - Communities, Data Pipeline - Bucket 4 monthly, Data Pipeline - Bucket 4 semiannually, Data Pipeline - Bucket 5 monthly, Data Pipeline - Bucket 5 semiannually Test, Data Pipeline - Bucket 5 semiannually Prod, Data Pipeline Bucket 6 - BC Assessment, Data Pipeline Bucket 7, Data Pipeline - Bucket 7 semiannually Prod, Data Pipeline - Bucket 7 semiannually Test, User Tracking Email]
     types: [completed]
 env: 
   WORKFLOW_NAME: ${{ github.event.workflow_run.name }}

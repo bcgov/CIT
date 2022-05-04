@@ -5,6 +5,7 @@ on:
   schedule: 
   # Every Month on the 1st 1am PST
     - cron: "0 8 1 * *"
+  workflow_dispatch:
 jobs:
   run-prod-user-tracking:
     runs-on: ubuntu-latest
@@ -34,4 +35,4 @@ jobs:
             
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-user-tracking
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-email
