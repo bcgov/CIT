@@ -31,7 +31,7 @@ export default function HomePage() {
           <Col sm={12} className="svg-box">
             We are continuing to evolve the tool and would appreciate{" "}
             <a href="mailto:citinfo@gov.bc.ca">your feedback</a>. Please check
-            back in April 2022 for new updates.
+            back in May 2022 for new updates.
           </Col>
         </Row>
         <Row className="mb-5 mt-3 w-100 box">
