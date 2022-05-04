@@ -46,15 +46,7 @@ const LocationsPanel = ({
             <Row key={v4()} className="d-flex justify-content-between">
               <Col className="pl-0">
                 <span className="ml-2 link">
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href={`/cit-dashboard/public/${encodeURIComponent(
-                      muni.name.toLowerCase()
-                    )}`}
-                  >
-                    {muni.name} - {muni.distance.toFixed(2)}km
-                  </a>
+                  {muni.name} - {muni.distance.toFixed(2)}km
                 </span>
               </Col>
               <Col className="d-flex justify-content-end pr-0" md="auto">
@@ -80,22 +72,14 @@ const LocationsPanel = ({
         <h3 className="mb-3">Nearest First Nation Communities</h3>
         <Container className="pb-2">
           {firstNationCommunities.map((firstNationCommunity) => (
-            <Row key={v4()} className="d-flex justify-content-between mb-2">
+            <Row key={v4()} className="d-flex justify-content-between">
               <Col className="pl-0">
                 <span className="ml-2 link">
-                  <a
-                    target="_blank"
-                    rel="noreferrer"
-                    href={`/cit-dashboard/public/${encodeURIComponent(
-                      firstNationCommunity.link.toLowerCase()
-                    )}`}
-                  >
-                    {firstNationCommunity.name
-                      .toLowerCase()
-                      .replace(/(^|\s)\S/g, (t) => t.toUpperCase())}{" "}
-                    - {firstNationCommunity.distance.toFixed(2)}
-                    km
-                  </a>
+                  {firstNationCommunity.name
+                    .toLowerCase()
+                    .replace(/(^|\s)\S/g, (t) => t.toUpperCase())}{" "}
+                  - {firstNationCommunity.distance.toFixed(2)}
+                  km
                 </span>
               </Col>
               <Col className="d-flex justify-content-end pr-0" md="auto">
