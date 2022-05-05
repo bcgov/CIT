@@ -80,6 +80,11 @@ export default function UserStory() {
 
   const userStoryUrl = "/userstory/internal";
 
+  const singularize = (text) => {
+    if (text.endsWith("ies")) return `${text.slice(0, -3)}y`;
+    return text.slice(0, -1);
+  };
+
   const saveUserStory = () => {
     const userStoryValues = {
       userOptions,
@@ -264,10 +269,12 @@ export default function UserStory() {
     }
 
     let replaceText = userOption.longText;
-    replaceText = replaceText.replace(
-      "{ZONE-TYPE-1}",
-      userOption.label.slice(0, -1)
-    );
+    if (replaceText.includes("{ZONE-TYPE-1}")) {
+      replaceText = replaceText.replace(
+        "{ZONE-TYPE-1}",
+        singularize(userOption.label)
+      );
+    }
 
     replaceText = replaceText.replace("{ZONE-TYPE-2}", areaType);
     replaceText = replaceText.replace("{ZONE-SEARCH-FILTER}", param.label);
@@ -318,7 +325,10 @@ export default function UserStory() {
   };
 
   const handleReset = () => {
-    handleUserStoryChange(who);
+    const option = userStoryPaths.find((x) => x.code === "START");
+    setUserOptions([option]);
+    setIsOkButton(false);
+    setIsGoButton(false);
   };
 
   const handleIsOk = () => {
