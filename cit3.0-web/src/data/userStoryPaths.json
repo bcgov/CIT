@@ -67,7 +67,7 @@
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
-            "label": "learning more about the province or a specific area of B.C.",
+            "label": "learning more about the province or a specific area",
             "url": ""
           },
           {
@@ -75,7 +75,7 @@
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
-            "label": "discovering insights and patterns among BC communities",
+            "label": "discovering areas with particular characteristics",
             "url": "powerbi-criteriaSearch"
           },
           {
@@ -103,7 +103,7 @@
             "code": "VIEWING",
             "group": "what",
             "value": "1-VIEWING",
-            "label": "viewing Investment Opportunity matching my criteria",
+            "label": "viewing investment opportunity matching my criteria",
             "url": "investmentopportunities/home"
           },
           {
@@ -111,7 +111,7 @@
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
-            "label": "learning more about the province or a specific area of B.C.",
+            "label": "learning more about the province or a specific area",
             "url": ""
           },
           {
@@ -119,7 +119,7 @@
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
-            "label": "discovering insights and patterns among BC communities",
+            "label": "discovering areas with particular characteristics",
             "url": "powerbi-criteriaSearch"
           },
           {
@@ -155,7 +155,7 @@
             "code": "VIEWING",
             "group": "what",
             "value": "1-VIEWING",
-            "label": "viewing Investment Opportunity matching my criteria",
+            "label": "viewing investment opportunity matching my criteria",
             "url": "investmentopportunities/home"
           },
           {
@@ -163,7 +163,7 @@
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
-            "label": "learning more about the province or a specific area of B.C.",
+            "label": "learning more about the province or a specific area",
             "url": ""
           },
           {
@@ -171,7 +171,7 @@
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
-            "label": "discovering insights and patterns among BC communities",
+            "label": "discovering areas with particular characteristics",
             "url": "powerbi-criteriaSearch"
           },
           {
@@ -207,7 +207,7 @@
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
-            "label": "learning more about the province or a specific area of B.C.",
+            "label": "learning more about the province or a specific area",
             "url": ""
           },
           {
@@ -215,7 +215,7 @@
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
-            "label": "discovering insights and patterns among BC communities",
+            "label": "discovering areas with particular characteristics",
             "url": "powerbi-criteriaSearch"
           },
           {
@@ -243,7 +243,7 @@
             "code": "LEARNING",
             "group": "what",
             "value": "2-LEARNING",
-            "label": "learning more about the province or a specific area of B.C.",
+            "label": "learning more about the province or a specific area",
             "url": ""
           },
           {
@@ -251,7 +251,7 @@
             "code": "DISCOVERING",
             "group": "what",
             "value": "2-DISCOVERING",
-            "label": "discovering insights and patterns among BC communities",
+            "label": "discovering areas with particular characteristics",
             "url": "powerbi-criteriaSearch"
           },
           {
@@ -269,7 +269,7 @@
         "code": "VIEWING",
         "group": "what",
         "value": "1-VIEWING",
-        "label": "viewing Investment Opportunity matching my criteria",
+        "label": "viewing investment opportunity matching my criteria",
         "longText": "<div class='select-break'></div><p><b>We have a tool you might like to check out: our Community Investment Opportunity Tool. Our tool helps you find properties that meet your site selection criteria for your next investment into B.C. You can search for industrial, commercial, and agricultural properties by size, site servicing, labour force, and more.</b></p><class='line-break'><b>Would you like to go to the Community Investment Opportunity Tool?</b></p><div class='section-break'></div>",
         "text": "",
         "url": "investmentopportunities/home",
@@ -297,7 +297,7 @@
         "code": "LEARNING",
         "group": "what",
         "value": "2-LEARNING",
-        "label": "learning more about the province or a specific area of B.C.",
+        "label": "learning more about the province or a specific area",
         "longText": "<div class='select-break'></div><p><b>Great! You can choose between different types of areas from Census Subdivisions (Municipalities, Electoral Areas, First Nations Reserves) and Regional Districts to larger Economic Regions or Health Authorities.</b></p><div class='section-break'></div><p><b>What kind of area would you like to look at?</b></p><div class='section-break'></div>",
         "text": "<p>I would like to look at</p>",
         "url": "",
@@ -381,7 +381,7 @@
         "code": "DISCOVERING",
         "group": "what",
         "value": "2-DISCOVERING",
-        "label": "discovering insights and patterns among BC communities",
+        "label": "discovering areas with particular characteristics",
         "longText": "<div class='select-break'></div><p><b>We have a criteria search that has many types of filters to help you narrow down specific areas of BC that matches your criteria.   </b></p><p class='line-break'><b>Would you like to try it?</b></p><div class='section-break'></div>",
         "text": "",
         "url": "powerbi-criteriaSearch",
