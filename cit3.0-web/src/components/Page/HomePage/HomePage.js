@@ -30,8 +30,7 @@ export default function HomePage() {
         <Row className="mb-3 mt-3 w-100">
           <Col sm={12} className="svg-box">
             We are continuing to evolve the tool and would appreciate{" "}
-            <a href="mailto:citinfo@gov.bc.ca">your feedback</a>. Please check
-            back in May 2022 for new updates.
+            <a href="mailto:citinfo@gov.bc.ca">your feedback</a>.
           </Col>
         </Row>
         <Row className="mb-5 mt-3 w-100 box">
