@@ -27,11 +27,7 @@ export default function UserStoryItem({
       ...base,
       border: "solid white 1px",
       color: "#ffffff",
-      backgroundColor: isFocused
-        ? "#003366"
-        : isSelected
-        ? "#003366"
-        : "#3288D9",
+      backgroundColor: isFocused || isSelected ? "#003366" : "#3288D9",
     }),
     menu: (base) => ({
       ...base,

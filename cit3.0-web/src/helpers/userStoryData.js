@@ -102,7 +102,7 @@ export async function getWildfireZones() {
   const response = await axios.get(url);
   const result = response.data.data.map((x) => ({
     value: x.id,
-    label: x.name,
+    label: x.zone_name,
   }));
 
   return result;

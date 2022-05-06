@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Button } from "react-bootstrap";
+import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Printer } from "react-bootstrap-icons";
 import Config from "../../Config";
 import "./ReportCriteriaSearch.css";
@@ -11,6 +11,7 @@ export default function ReportCriteriaSearch() {
   const [report, setReport] = useState(null);
   const [token, setToken] = useState(null);
   const [showReport, setShowReport] = useState(false);
+  const [activePage, setActivePage] = useState("Criteria Search");
 
   const groupId = Config.pbiGroupId;
   const reportId = Config.pbiReportIdSearch;
@@ -89,9 +90,28 @@ export default function ReportCriteriaSearch() {
     });
   };
 
+  const setPage = async (displayName) => {
+    if (!report) return;
+    setActivePage(displayName);
+    const pages = await report.getPages();
+    const newPage = pages.find((page) => page.displayName === displayName);
+
+    if (newPage) {
+      report.setPage(newPage.name);
+    }
+  };
+
   const handlePrint = async () => {
     if (!report) return;
-    await report.print();
+    const pages = await report.getPages();
+    const reportPage = pages.find((page) => page.displayName === "Print");
+
+    if (reportPage) {
+      await report.setPage(reportPage.name);
+      await report.print();
+    }
+
+    await setPage(activePage);
   };
 
   useEffect(() => {
@@ -109,9 +129,11 @@ export default function ReportCriteriaSearch() {
 
   const printButton = (
     <div className="d-flex flex-row-reverse my-2 print-container">
-      <Button type="button" variant="light" onClick={handlePrint}>
-        <Printer /> Print
-      </Button>
+      <OverlayTrigger placement="top" overlay={<Tooltip>Print</Tooltip>}>
+        <Button type="button" variant="light" onClick={handlePrint}>
+          <Printer />
+        </Button>
+      </OverlayTrigger>
     </div>
   );
 

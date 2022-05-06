@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, OverlayTrigger, Tooltip } from "react-bootstrap";
 import { Printer, LockFill } from "react-bootstrap-icons";
 import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
 import Roles from "../../constants/roles";
@@ -297,9 +297,11 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
 
   const printButton = (
     <div className="d-flex flex-row-reverse my-2 print-container">
-      <Button type="button" variant="light" onClick={handlePrint}>
-        <Printer />
-      </Button>
+      <OverlayTrigger placement="top" overlay={<Tooltip>Print</Tooltip>}>
+        <Button type="button" variant="light" onClick={handlePrint}>
+          <Printer />
+        </Button>
+      </OverlayTrigger>
     </div>
   );
 
