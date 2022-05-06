@@ -14,7 +14,7 @@ from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.community import Community
 from pipeline.models.natural_resource_region import NaturalResourceRegion
 from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
-from pipeline.models.general import WildfireZone
+from pipeline.models.general import BCWildfireZone
 from pipeline.models.general import TsunamiZone
 from pipeline.models.general import SchoolDistrict
 from pipeline.models.health_authority_boundary import  HealthAuthorityBoundary
@@ -69,7 +69,7 @@ class CensusSubdivisionOptions(APIView):
 
 class WildfireZoneOptions(APIView):
     def get(self, request, format=None):
-        options =  WildfireZone.objects.all().values('id', 'name').distinct().order_by('name')
+        options =  BCWildfireZone.objects.all().values('id', 'zone_name').distinct().order_by('zone_name')
         return Response(dict(data=options)) 
 
 class TsunamiZoneOptions(APIView):

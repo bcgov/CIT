@@ -81,8 +81,7 @@ export default function citHome() {
               <br />
               <br />
               We are continuing to evolve the tool and would appreciate{" "}
-              <a href="mailto:citinfo@gov.bc.ca">your feedback</a>. Please check
-              back in April 2022 for new updates.
+              <a href="mailto:citinfo@gov.bc.ca">your feedback</a>.
             </p>
           </Col>
           <Col sm={3} className="svg-box pt-3">

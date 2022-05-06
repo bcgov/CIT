@@ -11,6 +11,7 @@ export default function ReportCriteriaSearch() {
   const [report, setReport] = useState(null);
   const [token, setToken] = useState(null);
   const [showReport, setShowReport] = useState(false);
+  const [activePage, setActivePage] = useState("Criteria Search");
 
   const groupId = Config.pbiGroupId;
   const reportId = Config.pbiReportIdSearch;
@@ -89,9 +90,28 @@ export default function ReportCriteriaSearch() {
     });
   };
 
+  const setPage = async (displayName) => {
+    if (!report) return;
+    setActivePage(displayName);
+    const pages = await report.getPages();
+    const newPage = pages.find((page) => page.displayName === displayName);
+
+    if (newPage) {
+      report.setPage(newPage.name);
+    }
+  };
+
   const handlePrint = async () => {
     if (!report) return;
-    await report.print();
+    const pages = await report.getPages();
+    const reportPage = pages.find((page) => page.displayName === "Print");
+
+    if (reportPage) {
+      await report.setPage(reportPage.name);
+      await report.print();
+    }
+
+    await setPage(activePage);
   };
 
   useEffect(() => {
@@ -109,7 +129,7 @@ export default function ReportCriteriaSearch() {
 
   const printButton = (
     <div className="d-flex flex-row-reverse my-2 print-container">
-      <Button type="button" variant="light" onClick={handlePrint}>
+      <Button type="button" variant="light px-2 rounded" onClick={handlePrint}>
         <Printer /> Print
       </Button>
     </div>

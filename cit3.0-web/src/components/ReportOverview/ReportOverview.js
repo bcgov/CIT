@@ -297,8 +297,8 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
 
   const printButton = (
     <div className="d-flex flex-row-reverse my-2 print-container">
-      <Button type="button" variant="light" onClick={handlePrint}>
-        <Printer />
+      <Button type="button" variant="light px-2 rounded" onClick={handlePrint}>
+        <Printer /> Print
       </Button>
     </div>
   );
