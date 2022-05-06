@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Button, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { Printer } from "react-bootstrap-icons";
 import Config from "../../Config";
 import "./ReportCriteriaSearch.css";
@@ -129,11 +129,9 @@ export default function ReportCriteriaSearch() {
 
   const printButton = (
     <div className="d-flex flex-row-reverse my-2 print-container">
-      <OverlayTrigger placement="top" overlay={<Tooltip>Print</Tooltip>}>
-        <Button type="button" variant="light" onClick={handlePrint}>
-          <Printer />
-        </Button>
-      </OverlayTrigger>
+      <Button type="button" variant="light px-2 rounded" onClick={handlePrint}>
+        <Printer /> Print
+      </Button>
     </div>
   );
 
