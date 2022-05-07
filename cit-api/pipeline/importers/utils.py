@@ -136,6 +136,27 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
             centre_name = row['MOF_FIRE_CENTRE_NAME'],
             zone_name=row['MOF_FIRE_ZONE_NAME'],
             headquarter_city_name = row['HEADQUARTERS_CITY_NAME'])
+    
+    elif resource_type == 'BC Network Connectivity':
+        instance, created = Model.objects.get_or_create(
+            bcnc_ncs_sysid = row['BCNC_NCS_SYSID'],
+            hex_code_id = row['HEX_CODE_ID'],
+            population = row['POPULATION'],
+            total_dwellings = row['TOTAL_DWELLINGS'],
+            usual_residences = row['USUAL_RESIDENCES'],
+            td_underserved_50mpbs = row['TD_UNDERSERVED_50MBPS'],
+            internet_zone = row['INTERNET_ZONE'],
+            mobile_wireless_coverage = row['MOBILE_WIRELESS_COVERAGE'],
+            percent_served_5_mbps = row['PERCENT_SERVED_5_MBPS'],
+            percent_served_50_mbps = row['PERCENT_SERVED_50_MBPS'],
+            cable_providers = row['CABLE_PROVIDERS'],
+            fibre_providers = row['FIBRE_PROVIDERS'],
+            dsl_providers = row['DSL_PROVIDERS'],
+            fixed_wireless_providers = row['FIXED_WIRELESS_PROVIDERS'],
+            satellite_providers = row['SATELLITE_PROVIDERS'],
+            mobile_wireless_providers = row['MOBILE_WIRELESS_PROVIDERS'],
+            transport_fibre_providers = row['TRANSPORT_FIBRE_PROVIDERS'])
+        
     else:
         name_fields = Model.NAME_FIELD.split(",")
         name = ", ".join([str(row[name_field]) for name_field in name_fields])
