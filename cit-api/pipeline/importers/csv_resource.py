@@ -54,7 +54,7 @@ def import_resource(resource_type):
     elif resource_type == "civic_leaders":
         import_civic_leaders_from_csv(file_path)
     elif resource_type == "services":
-        import_services(file_path)
+        import_services(URL)
     elif resource_type == "projects":
         import_projects(file_path)
     elif resource_type == "LinkageWithCensus":

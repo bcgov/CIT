@@ -547,31 +547,19 @@ def import_civic_leaders_from_csv(file_path):
             civic_leader.save()
 
 
-def import_services(file_path):
-    isps = read_csv(file_path)
-
-    # avoid re-querying for each row with ISP reference.
-    isp_cache = {}
-    services = []
-    print(len(isps))
-    for i, isp in enumerate(isps):
-        if not i % 1000:
-            print(i)
+def import_services(url):
+    s = requests.get(url)
+    if s.ok:
         try:
-            hex = Hex.objects.get(pk=isp['HEXuid_HEXidu'])
-        except Hex.DoesNotExist:
-            continue
-        if isp["ISPname_NomFSI"] in isp_cache:
-            isp_obj = isp_cache[isp["ISPname_NomFSI"]]
-        else:
-            isp_obj = ISP(name=isp["ISPname_NomFSI"])
-            print(isp_obj)
-            isp_cache[isp["ISPname_NomFSI"]] = isp_obj
-            isp_obj.save()
-        service = Service(isp=isp_obj, hex=hex, technology=isp['Technology'])
-        services.append(service)
-
-    Service.objects.bulk_create(services)
+            resp = urlopen(url)
+            zipfile = ZipFile(BytesIO(resp.read()))
+            with zipfile.open("ISP_Hex_FSI.csv") as f:
+                fields = ['HEXuid_HEXidu','ISPname_NomFSI','Technology']
+                services = pd.read_csv(f, header=0, delimiter=",",usecols=fields)
+                services.rename(columns={services.columns[0]:"hex_id",services.columns[1]:"isp_id",services.columns[2]:"technology",},inplace=True)
+                write_to_db(Service, services)
+        except Exception as e:
+            print(e)
 
 
 def get_databc_last_modified_date(data_source):
