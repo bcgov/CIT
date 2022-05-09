@@ -8,7 +8,7 @@
     "source_file_path": "data/ISP_Hex_FSI.csv",
     "resource_id": "00a331db-121b-445d-b119-35dbbe3eedd9",
     "sub_resource_id": "ec679621-d333-40c7-a7ea-66e17d007010",
-    "external_url": "https://open.canada.ca/data/en/dataset/00a331db-121b-445d-b119-35dbbe3eedd9",
-    "import_order": 103
+    "external_url": "https://www.ic.gc.ca/eic/site/720.nsf/vwapj/Map_Data_CSV.zip/$file/Map_Data_CSV.zip",
+    "import_order": 1
   }
 ]
