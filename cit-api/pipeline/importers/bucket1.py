@@ -1,7 +1,6 @@
 import json
 from pipeline.models.general import DataSource
 
-# need 5 pipelines with each own command for DevOps to build script batch. Regroup the json files to consider the schedule as well.
 def import_data_sources():
     DATA_SOURCES_FILENAME = "data/import/bucket1/1census.json"
 
