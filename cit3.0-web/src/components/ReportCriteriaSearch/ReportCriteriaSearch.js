@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { Printer } from "react-bootstrap-icons";
 import Config from "../../Config";
 import "./ReportCriteriaSearch.css";
@@ -11,10 +11,14 @@ export default function ReportCriteriaSearch() {
   const [report, setReport] = useState(null);
   const [token, setToken] = useState(null);
   const [showReport, setShowReport] = useState(false);
+  const [isPrintLoading, setIsPrintLoading] = useState(false);
   const [activePage, setActivePage] = useState("Criteria Search");
 
   const groupId = Config.pbiGroupId;
   const reportId = Config.pbiReportIdSearch;
+
+  const delay = (milliseconds) =>
+    new Promise((resolve) => setTimeout(resolve, milliseconds));
 
   const layoutSettings = {
     panes: {
@@ -67,7 +71,12 @@ export default function ReportCriteriaSearch() {
         setShowReport(true);
       },
     ],
-    ["rendered", function reportRendered() {}],
+    [
+      "rendered",
+      function reportRendered(e) {
+        console.log(e);
+      },
+    ],
     [
       "error",
       function reportErrored(event) {
@@ -107,7 +116,10 @@ export default function ReportCriteriaSearch() {
     const reportPage = pages.find((page) => page.displayName === "Print");
 
     if (reportPage) {
+      setIsPrintLoading(true);
       await report.setPage(reportPage.name);
+      await delay(9000);
+      setIsPrintLoading(false);
       await report.print();
     }
 
@@ -138,6 +150,13 @@ export default function ReportCriteriaSearch() {
   return (
     <>
       <div>
+        {isPrintLoading && (
+          <>
+            <div className="center-spinner">
+              <Spinner animation="border" />
+            </div>
+          </>
+        )}
         {showReport && (
           <>
             <div>{printButton}</div>

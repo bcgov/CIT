@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Select from "react-select";
+import Select, { createFilter } from "react-select";
 import { Button } from "react-bootstrap";
 import ReactHtmlParser from "react-html-parser";
 import "./UserStoryItem.css";
@@ -14,6 +14,13 @@ export default function UserStoryItem({
     (x) => x.label === "Yes"
   );
   const userStoryNo = userStory.user_story_paths.find((x) => x.label === "No");
+
+  const filterConfig = {
+    ignoreCase: true,
+    ignoreAccents: true,
+    trim: true,
+    matchFrom: "start",
+  };
 
   const selectStyle = {
     container: (base) => ({
@@ -121,6 +128,7 @@ export default function UserStoryItem({
               onChange={onUserStoryChange}
               aria-sort="ascending"
               isMulti={userStory.isMultiple}
+              filterOption={createFilter(filterConfig)}
             />
           )}
       </div>
