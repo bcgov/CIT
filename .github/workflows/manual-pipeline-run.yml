@@ -42,6 +42,7 @@ on:
         - bucket_6
         - bucket_7
         - bucket_7_bc_wildfire_zones
+        - bucket_7_bc_network_connectivity
 env: 
   BUCKET_COMMAND: ${{ github.event.inputs.buckets }}
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
