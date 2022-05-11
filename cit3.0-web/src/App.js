@@ -251,7 +251,7 @@ function App() {
                 <AppRoute
                   path="/cit-dashboard/home"
                   title="Community Information Tool"
-                  component={citHome}
+                  component={UserStory}
                 />
                 <AppRoute
                   exact
