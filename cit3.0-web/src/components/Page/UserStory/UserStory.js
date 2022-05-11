@@ -343,9 +343,9 @@ export default function UserStory() {
       </h3>
       <p>
         The Community Information Tool offers insight into communities across
-        B.C. with integrated socio-economic, infrastructure, and community
-        assets data. The Tool supports community, regional, and province-wide
-        planning, which is essential to building thriving, healthy communities.
+        B.C. with integrated socio-economic, connectivity, and community assets
+        data. The Tool supports community, regional, and province-wide planning,
+        which is essential to building thriving, healthy communities.
       </p>
     </>
   );
