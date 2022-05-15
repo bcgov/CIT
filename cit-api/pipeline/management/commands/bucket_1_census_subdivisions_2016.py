@@ -6,7 +6,7 @@ from azure.storage.blob import BlobServiceClient
 
 
 from pipeline.importers.databc_resource import import_wms_resource
-from pipeline.importers.bucket1 import import_data_sources
+from pipeline.importers.bucket1_census_subdivisions_2016 import import_data_sources
 from pipeline.models.general import DataSource
 from admin import settings
 
@@ -39,7 +39,7 @@ class Command(BaseCommand):
         import_data_sources()
         #Ensure that the data sources are updated
         data_resources = DataSource.objects.filter(name__in=[
-            'census_subdivisions', 'census_divisions', 'census_subdivisions_2016', 'census_divisions_2016'
+            'census_subdivisions_2016'
         ]).order_by('import_order')
 
         for resource in data_resources:
@@ -47,4 +47,4 @@ class Command(BaseCommand):
                 print(f'Importing {resource.display_name}...')
                 import_wms_resource(resource)
 
-        print("Import process for bucket1 completed!")
+        print("Import process for Census Subdivisions 2016 completed!")

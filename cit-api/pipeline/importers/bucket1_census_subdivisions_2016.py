@@ -1,9 +1,8 @@
 import json
 from pipeline.models.general import DataSource
 
-
 def import_data_sources():
-    DATA_SOURCES_FILENAME = "data/import/bucket2/monthly/2connectivity_infrastructure_projects.json"
+    DATA_SOURCES_FILENAME = "data/import/bucket1/1census_subdivisions_2016.json"
 
     with open(DATA_SOURCES_FILENAME) as f:
         data_sources = json.loads(f.read())
