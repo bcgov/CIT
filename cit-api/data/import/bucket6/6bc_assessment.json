@@ -6,7 +6,7 @@
     "source": "internal",
     "source_type": "csv",
     "source_file_path": "data/bca_summary_by_cd_use.csv",
-    "import_order": 104
+    "import_order": 1
   },
   {
     "name": "bc_assessment_census_subdivision",
@@ -15,7 +15,7 @@
     "source": "internal",
     "source_type": "csv",
     "source_file_path": "data/bca_summary_by_csd_use.csv",
-    "import_order": 105
+    "import_order": 2
   },
   {
     "name": "bc_assessment_economic_region",
@@ -24,6 +24,6 @@
     "source": "internal",
     "source_type": "csv",
     "source_file_path": "data/bca_summary_by_er_use.csv",
-    "import_order": 106
+    "import_order": 3
   }
 ]
