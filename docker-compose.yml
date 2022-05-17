@@ -17,7 +17,7 @@ services:
     volumes:
       - ./cit-api:/code
       - static:/static
-      - media:/media
+      - media:/code/data
     env_file:
       - cit-api/.env
     ports:
