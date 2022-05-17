@@ -6,6 +6,7 @@ import { Button as SharedButton } from "shared-components";
 import { useState } from "react";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
+import DisclaimerCIT from "../../DisclaimerCIT/DisclaimerCIT";
 
 export default function citHome() {
   const history = useHistory();
@@ -80,8 +81,7 @@ export default function citHome() {
               <br />
               <br />
               We are continuing to evolve the tool and would appreciate{" "}
-              <a href="mailto:citinfo@gov.bc.ca">your feedback</a>. Please check
-              back in April 2022 for new updates.
+              <a href="mailto:citinfo@gov.bc.ca">your feedback</a>.
             </p>
           </Col>
           <Col sm={3} className="svg-box pt-3">
@@ -166,7 +166,7 @@ export default function citHome() {
           </Col>
         </Row>
       </Container>
-
+      <DisclaimerCIT />
       <Modal
         show={show}
         centered

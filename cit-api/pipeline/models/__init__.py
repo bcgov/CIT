@@ -9,11 +9,9 @@ from .census_economic_region import *
 from .health_authority_boundary import *
 from .lake import *
 from .natural_resource_region import *
-from .permitted_major_mines import *
 from .provincial_electoral_district import *
 from .railway import *
 from .river import *
-from .bc_floodplain import *
 from .bc_assessment.bc_assessment_census_subdivision import *
 from .bc_assessment.bc_assessment_regional_district import *
 from .bc_assessment.bc_assessment_economic_region import *
@@ -24,3 +22,12 @@ from .users.tracking import *
 from .agricultural_land_reserve import *
 from .cen_prof_detailed_cd_attrs_sp import *
 from .cen_prof_detailed_csd_attrs_sp import *
+from .Housing_Data import *
+from .tourism_region import *
+from .linkagewithcensus import *
+from .census_division_2016 import *
+from .census_subdivision_2016 import *
+from .business_by_census_subdivions import *
+from .connectivity_infrastructure_projects import *
+from .naics_codes import *
+from .BCNetworkConnectivity import *

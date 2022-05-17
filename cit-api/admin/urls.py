@@ -18,8 +18,13 @@ from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from rest_framework import routers
+from pipeline.views.file_upload import FileUploadViewSet
 
 from admin import auth_tokens
+
+router = routers.DefaultRouter()
+router.register(r'file', FileUploadViewSet, basename='file')
 
 
 def fail(request):
@@ -51,6 +56,7 @@ urlpatterns = [
     url(r"^api/opportunity/", include('pipeline.opportunity-urls')),
     url(r"^api/email/", include('pipeline.email-urls')),
     url(r"^api/token/", auth_tokens.get_access_token),
+    url(r"^upload/", include(router.urls)),
     url(r"^api/health/fail/", fail),
 ]
 

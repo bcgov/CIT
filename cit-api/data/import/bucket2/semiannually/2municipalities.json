@@ -1,0 +1,14 @@
+[
+
+  {
+    "name": "municipalities",
+    "display_name": "Municipalities",
+    "model_name": "Municipality",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": "0bd8e3d1-4d7f-4db8-a8b2-2cd4cd051074",
+    "permalink_id": "e3c3c580-996a-4668-8bc5-6aa7c7dc4932",
+    "dataset": "municipalities-legally-defined-administrative-areas-of-bc",
+    "import_order": 4
+  }
+]

@@ -1,0 +1,12 @@
+[{
+    "name": "bc_network_connectivity",
+    "display_name": "BC Network Connectivity",
+    "model_name": "BCNetworkConnectivity",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": "834e788d-86f9-4a1f-b59b-211bcab099c9",
+    "permalink_id": "6b246885-45fb-413f-b8a4-3949729959bc",
+    "dataset": "bc-network-connectivity",
+    "import_order": 1
+  }
+]

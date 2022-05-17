@@ -21,14 +21,17 @@ const Header = () => {
     if (location.pathname.includes("/cit-dashboard")) {
       return "Community Information Tool";
     }
+    if (location.pathname.includes("/userstory")) {
+      return "Community Information Tool";
+    }
     return "";
   };
 
   useEffect(() => {
-    if (location.pathname.includes("/cit-dashboard")) {
-      setIsPowerBI(true);
-    } else {
+    if (location.pathname.includes("/investmentopportunities")) {
       setIsPowerBI(false);
+    } else {
+      setIsPowerBI(true);
     }
   });
 

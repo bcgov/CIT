@@ -1,0 +1,13 @@
+[
+  {
+    "name": "northern_rockies_census_division",
+    "display_name": "Northern Rockies Census Division (included as Regional District)",
+    "model_name": "RegionalDistrict",
+    "source": "databc",
+    "source_type": "shp",
+    "source_file_path": "/code/data/census_divisions.zip",
+    "resource_id": "d7d6e2ea-e742-43ab-94a3-c0eaf48b68de",
+    "permalink_id": "ef17918a-597a-4012-8534-f8e71d8735b3",
+    "import_order": 9
+  }
+]

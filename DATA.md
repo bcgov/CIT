@@ -1,3 +1,31 @@
+# CIT-4.0 Data Changes
+With the newest version of CIT, the process of importing data has been udpated. The data has been decoupled to a certain point where specific datasets have been organized into groups that can be run seperately. In the previous version, an Azure Container was running the import-data.sh script which ran the bootstrap command. Now that the data has been decoupled into groups, each group has its own command that can be run by executing:
+
+python3 manage.py 'bucket_command' ex. python3 manage.py bucket_1
+
+Most buckets have been grouped together based on a certain schedule that they should be run at. Weekly, Monthly, Semi-Annually etc. 
+
+Github Actions have been created to run each bucket on its determined schedule. An email will be sent when its been run successfully or not. A Github Action has also been created to run any bucket manually where the user will be given a choice of what environment they would like to run it in and which bucket to run.
+
+This has cut down the time it takes to import the data significantly, however further decoupling could take place to have each dataset entirely decoupled and able to be run on their own. 
+
+Below is a list of each dataset included in each bucket:
+
+Bucket 1 - census 
+Bucket 2 Semiannually - housing, municipalities, NBDPHHSpeeds, Northern Rockies Census Division, phdemographic, regional districts, tourism region, tsunami zones, wildfire zones
+Bucket 2 Weekly - hexes, roads
+Bucket 3 - communities
+Bucket 4 Monthly - agricultural land reserve
+Bucket 4 Semiannually - census economic region, courts, health authority boundaries, indian reserve and band name, lakes, natural resource regions, post secondary institutions, provincial electoral district, railways, research centres, rivers, road and highways, services
+Bucket 5 Monthly - economic projects, first responders
+Bucket 5 Semiannually (fully decoupled datasets with their own commands) - airports, civic facilities, clinics, customs ports of entry, diagnostic facilities, emergency social service facilities, first nations health authority, hospitals, laboratory services, pharmacies, port and terminal, public library, schools, servicebc locations, timber facilities
+Bucket 6 - bc assessment
+Bucket 7 - linkage csd
+
+If a new "Bucket" is added, this needs to be added to the list of manual run buckets in the manual-pipeline-run.yml file. 
+
+If any new data files are added to the Azure storage container, it will also need to be added to the Dockerfile.pipeline file (there is a section pulling each datafile from storage into the container) - definitely room for improvement here, it would be better if we could pull the whole folder instead of individual files.
+
 # Data Sources and Importing Data
 
 There are three main types of data: BC Data Catalogue API, CSV files, and SHP files. These are enumerated in `./cit-api/pipeline/constants.py`. The list of datasets used in this project is detailed in `./cit-api/pipeline/data_sources.json` and this is imported into the `DataSource` model.

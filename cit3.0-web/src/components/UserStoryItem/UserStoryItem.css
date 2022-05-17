@@ -1,0 +1,19 @@
+.select-label {
+    margin-top: 6px;
+    margin-right: 4px;
+}
+
+.select-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.user-story-button {
+    height: 40px;
+    font-weight: bold !important;
+    font-size: 16px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}

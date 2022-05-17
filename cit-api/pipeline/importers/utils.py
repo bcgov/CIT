@@ -1,8 +1,9 @@
 import csv
+from numpy import int64
 import requests
 import copy
 import math
-
+from django.db import connection
 from django.apps import apps
 from django.conf import settings
 from django.contrib.gis.geos import Point
@@ -15,16 +16,34 @@ from django.utils.timezone import make_aware
 from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 
 from pipeline.constants import WGS84_SRID
+from pipeline.models import LinkageWithCensus
+from pipeline.models.tourism_region import TourismRegion
 from pipeline.models.community import Community
+from pipeline.models.business_by_census_subdivions import BusinessesByCSD
 from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.models.census_economic_region import CensusEconomicRegion
 from pipeline.models.general import (DataSource, LocationDistance, SchoolDistrict, Municipality,
-                                     CivicLeader, Hex, Service, ISP, RegionalDistrict)
+                                      Hex, Service, ISP, RegionalDistrict, TsunamiZone, BCWildfireZone)
 from pipeline.models.location_assets import School, Hospital
+from pipeline.models.census_division_2016 import *
+from pipeline.models.census_subdivision_2016 import *
 from pipeline.constants import LOCATION_TYPES
 
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
+from sqlalchemy import create_engine
+from pipeline.models.Housing_Data import Housing_Data
+from pipeline.models.connectivity_infrastructure_projects import ConnectivityInfrastructureProjects
+from pipeline.models import NAICSCodes
+from pipeline.models.general import NBDPHHSpeeds,PHDemographicDistribution
+from sqlalchemy.sql.expression import false
+import requests
+import io
+import pandas as pd
+from io import BytesIO
+from zipfile import ZipFile
+from urllib.request import urlopen
+
 
 RETRY_STRATEGY = Retry(total=3)
 ADAPTER = HTTPAdapter(max_retries=RETRY_STRATEGY)
@@ -100,6 +119,44 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
     elif resource_type == 'Census Division':
         instance, created = Model.objects.get_or_create(
             census_division_id=row['CENSUS_DIVISION_ID'])
+    elif resource_type == 'Census Division 2016':
+        instance, created = Model.objects.get_or_create(
+            census_division_id=row['CENSUS_DIVISION_ID'])
+    elif resource_type == 'Census Subdivisions 2016':
+        instance, created = Model.objects.get_or_create(
+            census_subdivision_id=row['CENSUS_SUBDIVISION_ID'])
+
+    elif resource_type == 'Tourism Regions':
+        instance, created = Model.objects.get_or_create(
+            tourism_region_id=row['TOURISM_REGION_ID'])
+    
+    elif resource_type == 'BC Wildfire Fire Zones':
+        instance, created = Model.objects.get_or_create(
+            zone_id=row['MOF_FIRE_ZONE_ID'],
+            centre_name = row['MOF_FIRE_CENTRE_NAME'],
+            zone_name=row['MOF_FIRE_ZONE_NAME'],
+            headquarter_city_name = row['HEADQUARTERS_CITY_NAME'])
+    
+    elif resource_type == 'BC Network Connectivity':
+        instance, created = Model.objects.get_or_create(
+            bcnc_ncs_sysid = row['BCNC_NCS_SYSID'],
+            hex_code_id = row['HEX_CODE_ID'],
+            population = row['POPULATION'],
+            total_dwellings = row['TOTAL_DWELLINGS'],
+            usual_residences = row['USUAL_RESIDENCES'],
+            td_underserved_50mpbs = row['TD_UNDERSERVED_50MBPS'],
+            internet_zone = row['INTERNET_ZONE'],
+            mobile_wireless_coverage = row['MOBILE_WIRELESS_COVERAGE'],
+            percent_served_5_mbps = row['PERCENT_SERVED_5_MBPS'],
+            percent_served_50_mbps = row['PERCENT_SERVED_50_MBPS'],
+            cable_providers = row['CABLE_PROVIDERS'],
+            fibre_providers = row['FIBRE_PROVIDERS'],
+            dsl_providers = row['DSL_PROVIDERS'],
+            fixed_wireless_providers = row['FIXED_WIRELESS_PROVIDERS'],
+            satellite_providers = row['SATELLITE_PROVIDERS'],
+            mobile_wireless_providers = row['MOBILE_WIRELESS_PROVIDERS'],
+            transport_fibre_providers = row['TRANSPORT_FIBRE_PROVIDERS'])
+        
     else:
         name_fields = Model.NAME_FIELD.split(",")
         name = ", ".join([str(row[name_field]) for name_field in name_fields])
@@ -117,7 +174,7 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
             name = f'{row[Model.NAME_FIELD]}, {row[Model.ID_FIELD]}'
         instance, created = Model.objects.get_or_create(name=name)
 
-    print("instance", instance)
+    #print("instance", instance)
     if hasattr(Model, 'ID_FIELD'):
         instance.area_id = row[Model.ID_FIELD]
 
@@ -490,31 +547,19 @@ def import_civic_leaders_from_csv(file_path):
             civic_leader.save()
 
 
-def import_services(file_path):
-    isps = read_csv(file_path)
-
-    # avoid re-querying for each row with ISP reference.
-    isp_cache = {}
-    services = []
-    print(len(isps))
-    for i, isp in enumerate(isps):
-        if not i % 1000:
-            print(i)
+def import_services(url):
+    s = requests.get(url)
+    if s.ok:
         try:
-            hex = Hex.objects.get(pk=isp['HEXuid_HEXidu'])
-        except Hex.DoesNotExist:
-            continue
-        if isp["ISPname_NomFSI"] in isp_cache:
-            isp_obj = isp_cache[isp["ISPname_NomFSI"]]
-        else:
-            isp_obj = ISP(name=isp["ISPname_NomFSI"])
-            print(isp_obj)
-            isp_cache[isp["ISPname_NomFSI"]] = isp_obj
-            isp_obj.save()
-        service = Service(isp=isp_obj, hex=hex, technology=isp['Technology'])
-        services.append(service)
-
-    Service.objects.bulk_create(services)
+            resp = urlopen(url)
+            zipfile = ZipFile(BytesIO(resp.read()))
+            with zipfile.open("ISP_Hex_FSI.csv") as f:
+                fields = ['HEXuid_HEXidu','ISPname_NomFSI','Technology']
+                services = pd.read_csv(f, header=0, delimiter=",",usecols=fields)
+                services.rename(columns={services.columns[0]:"hex_id",services.columns[1]:"isp_id",services.columns[2]:"technology",},inplace=True)
+                write_to_db(Service, services)
+        except Exception as e:
+            print(e)
 
 
 def get_databc_last_modified_date(data_source):
@@ -625,6 +670,198 @@ def import_community_descriptions():
 
             community.save()
 
+def write_to_db(Model, data):
+    user = settings.DATABASES['default']['USER']
+    password = settings.DATABASES['default']['PASSWORD']
+    database_name = settings.DATABASES['default']['NAME']
+    Host = settings.DATABASES['default']['HOST']
+    database_url = 'postgresql://{user}:{password}@{Host}:5432/{database_name}'.format(user=user,password=password,Host=Host,database_name=database_name )
+    engine = create_engine(database_url)
+    data.to_sql(Model._meta.db_table,if_exists = 'replace',con=engine,index=False)
+
+def exists(lst, element):
+  for i in lst:
+    if i == element:
+      return 1
+    continue
+  return 0
+
+def import_businesses_by_cid(tourism_file, url):
+    #url ='https://agriculture.canada.ca/atlas/data_donnees/soc/businessesByCSD/csv/businesses_by_census_subdivision.zip'
+    #tourism_file = "data/Tourism NAICS.xlsx"
+    s = requests.get(url)
+    if s.ok:
+        try:
+            resp = urlopen(url)
+            zipfile = ZipFile(BytesIO(resp.read()))
+            with zipfile.open("businesses_by_census_subdivision_2021.csv") as f:
+                fields = ['CSD_ID','NAICS_CODE','EMPLOYEE_CLASS','FREQUENCY']
+                businesses = pd.read_csv(f, header=0, delimiter=",",usecols=fields)
+                businesses.rename(columns={businesses.columns[0]:"census_subdivision_id",businesses.columns[1]:"naics_code",businesses.columns[2]:"employee_class",businesses.columns[3]:"number_of_businesses",},inplace=True)
+
+            #businesses.head(10)
+            #data = pd.read_excel(tourism_file, skiprows = 1)
+            data =  pd.read_excel(tourism_file,engine='openpyxl',skiprows = 1)
+            tourism_list = data['NAICS'].tolist()
+            sectors = []
+            for index, row in businesses.iterrows():
+                if exists(tourism_list, row['naics_code']) == 1:
+                    sectors.append('tourism')
+                if exists(tourism_list, row['naics_code']) == 0:
+                    sectors.append("")
+            businesses['sector'] = sectors
+            businesses.head(10)
+            write_to_db(BusinessesByCSD, businesses)
+
+        except Exception as e:
+            print(e)
+
+def import_naics_codes(url):
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', "Upgrade-Insecure-Requests": "1","DNT": "1","Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","Accept-Language": "en-US,en;q=0.5","Accept-Encoding": "gzip, deflate"}
+    #url = "https://www.statcan.gc.ca/eng/statistical-programs/document/naics-scian-2022-structure-v1-eng.csv"
+    s = requests.get(url,headers=headers)
+    if s.ok:
+        try:
+            data1 = s.content.decode('utf8')
+            data = pd.read_csv(io.StringIO(data1))
+            data.rename(
+            columns={data.columns[0]:"level",
+                    data.columns[1]:"hierarchical_structure",
+                    data.columns[2]:"code",
+                    data.columns[3]:"parent",
+                    data.columns[4]:"class_title",
+                    },inplace=True)
+            data.drop('Superscript', axis=1, inplace=True)
+            data.drop('Class definition', axis=1, inplace=True)
+            write_to_db(NAICSCodes, data)
+        except Exception as e:
+            print(e)
+
+def import_connectivity_project(url):
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', "Upgrade-Insecure-Requests": "1","DNT": "1","Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","Accept-Language": "en-US,en;q=0.5","Accept-Encoding": "gzip, deflate"}
+    s = requests.get(url,headers=headers)
+    if s.ok:
+        try:
+            data1 = s.content.decode('utf8')
+            data = pd.read_csv(io.StringIO(data1))
+            data.rename(
+            columns={data.columns[0]:"project",
+                    data.columns[1]:"project_name",
+                    data.columns[2]:"proponent",
+                    data.columns[3]:"place_id",
+                    data.columns[4]:"community_name",
+                    data.columns[5]:"latitude",
+                    data.columns[6]:"longitude",
+                    data.columns[7]:"phase",
+                    data.columns[8]:"num_housesholds_served",
+                    data.columns[9]:"speed",
+                    data.columns[10]:"status",
+                    data.columns[11]:"type_of_project",
+                    data.columns[12]:"project_description",
+                    data.columns[13]:"bc_funding",
+                    data.columns[14]:"estimated_start_date",
+                    data.columns[15]:"estimated_completion_date",
+                    data.columns[16]:"primary_news_release",
+                    data.columns[17]:"economic_region",
+                    data.columns[18]:"electoral_name",
+                    data.columns[19]:"place_type",
+                    data.columns[20]:"reserve_name",
+                    data.columns[21]:"nation"
+                    },inplace=True)
+            data['estimated_start_date'] = data['estimated_start_date'].str[1:]
+            data['estimated_completion_date'] = data['estimated_completion_date'].str[1:]
+            data['estimated_start_date'] = pd.to_datetime(data['estimated_start_date'],format='%Y-%m-%d')
+            data['estimated_completion_date'] = pd.to_datetime(data['estimated_completion_date'],format='%Y-%m-%d')
+            data.drop('Nation', axis=1, inplace=True)
+            data.drop('Unnamed: 23', axis=1, inplace=True)
+            write_to_db(ConnectivityInfrastructureProjects, data)
+        except Exception as e:
+            print(e)
+
+def remove_dependencies():
+    with connection.cursor() as cursor:
+        cursor.execute(
+            f"DROP VIEW IF EXISTS public.cit_regions_distribution_vw;")
+
+def add_dependencies():
+    with connection.cursor() as cursor:
+        cursor.execute(
+            f"""CREATE OR REPLACE VIEW public.cit_regions_distribution_vw AS
+         SELECT DISTINCT 'All of British Columbia'::text AS zone_type,
+    'All of British Columbia'::text AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_cen_prof_detailed_csd_attrs_sp csd
+UNION
+ SELECT DISTINCT 'Regional District'::text AS zone_type,
+    rd.name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_regionaldistrict rd ON lk.regional_district_id = cast(rd.area_id as bigint)
+UNION
+ SELECT DISTINCT 'Census Subdivision'::text AS zone_type,
+    csd.census_subdivision_name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_cen_prof_detailed_csd_attrs_sp csd
+UNION
+ SELECT 'Tourism Region'::text AS zone_type,
+    tr.tourism_region_name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_tourismregion tr ON lk.tourism_region_id = tr.tourism_region_id::text
+UNION
+ SELECT 'Economic Region'::text AS zone_type,
+    split_part(er.name::text, '/'::text, 1) AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_censuseconomicregion er ON lk.economic_region_id = er.economic_region_id
+UNION
+ SELECT 'Wildfire Zone'::text AS zone_type,
+    wf.name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_wildfirezone wf ON lk.bc_fire_zone_id = wf.id
+UNION
+ SELECT 'Tsunami Zone'::text AS zone_type,
+    tz.tsunami_zone_name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_tsunamizone tz ON lk.tsunami_notification_zone_id = tz.name::bigint
+UNION
+ SELECT 'Health Authority'::text AS zone_type,
+    ha.name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_healthauthorityboundary ha ON lk.health_authority_id = ha.id
+UNION
+ SELECT 'School District'::text AS zone_type,
+    sd.name AS zone_name,
+    csd.census_subdivision_id
+   FROM pipeline_linkagewithcensus lk
+     JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
+     JOIN pipeline_schooldistrict sd ON lk.school_district_id = sd.area_id;""")
+
+def import_census_subdivision_linkage(linkage_file):
+    data = pd.read_csv(linkage_file)
+    data.rename(
+    columns={data.columns[0]:"census_subdivision_id",
+             data.columns[1]:"tourism_region_id",
+             data.columns[2]:"regional_district_id",
+             data.columns[3]:"economic_region_id",
+             data.columns[4]:"bc_fire_zone_id",
+             data.columns[5]:"tsunami_notification_zone_id",
+             data.columns[7]:"health_authority_id",
+             data.columns[8]:"school_district_id",
+             data.columns[9]:"natural_resource_region_id"},inplace=True)
+    #data.drop('LOCAL_HLTH_AREA_CODE', axis=1, inplace=True)
+    remove_dependencies()
+    write_to_db(LinkageWithCensus, data)
+    add_dependencies()
 
 def _generate_geom(feat, srid=None):
     """
@@ -686,6 +923,16 @@ def _coerce_to_multilinestring(geom, srid=WGS84_SRID):
     else:
         raise Exception("Bad geometry type: {}, skipping.".format(geom.__class__))
 
+def import_tsunami_full_description(instance, file_path):
+    data =  pd.read_csv(file_path)
+    for index, row in data.iterrows():
+        if str(instance.name) == str(row['TSUNAMI_NOTIFY_ZONE_ID']):
+            instance.tsunami_zone_name = row['TSUNAMI_ZONE_NAME']
+    instance.save()
+
+def remove_french_description(instance):
+    instance.name = ((instance.name).split("/", 1))[0]
+    instance.save()
 
 def calculate_muni_or_rd(instance):
     muni = Municipality.objects.filter(geom__covers=instance.geom).first()
@@ -696,3 +943,85 @@ def calculate_muni_or_rd(instance):
     instance.regional_district = rd
 
     instance.save()
+
+def import_housing(URL):
+    #csv_file = 'total.csv'
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', "Upgrade-Insecure-Requests": "1","DNT": "1","Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","Accept-Language": "en-US,en;q=0.5","Accept-Encoding": "gzip, deflate"}
+    url = "https://www2.gov.bc.ca/assets/gov/data/statistics/economy/building-permits/total.csv"
+    s = requests.get(url,headers=headers)
+    if s.ok:
+        try:
+            data1 = s.content.decode('utf8')
+            data = pd.read_csv(io.StringIO(data1),skiprows=1)
+            data.rename(columns={data.columns[0]:'census_subdivision_id'}, inplace=True)
+            data.drop(data.columns[1], axis=1,inplace=True)
+            data=data[(data['census_subdivision_id'].str.contains("[a-zA-Z]")==False) & (data['census_subdivision_id'].str.len() > 4)] 
+            data = data.melt(id_vars=['census_subdivision_id'], var_name='yearmonth', value_name='total_building_permits')
+            data['census_subdivision_id'] = data['census_subdivision_id'].astype(str).astype(int64)
+            data['month'] = data['yearmonth'].str.split('-').str[1]
+            data['year'] = data['yearmonth'].str.split('-').str[0]
+            data['year']=pd.to_datetime(data['year'], format = '%y',errors='coerce').dt.year
+            data['month']=pd.to_datetime(data['month'], format = '%b',errors='coerce').dt.month
+
+
+    
+            user = settings.DATABASES['default']['USER']
+            password = settings.DATABASES['default']['PASSWORD']
+            database_name = settings.DATABASES['default']['NAME']
+            Host = settings.DATABASES['default']['HOST']
+    
+            database_url = 'postgresql://{user}:{password}@{Host}:5432/{database_name}'.format(user=user,password=password,Host=Host,database_name=database_name )
+            engine = create_engine(database_url)
+            data.to_sql(Housing_Data._meta.db_table,if_exists = 'replace',con=engine,index=False)
+
+        except Exception as e:
+            print(e)
+def import_phdemographicdistribution(url, linkage_file):
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', "Upgrade-Insecure-Requests": "1","DNT": "1","Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","Accept-Language": "en-US,en;q=0.5","Accept-Encoding": "gzip, deflate"}
+    s = requests.get(url,headers=headers)
+    if s.ok:
+        data1 = s.content.decode('utf8')
+        data = pd.read_csv(io.StringIO(data1))
+        data.drop('Pruid_Pridu', axis=1, inplace=True)
+        data.rename(
+    columns={data.columns[0]:"phh_id",data.columns[1]:"phh_type",
+            data.columns[2]:"population",data.columns[3]:"total_private_dwellings",
+            data.columns[4]:"private_dwellings_usual_residents_occupied",
+            data.columns[5]:"dbuid_ididu",
+            data.columns[6]:"hexuid_iduhex",
+            data.columns[7]:"Latitude",
+            data.columns[8]:"Longitude"}
+          ,inplace=True)
+        linkage = pd.read_csv(linkage_file)
+        linkage.rename(columns={linkage.columns[0]:"dbuid_ididu",linkage.columns[1]:"census_subdivision_id"},inplace=True)
+        df_all_rows = pd.merge(data, linkage, how='left')
+        write_to_db(PHDemographicDistribution, df_all_rows)
+
+def import_nbdphhspeeds(URL):
+    url = URL
+    s = requests.get(url)
+    if s.ok:
+        resp = urlopen(url)
+        zipfile = ZipFile(BytesIO(resp.read()))
+        with zipfile.open("PHH_Speeds_Current-PHH_Vitesses_Actuelles_BC.csv") as f:
+            fields = ['PHH_ID','Combined_lt5_1_Combine','Combined_5_1_Combine','Combined_10_2_Combine','Combined_25_5_Combine','Combined_50_10_Combine']
+            PHH_BC = pd.read_csv(f, header=0, delimiter=",",usecols=fields)
+            PHH_BC.rename(
+    columns={PHH_BC.columns[0]:"phh_id",PHH_BC.columns[1]:"combined_lt5_1",PHH_BC.columns[2]:"combined_5_1",
+            PHH_BC.columns[3]:"combined_10_2",PHH_BC.columns[4]:"Combined_25_5",PHH_BC.columns[5]:"combined_50_10",}
+          ,inplace=True)
+        with zipfile.open("PHH_Speeds_Government_Support-PHH_Vitesses_Appui_Gouvernement_BC.csv") as f:
+            fields = ['PHH_ID','Combined_50_10_Combine']
+            PHH_Gov_Suup = pd.read_csv(f, delimiter=",",usecols=fields)
+            PHH_Gov_Suup.rename(
+    columns={PHH_Gov_Suup.columns[0]:"phh_id",PHH_Gov_Suup.columns[1]:"combined_50_10_gov_supp"}
+          ,inplace=True)
+        nbdphhspeeds =PHH_BC.merge(PHH_Gov_Suup, on='phh_id', how='left')
+        user = settings.DATABASES['default']['USER']
+        password = settings.DATABASES['default']['PASSWORD']
+        database_name = settings.DATABASES['default']['NAME']
+        Host = settings.DATABASES['default']['HOST']
+    
+        database_url = 'postgresql://{user}:{password}@{Host}:5432/{database_name}'.format(user=user,password=password,Host=Host,database_name=database_name )
+        engine = create_engine(database_url)
+        nbdphhspeeds.to_sql(NBDPHHSpeeds._meta.db_table,if_exists = 'replace',con=engine,index=False)

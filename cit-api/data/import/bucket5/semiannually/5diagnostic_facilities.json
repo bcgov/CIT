@@ -1,0 +1,13 @@
+[
+  {
+    "name": "diagnostic_facilities",
+    "display_name": "Diagnostic Facilities",
+    "model_name": "DiagnosticFacility",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": "e546be7a-a432-458b-91a0-1084887c291c",
+    "permalink_id": "4f75e9f6-1459-4ae2-990d-b53b1c389525",
+    "dataset": "diagnostic-facilities",
+    "import_order": 12
+  }
+]

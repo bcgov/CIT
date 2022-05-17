@@ -1,0 +1,13 @@
+[
+    {
+    "name": "connectivity_infrastructure_projects",
+    "display_name": "Connectivity Infrastructure Projects",
+    "model_name": "ConnectivityInfrastructureProjects",
+    "source": "databc",
+    "source_type": "csv",
+    "source_file_path": "",
+    "resource_id": "9967bfc7-cf2a-4873-a5ac-435048269d9b",
+    "external_url": "https://catalogue.data.gov.bc.ca/dataset/ee53f7aa-d5dc-4897-b0c6-635dfe2f7e5e/resource/9967bfc7-cf2a-4873-a5ac-435048269d9b/download/connectivity-infrastructure-projects.csv",
+    "import_order": 1
+    }
+]

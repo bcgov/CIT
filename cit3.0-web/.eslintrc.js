@@ -28,6 +28,7 @@ module.exports = {
     "no-restricted-globals": "off",
     "import/no-extraneous-dependencies": "off",
     "no-unused-vars": "warn",
+    "no-nested-ternary": "off",
     "no-plusplus": ["error", { allowForLoopAfterthoughts: true }],
     "prettier/prettier": ["error"],
   },

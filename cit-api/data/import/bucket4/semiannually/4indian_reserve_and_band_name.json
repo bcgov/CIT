@@ -1,0 +1,13 @@
+[
+  {
+    "name": "indian_reserve_and_band_name",
+    "display_name": "Indian Reserves and Band Names",
+    "model_name": "IndianReserveBandName",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": null,
+    "permalink_id": "c2ce81af-78c1-467c-b47e-c392cd0a771f",
+    "dataset": "indian-reserves-and-band-names-administrative-boundaries",
+    "import_order": 31
+  }
+]

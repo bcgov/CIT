@@ -1,5 +1,5 @@
 Django==2.2.16
-psycopg2==2.8.6
+psycopg2-binary==2.8.6
 djangorestframework==3.12.1
 djangorestframework-csv==2.1.0
 djangorestframework-gis==0.16
@@ -16,4 +16,5 @@ Pillow==8.0.1
 bcdata==0.4.3
 whitenoise==5.2.0
 python-keycloak==0.24.0
-azure-storage-blob==12.8.0 
+azure-storage-blob==12.8.0
+openpyxl == 3.0.9
