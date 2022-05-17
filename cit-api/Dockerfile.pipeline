@@ -1,87 +1,3 @@
-FROM mcr.microsoft.com/azure-cli AS az
-
-ARG AZURE_STORAGE_ACCOUNT_KEY
-RUN mkdir /datafiles
-WORKDIR /datafiles
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data \
-             --name census_divisions.zip \
-             --file census_divisions.zip \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
-
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data \
-             --name COMMUNITIES_V6.csv \
-             --file COMMUNITIES_V6.csv \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
-
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data \
-             --name ISP_Hex_FSI.csv \
-             --file ISP_Hex_FSI.csv \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
-
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data \
-             --name csd_linkage.csv \
-             --file csd_linkage.csv \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
-             
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data/bc_assessment \
-             --name bca_summary_by_cd_use.csv \
-             --file bca_summary_by_cd_use.csv \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
-
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data/bc_assessment \
-             --name bca_summary_by_csd_use.csv \
-             --file bca_summary_by_csd_use.csv \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
-
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data/bc_assessment \
-             --name bca_summary_by_er_use.csv \
-             --file bca_summary_by_er_use.csv \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
-
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data \
-             --name Tourism_NAICS.xlsx \
-             --file Tourism_NAICS.xlsx \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
-
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data \
-             --name dbuid_csduid.csv \
-             --file dbuid_csduid.csv \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
-
-RUN az storage blob download \
-             --account-name citpipelinedata \
-             --container-name data \
-             --name Tsunami_Zone_Names.csv \
-             --file Tsunami_Zone_Names.csv \
-             --account-key $AZURE_STORAGE_ACCOUNT_KEY \
-             --auth-mode key
 FROM python:3.6
 ENV PYTHONUNBUFFERED 1
 
@@ -93,7 +9,7 @@ COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . .
 
-COPY --from=az datafiles /code/data
+RUN mv data/import/datafiles/* /code/data
 RUN python3 manage.py collectstatic --noinput
 
 CMD /bin/sh ./entrypoint.pipeline.sh

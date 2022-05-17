@@ -3,7 +3,9 @@
 
 name: Data Pipeline Bucket 7
 on:
-  workflow_dispatch:
+  push:
+    branches: [CIT-317]
+  #workflow_dispatch:
 env: 
   BUCKET_COMMAND: bucket_7
   AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}

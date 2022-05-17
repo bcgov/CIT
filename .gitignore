@@ -13,11 +13,11 @@ __pycache__/
 *.so
 
 # Potentially private data
-*.csv
-*.zip
+#*.csv
+#*.zip
 *.sql
-*.xls
-*.xlsx
+#*.xls
+#*.xlsx
 *.geojson
 web/data/
 

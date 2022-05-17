@@ -39,7 +39,6 @@ on:
         - bucket_5_schools
         - bucket_5_servicebc_locations
         - bucket_5_timber_facilities
-        - bucket_6
         - bucket_7
         - bucket_7_bc_wildfire_zones
         - bucket_7_bc_network_connectivity
