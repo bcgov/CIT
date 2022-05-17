@@ -98,7 +98,7 @@ the first place. Still looking at how to maintain this either via VCS or Terrafo
 # TODO: This document needs to be sanitized as it holds secrets.
 
 Updated Documentation to start from scratch creating the TF state info and using AZ:
-
+# Assumption: AzureCLI is installed 
 az login
 # get the list of accounts to obtain the "id" of the required account.  This is the subscription id.
 az account list
@@ -107,21 +107,25 @@ az account set -s "be5c5c2b-d7e6-4940-ae15-37d7ef061283"
 # same with setting the default resource group for ease.
 az config set defaults.group=CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01-Test
 
-# this is creating the data store that will hold the TF-State file
-az storage account create --name tfstatecittest  --sku Standard_LRS --encryption-services blob
+# Only do this section if this is the first time provisioning this infrastructure
+    # this is creating the data store that will hold the TF-State file
+    az storage account create --name tfstatecittest  --sku Standard_LRS --encryption-services blob
 
-# Now get the keys we need to access the store:
-az storage account keys list --account-name tfstatecittest
+    # Now get the keys we need to access the store:
+    az storage account keys list --account-name tfstatecittest
 
-# create a container in the newly created datastore. The account-name is the name from the account create above, and the account-key is from the account key list from above.
-az storage container create --name tfstate --account-name tfstatecittest --account-key <SECRET-FROM-ACCOUNT-KEY-LIST>
+    # create a container in the newly created datastore. The account-name is the name from the account create above, and the account-key is from the account key list from above.
+    az storage container create --name tfstate --account-name tfstatecittest --account-key <SECRET-FROM-ACCOUNT-KEY-LIST>
 
 # Create a file that holds the account key (above) in a file for the TF backend to use during init:
 cp secrets.backend.template secrets.backend
 # edit the file above
+# Make sure that you have populated the variables.auto.tfvars file with the appropriate secrets
 
 terraform init -backend-config=secrets.backend
 
+# Windows
+terraform init -backend-config="secrets.backend"
 
 # NOTE: we've obsoleted the "shared" TF function as we're keeping -Test and -Prod resource groups seperate and not going to use the same resources at all.
 # TODO: we need to decide how to promote between test and prod.
