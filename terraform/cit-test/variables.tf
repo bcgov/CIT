@@ -48,6 +48,19 @@ variable "azure_location" {
   default     = "canadacentral"
 }
 
+variable "psql_username" {
+  type        = string
+  description = "The psql username"
+  default     = "cit_user"
+}
+
+variable "psql_password" {
+  type        = string
+  description = "The psql password"
+}
+
+
+
 # variable "github_token" {
 #   type        = string
 #   description = "Github PAT with repo write access"

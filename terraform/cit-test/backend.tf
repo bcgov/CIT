@@ -8,7 +8,8 @@ resource "azurerm_app_service" "backend" {
     linux_fx_version = "DOCKER|${azurerm_container_registry.citacrtest.name}.azurecr.io/cit-webapi:latest"
     always_on        = true
     cors {
-      allowed_origins = ["https://test.communityinformationtool.gov.bc.ca"]
+      # allowed_origins = ["https://test.communityinformationtool.gov.bc.ca"]
+      allowed_origins = ["https://web-cit4-citz-bcgov-test.azurewebsites.net"]
     }
   }
 
@@ -20,8 +21,10 @@ resource "azurerm_app_service" "backend" {
     DOCKER_REGISTRY_SERVER_PASSWORD = azurerm_container_registry.citacrtest.admin_password
     DOCKER_ENABLE_CI                = true
     POSTGRES_DB                     = azurerm_postgresql_database.postgres.name
-    POSTGRES_DJANGO_USER            = "${azurerm_postgresql_server.postgres.administrator_login}@${azurerm_postgresql_server.postgres.fqdn}"
-    POSTGRES_DJANGO_PASSWORD        = azurerm_postgresql_server.postgres.administrator_login_password
+    # POSTGRES_DJANGO_USER            = "${azurerm_postgresql_server.postgres.administrator_login}@${azurerm_postgresql_server.postgres.fqdn}"
+    # POSTGRES_DJANGO_PASSWORD        = azurerm_postgresql_server.postgres.administrator_login_password
+    POSTGRES_DJANGO_USER            = "${var.psql_username}@${azurerm_postgresql_server.postgres.fqdn}"
+    POSTGRES_DJANGO_PASSWORD        = "${var.psql_password}"
     POSTGRES_HOST                   = azurerm_postgresql_server.postgres.fqdn
     KEY_CLOAK_URL                   = "https://test.oidc.gov.bc.ca/auth/"
     KEY_CLOAK_REALM                 = "fyof530u"

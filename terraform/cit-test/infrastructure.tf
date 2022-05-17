@@ -56,28 +56,28 @@ resource "azurerm_storage_container" "citdatatest" {
 #   plaintext_value = azurerm_container_registry.citacrtest.login_server
 # }
 
-##############################
-##  KeyCloak Web Service    ##
-##############################
-resource "azurerm_app_service" "keycloak" {
-  name                = "keycloak-${var.app_suffix}-${var.environment}"
-  location            = var.azure_location
-  resource_group_name = var.azure_resource_group
-  app_service_plan_id = azurerm_app_service_plan.webapp.id
+# ##############################
+# ##  KeyCloak Web Service    ##
+# ##############################
+# resource "azurerm_app_service" "keycloak" {
+#   name                = "keycloak-${var.app_suffix}-${var.environment}"
+#   location            = var.azure_location
+#   resource_group_name = var.azure_resource_group
+#   app_service_plan_id = azurerm_app_service_plan.webapp.id
 
-  site_config {
-    linux_fx_version = "DOCKER|quay.io/keycloak/keycloak:latest"
-    always_on        = true
-    cors {
-      allowed_origins = ["https://web-cit4-citz-bcgov-test.azurewebsites.net"]
-    }
-  }
+#   site_config {
+#     linux_fx_version = "DOCKER|quay.io/keycloak/keycloak:latest"
+#     always_on        = true
+#     cors {
+#       allowed_origins = ["https://web-cit4-citz-bcgov-test.azurewebsites.net"]
+#     }
+#   }
 
-  app_settings = {
-    WEBSITES_PORT     = 80
-    KEYCLOAK_USER     = "admin"
-    KEYCLOAK_PASSWORD = "Pa55w0rd"
-    #KEYCLOAK_IMPORT   = "https://raw.githubusercontent.com/bcgov/CIT/develop/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled"
-    HEALTH_CHECK_PATH = "https://web-cit4-citz-bcgov-test.azurewebsites.net/auth/"
-  }
-}
+#   app_settings = {
+#     WEBSITES_PORT     = 80
+#     KEYCLOAK_USER     = "admin"
+#     KEYCLOAK_PASSWORD = "Pa55w0rd"
+#     #KEYCLOAK_IMPORT   = "https://raw.githubusercontent.com/bcgov/CIT/develop/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled"
+#     HEALTH_CHECK_PATH = "https://web-cit4-citz-bcgov-test.azurewebsites.net/auth/"
+#   }
+# }
