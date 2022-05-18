@@ -6,7 +6,7 @@ from azure.storage.blob import BlobServiceClient
 
 
 from pipeline.importers.databc_resource import import_wms_resource
-from pipeline.importers.bucket2_semiannually import import_data_sources
+from pipeline.importers.bucket2_phdemographic import import_data_sources
 from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.importers.shp_resource import import_shp_resources
@@ -41,18 +41,9 @@ class Command(BaseCommand):
         import_data_sources()
         #Ensure that the data sources are updated
         data_resources = DataSource.objects.filter(name__in=[
-            'BusinessesByCSD','NBDPHHSpeeds','phdemographicdistribution','tourism_regions', 'Housing_Data', 'municipalities',  'regional_districts', 'school_districts', 'tsunami_zones', 'wildfires_zones'
+            'phdemographicdistribution'
         ])
 
         for resource in data_resources:
-            if resource.source_type == "wms":
-                print(f'Importing {resource.display_name}...')
-                import_wms_resource(resource)
-            if resource.source_type == "csv":
-                print(f'Importing {resource.display_name}...')
-                import_csv_resources(resource.name)
-            if resource.source_type == "shp":
-                print(f'Importing {resource.display_name}...')
-                import_shp_resources(resource.name)
-
-        print("Import process for bucket2_semiannually completed!")
+            import_csv_resources(resource.name)
+        print("Import process for PH Demographic completed!")
