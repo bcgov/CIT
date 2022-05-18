@@ -14,12 +14,17 @@ terraform {
       version = ">= 4.1"
     }
   }
+  # To obtain the acces_key value:
+  # 1) az login
+  # 2) az storage account keys list -g CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01-Test -n tfstatecittest
+  # 3) you can add the access_key here, but you may accidently commit it to the git repo.  Better would be to pass it in via CLI at init.  eg:
+  #       $> terraform init --backend-config="access_key=abcyourkeyhere123"
   backend "azurerm" {
     storage_account_name = "tfstatecittest"
     container_name       = "tfstate"
     key                  = "terraform.tfstate"
     resource_group_name  = "CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01-Test"
-    access_key           = var.tf_state_backend_access_key
+    # access_key           = ""
     use_azuread_auth     = true
     use_msi              = true
   }
@@ -34,7 +39,7 @@ provider "azurerm" {
   }
 }
 
-provider "github" {
-  token = var.github_token
-  owner = var.github_owner
-}
+# provider "github" {
+#   token = var.github_token
+#   owner = var.github_owner
+# }

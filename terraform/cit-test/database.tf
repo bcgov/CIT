@@ -30,8 +30,8 @@ resource "azurerm_postgresql_server" "postgres" {
 
   # administrator_login          = random_string.db_admin.result
   # administrator_login_password = random_password.db_password.result
-  administrator_login          = "${var.psql_username}"
-  administrator_login_password = "${var.psql_password}"
+  administrator_login          = var.psql_username
+  administrator_login_password = var.psql_password
 
 
   version                 = "11"

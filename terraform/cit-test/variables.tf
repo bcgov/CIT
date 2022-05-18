@@ -24,6 +24,19 @@ variable "description" {
   description = "Provide a description of the resource"
 }
 
+
+variable "psql_username" {
+  type        = string
+  description = "The psql username"
+  default     = "cit_user"
+}
+
+variable "psql_password" {
+  type        = string
+  description = "The psql password"
+}
+
+
 #############################
 ## Azure Variables         ##
 #############################
@@ -47,18 +60,6 @@ variable "azure_location" {
   description = "Azure resource group"
   default     = "canadacentral"
 }
-
-variable "psql_username" {
-  type        = string
-  description = "The psql username"
-  default     = "cit_user"
-}
-
-variable "psql_password" {
-  type        = string
-  description = "The psql password"
-}
-
 
 
 # variable "github_token" {
