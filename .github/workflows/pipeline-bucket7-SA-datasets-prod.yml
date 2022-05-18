@@ -4,8 +4,6 @@ name: Data Pipeline - Bucket 7 semiannually Prod
 on:
   schedule:
     - cron: "0 0 1 */6 *"
-env: 
-  AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   run-wildfire-zones:
     runs-on: ubuntu-latest

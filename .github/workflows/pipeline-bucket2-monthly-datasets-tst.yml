@@ -5,8 +5,6 @@ name: Data Pipeline - Bucket 2 monthly Test
 on:
   schedule:
     - cron: "0 0 1 * *"
-env: 
-  AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   run-connectivity-projects:
     runs-on: ubuntu-latest

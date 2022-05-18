@@ -7,8 +7,6 @@ name: Data Pipeline - Bucket 5 semiannually Test
 on:
   schedule:
     - cron: "0 0 1 */6 *"
-env: 
-  AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   run-airports:
     runs-on: ubuntu-latest
