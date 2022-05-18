@@ -2,20 +2,6 @@
 ## PostgreSQL Database      ##
 ##############################
 
-# resource "random_string" "db_admin" {
-#   length  = 8
-#   special = false
-#   lower   = true
-#   upper   = false
-#   number  = false
-# }
-
-# resource "random_password" "db_password" {
-#   length  = 16
-#   special = true
-#   #override_special = "_%@"
-# }
-
 resource "azurerm_postgresql_server" "postgres" {
   name                = "psql-${var.app_suffix}-${var.environment}"
   location            = var.azure_location
@@ -28,11 +14,8 @@ resource "azurerm_postgresql_server" "postgres" {
   geo_redundant_backup_enabled = false
   auto_grow_enabled            = true
 
-  # administrator_login          = random_string.db_admin.result
-  # administrator_login_password = random_password.db_password.result
   administrator_login          = var.psql_username
   administrator_login_password = var.psql_password
-
 
   version                 = "11"
   ssl_enforcement_enabled = true
@@ -43,6 +26,22 @@ resource "azurerm_postgresql_server" "postgres" {
     owner       = var.owner
   }
 
+}
+
+resource "azurerm_postgresql_firewall_rule" "api-psql-webapp-firewall" {
+  name                = "api-webapp"
+  resource_group_name = var.azure_resource_group
+  server_name         = azurerm_postgresql_server.postgres.name
+  start_ip_address    = "20.151.0.0"
+  end_ip_address      = "20.151.255.255"
+}
+
+resource "azurerm_postgresql_firewall_rule" "jessica-psql-firewall" {
+  name                = "jessica-home"
+  resource_group_name = var.azure_resource_group
+  server_name         = azurerm_postgresql_server.postgres.name
+  start_ip_address    = "165.225.209.47"
+  end_ip_address      = "165.225.209.47"
 }
 
 resource "azurerm_postgresql_database" "postgres" {
