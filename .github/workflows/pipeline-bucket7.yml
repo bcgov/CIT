@@ -6,7 +6,6 @@ on:
   workflow_dispatch:
 env: 
   BUCKET_COMMAND: bucket_7
-  AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   run-test:
     runs-on: ubuntu-latest

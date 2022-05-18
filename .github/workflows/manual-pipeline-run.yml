@@ -44,7 +44,6 @@ on:
         - bucket_7_bc_network_connectivity
 env: 
   BUCKET_COMMAND: ${{ github.event.inputs.buckets }}
-  AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   run-test:
     runs-on: ubuntu-latest
