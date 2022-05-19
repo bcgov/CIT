@@ -785,17 +785,8 @@ def remove_dependencies():
 
 def add_dependencies():
     with connection.cursor() as cursor:
-        cursor.execute(
-            f"""CREATE OR REPLACE VIEW public.cit_regions_distribution_vw AS
-         SELECT DISTINCT 'All of British Columbia'::text AS zone_type,
-    'All of British Columbia'::text AS zone_name,
-    csd.census_subdivision_id
-   FROM pipeline_cen_prof_detailed_csd_attrs_sp csd
-UNION
- SELECT DISTINCT 'Regional District'::text AS zone_type,
-    rd.name AS zone_name,
-    csd.census_subdivision_id
-   FROM pipeline_linkagewithcensus lkSELECT DISTINCT 'All of British Columbia'::text AS zone_type,
+        cursor.execute("""CREATE OR REPLACE VIEW public.cit_regions_distribution_vw AS
+             SELECT DISTINCT 'All of British Columbia'::text AS zone_type,
     'All of British Columbia'::text AS zone_name,
 	1::text AS zone_id,
     csd.census_subdivision_id
@@ -869,7 +860,7 @@ UNION
     csd.census_subdivision_id
    FROM pipeline_linkagewithcensus lk
      JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
-     JOIN pipeline_naturalresourceregion nrr ON lk.natural_resource_region_id = nrr.id;""")
+     JOIN pipeline_naturalresourceregion nrr ON lk.natural_resource_region_id = nrr.id;;""")
 
 def import_census_subdivision_linkage(linkage_file):
     data = pd.read_csv(linkage_file)
