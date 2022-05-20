@@ -7,7 +7,6 @@ on:
     - cron: "0 0 1 * *"
 env: 
   BUCKET_COMMAND: bucket_4_monthly
-  AZURE_STORAGE_ACCOUNT_KEY: ${{ secrets.AZURE_STORAGE_ACCOUNT_KEY }}
 jobs:
   run-test:
     runs-on: ubuntu-latest

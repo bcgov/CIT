@@ -3,8 +3,6 @@ version: "3.3"
 services:
   cit-api-pipeline:
     build:
-      args: 
-        AZURE_STORAGE_ACCOUNT_KEY: ${AZURE_STORAGE_ACCOUNT_KEY}
       context: ./
       dockerfile: Dockerfile.pipeline
     image: countable/cit
