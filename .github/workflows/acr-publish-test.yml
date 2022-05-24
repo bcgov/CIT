@@ -1,12 +1,12 @@
 # This workflow will build and push a new container image to Azure ACR
 
 on:
-  # push:
-  #   branches:
-  #     - terraform
+  push:
+    branches:
+      - terraform
   workflow_dispatch:
 
-name: Build and Push (Test)
+name: Ugly - Build and Push (Test)
 
 jobs:
   build-and-deploy:
