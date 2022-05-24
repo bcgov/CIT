@@ -70,7 +70,7 @@ class Migration(migrations.Migration):
         FROM pipeline_linkagewithcensus lk
             JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
             JOIN pipeline_schooldistrict sd ON lk.school_district_id = sd.area_id;"""),
-        
+
         migrations.RunSQL("""DROP VIEW IF EXISTS public.cit_census_subdivisions_vw;
                     CREATE OR REPLACE VIEW public.cit_census_subdivisions_vw AS
                     SELECT '2021'::text AS data_year,
@@ -97,7 +97,6 @@ class Migration(migrations.Migration):
                         pipeline_cen_prof_detailed_csd_attrs_sp.education_25_64_univ_doctor,
                         pipeline_cen_prof_detailed_csd_attrs_sp.pop_total_2021 AS pop_total_census,
                         pipeline_cen_prof_detailed_csd_attrs_sp.pop_total_2016 AS pop_total_prev_census,
-                        pipeline_cen_prof_detailed_csd_attrs_sp.pop_2016_2021_pct_change AS pop_pct_change_with_prev_census,
                         pipeline_cen_prof_detailed_csd_attrs_sp.land_area_sq_km,
                         pipeline_cen_prof_detailed_csd_attrs_sp.aboriginal_identity,
                         pipeline_cen_prof_detailed_csd_attrs_sp.hshld_income_median,
@@ -282,7 +281,6 @@ class Migration(migrations.Migration):
                         pipeline_cen_prof_detailed_csd_attrs_sp.census_subdivision_type_code,
                         pipeline_cen_prof_detailed_csd_attrs_sp.pop_total_2021 AS pop_total_2016,
                         pipeline_cen_prof_detailed_csd_attrs_sp.pop_total_2016 AS pop_total_2011,
-                        pipeline_cen_prof_detailed_csd_attrs_sp.pop_2016_2021_pct_change AS pop_2011_2016_pct_change
                     FROM pipeline_cen_prof_detailed_csd_attrs_sp
                     UNION ALL
                     SELECT '2016'::text AS data_year,

@@ -32,17 +32,17 @@ resource "azurerm_postgresql_firewall_rule" "api-psql-webapp-firewall" {
   name                = "api-webapp"
   resource_group_name = var.azure_resource_group
   server_name         = azurerm_postgresql_server.postgres.name
-  start_ip_address    = "20.0.0.0"
-  end_ip_address      = "20.255.255.255"
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
 }
 
-resource "azurerm_postgresql_firewall_rule" "jessica-psql-firewall" {
-  name                = "jessica-home"
-  resource_group_name = var.azure_resource_group
-  server_name         = azurerm_postgresql_server.postgres.name
-  start_ip_address    = "165.225.209.47"
-  end_ip_address      = "165.225.209.47"
-}
+# resource "azurerm_postgresql_firewall_rule" "jessica-psql-firewall" {
+#   name                = "jessica-home"
+#   resource_group_name = var.azure_resource_group
+#   server_name         = azurerm_postgresql_server.postgres.name
+#   start_ip_address    = "165.225.209.47"
+#   end_ip_address      = "165.225.209.47"
+# }
 
 resource "azurerm_postgresql_database" "postgres" {
   name                = "cit"
