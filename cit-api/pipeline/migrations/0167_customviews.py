@@ -280,7 +280,7 @@ class Migration(migrations.Migration):
                         pipeline_cen_prof_detailed_csd_attrs_sp.feature_length_m,
                         pipeline_cen_prof_detailed_csd_attrs_sp.census_subdivision_type_code,
                         pipeline_cen_prof_detailed_csd_attrs_sp.pop_total_2021 AS pop_total_2016,
-                        pipeline_cen_prof_detailed_csd_attrs_sp.pop_total_2016 AS pop_total_2011,
+                        pipeline_cen_prof_detailed_csd_attrs_sp.pop_total_2016 AS pop_total_2011
                     FROM pipeline_cen_prof_detailed_csd_attrs_sp
                     UNION ALL
                     SELECT '2016'::text AS data_year,
