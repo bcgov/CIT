@@ -490,7 +490,6 @@ class Migration(migrations.Migration):
                         pipeline_census_subdivision_2016.feature_length_m,
                         pipeline_census_subdivision_2016.census_subdivision_type_code,
                         pipeline_census_subdivision_2016.pop_total_2016,
-                        pipeline_census_subdivision_2016.pop_total_2011,
-                        pipeline_census_subdivision_2016.pop_2011_2016_pct_change
+                        pipeline_census_subdivision_2016.pop_total_2011
                     FROM pipeline_census_subdivision_2016;""")
     ]
