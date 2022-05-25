@@ -13,8 +13,7 @@ resource "azurerm_linux_web_app" "backend" {
     }
 
     cors {
-      # allowed_origins = ["https://test.communityinformationtool.gov.bc.ca"]
-      allowed_origins = ["https://web-cit4-citz-bcgov-test.azurewebsites.net"]
+      allowed_origins = ["https://test.communityinformationtool.gov.bc.ca"]
     }
   }
 

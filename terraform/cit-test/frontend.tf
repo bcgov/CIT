@@ -12,8 +12,12 @@ resource "azurerm_linux_web_app" "frontend" {
       docker_image      = "${azurerm_container_registry.citacrtest.name}.azurecr.io/cit-frontend"
       docker_image_tag  = "latest"
     }
-  }
 
+    cors {
+      allowed_origins = ["cittest.communityinformationtool.gov.bc.ca"]
+    }
+
+  }
 
   app_settings = {
     DOCKER_REGISTRY_SERVER_URL            = "https://${azurerm_container_registry.citacrtest.name}.azurecr.io"
@@ -38,3 +42,24 @@ resource "azurerm_linux_web_app" "frontend" {
     owner       = var.owner
   }
 }
+
+# resource "azurerm_app_service_custom_hostname_binding" "cittest" {
+#   hostname            = "cittest.communityinformationtool.gov.bc.ca"
+#   app_service_name    = azurerm_linux_web_app.frontend.name
+#   resource_group_name = var.azure_resource_group
+#   # Ignore ssl_state and thumbprint as they are managed using
+#   # azurerm_app_service_certificate_binding.example
+#   lifecycle {
+#     ignore_changes = [ssl_state, thumbprint]
+#   }
+# }
+
+# resource "azurerm_app_service_managed_certificate" "cittest" {
+#   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.cittest.id
+# }
+
+# resource "azurerm_app_service_certificate_binding" "cittest" {
+#   hostname_binding_id = azurerm_app_service_custom_hostname_binding.cittest.id
+#   certificate_id      = azurerm_app_service_managed_certificate.cittest.id
+#   ssl_state           = "SniEnabled"
+# }
