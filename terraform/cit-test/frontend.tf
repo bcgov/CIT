@@ -6,10 +6,14 @@ resource "azurerm_linux_web_app" "frontend" {
   https_only          = true
 
   site_config {
-    # linux_fx_version = "DOCKER|${azurerm_container_registry.citacrtest.name}.azurecr.io/cit-frontend:latest"
     always_on = true
-    # http2_enabled = true
+
+    application_stack {
+      docker_image      = "${azurerm_container_registry.citacrtest.name}.azurecr.io/cit-frontend"
+      docker_image_tag  = "latest"
+    }
   }
+
 
   app_settings = {
     DOCKER_REGISTRY_SERVER_URL            = "https://${azurerm_container_registry.citacrtest.name}.azurecr.io"

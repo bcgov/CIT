@@ -5,8 +5,13 @@ resource "azurerm_linux_web_app" "backend" {
   service_plan_id     = azurerm_service_plan.webapp.id
 
   site_config {
-    # linux_fx_version = "DOCKER|${azurerm_container_registry.citacrtest.name}.azurecr.io/cit-webapi:latest"
     always_on = true
+
+    application_stack {
+      docker_image      = "${azurerm_container_registry.citacrtest.name}.azurecr.io/cit-frontend"
+      docker_image_tag  = "latest"
+    }
+
     cors {
       # allowed_origins = ["https://test.communityinformationtool.gov.bc.ca"]
       allowed_origins = ["https://web-cit4-citz-bcgov-test.azurewebsites.net"]
