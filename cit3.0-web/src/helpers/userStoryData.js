@@ -41,7 +41,7 @@ export async function getNaturalResourceRegions() {
 
   const response = await axios.get(url);
   const result = response.data.data.map((x) => ({
-    value: x.org_unit,
+    value: x.id,
     label: x.name,
   }));
 
@@ -65,7 +65,7 @@ export async function getRegionalDistricts() {
 
   const response = await axios.get(url);
   const result = response.data.data.map((x) => ({
-    value: x.id,
+    value: x.area_id,
     label: x.name,
   }));
 
@@ -89,7 +89,7 @@ export async function getTsunamiZones() {
 
   const response = await axios.get(url);
   const result = response.data.data.map((x) => ({
-    value: x.id,
+    value: x.name,
     label: x.tsunami_zone_name,
   }));
 
@@ -101,7 +101,7 @@ export async function getWildfireZones() {
 
   const response = await axios.get(url);
   const result = response.data.data.map((x) => ({
-    value: x.id,
+    value: x.zone_id,
     label: x.zone_name,
   }));
 
