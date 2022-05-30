@@ -153,17 +153,17 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
       };
       zoneFilter.push(zoneTypeFilter);
     }
-    if (filter && filter.zoneName) {
-      const zoneNameFilter = {
+    if (filter && filter.zoneId) {
+      const zoneIdFilter = {
         $schema: "http://powerbi.com/product/schema#basic",
         target: {
-          column: "zone_name",
+          column: "zone_id",
           table: "Region Distribution",
         },
         operator: "In",
-        values: [filter.zoneName],
+        values: [String(filter.zoneId)],
       };
-      zoneFilter.push(zoneNameFilter);
+      zoneFilter.push(zoneIdFilter);
     }
 
     return zoneFilter;
@@ -248,7 +248,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
   };
 
   const reportButtons = (
-    <div className="d-flex justify-content-left btn-group report-buttons my-0 mr-3 ml-10">
+    <div className="d-flex justify-content-left btn-group report-buttons m-0 p-0">
       {reportTabs
         .filter((t) => !t.isLoginRequired)
         .map((tab) => (

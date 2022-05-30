@@ -16,6 +16,7 @@
     width: 99%;
     min-width: 960px;
     max-width: 1340px;
+    padding:0 auto;
     margin:0 auto;
     font-size:1em; 
 }
