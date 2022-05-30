@@ -44,7 +44,7 @@ class CommunityOptions(APIView):
         
 class RegionalDistrictOptions(APIView):
     def get(self, request, format=None):
-        options =  RegionalDistrict.objects.all().values('id', 'area_id', 'name').distinct().order_by('name')
+        options =  RegionalDistrict.objects.all().values('area_id', 'name').distinct().order_by('name')
         return Response(dict(data=options))
 
 class TourismRegionOptions(APIView):
@@ -54,12 +54,12 @@ class TourismRegionOptions(APIView):
 
 class CensusEconomicRegionOptions(APIView):
     def get(self, request, format=None):
-        options =  CensusEconomicRegion.objects.all().values('census_year', 'economic_region_id', 'name').distinct().order_by('name')
+        options =  CensusEconomicRegion.objects.all().filter(census_year='2021').values('economic_region_id', 'name').distinct().order_by('name')
         return Response(dict(data=options))       
 
 class NaturalResourceRegionOptions(APIView):
     def get(self, request, format=None):
-        options =  NaturalResourceRegion.objects.all().values('org_unit', 'name').distinct().order_by('name')
+        options =  NaturalResourceRegion.objects.all().values('id', 'name').distinct().order_by('name')
         return Response(dict(data=options))    
 
 class CensusSubdivisionOptions(APIView):
@@ -69,12 +69,12 @@ class CensusSubdivisionOptions(APIView):
 
 class WildfireZoneOptions(APIView):
     def get(self, request, format=None):
-        options =  BCWildfireZone.objects.all().values('id', 'zone_name').distinct().order_by('zone_name')
+        options =  BCWildfireZone.objects.all().values('zone_id', 'zone_name').distinct().order_by('zone_name')
         return Response(dict(data=options)) 
 
 class TsunamiZoneOptions(APIView):
     def get(self, request, format=None):
-        options =  TsunamiZone.objects.all().values('id', 'tsunami_zone_name').distinct().order_by('tsunami_zone_name')
+        options =  TsunamiZone.objects.all().values('name', 'tsunami_zone_name').distinct().order_by('tsunami_zone_name')
         return Response(dict(data=options)) 
 
 class SchoolDistrictOptions(APIView):
