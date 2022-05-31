@@ -16,8 +16,19 @@ on:
         description: Select the bucket
         required: true
         options:
-        - bucket_1
-        - bucket_2_semiannually
+        - bucket_1_census_divisions
+        - bucket_1_census_subdivisions_2016
+        - bucket_1_census_subdivisions
+        - bucket_2_businesses_by_csd
+        - bucket_2_housing
+        - bucket_2_municipalities
+        - bucket_2_nbd_phh_speeds
+        - bucket_2_phdeomographic
+        - bucket_2_regional_districts
+        - bucket_2_school_districts
+        - bucket_2_tourism_region
+        - bucket_2_tsunami_zones
+        - bucket_2_wildfire_zones
         - bucket_2_connectivity_projects
         - bucket_2_naics_codes
         - bucket_3
