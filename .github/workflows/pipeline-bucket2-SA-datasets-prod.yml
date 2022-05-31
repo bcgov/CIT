@@ -5,7 +5,7 @@
 name: Data Pipeline - Bucket 2 semiannually Prod
 on:
   schedule:
-    - cron: "0 0 1 */6 *" 
+    - cron: "0 0 1 */6 *"
 jobs:
   run-businesses-by-csd:
     runs-on: ubuntu-latest
@@ -102,7 +102,7 @@ jobs:
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
   
-   run-regional-districts:
+  run-regional-districts:
     runs-on: ubuntu-latest
     steps:
       # checkout the repo
