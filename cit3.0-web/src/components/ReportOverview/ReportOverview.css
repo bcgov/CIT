@@ -39,8 +39,8 @@
 .tabs-container button {
 	border: 0;
 	font-size: medium;
-	margin: 0 0px;
-  padding: 0 0px;
+	margin: 0px 2px 0px 0px;
+  padding: 0px 1px 0px 0px;
   height: 40px;
   font-weight: bold;
   border-radius: 0 !important;
