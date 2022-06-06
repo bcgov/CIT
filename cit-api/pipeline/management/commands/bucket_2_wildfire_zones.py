@@ -6,13 +6,13 @@ from azure.storage.blob import BlobServiceClient
 
 
 from pipeline.importers.databc_resource import import_wms_resource
-from pipeline.importers.bucket1 import import_data_sources
+from pipeline.importers.bucket2_wildfire_zones import import_data_sources
+from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.models.general import DataSource
 from admin import settings
 
 
 class Command(BaseCommand):
-    SUB_FOLDERS = ['bc_assessment']
 
     def handle(self, *args, **options):
         #If in test or prod make sure the most recent static files are fetched.
@@ -39,12 +39,9 @@ class Command(BaseCommand):
         import_data_sources()
         #Ensure that the data sources are updated
         data_resources = DataSource.objects.filter(name__in=[
-            'census_subdivisions', 'census_divisions', 'census_subdivisions_2016', 'census_divisions_2016'
-        ]).order_by('import_order')
+            'wildfires_zones'
+        ])
 
         for resource in data_resources:
-            if resource.source_type == "wms":
-                print(f'Importing {resource.display_name}...')
-                import_wms_resource(resource)
-
-        print("Import process for bucket1 completed!")
+            import_wms_resource(resource)
+        print("Import process for Wildfire Zones completed!")

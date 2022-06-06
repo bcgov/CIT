@@ -1,0 +1,10 @@
+[{
+    "name": "census_subdivisions_2016",
+    "display_name": "Census Subdivisions 2016",
+    "model_name": "census_subdivision_2016",
+    "source": "databc",
+    "source_type": "wms",
+    "permalink_id": "b3b986e5-33bf-46c2-82a7-0b7023d9f9fa",
+    "dataset": "census-profiles-for-bc-census-subdivisions-2016-census",
+    "import_order": 1
+  }]
