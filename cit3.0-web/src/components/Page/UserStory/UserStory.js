@@ -216,9 +216,9 @@ export default function UserStory() {
       switch (userOption.code) {
         case "COMMUNITY":
           userOption.user_story_paths = communities;
-          zoneType.current = "Communities";
+          zoneType.current = "Community";
           break;
-        case "COMMUNITYAREA":
+        case "CENSUSSUBDIVISION":
           userOption.user_story_paths = censusSubdivisions;
           zoneType.current = "Census Subdivision";
           break;
