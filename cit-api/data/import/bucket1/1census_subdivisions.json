@@ -1,0 +1,12 @@
+[
+    {
+      "name": "census_subdivisions",
+      "display_name": "Census Subdivisions",
+      "model_name": "CEN_PROF_DETAILED_CSD_ATTRS_SP",
+      "source": "databc",
+      "source_type": "wms",
+      "permalink_id": "42b3f57e-8879-4e5c-97e0-cdad8410da47",
+      "dataset": "census-profiles-for-bc-census-subdivisions-2021-census",
+      "import_order": 0
+    }
+]

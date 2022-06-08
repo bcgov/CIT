@@ -71,7 +71,7 @@ export default function UserStory() {
 
   const zoneFilter = useRef();
   const zoneType = useRef();
-  const zoneName = useRef();
+  const zoneId = useRef();
   const redirectUrl = useRef();
 
   const history = useHistory();
@@ -208,7 +208,7 @@ export default function UserStory() {
       }
     }
 
-    if (param.group === "zone-type-list") zoneName.current = param.label;
+    if (param.group === "zone-type-list") zoneId.current = param.value;
 
     if (param.group === "zone") {
       setAreaType(userOption.label);
@@ -216,9 +216,9 @@ export default function UserStory() {
       switch (userOption.code) {
         case "COMMUNITY":
           userOption.user_story_paths = communities;
-          zoneType.current = "Communities";
+          zoneType.current = "Community";
           break;
-        case "COMMUNITYAREA":
+        case "CENSUSSUBDIVISION":
           userOption.user_story_paths = censusSubdivisions;
           zoneType.current = "Census Subdivision";
           break;
@@ -256,15 +256,15 @@ export default function UserStory() {
           break;
         default:
           zoneType.current = null;
-          zoneName.current = null;
+          zoneId.current = null;
       }
     }
 
     zoneFilter.current = null;
-    if (zoneType.current || zoneName.current) {
+    if (zoneType.current || zoneId.current) {
       zoneFilter.current = {
         zoneType: zoneType.current,
-        zoneName: zoneName.current,
+        zoneId: zoneId.current,
       };
     }
 
@@ -337,10 +337,10 @@ export default function UserStory() {
 
   const header = (
     <>
-      <h3>
+      <h1>
         Hi{userName ? " " : ""}
         {userName}, welcome to our Community Information Tool
-      </h3>
+      </h1>
       <p>
         The Community Information Tool offers insight into communities across
         B.C. with integrated socio-economic, connectivity, and community assets

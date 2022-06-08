@@ -15,7 +15,7 @@
 }
 
 .report-buttons button {
-	width: 180px;
+	  width: 180px;
     height: 44px;
     font-weight: bold !important;
     font-size: 16px;
@@ -28,7 +28,7 @@
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    width: 98%;
+    width: 99%;
     min-width: 960px;
     max-width: 1340px;
     margin: 0px !important;
@@ -38,10 +38,9 @@
 
 .tabs-container button {
 	border: 0;
-	color: #FFFFFF;
 	font-size: medium;
-	margin: 0 2px;
-  padding: 0 1px;
+	margin: 0px 2px 0px 0px;
+  padding: 0px 1px 0px 0px;
   height: 40px;
   font-weight: bold;
   border-radius: 0 !important;
