@@ -5,6 +5,7 @@ name: Data Pipeline - Bucket 2 monthly Test
 on:
   schedule:
     - cron: "0 0 1 * *"
+    
 jobs:
   run-connectivity-projects:
     runs-on: ubuntu-latest
