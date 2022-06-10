@@ -16,4 +16,9 @@ class Migration(migrations.Migration):
             name='natural_resource_region_id',
             field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='pipeline.NaturalResourceRegion'),
         ),
+             migrations.RenameField(
+            model_name='linkagewithcensus',
+            old_name='natural_resource_region_id',
+            new_name='natural_resource_region',
+        ),    
     ]

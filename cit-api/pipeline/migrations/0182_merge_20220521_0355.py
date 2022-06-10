@@ -6,8 +6,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('pipeline', '0180_auto_20220514_2017'),
-        ('pipeline', '0180_change_view'),
+        
+        ('pipeline', '0181_change_view'),
     ]
 
     operations = [

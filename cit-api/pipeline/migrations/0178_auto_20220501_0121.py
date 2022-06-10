@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='linkagewithcensus',
-            name='natural_resource_region_id',
+            name='natural_resource_region',
             field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='pipeline.NaturalResourceRegion'),
         ),
         migrations.AlterField(
@@ -56,4 +56,5 @@ class Migration(migrations.Migration):
             name='tsunami_notification_zone',
             field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='pipeline.TsunamiZone'),
         ),
+       
     ]
