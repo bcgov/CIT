@@ -333,7 +333,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
 
   useEffect(() => {
     const defaultPage = reportTabs.find((tab) => tab.isDefault);
-    if (defaultPage) setPage(defaultPage.pageNahandleCopyUrlme);
+    if (defaultPage) setPage(defaultPage.pageName);
   }, [showReport]);
 
   const otherButtons = (
