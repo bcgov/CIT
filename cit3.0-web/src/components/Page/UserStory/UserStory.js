@@ -72,6 +72,7 @@ export default function UserStory() {
   const zoneFilter = useRef();
   const zoneType = useRef();
   const zoneId = useRef();
+  const zoneLabel = useRef();
   const redirectUrl = useRef();
 
   const history = useHistory();
@@ -208,8 +209,10 @@ export default function UserStory() {
       }
     }
 
-    if (param.group === "zone-type-list") zoneId.current = param.value;
-
+    if (param.group === "zone-type-list") {
+      zoneLabel.current = param.label;
+      zoneId.current = param.value;
+    }
     if (param.group === "zone") {
       setAreaType(userOption.label);
 
@@ -257,6 +260,7 @@ export default function UserStory() {
         default:
           zoneType.current = null;
           zoneId.current = null;
+          zoneLabel.current = null;
       }
     }
 
@@ -265,6 +269,7 @@ export default function UserStory() {
       zoneFilter.current = {
         zoneType: zoneType.current,
         zoneId: zoneId.current,
+        zoneLabel: zoneLabel.current,
       };
     }
 
