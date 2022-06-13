@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Toast } from "react-bootstrap";
 import { Printer, LockFill } from "react-bootstrap-icons";
 import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
 import Roles from "../../constants/roles";
 import Config from "../../Config";
+import useConfiguration from "../../hooks/useConfiguration";
 import "./ReportOverview.css";
 
 let reportId = Config.pbiReportIdPublic;
@@ -15,14 +16,20 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
   const BcGovUser = "BCGOV";
 
   const keycloak = useKeycloakWrapper();
+  const configuration = useConfiguration();
+
+  const reportUrl = useRef();
 
   const [report, setReport] = useState();
   const [token, setToken] = useState("");
   const [showReport, setShowReport] = useState(false);
 
   const [show, setShow] = useState(false);
+  const [showCopyUrl, setShowCopyUrl] = useState(false);
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
+
+  const handleCloseCopyUrl = () => setShowCopyUrl(false);
 
   const [modalInfo, setModalInfo] = useState("");
 
@@ -166,6 +173,19 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
       zoneFilter.push(zoneIdFilter);
     }
 
+    if (filter && filter.zoneName) {
+      const zoneIdFilter = {
+        $schema: "http://powerbi.com/product/schema#basic",
+        target: {
+          column: "zone_name",
+          table: "Region Distribution",
+        },
+        operator: "In",
+        values: [String(filter.zoneName)],
+      };
+      zoneFilter.push(zoneIdFilter);
+    }
+
     return zoneFilter;
   };
 
@@ -197,6 +217,27 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
     if (newPage) {
       report.setPage(newPage.name);
     }
+  };
+
+  const handleCopyUrl = () => {
+    const url = `${
+      configuration.baseUrl
+    }/cit-dashboard/info/${encodeURIComponent(
+      reportFilter.zoneType.toLowerCase().replace(" ", "-")
+    )}/${reportFilter.zoneId}`;
+
+    reportUrl.current = url;
+
+    const el = document.createElement("textarea");
+    el.value = url;
+    el.setAttribute("readonly", "");
+    el.style.position = "absolute";
+    el.style.left = "-9999px";
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand("copy");
+    document.body.removeChild(el);
+    setShowCopyUrl(true);
   };
 
   const handlePrint = async () => {
@@ -295,11 +336,24 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
     if (defaultPage) setPage(defaultPage.pageName);
   }, [showReport]);
 
-  const printButton = (
+  const otherButtons = (
     <div className="d-flex flex-row-reverse my-2 print-container">
-      <Button type="button" variant="light px-2 rounded" onClick={handlePrint}>
+      <Button
+        type="button"
+        variant="light px-2 mx-1 rounded"
+        onClick={handlePrint}
+      >
         <Printer /> Print
       </Button>
+      {reportFilter.zoneLabel && (
+        <Button
+          type="button"
+          variant="light px-2 rounded"
+          onClick={handleCopyUrl}
+        >
+          Copy link
+        </Button>
+      )}
     </div>
   );
 
@@ -311,7 +365,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
             {showReport && (
               <>
                 <div className="tabs-container-button">{reportButtons}</div>
-                <div>{printButton}</div>
+                <div>{otherButtons}</div>
               </>
             )}
           </div>
@@ -361,6 +415,35 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
                 Login with IDIR
               </Button>
             )}
+          </Modal.Footer>
+        </Modal>
+        <Modal
+          show={showCopyUrl}
+          centered
+          onHide={handleCloseCopyUrl}
+          keyboard={false}
+          size="lg"
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>
+              <h2>CIT Link</h2>
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <h3 className="my-2">
+              {reportFilter.zoneLabel} CIT link copied to clipboard.
+            </h3>
+            <small>{reportUrl.current}</small>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              type="button"
+              variant="outline-primary"
+              className="user-story-button mr-auto"
+              onClick={handleCloseCopyUrl}
+            >
+              Close
+            </Button>
           </Modal.Footer>
         </Modal>
       </div>

@@ -232,6 +232,18 @@ function App() {
                   component={PowerBi}
                 />
                 <AppRoute
+                  title="Community Information Tool - Community Report"
+                  exact
+                  path="/cit-dashboard/info/:zonetype/:id"
+                  component={PublicReport}
+                />
+                <AppRoute
+                  title="Community Information Tool - Community Report"
+                  exact
+                  path="/cit-dashboard/info/:zonetype/name/:name"
+                  component={PublicReport}
+                />
+                <AppRoute
                   protected
                   exact
                   path="/manage/users"
