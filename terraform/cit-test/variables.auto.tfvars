@@ -1,4 +1,4 @@
-app_suffix      = "cit3-citz-bcgov"
-owner           = "CITZ"
-description     = "Community Information Toolkit"
-environment     = "test"
+app_suffix  = "cit4-citz-bcgov"
+owner       = "CITZ"
+description = "Community Information Toolkit"
+environment = "test"

@@ -70,7 +70,7 @@ class Migration(migrations.Migration):
         FROM pipeline_linkagewithcensus lk
             JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
             JOIN pipeline_schooldistrict sd ON lk.school_district_id = sd.area_id;"""),
-        
+
         migrations.RunSQL("""DROP VIEW IF EXISTS public.cit_census_subdivisions_vw;
                     CREATE OR REPLACE VIEW public.cit_census_subdivisions_vw AS
                     SELECT '2021'::text AS data_year,

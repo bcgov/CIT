@@ -15,4 +15,4 @@ class LinkageWithCensus(models.Model):
     tsunami_notification_zone= models.ForeignKey(TsunamiZone, null=True, on_delete=models.CASCADE)
     health_authority = models.ForeignKey(HealthAuthorityBoundary, null=True, on_delete=models.CASCADE)
     school_district = models.ForeignKey(SchoolDistrict, null=True, on_delete=models.CASCADE)
-    natural_resource_region_id = models.ForeignKey(NaturalResourceRegion, null=True, on_delete=models.CASCADE)
+    natural_resource_region = models.ForeignKey(NaturalResourceRegion, null=True, on_delete=models.CASCADE)

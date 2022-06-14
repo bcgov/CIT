@@ -24,6 +24,19 @@ variable "description" {
   description = "Provide a description of the resource"
 }
 
+
+variable "psql_username" {
+  type        = string
+  description = "The psql username"
+  default     = "cit_user"
+}
+
+variable "psql_password" {
+  type        = string
+  description = "The psql password"
+}
+
+
 #############################
 ## Azure Variables         ##
 #############################
@@ -39,7 +52,7 @@ variable "azure_tenant_id" {
 variable "azure_resource_group" {
   type        = string
   description = "Azure resource group"
-  default     = "CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01"
+  default     = "CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01-Test"
 }
 
 variable "azure_location" {
@@ -47,6 +60,22 @@ variable "azure_location" {
   description = "Azure resource group"
   default     = "canadacentral"
 }
+
+
+# variable "github_token" {
+#   type        = string
+#   description = "Github PAT with repo write access"
+# }
+
+# variable "github_owner" {
+#   type        = string
+#   description = "Owner (group) of the Github repository'"
+# }
+
+# variable "github_repository" {
+#   type        = string
+#   description = "Github repository for the project'"
+# }
 
 #############################
 ## Application Variables   ##
@@ -69,4 +98,3 @@ variable "pbi_secret" {
   type        = string
   description = "PowerBI client secret"
 }
-

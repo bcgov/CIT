@@ -1,22 +1,30 @@
-resource "azurerm_app_service" "frontend" {
-  name                =  "web-${var.app_suffix}-${var.environment}"
+resource "azurerm_linux_web_app" "frontend" {
+  name                = "web-${var.app_suffix}-${var.environment}"
   location            = var.azure_location
   resource_group_name = var.azure_resource_group
-  app_service_plan_id = azurerm_app_service_plan.webapp.id
+  service_plan_id     = azurerm_service_plan.webapp.id
   https_only          = true
 
   site_config {
-    linux_fx_version = "DOCKER|${data.terraform_remote_state.shared.outputs.acr_name}.azurecr.io/cit-frontend:latest"
     always_on = true
-    # http2_enabled = true
+
+    application_stack {
+      docker_image      = "${azurerm_container_registry.citacrtest.name}.azurecr.io/cit-frontend"
+      docker_image_tag  = "latest"
+    }
+
+    cors {
+      allowed_origins = ["cittest.communityinformationtool.gov.bc.ca"]
+    }
+
   }
 
   app_settings = {
-    DOCKER_REGISTRY_SERVER_URL            = "https://${data.terraform_remote_state.shared.outputs.acr_name}.azurecr.io"
-    DOCKER_REGISTRY_SERVER_USERNAME       = data.terraform_remote_state.shared.outputs.acr_admin
-    DOCKER_REGISTRY_SERVER_PASSWORD       = data.terraform_remote_state.shared.outputs.acr_password
+    DOCKER_REGISTRY_SERVER_URL            = "https://${azurerm_container_registry.citacrtest.name}.azurecr.io"
+    DOCKER_REGISTRY_SERVER_USERNAME       = azurerm_container_registry.citacrtest.admin_username
+    DOCKER_REGISTRY_SERVER_PASSWORD       = azurerm_container_registry.citacrtest.admin_password
     DOCKER_ENABLE_CI                      = true
-    REACT_APP_API_BASE_URL                = "https://${azurerm_app_service.backend.default_site_hostname}"
+    REACT_APP_API_BASE_URL                = "https://${azurerm_linux_web_app.backend.default_hostname}"
     REACT_APP_KEYCLOAK_URL                = "https://test.oidc.gov.bc.ca/auth/"
     REACT_APP_KEYCLOAK_CLIENT             = "cit-test"
     REACT_APP_KEYCLOAK_REALM              = "fyof530u"
@@ -34,3 +42,24 @@ resource "azurerm_app_service" "frontend" {
     owner       = var.owner
   }
 }
+
+# resource "azurerm_app_service_custom_hostname_binding" "cittest" {
+#   hostname            = "cittest.communityinformationtool.gov.bc.ca"
+#   app_service_name    = azurerm_linux_web_app.frontend.name
+#   resource_group_name = var.azure_resource_group
+#   # Ignore ssl_state and thumbprint as they are managed using
+#   # azurerm_app_service_certificate_binding.example
+#   lifecycle {
+#     ignore_changes = [ssl_state, thumbprint]
+#   }
+# }
+
+# resource "azurerm_app_service_managed_certificate" "cittest" {
+#   custom_hostname_binding_id = azurerm_app_service_custom_hostname_binding.cittest.id
+# }
+
+# resource "azurerm_app_service_certificate_binding" "cittest" {
+#   hostname_binding_id = azurerm_app_service_custom_hostname_binding.cittest.id
+#   certificate_id      = azurerm_app_service_managed_certificate.cittest.id
+#   ssl_state           = "SniEnabled"
+# }
