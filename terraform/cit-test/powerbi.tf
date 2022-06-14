@@ -1,3 +1,4 @@
+# We are not using this right now - we are using the production version of PowerBI - Go to documentation for more info
 # Turning this off as it costs $1000/month and doesn't appear to be needed - still investigating
 # resource "azurerm_powerbi_embedded" "powerbi" {
 #   name                = "powerbicit${var.environment}"
