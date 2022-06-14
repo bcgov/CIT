@@ -3,7 +3,7 @@
 on:
   push:
     branches:
-      - terraform
+      - develop
   workflow_dispatch:
 
 name: Build and Push (Cit01-Test RG)
