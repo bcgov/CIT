@@ -1,17 +1,18 @@
 # CIT-4.0 Data Changes
 With the newest version of CIT, the process of importing data has been udpated. The data has been decoupled to a certain point where specific datasets have been organized into groups that can be run seperately. In the previous version, an Azure Container was running the import-data.sh script which ran the bootstrap command. Now that the data has been decoupled into groups, each group has its own command that can be run by executing:
 
+
 python3 manage.py 'bucket_command' ex. python3 manage.py bucket_1
 
-Most buckets have been grouped together based on a certain schedule that they should be run at. Weekly, Monthly, Semi-Annually etc. 
+Most buckets have been grouped together based on a certain schedule that they should be run at. Weekly, Monthly, Semi-Annually etc.
 
 Github Actions have been created to run each bucket on its determined schedule. An email will be sent when its been run successfully or not. A Github Action has also been created to run any bucket manually where the user will be given a choice of what environment they would like to run it in and which bucket to run.
 
-This has cut down the time it takes to import the data significantly, however further decoupling could take place to have each dataset entirely decoupled and able to be run on their own. 
+This has cut down the time it takes to import the data significantly, however further decoupling could take place to have each dataset entirely decoupled and able to be run on their own.
 
 Below is a list of each dataset included in each bucket:
 
-Bucket 1 - census 
+Bucket 1 - census
 Bucket 2 Semiannually - housing, municipalities, NBDPHHSpeeds, Northern Rockies Census Division, phdemographic, regional districts, tourism region, tsunami zones, wildfire zones
 Bucket 2 Weekly - hexes, roads
 Bucket 3 - communities
@@ -22,7 +23,7 @@ Bucket 5 Semiannually (fully decoupled datasets with their own commands) - airpo
 Bucket 6 - bc assessment
 Bucket 7 - linkage csd
 
-If a new "Bucket" is added, this needs to be added to the list of manual run buckets in the manual-pipeline-run.yml file. 
+If a new "Bucket" is added, this needs to be added to the list of manual run buckets in the manual-pipeline-run.yml file.
 
 If any new data files are added to the Azure storage container, it will also need to be added to the Dockerfile.pipeline file (there is a section pulling each datafile from storage into the container) - definitely room for improvement here, it would be better if we could pull the whole folder instead of individual files.
 
