@@ -36,14 +36,6 @@ resource "azurerm_postgresql_firewall_rule" "api-psql-webapp-firewall" {
   end_ip_address      = "255.255.255.255"
 }
 
-# resource "azurerm_postgresql_firewall_rule" "jessica-psql-firewall" {
-#   name                = "jessica-home"
-#   resource_group_name = var.azure_resource_group
-#   server_name         = azurerm_postgresql_server.postgres.name
-#   start_ip_address    = "165.225.209.47"
-#   end_ip_address      = "165.225.209.47"
-# }
-
 resource "azurerm_postgresql_database" "postgres" {
   name                = "cit"
   resource_group_name = var.azure_resource_group
