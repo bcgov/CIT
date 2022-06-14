@@ -97,6 +97,7 @@ UNION
     pipeline_cen_prof_detailed_csd_attrs_sp.education_25_64_univ_doctor,
     pipeline_cen_prof_detailed_csd_attrs_sp.pop_total_2021 AS pop_total_census,
     pipeline_cen_prof_detailed_csd_attrs_sp.pop_total_2016 AS pop_total_prev_census,
+    pipeline_cen_prof_detailed_csd_attrs_sp.pop_2016_2021_pct_change AS pop_pct_change_with_prev_census,
     pipeline_cen_prof_detailed_csd_attrs_sp.land_area_sq_km,
     pipeline_cen_prof_detailed_csd_attrs_sp.aboriginal_identity,
     pipeline_cen_prof_detailed_csd_attrs_sp.hshld_income_median,
@@ -281,7 +282,8 @@ UNION
     pipeline_cen_prof_detailed_csd_attrs_sp.census_subdivision_type_code,
     pipeline_cen_prof_detailed_csd_attrs_sp.census_subdivision_type_desc,
     pipeline_cen_prof_detailed_csd_attrs_sp.pop_total_2021 AS pop_total_2016,
-    pipeline_cen_prof_detailed_csd_attrs_sp.pop_total_2016 AS pop_total_2011
+    pipeline_cen_prof_detailed_csd_attrs_sp.pop_total_2016 AS pop_total_2011,
+    pipeline_cen_prof_detailed_csd_attrs_sp.pop_2016_2021_pct_change AS pop_2011_2016_pct_change
    FROM pipeline_cen_prof_detailed_csd_attrs_sp
 UNION ALL
  SELECT '2016'::text AS data_year,
@@ -308,6 +310,7 @@ UNION ALL
     pipeline_census_subdivision_2016.education_25_64_univ_doctor,
     pipeline_census_subdivision_2016.pop_total_2016 AS pop_total_census,
     pipeline_census_subdivision_2016.pop_total_2011 AS pop_total_prev_census,
+    pipeline_census_subdivision_2016.pop_2011_2016_pct_change AS pop_pct_change_with_prev_census,
     pipeline_census_subdivision_2016.land_area_sq_km,
     pipeline_census_subdivision_2016.aboriginal_identity,
     pipeline_census_subdivision_2016.hshld_income_median,
@@ -492,6 +495,7 @@ UNION ALL
     pipeline_census_subdivision_2016.census_subdivision_type_code,
     pipeline_census_subdivision_2016.census_subdivision_type_desc,
     pipeline_census_subdivision_2016.pop_total_2016,
-    pipeline_census_subdivision_2016.pop_total_2011
+    pipeline_census_subdivision_2016.pop_total_2011,
+    pipeline_census_subdivision_2016.pop_2011_2016_pct_change
    FROM pipeline_census_subdivision_2016;""")
     ]
