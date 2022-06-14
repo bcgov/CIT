@@ -1,4 +1,4 @@
-# This workflow will build and push a new container image to Azure ACR
+# This workflow will build and push a new container image to Azure ACR in the Cit01-Test Resource Group
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - terraform
   workflow_dispatch:
 
-name: Ugly - Build and Push (Test)
+name: Build and Push (Cit01-Test RG)
 
 jobs:
   build-and-deploy:
