@@ -100,7 +100,6 @@ export default function UserStory() {
   };
 
   const showResult = (urlPath) => {
-    console.log(urlPath);
     if (!urlPath) return;
 
     if (urlPath && !urlPath.includes("powerbi")) {
