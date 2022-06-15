@@ -3,9 +3,6 @@
 
 name: Data Pipeline Bucket 7
 on:
-  push:
-    branches:
-      - viewupdate
   workflow_dispatch:
 env: 
   BUCKET_COMMAND: bucket_7
