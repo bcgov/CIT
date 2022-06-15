@@ -100,10 +100,11 @@ export default function UserStory() {
   };
 
   const showResult = (urlPath) => {
+    console.log(urlPath);
     if (!urlPath) return;
 
     if (urlPath && !urlPath.includes("powerbi")) {
-      history.push(urlPath);
+      window.location.href = encodeURI(`${configuration.baseUrl}/${urlPath}`);
       return;
     }
 
