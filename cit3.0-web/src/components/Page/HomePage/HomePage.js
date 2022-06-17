@@ -17,9 +17,9 @@ export default function HomePage() {
         />
         <div className="header-text">
           <div className="d-flex flex-column align-items-end">
-            <h2 className="main-header-text">
+            <h1 className="main-header-text">
               Community Investment Opportunities
-            </h2>
+            </h1>
             <h2 className="sub-header-text">
               Connecting investors with opportunities in communities across
               British Columbia
