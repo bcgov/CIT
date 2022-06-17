@@ -67,11 +67,12 @@
 }
 
 // show long App Name when space allows
-@media (min-width: 600px) {
+@media (min-width: 400px) {
   .App-header.navbar {
     .title {
       display: block;
-      font-size: calc(7px + 2.2vw);
+      font-size: calc(12px + (26 - 12) * ((100vw - 300px) / (1600 - 300)));
+      text-align: center;
     }
   }
 }

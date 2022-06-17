@@ -46,7 +46,15 @@ const LocationsPanel = ({
             <Row key={v4()} className="d-flex justify-content-between">
               <Col className="pl-0">
                 <span className="ml-2 link">
-                  {muni.name} - {muni.distance.toFixed(2)}km
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href={`/cit-dashboard/info/community/name/${encodeURIComponent(
+                      muni.name.toLowerCase()
+                    )}`}
+                  >
+                    {muni.name} - {muni.distance.toFixed(2)}km
+                  </a>
                 </span>
               </Col>
               <Col className="d-flex justify-content-end pr-0" md="auto">
