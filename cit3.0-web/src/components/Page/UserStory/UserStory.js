@@ -103,7 +103,7 @@ export default function UserStory() {
     if (!urlPath) return;
 
     if (urlPath && !urlPath.includes("powerbi")) {
-      history.push(urlPath);
+      window.location.href = encodeURI(`${configuration.baseUrl}/${urlPath}`);
       return;
     }
 
@@ -342,15 +342,23 @@ export default function UserStory() {
 
   const header = (
     <>
-      <h1>
-        Hi{userName ? " " : ""}
-        {userName}, welcome to our Community Information Tool
-      </h1>
+      <h1>Welcome to the Community Information Tool.</h1>
+      <p className="mb-3">
+        The Community Information Tool compiles over 40 data sets offering
+        insights into regions across B.C. with integrated socio-economic,
+        connectivity and community assets data. This interactive tool supports
+        community, regional and province-wide planning, which is essential to
+        building thriving communities.
+      </p>
+      <p className="mb-3">
+        You can learn more about a specific area of the province, or discover an
+        area with particular characteristics. You can also compare different
+        types of areas such as communities, census subdivisions, regional
+        districts and more.
+      </p>
       <p>
-        The Community Information Tool offers insight into communities across
-        B.C. with integrated socio-economic, connectivity, and community assets
-        data. The Tool supports community, regional, and province-wide planning,
-        which is essential to building thriving, healthy communities.
+        Please note: Searching by community will display the data from the
+        census subdivision the community belongs to.
       </p>
     </>
   );
@@ -362,7 +370,7 @@ export default function UserStory() {
       className="user-story-button"
       onClick={handleReset}
     >
-      Reset Search Criteria
+      Reset search criteria
     </Button>
   );
 
@@ -384,7 +392,7 @@ export default function UserStory() {
       className="user-story-button"
       onClick={() => showResult(redirectUrl.current)}
     >
-      {isLongVersion ? "Let's Go" : "View Results For Your New Search"}{" "}
+      {isLongVersion ? "Let's go" : "View results for your new search"}{" "}
       {isLongVersion ? <ArrowRight /> : <ChevronRight />}
     </Button>
   );
