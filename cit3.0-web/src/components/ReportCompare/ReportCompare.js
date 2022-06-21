@@ -90,8 +90,9 @@ export default function ReportCompare() {
   };
 
   const handlePrint = async () => {
-    if (!report) return;
-    await report.print();
+    if (report) {
+      await report.print();
+    }
   };
 
   useEffect(() => {
