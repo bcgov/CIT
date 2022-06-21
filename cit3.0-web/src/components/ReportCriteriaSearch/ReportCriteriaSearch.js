@@ -111,19 +111,9 @@ export default function ReportCriteriaSearch() {
   };
 
   const handlePrint = async () => {
-    if (!report) return;
-    const pages = await report.getPages();
-    const reportPage = pages.find((page) => page.displayName === "Print");
-
-    if (reportPage) {
-      setIsPrintLoading(true);
-      await report.setPage(reportPage.name);
-      await delay(9000);
-      setIsPrintLoading(false);
+    if (report) {
       await report.print();
     }
-
-    await setPage(activePage);
   };
 
   useEffect(() => {
