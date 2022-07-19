@@ -5,7 +5,7 @@
   window.env.keycloakUrl = "https://test.oidc.gov.bc.ca/auth/";
   window.env.keycloakRealm = "fyof530u";
   window.env.keycloakClient = "cit-local";
-  window.env.snowplowUrl = "spt.apps.gov.bc.ca";
+  window.env.snowplowUrl = "spm.apps.gov.bc.ca";
   window.env.geocoderKey = "";
   window.env.routePlannerKey = "";
   window.env.pbiReportIdPublic = "0d120da3-3d1a-4edb-9b0e-65f0890e3991";

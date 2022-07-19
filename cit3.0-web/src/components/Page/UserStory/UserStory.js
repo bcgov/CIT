@@ -102,6 +102,22 @@ export default function UserStory() {
   const showResult = (urlPath) => {
     if (!urlPath) return;
 
+    // snow plow start
+    window.snowplow("trackSelfDescribingEvent", {
+      schema: "iglu:ca.bc.gov.cit/userstory/jsonschema/1-0-0",
+      data: {
+        i_am: userOptions?.find((x) => x.group === "who")?.label,
+        interest: userOptions?.find((x) => x.group === "what")?.label,
+        kind_of_area: userOptions?.find((x) => x.group === "zone")?.label,
+        location: userOptions?.find((x) => x.group === "zone-type-list")?.label,
+        outcome: "Community Information Tool",
+        source: "front",
+      },
+    });
+    // snow plow end
+
+    console.log(zoneFilter.current);
+
     if (urlPath && !urlPath.includes("powerbi")) {
       window.location.href = encodeURI(`${configuration.baseUrl}/${urlPath}`);
       return;
@@ -212,6 +228,11 @@ export default function UserStory() {
     if (param.group === "zone-type-list") {
       zoneLabel.current = param.label;
       zoneId.current = param.value;
+      userOption.label = param.label;
+      userOption.value = param.value;
+    } else {
+      zoneLabel.current = null;
+      zoneId.current = null;
     }
     if (param.group === "zone") {
       setAreaType(userOption.label);
@@ -289,7 +310,6 @@ export default function UserStory() {
       currentUserOptions[currentUserOptions.length - 1].selectedValue =
         param.value;
     }
-
     setUserOptions([...currentUserOptions, userOption]);
 
     if (param.code.includes("-YES") && isLongVersion) {
