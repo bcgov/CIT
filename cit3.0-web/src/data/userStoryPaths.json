@@ -99,14 +99,6 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5475",
-            "code": "VIEWING",
-            "group": "what",
-            "value": "1-VIEWING",
-            "label": "viewing investment opportunities matching my criteria",
-            "url": "investmentopportunities/home"
-          },
-          {
             "id": "5476",
             "code": "LEARNING",
             "group": "what",
@@ -136,6 +128,14 @@
             "group": "what",
             "value": "4-PROMOTING",
             "label": "promoting an investment opportunity in my community",
+            "url": "investmentopportunities/home"
+          },
+          {
+            "id": "5475",
+            "code": "VIEWING",
+            "group": "what",
+            "value": "1-VIEWING",
+            "label": "viewing investment opportunities matching my criteria",
             "url": "investmentopportunities/home"
           }
         ]
@@ -151,14 +151,6 @@
         "url": "",
         "user_story_paths": [
           {
-            "id": "5475",
-            "code": "VIEWING",
-            "group": "what",
-            "value": "1-VIEWING",
-            "label": "viewing investment opportunities matching my criteria",
-            "url": "investmentopportunities/home"
-          },
-          {
             "id": "5476",
             "code": "LEARNING",
             "group": "what",
@@ -188,6 +180,14 @@
             "group": "what",
             "value": "4-PROMOTING",
             "label": "promoting an investment opportunity in my community",
+            "url": "investmentopportunities/home"
+          },
+          {
+            "id": "5475",
+            "code": "VIEWING",
+            "group": "what",
+            "value": "1-VIEWING",
+            "label": "viewing investment opportunities matching my criteria",
             "url": "investmentopportunities/home"
           }
         ]

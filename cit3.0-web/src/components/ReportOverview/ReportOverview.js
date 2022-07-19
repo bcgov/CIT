@@ -338,7 +338,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
       >
         <Printer /> Print
       </Button>
-      {reportFilter.zoneLabel && (
+      {reportFilter && reportFilter.zoneLabel && (
         <Button
           type="button"
           variant="light px-2 rounded"
@@ -424,7 +424,8 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
           </Modal.Header>
           <Modal.Body>
             <h3 className="my-2">
-              {reportFilter.zoneLabel} CIT link copied to clipboard.
+              {reportFilter && reportFilter.zoneLabel} CIT link copied to
+              clipboard.
             </h3>
             <small>{reportUrl.current}</small>
           </Modal.Body>
