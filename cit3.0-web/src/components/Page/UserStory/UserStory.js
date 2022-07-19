@@ -234,6 +234,7 @@ export default function UserStory() {
       zoneLabel.current = null;
       zoneId.current = null;
     }
+
     if (param.group === "zone") {
       setAreaType(userOption.label);
 
