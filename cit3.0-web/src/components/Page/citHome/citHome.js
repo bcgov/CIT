@@ -79,9 +79,10 @@ export default function citHome() {
               thriving, healthy communities.
               <br />
               <br />
-              We are continuing to evolve the tool and would appreciate{" "}
-              <a href="mailto:citinfo@gov.bc.ca">your feedback</a>. Please check
-              back in May 2022 for new updates.
+              Coming soon: CIT 4.0! On July 27, the CIT will be updated, making
+              it easier for users to search for and find information. You’ll
+              notice a new user-friendly interface to help you get to the
+              information that is relevant to you.
             </p>
           </Col>
           <Col sm={3} className="svg-box pt-3">
