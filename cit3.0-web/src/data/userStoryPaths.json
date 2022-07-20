@@ -298,7 +298,7 @@
         "group": "what",
         "value": "2-LEARNING",
         "label": "learning more about the province or a specific area",
-        "longText": "<div class='select-break'></div><p><b>Great! You can choose between different types of areas from Census Subdivisions (Municipalities, Electoral Areas, First Nations Reserves) and Regional Districts to larger Economic Regions or Health Authorities.</b></p><div class='section-break'></div><p><b>What kind of area would you like to look at?</b></p><div class='section-break'></div>",
+        "longText": "<div class='select-break'><p><b>What kind of area would you like to look at?</b></p><div class='section-break'></div>",
         "text": "<p>I would like to look at</p>",
         "url": "",
         "user_story_paths": [
@@ -315,7 +315,7 @@
             "code": "CENSUSSUBDIVISION",
             "group": "zone",
             "value": "CENSUSSUBDIVISION",
-            "label": "Census subdivisions",
+            "label": "census subdivisions",
             "url": ""
           },
           {
@@ -323,7 +323,7 @@
             "code": "COMMUNITY",
             "group": "zone",
             "value": "COMMUNITY",
-            "label": "Communities",
+            "label": "communities",
             "url": ""
           },
           {
@@ -331,7 +331,7 @@
             "code": "ECONOMICREGIONS",
             "group": "zone",
             "value": "ECONOMICREGIONS",
-            "label": "Economic regions",
+            "label": "economic regions",
             "url": ""
           },
           {
@@ -339,7 +339,7 @@
             "code": "HEALTHAUTHORITY",
             "group": "zone",
             "value": "HEALTHAUTHORITY",
-            "label": "Health authorities",
+            "label": "health authorities",
             "url": ""
           },
           {
@@ -347,7 +347,7 @@
             "code": "REGIONALDISTRICTS",
             "group": "zone",
             "value": "REGIONALDISTRICTS",
-            "label": "Regional districts",
+            "label": "regional districts",
             "url": ""
           },
           {
@@ -355,7 +355,7 @@
             "code": "SCHOOLDISTRICTS",
             "group": "zone",
             "value": "SCHOOLDISTRICTS",
-            "label": "School districts",
+            "label": "school districts",
             "url": ""
           },
           {
@@ -363,7 +363,7 @@
             "code": "TOURISMREGIONS",
             "group": "zone",
             "value": "TOURISMREGIONS",
-            "label": "Tourism regions",
+            "label": "tourism regions",
             "url": ""
           },
           {
@@ -371,7 +371,7 @@
             "code": "TSUNAMIZONES",
             "group": "zone",
             "value": "TSUNAMIZONES",
-            "label": "Tsunami notification zones",
+            "label": "tsunami notification zones",
             "url": ""
           },
           {
@@ -379,7 +379,7 @@
             "code": "WILDFIREZONES",
             "group": "zone",
             "value": "WILDFIREZONES",
-            "label": "Wildfire zones",
+            "label": "wildfire zones",
             "url": ""
           }
         ]
@@ -390,25 +390,17 @@
         "group": "what",
         "value": "2-DISCOVERING",
         "label": "discovering areas with particular characteristics",
-        "longText": "<div class='select-break'></div><p><b>We have a criteria search that has many types of filters to help you narrow down specific areas of BC that matches your criteria.   </b></p><p class='line-break'><b>Would you like to try it?</b></p><div class='section-break'></div>",
+        "longText": "<div class='select-break'></div>",
         "text": "",
         "url": "powerbi-criteriaSearch",
         "user_story_paths": [
           {
             "id": "5491",
-            "code": "DISCOVERING-YES",
+            "code": "DISCOVERING-GO",
             "group": "discovering-yesno",
-            "value": "1-DISCOVERING-YES",
+            "value": "1-DISCOVERING-GO",
             "label": "Yes",
             "url": "powerbi-criteriaSearch"
-          },
-          {
-            "id": "5492",
-            "code": "DISCOVERING-NO",
-            "group": "discovering-yesno",
-            "value": "2-DISCOVERING-NO",
-            "label": "No",
-            "url": ""
           }
         ]
       },
@@ -418,7 +410,7 @@
         "group": "what",
         "value": "3-COMPARING",
         "label": "comparing an area to another one",
-        "longText": "<div class='select-break'></div><p><b>Our tool lets you compare different types of areas to each other or to the B.C. average. You can select the types of area such as Census Subdivisions (Municipalities, Electoral Areas, First Nations Reserves), Tourism Regions, Economic Regions and the specific area you want to compare.</b></p><div class='select-break'></div>",
+        "longText": "",
         "text": "",
         "url": "powerbi-compare",
         "user_story_paths": [
@@ -485,7 +477,7 @@
         "code": "CENSUSSUBDIVISION",
         "group": "zone",
         "value": "CENSUSSUBDIVISION",
-        "label": "Census subdivisions",
+        "label": "census subdivisions",
         "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
@@ -496,7 +488,7 @@
         "code": "COMMUNITY",
         "group": "zone",
         "value": "COMMUNITY",
-        "label": "Communities",
+        "label": "communities",
         "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
@@ -507,7 +499,7 @@
         "code": "ECONOMICREGIONS",
         "group": "zone",
         "value": "ECONOMICREGIONS",
-        "label": "Economic regions",
+        "label": "economic regions",
         "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
@@ -518,7 +510,7 @@
         "code": "HEALTHAUTHORITY",
         "group": "zone",
         "value": "HEALTHAUTHORITY",
-        "label": "Health authorities",
+        "label": "health authorities",
         "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
@@ -529,7 +521,7 @@
         "code": "REGIONALDISTRICTS",
         "group": "zone",
         "value": "REGIONALDISTRICTS",
-        "label": "Regional districts",
+        "label": "regional districts",
         "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
@@ -540,7 +532,7 @@
         "code": "SCHOOLDISTRICTS",
         "group": "zone",
         "value": "SCHOOLDISTRICTS",
-        "label": "School districts",
+        "label": "school districts",
         "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
@@ -551,7 +543,7 @@
         "code": "TOURISMREGIONS",
         "group": "zone",
         "value": "TOURISMREGIONS",
-        "label": "Tourism regions",
+        "label": "tourism regions",
         "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
@@ -562,7 +554,7 @@
         "code": "TSUNAMIZONES",
         "group": "zone",
         "value": "TSUNAMIZONES",
-        "label": "Tsunami notification zones",
+        "label": "tsunami notification zones",
         "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
@@ -573,7 +565,7 @@
         "code": "WILDFIREZONES",
         "group": "zone",
         "value": "WILDFIREZONES",
-        "label": "Wildfire zones",
+        "label": "wildfire zones",
         "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
@@ -601,9 +593,9 @@
       },
       {
         "id": "5491",
-        "code": "DISCOVERING-YES",
+        "code": "DISCOVERING-GO",
         "group": "discovering-yesno",
-        "value": "1-DISCOVERING-YES",
+        "value": "1-DISCOVERING-GO",
         "label": "Yes",
         "longText": "",
         "text": "",
@@ -615,26 +607,6 @@
             "group": "end",
             "value": "99-END",
             "label": "GO",
-            "url": ""
-          }
-        ]
-      },
-      {
-        "id": "5492",
-        "code": "DISCOVERING-NO",
-        "group": "discovering-yesno",
-        "value": "2-DISCOVERING-NO",
-        "label": "No",
-        "longText": "<div class='section-break'></div><p><b>Ok, maybe you can come back and have a look at it another day. Tell us what you would like to see now.</b></p>",
-        "text": "",
-        "url": "",
-        "user_story_paths": [
-          {
-            "id": "5500",
-            "code": "GENERIC-NO",
-            "group": "generic-no",
-            "value": "No-GENERIC-NO",
-            "label": "",
             "url": ""
           }
         ]
