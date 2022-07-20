@@ -390,7 +390,7 @@
         "group": "what",
         "value": "2-DISCOVERING",
         "label": "discovering areas with particular characteristics",
-        "longText": "<div class='select-break'></div>",
+        "longText": "",
         "text": "",
         "url": "powerbi-criteriaSearch",
         "user_story_paths": [
