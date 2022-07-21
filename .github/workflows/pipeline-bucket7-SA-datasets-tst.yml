@@ -4,6 +4,7 @@ name: Data Pipeline - Bucket 7 semiannually Test
 on:
   schedule:
     - cron: "0 0 1 */6 *"
+  workflow_dispatch:
 jobs:
   run-wildfire-zones:
     runs-on: ubuntu-latest

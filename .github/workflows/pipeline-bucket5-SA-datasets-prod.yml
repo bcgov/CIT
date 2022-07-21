@@ -7,6 +7,7 @@ name: Data Pipeline - Bucket 5 semiannually Prod
 on:
   schedule:
     - cron: "0 0 1 */6 *"
+  workflow_dispatch:
 jobs:
   run-airports:
     runs-on: ubuntu-latest

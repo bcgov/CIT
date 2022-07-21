@@ -5,6 +5,7 @@ name: Data Pipeline - Bucket 2 monthly Prod
 on:
   schedule:
     - cron: "0 0 1 * *"
+  workflow_dispatch:
 jobs:
   run-connectivity-projects:
     runs-on: ubuntu-latest
