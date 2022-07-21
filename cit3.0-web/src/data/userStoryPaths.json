@@ -307,7 +307,7 @@
             "code": "ALLBC",
             "group": "zone",
             "value": "ALLBC",
-            "label": "All of British Columbia",
+            "label": "all of British Columbia",
             "url": "powerbi-overview"
           },
           {
@@ -457,7 +457,7 @@
         "code": "ALLBC",
         "group": "zone",
         "value": "ALLBC",
-        "label": "All of British Columbia",
+        "label": "all of British Columbia",
         "longText": "<div class='section-break'></div><p><b>Ok, let's learn more about the province of British Columbia.</b></p>",
         "text": "",
         "url": "powerbi-overview",
