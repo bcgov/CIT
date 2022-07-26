@@ -1012,11 +1012,14 @@ def import_housing(URL):
             data.rename(columns={data.columns[0]:'census_subdivision_id'}, inplace=True)
             data.drop(data.columns[1], axis=1,inplace=True)
             data=data[(data['census_subdivision_id'].str.contains("[a-zA-Z]")==False) & (data['census_subdivision_id'].str.len() > 4)] 
-            data = data[['census_subdivision_id']].replace({'\*': ''}, regex=True)
-            data = data.melt(id_vars=['census_subdivision_id'], var_name='yearmonth', value_name='total_building_permits')
+            data['census_subdivision_id'] = data['census_subdivision_id'].str.replace('[#,@,&,*]','',regex=True)
+            thisFilter = data.filter(drop_list)
+            data.drop(thisFilter, inplace=True, axis=1)
+            A=list(data.columns)
+            data = data.melt(id_vars=['census_subdivision_id'], var_name='yearmonth', value_vars=A[1:])
+            data['month'] = data['yearmonth'].str.split('-').str[0]
+            data['year'] = data['yearmonth'].str.split('-').str[1]
             data['census_subdivision_id'] = data['census_subdivision_id'].astype(str).astype(int64)
-            data['month'] = data['yearmonth'].str.split('-').str[1]
-            data['year'] = data['yearmonth'].str.split('-').str[0]
             data['year']=pd.to_datetime(data['year'], format = '%y',errors='coerce').dt.year
             data['month']=pd.to_datetime(data['month'], format = '%b',errors='coerce').dt.month
 
