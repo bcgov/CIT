@@ -1013,6 +1013,7 @@ def import_housing(URL):
             data.drop(data.columns[1], axis=1,inplace=True)
             data=data[(data['census_subdivision_id'].str.contains("[a-zA-Z]")==False) & (data['census_subdivision_id'].str.len() > 4)] 
             data['census_subdivision_id'] = data['census_subdivision_id'].str.replace('[#,@,&,*]','',regex=True)
+            drop_list=['Unnamed: 235']
             thisFilter = data.filter(drop_list)
             data.drop(thisFilter, inplace=True, axis=1)
             A=list(data.columns)
