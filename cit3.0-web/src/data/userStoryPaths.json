@@ -343,6 +343,14 @@
             "url": ""
           },
           {
+            "id": "6001",
+            "code": "NATURALRESOURCEREGIONS",
+            "group": "zone",
+            "value": "NATURALRESOURCEREGIONS",
+            "label": "natural resource regions",
+            "url": ""
+          },
+          {
             "id": "5485",
             "code": "REGIONALDISTRICTS",
             "group": "zone",
@@ -511,6 +519,17 @@
         "group": "zone",
         "value": "HEALTHAUTHORITY",
         "label": "health authorities",
+        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
+        "text": "<p>I am specifically interested in</p>",
+        "url": "",
+        "user_story_paths": []
+      },
+      {
+        "id": "6001",
+        "code": "NATURALRESOURCEREGIONS",
+        "group": "zone",
+        "value": "NATURALRESOURCEREGIONS",
+        "label": "natural resource regions",
         "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
