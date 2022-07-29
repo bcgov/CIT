@@ -257,7 +257,7 @@ export default function UserStory() {
           break;
         case "NATURALRESOURCEREGIONS":
           userOption.user_story_paths = naturalResourceRegions;
-          zoneType.current = null;
+          zoneType.current = "Natural Resource Region";
           break;
         case "REGIONALDISTRICTS":
           userOption.user_story_paths = regionalDistricts;
