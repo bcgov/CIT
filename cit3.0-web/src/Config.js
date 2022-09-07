@@ -10,6 +10,8 @@ const Config = {
   routePlannerKey: window.env.routePlannerKey,
   pbiReportIdPublic: window.env.pbiReportIdPublic,
   pbiReportIdInternal: window.env.pbiReportIdInternal,
+  pbiReportIdCompare: window.env.pbiReportIdCompare,
+  pbiReportIdSearch: window.env.pbiReportIdSearch,
   pbiGroupId: window.env.pbiGroupId,
 };
 

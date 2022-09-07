@@ -1,0 +1,12 @@
+[
+  {
+    "name": "servicebc_locations",
+    "display_name": "Service BC Office Locations",
+    "model_name": "ServiceBCLocation",
+    "source": "databc",
+    "source_type": "api",
+    "resource_id": "c7cc9297-220c-4d6c-a9a7-72d0680b2f74",
+    "permalink_id": "2b44d212-5438-47a9-ad23-20eb8ada9709",
+    "import_order": 38
+  }
+]

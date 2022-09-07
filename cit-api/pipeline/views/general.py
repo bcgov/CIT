@@ -12,7 +12,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from pipeline.models.community import Community
 from pipeline.models.general import (LocationDistance, Service, RegionalDistrict, SchoolDistrict,
-                                     DataSource, CivicLeader, PageView)
+                                     DataSource,  PageView)
 from pipeline.serializers.general import (
     LocationDistanceSerializer,
     ServiceListSerializer,
@@ -20,7 +20,6 @@ from pipeline.serializers.general import (
     RegionalDistrictDetailSerializer,
     SchoolDistrictSerializer,
     DataSourceSerializer,
-    CivicLeaderSerializer,
     PageViewSerializer,
 )
 from pipeline.serializers.community import (
@@ -155,9 +154,6 @@ class SchoolDistrictList(generics.ListAPIView):
     serializer_class = SchoolDistrictSerializer
 
 
-class CivicLeaderList(generics.ListAPIView):
-    queryset = CivicLeader.objects.all()
-    serializer_class = CivicLeaderSerializer
 
 
 class PageViewList(generics.ListCreateAPIView):

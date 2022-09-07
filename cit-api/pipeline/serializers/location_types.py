@@ -3,7 +3,7 @@ from rest_framework import serializers
 from pipeline.models.location_assets import (FirstResponder, DiagnosticFacility, TimberFacility,
                                              CivicFacility, Hospital, Project, ServiceBCLocation,
                                              School, Clinic, Court, PostSecondaryInstitution,
-                                             ClosedMill, ResearchCentre, Airport, Location)
+                                              ResearchCentre, Airport, Location)
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -287,22 +287,6 @@ class CourtSerializer(serializers.ModelSerializer):
             "court_level",
         )
 
-
-class ClosedMillSerializer(serializers.ModelSerializer):
-    latitude = serializers.FloatField(source="get_latitude")
-    longitude = serializers.FloatField(source="get_longitude")
-    community = serializers.IntegerField(source="closest_community_id")
-
-    class Meta:
-        model = ClosedMill
-        fields = (
-            "id",
-            "name",
-            "latitude",
-            "longitude",
-            "location_fuzzy",
-            "community",
-        )
 
 
 class ResearchCentreSerializer(serializers.ModelSerializer):

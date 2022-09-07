@@ -1,0 +1,16 @@
+[
+    {
+      "name": "NAICS_Codes",
+      "display_name": "NAICS Codes",
+      "model_name": "NAICSCodes",
+      "source": "statscan",
+      "source_type": "csv",
+      "source_file_path": "a",
+      "resource_id": "9967bfc7-cf2a-4873-a5ac-435048269d9babc",
+      "external_url": "https://www.statcan.gc.ca/eng/statistical-programs/document/naics-scian-2022-structure-v1-eng.csv",
+      "import_order": 1
+    }
+  ]
+    
+    
+    

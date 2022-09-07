@@ -1,0 +1,11 @@
+[{
+    "name": "census_divisions",
+    "display_name": "Census Division",
+    "model_name": "CEN_PROF_DETAILED_CD_ATTRS_SP",
+    "source": "databc",
+    "source_type": "wms",
+    "permalink_id": "ee79424b-15a6-4b8a-8634-e83c0b635585",
+    "dataset": "census-profiles-for-bc-census-divisions-2021-census",
+    "import_order": 1
+  }
+]

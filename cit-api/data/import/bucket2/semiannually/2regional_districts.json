@@ -1,0 +1,13 @@
+[
+  {
+    "name": "regional_districts",
+    "display_name": "Regional Districts",
+    "model_name": "RegionalDistrict",
+    "source": "databc",
+    "source_type": "wms",
+    "resource_id": "eb5a9d9b-fb7b-40aa-a3fe-020993345bbc",
+    "permalink_id": "d1aff64e-dbfe-45a6-af97-582b7f6418b9",
+    "dataset": "regional-districts-legally-defined-administrative-areas-of-bc",
+    "import_order": 1
+  }
+]

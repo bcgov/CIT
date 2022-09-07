@@ -1,0 +1,12 @@
+[
+  {
+    "name": "courts",
+    "display_name": "Courts",
+    "model_name": "Court",
+    "source": "databc",
+    "source_type": "api",
+    "resource_id": "23aa0b75-2715-4ccb-9a36-9a608450dc2d",
+    "permalink_id": "c95a2ad5-f62a-43d6-8678-80a617b6200e",
+    "import_order": 41
+  }
+]

@@ -1,0 +1,19 @@
+version: "3.3"
+
+services:
+  cit-api-pipeline:
+    build:
+      context: ./
+      dockerfile: Dockerfile.pipeline
+    image: countable/cit
+    env_file:
+      - ../.env
+    ports:
+      - 8000:8000
+  cit-email:
+    build:
+      context: ./
+      dockerfile: Dockerfile.email
+    image: countable/cit
+    env_file:
+      - ../.env

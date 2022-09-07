@@ -1051,4 +1051,30 @@ class Migration(migrations.Migration):
         migrations.DeleteModel(
             name='CensusSubdivision',
         ),
+        migrations.RemoveField(
+            model_name='cen_prof_detailed_cd_attrs_sp',
+            name='pop_2011_2016_pct_change',
+        ),
+        migrations.RemoveField(
+            model_name='cen_prof_detailed_cd_attrs_sp',
+            name='pop_total_2011',
+        ),
+        migrations.RemoveField(
+            model_name='cen_prof_detailed_csd_attrs_sp',
+            name='pop_2011_2016_pct_change',
+        ),
+        migrations.RemoveField(
+            model_name='cen_prof_detailed_csd_attrs_sp',
+            name='pop_total_2011',
+        ),
+        migrations.AddField(
+            model_name='cen_prof_detailed_cd_attrs_sp',
+            name='pop_2016_2021_pct_change',
+            field=models.FloatField(null=True),
+        ),
+        migrations.AddField(
+            model_name='cen_prof_detailed_csd_attrs_sp',
+            name='pop_2016_2021_pct_change',
+            field=models.FloatField(null=True),
+        ),        
     ]

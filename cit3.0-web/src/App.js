@@ -20,6 +20,7 @@ import OpportunityDeletePage from "./components/Page/OpportunityDeletePage/Oppor
 import { AuthStateContext } from "./contexts/authStateContext";
 import Login from "./components/Page/account/Login";
 import Logout from "./components/Page/account/Logout";
+import UserStory from "./components/Page/UserStory/UserStory";
 import AccessDenied from "./components/Page/Errors/401/AccessDenied";
 
 import ReviewSubmitted from "./components/Page/ReviewSubmitted/ReviewSubmitted";
@@ -31,7 +32,9 @@ import OpportunityApproveListPage from "./components/Page/OpportunityApproveList
 import UserManagementDashboard from "./components/Page/UserManagement/UserManagementDashboard";
 
 import PowerBi from "./components/Page/PowerBi/PowerBi";
-
+import PublicReport from "./components/Page/PowerBi/PublicReport";
+import Compare from "./components/Page/PowerBi/Compare";
+import CriteriaSearch from "./components/Page/PowerBi/CriteriaSearch";
 import Roles from "./constants/roles";
 import PublicLayout from "./layouts/PublicLayout";
 import HomePage from "./components/Page/HomePage/HomePage";
@@ -229,6 +232,18 @@ function App() {
                   component={PowerBi}
                 />
                 <AppRoute
+                  title="Community Information Tool - Community Report"
+                  exact
+                  path="/cit-dashboard/info/:zonetype/:id"
+                  component={PublicReport}
+                />
+                <AppRoute
+                  title="Community Information Tool - Community Report"
+                  exact
+                  path="/cit-dashboard/info/:zonetype/name/:name"
+                  component={PublicReport}
+                />
+                <AppRoute
                   protected
                   exact
                   path="/manage/users"
@@ -240,7 +255,6 @@ function App() {
                   layout={AuthLayout}
                   component={UserManagementDashboard}
                 />
-
                 <AppRoute
                   path="/investmentopportunities/home"
                   title="Community Investment Opportunities Tool"
@@ -249,7 +263,37 @@ function App() {
                 <AppRoute
                   path="/cit-dashboard/home"
                   title="Community Information Tool"
-                  component={citHome}
+                  component={UserStory}
+                />
+                <AppRoute
+                  exact
+                  path="/userstory"
+                  title="Community Information Tool"
+                  component={UserStory}
+                />
+                <AppRoute
+                  exact
+                  path="/userstory/internal"
+                  title="Community Information Tool"
+                  component={UserStory}
+                />
+                <AppRoute
+                  exact
+                  path="/reports/publicreport"
+                  title="Community Information Tool"
+                  component={PublicReport}
+                />
+                <AppRoute
+                  exact
+                  path="/reports/Compare"
+                  title="Community Information Tool"
+                  component={Compare}
+                />
+                <AppRoute
+                  exact
+                  path="/reports/criteriasearch"
+                  title="Community Information Tool"
+                  component={CriteriaSearch}
                 />
                 <AppRoute
                   path="/datasources"

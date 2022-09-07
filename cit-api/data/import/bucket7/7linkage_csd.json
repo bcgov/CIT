@@ -1,0 +1,16 @@
+[{
+    "name": "LinkageWithCensus",
+    "display_name": "Linkage With Census Subdivisions",
+    "model_name": "LinkageWithCensus",
+    "source": "statscan",
+    "source_type": "csv",
+    "source_file_path": "data/csd_linkage.csv",
+    "resource_id": "",
+    "sub_resource_id": "",
+    "external_url": "",
+    "import_order": 2
+  }    
+  ]
+    
+    
+    

@@ -71,11 +71,12 @@
   .App-header.navbar {
     .title {
       display: block;
-      font-size: calc(7px + 2.2vw);
+      font-size: calc(12px + (32 - 12) * ((100vw - 300px) / (1600 - 300)));
+      text-align: center;
     }
   }
 }
-@media (min-width: 992px) {
+@media (min-width: 1200px) {
   .App-header.navbar {
     .title {
       display: block;

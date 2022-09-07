@@ -562,18 +562,6 @@ class CivicFacility(Location):
     '''
 
 
-class ClosedMill(Location):
-    LATITUDE_FIELD = 'Resource_Latitude'
-    LONGITUDE_FIELD = 'Resource_Longitude'
-    NAME_FIELD = 'Name'
-
-    class Meta:
-        ordering = ("id", )
-
-    '''
-    OrderedDict([('Place_ID', '7928'), ('Place_Name', 'Baynes Lake'), ('Name', 'Canfor Sawmill - Elko'), ('Resource_Longitude', '-115.10295'), ('Resource_Latitude', '49.27562'), ('Type', 'Closed Mill')])
-    '''
-
 
 class ResearchCentre(Location):
     LATITUDE_FIELD = 'LATITUDE'
@@ -644,21 +632,6 @@ class PortAndTerminal(Location):
     physical_address = models.CharField(null=True, blank=True, max_length=255)
     other_address = models.CharField(null=True, blank=True, max_length=255)
     street_address = models.CharField(null=True, blank=True, max_length=255)
-
-    class Meta:
-        ordering = ("id", )
-
-
-class EAOProjects(Location):
-    LATITUDE_FIELD = 'LATITUDE'
-    LONGITUDE_FIELD = 'LONGITUDE'
-    NAME_FIELD = 'PROJECT_NAME'
-    WEBSITE_FIELD = 'PROJECT_URL'
-
-    project_description = models.CharField(null=True, blank=True, max_length=255)
-    type = models.CharField(null=True, blank=True, max_length=255)
-    sub_type = models.CharField(null=True, blank=True, max_length=255)
-    proponent = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
         ordering = ("id", )
@@ -763,19 +736,4 @@ class PublicLibrary(Location):
         ordering = ("id", )
 
 
-class FirstNationsHealthAuthoritySite(Location):
-    LATITUDE_FIELD = 'Y'
-    LONGITUDE_FIELD = 'X'
-    NAME_FIELD = 'location'
 
-    address = models.CharField(null=True, blank=True, max_length=255)
-    circuit_details_1 = models.CharField(null=True, blank=True, max_length=255)
-    circuit_vendor_1 = models.CharField(null=True, blank=True, max_length=255)
-    circuit_details_2 = models.CharField(null=True, blank=True, max_length=255)
-    circuit_vendor_2 = models.CharField(null=True, blank=True, max_length=255)
-    circuit_details_3 = models.CharField(null=True, blank=True, max_length=255)
-    circuit_vendor_4 = models.CharField(null=True, blank=True, max_length=255)
-    comments = models.CharField(null=True, blank=True, max_length=255)
-
-    class Meta:
-        ordering = ("id", )

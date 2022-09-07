@@ -1,0 +1,24 @@
+.report-style-class{
+    width: 100%;
+    height: 85vh;
+}
+
+.report-style-class iframe {
+    border: none;
+}
+
+.embed-container {
+    position: relative;
+}
+
+.cit-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 65px;
+    background: #38598a;
+}
+
+.copy-btn {
+    background-color: #fcba19;
+    color: black;
+}

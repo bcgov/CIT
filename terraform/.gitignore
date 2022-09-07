@@ -3,3 +3,5 @@
 .terraform.tfstate.lock.info
 .terraform
 secrets.auto.tfvars
+secrets.backend
+.terraform.lock.hcl
