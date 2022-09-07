@@ -41,10 +41,13 @@ class CommunityOptions(APIView):
     def get(self, request, format=None):
         options =  Community.objects.all().values("id", "place_name").distinct().order_by('place_name')
         return Response(dict(data=options))
-        
+
+# temporary fix       
+# exclude id = 29 (Northern Rockies) from the Regional District list due to bad data
+
 class RegionalDistrictOptions(APIView):
     def get(self, request, format=None):
-        options =  RegionalDistrict.objects.all().values('area_id', 'name').distinct().order_by('name')
+        options =  RegionalDistrict.objects.exclude(id = 29).values('area_id', 'name').distinct().order_by('name')
         return Response(dict(data=options))
 
 class TourismRegionOptions(APIView):
