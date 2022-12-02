@@ -11,7 +11,8 @@ class MyBasePermission(BasePermission):
             # Configure client
             keycloak_openid = KeycloakOpenID(server_url=os.environ.get('KEY_CLOAK_URL'),
                                              client_id=os.environ.get('KEY_CLOAK_CLIENT'),
-                                             realm_name=os.environ.get('KEY_CLOAK_REALM'))
+                                             realm_name=os.environ.get('KEY_CLOAK_REALM'),
+                                             client_secret=os.environ.get('KEY_CLOAK_SECRET'))
 
             # Get WellKnow
             config_well_know = keycloak_openid.well_know()

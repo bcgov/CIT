@@ -184,7 +184,8 @@ class UserView(GenericAPIView):
     def determine_user_admin_status(self, request):
         keycloak_openid = KeycloakOpenID(server_url=os.environ.get('KEY_CLOAK_URL'),
                             client_id=os.environ.get('KEY_CLOAK_CLIENT'),
-                            realm_name=os.environ.get('KEY_CLOAK_REALM'))
+                            realm_name=os.environ.get('KEY_CLOAK_REALM'),
+                            client_secret=os.environ.get('KEY_CLOAK_SECRET'))
 
         keycloak_user_info = keycloak_openid.userinfo(request.headers['Authorization'][7:])
 
