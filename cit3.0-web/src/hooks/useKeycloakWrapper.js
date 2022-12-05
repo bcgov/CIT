@@ -98,7 +98,7 @@ export function useKeycloakWrapper() {
     hasRole,
     canEdit: canUserEditOpportunity(),
     canDelete: canUserDeleteOpportunity(),
-    pkceMethod: 'S256',
+    pkceMethod: "S256",
   };
 }
 
