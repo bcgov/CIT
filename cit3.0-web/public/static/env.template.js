@@ -5,7 +5,6 @@
   window.env.keycloakUrl = "${REACT_APP_KEYCLOAK_URL}";
   window.env.keycloakRealm = "${REACT_APP_KEYCLOAK_REALM}";
   window.env.keycloakClient = "${REACT_APP_KEYCLOAK_CLIENT}";
-  window.env.keycloakSecret = "${REACT_APP_KEYCLOAK_SECRET}";
   window.env.snowplowUrl = "${REACT_APP_SNOWPLOW_COLLECTOR}";
   window.env.geocoderKey = "${REACT_APP_GEOCODER_API_KEY}";
   window.env.routePlannerKey = "${REACT_APP_BC_ROUTE_PLANNER_API_KEY}";

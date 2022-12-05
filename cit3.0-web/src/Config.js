@@ -4,7 +4,6 @@ const Config = {
     url: window.env.keycloakUrl,
     realm: window.env.keycloakRealm,
     clientId: window.env.keycloakClient,
-    clientSecret: window.env.keycloakSecret,
   },
   snowplowUrl: window.env.snowplowUrl,
   geocoderKey: window.env.geocoderKey,
