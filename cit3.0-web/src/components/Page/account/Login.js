@@ -39,14 +39,14 @@ const Login = () => {
   const handleLogin = () => {
     if (window.location.href.includes("cit-dashboard")) {
       const loginWithIdir = keycloak.createLoginUrl({
-        idpHint: "idir",
+        //idpHint: "idir",
         redirectUri: encodeURI(`${configuration.baseUrl}/cit-dashboard/home`),
       });
       window.location.href = loginWithIdir;
     }
     if (window.location.href.includes("userstory")) {
       const loginWithIdir = keycloak.createLoginUrl({
-        idpHint: "idir",
+        //idpHint: "idir",
         redirectUri: window.location.href,
       });
       window.location.href = loginWithIdir;
