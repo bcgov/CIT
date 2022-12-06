@@ -16,9 +16,9 @@ const keycloak = new Keycloak(Config.keycloakConfig);
 const Index = () => (
   <ReactKeycloakProvider
     authClient={keycloak}
-    initOptions={{ pkceMethod: '256',
+    initOptions={{ pkceMethod: "256",
                    checkLoginIframe: false,
-                   onLoad: 'login-required',}}
+                   onLoad: "login-required"}}
     onEvent={getKeycloakEventHandler(keycloak)}
   >
     <Provider store={store}>
