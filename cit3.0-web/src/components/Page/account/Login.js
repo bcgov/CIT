@@ -41,7 +41,6 @@ const Login = () => {
       const loginWithIdir = keycloak.createLoginUrl({
         idpHint: "idir",
         redirectUri: encodeURI(`${configuration.baseUrl}/cit-dashboard/home`),
-        pkceMethod: "S256",
       });
       window.location.href = loginWithIdir;
     }
@@ -49,7 +48,6 @@ const Login = () => {
       const loginWithIdir = keycloak.createLoginUrl({
         idpHint: "idir",
         redirectUri: window.location.href,
-        pkceMethod: "S256",
       });
       window.location.href = loginWithIdir;
     } else {

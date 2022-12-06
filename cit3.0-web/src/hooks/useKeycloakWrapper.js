@@ -6,7 +6,6 @@ import Roles from "../constants/roles";
  */
 export function useKeycloakWrapper() {
   const { keycloak } = useKeycloak();
-  keycloak.init();
   const userInfo = keycloak && keycloak.userInfo;
 
   /**
@@ -99,7 +98,6 @@ export function useKeycloakWrapper() {
     hasRole,
     canEdit: canUserEditOpportunity(),
     canDelete: canUserDeleteOpportunity(),
-    pkceMethod: "S256",
   };
 }
 
