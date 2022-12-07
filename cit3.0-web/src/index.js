@@ -15,7 +15,7 @@ axios.defaults.baseURL = Config.apiUrl;
 const keycloak = new Keycloak(Config.keycloakConfig);
 const keycloakProviderInitConfig = {
   onLoad: "login-required",
-  pkceMethod: "256",
+  pkceMethod: "S256",
   checkLoginIframe: false,
 };
 const Index = () => (
