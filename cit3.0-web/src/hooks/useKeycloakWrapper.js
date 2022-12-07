@@ -41,7 +41,7 @@ export function useKeycloakWrapper() {
    * Return the user's identity provider
    */
   const idp = () => userInfo && userInfo.idir_username;
-  
+
   /**
    * Return the user's first name
    */
