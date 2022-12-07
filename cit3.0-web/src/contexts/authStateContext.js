@@ -49,9 +49,7 @@ const AuthStateContextProvider = ({ children }) => {
               handleShow();
               return;
             }
-            idp = user.preferred_username.slice(
-              user.preferred_username.indexOf("@") + 1
-            );
+            idp = user.idir_username;
             setUserInfo({ ...user, idp });
             getUser({ email: user.email }).then((existingUser) => {
               if (existingUser.data.length) {

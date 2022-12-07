@@ -19,20 +19,10 @@ const PrivateRoute = (props) => {
       {...rest}
       render={(subprops) => {
         if (keycloak.obj && !!keycloak.obj.authenticated) {
-          if (keycloak.hasRole(roles)) {
-            return (
-              <Layout>
-                <Component {...subprops} {...rest.componentProps} />
-              </Layout>
-            );
-          }
           return (
-            <Redirect
-              to={{
-                pathname: "/forbidden",
-                state: { referer: subprops.location },
-              }}
-            />
+            <Layout>
+              <Component {...subprops} {...rest.componentProps} />
+            </Layout>
           );
         }
         if (subprops.location.pathname !== "/login") {

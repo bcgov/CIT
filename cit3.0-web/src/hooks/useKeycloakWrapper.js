@@ -35,17 +35,14 @@ export function useKeycloakWrapper() {
    * Return the user's display name
    */
   const displayName = () =>
-    userInfo && (userInfo.name || userInfo.preferred_username);
+    userInfo && (userInfo.name || userInfo.idir_username);
 
   /**
    * Return the user's identity provider
    */
   const idp = () =>
     userInfo &&
-    userInfo.preferred_username.slice(
-      userInfo.preferred_username.indexOf("@") + 1
-    );
-
+    userInfo.idir_username;
   /**
    * Return the user's first name
    */
