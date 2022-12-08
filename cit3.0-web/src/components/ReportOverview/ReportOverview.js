@@ -52,8 +52,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
 
   const [isInternalAuthorized] = useState(
     isLoginWithIdir && hasBcAssessmentRole,
-    console.log(isLoginWithIdir),
-    console.log(hasBcAssessmentRole)
+    console.log(isLoginWithIdir)
   );
 
   const reportTabs = [
