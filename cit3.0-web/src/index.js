@@ -14,7 +14,6 @@ import AuthStateContextProvider from "./contexts/authStateContext";
 axios.defaults.baseURL = Config.apiUrl;
 const keycloak = new Keycloak(Config.keycloakConfig);
 const keycloakProviderInitConfig = {
-  onLoad: "login-required",
   pkceMethod: "S256",
   checkLoginIframe: false,
 };
