@@ -37,7 +37,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
 
   const [activePage, setActivePage] = useState("Connectivity");
 
-  const [isLoginWithIdir] = useState(keycloak.idp === "idir");
+  const [isLoginWithIdir] = useState(keycloak.idp === "idir", console.log("**** KEYCLOAK IDP****: " + keycloak.idp));
 
   const [hasBcAssessmentRole] = useState(
     keycloak.hasRole([
@@ -48,7 +48,10 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
   );
 
   const [isInternalAuthorized] = useState(
-    isLoginWithIdir && hasBcAssessmentRole
+    isLoginWithIdir && hasBcAssessmentRole,
+
+    console.log( " ******** IS LOGIN WITH IDIR: " + isLoginWithIdir),
+    console.log( " ******** BC ASSESSMENT ROLES: " + hasBcAssessmentRole)
   );
 
   const reportTabs = [
