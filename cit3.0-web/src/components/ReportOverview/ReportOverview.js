@@ -37,8 +37,9 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
 
   const [activePage, setActivePage] = useState("Connectivity");
 
-  const [isLoginWithIdir] = useState(keycloak.idp === "idir",
-  console.log(keycloak.idp)
+  const [isLoginWithIdir] = useState(
+    keycloak.idp === "idir",
+    console.log(keycloak.idp)
   );
 
   const [hasBcAssessmentRole] = useState(
