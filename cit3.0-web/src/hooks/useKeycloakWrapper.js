@@ -43,7 +43,7 @@ export function useKeycloakWrapper() {
   const idp = () =>
     userInfo &&
     userInfo.preferred_username.slice(
-        userInfo.preferred_username.indexOf("@") + 1
+      userInfo.preferred_username.indexOf("@") + 1
     );
 
   /**
