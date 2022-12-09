@@ -40,11 +40,11 @@ export function useKeycloakWrapper() {
   /**
    * Return the user's identity provider
    */
-   const idp = () =>
-     userInfo &&
-     userInfo.preferred_username.slice(
-         userInfo.preferred_username.indexOf("@") + 1
-     );
+  const idp = () =>
+    userInfo &&
+    userInfo.preferred_username.slice(
+        userInfo.preferred_username.indexOf("@") + 1
+    );
 
   /**
    * Return the user's first name
