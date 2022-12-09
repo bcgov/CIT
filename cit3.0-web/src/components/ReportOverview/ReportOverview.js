@@ -42,16 +42,8 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
     console.log(keycloak.idp)
   );
 
-  const [hasBcAssessmentRole] = useState(
-    keycloak.hasRole([
-      Roles.SUPER_ADMINISTRATOR,
-      Roles.SYSTEM_ADMINISTRATOR,
-      Roles.POWER_BI_VIEWER,
-    ])
-  );
-
   const [isInternalAuthorized] = useState(
-    isLoginWithIdir && hasBcAssessmentRole,
+    isLoginWithIdir,
     console.log(isLoginWithIdir)
   );
 
