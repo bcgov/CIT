@@ -261,26 +261,12 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
       return;
     }
 
-    if (hasBcAssessmentRole) {
+    if (isLoginWithIdir) {
       reportId = Config.pbiReportIdInternal;
       await loadReport();
       setActivePage(displayName);
       return;
     }
-
-    setModalInfo({
-      title: "Not Authorized",
-      body: (
-        <>
-          <p>
-            You are not authorized to view this report.
-            <br />
-            <br />
-            Please contact citinfo@gov.bc.ca to request access.
-          </p>
-        </>
-      ),
-    });
 
     handleShow();
   };
