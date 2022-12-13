@@ -26,7 +26,6 @@ export function useKeycloakWrapper() {
    */
   const roles = () => (userInfo && userInfo.roles ? [...userInfo.roles] : []);
   console.log(JSON.stringify(roles));
-  console.log(userInfo.roles);
   console.log(roles);
 
   /**
