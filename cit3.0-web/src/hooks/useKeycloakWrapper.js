@@ -19,14 +19,13 @@ export function useKeycloakWrapper() {
     userInfo.roles &&
     (typeof role === "string"
       ? userInfo.roles.includes(role)
-      : role.some((r) => userInfo.roles.includes(r)));
+      : role.some((r) => userInfo.roles.includes(r)),
+      console.log(role));
 
   /**
    * Return an array of roles the user belongs to
    */
   const roles = () => (userInfo && userInfo.roles ? [...userInfo.roles] : []);
-  console.log(JSON.stringify(roles));
-  console.log(roles);
 
   /**
    * Return the user's username
