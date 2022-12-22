@@ -3,8 +3,6 @@ import { Row, Container } from "react-bootstrap";
 import InputRange from "react-input-range";
 import TextInput from "../FormComponents/TextInput";
 import Validator from "../FormComponents/Validator";
-import "react-input-range/src/scss/index.scss";
-import "./InputRangeWithTextboxes.scss";
 
 export default function InputRangeWithTextboxes(props) {
   const {

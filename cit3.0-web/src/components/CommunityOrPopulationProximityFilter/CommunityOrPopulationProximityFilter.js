@@ -5,7 +5,6 @@ import { Modal, Container, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import Select, { createFilter } from "react-select";
 import InputRangeWithTextboxes from "../InputRangeWithTextboxes/InputRangeWithTextboxes";
-import "./CommunityOrPopulationProximityFilter.scss";
 
 export default function CommunityOrPopulationProximityFilter(props) {
   const {

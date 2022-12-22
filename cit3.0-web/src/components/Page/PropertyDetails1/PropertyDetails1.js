@@ -18,7 +18,7 @@ import {
   resetOpportunity,
 } from "../../../store/actions/opportunity";
 import { setOptions, getOptions } from "../../../store/actions/options";
-import "./PropertyDetails1.scss";
+
 import Validator from "../../FormComponents/Validator";
 
 export default function PropertyDetails1() {

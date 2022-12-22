@@ -35,7 +35,6 @@ import {
 } from "../../../helpers/userStoryData";
 
 import { userStoryPaths } from "../../../data/userStoryPaths.json";
-import "../HomePage/HomePage.scss";
 import "./UserStory.css";
 
 export default function UserStory() {

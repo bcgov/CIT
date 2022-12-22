@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import NumberRangeFilter from "../NumberRangeFilter/NumberRangeFilter";
 import SelectFilter from "../SelectFilter/SelectFilter";
 import CommunityOrPopulationProximityFilter from "../CommunityOrPopulationProximityFilter/CommunityOrPopulationProximityFilter";
-import "./SearchFlyoutContent.scss";
 import { getOptions, setOptions } from "../../store/actions/options";
 
 const FORM_EXCLUDE_UNKNOWNS = "exclude_unknowns";

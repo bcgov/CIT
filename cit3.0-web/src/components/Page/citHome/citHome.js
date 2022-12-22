@@ -1,7 +1,6 @@
 import "./citHome.css";
 import { Container, Row, Col, Modal } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
-import "../HomePage/HomePage.scss";
 import { Button as SharedButton } from "shared-components";
 import { useState } from "react";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";

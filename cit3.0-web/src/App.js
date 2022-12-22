@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
 
@@ -32,7 +33,6 @@ import OpportunityApproveListPage from "./components/Page/OpportunityApproveList
 import UserManagementDashboard from "./components/Page/UserManagement/UserManagementDashboard";
 
 import PowerBi from "./components/Page/PowerBi/PowerBi";
-import PublicReport from "./components/Page/PowerBi/PublicReport";
 import Compare from "./components/Page/PowerBi/Compare";
 import CriteriaSearch from "./components/Page/PowerBi/CriteriaSearch";
 import Roles from "./constants/roles";
@@ -40,7 +40,13 @@ import PublicLayout from "./layouts/PublicLayout";
 import HomePage from "./components/Page/HomePage/HomePage";
 import citHome from "./components/Page/citHome/citHome";
 
+import { useKeycloakWrapper } from "./hooks/useKeycloakWrapper";
+
 function App() {
+  const keycloak = useKeycloakWrapper();
+  const [isLoginWithIdir] = useState(keycloak.idp === "idir");
+  console.log(keycloak);
+
   return (
     <AuthStateContext.Consumer>
       {(context) => {
@@ -235,13 +241,13 @@ function App() {
                   title="Community Information Tool - Community Report"
                   exact
                   path="/cit-dashboard/info/:zonetype/:id"
-                  component={PublicReport}
+                  component={HomePage}
                 />
                 <AppRoute
                   title="Community Information Tool - Community Report"
                   exact
                   path="/cit-dashboard/info/:zonetype/name/:name"
-                  component={PublicReport}
+                  component={HomePage}
                 />
                 <AppRoute
                   protected
@@ -263,25 +269,25 @@ function App() {
                 <AppRoute
                   path="/cit-dashboard/home"
                   title="Community Information Tool"
-                  component={UserStory}
+                  component={HomePage}
                 />
                 <AppRoute
                   exact
                   path="/userstory"
                   title="Community Information Tool"
-                  component={UserStory}
+                  component={HomePage}
                 />
                 <AppRoute
                   exact
                   path="/userstory/internal"
                   title="Community Information Tool"
-                  component={UserStory}
+                  component={HomePage}
                 />
                 <AppRoute
                   exact
-                  path="/reports/publicreport"
+                  path="/reports/HomePage"
                   title="Community Information Tool"
-                  component={PublicReport}
+                  component={HomePage}
                 />
                 <AppRoute
                   exact

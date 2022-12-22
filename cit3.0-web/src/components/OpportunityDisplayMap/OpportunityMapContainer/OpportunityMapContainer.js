@@ -4,7 +4,6 @@ import { CgCloseR } from "react-icons/cg";
 import { GrMapLocation } from "react-icons/gr";
 import { Row, Col } from "react-bootstrap";
 import OpportunitiesMap from "../OpportunitiesMap/OpportunitiesMap";
-import "./OpportunityMapContainer.scss";
 import { fadeIn, fadeOut } from "../../../helpers/fade";
 
 export default function OpportunityMapContainer({ totalCount, opportunities }) {
