@@ -1,22 +1,24 @@
-# update module
+1. change directory
+    cd cit3.0-web
 
-yarn install
+2. update module
 
-# run app
+   yarn install
 
-yarn start
+3. run app
 
+   yarn start
 
-# app will open in the browser
+4. app will open in the browser
 
-http://localhost:3000/
+    http://localhost:3000/
 
-# press F12 on your browser
+5. press F12 on your browser
 
-look for entry App.js line 48
+    look for entry App.js line 48
 
-{obj: Keycloak, username: undefined, displayName: undefined, firstName: undefined, lastName: undefined, …}
+    {obj: Keycloak, username: undefined, displayName: undefined, firstName: undefined, lastName: undefined, …}
 
-this will show you the roles for the login user
+    this will show you the roles for the login user
 
 
