@@ -7,6 +7,7 @@ import Roles from "../constants/roles";
 export function useKeycloakWrapper() {
   const { keycloak } = useKeycloak();
   const userInfo = keycloak && keycloak.userInfo;
+  console.log(userInfo);
 
   /**
    * Determine if the user belongs to the specified 'role'
