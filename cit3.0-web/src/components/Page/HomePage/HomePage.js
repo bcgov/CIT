@@ -3,8 +3,11 @@ import { useHistory } from "react-router-dom";
 import "./HomePage.scss";
 import { Button } from "shared-components";
 import DisclaimerCIOT from "../../DisclaimerCIOT/DisclaimerCIOT";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 
 export default function HomePage() {
+  const keycloak = useKeycloakWrapper();
+  console.log(keycloak);
   const history = useHistory();
   return (
     <>
