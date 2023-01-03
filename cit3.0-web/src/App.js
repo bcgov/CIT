@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
 
@@ -40,7 +41,13 @@ import PublicLayout from "./layouts/PublicLayout";
 import HomePage from "./components/Page/HomePage/HomePage";
 import citHome from "./components/Page/citHome/citHome";
 
+import { useKeycloakWrapper } from "./hooks/useKeycloakWrapper";
+
 function App() {
+  const keycloak = useKeycloakWrapper();
+  const [isLoginWithIdir] = useState(keycloak.idp === "idir");
+  console.log(keycloak);
+
   return (
     <AuthStateContext.Consumer>
       {(context) => {
