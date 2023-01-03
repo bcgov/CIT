@@ -25,7 +25,8 @@ export function useKeycloakWrapper() {
   /**
    * Return an array of roles the user belongs to
    */
-  const roles = () => userInfo && userInfo.client_roles ? [...userInfo.client_roles] : [];
+  const roles = () =>
+    userInfo && userInfo.client_roles ? [...userInfo.client_roles] : [];
 
   /**
    * Return the user's username
