@@ -2,9 +2,12 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import { Button } from "shared-components";
 import DisclaimerCIOT from "../../DisclaimerCIOT/DisclaimerCIOT";
+import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 
 export default function HomePage() {
   const history = useHistory();
+  const keycloak = useKeycloakWrapper();
+  console.log(keycloak);
   return (
     <>
       <div className="w-100 header-div">
@@ -21,7 +24,7 @@ export default function HomePage() {
             </h1>
             <h2 className="sub-header-text">
               Connecting investors with opportunities in communities across
-              British Columbia
+              British Columbia 1
             </h2>
           </div>
         </div>

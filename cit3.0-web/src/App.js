@@ -44,12 +44,10 @@ import { useKeycloakWrapper } from "./hooks/useKeycloakWrapper";
 
 function App() {
   const keycloak = useKeycloakWrapper();
-  const [isLoginWithIdir] = useState(keycloak.idp === "idir");
-  console.log(keycloak);
-
   return (
     <AuthStateContext.Consumer>
       {(context) => {
+        console.log(keycloak);
         if (!context.ready) {
           return (
             <PublicLayout>
