@@ -72,8 +72,7 @@ export function useKeycloakWrapper() {
     !!opportunity &&
     (hasRole(Roles.SYSTEM_ADMINISTRATOR) ||
       hasRole(Roles.SUPER_ADMINISTRATOR) ||
-      (hasRole(Roles.ECONOMIC_DEVELOPMENT_OFFICER) &&
-        !opportunity.edoId === edoId));
+      (!opportunity.edoId === edoId));
 
   /**
    * Return true if the user has permissions to delete this property
@@ -82,8 +81,7 @@ export function useKeycloakWrapper() {
     !!opportunity &&
     (hasRole(Roles.SYSTEM_ADMINISTRATOR) ||
       hasRole(Roles.SUPER_ADMINISTRATOR) ||
-      (hasRole(Roles.ECONOMIC_DEVELOPMENT_OFFICER) &&
-        !opportunity.edoId === edoId));
+      (!opportunity.edoId === edoId));
 
   return {
     obj: keycloak,
