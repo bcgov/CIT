@@ -30,7 +30,8 @@ class MyBasePermission(BasePermission):
         except KeycloakGetError:
             self.message = 'Failed to recieve userinfo'
         except KeycloakAuthenticationError:
-            self.message = 'Authorization token in not valid'
+            self.message = 'Authorization token is not valid'
+            self.message = userinfo
         return False
 
 class IsAuthenticated(MyBasePermission):
