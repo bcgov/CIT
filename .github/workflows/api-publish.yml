@@ -1,0 +1,28 @@
+# This workflow will build and push a new backend container image to Azure ACR
+name: Backend Build and Push (Test)
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - 'cit-api/**'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # checkout the repo
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@master
+
+      - name: "Build and push webapi"
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      # TODO: tags with ${{ github.sha }}
+      - run: |
+          docker build cit-api -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:latest
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:latest
