@@ -1,19 +1,19 @@
 
 # What we have done:
- We have created a new set of instructions to gain access to the tfstate file and ensure that everyone is able to havea access to this from start up. 
+ We have created a new set of instructions to gain access to the tfstate file and ensure that everyone is able to have access to this from start up.
  Following these steps, much of the infrastructure will be provisioned. However there are still a few to-do's.
  The configuration expects a certain DNS that is being used in the existing resource group where the test and prod resources live.
  A new DNS will need to be assigned and added to the "accept list". The test keycloak instance we are using will also need to accept
  this new DNS. The connection to PowerBI also needs to be made - whether a new PowerBi resource is created or its added to the existing
- one in the other resource group. Many parts of the existing infrastructure seem to be manually created. It would be ideal at some point to 
- add the creation of all resources to terraform. 
+ one in the other resource group. Many parts of the existing infrastructure seem to be manually created. It would be ideal at some point to
+ add the creation of all resources to terraform.
 
 
 ===============
-# NEW DOCUMENTATION 
+# NEW DOCUMENTATION
 
 Updated Documentation to start from scratch creating the TF state info and using AZ:
-# Assumption: AzureCLI is installed 
+# Assumption: AzureCLI is installed
 az login
 # get the list of accounts to obtain the "id" of the required account.  This is the subscription id.
 az account list
@@ -32,8 +32,6 @@ az config set defaults.group=<resource group>
     # create a container in the newly created datastore. The account-name is the name from the account create above, and the account-key is from the account key list from above.
     az storage container create --name tfstate --account-name tfstatecittest --account-key <SECRET-FROM-ACCOUNT-KEY-LIST>
 
-# Create a file that holds the account key (above) in a file for the TF backend to use during init:
-cp secrets.backend.template secrets.backend
 # edit the file above
 
 Copy the `variables.auto.tfvars.template` file and rename it `variables.auto.tfvars`, then
@@ -41,6 +39,23 @@ populate the following variables:
 
 * **subscription_id**={Your Azure subscription ID}
 * **tenant_id**={tenant}
+
+# init the Terraform
+To obtain the access_key value:
+1) az login
+2) az storage account keys list -g CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01-Test -n tfstatecittest
+3) you can add the access_key in the providers.tf file, but you may accidentally commit it to the git repo. Better would be to pass it in via CLI at init. eg:
+      $> terraform init --backend-config="access_key=abcyourkeyhere123"
+
+NOTE: If you forget to pass in the accesskey during a terraform init you'll get an error "Error: MSI not available"... so don't forget the access_key Chris!
+
+Since I was developing this I only created the storge the first time then just re-used the same object store and bucket. So it's unlikely you'll need to do this again.
+The above init command may throw an error if you're re-using the storage from a previous implementation. If this is a fresh start you can just do as instructed and include the -reconfigure option:
+      $> terraform init -reconfigure --backend-config="access_key=Y9{redacted}}=="
+
+TODO: add some instruction on how to pull the state for updates rather than starting from scratch.
+
+Once the init has been completed you'll have the backend configured and then be able to proceed with terraform plan/apply as you wish.
 
 ## Configure Github Repository
 Terraform includes a provider which allows us to automatically provision Github Action build secrets
