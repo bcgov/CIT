@@ -1,22 +1,16 @@
-# This workflow will build and push a new container image to the Production Azure ACR
+# This workflow will build and push a new container image to Azure ACR
+
+on:
+  push:
+    branches: [production]
+  workflow_dispatch:
 
 name: Deploy to Prod
-on:
-  workflow_dispatch:
-    inputs:
-      container:
-        type: choice
-        description: Select the container
-        required: true
-        options:
-        - backend
-        - frontend
 jobs:
-  build-and-deploy-backend:
+  build-and-deploy:
     runs-on: ubuntu-latest
     environment: 
       name: Production
-    if: ${{ github.event.inputs.container == 'backend' }}
     steps:
       # checkout the repo
       - name: "Checkout GitHub Action"
@@ -32,26 +26,8 @@ jobs:
       - run: |
           docker build cit-api -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:prod
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:prod
-    
-      - name: Merge changes to production branch
-        uses: everlytic/branch-merge@1.1.2
-        with:
-          github_token: ${{ github.token }}
-          source_ref: ${{ github.ref }}
-          target_branch: 'production'
-          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
-  
-  build-and-deploy-frontend:
-    runs-on: ubuntu-latest
-    environment: 
-      name: Production
-    if: ${{ github.event.inputs.container == 'frontend' }}
-    steps:
-      # checkout the repo
-      - name: "Checkout GitHub Action"
-        uses: actions/checkout@master
 
-      - name: "Build and Push frontend"
+      - name: "Build and push frontend"
         uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
@@ -60,14 +36,5 @@ jobs:
       - run: |
           docker build cit3.0-web -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:prod
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:prod
-      
-      - name: Merge changes to production branch
-        uses: everlytic/branch-merge@1.1.2
-        with:
-          github_token: ${{ github.token }}
-          source_ref: ${{ github.ref }}
-          target_branch: 'production'
-          commit_message_template: '[Automated] Merged {source_ref} into target {target_branch}'
-  
 
 
