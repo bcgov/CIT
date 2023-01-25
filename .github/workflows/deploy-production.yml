@@ -1,7 +1,9 @@
 # This workflow will build and push a new container image to Azure ACR
 
 on:
-  workflow_dispatch
+  push:
+    branches: [production]
+  workflow_dispatch:
 
 name: Deploy to Prod
 jobs:
