@@ -18,7 +18,7 @@ All contributors retain the original copyright to their stuff, but by contributi
 - Push your branch up to github.
 `git push origin <branchname>`
 - open a pull request against develop and request a team member review it.
-
+- once reviewed and approved, merge the request
 
 ### Merging your code into develop.
 
