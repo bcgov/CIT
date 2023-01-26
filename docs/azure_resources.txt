@@ -1,0 +1,50 @@
+# Azure resources in production and their usage:
+acraf6z1jmd - The Container Registry.  This is the place the docker files that GitHub Actions creates. Generally this will hold the containers used for CIT-API and CIT-WEB
+
+api-cit3-citz-bcgov-prod - This is the "App Service" which is the an implementation of the docker image for API backend.
+api-cit3-citz-bcgov-test
+
+citapi (acraf6z1jmd/citapi) - The webhook used to reference the Container Registry.
+citapiprod (acraf6z1jmd/citapiprod)
+
+clnpdictprbi01 - This is the Power BI Embedded resource used as a connector for PowerBI Cloud
+
+psql-cit3-citz-bcgov-prod - the prod and following test PSQL databases actively used.
+psql-cit3-citz-bcgov
+
+tfstatecit - Storage to hold the Terraform state files.  These are important and should be preserved.
+
+web-cit3-citz-bcgov-prod - this is the web service actively used for the frontend.
+web-cit3-citz-bcgov
+
+
+# Resources no longer needed or unknown
+cit-data-pipeline         - This is an obsolete container instance and should be removed once the GitHub Action Data pipeline has been validated to work as expected.
+cit-data-pipeline-prod
+
+cit-dev-lab-vnet          - the Virtual Network assocaited with the lab VMs - likely unneeded.
+cit-dev1 (cit-devtest-lab1/cit-dev1) - The lab virtual machine.  Likely unused/no longer needed
+cit-devtest-lab1
+
+cit-email-notifications     - A logic App - seems to have been used for email service.  not sure it's used any longer. Needs to be verified.
+cit-email-notifications-prod
+
+cit-email-reminders - Container instances for sending emails.  I think this was replaced with the Common Hosted Email Service (CHES)
+cit-email-reminders-prod
+
+cit-idir-tracking-prod - Containers and VMs used for tracking IDIR. Again, I think this has been obsoleted but needs to be verified.
+cit-idir-tracking
+
+citdevtestlab19876 - Key Vault - unused - comes be defaut with the Resource Group
+
+citpipelinedata - Storge for data files. This should have been obsoleted in Phase4 of the project.  It's unclear if this data (and hence storage) is still required.
+
+citshell - log storage for instances.  Expected it's no longer needed.
+citshel2
+
+Dtlcit-devtest-lab1 - obsolete network for the lab
+
+key-cit3-citz-bcgov-test - no longer needed - never fully implemented
+
+cit-cit3-citz-bcgov-prod - This appears to be an obsolete app service no longer used.
+cit-cit3-citz-bcgov-test
