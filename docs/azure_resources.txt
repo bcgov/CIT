@@ -22,7 +22,7 @@ web-cit3-citz-bcgov
 cit-data-pipeline         - This is an obsolete container instance and should be removed once the GitHub Action Data pipeline has been validated to work as expected.
 cit-data-pipeline-prod
 
-cit-dev-lab-vnet          - the Virtual Network assocaited with the lab VMs - likely unneeded.
+cit-dev-lab-vnet          - the Virtual Network associated with the lab VMs - likely unneeded.
 cit-dev1 (cit-devtest-lab1/cit-dev1) - The lab virtual machine.  Likely unused/no longer needed
 cit-devtest-lab1
 
@@ -35,9 +35,9 @@ cit-email-reminders-prod
 cit-idir-tracking-prod - Containers and VMs used for tracking IDIR. Again, I think this has been obsoleted but needs to be verified.
 cit-idir-tracking
 
-citdevtestlab19876 - Key Vault - unused - comes be defaut with the Resource Group
+citdevtestlab19876 - Key Vault - unused - comes be default with the Resource Group
 
-citpipelinedata - Storge for data files. This should have been obsoleted in Phase4 of the project.  It's unclear if this data (and hence storage) is still required.
+citpipelinedata - Storage for data files. This should have been obsoleted in Phase4 of the project.  It's unclear if this data (and hence storage) is still required.
 
 citshell - log storage for instances.  Expected it's no longer needed.
 citshel2
