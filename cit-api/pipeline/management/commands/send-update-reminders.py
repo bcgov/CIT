@@ -39,7 +39,7 @@ class Command(BaseCommand):
 
 def send_reminder_email(email, opportunity_list):
     token_request_body = {'grant_type': 'client_credentials'}
-    response = requests.post(os.environ.get("EMAIL_AUTH_HOST") + "/auth/realms/jbd6rnxw/protocol/openid-connect/token", data=token_request_body, auth=HTTPBasicAuth(os.environ.get("EMAIL_CLIENT_ID"),os.environ.get("EMAIL_CLIENT_SECRET")))       
+    response = requests.post(os.environ.get("EMAIL_AUTH_HOST"), data=token_request_body, auth=HTTPBasicAuth(os.environ.get("EMAIL_CLIENT_ID"),os.environ.get("EMAIL_CLIENT_SECRET")))       
     if response.status_code == 200:
         access_token = response.json()["access_token"]
         headers = {
