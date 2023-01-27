@@ -32,9 +32,9 @@ resource "azurerm_app_service" "backend" {
     CLIENT_ID                       = "f6450e1d-a85b-46b7-8180-c72f9ecad653"
     CLIENT_SECRET                   = var.pbi_secret
     EMAIL_NOTIFICATIONS_ENABLED     = true
-    EMAIL_AUTH_HOST                 = "https://oidc.gov.bc.ca"
-    EMAIL_SERVICE_HOST              = "https://ches.apps.silver.devops.gov.bc.ca"
-    EMAIL_CLIENT_ID                 = "CIT_SERVICE_CLIENT"
+    EMAIL_AUTH_HOST                 = "https://loginproxy.gov.bc.ca/auth/realms/comsvcauth/protocol/openid-connect/token"
+    EMAIL_SERVICE_HOST              = "https://ches.api.gov.bc.ca"
+    EMAIL_CLIENT_ID                 = "0943A91E-F260FF4EEDA"
     EMAIL_CLIENT_SECRET             = var.email_client_secret
     EMAIL_SENDING_ADDRESS           = "noreply@gov.bc.ca"
     EMAIL_OPPORTUNITY_LINK_HOST     = "https://communityinformationtool.gov.bc.ca"
