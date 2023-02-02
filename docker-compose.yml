@@ -9,6 +9,8 @@ services:
     restart: always
     ports:
       - "80:80"
+    depends_on:
+      - cit-api
   cit-api:
     build:
       context: ./cit-api
@@ -24,6 +26,7 @@ services:
       - 8000:8000
     depends_on:
       - db
+      - keycloak
 
   db:
     # image: mdillon/postgis
@@ -59,6 +62,6 @@ services:
       - ./realm-export.json:/opt/keycloak/data/import/realm-export.json
     command:
       - start-dev
-      - --import-realm
+      - "-Dkeycloak.profile.feature.upload_scripts=enabled -Dkeycloak.import=/opt/keycloak/data/import/realm-export.json"
     ports:
       - 8080:8080
