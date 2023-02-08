@@ -17,16 +17,15 @@ export function useKeycloakWrapper() {
     role !== undefined &&
     role !== null &&
     userInfo &&
-    userInfo.client_roles &&
+    userInfo.roles &&
     (typeof role === "string"
-      ? userInfo.client_roles.includes(role)
-      : role.some((r) => userInfo.client_roles.includes(r)));
+      ? userInfo.roles.includes(role)
+      : role.some((r) => userInfo.roles.includes(r)));
 
   /**
    * Return an array of roles the user belongs to
    */
-  const roles = () =>
-    userInfo && userInfo.client_roles ? [...userInfo.client_roles] : [];
+  const roles = () => (userInfo && userInfo.roles ? [...userInfo.roles] : []);
 
   /**
    * Return the user's username
