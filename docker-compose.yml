@@ -9,53 +9,37 @@ services:
     restart: always
     ports:
       - "80:80"
+    depends_on:
+      - cit-api
   cit-api:
     build:
       context: ./cit-api
       dockerfile: Dockerfile.dev
     image: countable/cit
-    volumes:
-      - ./cit-api:/code
-      - static:/static
-      - media:/code/data
+    # volumes:
+    #   - ./cit-api:/code
+    #   - static:/static
+    #   - media:/code/data
     env_file:
       - cit-api/.env
     ports:
       - 8000:8000
     depends_on:
       - db
+      - keycloak
+
   db:
-    image: mdillon/postgis
-    env_file:
-      - .env
+    # image: mdillon/postgis
+    # image: postgis/postgis:15-3.3
+    # image: pgrouting/pgrouting
+    image: kartoza/postgis:15-3.3
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cittest1
+      POSTGRES_MULTIPLE_EXTENSIONS: postgis,pgrouting,pg_buffercache,pg_stat_statements
     volumes:
-      - pg-data:/var/lib/postgresql/data
-      - ./db:/code
+      - ./db/init.sql:/usr/share/postgresql/15/contrib/postgis-3.3/legacy_minimal.sql
+      - ./db/cittest1.sql:/docker-entrypoint-initdb.d/setup-db.sql
     ports:
       - 5432:5432
-  keycloak:
-    image: quay.io/keycloak/keycloak:latest
-    # so where did this realm-export come from? Long store worth documenting for future Chris:
-    # ** This important part of this export is getting the user account.  Otherwise there's a simpler way of just getting the realm export through the GUI.
-    # - standup a bare keycloak from he docker image
-    # - config the keycloak with the desired realm, client, and bobross user account.
-    # - stand up a second instance to export the first instance config file and store in the /tmp folder on the first KC instance. Do so wih this command:
-    # -     docker exec -it cit_keycloak_1 /opt/jboss/keycloak/bin/standalone.sh -Djboss.socket.binding.port-offset=100 -Dkeycloak.migration.action=export -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.realmName=fyof530u -Dkeycloak.migration.usersExportStrategy=SAME_FILE -Dkeycloak.migration.file=/tmp/export.json
-    # - then to get the file just: docker cp cit_keycloak_1:/tmp/export.json ./realm-export.json
-    volumes:
-      - ./realm-export.json:/tmp/realm-export.json
-    environment:
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: Pa55w0rd
-      KEYCLOAK_IMPORT: /tmp/realm-export.json -Dkeycloak.profile.feature.upload_scripts=enabled
-    ports:
-      - 8080:8080
-
-
-volumes:
-  pg-data:
-    driver: local
-  static:
-    driver: local
-  media:
-    driver: local
