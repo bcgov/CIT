@@ -2,9 +2,9 @@
   window.env = window.env || {};
   // Environment variables
   window.env.apiUrl = "http://localhost:8000";
-  window.env.keycloakUrl = "https://test.oidc.gov.bc.ca/auth/";
-  window.env.keycloakRealm = "fyof530u";
-  window.env.keycloakClient = "cit-local";
+  window.env.keycloakUrl = "https://dev.loginproxy.gov.bc.ca/auth";
+  window.env.keycloakRealm = "standard";
+  window.env.keycloakClient = "community-information-tool-4411";
   window.env.snowplowUrl = "spm.apps.gov.bc.ca";
   window.env.geocoderKey = "";
   window.env.routePlannerKey = "";

@@ -20,7 +20,7 @@ class MyBasePermission(BasePermission):
             userinfo = keycloak_openid.userinfo(request.headers['Authorization'][7:])
             print(f"USERINFOOOOOOOOO : {userinfo}")
             # Use Userinfo to validate permissions
-            return any(i in roles for i in userinfo['roles'])
+            return any(i in roles for i in userinfo['client_roles'])
         except KeycloakConnectionError:
             self.message = 'Cannot connect to authorization server'
         except AttributeError:
