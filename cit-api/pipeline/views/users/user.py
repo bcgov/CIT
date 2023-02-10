@@ -188,7 +188,7 @@ class UserView(GenericAPIView):
 
         keycloak_user_info = keycloak_openid.userinfo(request.headers['Authorization'][7:])
 
-        if "IDIR" in keycloak_user_info["roles"]:
+        if "IDIR" in keycloak_user_info["client_roles"]:
             return True
         else:
             return False
