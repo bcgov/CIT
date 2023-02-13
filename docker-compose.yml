@@ -26,7 +26,6 @@ services:
       - 8000:8000
     depends_on:
       - db
-      - keycloak
 
   db:
     # image: mdillon/postgis
