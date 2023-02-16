@@ -18,6 +18,7 @@ import {
   getPID,
   getParcelDataNoAddress,
 } from "../../../helpers/parcelData";
+import { COORDINATE } from "../../../constants/coordinate";
 import {
   setAddress,
   setCoords,
@@ -79,6 +80,11 @@ export default function AddOpportunity() {
   // handle proximity data still loading modal
   const [proxModalShow, setProxModalShow] = useState(false);
 
+  const isInvalidAddress =
+    (!address || !localityName) &&
+    coords[0] === COORDINATE.X &&
+    coords[1] === COORDINATE.Y;
+
   const showProximityModal = () => {
     setChangePage(true);
     setProxModalShow(true);
@@ -105,7 +111,7 @@ export default function AddOpportunity() {
       }
     }
     handleClose();
-    if (proximityInProgress && !error.length) {
+    if (proximityInProgress && !error.length && !isInvalidAddress) {
       showProximityModal();
     }
   };
@@ -139,13 +145,12 @@ export default function AddOpportunity() {
     setError([]);
     let errors = [];
     let warnings = [];
-
     if (!address || !geometry) {
       warnings = [
         ...warnings,
-        `This opportunity has no ${!address ? "address" : ""}${
-          !address && !geometry ? " or " : ""
-        }${!geometry ? "parcel" : ""} associated with it.`,
+        `${isInvalidAddress ? "Please enter a valid address" : ""}${
+          isInvalidAddress && !geometry ? " or " : ""
+        }${!geometry ? "select a land parcel from the map to continue." : ""}`,
       ];
     }
     if (parcelOwner === "Private" && hasApproval !== "Yes") {
