@@ -174,20 +174,19 @@ export default function CommunityOrPopulationProximityFilter(props) {
 
   return (
     <>
-      {!isSelected ? (
-        <Button
-          label={label}
-          styling="bcgov-normal-white filter-button unselected btn"
-          onClick={handleShow}
-        />
-      ) : (
-        <Button
-          label={`${label}: within ${displayRange.min}-${displayRange.max} ${units} of ${displayCommunityOrPopulation}`}
-          styling="bcgov-normal-blue filter-button selected btn"
-          onClick={handleShow}
-        />
-      )}
-
+      <Button
+        label={`${label}`}
+        styling={
+          isSelected
+            ? "bcgov-normal-blue filter-button selected btn"
+            : "bcgov-normal-white filter-button unselected btn"
+        }
+        onClick={handleShow}
+      />
+      <br />
+      {isSelected
+        ? `within ${displayRange.min} - ${displayRange.max} ${units} of ${displayCommunityOrPopulation}`
+        : ""}
       <Modal
         show={show}
         onHide={handleClose}
