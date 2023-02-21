@@ -38,11 +38,11 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
   const [activePage, setActivePage] = useState("Connectivity");
 
   const [isLoginWithIdir] = useState(
-    keycloak.idp === "idir"
+    keycloak.idp === "idir",
     );
 
   const [isInternalAuthorized] = useState(
-    isLoginWithIdir
+    isLoginWithIdir,
     );
 
   const reportTabs = [
