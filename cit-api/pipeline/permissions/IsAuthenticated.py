@@ -18,7 +18,6 @@ class MyBasePermission(BasePermission):
 
             # Get Userinfo
             userinfo = keycloak_openid.userinfo(request.headers['Authorization'][7:])
-            print(f"USERINFOOOOOOOOO : {userinfo}")
             # Use Userinfo to validate permissions
             return any(i in roles for i in userinfo['client_roles'])
         except KeycloakConnectionError:

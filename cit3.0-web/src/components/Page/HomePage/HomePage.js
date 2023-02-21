@@ -7,7 +7,6 @@ import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 
 export default function HomePage() {
   const keycloak = useKeycloakWrapper();
-  console.log(keycloak);
   const history = useHistory();
   return (
     <>
