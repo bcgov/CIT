@@ -13,10 +13,14 @@ import AuthStateContextProvider from "./contexts/authStateContext";
 
 axios.defaults.baseURL = Config.apiUrl;
 const keycloak = new Keycloak(Config.keycloakConfig);
-
+const keycloakProviderInitConfig = {
+  pkceMethod: "S256",
+  checkLoginIframe: false,
+};
 const Index = () => (
   <ReactKeycloakProvider
     authClient={keycloak}
+    initOptions={keycloakProviderInitConfig}
     onEvent={getKeycloakEventHandler(keycloak)}
   >
     <Provider store={store}>

@@ -18,9 +18,8 @@ class MyBasePermission(BasePermission):
 
             # Get Userinfo
             userinfo = keycloak_openid.userinfo(request.headers['Authorization'][7:])
-
             # Use Userinfo to validate permissions
-            return any(i in roles for i in userinfo['roles'])
+            return any(i in roles for i in userinfo['client_roles'])
         except KeycloakConnectionError:
             self.message = 'Cannot connect to authorization server'
         except AttributeError:
@@ -30,7 +29,7 @@ class MyBasePermission(BasePermission):
         except KeycloakGetError:
             self.message = 'Failed to recieve userinfo'
         except KeycloakAuthenticationError:
-            self.message = 'Authorization token in not valid'
+            self.message = 'Authorization token is not valid'
         return False
 
 class IsAuthenticated(MyBasePermission):

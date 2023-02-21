@@ -24,7 +24,7 @@ function createStateFromKeyCloak(keycloak) {
     name: keycloak.displayName || keycloak.name,
     email: keycloak.email,
     role: "",
-    isAdmin: keycloak.roles.some((role) => role === "IDIR"),
+    isAdmin: keycloak.client_roles.some((role) => role === "IDIR"),
     municipalities: [],
     regionalDistricts: [],
   };

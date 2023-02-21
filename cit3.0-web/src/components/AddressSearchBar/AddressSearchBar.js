@@ -54,6 +54,10 @@ export default function AddressSearchBar({
               background: "transparent",
               padding: "0",
               border: "0px solid transparent",
+              color: "#000000",
+              fontWeight: "400",
+              marginTop: "0px",
+              paddingLeft: "6px",
             }}
             type="button"
             onClick={(e) => selectAddress(e)}
@@ -78,6 +82,7 @@ export default function AddressSearchBar({
         id="addressSearch"
         value={currentAddress || ""}
         onChange={(e) => runSearch(e)}
+        style={{ marginBottom: "2px" }}
       />
       {show ? (
         <div

@@ -39,17 +39,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
 
   const [isLoginWithIdir] = useState(keycloak.idp === "idir");
 
-  const [hasBcAssessmentRole] = useState(
-    keycloak.hasRole([
-      Roles.SUPER_ADMINISTRATOR,
-      Roles.SYSTEM_ADMINISTRATOR,
-      Roles.POWER_BI_VIEWER,
-    ])
-  );
-
-  const [isInternalAuthorized] = useState(
-    isLoginWithIdir && hasBcAssessmentRole
-  );
+  const [isInternalAuthorized] = useState(isLoginWithIdir);
 
   const reportTabs = [
     {
@@ -257,26 +247,12 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
       return;
     }
 
-    if (hasBcAssessmentRole) {
+    if (isLoginWithIdir) {
       reportId = Config.pbiReportIdInternal;
       await loadReport();
       setActivePage(displayName);
       return;
     }
-
-    setModalInfo({
-      title: "Not Authorized",
-      body: (
-        <>
-          <p>
-            You are not authorized to view this report.
-            <br />
-            <br />
-            Please contact citinfo@gov.bc.ca to request access.
-          </p>
-        </>
-      ),
-    });
 
     handleShow();
   };

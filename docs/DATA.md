@@ -1,5 +1,5 @@
 # CIT-4.0 Data Changes
-With the newest version of CIT, the process of importing data has been udpated. The data has been decoupled to a certain point where specific datasets have been organized into groups that can be run seperately. In the previous version, an Azure Container was running the import-data.sh script which ran the bootstrap command. Now that the data has been decoupled into groups, each group has its own command that can be run by executing:
+With the newest version of CIT, the process of importing data has been updated. The data has been decoupled to a certain point where specific datasets have been organized into groups that can be run separately. In the previous version, an Azure Container was running the import-data.sh script which ran the bootstrap command. Now that the data has been decoupled into groups, each group has its own command that can be run by executing:
 
 
 python3 manage.py 'bucket_command' ex. python3 manage.py bucket_1
@@ -71,6 +71,8 @@ ogr2ogr -clipsrc -144 48 -110 60 census_bc.zip census.zip
 ```
 
 ## Importing Data
+TODO: This process is somewhat out of date and should be updated to reflect the new GHA data pipeline method where data collection and injection is segmented.
+
 
 Some data must be downloaded locally (data bc warehouse resources). Download all local datasets to the `data` folder. ie, the census subdiv geometry:
 

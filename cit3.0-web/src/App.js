@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "bootstrap/dist/css/bootstrap.css";
 import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
 
@@ -40,7 +41,12 @@ import PublicLayout from "./layouts/PublicLayout";
 import HomePage from "./components/Page/HomePage/HomePage";
 import citHome from "./components/Page/citHome/citHome";
 
+import { useKeycloakWrapper } from "./hooks/useKeycloakWrapper";
+
 function App() {
+  const keycloak = useKeycloakWrapper();
+  const [isLoginWithIdir] = useState(keycloak.idp === "idir");
+
   return (
     <AuthStateContext.Consumer>
       {(context) => {
@@ -87,7 +93,6 @@ function App() {
                   protected
                   title="Community Investment Opportunities Tool - Dashboard"
                   path="/investmentopportunities/dashboard"
-                  roles={[Roles.ECONOMIC_DEVELOPMENT_OFFICER]}
                   layout={AuthLayout}
                   component={EDODashboard}
                 />
@@ -96,11 +101,6 @@ function App() {
                   exact
                   path="/investmentopportunities/add"
                   title="Community Investment Opportunities Tool - Add Property"
-                  roles={[
-                    Roles.SUPER_ADMINISTRATOR,
-                    Roles.SYSTEM_ADMINISTRATOR,
-                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
-                  ]}
                   layout={AuthLayout}
                   component={AddOpportunity}
                 />
@@ -109,11 +109,6 @@ function App() {
                   exact
                   path="/investmentopportunities/site-info"
                   title="Community Investment Opportunities Tool - Site Information"
-                  roles={[
-                    Roles.SUPER_ADMINISTRATOR,
-                    Roles.SYSTEM_ADMINISTRATOR,
-                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
-                  ]}
                   layout={AuthLayout}
                   component={SiteInfomation}
                 />
@@ -122,11 +117,6 @@ function App() {
                   exact
                   path="/investmentopportunities/property-details"
                   title="Community Investment Opportunities Tool - Add Property Details"
-                  roles={[
-                    Roles.SUPER_ADMINISTRATOR,
-                    Roles.SYSTEM_ADMINISTRATOR,
-                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
-                  ]}
                   layout={AuthLayout}
                   component={PropertyDetails1}
                 />
@@ -134,11 +124,6 @@ function App() {
                   protected
                   exact
                   path="/investmentopportunities/additional-details"
-                  roles={[
-                    Roles.SUPER_ADMINISTRATOR,
-                    Roles.SYSTEM_ADMINISTRATOR,
-                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
-                  ]}
                   title="Community Investment Opportunities Tool - Add Additional Details"
                   layout={AuthLayout}
                   component={PropertyDetails2}
@@ -147,11 +132,6 @@ function App() {
                   protected
                   exact
                   path="/investmentopportunities/review"
-                  roles={[
-                    Roles.SUPER_ADMINISTRATOR,
-                    Roles.SYSTEM_ADMINISTRATOR,
-                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
-                  ]}
                   title="Community Investment Opportunities Tool - Opportunity Review & Submit"
                   layout={AuthLayout}
                   component={ReviewOpportunity}
@@ -160,11 +140,6 @@ function App() {
                   protected
                   exact
                   path="/investmentopportunities/success"
-                  roles={[
-                    Roles.SUPER_ADMINISTRATOR,
-                    Roles.SYSTEM_ADMINISTRATOR,
-                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
-                  ]}
                   title="Community Investment Opportunities Tool - Opportunity Submitted!"
                   layout={AuthLayout}
                   component={ReviewSubmitted}
@@ -206,11 +181,6 @@ function App() {
                   protected
                   path="/delete/investmentopportunities/*:path"
                   title="Community Investment Opportunities Tool - Delete an Opportunity"
-                  roles={[
-                    Roles.SUPER_ADMINISTRATOR,
-                    Roles.SYSTEM_ADMINISTRATOR,
-                    Roles.ECONOMIC_DEVELOPMENT_OFFICER,
-                  ]}
                   layout={AuthLayout}
                   component={OpportunityDeletePage}
                 />
@@ -219,11 +189,6 @@ function App() {
                   path="/cit-dashboard/internal"
                   title="Community Information Tool - Internal Report"
                   layout={AuthLayout}
-                  roles={[
-                    Roles.SUPER_ADMINISTRATOR,
-                    Roles.SYSTEM_ADMINISTRATOR,
-                    Roles.POWER_BI_VIEWER,
-                  ]}
                   component={PowerBi}
                 />
                 <AppRoute

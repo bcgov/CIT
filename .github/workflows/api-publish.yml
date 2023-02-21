@@ -1,12 +1,12 @@
-# This workflow will build and push a new container image to Azure ACR
+# This workflow will build and push a new backend container image to Azure ACR
+name: Backend Build and Push (Test)
 
 on:
   push:
-    branches:
-      - develop
-      - feature/deploy
-
-name: Build and Push (Test)
+    branches: [develop]
+    paths:
+      - 'cit-api/**'
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -22,17 +22,15 @@ jobs:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
+      
       # TODO: tags with ${{ github.sha }}
       - run: |
           docker build cit-api -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:latest
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:latest
-
-      - name: "Build and push frontend"
-        uses: azure/docker-login@v1
+      
+      - name: Vulnerability Scan Backend
+        uses: Azure/container-scan@v0
+        continue-on-error: true
         with:
-          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-      - run: |
-          docker build cit3.0-web -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest
+          image-name: ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:latest
+     

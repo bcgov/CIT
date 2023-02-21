@@ -16,15 +16,16 @@ export function useKeycloakWrapper() {
     role !== undefined &&
     role !== null &&
     userInfo &&
-    userInfo.roles &&
+    userInfo.client_roles &&
     (typeof role === "string"
-      ? userInfo.roles.includes(role)
-      : role.some((r) => userInfo.roles.includes(r)));
+      ? userInfo.client_roles.includes(role)
+      : role.some((r) => userInfo.client_roles.includes(r)));
 
   /**
    * Return an array of roles the user belongs to
    */
-  const roles = () => (userInfo && userInfo.roles ? [...userInfo.roles] : []);
+  const roles = () =>
+    userInfo && userInfo.client_roles ? [...userInfo.client_roles] : [];
 
   /**
    * Return the user's username
@@ -35,7 +36,7 @@ export function useKeycloakWrapper() {
    * Return the user's display name
    */
   const displayName = () =>
-    userInfo && (userInfo.name || userInfo.preferred_username);
+    userInfo && (userInfo.name || userInfo.idir_username);
 
   /**
    * Return the user's identity provider
@@ -70,8 +71,7 @@ export function useKeycloakWrapper() {
     !!opportunity &&
     (hasRole(Roles.SYSTEM_ADMINISTRATOR) ||
       hasRole(Roles.SUPER_ADMINISTRATOR) ||
-      (hasRole(Roles.ECONOMIC_DEVELOPMENT_OFFICER) &&
-        !opportunity.edoId === edoId));
+      !opportunity.edoId === edoId);
 
   /**
    * Return true if the user has permissions to delete this property
@@ -80,8 +80,7 @@ export function useKeycloakWrapper() {
     !!opportunity &&
     (hasRole(Roles.SYSTEM_ADMINISTRATOR) ||
       hasRole(Roles.SUPER_ADMINISTRATOR) ||
-      (hasRole(Roles.ECONOMIC_DEVELOPMENT_OFFICER) &&
-        !opportunity.edoId === edoId));
+      !opportunity.edoId === edoId);
 
   return {
     obj: keycloak,

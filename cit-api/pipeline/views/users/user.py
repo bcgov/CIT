@@ -84,7 +84,6 @@ class UserView(GenericAPIView):
     View to save details of a single user
     """
     serializer_class = UserPostSerializer
-    permission_classes = [IsAuthenticated]
 
     @swagger_auto_schema(request_body=UserPostSerializer,
                          method='POST',
@@ -188,7 +187,7 @@ class UserView(GenericAPIView):
 
         keycloak_user_info = keycloak_openid.userinfo(request.headers['Authorization'][7:])
 
-        if "IDIR" in keycloak_user_info["roles"]:
+        if keycloak_user_info:
             return True
         else:
             return False

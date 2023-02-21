@@ -73,7 +73,7 @@ const Header = () => {
       </header>
       {keycloak.obj.authenticated && !isPowerBI ? (
         <div className="navigation-container no-print">
-          {keycloak.hasRole([Roles.ECONOMIC_DEVELOPMENT_OFFICER]) && (
+          {
             <Button
               variant="link"
               className="text-white"
@@ -81,7 +81,7 @@ const Header = () => {
             >
               Dashboard
             </Button>
-          )}
+          }
           {keycloak.hasRole([
             Roles.SUPER_ADMINISTRATOR,
             Roles.SYSTEM_ADMINISTRATOR,
