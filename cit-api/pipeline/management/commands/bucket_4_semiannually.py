@@ -9,6 +9,7 @@ from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.importers.bucket4_semiannually import import_data_sources
 from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.importers.databc_resource import import_wms_resource
+from pipeline.importers.databc_resource import import_databc_resources
 from pipeline.importers.shp_resource import import_shp_resources
 from pipeline.models.general import DataSource
 from admin import settings
@@ -48,6 +49,9 @@ class Command(BaseCommand):
             if resource.source_type == "wms":
                 print(f'Importing {resource.display_name}...')
                 import_wms_resource(resource)
+            if resource.source_type == "api":
+                print(f'Importing {resource.display_name}...')
+                import_databc_resources(resource.name)
             if resource.source_type == "csv":
                 print(f'Importing {resource.display_name}...')
                 import_csv_resources(resource.name)
