@@ -694,8 +694,8 @@ def import_businesses_by_cid(tourism_file, url):
         try:
             resp = urlopen(url)
             zipfile = ZipFile(BytesIO(resp.read()))
-            with zipfile.open("businesses_by_census_subdivision_2021.csv") as f:
-                fields = ['CSD_ID','NAICS_CODE','EMPLOYEE_CLASS','FREQUENCY']
+            with zipfile.open("businesses_by_census_subdivision_2022.csv") as f:
+                fields = ['SGC','NAICS','empcl','FREQ']
                 businesses = pd.read_csv(f, header=0, delimiter=",",usecols=fields)
                 businesses.rename(columns={businesses.columns[0]:"census_subdivision_id",businesses.columns[1]:"naics_code",businesses.columns[2]:"employee_class",businesses.columns[3]:"number_of_businesses",},inplace=True)
 
