@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 import "./OpportunityApproveListPage.css";
 import { useHistory } from "react-router-dom";
 import querystring from "querystring";
@@ -16,6 +16,7 @@ const OpportunityApproveListPage = () => {
   const [opportunities, setOpportunities] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [query, setQuery] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
   const pageSize = 10;
   const history = useHistory();
   let search = querystring.decode(window.location.search.split("?")[1]);
@@ -31,6 +32,7 @@ const OpportunityApproveListPage = () => {
       source.cancel("newer search");
     }
     source = CancelToken.source();
+    setIsLoaded(false);
     axios
       .get(
         `${GET_OPPORTUNITIES_LIST_URL}?${
@@ -42,9 +44,11 @@ const OpportunityApproveListPage = () => {
       )
       .then((data) => {
         if (data.data.results.length) {
+          setIsLoaded(true);
           setOpportunities(data.data.results);
           setTotalCount(data.data.count);
         } else {
+          setIsLoaded(true);
           setOpportunities([]);
           setTotalCount(0);
         }
@@ -110,26 +114,36 @@ const OpportunityApproveListPage = () => {
               <b>Action(s)</b>
             </Col>
           </Row>
-          <Row>
-            {opportunities && opportunities.length ? (
-              <OpportunityList
-                component={() => OpportunityApprovalItem}
-                opportunities={opportunities}
-              />
-            ) : null}
-          </Row>
-          <Row className="d-flex flex-column align-items-center justify-content-center p-2">
-            <Paginator
-              count={totalCount}
-              setCurrentPage={setCurrentPage}
-              currentPage={currentPage}
-              pageSize={pageSize}
-            />
-            <p>
-              Showing {opportunities ? opportunities.length : 0} of {totalCount}{" "}
-              properties
-            </p>
-          </Row>
+          {!isLoaded ? (
+            <>
+              <div className="center-spinner">
+                <Spinner animation="border" />
+              </div>
+            </>
+          ) : (
+            <>
+              <Row>
+                {opportunities && opportunities.length ? (
+                  <OpportunityList
+                    component={() => OpportunityApprovalItem}
+                    opportunities={opportunities}
+                  />
+                ) : null}
+              </Row>
+              <Row className="d-flex flex-column align-items-center justify-content-center p-2">
+                <Paginator
+                  count={totalCount}
+                  setCurrentPage={setCurrentPage}
+                  currentPage={currentPage}
+                  pageSize={pageSize}
+                />
+                <p>
+                  Showing {opportunities ? opportunities.length : 0} of{" "}
+                  properties
+                </p>
+              </Row>
+            </>
+          )}
         </Container>
       </Flyout>
     </div>
