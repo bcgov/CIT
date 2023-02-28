@@ -1,4 +1,4 @@
-import { Row, Col, Container } from "react-bootstrap";
+import { Row, Col, Container, Spinner } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import querystring from "querystring";
@@ -15,7 +15,12 @@ export default function InvestorMainView() {
   const [currentPage, setCurrentPage] = useState(1);
   const [opportunities, setOpportunities] = useState(null);
   const [paginatedOpportunities, setPaginatedOpportunities] = useState(null);
-  const [pageSize] = useState(4);
+  const [isLoadedMap, setIsLoadedMap] = useState(false);
+  const [
+    isLoadedOpportunityListPage,
+    setIsLoadedOpportunityListPage,
+  ] = useState(false);
+  const pageSize = 10;
   const [query, setQuery] = useState("");
   const history = useHistory();
   let search = querystring.decode(window.location.search.split("?")[1]);
@@ -40,6 +45,7 @@ export default function InvestorMainView() {
     search = querystring.decode(query);
     search.approval_status_id = "PUBL";
     const latestQuery = querystring.encode(search);
+    setIsLoadedMap(false);
     if (latestQuery.length > 0) {
       setCurrentPage(1);
       axios
@@ -54,6 +60,7 @@ export default function InvestorMainView() {
         .then((data) => {
           setOpportunities(data.data.results);
           setTotalCount(data.data.count);
+          setIsLoadedMap(true);
         })
         .catch(() => {
           setOpportunities(null);
@@ -72,9 +79,10 @@ export default function InvestorMainView() {
 
     search = querystring.decode(query);
     search.approval_status_id = "PUBL";
-    search.pageSize = pageSize;
-    search.currentPage = currentPage;
+    search.page_size = pageSize;
+    search.page = currentPage;
     const latestQuery = querystring.encode(search);
+    setIsLoadedOpportunityListPage(false);
     if (latestQuery.length > 0) {
       axios
         .get(
@@ -87,6 +95,7 @@ export default function InvestorMainView() {
         )
         .then((data) => {
           setPaginatedOpportunities(data.data.results);
+          setIsLoadedOpportunityListPage(true);
         })
         .catch(() => {
           setPaginatedOpportunities(null);
@@ -123,27 +132,35 @@ export default function InvestorMainView() {
           },
         }}
       >
-        <Container>
-          <Row>
-            <Col>
-              <OpportunityMapContainer
-                totalCount={totalCount}
-                opportunities={opportunities}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <OpportunityListContainer
-                totalCount={totalCount}
-                opportunities={paginatedOpportunities}
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-                pageSize={pageSize}
-              />
-            </Col>
-          </Row>
-        </Container>
+        {!isLoadedMap || !isLoadedOpportunityListPage ? (
+          <>
+            <div className="center-spinner">
+              <Spinner animation="border" />
+            </div>
+          </>
+        ) : (
+          <Container>
+            <Row>
+              <Col>
+                <OpportunityMapContainer
+                  totalCount={totalCount}
+                  opportunities={opportunities}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <OpportunityListContainer
+                  totalCount={totalCount}
+                  opportunities={paginatedOpportunities}
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                  pageSize={pageSize}
+                />
+              </Col>
+            </Row>
+          </Container>
+        )}
       </Flyout>
       <FooterLinks type="search-page" />
     </div>
