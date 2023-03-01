@@ -42,7 +42,7 @@ def import_resource(resource_type):
         'first_responders', 'diagnostic_facilities', 'timber_facilities', 'civic_facilities',
         'closed_mills', 'airports', 'port_and_terminal', 'eao_projects', 'laboratory_service',
         'local_govt_offices', 'emergency_social_service_facilities', 'natural_resource_projects',
-        'customs_ports_of_entry', 'pharmacies', 'public_library', 'first_nations_health_authority'
+        'customs_ports_of_entry', 'pharmacies', 'public_library'
     ]
     bca_resources = [
         'bc_assessment_census_subdivision', 'bc_assessment_economic_region',

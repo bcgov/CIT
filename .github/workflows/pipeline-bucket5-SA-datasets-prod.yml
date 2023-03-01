@@ -1,6 +1,6 @@
 # The datasets included in this bucket are airports, civic facilities, clinics, 
 # customs ports of entry, diagnostic facilities, emergency social service facilities, 
-# first nations health authority, hospitals, laboratory services, pharmacies, 
+# hospitals, laboratory services, pharmacies,
 # port and terminal, public library, schools, servicebc locations, timber facilities
 
 name: Data Pipeline - Bucket 5 semiannually Prod
