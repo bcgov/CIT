@@ -19,7 +19,7 @@ Bucket 3 - communities
 Bucket 4 Monthly - agricultural land reserve
 Bucket 4 Semiannually - census economic region, courts, health authority boundaries, indian reserve and band name, lakes, natural resource regions, post secondary institutions, provincial electoral district, railways, research centres, rivers, road and highways, services
 Bucket 5 Monthly - economic projects, first responders
-Bucket 5 Semiannually (fully decoupled datasets with their own commands) - airports, civic facilities, clinics, customs ports of entry, diagnostic facilities, emergency social service facilities, first nations health authority, hospitals, laboratory services, pharmacies, port and terminal, public library, schools, servicebc locations, timber facilities
+Bucket 5 Semiannually (fully decoupled datasets with their own commands) - airports, civic facilities, clinics, customs ports of entry, diagnostic facilities, emergency social service facilities, hospitals, laboratory services, pharmacies, port and terminal, public library, schools, servicebc locations, timber facilities
 Bucket 6 - bc assessment
 Bucket 7 - linkage csd
 
