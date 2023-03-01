@@ -45,7 +45,7 @@ class Command(BaseCommand):
         import_data_sources()
         #Ensure that the data sources are updated
         data_resources = DataSource.objects.filter(name__in=[
-            'airports', 'civic_facilities', 'clinics', 'customs_ports_of_entry', 'diagnostic_facilities', 'emergency_social_service_facilities', 'first_nations_health_authority', 'hospitals', 'laboratory_service', 'local_govt_offices', 'pharmacies', 'port_and_terminal', 'public_library','schools','servicebc_locations', 'timber_facilities'
+            'airports', 'civic_facilities', 'clinics', 'customs_ports_of_entry', 'diagnostic_facilities', 'emergency_social_service_facilities', 'hospitals', 'laboratory_service', 'local_govt_offices', 'pharmacies', 'port_and_terminal', 'public_library','schools','servicebc_locations', 'timber_facilities'
         ])
 
         for resource in data_resources:
