@@ -263,7 +263,7 @@ class PageView(models.Model):
 
 
 class PHDemographicDistribution(models.Model):
-    phh_id = models.IntegerField(primary_key=True, max_length=12)
+    phh_id = models.IntegerField(primary_key=True)
     phh_type = models.IntegerField()              # PHH Type: 1 = Centroid of a 2016 Census dissemination block; 2 = Atlas of Canada Placename point; 3 = 2016 Census Road Network Address Range Left; 4 = 2016 Census Road Network Address Range Right; 5 = Previous representative point Left; 6 = Previous representative point Right; 8 = PHH null points added on highways
     population = models.FloatField()              # population (PHH representative)
     total_private_dwellings = models.FloatField()   # total private dwellings
@@ -275,7 +275,7 @@ class PHDemographicDistribution(models.Model):
     census_subdivision = models.ForeignKey(CEN_PROF_DETAILED_CSD_ATTRS_SP, null=True, on_delete=models.SET_NULL)
 
 class NBDPHHSpeeds(models.Model):
-    phh_id = models.IntegerField(primary_key=True, max_length=12)
+    phh_id = models.IntegerField(primary_key=True)
     combined_lt5_1 = models.BooleanField(default=False)
     combined_5_1 = models.BooleanField(default=False)
     combined_10_2 = models.BooleanField(default=False)
