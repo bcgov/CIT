@@ -1,0 +1,86 @@
+Data Pipeline Bucket 1 - Census Datasets Test
+ -bucket_1_census_divisions: pipeline_cen_prof_detailed_cd_attrs_sp
+ -bucket_1_census_subdivisions_2016: pipeline_census_subdivisions_2016
+ -bucket_1_census_subdivisions: pipeline_cen_prof_detailed_csd_attrs_sp
+ 
+ 
+ Data Pipeline - Bucket 2 monthly Test
+ -bucket_2_connectivity_projects: pipeline_connectivityinfrastructureprojects
+ -bucket_2_naics_codes: pipeline_naicscodes
+ 
+ Data Pipeline - Bucket 2 semiannually Test
+ -bucket_2_businesses_by_csd: pipeline_businessesbycsd
+ -bucket_2_housing: pipeline_housing_data
+ -bucket_2_municipalities: pipeline_municipality
+ -bucket_2_nbd_phh_speeds: pipeline_nbdphhspeeds
+ -bucket_2_phdemographic  pipeline_phdemographicdistribution
+ -bucket_2_regional_districts: pipeline_regionaldistrict
+ -bucket_2_school_districts: pipeline_schooldistrict
+  pipeline_school - related but not populated here
+  pipeline_shcooldristict_community -- related but not pupolated here
+  pipeline_schooldistrict
+ 
+ -bucket_2_tourism_region: pipeline_tourismregion
+ -bucket_2_tsunami_zones: pipeline_tsunamizone
+  pipeline_community -- related but not populated
+  pipeline_tsunamizone
+  
+ -bucket_2_wildfire_zones: pipeline_wildfirezone
+  pipeline_community-- related but not populated
+  pipeline_wildfirezone
+  
+  
+ Data Pipeline Bucket 3 - Communities (Dependency with bucket 2)
+ -bucket_3: pipeline_community
+ 
+ Data Pipeline - Bucket 4 semiannually (Run test and prod)
+ -bucket_4_semiannually: pipeline_censuseconomicregion, pipeline_court, pipeline_healthauthorityboundary, pipeline_indianreservebandname, pipeline_lake, pipeline_naturalresourceregion, pipeline_postsecondaryinstitution, pipeline_provincialelectoraldistrict, pipeline_railway, pipeline_researchcentre, pipeline_river, pipeline_roadsandhighways, pipeline_service 
+
+--30 tables until here.
+
+ Data Pipeline - Bucket 4 monthly (Run test and prod)
+ -bucket_4_monthly: pipeline_agriculturallandreserve
+ 
+ Data Pipeline - Bucket 5 semiannually Test (Dependency with bucket 2)
+ -bucket_5_semiannually: pipeline_airport, pipeline_civicfacility, pipeline_clinic, pipeline_customsportofentry, pipeline_diagnosticfacility, pipeline_emergencysocialservicefacility, pipeline_hospital, pipeline_laboratoryservice, pipeline_localgovernmentoffice, pipeline_pharmacy, pipeline_portandterminal, pipeline_publiclibrary, pipeline_school, pipeline_servicebclocation, pipeline_timberfacility
+ 
+--46 tables until here
+
+ Data Pipeline - Bucket 5 monthly (Run test and prod)
+ -bucket_5_monthly: pipeline_project, pipeline_firstresponder
+ 
+ No bucket 6
+ 
+ Data Pipeline - Bucket 7 semiannually
+ -bucket_7_bc_wildfire_zones:
+ -bucket_7_bc_network_connectivity:
+ 
+--50 tables until here.
+
+ Data Pipeline Bucket 7 (Run test and prod)
+ -bucket_7: pipeline_linkagewithcensus
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
