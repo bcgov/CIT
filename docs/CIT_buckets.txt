@@ -1,0 +1,81 @@
+ Note: Dependencies indicated with *
+ 
+ Data Pipeline Bucket 1 - Census Datasets
+ Pipeline can be executed separately for Test and Prod environments
+ -bucket_1_census_divisions: pipeline_cen_prof_detailed_cd_attrs_sp
+ -bucket_1_census_subdivisions_2016: pipeline_census_subdivisions_2016
+ -bucket_1_census_subdivisions: pipeline_cen_prof_detailed_csd_attrs_sp
+ 
+ Data Pipeline - Bucket 2 monthly
+ Pipeline can be executed separately for Test and Prod environments
+ -bucket_2_connectivity_projects: pipeline_connectivityinfrastructureprojects
+ -bucket_2_naics_codes: pipeline_naicscodes
+ 
+ Data Pipeline - Bucket 2 semiannually
+ Pipeline can be executed separately for Test and Prod environments
+ -bucket_2_businesses_by_csd: pipeline_businessesbycsd
+ -bucket_2_housing: pipeline_housing_data
+ -bucket_2_municipalities: pipeline_municipality
+ -bucket_2_nbd_phh_speeds: pipeline_nbdphhspeeds
+ -bucket_2_phdemographic  pipeline_phdemographicdistribution
+ -bucket_2_regional_districts: pipeline_regionaldistrict
+ -bucket_2_school_districts: pipeline_schooldistrict *Needs to run before Bucket 5 semiannually
+ -bucket_2_tourism_region: pipeline_tourismregion
+ -bucket_2_tsunami_zones: pipeline_tsunamizone *Need to run before Bucket 3
+ -bucket_2_wildfire_zones: pipeline_wildfirezone *Need to run before Bucket 3
+   
+ Data Pipeline Bucket 3 - Communities *Need to run after Bucket 2 semiannually 
+ Pipeline run together Test and Prod environments
+ -bucket_3: pipeline_community
+ 
+ Data Pipeline - Bucket 4 semiannually
+ Pipeline run together Test and Prod environments
+ -bucket_4_semiannually: pipeline_censuseconomicregion, pipeline_court, pipeline_healthauthorityboundary, pipeline_indianreservebandname, pipeline_lake, pipeline_naturalresourceregion, pipeline_postsecondaryinstitution, pipeline_provincialelectoraldistrict, pipeline_railway, pipeline_researchcentre, pipeline_river, pipeline_roadsandhighways, pipeline_service 
+
+ Data Pipeline - Bucket 4 monthly
+ Pipeline run together Test and Prod environments
+ -bucket_4_monthly: pipeline_agriculturallandreserve
+ 
+ Data Pipeline - Bucket 5 semiannually *Need to run before Bucket 2 semiannually
+ Pipeline can be executed separately for Test and Prod environments
+ -bucket_5_semiannually: pipeline_airport, pipeline_civicfacility, pipeline_clinic, pipeline_customsportofentry, pipeline_diagnosticfacility, pipeline_emergencysocialservicefacility, pipeline_hospital, pipeline_laboratoryservice, pipeline_localgovernmentoffice, pipeline_pharmacy, pipeline_portandterminal, pipeline_publiclibrary, pipeline_school, pipeline_servicebclocation, pipeline_timberfacility
+ 
+ Data Pipeline - Bucket 5 monthly
+ Pipeline run together Test and Prod environments
+ -bucket_5_monthly: pipeline_project, pipeline_firstresponder
+ 
+ No bucket 6
+ 
+ Data Pipeline - Bucket 7 semiannually
+ Pipeline run together Test and Prod environments
+ -bucket_7_bc_wildfire_zones: pipeline_bcwildfirezone
+ -bucket_7_bc_network_connectivity: pipeline_bcnetworkconnectivity
+ 
+ Data Pipeline Bucket 7
+ Pipeline run together Test and Prod environments
+ -bucket_7: pipeline_linkagewithcensus
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
