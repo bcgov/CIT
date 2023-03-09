@@ -1,9 +1,9 @@
-﻿TABLES,BUCKET,Dependency,Datasource,Datasource type,Used by CIT?
+﻿Tables,Bucket,Dependency,Datasource,Datasource type,Usage
 pipeline_agriculturallandreserve,4,,https://catalogue.data.gov.bc.ca/dataset/alc-alr-polygons,wms,
-pipeline_airport,5,,https://catalogue.data.gov.bc.ca/dataset/bc-airports,wms,
+pipeline_airport,5,,https://catalogue.data.gov.bc.ca/dataset/bc-airports,wms,CIOT
 pipeline_airportdistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
-pipeline_approvalstatus,X,Migration,,,
-pipeline_assignments,X,When creating a user and municipality is different to 0,,,
+pipeline_approvalstatus,X,"Migrations: 0118_auto_20210217_1907.py, 0123_auto_20210303_2236.py, 0149_auto_20210416_1946.py",,,CIOT
+pipeline_assignments,X,When creating a user and municipality is different to 0,,,CIOT
 pipeline_bcassessmentcensussubdivision,X,,File Upload,,
 pipeline_bcassessmentcensussubdivision_bk,X,,Backup,,
 pipeline_bcassessmenteconomicregion,X,,File Upload,,
@@ -24,34 +24,34 @@ pipeline_community,3,,data/COMMUNITIES_V6.csv,csv,CIT/CIOT
 pipeline_communitydistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
 pipeline_connectivityinfrastructureprojects,2,,https://catalogue.data.gov.bc.ca/dataset/ee53f7aa-d5dc-4897-b0c6-635dfe2f7e5e/resource/9967bfc7-cf2a-4873-a5ac-435048269d9b/download/connectivity-infrastructure-projects.csv,csv,
 pipeline_court,4,,https://catalogue.data.gov.bc.ca/dataset/c95a2ad5-f62a-43d6-8678-80a617b6200e,api,
-pipeline_customsportofentry,5,,https://catalogue.data.gov.bc.ca/dataset/customs-ports-of-entry,wms,
+pipeline_customsportofentry,5,,https://catalogue.data.gov.bc.ca/dataset/customs-ports-of-entry,wms,CIOT
 pipeline_customsportofentrydistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
 pipeline_datasource,,When running buckets and importing a datasource a record is created,,,
 pipeline_diagnosticfacility,5,,https://catalogue.data.gov.bc.ca/dataset/diagnostic-facilities,wms,
 pipeline_emergencysocialservicefacility,5,,https://catalogue.data.gov.bc.ca/dataset/emergency-social-services-facilities,wms,
-pipeline_firstresponder,5,,https://catalogue.data.gov.bc.ca/dataset/first-responders,wms,
+pipeline_firstresponder,5,,https://catalogue.data.gov.bc.ca/dataset/first-responders,wms,CIOT
 pipeline_firstresponderdistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
 pipeline_healthauthorityboundary,4,,https://catalogue.data.gov.bc.ca/dataset/health-authority-boundaries,wms,CIT
 pipeline_hex,X,"Populated when source type is ""shp"". Currently, no source_type using ""shp""",,,
-pipeline_hospital,5,,https://catalogue.data.gov.bc.ca/dataset/383eaf98-afd7-436a-9556-67ecf14f64a7,api,
+pipeline_hospital,5,,https://catalogue.data.gov.bc.ca/dataset/383eaf98-afd7-436a-9556-67ecf14f64a7,api,CIOT
 pipeline_hospitaldistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
 pipeline_housing_data,2,,https://www2.gov.bc.ca/assets/gov/data/statistics/economy/building-permits/total.csv,csv,
 pipeline_indianreservebanddistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
 pipeline_indianreservebandname,4,,https://catalogue.data.gov.bc.ca/dataset/indian-reserves-and-band-names-administrative-boundaries,wms,
 pipeline_isp,X,Empty,,,
 pipeline_laboratoryservice,5,,https://catalogue.data.gov.bc.ca/dataset/laboratory-services-in-bc,wms,
-pipeline_lake,4,,https://catalogue.data.gov.bc.ca/dataset/freshwater-atlas-lakes,wms,
+pipeline_lake,4,,https://catalogue.data.gov.bc.ca/dataset/freshwater-atlas-lakes,wms,CIOT
 pipeline_lakedistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
-pipeline_landusezoning,X,Migrations,,,
+pipeline_landusezoning,X,"Migrations: 0136_auto_20210323_1547.py, 0139_auto_20210331_1616.py",,,CIOT
 pipeline_linkagewithcensus,7,,data/csd_linkage.csv,csv,
 pipeline_localgovernmentoffice,5,,https://catalogue.data.gov.bc.ca/dataset/local-government-offices,wms,
 pipeline_location,X,"Populated when running bucket 3: pipeline_community
 bucket 4 semianually: pipeline_court. pipeline_postsecondaryinstitution
 bucket 5 semianually: pipeline_airport, pipeline_civicfacility, pipeline_clinic, pipeline_customsportofentry, pipeline_diagnosticfacility, pipeline_emergencysocialservicefacility, pipeline_hospital, pipeline_laboratoryservice, pipeline_localgovernmentoffice, pipeline_pharmacy, pipeline_portandterminal, pipeline_publiclibrary, pipeline_school, pipeline_servicebclocation, pipeline_timberfacility, pipeline_researchcentre
 bucket 5 monthly: pipeline_firstresponder, pipeline_project
-",,,
+",,,CIOT
 pipeline_locationdistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
-pipeline_municipality,2,,https://catalogue.data.gov.bc.ca/dataset/municipalities-legally-defined-administrative-areas-of-bc,wms,
+pipeline_municipality,2,,https://catalogue.data.gov.bc.ca/dataset/municipalities-legally-defined-administrative-areas-of-bc,wms,CIOT
 pipeline_municipalitydistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
 pipeline_naicscodes,2,,https://www.statcan.gc.ca/eng/statistical-programs/document/naics-scian-2022-structure-v1-eng.csv,csv,
 pipeline_naturalresourceregion,4,,https://catalogue.data.gov.bc.ca/dataset/natural-resource-nr-regions,wms,CIT
@@ -63,11 +63,11 @@ pipeline_opportunity_opportunity_preferred_development,X,Creation of opportunity
 pipeline_pageview,X,Empty,,,
 pipeline_pharmacy,5,,https://catalogue.data.gov.bc.ca/dataset/after-hours-pharmacies-in-bc,wms,
 pipeline_phdemographicdistribution,2,,https://www.ic.gc.ca/eic/site/720.nsf/vwapj/PHH-BC.csv/$file/PHH-BC.csv,csv,
-pipeline_portandterminal,5,,https://catalogue.data.gov.bc.ca/dataset/bc-ports-and-terminals,wms,
+pipeline_portandterminal,5,,https://catalogue.data.gov.bc.ca/dataset/bc-ports-and-terminals,wms,CIOT
 pipeline_portandterminaldistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
 pipeline_postsecondarydistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
 pipeline_postsecondaryinstitution,4,,https://catalogue.data.gov.bc.ca/dataset/81558d54-1f96-46c2-94fe-56d26f69c4f5,api,CIOT
-pipeline_preferreddevelopment,X,Migration,,,
+pipeline_preferreddevelopment,X,"Migrations: 0124_landusezoning_preferreddevelopment_propertystatus.py, 0154_auto_20210423_1530.py",,,CIOT
 pipeline_project,5,,https://catalogue.data.gov.bc.ca/dataset/major-projects-inventory-economic-points,wms,
 pipeline_propertystatus,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
 pipeline_provincialelectoraldistrict,4,,https://catalogue.data.gov.bc.ca/dataset/provincial-electoral-districts-electoral-boundaries-redistribution-2015,wms,
@@ -77,19 +77,19 @@ pipeline_railwaydistance,X,Creation of opportunity,/api/opportunity/proximity/?l
 pipeline_regionaldistrict,2,,https://catalogue.data.gov.bc.ca/dataset/regional-districts-legally-defined-administrative-areas-of-bc,wms,CIT
 pipeline_researchcentre,4,,https://catalogue.data.gov.bc.ca/dataset/7859ae46-2aa1-47ee-a05b-7d0daa472678,api,CIOT
 pipeline_researchcentredistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
-pipeline_river,4,,https://catalogue.data.gov.bc.ca/dataset/freshwater-atlas-rivers,wms,
+pipeline_river,4,,https://catalogue.data.gov.bc.ca/dataset/freshwater-atlas-rivers,wms,CIOT
 pipeline_riverdistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
 pipeline_road,X,,,,
-pipeline_roadsandhighways,4,,https://catalogue.data.gov.bc.ca/dataset/digital-road-atlas-dra-master-partially-attributed-roads,wms,
+pipeline_roadsandhighways,4,,https://catalogue.data.gov.bc.ca/dataset/digital-road-atlas-dra-master-partially-attributed-roads,wms,CIOT
 pipeline_roadsandhighwaysdistance,X,Creation of opportunity,/api/opportunity/proximity/?lat=48.4237865&lng=-123.3598657,,CIOT
 pipeline_school,5,,https://catalogue.data.gov.bc.ca/dataset/95da1091-7e8c-4aa6-9c1b-5ab159ea7b42,api,
 pipeline_schooldistrict,2,,https://catalogue.data.gov.bc.ca/dataset/school-districts-of-bc,wms,CIT
-pipeline_schooldistrict_community,X,No Info,,,
+pipeline_schooldistrict_community,X,,,,
 pipeline_service,4,,https://www.ic.gc.ca/eic/site/720.nsf/vwapj/Map_Data_CSV.zip/$file/Map_Data_CSV.zip,csv,
 pipeline_servicebclocation,5,,https://catalogue.data.gov.bc.ca/dataset/2b44d212-5438-47a9-ad23-20eb8ada9709,,
 pipeline_timberfacility,5,,https://catalogue.data.gov.bc.ca/dataset/british-columbia-major-timber-processing-facilities,wms,
 pipeline_tourismregion,2,,https://catalogue.data.gov.bc.ca/dataset/bc-tourism-regions,wms,CIT
 pipeline_tsunamizone,2,,https://catalogue.data.gov.bc.ca/dataset/tsunami-notification-zones-for-bc,wms,CIT
 pipeline_user,X,Creation of opportunity - data obtained from keycloak,,,CIOT
-pipeline_usertracking,X,Insert User when Power BI  report is internal,,,
-pipeline_wildfirezone,7,,https://catalogue.data.gov.bc.ca/dataset/bc-wildfire-fire-zones,wms,
+pipeline_usertracking,X,Insert User when Power BI  report is internal,,,CIOT
+pipeline_wildfirezone,7,,https://catalogue.data.gov.bc.ca/dataset/bc-wildfire-fire-zones,wms,CIT
