@@ -18,7 +18,7 @@ class EmailView(APIView):
         request_body = request.data
         opportunity_id = request_body.get("id", -1)
         opportunity_link = request_body.get("link", None)
-        if opportunity_link is not None and opportunity_id is not -1:
+        if opportunity_link is not None and opportunity_id != -1:
             token_request_body = {'grant_type': 'client_credentials'}
             response = requests.post(os.environ.get("EMAIL_AUTH_HOST"), data=token_request_body, auth=HTTPBasicAuth(os.environ.get("EMAIL_CLIENT_ID"),os.environ.get("EMAIL_CLIENT_SECRET")))       
             if response.status_code == 200:
@@ -76,7 +76,7 @@ class EdoEmailView(APIView):
         request_body = request.data
         opportunity_id = request_body.get("id", -1)
         opportunity_link = request_body.get("link", None)
-        if opportunity_link is not None and opportunity_id is not -1:
+        if opportunity_link is not None and opportunity_id != -1:
             token_request_body = {'grant_type': 'client_credentials'}
             response = requests.post(os.environ.get("EMAIL_AUTH_HOST"), data=token_request_body, auth=HTTPBasicAuth(os.environ.get("EMAIL_CLIENT_ID"),os.environ.get("EMAIL_CLIENT_SECRET")))
             if response.status_code == 200:
