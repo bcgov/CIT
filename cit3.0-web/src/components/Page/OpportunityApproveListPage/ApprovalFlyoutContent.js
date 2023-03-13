@@ -251,7 +251,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
             {regionalDistricts &&
               regionalDistricts.map((district) => (
                 <option key={district.id} value={district.id}>
-                  {district.name}({district.area_id})
+                  {district.name}
                 </option>
               ))}
           </Form.Control>
