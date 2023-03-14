@@ -1,4 +1,4 @@
-# This workflow will build and push a new backend container image to Azure ACR and the Openshift Image Stream
+# This workflow will build and push a new backend container image to Azure ACR and the Openshift Image Stream Tools
 name: Backend Build and Push (Test)
 
 on:
