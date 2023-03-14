@@ -21,14 +21,14 @@ jobs:
           docker build cit3.0-web -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:latest
           docker images
       
-      - name: "Push frontend to Azure"
-        uses: azure/docker-login@v1
-        with:
-          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-      - run: |
-          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest
+      #- name: "Push frontend to Azure"
+      #  uses: azure/docker-login@v1
+      #  with:
+      #    login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+      #    username: ${{ secrets.REGISTRY_USERNAME }}
+      #    password: ${{ secrets.REGISTRY_PASSWORD }}
+      #- run: |
+      #    docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest
       
       - name: "Push frontend to Openshift" 
         uses: docker/login-action@v1
