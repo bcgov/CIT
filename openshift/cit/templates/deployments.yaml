@@ -9,7 +9,7 @@ metadata:
           "from": {
             "kind": "ImageStreamTag",
             "namespace": "{{ .Values.license_plate }}-tools",
-            "name": "{{ .Values.app_name }}:{{ .Values.image_stream_tag }}"
+            "name": "{{ .Values.app_name }}-webapi:{{ .Values.image_stream_tag }}"
           },
           "fieldPath": "spec.template.spec.containers[0].image"
         }
@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.app_name }}-api
-          image: {{ .Values.dockerhost }}/{{ .Values.license_plate }}-tools/{{ .Values.app_name }}:{{ .Values.image_stream_tag }}
+          image: {{ .Values.dockerhost }}/{{ .Values.license_plate }}-tools/{{ .Values.app_name }}-webapi:{{ .Values.image_stream_tag }}
           resources:
             limits:
               cpu: {{ .Values.limits_cpu }}
@@ -70,7 +70,7 @@ metadata:
           "from": {
             "kind": "ImageStreamTag",
             "namespace": "{{ .Values.license_plate }}-tools",
-            "name": "{{ .Values.app_name }}:{{ .Values.image_stream_tag }}"
+            "name": "{{ .Values.app_name }}-frontend:{{ .Values.image_stream_tag }}"
           },
           "fieldPath": "spec.template.spec.containers[0].image"
         }
@@ -91,7 +91,7 @@ spec:
     spec:
       containers:
         - name: {{ .Values.app_name }}-gui
-          image: {{ .Values.dockerhost }}/{{ .Values.license_plate }}-tools/{{ .Values.app_name }}:{{ .Values.image_stream_tag }}
+          image: {{ .Values.dockerhost }}/{{ .Values.license_plate }}-tools/{{ .Values.app_name }}-frontend:{{ .Values.image_stream_tag }}
           resources:
             limits:
               cpu: {{ .Values.limits_cpu }}
