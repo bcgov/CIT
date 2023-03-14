@@ -1,0 +1,35 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.app_name }}-api
+  labels:
+    app: {{ .Values.app_name }}-api
+    name: {{ .Values.app_name }}-api
+spec:
+  ports:
+  - name: 8080-tcp
+    port: 80
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: {{ .Values.app_name }}-api
+  sessionAffinity: None
+  type: ClusterIP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.app_name }}-web
+  labels:
+    app: {{ .Values.app_name }}-web
+    name: {{ .Values.app_name }}-web
+spec:
+  ports:
+  - name: 8080-tcp
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: {{ .Values.app_name }}-web
+  sessionAffinity: None
+  type: ClusterIP

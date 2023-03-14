@@ -1,0 +1,10 @@
+app_name: cit
+license_plate: 286498
+replicas: 1
+image_stream_tag: develop
+namespace_env: dev
+limits_cpu: 500m
+limits_memory: 512Mi
+requests_cpu: 250m
+requests_memory: 500Mi
+docker_host: image-registry.openshift-image-registry.svc:5000

@@ -1,0 +1,37 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ .Values.app_name }}-api
+  labels:
+    app: {{ .Values.app_name }}-api
+    name: {{ .Values.app_name }}-api
+spec:
+  port:
+    targetPort: 8080-tcp
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: {{ .Values.app_name }}-api
+    weight: 100
+  wildcardPolicy: None
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ .Values.app_name }}-web
+  labels:
+    app: {{ .Values.app_name }}-web
+    name: {{ .Values.app_name }}-web
+spec:
+  port:
+    targetPort: 8080-tcp
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: {{ .Values.app_name }}-web
+    weight: 100
+  wildcardPolicy: None

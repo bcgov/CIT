@@ -1,0 +1,121 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: '8'
+    image.openshift.io/triggers: |-
+      [
+        {
+          "from": {
+            "kind": "ImageStreamTag",
+            "namespace": "{{ .Values.license_plate }}-tools",
+            "name": "{{ .Values.app_name }}:{{ .Values.image_stream_tag }}"
+          },
+          "fieldPath": "spec.template.spec.containers[0].image"
+        }
+      ]
+  name: {{ .Values.app_name }}-api
+  namespace: {{ .Values.license_plate }}-{{ .Values.namespace_env }}
+  labels:
+    app: {{ .Values.app_name }}-api
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app_name }}-api
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app_name }}-api
+    spec:
+      containers:
+        - name: {{ .Values.app_name }}-api
+          image: {{ .Values.dockerhost }}/{{ .Values.license_plate }}-tools/{{ .Values.app_name }}:{{ .Values.image_stream_tag }}
+          resources:
+            limits:
+              cpu: {{ .Values.limits_cpu }}
+              memory: {{ .Values.limits_memory }}
+            requests:
+              cpu: {{ .Values.requests_cpu}}
+              memory: {{ .Values.requests_memory }}
+          terminationMessagePath: /dev/termination-log
+
+          env:
+            - name: {{ .Values.namespace_env }}
+              value: {{ .Values.namespace_env }}
+            - name: namespace
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+          imagePullPolicy: Always
+          terminationMessagePolicy: File
+      restartPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 5
+  progressDeadlineSeconds: 600
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: '8'
+    image.openshift.io/triggers: |-
+      [
+        {
+          "from": {
+            "kind": "ImageStreamTag",
+            "namespace": "{{ .Values.license_plate }}-tools",
+            "name": "{{ .Values.app_name }}:{{ .Values.image_stream_tag }}"
+          },
+          "fieldPath": "spec.template.spec.containers[0].image"
+        }
+      ]
+  name: {{ .Values.app_name }}-gui
+  namespace: {{ .Values.license_plate }}-{{ .Values.namespace_env }}
+  labels:
+    app: {{ .Values.app_name }}-gui
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app_name }}-gui
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app_name }}-gui
+    spec:
+      containers:
+        - name: {{ .Values.app_name }}-gui
+          image: {{ .Values.dockerhost }}/{{ .Values.license_plate }}-tools/{{ .Values.app_name }}:{{ .Values.image_stream_tag }}
+          resources:
+            limits:
+              cpu: {{ .Values.limits_cpu }}
+              memory: {{ .Values.limits_memory }}
+            requests:
+              cpu: {{ .Values.requests_cpu}}
+              memory: {{ .Values.requests_memory }}
+          terminationMessagePath: /dev/termination-log
+
+          env:
+            - name: {{ .Values.namespace_env }}
+              value: {{ .Values.namespace_env }}
+            - name: namespace
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: metadata.namespace
+          imagePullPolicy: Always
+          terminationMessagePolicy: File
+      restartPolicy: Always
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 5
+  progressDeadlineSeconds: 600

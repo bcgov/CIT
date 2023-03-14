@@ -8,7 +8,7 @@ services:
       - cit3.0-web/.env
     restart: always
     ports:
-      - "80:80"
+      - "80:8080"
     depends_on:
       - cit-api
   cit-api:
