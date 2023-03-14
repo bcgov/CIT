@@ -18,7 +18,7 @@ jobs:
 
       - name: "Build frontend"
         run: |
-          docker build cit3.0-web -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest -t image-registry.apps.silver.devops.gov.bc.ca/cit-frontend:latest
+          docker build cit3.0-web -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:latest
           docker images
       
       - name: "Push frontend to Azure"
@@ -37,7 +37,7 @@ jobs:
           username: serviceaccount
           password: ${{ secrets.OCP_REGISTRY_PASSWORD }}
       - run: |
-          docker push image-registry.apps.silver.devops.gov.bc.ca/cit-frontend:latest
+          docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:latest
 
       - name: Vulnerability Scan Backend
         uses: Azure/container-scan@v0

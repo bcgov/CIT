@@ -3,9 +3,9 @@ name: Backend Build and Push (Test)
 
 on:
   push:
-    branches: [develop]
-    paths:
-      - 'cit-api/**'
+    branches: [openshift]
+    #paths:
+    #  - 'cit-api/**'
   workflow_dispatch:
 
 jobs:
@@ -15,18 +15,29 @@ jobs:
       # checkout the repo
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master
-
-      - name: "Build and push webapi"
+      
+      - name: "Build backend"
+        run: |
+          docker build cit-api -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:latest -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-webapi:latest
+          docker images
+      
+      - name: "Push backend to Azure"
         uses: azure/docker-login@v1
         with:
           login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
-      
-      # TODO: tags with ${{ github.sha }}
       - run: |
-          docker build cit-api -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:latest
           docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-webapi:latest
+      
+      - name: "Push backend to Openshift" 
+        uses: docker/login-action@v1
+        with:
+          registry: image-registry.apps.silver.devops.gov.bc.ca
+          username: serviceaccount
+          password: ${{ secrets.OCP_REGISTRY_PASSWORD }}
+      - run: |
+          docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-webapi:latest
       
       - name: Vulnerability Scan Backend
         uses: Azure/container-scan@v0
