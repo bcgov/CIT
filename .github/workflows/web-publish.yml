@@ -1,4 +1,4 @@
-# This workflow will build and push a new frontend container image to Azure ACR
+# This workflow will build and push a new frontend container image to Azure ACR and the Openshift Image Stream
 name: Frontend Build and Push (Test)
 
 on:
