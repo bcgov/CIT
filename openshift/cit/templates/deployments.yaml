@@ -51,6 +51,7 @@ spec:
           imagePullPolicy: Always
           terminationMessagePolicy: File
       restartPolicy: Always
+      serviceAccount: default
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -112,6 +113,7 @@ spec:
           imagePullPolicy: Always
           terminationMessagePolicy: File
       restartPolicy: Always
+      serviceAccount: default
   strategy:
     type: RollingUpdate
     rollingUpdate:
