@@ -9,7 +9,6 @@ from pipeline.models.users.user import User
 from pipeline.models.opportunity import Opportunity
 
 class EmailView(APIView):
-    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         email_enabled = os.environ.get("EMAIL_NOTIFICATIONS_ENABLED")
