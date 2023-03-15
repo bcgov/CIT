@@ -10,7 +10,6 @@ class OpportunityView(generics.UpdateAPIView):
     """
     serializer_class = OpportunitySerializer
     lookup_field = 'id'
-    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Opportunity.objects.filter(id=self.kwargs['id'])

@@ -4,7 +4,7 @@ import { Alert } from "shared-components/build/components/alert/Alert";
 import { MdError } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 import OpportunityFactory from "../../../store/factory/OpportunityFactory";
 import {
   deleteOpportunity,
@@ -13,14 +13,13 @@ import {
   setOpportunity,
 } from "../../../store/actions/opportunity";
 import ButtonRow from "../../ButtonRow/ButtonRow";
-import TextInput from "../../FormComponents/TextInput";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 
 const OpportunityDeletePage = ({ id }) => {
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
-  const [confirmName, setConfirmName] = useState();
+  const [isOpportunityLoaded, setIsOpportunityLoaded] = useState(false);
   const opportunity = useSelector((state) => state.opportunity);
   const keycloak = useKeycloakWrapper();
 
@@ -40,10 +39,19 @@ const OpportunityDeletePage = ({ id }) => {
       opId = found && parseInt(found[0], 10);
     }
     if (opId !== opportunity.id) {
-      getOpportunity(opId).then((response) => {
-        const opp = OpportunityFactory.createStateFromResponse(response.data);
-        dispatch(setOpportunity(opp));
-      });
+      getOpportunity(opId)
+        .then((response) => {
+          const opp = OpportunityFactory.createStateFromResponse(response.data);
+          dispatch(setOpportunity(opp));
+          setIsOpportunityLoaded(true);
+        })
+        .catch((err) => {
+          console.log("Error: ", err);
+          setIsOpportunityLoaded(false);
+          return null;
+        });
+    } else {
+      setIsOpportunityLoaded(true);
     }
   }, []);
 
@@ -57,29 +65,32 @@ const OpportunityDeletePage = ({ id }) => {
 
   return (
     <div data-testid="OpportunityDeletePage">
-      <Container className="my-3">
-        <Alert
-          icon={<MdError size={32} />}
-          type="error"
-          styling="bcgov-error-background"
-          element="Deleting an opportunity is permanent"
-        />
-        <h3 className="my-3">{opportunity.name}</h3>
-        <h4 className="my-3">{opportunity.address}</h4>
-        <TextInput
-          heading="Type the Opportunity name to confirm deletion"
-          name="confirm-name"
-          value={confirmName}
-          handleChange={(_, value) => setConfirmName(value)}
-          rows={1}
-        />
-        <ButtonRow
-          onClick={(e) => handleDeleteOpportunity(e)}
-          continueLabel="Delete"
-          noContinue={confirmName !== opportunity.name}
-          onCancelClick={onCancelClick}
-        />
-      </Container>
+      {!opportunity.id || !isOpportunityLoaded ? (
+        <>
+          <div className="center-spinner">
+            <Spinner animation="border" />
+          </div>
+        </>
+      ) : (
+        <Container className="my-3">
+          <Alert
+            icon={<MdError size={32} />}
+            type="error"
+            styling="bcgov-error-background"
+            element="Deleting an opportunity is permanent"
+          />
+          <h3 className="my-3">{opportunity.name}</h3>
+          <h4 className="my-3">{opportunity.address}</h4>
+          <br />
+          <br />
+          <ButtonRow
+            onClick={(e) => handleDeleteOpportunity(e)}
+            continueLabel="Delete"
+            noContinue={!opportunity.id}
+            onCancelClick={onCancelClick}
+          />
+        </Container>
+      )}
     </div>
   );
 };
