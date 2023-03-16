@@ -4,8 +4,8 @@ name: Backend Build and Push (Test)
 on:
   push:
     branches: [openshift]
-    #paths:
-    #  - 'cit-api/**'
+    paths:
+      - 'cit-api/**'
   workflow_dispatch:
 
 jobs:

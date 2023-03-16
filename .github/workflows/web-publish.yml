@@ -4,8 +4,8 @@ name: Frontend Build and Push (Test)
 on:
   push:
     branches: [openshift]
-    #paths:
-    #  - 'cit3.0-web/**'
+    paths:
+      - 'cit3.0-web/**'
   workflow_dispatch:
 
 jobs:
