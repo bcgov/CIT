@@ -81,9 +81,10 @@ export default function AddOpportunity() {
   const [proxModalShow, setProxModalShow] = useState(false);
 
   const isInvalidAddress =
-    (!address || !localityName) &&
-    coords[0] === COORDINATE.X &&
-    coords[1] === COORDINATE.Y;
+    !PID ||
+    ((!address || !localityName) &&
+      coords[0] === COORDINATE.X &&
+      coords[1] === COORDINATE.Y);
 
   const showProximityModal = () => {
     setChangePage(true);
@@ -102,7 +103,7 @@ export default function AddOpportunity() {
   };
 
   const handleErrorModalContinue = () => {
-    if (!error.length && (!!address || !!geometry)) {
+    if (!error.length && (!isInvalidAddress || !!geometry)) {
       setWarning([]);
       setError([]);
       setChangePage(true);
@@ -131,7 +132,7 @@ export default function AddOpportunity() {
       handleProximityModalClose();
       closeModalAndContinue();
     }
-  }, [proximityInProgress, error]);
+  }, [proximityInProgress, error, warning]);
 
   useEffect(() => {
     if (municipality) {
@@ -145,7 +146,7 @@ export default function AddOpportunity() {
     setError([]);
     let errors = [];
     let warnings = [];
-    if (!address || !geometry) {
+    if (isInvalidAddress || !geometry) {
       warnings = [
         ...warnings,
         `${isInvalidAddress ? "Please enter a valid address" : ""}${
@@ -161,7 +162,7 @@ export default function AddOpportunity() {
     }
     setWarning(warnings);
     setError(errors);
-    setChangePage(agreed && !errors.length);
+    setChangePage(agreed && !errors.length && !isInvalidAddress);
     if (!proximityInProgress) {
       closeModalAndContinue();
     }
