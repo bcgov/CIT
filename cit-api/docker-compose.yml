@@ -6,8 +6,8 @@ services:
       context: ./
       dockerfile: Dockerfile.pipeline
     image: countable/cit
-    #env_file:
-    #  - ../.env
+    env_file:
+      - ../.env
     ports:
       - 8000:8000
   cit-email:
