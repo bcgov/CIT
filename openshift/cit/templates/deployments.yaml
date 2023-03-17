@@ -39,15 +39,9 @@ spec:
               cpu: {{ .Values.requests_cpu}}
               memory: {{ .Values.requests_memory }}
           terminationMessagePath: /dev/termination-log
-
-          env:
-            - name: {{ .Values.namespace_env }}
-              value: {{ .Values.namespace_env }}
-            - name: namespace
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.namespace
+          envFrom:
+            - secretRef:
+                name: {{ .Values.app_name }}-api-config
           imagePullPolicy: Always
           terminationMessagePolicy: File
       restartPolicy: Always
@@ -76,22 +70,22 @@ metadata:
           "fieldPath": "spec.template.spec.containers[0].image"
         }
       ]
-  name: {{ .Values.app_name }}-gui
+  name: {{ .Values.app_name }}-web
   namespace: {{ .Values.license_plate }}-{{ .Values.namespace_env }}
   labels:
-    app: {{ .Values.app_name }}-gui
+    app: {{ .Values.app_name }}-web
 spec:
   replicas: {{ .Values.replicas }}
   selector:
     matchLabels:
-      app: {{ .Values.app_name }}-gui
+      app: {{ .Values.app_name }}-web
   template:
     metadata:
       labels:
-        app: {{ .Values.app_name }}-gui
+        app: {{ .Values.app_name }}-web
     spec:
       containers:
-        - name: {{ .Values.app_name }}-gui
+        - name: {{ .Values.app_name }}-web
           image: {{ .Values.dockerhost }}/{{ .Values.license_plate }}-tools/{{ .Values.app_name }}-frontend:{{ .Values.image_stream_tag }}
           resources:
             limits:
@@ -101,19 +95,19 @@ spec:
               cpu: {{ .Values.requests_cpu}}
               memory: {{ .Values.requests_memory }}
           terminationMessagePath: /dev/termination-log
-
-          env:
-            - name: {{ .Values.namespace_env }}
-              value: {{ .Values.namespace_env }}
-            - name: namespace
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.namespace
+          envFrom:
+            - secretRef:
+                name: {{ .Values.app_name }}-web-config
           imagePullPolicy: Always
           terminationMessagePolicy: File
+          #volumeMounts:
+          #  - name: {{ .Values.app_name }}-nginx-cache
+          #    mountPath: /var/cache/nginx
       restartPolicy: Always
       serviceAccount: default
+      #volumes:
+      #  - name: {{ .Values.app_name }}-nginx-cache
+      #    emptyDir: {}
   strategy:
     type: RollingUpdate
     rollingUpdate:

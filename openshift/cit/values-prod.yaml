@@ -1,0 +1,10 @@
+app_name: cit
+license_plate: b4e935
+replicas: 1
+image_stream_tag: prod
+namespace_env: prod
+limits_cpu: 250m
+limits_memory: 512Mi
+requests_cpu: 150m
+requests_memory: 512Mi
+docker_host: image-registry.openshift-image-registry.svc:5000
