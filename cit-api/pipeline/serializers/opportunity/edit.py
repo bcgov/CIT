@@ -262,6 +262,8 @@ class OpportunitySerializer(serializers.ModelSerializer):
                     **nation)
                 filtered_first_nations_distances.append(
                     filtered_first_nations_distance.pk)
+        else:
+            del validated_data['nearest_first_nations_object']
 
         filtered_municipality_distances = []
         if validated_data.get('nearest_municipalities_object'):
@@ -273,6 +275,8 @@ class OpportunitySerializer(serializers.ModelSerializer):
                     **muni)
                 filtered_municipality_distances.append(
                     municipalities_distance.pk)
+        else:
+            del validated_data['nearest_municipalities_object']
 
         # insert opportuntity with literal fields
         instance = Opportunity.objects.create(**validated_data)
