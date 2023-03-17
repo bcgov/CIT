@@ -1,7 +1,7 @@
 .report-overview-container {
     display: flex;
     flex-direction: column;
-    height: 75vh ;
+    height: 1640px;
     width: 100% !important;
     min-width: 960px;
     max-width: 1340px;
