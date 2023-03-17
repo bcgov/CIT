@@ -16,7 +16,7 @@ jobs:
       
       - name: "Build pipeline image"
         run: |
-          docker-compose -f cit-api/docker-compose.yml --build cit-api-pipeline
+          docker-compose -f cit-api/docker-compose.yml build cit-api-pipeline
           docker tag cit-api-pipeline image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-data-pipeline:develop
           
       
