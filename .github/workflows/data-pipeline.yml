@@ -16,7 +16,7 @@ jobs:
       
       - name: "Build pipeline image"
         run: |
-          docker build . -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-data-pipeline:develop -f Dockerfile.pipeline
+          docker build cit-api -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-data-pipeline:develop -f Dockerfile.pipeline
       
       - name: "Push backend to Openshift" 
         uses: docker/login-action@v2
