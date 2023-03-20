@@ -1,6 +1,20 @@
 version: "3.3"
 
 services:
+  data-pipeline:
+    container_name: data-pipeline
+    image: data-pipeline
+    build:
+      context: ./cit-api
+      dockerfile: ./Dockerfile.pipeline
+    ports:
+      - "8090:8090"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_DJANGO_USER=${POSTGRES_DJANGO_USER}
+      - POSTGRES_DJANGO_PASSWORD=${POSTGRES_DJANGO_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - BUCKET_COMMAND=${BUCKET_COMMAND}
   cit-web:
     container_name: cit-web
     build: ./cit3.0-web
@@ -59,20 +73,7 @@ services:
     ports:
       - 5432:5432
 
-  data-pipeline:
-    container_name: data-pipeline
-    image: data-pipeline
-    build:
-      context: ./cit-api
-      dockerfile: ./Dockerfile.pipeline
-    ports:
-      - "8090:8090"
-    environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_DJANGO_USER=${POSTGRES_DJANGO_USER}
-      - POSTGRES_DJANGO_PASSWORD=${POSTGRES_DJANGO_PASSWORD}
-      - POSTGRES_HOST=${POSTGRES_HOST}
-      - BUCKET_COMMAND=${BUCKET_COMMAND}
+
   
   email:
     container_name: email
