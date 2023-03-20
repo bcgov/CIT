@@ -58,3 +58,44 @@ services:
       - ./db/cittest1.sql:/docker-entrypoint-initdb.d/setup-db.sql
     ports:
       - 5432:5432
+
+  data-pipeline:
+    container_name: data-pipeline
+    image: data-pipeline
+    build:
+      context: ./cit-api
+      dockerfile: ./Dockerfile.pipeline
+    ports:
+      - "8090:8090"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_DJANGO_USER=${POSTGRES_DJANGO_USER}
+      - POSTGRES_DJANGO_PASSWORD=${POSTGRES_DJANGO_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - BUCKET_COMMAND=${BUCKET_COMMAND}
+  
+  email:
+    container_name: email
+    image: email
+    build:
+      context: ./cit-api
+      dockerfile: ./Dockerfile.email
+    ports:
+      - "8070:8070"
+    environment:
+      - ENV_LEVEL=${ENV_LEVEL}
+      - EMAIL_TYPE=${EMAIL_TYPE}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_DJANGO_USER=${POSTGRES_DJANGO_USER}
+      - POSTGRES_DJANGO_PASSWORD=${POSTGRES_DJANGO_PASSWORD}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - EMAIL_NOTIFICATIONS_ENABLED=${EMAIL_NOTIFICATIONS_ENABLED}
+      - EMAIL_AUTH_HOST=${EMAIL_NOTIFICATIONS_ENABLED}
+      - EMAIL_SERVICE_HOST=${EMAIL_AUTH_HOST}
+      - EMAIL_CLIENT_ID=${EMAIL_CLIENT_ID}
+      - EMAIL_CLIENT_SECRET=${EMAIL_CLIENT_SECRET}
+      - EMAIL_SENDING_ADDRESS=${EMAIL_SENDING_ADDRESS}
+      - EMAIL_OPPORTUNITY_LINK_HOST=${EMAIL_OPPORTUNITY_LINK_HOST}
+      - USER_TRACKING_TO_EMAIL=${USER_TRACKING_TO_EMAIL}
+      - AZURE_BLOB_STORAGE_CONNECTION_STRING=${AZURE_BLOB_STORAGE_CONNECTION_STRING}
+      - ROUTE_PLANNER_API_KEY=${ROUTE_PLANNER_API_KEY}
