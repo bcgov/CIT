@@ -4,8 +4,6 @@ name: Data Pipeline Build and Push
 on:
   push:
     branches: [openshift]
-    paths:
-      - 'cit-api/**'
   workflow_dispatch:
 
 jobs:
