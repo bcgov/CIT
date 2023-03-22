@@ -102,9 +102,9 @@ class ProximityView(APIView):
             post_secondary['post_secondary_distance'] = post_secondary_check.first().distance.km
 
         railway = None
-        railway_check = Railway.objects.annotate(distance=Distance("geom", point)).filter(
-            geom__distance_lte=(point, D(km=100))).order_by('distance')[:1]
-        if railway_check:
+        railway_check = Railway.objects.annotate(distance=Distance("geom", point)).order_by('distance')[:1]
+        print(f"railway_check: {railway_check}")
+        if railway_check and railway_check.first().distance.km <= 100:
             railway = json.loads(
                 serializers.serialize('geojson', railway_check, geometry_field=point))
             railway['railway_distance'] = railway_check.first().distance.km
@@ -118,16 +118,15 @@ class ProximityView(APIView):
             highway['highway_distance'] = highway_check.first().distance.km
 
         lake = None
-        lake_check = Lake.objects.annotate(distance=Distance("geom", point)).filter(
-            geom__distance_lte=(point, D(km=100))).order_by('distance')[:1]
-        if lake_check:
+        lake_check = Lake.objects.annotate(distance=Distance("geom", point)).order_by('distance')[:1]
+        if lake_check and lake_check.first().distance.km <= 100:
             lake = json.loads(serializers.serialize('geojson', lake_check, geometry_field=point))
             lake['lake_distance'] = lake_check.first().distance.km
 
         river = None
-        river_check = River.objects.annotate(distance=Distance("geom", point)).filter(
-            geom__distance_lte=(point, D(km=100))).order_by('distance')[:1]
-        if river_check:
+        river_check = River.objects.annotate(distance=Distance("geom", point)).order_by('distance')[:1]
+
+        if river_check and river_check.first().distance.km <= 100:
             river = json.loads(serializers.serialize('geojson', river_check, geometry_field=point))
             river['river_distance'] = river_check.first().distance.km
 
@@ -234,8 +233,8 @@ class ProximityView(APIView):
         municipality = None
         municipalities = None
         municipalities_check = Municipality.objects.annotate(
-            distance=Distance("geom", point)).filter(geom__distance_lte=(point, D(
-                km=100))).order_by('distance')[:5]
+            distance=Distance("geom", point)).order_by('distance')[:5]
+        
         if municipalities_check:
             municipalities = json.loads(
                 serializers.serialize('geojson', municipalities_check, geometry_field=point))
