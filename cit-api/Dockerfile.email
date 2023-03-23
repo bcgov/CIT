@@ -2,7 +2,7 @@ FROM python:3.6
 ENV PYTHONUNBUFFERED 1
 
 
-ARG RUNTIME_ENV
+#ARG RUNTIME_ENV
 
 RUN apt-get update && apt-get install -y libproj-dev gdal-bin libpq-dev libpython3-dev build-essential
 
