@@ -1,98 +1,60 @@
 version: "3.3"
 
 services:
-  data-pipeline:
-    container_name: data-pipeline
-    image: data-pipeline
+  cit-web:
+    container_name: cit-web
+    build: ./cit3.0-web
+    env_file:
+      - cit3.0-web/.env
+    restart: always
+    ports:
+      - "80:8080"
+    depends_on:
+      - cit-api
+  cit-api:
     build:
       context: ./cit-api
-      dockerfile: ./Dockerfile.pipeline
+      dockerfile: Dockerfile.dev
+    image: countable/cit
+    # volumes:
+    #   - ./cit-api:/code
+    #   - static:/static
+    #   - media:/code/data
+    env_file:
+      - cit-api/.env
     ports:
-      - "8090:8090"
+      - 8000:8000
+    depends_on:
+      - db
+
+  db:
+    # image: mdillon/postgis
+    # image: postgis/postgis:15-3.3
+    # image: pgrouting/pgrouting
+    image: kartoza/postgis:15-3.3
     environment:
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_DJANGO_USER=${POSTGRES_DJANGO_USER}
-      - POSTGRES_DJANGO_PASSWORD=${POSTGRES_DJANGO_PASSWORD}
-      - POSTGRES_HOST=${POSTGRES_HOST}
-      - BUCKET_COMMAND=${BUCKET_COMMAND}
-  #cit-web:
-  #  container_name: cit-web
-  #  build: ./cit3.0-web
-  #  env_file:
-  #    - cit3.0-web/.env
-  #  restart: always
-  #  ports:
-  #    - "80:8080"
-  #  depends_on:
-  #    - cit-api
-  #cit-api:
-  #  build:
-  #    context: ./cit-api
-  #    dockerfile: Dockerfile.dev
-  #  image: countable/cit
-  #  # volumes:
-  #  #   - ./cit-api:/code
-  #  #   - static:/static
-  #  #   - media:/code/data
-  #  env_file:
-  #    - cit-api/.env
-  #  ports:
-  #    - 8000:8000
-  #  depends_on:
-  #    - db
-  #db:
-  #  # image: mdillon/postgis
-  #  # image: postgis/postgis:15-3.3
-  #  # image: pgrouting/pgrouting
-  #  image: kartoza/postgis:15-3.3
-  #  environment:
-  #    POSTGRES_USER: postgres
-  #    POSTGRES_PASSWORD: postgres
-  #    POSTGRES_DB: cittest1
-  #    POSTGRES_MULTIPLE_EXTENSIONS: postgis,pgrouting,pg_buffercache,pg_stat_statements
-  #  volumes:
-  #    - ./db/init.sql:/usr/share/postgresql/15/contrib/postgis-3.3/legacy_minimal.sql
-  #    - ./db/cittest1.sql:/docker-entrypoint-initdb.d/setup-db.sql
-  #  ports:
-  #    - 5432:5432
-  #  
-  #patroni-db:
-  #  # image: mdillon/postgis
-  #  # image: postgis/postgis:15-3.3
-  #  # image: pgrouting/pgrouting
-  #  image: artifacts.developer.gov.bc.ca/artifactory/bcgov-docker-local/patroni-postgres/12.4-latest
-  #  environment:
-  #    POSTGRES_USER: postgres
-  #    POSTGRES_PASSWORD: postgres
-  #    POSTGRES_DB: cit
-  #    POSTGRES_MULTIPLE_EXTENSIONS: postgis,pgrouting,pg_buffercache,pg_stat_statements
-  #  volumes:
-  #    - ./db/init.sql:/usr/share/postgresql/15/contrib/postgis-3.3/legacy_minimal.sql
-  #    - ./db/cittest1.sql:/docker-entrypoint-initdb.d/setup-db.sql
-  #  ports:
-  #    - 5432:5432
-  email:
-    container_name: email
-    image: email
-    build:
-      context: ./cit-api
-      dockerfile: ./Dockerfile.email
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cittest1
+      POSTGRES_MULTIPLE_EXTENSIONS: postgis,pgrouting,pg_buffercache,pg_stat_statements
+    volumes:
+      - ./db/init.sql:/usr/share/postgresql/15/contrib/postgis-3.3/legacy_minimal.sql
+      # - ./db/cittest1.sql:/docker-entrypoint-initdb.d/setup-db.sql
     ports:
-      - "8070:8070"
+      - 5432:5432
+
+  patroni-db:
+    # image: mdillon/postgis
+    # image: postgis/postgis:15-3.3
+    # image: pgrouting/pgrouting
+    image: artifacts.developer.gov.bc.ca/bcgov-docker-local/patroni-postgres:12.4-latest
     environment:
-      - ENV_LEVEL=${ENV_LEVEL}
-      - EMAIL_TYPE=${EMAIL_TYPE}
-      - POSTGRES_DB=${POSTGRES_DB}
-      - POSTGRES_DJANGO_USER=${POSTGRES_DJANGO_USER}
-      - POSTGRES_DJANGO_PASSWORD=${POSTGRES_DJANGO_PASSWORD}
-      - POSTGRES_HOST=${POSTGRES_HOST}
-      - EMAIL_NOTIFICATIONS_ENABLED=${EMAIL_NOTIFICATIONS_ENABLED}
-      - EMAIL_AUTH_HOST=${EMAIL_NOTIFICATIONS_ENABLED}
-      - EMAIL_SERVICE_HOST=${EMAIL_AUTH_HOST}
-      - EMAIL_CLIENT_ID=${EMAIL_CLIENT_ID}
-      - EMAIL_CLIENT_SECRET=${EMAIL_CLIENT_SECRET}
-      - EMAIL_SENDING_ADDRESS=${EMAIL_SENDING_ADDRESS}
-      - EMAIL_OPPORTUNITY_LINK_HOST=${EMAIL_OPPORTUNITY_LINK_HOST}
-      - USER_TRACKING_TO_EMAIL=${USER_TRACKING_TO_EMAIL}
-      - AZURE_BLOB_STORAGE_CONNECTION_STRING=${AZURE_BLOB_STORAGE_CONNECTION_STRING}
-      - ROUTE_PLANNER_API_KEY=${ROUTE_PLANNER_API_KEY}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: cit
+      POSTGRES_MULTIPLE_EXTENSIONS: postgis,pgrouting,pg_buffercache,pg_stat_statements
+    # volumes:
+      # - ./db/init.sql:/usr/share/postgresql/15/contrib/postgis-3.3/legacy_minimal.sql
+      # - ./db/cittest1.sql:/docker-entrypoint-initdb.d/setup-db.sql
+    ports:
+      - 5432:5432
