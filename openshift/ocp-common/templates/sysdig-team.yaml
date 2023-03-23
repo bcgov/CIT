@@ -9,7 +9,7 @@ spec:
     users:
     - name: Susan.Mordy@gov.bc.ca
       role: ROLE_TEAM_MANAGER
-    - name: chris.mullin@nttdata.com
-      role: ROLE_TEAM_MANAGER
     - name: jessica.stratton@nttdata.com
       role: ROLE_TEAM_EDIT
+    - name: chris@bashbang.com
+      role: ROLE_TEAM_MANAGER

@@ -98,7 +98,9 @@ spec:
             - name: CLUSTER
               value: {{ .Values.cluster }}
           # image: {{ .Values.image_registry }}/{{ .Values.license_plate }}-tools/patroni-postgres:latest
-          image: image-registry.openshift-image-registry.svc:5000/bcgov/patroni-postgres:12.4-latest
+          # image: image-registry.openshift-image-registry.svc:5000/bcgov/patroni-postgres:12.4-latest
+          image: '{{ .Values.docker_host }}/{{ .Values.license_plate }}-tools/patroni-psql-gis:latest'
+
           imagePullPolicy: Always
           name: patroni
           ports:
@@ -122,7 +124,8 @@ spec:
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
-      serviceAccountName: {{ .Values.app_name }}-patroni
+      serviceAccount: {{ .Values.app_name }}-patroni
+      # serviceAccountName: default
       terminationGracePeriodSeconds: 0
       volumes:
         - name: postgresql
@@ -130,4 +133,3 @@ spec:
             claimName: postgresql
   updateStrategy:
     type: RollingUpdate
- 
