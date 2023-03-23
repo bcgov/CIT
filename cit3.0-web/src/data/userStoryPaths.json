@@ -343,51 +343,11 @@
             "url": ""
           },
           {
-            "id": "6001",
-            "code": "NATURALRESOURCEREGIONS",
-            "group": "zone",
-            "value": "NATURALRESOURCEREGIONS",
-            "label": "natural resource regions",
-            "url": ""
-          },
-          {
             "id": "5485",
             "code": "REGIONALDISTRICTS",
             "group": "zone",
             "value": "REGIONALDISTRICTS",
             "label": "regional districts",
-            "url": ""
-          },
-          {
-            "id": "5486",
-            "code": "SCHOOLDISTRICTS",
-            "group": "zone",
-            "value": "SCHOOLDISTRICTS",
-            "label": "school districts",
-            "url": ""
-          },
-          {
-            "id": "5487",
-            "code": "TOURISMREGIONS",
-            "group": "zone",
-            "value": "TOURISMREGIONS",
-            "label": "tourism regions",
-            "url": ""
-          },
-          {
-            "id": "5488",
-            "code": "TSUNAMIZONES",
-            "group": "zone",
-            "value": "TSUNAMIZONES",
-            "label": "tsunami notification zones",
-            "url": ""
-          },
-          {
-            "id": "5489",
-            "code": "WILDFIREZONES",
-            "group": "zone",
-            "value": "WILDFIREZONES",
-            "label": "wildfire zones",
             "url": ""
           }
         ]
@@ -525,66 +485,11 @@
         "user_story_paths": []
       },
       {
-        "id": "6001",
-        "code": "NATURALRESOURCEREGIONS",
-        "group": "zone",
-        "value": "NATURALRESOURCEREGIONS",
-        "label": "natural resource regions",
-        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
-        "text": "<p>I am specifically interested in</p>",
-        "url": "",
-        "user_story_paths": []
-      },
-      {
         "id": "5485",
         "code": "REGIONALDISTRICTS",
         "group": "zone",
         "value": "REGIONALDISTRICTS",
         "label": "regional districts",
-        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
-        "text": "<p>I am specifically interested in</p>",
-        "url": "",
-        "user_story_paths": []
-      },
-      {
-        "id": "5486",
-        "code": "SCHOOLDISTRICTS",
-        "group": "zone",
-        "value": "SCHOOLDISTRICTS",
-        "label": "school districts",
-        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
-        "text": "<p>I am specifically interested in</p>",
-        "url": "",
-        "user_story_paths": []
-      },
-      {
-        "id": "5487",
-        "code": "TOURISMREGIONS",
-        "group": "zone",
-        "value": "TOURISMREGIONS",
-        "label": "tourism regions",
-        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
-        "text": "<p>I am specifically interested in</p>",
-        "url": "",
-        "user_story_paths": []
-      },
-      {
-        "id": "5488",
-        "code": "TSUNAMIZONES",
-        "group": "zone",
-        "value": "TSUNAMIZONES",
-        "label": "tsunami notification zones",
-        "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
-        "text": "<p>I am specifically interested in</p>",
-        "url": "",
-        "user_story_paths": []
-      },
-      {
-        "id": "5489",
-        "code": "WILDFIREZONES",
-        "group": "zone",
-        "value": "WILDFIREZONES",
-        "label": "wildfire zones",
         "longText": "<div class='select-break'></div><p><b>Which {ZONE-TYPE-1} specifically?</b></p><div class='line-break'></div> ",
         "text": "<p>I am specifically interested in</p>",
         "url": "",
