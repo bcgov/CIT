@@ -55,15 +55,12 @@ class EmailView(APIView):
                 "from": os.environ.get("EMAIL_SENDING_ADDRESS"),
                 "priority": "normal",
                 "subject": "New Investment Opportunity submitted",
-                "to": self.get_admin_email_addresses(),
+                "to": [os.environ.get("CIOT_EMAIL_SENDING_ADDRESS")],
                 "tag": "CIT_Admin_Notification",
             }
             email_config_json = json.dumps(email_config)
             response = requests.post(os.environ.get("EMAIL_SERVICE_HOST") + "/api/v1/email", data=email_config_json, headers=headers)
         return response
-
-    def get_admin_email_addresses(self):
-        return list(User.objects.filter(is_admin=True,deleted=False).exclude(email__in=['', 'Unknown']).values_list('email', flat=True))
 
 class EdoEmailView(APIView):
     permission_classes = [IsAdminAuthenticated]
