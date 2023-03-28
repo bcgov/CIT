@@ -57,7 +57,7 @@ export default function HomePage() {
                     Find properties that meet your site selection criteria for
                     your next investment into B.C. Search for industrial,
                     commercial, and agricultural properties by size, site
-                    servicing, labour force, and more.
+                    servicing, and more.
                   </p>
                 </Row>
                 <Row className="d-flex justify-content-end w-100">
