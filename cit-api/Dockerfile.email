@@ -25,7 +25,7 @@ WORKDIR /code
 COPY cit-api/requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . .
-RUN rm data/import/datafiles/*
-RUN python3 manage.py collectstatic --noinput
+RUN rm cit-api/data/import/datafiles/*
+RUN python3 cit-api/manage.py collectstatic --noinput
 
 CMD /bin/sh ./entrypoint.email.sh
