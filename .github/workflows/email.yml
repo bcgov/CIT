@@ -16,7 +16,7 @@ jobs:
       
       - name: "Build email image"
         run: |
-          docker build -f cit-api/Dockerfile.email -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/email:develop
+          docker build -f cit-api/Dockerfile.email . -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/email:develop
       
       - name: "Push email image to Openshift" 
         uses: docker/login-action@v2

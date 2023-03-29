@@ -90,25 +90,26 @@ subjects:
   - kind: ServiceAccount
     name: {{ .Values.app_name }}-patroni
 ---
+# THIS RBAC IS NOT IN USE BECAUSE PATRONI IS NOT BEING USED IN OPENSHIFT
 # We need to allow the cit-patroni SA to access image streams in the tools namespace
-kind: RoleBinding
-apiVersion: rbac.authorization.k8s.io/v1
-metadata:
-  name: {{ .Values.app_name }}-patroni-imagepuller
-  namespace: {{ .Values.license_plate }}-tools
-  labels:
-    app: {{ .Values.app_name }}-patroni
-roleRef:
-    apiGroup: rbac.authorization.k8s.io
-    kind: ClusterRole
-    name: system:image-puller
-subjects:
-  - kind: ServiceAccount
-    name: {{ .Values.app_name }}-patroni
-    namespace: {{ .Values.license_plate }}-dev
-  - kind: ServiceAccount
-    name: {{ .Values.app_name }}-patroni
-    namespace: {{ .Values.license_plate }}-test
-  - kind: ServiceAccount
-    name: {{ .Values.app_name }}-patroni
-    namespace: {{ .Values.license_plate }}-prod
+#kind: RoleBinding
+#apiVersion: rbac.authorization.k8s.io/v1
+#metadata:
+#  name: {{ .Values.app_name }}-patroni-imagepuller
+#  namespace: {{ .Values.license_plate }}-tools
+#  labels:
+#    app: {{ .Values.app_name }}-patroni
+#roleRef:
+#    apiGroup: rbac.authorization.k8s.io
+#    kind: ClusterRole
+#    name: system:image-puller
+#subjects:
+#  - kind: ServiceAccount
+#    name: {{ .Values.app_name }}-patroni
+#    namespace: {{ .Values.license_plate }}-dev
+#  - kind: ServiceAccount
+#    name: {{ .Values.app_name }}-patroni
+#    namespace: {{ .Values.license_plate }}-test
+#  - kind: ServiceAccount
+#    name: {{ .Values.app_name }}-patroni
+#    namespace: {{ .Values.license_plate }}-prod

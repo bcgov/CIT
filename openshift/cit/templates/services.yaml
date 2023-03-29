@@ -34,21 +34,22 @@ spec:
   sessionAffinity: None
   type: ClusterIP
 ---
-kind: Service
-apiVersion: v1
-metadata:
-  name: {{ .Values.app_name }}-patroni
-  namespace: {{ .Values.license_plate }}-{{ .Values.namespace_env }}
-  labels:
-    app: {{ .Values.app_name }}-patroni
-    name: {{ .Values.app_name }}-patroni
-spec:
-  ports:
-    - name: 5432-tcp
-      port: 5432
-      protocol: TCP
-      targetPort: 5432
-  selector:
-    app: {{ .Values.app_name }}-patroni
-  sessionAffinity: None
-  type: ClusterIP
+# This is a Service for our Patroni stateful set that is currently not in use. Check the notes in the stateful set yaml
+#kind: Service
+#apiVersion: v1
+#metadata:
+#  name: {{ .Values.app_name }}-patroni
+#  namespace: {{ .Values.license_plate }}-{{ .Values.namespace_env }}
+#  labels:
+#    app: {{ .Values.app_name }}-patroni
+#    name: {{ .Values.app_name }}-patroni
+#spec:
+#  ports:
+#    - name: 5432-tcp
+#      port: 5432
+#      protocol: TCP
+#      targetPort: 5432
+#  selector:
+#    app: {{ .Values.app_name }}-patroni
+#  sessionAffinity: None
+#  type: ClusterIP
