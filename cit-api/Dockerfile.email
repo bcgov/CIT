@@ -22,6 +22,7 @@ RUN apt-get update && apt-get install -y libproj-dev gdal-bin libpq-dev libpytho
 
 RUN mkdir /code
 WORKDIR /code
+COPY cit-api/requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . .
 RUN rm data/import/datafiles/*
