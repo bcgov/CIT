@@ -28,4 +28,4 @@ COPY . .
 RUN rm cit-api/data/import/datafiles/*
 RUN python3 cit-api/manage.py collectstatic --noinput
 
-CMD /bin/sh ./entrypoint.email.sh
+CMD /bin/sh ./cit-api/entrypoint.email.sh
