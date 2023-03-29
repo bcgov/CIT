@@ -84,6 +84,7 @@ const OpportunityApproveListPage = () => {
               delete search[key];
             }
             setQuery(querystring.encode(search));
+            setCurrentPage(1);
             history.push({ search: querystring.encode(search) });
           },
           resetFilters: () => {

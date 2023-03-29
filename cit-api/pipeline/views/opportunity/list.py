@@ -165,7 +165,11 @@ class OpportunitiesList(generics.ListAPIView):
                 queryset, community_population_distance_min, community_population_distance_max,
                 proximity_population)
 
-        return queryset
+        return queryset.select_related('nearest_port', 'nearest_airport', 'nearest_research_centre',
+        'nearest_customs_port_of_entry','nearest_coast_guard_station',
+        'nearest_ambulance_station', 'nearest_police_station', 'nearest_fire_station', 'nearest_health_center',
+        'nearest_railway','nearest_highway','nearest_river','nearest_lake',
+        'nearest_post_secondary', 'nearest_community', 'regional_district').order_by('id')
 
     def filter_opportunities_by_distance_from_community(self, queryset, community_distance_min,
                                                         community_distance_max,
