@@ -48,13 +48,13 @@ class EmailView(APIView):
             email_config = {
                 "bcc": [],
                 "bodyType": "html",
-                "body": "<p>A new opportunity has been submitted to the Investment Opportunities Tool. Please review the listing to determine whether any revisions are required prior to publication.</p><p>Click here to view the listing: " + build_full_link(link) + "</p>",
+                "body": "<p>A new opportunity has been submitted to the Investment Opportunities Tool for municipality, regional district. Please review the listing to determine whether any revisions are required prior to publication.</p><p>Click here to view the listing: " + build_full_link(link) + "</p>",
                 "cc": [],
                 "delayTS": 0,
                 "encoding": "utf-8",
                 "from": os.environ.get("EMAIL_SENDING_ADDRESS"),
                 "priority": "normal",
-                "subject": "New Investment Opportunity submitted",
+                "subject": "New Investment Opportunity submitted for municipality, regional district",
                 "to": [os.environ.get("CIOT_EMAIL_SENDING_ADDRESS")],
                 "tag": "CIT_Admin_Notification",
             }
