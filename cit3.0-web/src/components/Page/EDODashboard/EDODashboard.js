@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import "./EDODashboard.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Container } from "react-bootstrap";
+import { Container, Spinner } from "react-bootstrap";
 import { MdError, MdCheckBox } from "react-icons/md";
 import OpportunityTable from "../../OpportunityTable/OpportunityTable";
 import { resetOpportunity } from "../../../store/actions/opportunity";
@@ -22,6 +22,7 @@ export default function EDODashboard() {
   const [tableData, setTableData] = useState([]);
   const [communities, setCommunities] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const [isOpportunityLoaded, setIsOpportunityLoaded] = useState(false);
   const [currentId, setCurrentId] = useState(-1);
   const [markAsSoldStatus, setMarkAsSoldStatus] = useState(null);
   const resultRef = useRef(null);
@@ -46,6 +47,7 @@ export default function EDODashboard() {
           .get(`${GET_OPPORTUNITIES_LIST_URL}?user_id=${appUser.id}`)
           .then((data) => {
             setTableData(data.data.results);
+            setIsOpportunityLoaded(true);
           })
           .catch((err) => {
             /* eslint-disable-next-line */
@@ -231,7 +233,18 @@ export default function EDODashboard() {
             />
           </Container>
         ) : null}
-        {dataSection}
+        {isOpportunityLoaded ? (
+          dataSection
+        ) : (
+          <>
+            <h1 className="dashboard-header">
+              Searching for Your Promoted Opportunities
+            </h1>
+            <div className="center-spinner-opportunities">
+              <Spinner animation="border" />
+            </div>
+          </>
+        )}
         <ConfirmCancelModal
           show={showModal}
           handleClose={handleModalClose}

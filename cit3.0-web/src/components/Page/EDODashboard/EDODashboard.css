@@ -30,3 +30,10 @@ ul.dashed > li {
 ul.dashed > li:before {
     content: "- ";
 }
+
+.center-spinner-opportunities {
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

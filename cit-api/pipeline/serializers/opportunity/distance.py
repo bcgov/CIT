@@ -40,31 +40,31 @@ class OpportunityRiverSerializer(serializers.ModelSerializer):
 class OpportunityRoadsAndHighwaysSerializer(serializers.ModelSerializer):
     class Meta:
         model = RoadsAndHighwaysDistance
-        fields = ('highway_id', 'highway_distance')
+        fields = ('highway_id', 'highway_distance','name')
 
 
 class OpportunityAirportSerializer(serializers.ModelSerializer):
     class Meta:
         model = AirportDistance
-        fields = ('airport_id', 'airport_distance')
+        fields = ('airport_id', 'airport_distance','name')
 
 
 class OpportunityRailwaySerializer(serializers.ModelSerializer):
     class Meta:
         model = RailwayDistance
-        fields = ('railway_id', 'railway_distance')
+        fields = ('railway_id', 'railway_distance', 'name')
 
 
 class OpportunityPortAndTerminalSerializer(serializers.ModelSerializer):
     class Meta:
         model = PortAndTerminalDistance
-        fields = ('port_id', 'port_distance')
+        fields = ('port_id', 'port_distance','name')
 
 
 class OpportunityCustomsPortOfEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomsPortOfEntryDistance
-        fields = ('customs_port_id', 'customs_port_distance')
+        fields = ('customs_port_id', 'customs_port_distance','name')
 
 
 class OpportunityResearchCentreSerializer(serializers.ModelSerializer):

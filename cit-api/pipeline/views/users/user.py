@@ -49,7 +49,6 @@ class UserListView(GenericAPIView):
     View to retrieve a list of users
     """
     serializer_class = UserGetSerializer(many=True)
-    permission_classes = [IsAdminAuthenticated]
 
     user_email_param = openapi.Parameter('email',
                                          in_=openapi.IN_QUERY,
@@ -68,12 +67,14 @@ class UserListView(GenericAPIView):
         response = []
         user_id = request.query_params.get('id')
         user_email = request.query_params.get('email')
+        queryset = User.objects.all()
         if user_email is not None:
-            users = User.objects.filter(email=user_email, deleted=False)
+            users = queryset.filter(email=user_email, deleted=False)
         elif user_id is not None:
-            users = User.objects.filter(id=user_id, deleted=False)
+            users = queryset.filter(id=user_id, deleted=False)
         else:
-            users = User.objects.filter(deleted=False)
+            users = queryset.filter(deleted=False)
+
         for user in users:
             response.append(get_row(user))
         return Response(response)
