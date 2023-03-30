@@ -9,10 +9,10 @@ requests_cpu: 150m
 requests_memory: 512Mi
 docker_host: image-registry.openshift-image-registry.svc:5000
 cluster: silver
-stateful_requests_cpu: 50m
-stateful_requests_memory: 50Mi
-stateful_limit_cpu: 500m
-stateful_limit_memory: 500Mi
-volume_size: 200Mi
-replication_password: testing123
-root_password: testing456
+#stateful_requests_cpu: 50m
+#stateful_requests_memory: 50Mi
+#stateful_limit_cpu: 500m
+#stateful_limit_memory: 500Mi
+#volume_size: 200Mi
+#replication_password: testing123
+#root_password: testing456

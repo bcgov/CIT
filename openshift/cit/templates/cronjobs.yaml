@@ -1,51 +1,158 @@
-# This job runs on GoldDR only and is designed to probe Gold's version of Patroni and determine if it's running.
-# If it's not running then we'll promote GoldDR's patroni to be leader.
-
 kind: CronJob
 apiVersion: batch/v1
 metadata:
-  name: bucket_1
+  name: {{ .Values.namespace_env}}db-backup
   namespace: {{ .Values.license_plate }}-{{ .Values.namespace_env }}
-  labels:
-    {{- include "chart.common-labels" . }}
 spec:
-  schedule: "* * * * *"
-  successfulJobsHistoryLimit: 3
-  failedJobsHistoryLimit: 1
+  schedule: '@daily'
+  concurrencyPolicy: Forbid
+  suspend: false
   jobTemplate:
+    metadata:
+      creationTimestamp: null
     spec:
       template:
+        metadata:
+          creationTimestamp: null
         spec:
+          volumes:
+            - name: postgresql
+              persistentVolumeClaim:
+                claimName: postgresql
           containers:
-            - name: {{ .Values.app_name }}-bucket1
-              image: {{ .Values.docker_host }}/{{ .Values.license_plate }}-tools/data-pipeline:develop
+            - resources: {}
+              terminationMessagePath: /dev/termination-log
+              name: postgresql-client
+              command:
+                - bash
+                - '-eo'
+                - pipefail
+                - '-c'
+                - >
+                  trap "echo Backup failed; exit 0" ERR; 
+                  FILENAME=backup-devdb-`date +%Y-%m-%d_%H%M%S`.sql.gz; find 
+                  ./mnt -mtime +3 -type f -delete;
+                  PGPASSWORD=$POSTGRES_DJANGO_PASSWORD pg_dump
+                  --username=$POSTGRES_DJANGO_USER --host=$POSTGRES_HOST
+                  --port=5432 --column-inserts --clean --create $POSTGRES_DB | gzip >
+                  /mnt/$FILENAME;  echo ""; echo "Backup successful"; du -h
+                  /mnt/$FILENAME;  echo "to restore the backup to the serviced
+                  host use: $ psql --username=$POSTGRES_DJANGO_USER
+                  --password=$POSTGRES_DJANGO_PASSWORD --host=$POSTGRES_HOST
+                  --port=5432 $POSTGRES_DB < /mnt/<backupfile> (unpacked)"; ls -lstra
+                  /mnt
+
+
+                  #!/bin/bash
               env:
                 - name: POSTGRES_DB
                   valueFrom:
                     secretKeyRef:
-                      name: cit-api-config
+                      name: {{ .Values.app_name }}-api-config
                       key: POSTGRES_DB
                 - name: POSTGRES_HOST
                   valueFrom:
                     secretKeyRef:
-                      name: cit-api-config
+                      name: {{ .Values.app_name }}-api-config
                       key: POSTGRES_HOST
                 - name: POSTGRES_DJANGO_USER
                   valueFrom:
                     secretKeyRef:
-                      name: cit-api-config
+                      name: {{ .Values.app_name }}-api-config
                       key: POSTGRES_DJANGO_USER
                 - name: POSTGRES_DJANGO_PASSWORD
                   valueFrom:
                     secretKeyRef:
-                      name: cit-api-config
+                      name: {{ .Values.app_name }}-api-config
                       key: POSTGRES_DJANGO_PASSWORD
-                - name: ROUTE_PLANNER_API_KEY
-                  valueFrom:
-                    secretKeyRef:
-                      name: cit-api-config
-                      key: ROUTE_PLANNER_API_KEY
-                - name: BUCKET_COMMAND
-                  value: bucket_1_census_divisions
-          #serviceAccount: {{ .Values.app_name }}
+              imagePullPolicy: Always
+              volumeMounts:
+                - name: postgresql
+                  mountPath: /mnt
+              terminationMessagePolicy: File
+              image: 'postgres:latest'
           restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+          dnsPolicy: ClusterFirst
+          securityContext: {}
+          schedulerName: default-scheduler
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+---
+kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: send-update-reminders
+  namespace: {{ .Values.license_plate }}-{{ .Values.namespace_env }}
+spec:
+  schedule: '@daily'
+  concurrencyPolicy: Allow
+  suspend: false
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+            - name: send-update-email
+              image: >-
+                image-registry.openshift-image-registry.svc:5000/b4e935-tools/email:develop
+              envFrom:
+                - secretRef:
+                    name: {{ .Values.app_name }}-api-config
+              env:
+                - name: EMAIL_TYPE
+                  value: send-update-reminders
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              imagePullPolicy: IfNotPresent
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+          dnsPolicy: ClusterFirst
+          securityContext: {}
+          schedulerName: default-scheduler
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
+---
+kind: CronJob
+apiVersion: batch/v1
+metadata:
+  name: send-user-tracking
+  namespace: {{ .Values.license_plate }}-{{ .Values.namespace_env }}
+spec:
+  schedule: '0 8 1 * *'
+  concurrencyPolicy: Allow
+  suspend: false
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+            - name: bucket1
+              image: >-
+                image-registry.openshift-image-registry.svc:5000/b4e935-tools/email:develop
+              envFrom:
+                - secretRef:
+                    name: {{ .Values.app_name }}-api-config
+              env:
+                - name: EMAIL_TYPE
+                  value: send-user-tracking
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              imagePullPolicy: IfNotPresent
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
+          dnsPolicy: ClusterFirst
+          securityContext: {}
+          schedulerName: default-scheduler
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1

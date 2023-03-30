@@ -1,6 +1,4 @@
 #!/bin/bash
-ls -lstra 
-
 cd cit-api 
 
 wait-for-it.sh ${POSTGRES_HOST}:5432

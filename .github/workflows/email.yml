@@ -2,8 +2,6 @@
 name: Email Image Build and Push
 
 on:
-  push:
-    branches: [openshift]
   workflow_dispatch:
 
 jobs:
