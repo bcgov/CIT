@@ -43,14 +43,14 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
 
   const reportTabs = [
     {
-      pageName: "Connectivity",
+      pageName: "Internet Connectivity",
       label: "Internet Connectivity",
       isLoginRequired: null,
       isDefault: true,
     },
     {
-      pageName: "Assets & Infrastructure",
-      label: "Infrastructure",
+      pageName: "Facilities",
+      label: "Facilities",
       isLoginRequired: null,
       isDefault: null,
     },
