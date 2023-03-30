@@ -167,8 +167,9 @@ export default function EDODashboard() {
           process to add some key information about the property. The tool will
           automatically provide additional location information to help
           investors and site selectors quickly evaluate whether the site meets
-          their specific needs. All listings will be reviewed prior to
-          publication and will go live within 3-5 business days.
+          their specific needs. Investment opportunities are reviewed prior to
+          publication by a Provincial Regional Economic Operations Manager and
+          will go live within 3-5 business days.
         </p>
         <ul className="dashed">
           <li>
@@ -202,10 +203,10 @@ export default function EDODashboard() {
             </ul>
           </li>
           <li>
-            Listings must be approved by either a municipality, regional
-            district, electoral area, province, First Nation or a provincial
-            economic development organization, and from the Chief Administrative
-            Officer or their delegate.
+            Investment opportunities can be added by an authorized
+            representative for a community. This is typically an Economic
+            Development Officer, Chief Administrative Officer, Lands Manager, or
+            Band Manager.
           </li>
         </ul>
         <div className="add-opportunity-button">{addOpportunityButton}</div>
