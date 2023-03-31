@@ -468,6 +468,7 @@ export default function AddOpportunity() {
             <MapContainer
               nearbyResources={{}}
               coords={coords}
+              pid={PID}
               setResourceIds={(r) => dispatch(setResourceIds(r))}
               setAddress={(a) => dispatch(setAddress(a))}
               setCoords={(c) => dispatch(setCoords(c))}

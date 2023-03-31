@@ -14,6 +14,7 @@ import {
 export default function MapContainer({
   nearbyResources,
   coords,
+  pid,
   setCoords,
   setAddress,
   setNoAddressFlag,
@@ -49,14 +50,14 @@ export default function MapContainer({
       source.cancel("newer search");
     }
     source = CancelToken.source();
-    if (coords[0] !== 54.1722 && coords[0] !== lastCoords[0]) {
+    if (coords[0] !== 54.1722 && coords[0] !== lastCoords[0] && pid) {
       setLastCoords(coords);
       run(source);
     }
     return () => {
       source.cancel("cancel in clean up");
     };
-  }, [coords]);
+  }, [pid, coords]);
 
   return (
     <div style={{ minHeight: "100%" }} className="d-flex w-100">
@@ -86,6 +87,7 @@ MapContainer.propTypes = {
     data: PropTypes.arrayOf(PropTypes.shape),
   }).isRequired,
   coords: PropTypes.arrayOf(PropTypes.number).isRequired,
+  pid: PropTypes.arrayOf(PropTypes.string).isRequired,
   setCoords: PropTypes.func.isRequired,
   setAddress: PropTypes.func.isRequired,
   setNoAddressFlag: PropTypes.func.isRequired,
