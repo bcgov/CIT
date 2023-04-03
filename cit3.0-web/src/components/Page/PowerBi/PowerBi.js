@@ -258,7 +258,11 @@ export default function PowerBi() {
                         (report) => report.displayName === "Criteria Search"
                       );
                       if (community || regionalDistrict || setPage) {
-                        if (commReport[0].name !== currentPage) {
+                        if (
+                          commReport &&
+                          commReport.length &&
+                          commReport[0].name !== currentPage
+                        ) {
                           window.report
                             .setPage(commReport[0].name)
                             .catch((err) => console.log("setpage error:", err));
@@ -268,7 +272,11 @@ export default function PowerBi() {
                               .catch((err) => console.log("error: ", err));
                           }
                         }
-                      } else if (criteria[0].name !== currentPage) {
+                      } else if (
+                        criteria &&
+                        criteria.length &&
+                        criteria[0].name !== currentPage
+                      ) {
                         window.report
                           .setPage(criteria[0].name)
                           .catch((err) => console.log("setpage error:", err));
