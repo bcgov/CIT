@@ -37,6 +37,8 @@ spec:
     termination: edge
     certificate: |-
 {{ .Files.Get "cert.pem" | indent 6 }}
+    # The cit.key file is a secret so is added to the .gitignore and will not be included in the git repository
+    # See the OCP "secrets" where we've stored the value of the cit.key file so you can re-create as needed
     key: |-
 {{ .Files.Get "cit.key" | indent 6}}
     caCertificate: |-
