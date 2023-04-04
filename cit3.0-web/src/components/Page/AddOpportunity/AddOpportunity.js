@@ -211,8 +211,8 @@ export default function AddOpportunity() {
     /// //////////////////////////
     const pid = await getPID(id);
     let countedSQM = 0;
+    dispatch(setPID(pid));
     if (pid) {
-      dispatch(setPID(pid));
       pid.forEach(async (_pid) => {
         const parcelData = await getParcelData(_pid);
         if (parcelData) {
@@ -468,7 +468,6 @@ export default function AddOpportunity() {
             <MapContainer
               nearbyResources={{}}
               coords={coords}
-              pid={PID}
               setResourceIds={(r) => dispatch(setResourceIds(r))}
               setAddress={(a) => dispatch(setAddress(a))}
               setCoords={(c) => dispatch(setCoords(c))}
