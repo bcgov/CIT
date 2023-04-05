@@ -149,9 +149,13 @@ export default function AddOpportunity() {
     if (isInvalidAddress || !geometry) {
       warnings = [
         ...warnings,
-        `${isInvalidAddress ? "Please enter a valid address" : ""}${
-          isInvalidAddress && !geometry ? " or " : ""
-        }${!geometry ? "select a land parcel from the map to continue." : ""}`,
+        `${
+          isInvalidAddress
+            ? "Please enter a valid address including the building number"
+            : ""
+        }${isInvalidAddress && !geometry ? " or " : ""}${
+          !geometry ? "select a land parcel from the map to continue." : ""
+        }`,
       ];
     }
     if (parcelOwner === "Private" && hasApproval !== "Yes") {
@@ -175,7 +179,7 @@ export default function AddOpportunity() {
   const title1 = "Add an Opportunity";
   const title2 = "Confirm Property";
   const text1 =
-    'Enter an address or "zoom in" to the map and drop a pin on the land parcel you want to list as an opportunity for investors.';
+    'Enter an address (including a valid building number) or "zoom in" to the map and drop a pin on the land parcel you want to list as an opportunity for investors.';
   const text2 =
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 
