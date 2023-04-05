@@ -54,6 +54,8 @@ export default function EDODashboard() {
             console.error(err);
             setTableData([]);
           });
+      } else {
+        setIsOpportunityLoaded(true);
       }
     });
   };
