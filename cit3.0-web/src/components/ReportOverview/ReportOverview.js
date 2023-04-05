@@ -43,8 +43,8 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
 
   const reportTabs = [
     {
-      pageName: "Internet Connectivity",
-      label: "Internet Connectivity",
+      pageName: "Connectivity",
+      label: "Connectivity",
       isLoginRequired: null,
       isDefault: true,
     },
