@@ -140,7 +140,7 @@ const OpportunityApproveListPage = () => {
                 />
                 <p>
                   Showing {opportunities ? opportunities.length : 0} of{" "}
-                  properties
+                  {totalCount} properties
                 </p>
               </Row>
             </>
