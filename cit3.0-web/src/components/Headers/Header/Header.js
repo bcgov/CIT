@@ -18,6 +18,9 @@ const Header = () => {
     if (location.pathname.includes("/investmentopportunities")) {
       return "Community Investment Opportunities Tool";
     }
+    if (location.pathname.includes("/manage/users/")) {
+      return "Community Investment Opportunities Tool";
+    }
     if (location.pathname.includes("/cit-dashboard")) {
       return "Community Information Tool";
     }
@@ -28,7 +31,10 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (location.pathname.includes("/investmentopportunities")) {
+    if (
+      location.pathname.includes("/investmentopportunities") ||
+      location.pathname.includes("/manage/users/")
+    ) {
       setIsPowerBI(false);
     } else {
       setIsPowerBI(true);
