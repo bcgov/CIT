@@ -7,6 +7,7 @@ from requests.auth import HTTPBasicAuth
 from pipeline.permissions.IsAuthenticated import IsAuthenticated, IsAdminAuthenticated
 from pipeline.models.users.user import User
 from pipeline.models.opportunity import Opportunity
+from pipeline.models.general import Municipality, RegionalDistrict
 
 class EmailView(APIView):
 
@@ -45,16 +46,19 @@ class EmailView(APIView):
         }
         response = requests.get(os.environ.get("EMAIL_SERVICE_HOST") + "/api/v1/health", headers=headers)
         if(response.status_code == 200):
+            opportunity = Opportunity.objects.get(id=id)
+            municipality = Municipality.objects.get(id=opportunity.municipality_id)
+            district = RegionalDistrict.objects.get(id=opportunity.regional_district_id)
             email_config = {
                 "bcc": [],
                 "bodyType": "html",
-                "body": "<p>A new opportunity has been submitted to the Investment Opportunities Tool for municipality, regional district. Please review the listing to determine whether any revisions are required prior to publication.</p><p>Click here to view the listing: " + build_full_link(link) + "</p>",
+                "body": "<p>A new opportunity has been submitted to the Investment Opportunities Tool for "+ str(municipality) + ", "+ str(district) +". Please review the listing to determine whether any revisions are required prior to publication.</p><p>Click here to view the listing: " + build_full_link(link) + "</p>",
                 "cc": [],
                 "delayTS": 0,
                 "encoding": "utf-8",
                 "from": os.environ.get("EMAIL_SENDING_ADDRESS"),
                 "priority": "normal",
-                "subject": "New Investment Opportunity submitted for municipality, regional district",
+                "subject": "New Investment Opportunity submitted for "+str(municipality)+", "+ str(district),
                 "to": [os.environ.get("CIOT_EMAIL_SENDING_ADDRESS")],
                 "tag": "CIT_Admin_Notification",
             }
