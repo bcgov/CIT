@@ -49,11 +49,11 @@ jobs:
       #    docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-webapi:prod
 #
       #- name: "Build and push frontend to Openshift"
-      #  uses: azure/docker-login@v1
+      #  uses: docker/login-action@v2
       #  with:
-      #    login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
-      #    username: ${{ secrets.REGISTRY_USERNAME }}
-      #    password: ${{ secrets.REGISTRY_PASSWORD }}
+      #    registry: image-registry.apps.silver.devops.gov.bc.ca
+      #    username: serviceaccount
+      #    password: ${{ secrets.OCP_REGISTRY_PASSWORD }}
       #- run: |
       #    docker build cit3.0-web -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:prod
       #    docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:prod
