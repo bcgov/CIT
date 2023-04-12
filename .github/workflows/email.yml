@@ -1,0 +1,26 @@
+# This workflow will build and push a new email container image to the Openshift Image Stream Tools
+name: Email Image Build and Push
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # checkout the repo
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@master
+      
+      - name: "Build email image"
+        run: |
+          docker build -f cit-api/Dockerfile.email . -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/email:develop
+      
+      - name: "Push email image to Openshift" 
+        uses: docker/login-action@v2
+        with:
+          registry: image-registry.apps.silver.devops.gov.bc.ca
+          username: serviceaccount
+          password: ${{ secrets.OCP_REGISTRY_PASSWORD }}
+      - run: |
+          docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/email:develop

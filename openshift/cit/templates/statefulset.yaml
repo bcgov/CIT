@@ -1,0 +1,136 @@
+# This is a working patroni postgis stateful set, unfortunately for our purposes it is not functional because of our routing limitations to the internet to be consumed by PowerBI 
+#kind: StatefulSet
+#apiVersion: apps/v1
+#metadata:
+#  name: {{ .Values.app_name }}-patroni
+#  namespace: {{ .Values.license_plate }}-{{ .Values.namespace_env }}
+#  labels:
+#    app: {{ .Values.app_name }}-patroni
+#spec:
+#  podManagementPolicy: OrderedReady
+#  replicas: {{ .Values.replicas }}
+#  revisionHistoryLimit: 3
+#  selector:
+#    matchLabels:
+#      app: {{ .Values.app_name }}-patroni
+#  serviceName: {{ .Values.app_name }}-patroni
+#  template:
+#    metadata:
+#      labels:
+#        app: {{ .Values.app_name }}-patroni
+#    spec:
+#      affinity:
+#        podAntiAffinity:
+#          requiredDuringSchedulingIgnoredDuringExecution:
+#            - labelSelector:
+#                matchExpressions:
+#                  - key: statefulset
+#                    operator: In
+#                    values:
+#                      - {{ .Values.app_name }}-patroni
+#              topologyKey: "kubernetes.io/hostname"
+#      containers:
+#        - env:
+#            #TODO: Remove POD_IP in favor of PATRONI_KUBERNETES_POD_IP
+#            - name: POD_IP
+#              valueFrom:
+#                fieldRef:
+#                  apiVersion: v1
+#                  fieldPath: status.podIP
+#            - name: PATRONI_KUBERNETES_NAMESPACE
+#              valueFrom:
+#                fieldRef:
+#                  apiVersion: v1
+#                  fieldPath: metadata.namespace
+#            - name: PATRONI_KUBERNETES_LABELS
+#              value: '{"cluster-name": "{{ .Values.license_plate }}", "app.kubernetes.io/name": "patroni"}'
+#            - name: PATRONI_SUPERUSER_USERNAME
+#              valueFrom:
+#                secretKeyRef:
+#                  key: superuseruid
+#                  name: {{ .Values.app_name }}-patroni-creds
+#            - name: PATRONI_SUPERUSER_PASSWORD
+#              valueFrom:
+#                secretKeyRef:
+#                  key: superuserpwd
+#                  name: {{ .Values.app_name }}-patroni-creds
+#            - name: PATRONI_REPLICATION_USERNAME
+#              valueFrom:
+#                secretKeyRef:
+#                  key: replication-username
+#                  name: {{ .Values.app_name }}-patroni-creds
+#            - name: PATRONI_REPLICATION_PASSWORD
+#              valueFrom:
+#                secretKeyRef:
+#                  key: replication-password
+#                  name: {{ .Values.app_name }}-patroni-creds
+#            - name: APP_USER
+#              valueFrom:
+#                secretKeyRef:
+#                  key: app-db-username
+#                  name: {{ .Values.app_name }}-patroni-creds
+#            - name: APP_PASSWORD
+#              valueFrom:
+#                secretKeyRef:
+#                  key: app-db-password
+#                  name: {{ .Values.app_name }}-patroni-creds
+#            - name: APP_DATABASE
+#              valueFrom:
+#                secretKeyRef:
+#                  key: app-db-name
+#                  name: {{ .Values.app_name }}-patroni-creds
+#            - name: PATRONI_SCOPE
+#              value: {{ .Values.app_name }}-patroni
+#            - name: PATRONI_NAME
+#              valueFrom:
+#                fieldRef:
+#                  apiVersion: v1
+#                  fieldPath: metadata.name
+#            - name: PATRONI_LOG_LEVEL
+#              value: {{ .Values.loglevel }}
+#            - name: PATRONI_POSTGRESQL_DATA_DIR
+#              value: /home/postgres/pgdata/pgroot/data
+#            - name: PATRONI_POSTGRESQL_PGPASS
+#              value: /tmp/pgpass
+#            - name: PATRONI_POSTGRESQL_LISTEN
+#              value: 0.0.0.0:5432
+#            - name: PATRONI_RESTAPI_LISTEN
+#              value: 0.0.0.0:8008
+#            - name: CLUSTER
+#              value: {{ .Values.cluster }}
+#          # image: {{ .Values.image_registry }}/{{ .Values.license_plate }}-tools/patroni-postgres:latest
+#          # image: image-registry.openshift-image-registry.svc:5000/bcgov/patroni-postgres:12.4-latest
+#          image: '{{ .Values.docker_host }}/{{ .Values.license_plate }}-tools/patroni-psql-gis:latest'
+#
+#          imagePullPolicy: Always
+#          name: patroni
+#          ports:
+#            - containerPort: 8008
+#              protocol: TCP
+#            - containerPort: 5432
+#              protocol: TCP
+#          resources:
+#            requests:
+#              cpu: {{ .Values.stateful_requests_cpu }}
+#              memory: {{ .Values.stateful_requests_memory }}
+#            limits:
+#              cpu: {{ .Values.stateful_limit_cpu }}
+#              memory: {{ .Values.stateful_limit_memory }}
+#          terminationMessagePath: /dev/termination-log
+#          terminationMessagePolicy: File
+#          volumeMounts:
+#            - name: postgresql
+#              mountPath: /home/postgres/pgdata
+#      dnsPolicy: ClusterFirst
+#      restartPolicy: Always
+#      schedulerName: default-scheduler
+#      securityContext: {}
+#      serviceAccount: {{ .Values.app_name }}-patroni
+#      # serviceAccountName: default
+#      terminationGracePeriodSeconds: 0
+#      volumes:
+#        - name: postgresql
+#          persistentVolumeClaim:
+#            claimName: postgresql
+#  updateStrategy:
+#    type: RollingUpdate
