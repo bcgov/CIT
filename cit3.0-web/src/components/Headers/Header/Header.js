@@ -13,6 +13,7 @@ const Header = () => {
   const history = useHistory();
   const location = useLocation();
   const [isPowerBI, setIsPowerBI] = useState(null);
+  const [isAvailable, setIsAvailable] = useState(false);
 
   const title = () => {
     if (location.pathname.includes("/investmentopportunities")) {
@@ -79,15 +80,13 @@ const Header = () => {
       </header>
       {keycloak.obj.authenticated && !isPowerBI ? (
         <div className="navigation-container no-print">
-          {
-            <Button
-              variant="link"
-              className="text-white"
-              onClick={() => history.push("/investmentopportunities/dashboard")}
-            >
-              Dashboard
-            </Button>
-          }
+          <Button
+            variant="link"
+            className="text-white"
+            onClick={() => history.push("/investmentopportunities/dashboard")}
+          >
+            Dashboard
+          </Button>
           {keycloak.hasRole([
             Roles.SUPER_ADMINISTRATOR,
             Roles.SYSTEM_ADMINISTRATOR,
@@ -100,18 +99,19 @@ const Header = () => {
               Manage Opportunities
             </Button>
           )}
-          {keycloak.hasRole([
-            Roles.SUPER_ADMINISTRATOR,
-            Roles.SYSTEM_ADMINISTRATOR,
-          ]) && (
-            <Button
-              variant="link"
-              className="text-white"
-              onClick={() => history.push("/manage/users/")}
-            >
-              Manage Users
-            </Button>
-          )}
+          {isAvailable &&
+            keycloak.hasRole([
+              Roles.SUPER_ADMINISTRATOR,
+              Roles.SYSTEM_ADMINISTRATOR,
+            ]) && (
+              <Button
+                variant="link"
+                className="text-white"
+                onClick={() => history.push("/manage/users/")}
+              >
+                Manage Users
+              </Button>
+            )}
         </div>
       ) : null}
     </>

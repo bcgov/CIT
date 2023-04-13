@@ -151,7 +151,7 @@ export default function AddOpportunity() {
         ...warnings,
         `${
           isInvalidAddress
-            ? "Please enter a valid address including the building number"
+            ? "Please enter a valid civic address including the civic number"
             : ""
         }${isInvalidAddress && !geometry ? " or " : ""}${
           !geometry ? "select a land parcel from the map to continue." : ""
@@ -179,7 +179,7 @@ export default function AddOpportunity() {
   const title1 = "Add an Opportunity";
   const title2 = "Confirm Property";
   const text1 =
-    'Enter an address (including a valid building number) or "zoom in" to the map and drop a pin on the land parcel you want to list as an opportunity for investors.';
+    'Enter a civic address (including a valid civic number) or "zoom in" to the map and drop a pin on the land parcel you want to list as an opportunity for investors.';
   const text2 =
     "Please confirm this is the property you want to list as an investment opportunity in your community";
 
