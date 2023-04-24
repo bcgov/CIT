@@ -31,6 +31,12 @@ ul.dashed > li:before {
     content: "- ";
 }
 
+.center-page-spinner-opportunities {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+}
+
 .center-spinner-opportunities {
     height: 10vh;
     display: flex;

@@ -13,8 +13,8 @@ export default function OpportunitiesMap({ opportunities }) {
       zoom={5}
     >
       <TileLayer
-        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="http://www.esri.com/">Esri</a> contributors'
+        url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
       />
       {opportunities && <OpportunitiesMarker opportunities={opportunities} />}
     </MapContainer>
