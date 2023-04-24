@@ -49,7 +49,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
       isDefault: true,
     },
     {
-      pageName: "Facilities",
+      pageName: "Assets & Infrastructure",
       label: "Facilities",
       isLoginRequired: null,
       isDefault: null,
