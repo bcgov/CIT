@@ -84,6 +84,7 @@ const OpportunityApproveListPage = () => {
               delete search[key];
             }
             setQuery(querystring.encode(search));
+            setCurrentPage(1);
             history.push({ search: querystring.encode(search) });
           },
           resetFilters: () => {
@@ -139,7 +140,7 @@ const OpportunityApproveListPage = () => {
                 />
                 <p>
                   Showing {opportunities ? opportunities.length : 0} of{" "}
-                  properties
+                  {totalCount} properties
                 </p>
               </Row>
             </>

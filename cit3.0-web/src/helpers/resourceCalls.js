@@ -5,7 +5,7 @@ import Config from "../Config";
 export async function getAddressData(address) {
   return axios
     .get(
-      `https://geocoder.api.gov.bc.ca/addresses.json?addressString=${address}&autoComplete=true&maxResults=15`,
+      `https://geocoder.api.gov.bc.ca/addresses.json?addressString=${address}&autoComplete=true&matchPrecision=OCCUPANT,SITE,UNIT,CIVIC_NUMBER&maxResults=15`,
       {
         headers: {
           apikey: Config.geocoderKey,
