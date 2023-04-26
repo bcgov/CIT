@@ -241,7 +241,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
       setModalInfo({
         title: "Login Required",
         body:
-          "Please note that you must be logged in with an IDIR and have approved permission to continue with BC Assessment Report",
+          "Please note that you must be logged in with an IDIR to continue with BC Assessment Report",
       });
       handleShow();
       return;
