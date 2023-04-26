@@ -1,0 +1,47 @@
+# This workflow will build and push a new frontend container image to Azure ACR and the Openshift Image Stream Tools
+name: Frontend Build and Push (Test)
+
+on:
+  push:
+    branches: [openshift]
+    paths:
+      - 'cit3.0-web/**'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # checkout the repo
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@master
+
+      - name: "Build frontend"
+        run: |
+          docker build cit3.0-web -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:develop
+          docker images
+      
+      #- name: "Push frontend to Azure"
+      #  uses: azure/docker-login@v1
+      #  with:
+      #    login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+      #    username: ${{ secrets.REGISTRY_USERNAME }}
+      #    password: ${{ secrets.REGISTRY_PASSWORD }}
+      #- run: |
+      #    docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest
+    
+      # Uses the pipeline service account token
+      - name: "Push frontend to Openshift" 
+        uses: docker/login-action@v1
+        with:
+          registry: image-registry.apps.silver.devops.gov.bc.ca
+          username: serviceaccount
+          password: ${{ secrets.OCP_REGISTRY_PASSWORD }}
+      - run: |
+          docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:develop
+
+      - name: Vulnerability Scan Backend
+        uses: Azure/container-scan@v0
+        continue-on-error: true
+        with:
+          image-name: ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest

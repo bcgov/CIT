@@ -1,0 +1,39 @@
+# This workflow will build and push a new container image tagged with test to Openshift
+
+on:
+  push:
+    branches: [testing]
+  workflow_dispatch:
+
+name: Deploy to Test
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: 
+      name: Testing
+    steps:
+      # checkout the repo
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@master
+          
+      - name: "Build and push backend to Openshift" 
+        uses: docker/login-action@v2
+        with:
+          registry: image-registry.apps.silver.devops.gov.bc.ca
+          username: serviceaccount
+          password: ${{ secrets.OCP_REGISTRY_PASSWORD }}
+      - run: |
+          docker build cit-api -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-webapi:test
+          docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-webapi:test
+
+      - name: "Build and push frontend to Openshift"
+        uses: docker/login-action@v2
+        with:
+          registry: image-registry.apps.silver.devops.gov.bc.ca
+          username: serviceaccount
+          password: ${{ secrets.OCP_REGISTRY_PASSWORD }}
+      - run: |
+          docker build cit3.0-web -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:test
+          docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:test
+
+
