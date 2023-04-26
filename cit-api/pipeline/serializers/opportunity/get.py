@@ -14,10 +14,9 @@ from pipeline.models.preferred_development import PreferredDevelopment
 from pipeline.models.railway import Railway
 from pipeline.serializers.opportunity.distance import (
     OpportunityCommunitySerializer, OpportunityPostSecondarySerializer,
-    OpportunityFirstResponderSerializer, OpportunityHospitalSerializer, OpportunityCustomsPortOfEntrySerializer,
+    OpportunityFirstResponderSerializer, OpportunityHospitalSerializer,
     OpportunityResearchCentreSerializer, OpportunityRiverSerializer, OpportunityLakeSerializer,
-    OpportunityMunicipalitySerializer, OpportunityRegionalDistrictSerializer, OpportunityPortAndTerminalSerializer,
-    OpportunityRailwaySerializer, OpportunityRoadsAndHighwaysSerializer, OpportunityAirportSerializer)
+    OpportunityMunicipalitySerializer, OpportunityRegionalDistrictSerializer)
 
 
 class OpportunityGetSerializer(serializers.ModelSerializer):
@@ -33,11 +32,11 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
     nearest_fire_station = OpportunityFirstResponderSerializer(required=False)
     nearest_health_center = OpportunityHospitalSerializer(required=False)
     nearest_research_centre = OpportunityResearchCentreSerializer(required=False)
-    nearest_customs_port_of_entry = OpportunityCustomsPortOfEntrySerializer(required=False)
-    nearest_port = OpportunityPortAndTerminalSerializer(required=False)
-    nearest_railway = OpportunityRailwaySerializer(required=False)
-    nearest_airport = OpportunityAirportSerializer(required=False)
-    nearest_highway = OpportunityRoadsAndHighwaysSerializer(required=False)
+    nearest_customs_port_of_entry = serializers.SerializerMethodField()
+    nearest_port = serializers.SerializerMethodField()
+    nearest_railway = serializers.SerializerMethodField()
+    nearest_airport = serializers.SerializerMethodField()
+    nearest_highway = serializers.SerializerMethodField()
     nearest_river = OpportunityRiverSerializer(required=False)
     nearest_lake = OpportunityLakeSerializer(required=False)
     municipality = OpportunityMunicipalitySerializer(required=False)
@@ -113,7 +112,57 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
             "regional_district",
         )
 
+    def get_nearest_customs_port_of_entry(self, instance):
+        nearest_customs_port_of_entry = None
+        if instance.nearest_customs_port_of_entry:
+            nearest_customs_port_of_entry = dict()
+            nearest_customs_port_of_entry[
+                'customs_port_id'] = instance.nearest_customs_port_of_entry.customs_port_id_id
+            nearest_customs_port_of_entry[
+                'customs_port_distance'] = instance.nearest_customs_port_of_entry.customs_port_distance
+            nearest_customs_port_of_entry['name'] = CustomsPortOfEntry.objects.get(
+                id=nearest_customs_port_of_entry['customs_port_id']).name
+        return nearest_customs_port_of_entry
+
+    def get_nearest_port(self, instance):
+        nearest_port = None
+        if instance.nearest_port:
+            nearest_port = dict()
+            nearest_port['port_id'] = instance.nearest_port.port_id_id
+            nearest_port['port_distance'] = instance.nearest_port.port_distance
+            nearest_port['name'] = PortAndTerminal.objects.get(id=nearest_port['port_id']).name
+        return nearest_port
+
+    def get_nearest_railway(self, instance):
+        nearest_railway = None
+        if instance.nearest_railway:
+            nearest_railway = dict()
+            nearest_railway['railway_id'] = instance.nearest_railway.railway_id_id
+            nearest_railway['railway_distance'] = instance.nearest_railway.railway_distance
+            nearest_railway['name'] = Railway.objects.get(id=nearest_railway['railway_id']).name
+        return nearest_railway
+
+    def get_nearest_airport(self, instance):
+        nearest_airport = None
+        if instance.nearest_airport:
+            nearest_airport = dict()
+            nearest_airport['airport_id'] = instance.nearest_airport.airport_id_id
+            nearest_airport['airport_distance'] = instance.nearest_airport.airport_distance
+            nearest_airport['name'] = Airport.objects.get(id=nearest_airport['airport_id']).name
+        return nearest_airport
+
+    def get_nearest_highway(self, instance):
+        nearest_highway = None
+        if instance.nearest_highway:
+            nearest_highway = dict()
+            nearest_highway['highway_id'] = instance.nearest_highway.highway_id_id
+            nearest_highway['highway_distance'] = instance.nearest_highway.highway_distance
+            nearest_highway['name'] = RoadsAndHighways.objects.get(
+                id=nearest_highway['highway_id']).name
+        return nearest_highway
+
     def get_nearest_first_nations(self, instance):
+        index = 0
         nearest_first_nations = None
         if instance.nearest_first_nations:
             nearest_first_nations = []
@@ -124,6 +173,7 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
                 mapped_fn["link"] = fn.place_name
                 mapped_fn["distance"] = fn.distance.km
                 nearest_first_nations.append(mapped_fn)
+                index += 1
         return nearest_first_nations
 
     def get_nearest_municipalities(self, instance):

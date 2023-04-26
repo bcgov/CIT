@@ -114,7 +114,10 @@ const OpportunityListItem = ({
 
   return (
     <div key={opportunity.id} className="opportunity-table-row w-100">
-      <Row className={publicView ? "nested-link" : ""}>
+      <Row
+        className={publicView ? "nested-link" : ""}
+        onClick={() => !!publicView && history.push(opportunity.link)}
+      >
         <Col md={3} lg={3}>
           <div className="border-list-item opportunity-table-map-container">
             <Map
@@ -198,9 +201,7 @@ const OpportunityListItem = ({
                   <Button
                     className="p-0"
                     variant="link"
-                    onClick={() => {
-                      window.open(opportunity.link, "_blank");
-                    }}
+                    onClick={() => setCurrentUrl(opportunity.link)}
                   >
                     View property details
                   </Button>

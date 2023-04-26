@@ -123,10 +123,3 @@ A manual Github action will be triggered by a repo administrator to deploy to pr
 ## How to Contribute
 
 If you would like to contribute please follow the [contributing](CONTRIBUTING.md) readme.
-
-## Infrastructure
-
-The infrastructure has evolved over time. Currently the infrastructure is hosted in three locations:
-- API and GUI are hosted on Openshift (OCP) run by the BC Gov't Platform Services team. This infrastructure is managed by the HELM charts found in the "Openshift" folder.
-- Database and PowerBI Embedded are hosted in a production Resource Group on Azure. This infrastructure is currently unmanned by code. There is a Terraform structure that used be used for the testing environment that never made it into managing production.  However with the migration to OCP much of this has been obsoleted and there's a TODO to clean this up.
-- PowerBI Service is hosted on Azure by BG Gov't PowerBI Team.

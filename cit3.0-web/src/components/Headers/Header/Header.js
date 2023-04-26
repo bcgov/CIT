@@ -13,13 +13,9 @@ const Header = () => {
   const history = useHistory();
   const location = useLocation();
   const [isPowerBI, setIsPowerBI] = useState(null);
-  const [isAvailable, setIsAvailable] = useState(false);
 
   const title = () => {
     if (location.pathname.includes("/investmentopportunities")) {
-      return "Community Investment Opportunities Tool";
-    }
-    if (location.pathname.includes("/manage/users/")) {
       return "Community Investment Opportunities Tool";
     }
     if (location.pathname.includes("/cit-dashboard")) {
@@ -32,10 +28,7 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (
-      location.pathname.includes("/investmentopportunities") ||
-      location.pathname.includes("/manage/users/")
-    ) {
+    if (location.pathname.includes("/investmentopportunities")) {
       setIsPowerBI(false);
     } else {
       setIsPowerBI(true);
@@ -80,13 +73,15 @@ const Header = () => {
       </header>
       {keycloak.obj.authenticated && !isPowerBI ? (
         <div className="navigation-container no-print">
-          <Button
-            variant="link"
-            className="text-white"
-            onClick={() => history.push("/investmentopportunities/dashboard")}
-          >
-            Dashboard
-          </Button>
+          {
+            <Button
+              variant="link"
+              className="text-white"
+              onClick={() => history.push("/investmentopportunities/dashboard")}
+            >
+              Dashboard
+            </Button>
+          }
           {keycloak.hasRole([
             Roles.SUPER_ADMINISTRATOR,
             Roles.SYSTEM_ADMINISTRATOR,
@@ -99,19 +94,18 @@ const Header = () => {
               Manage Opportunities
             </Button>
           )}
-          {isAvailable &&
-            keycloak.hasRole([
-              Roles.SUPER_ADMINISTRATOR,
-              Roles.SYSTEM_ADMINISTRATOR,
-            ]) && (
-              <Button
-                variant="link"
-                className="text-white"
-                onClick={() => history.push("/manage/users/")}
-              >
-                Manage Users
-              </Button>
-            )}
+          {keycloak.hasRole([
+            Roles.SUPER_ADMINISTRATOR,
+            Roles.SYSTEM_ADMINISTRATOR,
+          ]) && (
+            <Button
+              variant="link"
+              className="text-white"
+              onClick={() => history.push("/manage/users/")}
+            >
+              Manage Users
+            </Button>
+          )}
         </div>
       ) : null}
     </>

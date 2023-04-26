@@ -13,7 +13,6 @@ const ReviewAndSubmitCallout = ({
   prevRoute,
   submitOpportunity,
   cancelOpportunity,
-  isSubmitted,
 }) => {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -84,8 +83,6 @@ const ReviewAndSubmitCallout = ({
             onClick={submitOpportunity}
             label="Submit my Opportunity"
             styling="bcgov-normal-blue btn primary"
-            disabled={isSubmitted}
-            hasLoader={isSubmitted}
           />
         </Col>
       </Row>
@@ -96,7 +93,6 @@ const ReviewAndSubmitCallout = ({
 ReviewAndSubmitCallout.propTypes = {
   submitOpportunity: PropTypes.func.isRequired,
   cancelOpportunity: PropTypes.func.isRequired,
-  isSubmitted: PropTypes.bool.isRequired,
   prevRoute: PropTypes.string,
 };
 

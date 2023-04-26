@@ -227,7 +227,7 @@ class ProximityView(APIView):
 
         network_at_road = 'Unknown network'
         network_at_road_check = Road.objects.annotate(distance=Distance("geom", point)).filter(
-            geom__distance_lte=(point, D(m=150))).order_by('distance')[:1]
+            geom__distance_lte=(point, D(km=100))).order_by('distance')[:1]
         if network_at_road_check and network_at_road_check.first().best_broadband:
             network_at_road = network_at_road_check.first().best_broadband
 

@@ -10,3 +10,4 @@ class UserTrackingView(generics.CreateAPIView):
     """
     model = UserTracking
     serializer_class = UserTrackingSerializer
+    permission_classes = [IsAdminAuthenticated]

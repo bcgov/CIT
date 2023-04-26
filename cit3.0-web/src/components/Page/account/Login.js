@@ -75,7 +75,10 @@ const Login = () => {
                 styling="bcgov-button bcgov-normal-blue btn mb-4"
                 onClick={handleLogin}
               />
-              <p>Sign into the tool with your Business BCeID.</p>
+              <p>
+                Sign into the tool with your government issued IDIR or your
+                Business BCeID.
+              </p>
             </Jumbotron>
           </Col>
           <Col md>

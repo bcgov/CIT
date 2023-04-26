@@ -1,8 +1,0 @@
-It took some time and several conversations to understand what PowerBI Embedded is and why we have it. These notes are for future novice PowerBI devops (and future Chris to help refresh his memory).
-
-So the flow works like this:
-- User accesses website
-- iframe inside GUI connects to PowerBI Service - which is basically a PowerBI cloud implementation of PowerBI Workstation.  It's the tool that PowerBI creators use to produce reports.
-- The PowerBI Service has a need for Compute. The service has some compute, but it's used for the PowerBI Service Administrator to use.  We need a method of allowing the general public who wish to consume the reports to have CPU for their use.  This is where PowerBI Embedded comes in.  PowerBI Service offloads workloads that are for web consumers to the PowerEmbedded.
-- Now, in our case the PowerBI Service is managed by a BC Gov't group. We have little control over it. However, we do have control over our own Azure Resource Group (RG) where we host PowerBI Embedded. Since the client side workload consumes the PowerBI Embedded CPU/Memory we can scale that as needed.  Be aware that the service is not cheap and so care should be taken to scaling it up and down as well as having a dev/test/prod version of it.
-- When the reports are "running slow" it's likely due to too many users consuming the reports at the same time (eg: during a demo).  The PowerBI Embedded can be bumped up to the next compute level (at twice the cost) to alleviate that slowness and be more performant. It's suggested that we set up an autoscaler of some sort to look for those times and auto scale the service up and down.  That's a future TODO.

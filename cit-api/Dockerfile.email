@@ -1,31 +1,17 @@
 FROM python:3.6
 ENV PYTHONUNBUFFERED 1
 
-ARG ENV_LEVEL
-ARG EMAIL_TYPE
-ARG POSTGRES_DB
-ARG POSTGRES_DJANGO_USER
-ARG POSTGRES_DJANGO_PASSWORD 
-ARG POSTGRES_HOST
-ARG EMAIL_NOTIFICATIONS_ENABLED
-ARG EMAIL_AUTH_HOST
-ARG EMAIL_SERVICE_HOST
-ARG EMAIL_CLIENT_ID
-ARG EMAIL_CLIENT_SECRET
-ARG EMAIL_SENDING_ADDRESS
-ARG EMAIL_OPPORTUNITY_LINK_HOST
-ARG USER_TRACKING_TO_EMAIL
-ARG AZURE_BLOB_STORAGE_CONNECTION_STRING
-ARG ROUTE_PLANNER_API_KEY
+
+ARG RUNTIME_ENV
 
 RUN apt-get update && apt-get install -y libproj-dev gdal-bin libpq-dev libpython3-dev build-essential
 
 RUN mkdir /code
 WORKDIR /code
-COPY cit-api/requirements.txt /code/
+COPY requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . .
-RUN rm cit-api/data/import/datafiles/*
-RUN python3 cit-api/manage.py collectstatic --noinput
+RUN rm data/import/datafiles/*
+RUN python3 manage.py collectstatic --noinput
 
-CMD /bin/sh ./cit-api/entrypoint.email.sh
+CMD /bin/sh ./entrypoint.email.sh

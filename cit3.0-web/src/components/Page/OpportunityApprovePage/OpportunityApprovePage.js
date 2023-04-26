@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Proptypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { Container, Spinner } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { Alert } from "shared-components/build/components/alert/Alert";
 import { MdCheckBox, MdError } from "react-icons/md";
 import OpportunityView from "../../OpportunityView/OpportunityView";
@@ -114,50 +114,40 @@ const OpportunityApprovePage = ({ id }) => {
 
   return (
     <div data-testid="OpportunityApprovePage">
-      {opportunity.id ? (
-        <>
-          <Container className="p-0 pt-3">
-            {notificationShow && notificationType === NOTIFICATION_SUCCESS ? (
-              <Alert
-                icon={<MdCheckBox size={32} />}
-                type="success"
-                styling="bcgov-success-background"
-                element={`The status of this opportunity has been updated to ${alertStatus}`}
-              />
-            ) : null}
+      <Container className="p-0 pt-3">
+        {notificationShow && notificationType === NOTIFICATION_SUCCESS ? (
+          <Alert
+            icon={<MdCheckBox size={32} />}
+            type="success"
+            styling="bcgov-success-background"
+            element={`The status of this opportunity has been updated to ${alertStatus}`}
+          />
+        ) : null}
 
-            {notificationShow && notificationType === NOTIFICATION_ERROR ? (
-              <Alert
-                icon={<MdError size={32} />}
-                type="error"
-                styling="bcgov-error-background"
-                element={`The status of this opportunity cannot be changed to ${alertStatus}`}
-              />
-            ) : null}
-
-            <OpportunityApproveCallout
-              publicNote={opportunity.publicNote}
-              privateNote={opportunity.privateNote}
-              currentStatus={opportunity.approvalStatus}
-              userQuestion={userQuestion}
-              validUser={validUser}
-              approvalStatuses={statuses}
-              onStatusChange={(newStatus, approval) =>
-                handleUpdateOpportunity(newStatus, approval)
-              }
-            />
-
-            <p className="my-3">
-              <b>{userStatement}</b>
-            </p>
-          </Container>
-          <OpportunityView view="all" />
-        </>
-      ) : (
-        <div className="center-page-spinner-opportunities">
-          <Spinner animation="border" />
-        </div>
-      )}
+        {notificationShow && notificationType === NOTIFICATION_ERROR ? (
+          <Alert
+            icon={<MdError size={32} />}
+            type="error"
+            styling="bcgov-error-background"
+            element={`The status of this opportunity cannot be changed to ${alertStatus}`}
+          />
+        ) : null}
+        <OpportunityApproveCallout
+          publicNote={opportunity.publicNote}
+          privateNote={opportunity.privateNote}
+          currentStatus={opportunity.approvalStatus}
+          userQuestion={userQuestion}
+          validUser={validUser}
+          approvalStatuses={statuses}
+          onStatusChange={(newStatus, approval) =>
+            handleUpdateOpportunity(newStatus, approval)
+          }
+        />
+        <p className="my-3">
+          <b>{userStatement}</b>
+        </p>
+      </Container>
+      <OpportunityView view="all" />
     </div>
   );
 };

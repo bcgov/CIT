@@ -77,9 +77,6 @@ class RoadsAndHighwaysDistance(models.Model):
                                    null=True)
     highway_distance = models.DecimalField(max_digits=16, decimal_places=4, blank=False, null=False)
 
-    @property
-    def name(self):
-        return self.highway_id.name
 
 class AirportDistance(models.Model):
     airport_id = models.ForeignKey(Airport,
@@ -88,9 +85,6 @@ class AirportDistance(models.Model):
                                    null=True)
     airport_distance = models.DecimalField(max_digits=16, decimal_places=4, blank=False, null=False)
 
-    @property
-    def name(self):
-        return self.airport_id.name
 
 class RailwayDistance(models.Model):
     railway_id = models.ForeignKey(Railway,
@@ -99,9 +93,6 @@ class RailwayDistance(models.Model):
                                    null=True)
     railway_distance = models.DecimalField(max_digits=16, decimal_places=4, blank=False, null=False)
 
-    @property
-    def name(self):
-        return self.railway_id.name
 
 class PortAndTerminalDistance(models.Model):
     port_id = models.ForeignKey(PortAndTerminal,
@@ -110,9 +101,6 @@ class PortAndTerminalDistance(models.Model):
                                 null=True)
     port_distance = models.DecimalField(max_digits=16, decimal_places=4, blank=False, null=False)
 
-    @property
-    def name(self):
-        return self.port_id.name
 
 class CustomsPortOfEntryDistance(models.Model):
     customs_port_id = models.ForeignKey(CustomsPortOfEntry,
@@ -124,9 +112,6 @@ class CustomsPortOfEntryDistance(models.Model):
                                                 blank=False,
                                                 null=False)
 
-    @property
-    def name(self):
-        return self.customs_port_id.name
 
 class ResearchCentreDistance(models.Model):
     research_centre_id = models.ForeignKey(ResearchCentre,
@@ -389,5 +374,3 @@ class Opportunity(models.Model):
                                                           decimal_places=3,
                                                           blank=True,
                                                           null=True)
-    class Meta:
-        ordering = ("id", )

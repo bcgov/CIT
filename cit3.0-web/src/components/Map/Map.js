@@ -96,14 +96,14 @@ export default function Map({
       <>
         <ChangeView center={changeView(coords)} zoom={16} />
         <LayersControl position="bottomleft">
-          <LayersControl.BaseLayer name="OpenStreetMap">
+          <LayersControl.BaseLayer checked name="OpenStreetMap">
             <TileLayer
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
           </LayersControl.BaseLayer>
 
-          <LayersControl.BaseLayer checked name="Satellite">
+          <LayersControl.BaseLayer name="Satellite">
             <TileLayer
               attribution='&copy; <a href="http://www.esri.com/">Esri</a> contributors'
               url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
@@ -146,8 +146,8 @@ export default function Map({
     additionalComponents = (
       <>
         <TileLayer
-          attribution='&copy; <a href="http://www.esri.com/">Esri</a> contributors'
-          url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <Marker position={coords} />
       </>

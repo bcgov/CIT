@@ -1,0 +1,33 @@
+# This workflow will build and push a new frontend container image to Azure ACR
+name: Frontend Build and Push (Test)
+
+on:
+  push:
+    branches: [develop]
+    paths:
+      - 'cit3.0-web/**'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # checkout the repo
+      - name: "Checkout GitHub Action"
+        uses: actions/checkout@master
+
+      - name: "Build and push frontend"
+        uses: azure/docker-login@v1
+        with:
+          login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+      - run: |
+          docker build cit3.0-web -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest
+          docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest
+      
+      - name: Vulnerability Scan Backend
+        uses: Azure/container-scan@v0
+        continue-on-error: true
+        with:
+          image-name: ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest

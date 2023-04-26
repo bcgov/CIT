@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import "./EDODashboard.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Spinner } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { MdError, MdCheckBox } from "react-icons/md";
 import OpportunityTable from "../../OpportunityTable/OpportunityTable";
 import { resetOpportunity } from "../../../store/actions/opportunity";
@@ -22,7 +22,6 @@ export default function EDODashboard() {
   const [tableData, setTableData] = useState([]);
   const [communities, setCommunities] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const [isOpportunityLoaded, setIsOpportunityLoaded] = useState(false);
   const [currentId, setCurrentId] = useState(-1);
   const [markAsSoldStatus, setMarkAsSoldStatus] = useState(null);
   const resultRef = useRef(null);
@@ -47,15 +46,12 @@ export default function EDODashboard() {
           .get(`${GET_OPPORTUNITIES_LIST_URL}?user_id=${appUser.id}`)
           .then((data) => {
             setTableData(data.data.results);
-            setIsOpportunityLoaded(true);
           })
           .catch((err) => {
             /* eslint-disable-next-line */
             console.error(err);
             setTableData([]);
           });
-      } else {
-        setIsOpportunityLoaded(true);
       }
     });
   };
@@ -171,9 +167,8 @@ export default function EDODashboard() {
           process to add some key information about the property. The tool will
           automatically provide additional location information to help
           investors and site selectors quickly evaluate whether the site meets
-          their specific needs. Investment opportunities are reviewed prior to
-          publication by a Provincial Regional Economic Operations Manager and
-          will go live within 3-5 business days.
+          their specific needs. All listings will be reviewed prior to
+          publication and will go live within 3-5 business days.
         </p>
         <ul className="dashed">
           <li>
@@ -207,10 +202,10 @@ export default function EDODashboard() {
             </ul>
           </li>
           <li>
-            Investment opportunities can be added by an authorized
-            representative for a community. This is typically an Economic
-            Development Officer, Chief Administrative Officer, Lands Manager, or
-            Band Manager.
+            Listings must be approved by either a municipality, regional
+            district, electoral area, province, First Nation or a provincial
+            economic development organization, and from the Chief Administrative
+            Officer or their delegate.
           </li>
         </ul>
         <div className="add-opportunity-button">{addOpportunityButton}</div>
@@ -235,18 +230,7 @@ export default function EDODashboard() {
             />
           </Container>
         ) : null}
-        {isOpportunityLoaded ? (
-          dataSection
-        ) : (
-          <>
-            <h1 className="dashboard-header">
-              Searching for Your Promoted Opportunities
-            </h1>
-            <div className="center-spinner-opportunities">
-              <Spinner animation="border" />
-            </div>
-          </>
-        )}
+        {dataSection}
         <ConfirmCancelModal
           show={showModal}
           handleClose={handleModalClose}

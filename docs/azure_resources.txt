@@ -55,10 +55,10 @@ In Azure, there is a lock on the resource group that prevents you from deleting 
 in the resource group. It also prevents you, for example, deleting ip addresses that you have
 allowed through the postgres firewall. There is a workaround around this if needed, an admin
 user can delete the lock temporarily that currently exists in the "locks" section at the resource
-group level. Before deleting the lock, you should copy the information/names in all the fields so
+group level. Before deleting the lock, you should copy the inforation/names in all the fields so 
 that when you recreate it, you can populate the fields back with the same information. AFter
 deleting the lock, you can delete the information needed, and then recreate the lock
 again.
 
 The lock to delete is called DoNotDelete-RG. Be very careful when this lock is not in place to
-not delete anything that you shouldn't.
+not delete anything that you shouldnt.
