@@ -17,21 +17,21 @@ jobs:
         uses: actions/checkout@master
 
       - name: "Build and push backend to Openshift"
-       uses: docker/login-action@v2
-       with:
-         registry: image-registry.apps.silver.devops.gov.bc.ca
-         username: serviceaccount
-         password: ${{ secrets.OCP_REGISTRY_PASSWORD }}
+        uses: docker/login-action@v2
+        with:
+          registry: image-registry.apps.silver.devops.gov.bc.ca
+          username: serviceaccount
+          password: ${{ secrets.OCP_REGISTRY_PASSWORD }}
       - run: |
-         docker build cit-api -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-webapi:prod
-         docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-webapi:prod
+          docker build cit-api -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-webapi:prod
+          docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-webapi:prod
 
       - name: "Build and push frontend to Openshift"
-       uses: docker/login-action@v2
-       with:
-         registry: image-registry.apps.silver.devops.gov.bc.ca
-         username: serviceaccount
-         password: ${{ secrets.OCP_REGISTRY_PASSWORD }}
+        uses: docker/login-action@v2
+        with:
+          registry: image-registry.apps.silver.devops.gov.bc.ca
+          username: serviceaccount
+          password: ${{ secrets.OCP_REGISTRY_PASSWORD }}
       - run: |
-         docker build cit3.0-web -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:prod
-         docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:prod
+          docker build cit3.0-web -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:prod
+          docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:prod
