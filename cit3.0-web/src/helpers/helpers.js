@@ -51,8 +51,11 @@ export function toKebabCase(str = "") {
   );
 }
 
-export function createOpportunityLink(name, id) {
-  return `/investmentopportunities/view/${toKebabCase(name)}-${id}`;
+export function createOpportunityLink(id, name = null) {
+  if (name) {
+    return `/investmentopportunities/view/${toKebabCase(name)}-${id}`;
+  }
+  return `/manage/investmentopportunities/view/${id}`;
 }
 
 export function determineStatusTextColour(approvalStatus, adminView) {
