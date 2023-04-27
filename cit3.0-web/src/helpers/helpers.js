@@ -56,12 +56,6 @@ export function createOpportunityLink(name, id) {
 }
 
 export function determineStatusTextColour(approvalStatus, adminView) {
-  if (approvalStatus === "NEW") {
-    if (adminView) {
-      return <div className="status-text-green">New</div>;
-    }
-    return <div className="status-text-orange">Pending Review</div>;
-  }
   if (approvalStatus === "PEND") {
     return <div className="status-text-orange">Pending Review</div>;
   }
