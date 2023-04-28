@@ -51,17 +51,14 @@ export function toKebabCase(str = "") {
   );
 }
 
-export function createOpportunityLink(name, id) {
-  return `/investmentopportunities/view/${toKebabCase(name)}-${id}`;
+export function createOpportunityLink(id, name = null) {
+  if (name) {
+    return `/investmentopportunities/view/${toKebabCase(name)}-${id}`;
+  }
+  return `/manage/investmentopportunities/view/${id}`;
 }
 
 export function determineStatusTextColour(approvalStatus, adminView) {
-  if (approvalStatus === "NEW") {
-    if (adminView) {
-      return <div className="status-text-green">New</div>;
-    }
-    return <div className="status-text-orange">Pending Review</div>;
-  }
   if (approvalStatus === "PEND") {
     return <div className="status-text-orange">Pending Review</div>;
   }
