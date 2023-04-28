@@ -368,7 +368,7 @@ export class Opportunity {
   }
 
   createLink() {
-    this.state.link = createOpportunityLink(this.state.name, this.state.id);
+    this.state.link = createOpportunityLink(this.state.id, this.state.name);
   }
 
   set opportunityName(value) {
