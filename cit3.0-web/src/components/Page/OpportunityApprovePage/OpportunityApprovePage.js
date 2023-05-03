@@ -10,6 +10,7 @@ import {
   setOpportunity,
   getOpportunity,
   updateOpportunity,
+  resetOpportunity,
   setLastAdmin,
 } from "../../../store/actions/opportunity";
 import { getOptions, setOptions } from "../../../store/actions/options";
@@ -42,6 +43,7 @@ const OpportunityApprovePage = ({ id }) => {
   const keycloak = useKeycloakWrapper();
 
   useEffect(() => {
+    dispatch(resetOpportunity());
     let opId = id;
     if (!id) {
       const found = location.pathname.match(/(\d+)+\/?$/);
