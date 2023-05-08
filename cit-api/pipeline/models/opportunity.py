@@ -57,6 +57,10 @@ class IndianReserveBandDistance(models.Model):
                                    on_delete=models.SET_NULL,
                                    db_column="reserve_id",
                                    null=True)
+    community_id = models.ForeignKey(Community,
+                                     on_delete= models.SET_NULL,
+                                     db_column="community_id",
+                                     null=True)
     reserve_distance = models.DecimalField(max_digits=16, decimal_places=4, blank=False, null=False)
 
 

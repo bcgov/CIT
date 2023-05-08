@@ -22,7 +22,7 @@ class OpportunityCommunitySerializer(serializers.ModelSerializer):
 class OpportunityIndianReserveBandSerializer(serializers.ModelSerializer):
     class Meta:
         model = IndianReserveBandDistance
-        fields = ('reserve_id', 'reserve_distance')
+        fields = ('reserve_id', 'reserve_distance','community_id')
 
 
 class OpportunityLakeSerializer(serializers.ModelSerializer):
@@ -106,4 +106,4 @@ class MunicipalitySerializer(serializers.ModelSerializer):
 class IndianReserveBandSerializer(serializers.ModelSerializer):
     class Meta:
         model = IndianReserveBandDistance
-        fields = ('reserve_distance', 'reserve_id')
+        fields = ('reserve_distance', 'reserve_id', 'community_id')

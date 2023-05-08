@@ -89,9 +89,11 @@ function createRequestFromModel(state) {
       municipality_distance: parseFloat(m.distance.toFixed(2)),
     })
   );
+  console.log("state.firstNationCommunities: ", state.firstNationCommunities);
   nearestLocations.nearest_first_nations_object = state.firstNationCommunities.map(
     (f) => ({
       reserve_id: parseInt(f.pk, 10),
+      community_id: parseInt(f.pk, 10),
       reserve_distance: parseFloat(f.distance.toFixed(2)),
     })
   );
