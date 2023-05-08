@@ -353,16 +353,14 @@ export class Opportunity {
         name: feature.properties.place_name,
         link: feature.properties.place_name,
         distance: feature.properties.distance,
-        population: feature.properties.population,
         pk: feature.properties.pk,
       }));
     } else {
       this.state.firstNationCommunities = value.map((feature) => ({
-        name: feature.name,
-        link: feature.name,
-        distance: feature.distance,
-        population: feature.population,
-        pk: feature.pk,
+        name: feature.place_name,
+        link: feature.place_name,
+        distance: feature.reserve_distance,
+        pk: feature.reserve_id,
       }));
     }
   }

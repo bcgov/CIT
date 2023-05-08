@@ -94,7 +94,7 @@ function createRequestFromModel(state) {
     (f) => ({
       reserve_id: parseInt(f.pk, 10),
       community_id: parseInt(f.pk, 10),
-      reserve_distance: parseFloat(f.distance.toFixed(2)),
+      reserve_distance: parseFloat(f.distance).toFixed(2),
     })
   );
   if (state.physical.nearElevation.value) {

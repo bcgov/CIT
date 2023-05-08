@@ -63,6 +63,14 @@ class IndianReserveBandDistance(models.Model):
                                      null=True)
     reserve_distance = models.DecimalField(max_digits=16, decimal_places=4, blank=False, null=False)
 
+    @property
+    def name(self):
+        return self.reserve_id.name
+
+    @property
+    def place_name(self):
+        return self.community_id.place_name
+
 
 class LakeDistance(models.Model):
     lake_id = models.ForeignKey(Lake, on_delete=models.SET_NULL, db_column="lake_id", null=True)

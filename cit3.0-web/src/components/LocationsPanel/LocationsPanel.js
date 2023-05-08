@@ -86,7 +86,7 @@ const LocationsPanel = ({
                   {firstNationCommunity.name
                     .toLowerCase()
                     .replace(/(^|\s)\S/g, (t) => t.toUpperCase())}{" "}
-                  - {firstNationCommunity.distance.toFixed(2)}
+                  - {parseFloat(firstNationCommunity.distance).toFixed(2)}
                   km
                 </span>
               </Col>
