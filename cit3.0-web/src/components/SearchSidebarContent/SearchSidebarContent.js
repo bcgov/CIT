@@ -1,15 +1,22 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import Switch from "react-switch";
-import { Button } from "shared-components";
-import { Row, Col, Tooltip, OverlayTrigger, Form } from "react-bootstrap";
+import {
+  Button,
+  Row,
+  Col,
+  Form,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import { MdHelp } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import NumberRangeFilter from "../NumberRangeFilter/NumberRangeFilter";
-import SelectFilter from "../SelectFilter/SelectFilter";
-import CommunityOrPopulationProximityFilter from "../CommunityOrPopulationProximityFilter/CommunityOrPopulationProximityFilter";
-import "./SearchFlyoutContent.scss";
+import InputRangeWithTextboxes from "../InputRangeWithTextboxes/InputRangeWithTextboxes";
+import InlineSelectFilter from "../InlineSelectFilter/InlineSelectFilter";
+import InlineCommunityOrPopulationProximityFilter from "../InlineCommunityOrPopulationProximityFilter/InlineCommunityOrPopulationProximityFilter";
+import "./SearchSidebarContent.scss";
 import { getOptions, setOptions } from "../../store/actions/options";
+import InlineNumberRangeFilter from "../InlineNumberRangeFilter/InlineNumberRangeFilter";
 
 const FORM_EXCLUDE_UNKNOWNS = "exclude_unknowns";
 const FORM_OPPORTUNITY_ROAD_CONNECTED = "opportunity_road_connected";
@@ -50,7 +57,13 @@ const FORM_PROXIMITY_POPULATION = "proximity_population";
 
 const FORM_ZONING = "zoning";
 
-export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
+const generalArrow = "";
+
+export default function SearchSidebarContent({
+  onQuery,
+  resetFilters,
+  search,
+}) {
   const dispatch = useDispatch();
   const regionalDistricts = useSelector(
     (state) => state.options.regionalDistricts
@@ -356,7 +369,7 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
     },
   ];
 
-  const numberRangeFilters = [
+  const InputRangeWithTextboxess = [
     {
       selected: parcelSizeIsSelected,
       value: parcelSizeDisplayRange,
@@ -458,7 +471,10 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
   };
 
   const siteServicingSection = siteServicingFilters.map((switchFilter) => (
-    <Row className="flex-nowrap" key={switchFilter.label}>
+    <Row
+      className="flex-nowrap bcgov-siteserv-filters"
+      key={switchFilter.label}
+    >
       <Col xs={9}>
         <p>{switchFilter.label}</p>
       </Col>
@@ -490,15 +506,35 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
     </Tooltip>
   );
 
+  const [isGeneralOpen, setGeneralOpen] = useState(true);
+  const [isServicingOpen, setServicingOpen] = useState(false);
+  const [isTransportationOpen, setTransportationOpen] = useState(false);
+  const [isNearbyCommunitiesOpen, setNearbyCommunitiesOpen] = useState(false);
+  const [isAdvancedAnROpen, setAdvancedAnROpen] = useState(false);
+  const [isRegionalDistrictOpen, setRegionalDistrictOpen] = useState(false);
+
   return (
-    <div className="search-flyout-content">
-      <h2>Filter your search</h2>
-      <h3>General site details</h3>
-      <NumberRangeFilter
+    <div className="search-sidebar-content">
+      {/* <h2>Filter your search</h2> */}
+      <h2>
+        General site details
+        <Button
+          className="bcgov-filter-toggle"
+          onClick={() => setGeneralOpen(!isGeneralOpen)}
+          aria-controls="example-collapse-text"
+          aria-expanded={isGeneralOpen}
+        >
+          {/* {isGeneralOpen ? "⏶" : "⏷"} */}
+        </Button>
+      </h2>
+      <h3>Parcel Size</h3>
+      <InlineNumberRangeFilter
+        show={isGeneralOpen}
         inputRange={{ min: 0, max: 2000 }}
         units="acres"
+        className=""
+        label=""
         description="Size of Property (in acres)"
-        label="Parcel Size"
         isSelected={parcelSizeIsSelected}
         setIsSelected={setParcelSizeIsSelected}
         inputRangeValue={parcelSizeInputRange}
@@ -512,11 +548,10 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
           });
         }}
       />
-      <SelectFilter
-        label="Zoning"
-        filters={zoningFilters.filter(
-          (element) => element.label !== "Residential"
-        )}
+      <h3>Zoning</h3>
+      <InlineSelectFilter
+        show={isGeneralOpen}
+        filters={zoningFilters}
         setFilters={setZoningFilters}
         isSelected={zoningIsSelected}
         setIsSelected={setZoningIsSelected}
@@ -525,11 +560,11 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
           setZoningQueryFilters(filter);
         }}
       />
-      <NumberRangeFilter
+      <h3>Power Transmission Lines</h3>
+      <InlineNumberRangeFilter
         inputRange={{ min: 0, max: 100 }}
         units="km"
-        description="Straight line distance to power transmission lines in km"
-        label="Power Transmission Lines"
+        description="Straight line distance to power transmission lines (km)"
         isDistance
         isSelected={powerTransmissionLinesIsSelected}
         setIsSelected={setPowerTransmissionLinesIsSelected}
@@ -544,7 +579,7 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
           });
         }}
       />
-      <h3>Site Servicing</h3>
+      <h2>Site Servicing</h2>
       {siteServicingSection}
       <Row className="flex-nowrap">
         <Col xs="auto" className="exclude-unknown-section-checkbox">
@@ -575,11 +610,11 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
           </span>
         </Col>
       </Row>
-      <h3>Transportation</h3>
-      <NumberRangeFilter
+      <h2>Transportation</h2>
+      <InlineNumberRangeFilter
         inputRange={{ min: 0, max: 500 }}
         units="km"
-        description="Straight line distance to airport in km"
+        description="Straight line distance to airport (km)"
         label="Air Service"
         isDistance
         isSelected={airServiceIsSelected}
@@ -595,10 +630,10 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
           });
         }}
       />
-      <NumberRangeFilter
+      <InlineNumberRangeFilter
         inputRange={{ min: 0, max: 500 }}
         units="km"
-        description="Straight line distance to rail connections in km"
+        description="Straight line distance to rail connections (km)"
         label="Rail Connections"
         isDistance
         isSelected={railConnectionsIsSelected}
@@ -614,10 +649,10 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
           });
         }}
       />
-      <NumberRangeFilter
+      <InlineNumberRangeFilter
         inputRange={{ min: 0, max: 500 }}
         units="km"
-        description="Straight line distance to deep water port in km"
+        description="Straight line distance to deep water port (km)"
         label="Deep Water Port"
         isDistance
         isSelected={deepWaterPortIsSelected}
@@ -633,9 +668,9 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
           });
         }}
       />
-      <h3>Nearby Communities</h3>
+      <h2>Nearby Communities</h2>
       {communityOptions ? (
-        <CommunityOrPopulationProximityFilter
+        <InlineCommunityOrPopulationProximityFilter
           inputRange={{ min: 0, max: 500 }}
           units="km"
           label="Proximity to community/population"
@@ -666,13 +701,10 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
         />
       ) : null}
 
-      <h3>Advanced Education &amp; Research</h3>
+      <h2>Advanced Education &amp; Research</h2>
       <Row className="flex-nowrap">
-        <Col xs={7}>
+        <Col xs={9}>
           <p>Post-secondary Institute within 100km?:</p>
-        </Col>
-        <Col xs="auto" className="no-padding">
-          <p>No</p>
         </Col>
         <Col xs="auto">
           <Switch
@@ -681,27 +713,23 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
               onQuery({ [FORM_POST_SECONDARY]: value ? "Y" : "N" });
               setPostSecondarySwitchValue(value);
             }}
-            onColor="#aad3df"
-            onHandleColor="#2693e6"
-            handleDiameter={30}
+            onColor="#c8e7f1"
+            offColor="#d2d2d2"
+            onHandleColor="#666666"
+            offHandleColor="#666666"
+            handleDiameter={15}
             uncheckedIcon={false}
             checkedIcon={false}
-            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-            height={20}
+            boxShadow="0px 0px 0px #d2d2d2"
+            activeBoxShadow="0px 0px 0px 0px #d2d2d2"
+            height={25}
             width={48}
           />
         </Col>
-        <Col xs="auto" className="no-padding">
-          <p>Yes</p>
-        </Col>
       </Row>
       <Row className="flex-nowrap">
-        <Col xs={7}>
+        <Col xs={9}>
           <p>Research Centre within 100km?:</p>
-        </Col>
-        <Col xs="auto" className="no-padding">
-          <p>No</p>
         </Col>
         <Col xs="auto">
           <Switch
@@ -710,70 +738,53 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
               onQuery({ [FORM_RESEARCH_CENTRE]: value ? "Y" : "N" });
               setResearchCentreSwitchValue(value);
             }}
-            onColor="#aad3df"
-            onHandleColor="#2693e6"
-            handleDiameter={30}
+            onColor="#c8e7f1"
+            offColor="#d2d2d2"
+            onHandleColor="#666666"
+            offHandleColor="#666666"
+            handleDiameter={15}
             uncheckedIcon={false}
             checkedIcon={false}
-            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
-            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
-            height={20}
+            boxShadow="0px 0px 0px #d2d2d2"
+            activeBoxShadow="0px 0px 0px 0px #d2d2d2"
+            height={25}
             width={48}
           />
         </Col>
-        <Col xs="auto" className="no-padding">
-          <p>Yes</p>
-        </Col>
       </Row>
-      <h3>Regional District</h3>
-      <div style={{ marginRight: "15px" }}>
-        <Form.Group controlId="regional_district">
-          <Form.Label className="visually-hidden">To</Form.Label>
-          <Form.Control
-            as="select"
-            name="regional-district"
-            value={regionalDistrict}
-            onChange={(e) => handleRegionalDistrictChange(e.target.value)}
-          >
-            <option value="">All</option>
-            {regionalDistricts &&
-              regionalDistricts.map((district) => (
-                <option key={district.id} value={district.id}>
-                  {district.name}
-                </option>
-              ))}
-          </Form.Control>
-        </Form.Group>
-        <hr className="hr-bold" />
-      </div>
-      <div style={{ marginBottom: "20px" }}>
-        <Row>
-          <Col xs="auto">
-            <span>
-              {" "}
-              <Link
-                to="/investmentopportunities/disclaimer-investor"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Terms of Use
-              </Link>
-            </span>{" "}
-          </Col>
-          <Col xs="auto" className="reset-button">
-            <Button
-              styling="BC-Gov-SecondaryButton"
-              label="Reset all filters"
-              onClick={() => handleResetFilters()}
-            />
-          </Col>
-        </Row>
+      <h2>Regional District</h2>
+      <Form.Group controlId="regional_district">
+        <Form.Label className="visually-hidden">To</Form.Label>
+        <Form.Control
+          as="select"
+          name="regional-district"
+          value={regionalDistrict}
+          onChange={(e) => handleRegionalDistrictChange(e.target.value)}
+        >
+          <option value="">All</option>
+          {regionalDistricts &&
+            regionalDistricts.map((district) => (
+              <option key={district.id} value={district.id}>
+                {district.name}
+              </option>
+            ))}
+        </Form.Control>
+      </Form.Group>
+      <hr className="hr-bold" />
+      <div className="d-flex justify-content-end">
+        <Button
+          styling="BC-Gov-SecondaryButton"
+          label="Reset all filters"
+          onClick={() => handleResetFilters()}
+        >
+          Reset all filters
+        </Button>
       </div>
     </div>
   );
 }
 
-SearchFlyoutContent.propTypes = {
+SearchSidebarContent.propTypes = {
   onQuery: PropTypes.func.isRequired,
   resetFilters: PropTypes.func.isRequired,
   search: PropTypes.shape().isRequired,

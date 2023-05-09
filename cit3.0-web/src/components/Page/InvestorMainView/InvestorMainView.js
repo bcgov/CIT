@@ -6,7 +6,7 @@ import axios from "axios";
 import OpportunityListContainer from "../../OpportunitiesListContainer/OpportunitiesListContainer";
 import OpportunityMapContainer from "../../OpportunityDisplayMap/OpportunityMapContainer/OpportunityMapContainer";
 import Flyout from "../../Flyout/Flyout";
-import SearchFlyoutContent from "../../SearchFlyoutContent/SearchFlyoutContent";
+import SearchSidebarContent from "../../SearchSidebarContent/SearchSidebarContent";
 import { GET_OPPORTUNITIES_LIST_URL } from "../../../store/constants/api-urls";
 import FooterLinks from "../../FooterLinks/FooterLinks";
 
@@ -109,7 +109,7 @@ export default function InvestorMainView() {
   return (
     <div className="w-100">
       <Flyout
-        flyoutComponent={SearchFlyoutContent}
+        flyoutComponent={SearchSidebarContent}
         flyoutProps={{
           search,
           onQuery: (keyValues) => {

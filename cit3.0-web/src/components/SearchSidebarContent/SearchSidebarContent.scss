@@ -1,0 +1,270 @@
+.unselected {
+  color: #313132;
+  border-color: #707070;
+  border-width: 2px;
+}
+
+.unselected:hover {
+  border-width: 2px;
+}
+
+.filter-button {
+  border-radius: 30px;
+  font-weight: 400;
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+
+.filter-button.filter-button {
+  border-radius: 30px;
+  border-width: 0;
+  background-color: #fff;
+}
+
+.btn {
+  font-weight: lighter;
+}
+
+.btn:hover {
+  background-color: #c8e7f1 !important;
+}
+
+.container-fluid {
+  margin: 15px 0 10px 0;
+}
+
+.exclude-unknown-section {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 0;
+  padding-right: 5px;
+}
+
+.sidebar.content {
+  margin: 0;
+}
+
+.search-sidebar-content {
+  width: 100%;
+  padding: 15px;
+
+  h3 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+}
+p {
+}
+
+.sidebar {
+  .header {
+    display: none;
+  }
+}
+
+.input-range {
+  // width: 320px !important;
+}
+.input-range__track--background {
+  background-color: #c8e7f1;
+}
+
+.input-range__label--value:nth-of-type(1) {
+  top: -27px;
+}
+
+.input-range__label--max,
+.input-range__label--min {
+  bottom: -17px;
+}
+
+.input-range__label {
+  color: #aaaaaa;
+  font-family: "BCSans", san-serif;
+  font-size: 0.6rem;
+  transform: translateZ(0);
+  white-space: nowrap;
+}
+
+.input-range__track--active,
+.input-range__slider {
+  background-color: #0098c9;
+  border: none;
+}
+
+.bcgov-text-input {
+  display: none;
+}
+
+.form-control,
+.bcgov-button {
+  border-color: #c8e7f1;
+  min-width: 0;
+}
+
+.bcgov-filter-toggle {
+  width: 25px;
+  padding: 0;
+  height: 25px;
+  text-align: center !important;
+  margin: 0 5px;
+  color: #000 !important;
+  background-color: transparent !important;
+  top: -3px;
+  position: relative;
+  outline: none;
+  border: none;
+}
+
+.bcgov-filter-group {
+  font-family: "BCSans";
+  font-size: 21px;
+  font-weight: 700;
+  display: block;
+  float: left;
+  margin: 15px 10px;
+}
+
+.bcgov-callout h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  padding-bottom: 0 !important;
+}
+
+.bcgov-filter-apply,
+.bcgov-filter-clear {
+  padding: 2px !important;
+  float: right !important;
+  height: 24px !important;
+  min-height: 29px !important;
+  min-width: 0;
+  max-width: 24px !important;
+  width: 24px !important;
+  top: -10px !important;
+  position: relative !important;
+  text-align: center !important;
+  margin: 0 2px 0 2px !important;
+  color: #79747e !important;
+  background-color: #d2d2d2 !important;
+  border: 1px solid #c8e7f1 !important;
+  font-weight: bold !important;
+}
+
+:root {
+  --panel-border: 2px solid rgba(23, 24, 87, 0.2);
+}
+
+html * {
+  box-sizing: border-box;
+}
+
+body {
+  padding: 3rem;
+  font-family: "Barlow", sans-serif;
+  font-size: 120%;
+  line-height: 1.5;
+  color: navy;
+}
+
+img {
+  width: 100%;
+  display: block;
+}
+
+h1,
+h2,
+h3 {
+  margin: 10px 0 10px 0;
+}
+
+.title {
+  margin-bottom: 0;
+}
+
+.lead {
+  margin-top: 0;
+  margin-bottom: 4rem;
+}
+
+a {
+  color: crimson;
+}
+
+.panel {
+  margin-bottom: 1rem;
+
+  h2 {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+}
+
+.panel__header {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  border: var(--panel-border);
+  font-weight: 700;
+  color: inherit;
+}
+
+.panel__header-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-left: auto;
+}
+
+button.panel__header {
+  cursor: pointer;
+  border-radius: 0;
+
+  &:focus,
+  &:hover {
+    outline: none;
+    background-color: navy;
+    color: white;
+    border-color: navy;
+  }
+}
+
+.panel__body {
+  border-right: var(--panel-border);
+  border-bottom: var(--panel-border);
+  border-left: var(--panel-border);
+
+  > *:first-child {
+    margin-top: 0;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.panel__body,
+.panel__header {
+  padding: 1rem;
+}
+
+.panel__body[aria-hidden="true"] {
+  display: none;
+}
+
+.panel-group {
+  .panel {
+    margin-bottom: 0;
+  }
+
+  .panel:not(:first-child) .panel__header {
+    border-top: none;
+  }
+}
+
+.search-sidebar-content .col-auto {
+  margin-left: 15px;
+}

@@ -24,7 +24,7 @@ const tableData = [
     id: 3,
     opportunity_address: "9999 Test Rd.",
     point: "SRID=3005;POINT (-123.3721727 48.4527115)",
-    approval_status: "PEND",
+    approval_status: "NEW",
     date_created: "2021-02-16T17:34:38.184663Z",
   },
   {

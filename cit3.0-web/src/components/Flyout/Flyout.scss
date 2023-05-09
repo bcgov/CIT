@@ -61,9 +61,9 @@
     } 
     .sidebar { 
       transition: transform var(--secs);
-      background-color: #F2F1F1;
+      background-color: #e8f4f9;
       height: 100%;
-      padding-left: 15px;
+      float: left;
       @media (orientation: portrait) { 
         width: var(--portrait-width); 
       }
@@ -73,7 +73,6 @@
       .header { 
         padding-right: 1vh; 
       }
-      outline: 2px solid #606060;
       &.closed { 
         transform: translateX(-100%); 
       }

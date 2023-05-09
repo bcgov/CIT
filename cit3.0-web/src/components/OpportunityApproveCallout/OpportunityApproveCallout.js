@@ -55,12 +55,17 @@ const OpportunityApproveCallout = ({
     setPublicValidated(true);
     setPrivateValidated(true);
     // No business logic
-    if (["PUBL", "CLOS"].includes(nextStatus)) {
+    if (["PUBL", "CLOS", "NWED", "NEW"].includes(nextStatus)) {
       return true;
     }
     // EDO Comment needed
     if (["NCOM"].includes(nextStatus) && newPublicNote === "") {
       setPublicValidated(false);
+      return false;
+    }
+    // Internal note needed
+    if (["PEND"].includes(nextStatus) && newPrivateNote === "") {
+      setPrivateValidated(false);
       return false;
     }
     return true;

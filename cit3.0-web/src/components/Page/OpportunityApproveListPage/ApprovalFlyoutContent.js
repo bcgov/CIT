@@ -128,7 +128,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
     setPubTo(search[FORM_PUB_TO_INPUT]);
   }, []);
 
-  const order = ["PEND", "NCOM", "PUBL", "CLOS"];
+  const order = ["NEW", "PEND", "NCOM", "NWED", "PUBL", "CLOS"];
 
   return (
     <div>
