@@ -331,18 +331,20 @@ export class Opportunity {
     if (value && value.features) {
       this.state.municipalities = value.features.map((feature) => ({
         name: feature.properties.name,
-        link: feature.properties.link,
+        link: feature.properties.name,
         distance: feature.properties.distance,
-        population: feature.properties.population,
+        population: feature.properties.pop_total,
         pk: feature.properties.pk,
+        community_id: feature.properties.community_id,
       }));
     } else {
       this.state.municipalities = value.map((feature) => ({
-        name: feature.municipality_name,
-        link: feature.municipality_link,
+        name: feature.name,
+        link: feature.name,
         distance: feature.municipality_distance,
-        population: feature.municipality_population,
+        population: feature.pop_total,
         pk: feature.municipality_id,
+        community_id: feature.community_id,
       }));
     }
   }
@@ -753,6 +755,8 @@ export class Opportunity {
   set community(value) {
     this.state.community.id = value.features && value.features[0].properties.pk;
     this.state.community.community_distance = value.community_distance;
+    this.state.community.municipality_id =
+      value.features[0].properties.municipality;
   }
 
   set opportunityLink(value) {

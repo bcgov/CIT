@@ -46,10 +46,22 @@ class MunicipalityDistance(models.Model):
                                         on_delete=models.SET_NULL,
                                         db_column="municipality_id",
                                         null=True)
+    community_id = models.ForeignKey(Community,
+                                     on_delete= models.SET_NULL,
+                                     db_column="community_id",
+                                     null=True)
     municipality_distance = models.DecimalField(max_digits=16,
                                                 decimal_places=4,
                                                 blank=False,
                                                 null=False)
+
+    @property
+    def name(self):
+        return self.municipality_id.name
+
+    @property
+    def pop_total(self):
+        return self.community_id.pop_total
 
 
 class IndianReserveBandDistance(models.Model):

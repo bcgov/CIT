@@ -258,6 +258,7 @@ class ProximityView(APIView):
                 # Valid population found, else not valid
                 #
                 # Tech Loan: The area overlap query below is to patch up misssing data in the Communities V6 spread sheet
+                municipalities['features'][index]['properties']['community_id']= community_queryset.values()[0]['id']
                 if len(community_queryset):
                     municipalities['features'][index]['properties'][
                         'population'] = community_queryset.values()[0]['count']

@@ -53,7 +53,7 @@ const LocationsPanel = ({
                       muni.name.toLowerCase()
                     )}`}
                   >
-                    {muni.name} - {muni.distance.toFixed(2)}km
+                    {muni.name} - {parseFloat(muni.distance).toFixed(2)}km
                   </a>
                 </span>
               </Col>

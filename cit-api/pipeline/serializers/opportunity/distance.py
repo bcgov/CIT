@@ -5,6 +5,7 @@ from pipeline.models.opportunity import PostSecondaryDistance,\
     RailwayDistance, PortAndTerminalDistance, CustomsPortOfEntryDistance,\
     ResearchCentreDistance, FirstResponderDistance, HospitalDistance, IndianReserveBandName
 from pipeline.models.general import Municipality, RegionalDistrict
+from pipeline.models.community import Community
 
 
 class OpportunityPostSecondarySerializer(serializers.ModelSerializer):
@@ -100,7 +101,7 @@ class OpportunityRegionalDistrictSerializer(serializers.ModelSerializer):
 class MunicipalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = MunicipalityDistance
-        fields = ('municipality_distance', 'municipality_id')
+        fields = ('name','pop_total','municipality_distance','municipality_id','community_id')
 
 
 class IndianReserveBandSerializer(serializers.ModelSerializer):
