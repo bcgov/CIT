@@ -101,7 +101,7 @@ class Community(models.Model):
     has_any_k12_school = models.NullBooleanField(null=True)
 
     @property
-    def pop_total(self):
+    def population(self):
         return self.census_subdivision.pop_total_2016
 
     def __str__(self):

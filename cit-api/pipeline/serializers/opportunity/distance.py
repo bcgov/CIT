@@ -101,7 +101,7 @@ class OpportunityRegionalDistrictSerializer(serializers.ModelSerializer):
 class MunicipalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = MunicipalityDistance
-        fields = ('name','pop_total','municipality_distance','municipality_id','community_id')
+        fields = ('name','population','municipality_distance','municipality_id','community_id')
 
 
 class IndianReserveBandSerializer(serializers.ModelSerializer):

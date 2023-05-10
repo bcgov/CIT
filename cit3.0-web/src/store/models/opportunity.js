@@ -333,7 +333,7 @@ export class Opportunity {
         name: feature.properties.name,
         link: feature.properties.name,
         distance: feature.properties.distance,
-        population: feature.properties.pop_total,
+        population: feature.properties.population,
         pk: feature.properties.pk,
         community_id: feature.properties.community_id,
       }));
@@ -342,7 +342,7 @@ export class Opportunity {
         name: feature.name,
         link: feature.name,
         distance: feature.municipality_distance,
-        population: feature.pop_total,
+        population: feature.population,
         pk: feature.municipality_id,
         community_id: feature.community_id,
       }));

@@ -87,9 +87,9 @@ function createRequestFromModel(state) {
     (m) => ({
       municipality_id: parseInt(m.pk, 10),
       municipality_distance: parseFloat(m.distance.toFixed(2)),
+      community_id: parseInt(m.community_id, 10),
     })
   );
-  console.log("state.firstNationCommunities: ", state.firstNationCommunities);
   nearestLocations.nearest_first_nations_object = state.firstNationCommunities.map(
     (f) => ({
       reserve_id: parseInt(f.pk, 10),

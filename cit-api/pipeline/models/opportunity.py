@@ -60,8 +60,8 @@ class MunicipalityDistance(models.Model):
         return self.municipality_id.name
 
     @property
-    def pop_total(self):
-        return self.community_id.pop_total
+    def population(self):
+        return self.community_id.population
 
 
 class IndianReserveBandDistance(models.Model):
