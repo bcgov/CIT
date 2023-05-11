@@ -202,8 +202,8 @@ const OpportunityApproveCallout = ({
               You must set a note for this status
             </Form.Control.Feedback>
             <TextInput
-              heading="Comment to Community/EDO"
-              notes="This comment will be returned to the Community User/EDO along with the status change."
+              heading="Comment to Community User"
+              notes="This comment will be returned to the Community User along with the status change."
               id="private-note"
               name="private-note"
               rows={3}
@@ -297,7 +297,7 @@ const OpportunityApproveCallout = ({
         centered
       >
         <Modal.Body>
-          <h3>You currently have this comment for the Community User/EDO:</h3>
+          <h3>You currently have this comment for the Community User:</h3>
           <p className="modal-text-indent">{publicNote}</p>
           <h4>
             The comment will show on the listing. Would you like to delete this
