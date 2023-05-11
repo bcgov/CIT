@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.contrib.gis.measure import D
 
 from pipeline.models.opportunity import Opportunity
+from pipeline.models.location_assets import Location
 from pipeline.models.general import RegionalDistrict
 from pipeline.models.community import Community
 from pipeline.serializers.opportunity.get import OpportunityGetSerializer
@@ -165,11 +166,19 @@ class OpportunitiesList(generics.ListAPIView):
                 queryset, community_population_distance_min, community_population_distance_max,
                 proximity_population)
 
-        return queryset.select_related('nearest_port', 'nearest_airport', 'nearest_research_centre',
-        'nearest_customs_port_of_entry','nearest_coast_guard_station',
-        'nearest_ambulance_station', 'nearest_police_station', 'nearest_fire_station', 'nearest_health_center',
-        'nearest_railway','nearest_highway','nearest_river','nearest_lake',
-        'nearest_post_secondary', 'nearest_community', 'regional_district').order_by('id')
+        return queryset.select_related('nearest_port__port_id', 'nearest_airport__airport_id',
+                                       'nearest_research_centre','nearest_customs_port_of_entry',
+                                       'nearest_coast_guard_station', 'nearest_community__community_id',
+                                       'nearest_ambulance_station', 'nearest_police_station',
+                                       'nearest_fire_station', 'nearest_health_center',
+                                       'nearest_railway__railway_id','nearest_highway__highway_id',
+                                       'nearest_river','nearest_lake','nearest_post_secondary',
+                                       'regional_district', 'municipality').prefetch_related('nearest_first_nations__reserve_id',
+                                                                                             'nearest_first_nations__community_id',
+                                                                                             'nearest_municipalities__municipality_id',
+                                                                                             'nearest_municipalities__community_id__census_subdivision',
+                                                                                             'opportunity_preferred_development').order_by('id')
+
 
     def filter_opportunities_by_distance_from_community(self, queryset, community_distance_min,
                                                         community_distance_max,
