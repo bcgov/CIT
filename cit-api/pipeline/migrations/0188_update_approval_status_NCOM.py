@@ -19,7 +19,7 @@ def rollback_status_name_ncom(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('pipeline', '0184_auto_20230426_2114'),
+        ('pipeline', '0187_populate_community_id_indianreservebanddistance'),
     ]
 
     operations = [
