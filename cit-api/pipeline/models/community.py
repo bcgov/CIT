@@ -100,6 +100,10 @@ class Community(models.Model):
     # Filters for mapbox
     has_any_k12_school = models.NullBooleanField(null=True)
 
+    @property
+    def population(self):
+        return self.census_subdivision.pop_total_2016
+
     def __str__(self):
         return self.place_name
 
