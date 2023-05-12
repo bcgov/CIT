@@ -167,7 +167,7 @@ export default function AddOpportunity() {
     setWarning(warnings);
     setError(errors);
     setChangePage(agreed && !errors.length && !isInvalidAddress);
-    if (!proximityInProgress) {
+    if (!proximityInProgress && changePage) {
       closeModalAndContinue();
     }
   };
@@ -444,7 +444,7 @@ export default function AddOpportunity() {
                         <Col>
                           <Radios
                             aria-label="approval to sell"
-                            labels={["Yes", "No", "Pending Approval"]}
+                            labels={["Yes", "No"]}
                             name="approval-to-sell"
                             value={hasApproval || ""}
                             handleRadioChange={handleRadioChange}

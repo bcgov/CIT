@@ -331,18 +331,7 @@ export default function PropertyDetails1() {
               />
             </Row>
           </Col>
-          <Col>
-            <Row id="future-zone-label">Designation</Row>
-            <Row>
-              <Select
-                aria-labelledby="future-zone-label"
-                value={futureZone}
-                onChange={(value) => handleSelectChange("futureZone", value)}
-                className="w-100"
-                options={zoningOptions}
-              />
-            </Row>
-          </Col>
+          <Col />
         </Row>
         <Row className="mb-3">
           <Col className="mr-5">
