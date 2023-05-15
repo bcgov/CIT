@@ -18,13 +18,6 @@ export default function Flyout(props) {
     <div id="search-page-layout">
       <div id="left" className={leftOpen}>
         <div className={`sidebar ${leftOpen}`}>
-          <div className="header" align="right">
-            <Button
-              onClick={toggleSidebar}
-              label="<< Close filter panel"
-              styling="btn bcgov-normal-blue close-panel-button btn"
-            />
-          </div>
           <div className="content">
             <FlyoutComponent {...flyoutProps} />
           </div>
