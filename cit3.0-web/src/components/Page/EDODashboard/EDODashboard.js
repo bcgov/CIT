@@ -141,7 +141,7 @@ export default function EDODashboard() {
   } else {
     dataSection = (
       <>
-        <h1 className="dashboard-header">Your Promoted Opportunities</h1>
+        <h1 className="dashboard-header">Your Investment Opportunities</h1>
         <OpportunityTable
           tableData={tableData}
           handleModalOpen={handleModalOpen}
@@ -236,7 +236,7 @@ export default function EDODashboard() {
         ) : (
           <>
             <h1 className="dashboard-header">
-              Searching for Your Promoted Opportunities
+              Searching for Your Investment Opportunities
             </h1>
             <div className="center-spinner-opportunities">
               <Spinner animation="border" />
