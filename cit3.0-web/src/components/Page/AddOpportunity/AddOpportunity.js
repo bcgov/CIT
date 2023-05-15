@@ -295,7 +295,6 @@ export default function AddOpportunity() {
   };
 
   const handleUpdateParcelInfo = () => {
-    dispatch(setGeometry(null));
     setParcelInfo(true);
   };
 
