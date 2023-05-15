@@ -141,11 +141,7 @@ export default function EDODashboard() {
   } else {
     dataSection = (
       <>
-        <h1 className="dashboard-header">
-          {`Your Promoted Opportunities${
-            communities ? ` in ${communities}` : ""
-          }`}
-        </h1>
+        <h1 className="dashboard-header">Your Promoted Opportunities</h1>
         <OpportunityTable
           tableData={tableData}
           handleModalOpen={handleModalOpen}
