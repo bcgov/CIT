@@ -67,7 +67,7 @@ const UserProfile = () => {
           <Button
             label={
               <>
-                Login-
+                {"Login "}
                 <FaSignInAlt />
               </>
             }
