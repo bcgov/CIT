@@ -517,7 +517,7 @@ export default function SearchSidebarContent({
     <div className="search-sidebar-content">
       {/* <h2>Filter your search</h2> */}
       <h2>
-        General site details
+        General Site Details
         <Button
           className="bcgov-filter-toggle"
           onClick={() => setGeneralOpen(!isGeneralOpen)}

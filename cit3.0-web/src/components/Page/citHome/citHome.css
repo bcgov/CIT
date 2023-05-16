@@ -18,3 +18,10 @@
 .main-text {
     font-size: 40px;
 }
+
+.box {
+    border: 0px;
+    border-radius: 10px;
+    box-shadow: none;
+    background-color: #e8f4f9;
+}

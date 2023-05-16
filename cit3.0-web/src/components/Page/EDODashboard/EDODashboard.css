@@ -1,5 +1,7 @@
 .dashboard-container {
-    padding: 5vh 10vh 5vh;
+    width: 80%;
+    margin-left: 10%;
+    padding: 5vh 0 5vh;
 }
 
 @media(max-width: 767px) {
@@ -13,6 +15,11 @@
 
 .dashboard-header {
     text-align: left;
+}
+
+.dashboard-header h2 {
+    width: 100%;
+    margin-bottom: 15px;
 }
 
 .add-opportunity-button {
@@ -42,4 +49,65 @@ ul.dashed > li:before {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.edo-dashboard .dashboard-howitworks {
+    margin-left: 10%;
+    min-width: 200px;
+    max-width: 350px;
+}
+
+.edo-dashboard .dashboard-howitworks p {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    margin: 0px 40px 0 0;
+    padding: 0px  2px;
+    border-radius: 2px;
+    float: left;
+}
+
+.edo-dashboard .dashboard-instructions {
+    display: block;
+    position: relative;
+    top: -50px;
+    min-width: 60%;
+    max-width: 60%;
+    float: left;
+}
+
+.edo-dashboard .dashboard-instructions .dashboard-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.edo-dashboard .dashboard-instructions .dashboard-row img {
+    width: 50%;
+    height: 50%;
+}
+
+.edo-dashboard .bcgov-opp-status {
+    display: block;
+    float: right;
+    -webkit-user-select: none;
+    user-select: none;
+    margin-top: 15px;
+    margin-right: 15px;
+}
+
+.edo-dashboard .bcgov-delete-listing-link {
+    font-size: 12pt;
+    position: relative;
+    top: 2px;
+}
+
+.edo-dashboard .bcgov-opp-actions {
+    bottom: 0;
+    display: block;
+    float: right;
 }

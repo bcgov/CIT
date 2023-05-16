@@ -5,14 +5,59 @@
 
 .opportunity-table-row {
     height: 100%;
-    border: 2px solid #606060;
+    /* border: 2px solid #606060; */
     margin-top: 1vh;
     margin-bottom: 1vh;
+    background-color: #e9e6e6;
+}
+
+.opportunity-table-row .btn-link,
+.bcgov-delete-listing-link {
+  margin-left: 15px;
+}
+
+.opportunity-table-row p.border--pill {
+    background: #c8e7f1;
+    border-width: 0;
+}
+
+.opportunity-table-row.w-100 .flex-grow-1 {
+    position: relative;
+    margin-left: -30px;
 }
 
 .opportunity-table-map-container {
-    min-height: 185px;
+    min-height: 224px;
     height: calc(100%);
+}
+
+.bcgov-opp-actions {
+  position: absolute;
+  width: 100%;
+  right: 0;
+  bottom: 0;
+  text-align: right;
+  padding-right: 20px;
+  border-top: 1px #d2d2d2 solid;
+}
+
+.bcgov-view-listing-link,
+.bcgov-view-listing-link:visited,
+.bcgov-edit-listing-link,
+.bcgov-edit-listing-link:visited,
+.bcgov-closed-listing-link,
+.bcgov-closed-listing-link:visited
+{
+  color: #313132 !important;
+}
+
+.bcgov-opp-actions button:hover,
+.bcgov-opp-actions button:active
+{
+  color: #003366 !important;
+  border: none !important;
+  border-width: 0 !important;
+  background-color: transparent !important;
 }
 
 .status-text-green {

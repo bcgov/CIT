@@ -4,7 +4,7 @@ import { useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import "./EDODashboard.css";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Spinner } from "react-bootstrap";
+import { Col, Container, Grid, Row, Spinner } from "react-bootstrap";
 import { MdError, MdCheckBox } from "react-icons/md";
 import OpportunityTable from "../../OpportunityTable/OpportunityTable";
 import { resetOpportunity } from "../../../store/actions/opportunity";
@@ -121,7 +121,7 @@ export default function EDODashboard() {
     addOpportunityButton = null;
   } else if (tableData.length === 0) {
     dataSection = (
-      <>
+      <div className="edo-dashboard">
         <h1 className="dashboard-header">
           Your Community Promoted Opportunities
         </h1>
@@ -129,7 +129,7 @@ export default function EDODashboard() {
           As soon as you add opportunities, you can see the status and manage
           them here.
         </p>
-      </>
+      </div>
     );
     addOpportunityButton = (
       <Button
@@ -151,14 +151,14 @@ export default function EDODashboard() {
     addOpportunityButton = (
       <Button
         onClick={goToMap}
-        label="+ Add your opportunity"
+        label="+ Add an opportunity"
         styling="bcgov-normal-blue btn"
       />
     );
   }
 
   return (
-    <>
+    <div className="edo-dashboard">
       <div className="dashboard-container">
         <h1 className="dashboard-header">How it works</h1>
         <p className="dashboard-text">
@@ -263,6 +263,6 @@ export default function EDODashboard() {
         />
       </div>
       <FooterLinks type="add-opp" />
-    </>
+    </div>
   );
 }

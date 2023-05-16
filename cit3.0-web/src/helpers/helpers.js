@@ -83,6 +83,31 @@ export function determineStatusTextColour(approvalStatus, adminView) {
   return approvalStatus;
 }
 
+export function determineStatusBackgroundColour(approvalStatus, adminView) {
+  if (approvalStatus === "PEND") {
+    return <div className="status-background-orange">Pending Review</div>;
+  }
+  if (approvalStatus === "PUBL") {
+    return <div className="status-background-green">Published</div>;
+  }
+  if (approvalStatus === "NCOM") {
+    if (adminView) {
+      return <div className="status-background-red">Pending Edit</div>;
+    }
+    return <div className="status-background-red">Needs to be edited</div>;
+  }
+  if (approvalStatus === "NWED") {
+    if (adminView) {
+      return <div className="status-background-orange">New - Edited</div>;
+    }
+    return <div className="status-background-orange">Pending Review</div>;
+  }
+  if (approvalStatus === "CLOS") {
+    return <div className="status-background-lilac">Closed</div>;
+  }
+  return approvalStatus;
+}
+
 export function formatDate(ISODate) {
   return ISODate.split("T")[0];
 }

@@ -12,10 +12,10 @@ export default function OpportunityTable(props) {
   const table = (
     <div className="opportunity-table w-100">
       <Container fluid>
-        {!props.public && (
+        {/* {!props.public && (
           <Row>
             <Col className="hide-point">
-              <b>Point</b>
+              <h2>Point</h2>
             </Col>
             <Col className="details">
               <b>Details</b>
@@ -30,7 +30,7 @@ export default function OpportunityTable(props) {
               <b>Actions</b>
             </Col>
           </Row>
-        )}
+        )} */}
         {opportunities &&
           opportunities.map((oppData) => {
             const opportunity = OpportunityFactory.createStateFromResponse(

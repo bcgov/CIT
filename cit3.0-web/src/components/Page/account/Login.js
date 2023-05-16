@@ -6,6 +6,7 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { useQuery } from "../../../hooks/use-query";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
+import "./login.css";
 
 // @todo: Move to actions / status sources
 // const NEW_CIT_USER = 201;
@@ -57,53 +58,51 @@ const Login = () => {
   return (
     <Container className="login" fluid>
       <Container className="unauth" fluid>
-        <h2 className="my-4">Login to Community Information Tool</h2>
         <Row className="sign-in">
           <Col>
             <Jumbotron className="pl-0" style={{ background: "transparent" }}>
-              <h3 className="mb-4">
-                Log-in to the Community Investment Opportunities Tool
-              </h3>
+              <h2 className="my-4">Community Investment Opportunities Tool</h2>
               <p className="mb-4">
                 Sign-in to promote properties available for sale or lease in
                 your community and the tool will automatically add key location
                 information to support site selection decisions.
               </p>
-              <hr className="hr-bold" />
+              <p>Sign into the tool with your Business BCeID.</p>
               <Button
+                className="BC-Gov-SecondaryButton"
                 label="Sign In"
                 styling="bcgov-button bcgov-normal-blue btn mb-4"
                 onClick={handleLogin}
               />
-              <p>Sign into the tool with your Business BCeID.</p>
             </Jumbotron>
           </Col>
           <Col md>
             <Jumbotron>
               <h3 className="mb-4">Don&apos;t have a Business BCeID?</h3>
-              <p>
-                1. Search to see if your entity is{" "}
-                <a
-                  href="https://www.bceid.ca/directories/whitepages"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  already registered
-                </a>{" "}
-                <FaExternalLinkAlt />
-              </p>
-              <p>
-                If you&apos;re not yet registered, <br />
-                2.{" "}
-                <a
-                  href="https://www.bceid.ca/os/?7449"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Register for your Business BCeID
-                </a>{" "}
-                <FaExternalLinkAlt />
-              </p>
+              <ol>
+                <li>
+                  Search to see if your entity is{" "}
+                  <a
+                    href="https://www.bceid.ca/directories/whitepages"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    already registered
+                  </a>{" "}
+                  <FaExternalLinkAlt />
+                </li>
+                <li>
+                  If you&apos;re not yet registered, <br />
+                  <a
+                    href="https://www.bceid.ca/os/?7449"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Register for your Business BCeID
+                  </a>{" "}
+                  <FaExternalLinkAlt />
+                </li>
+              </ol>
             </Jumbotron>
           </Col>
         </Row>

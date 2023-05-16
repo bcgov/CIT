@@ -6,7 +6,7 @@ import LinesEllipsis from "react-lines-ellipsis";
 import NumberFormat from "react-number-format";
 import Map from "../Map/Map";
 import {
-  determineStatusTextColour,
+  determineStatusBackgroundColour,
   formatDate,
   getAddress,
 } from "../../helpers/helpers";
@@ -46,60 +46,64 @@ const OpportunityListItem = ({
   const determineActions = (opp) => {
     if (opp.approvalStatus === "PUBL") {
       return (
-        <>
+        <div className="bcgov-opp-actions-inner">
           <Button
-            className="p-0"
+            className="p-0 bcgov-view-listing-link"
             variant="link"
             onClick={() => setCurrentUrl(opp.link)}
           >
             View Listing
           </Button>
-          <br />
+          |
           <Button
-            className="p-0"
+            className="p-0 bcgov-edit-listing-link"
             variant="link"
             onClick={() => goToEditListing()}
           >
             Edit Listing
           </Button>
-          <br />
+          |
           <Button
+            className="p-0 bcgov-closed-listing-link"
             variant="link"
-            className="p-0"
             onClick={() => handleModalOpen(opp.id)}
           >
             Close
           </Button>
-          <br />
-          <NavLink to={`/delete/investmentopportunities/${opp.id}/`}>
+          <NavLink
+            to={`/delete/investmentopportunities/${opp.id}/`}
+            className=" bcgov-delete-listing-link"
+          >
             Delete
           </NavLink>
-        </>
+        </div>
       );
     }
     return (
-      <>
+      <div className="bcgov-opp-actions-inner">
         <Button
-          className="p-0"
+          className="p-0 bcgov-view-listing-link"
           variant="link"
           onClick={() => setCurrentUrl(opp.link)}
         >
           View Listing
         </Button>
-        <br />
-
+        |
         <Button
-          className="p-0"
+          className="p-0 bcgov-edit-listing-link"
           variant="link"
           onClick={() => goToEditListing()}
         >
           Edit Listing
         </Button>
-        <br />
-        <NavLink to={`/delete/investmentopportunities/${opp.id}`}>
+        |
+        <NavLink
+          className="p-0 bcgov-delete-listing-link"
+          to={`/delete/investmentopportunities/${opp.id}`}
+        >
           Delete
         </NavLink>
-      </>
+      </div>
     );
   };
 
@@ -132,7 +136,9 @@ const OpportunityListItem = ({
             <>
               <Row>
                 <Col style={{ paddingLeft: "0" }}>
-                  <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
+                  <div className="bcgov-opp-address">
+                    <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
+                  </div>
                 </Col>
                 <Col
                   style={{
@@ -192,32 +198,38 @@ const OpportunityListItem = ({
                   className="text-right"
                 >
                   <Button
-                    className="p-0"
+                    className="p-0 bcgov-view-properties"
                     variant="link"
                     onClick={() => {
                       window.open(opportunity.link, "_blank");
                     }}
                   >
-                    View property details
+                    View property details {">"}
                   </Button>
                 </Col>
               </Row>
             </>
           ) : null}
-          <Row className="flex-grow-1">
+          <div className="flex-grow-1">
             {!publicView ? (
               <>
-                <Col style={{ paddingLeft: "0" }}>
-                  <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
-                </Col>
-                <Col>{formatDate(opportunity.dateCreated)}</Col>
-                <Col>
-                  {determineStatusTextColour(opportunity.approvalStatus)}
-                </Col>
-                <Col>{determineActions(opportunity)}</Col>
+                <div className="bcgov-opp-status">
+                  {determineStatusBackgroundColour(opportunity.approvalStatus)}
+                </div>
+                <div style={{ paddingLeft: "0" }}>
+                  <div className="bcgov-opp-address">
+                    <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
+                  </div>
+                </div>
+                <div className="bcgov-opp-date-added">
+                  Date added: {formatDate(opportunity.dateCreated)}
+                </div>
+                <div className="bcgov-opp-actions">
+                  {determineActions(opportunity)}
+                </div>
               </>
             ) : null}
-          </Row>
+          </div>
           {!publicView && opportunity.publicNote ? (
             <Row>
               <Col style={{ paddingLeft: "0" }}>

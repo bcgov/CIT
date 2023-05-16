@@ -21,6 +21,7 @@ import OpportunityDeletePage from "./components/Page/OpportunityDeletePage/Oppor
 import { AuthStateContext } from "./contexts/authStateContext";
 import Login from "./components/Page/account/Login";
 import Logout from "./components/Page/account/Logout";
+// eslint-disable-next-line import/no-named-as-default, import/no-named-as-default-member
 import UserStory from "./components/Page/UserStory/UserStory";
 import AccessDenied from "./components/Page/Errors/401/AccessDenied";
 

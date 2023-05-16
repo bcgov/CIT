@@ -1,0 +1,45 @@
+.login.container-fluid {
+  width: 70%;
+  margin-left: 15%;
+  padding-top: 5%;
+  height: 50%;
+}
+
+.login .sign-in.row {
+  background-color: #e8f4f9;
+}
+
+.login .sign-in .col {
+  border-right: #c0e9fa 1px solid;
+}
+
+.login .col,
+.login .col-md {
+    padding: 5%;
+    max-width: 50%;
+}
+
+.login .col.jumbotron {
+  background-color: transparent !important;
+  padding-left: 15%;
+  padding-right: 15%;
+  max-width: 20%;
+  height: 50%;
+}
+
+.login .col-md .jumbotron {
+  background-color: transparent !important;
+  height: 50%;
+  padding-top: 20%;
+}
+
+.login .jumbotron .btn {
+    background-color: #003366 !important;
+    color: #fff !important;
+    margin-top: 20px;
+    padding: 6px 40px !important;
+}
+
+.login .jumbotron li {
+    margin-bottom: 15px;
+}
