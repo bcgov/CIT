@@ -37,69 +37,71 @@ const UserProfile = () => {
 
   return (
     <>
-      <div
-        className="dropdown-style px-0"
-        title={displayName}
-        id="user-dropdown"
-      >
-        {keycloak.obj.authenticated ? (
-          <Button
-            label={
-              <>
-                {"Logout "}
-                <FaSignOutAlt />
-              </>
-            }
-            onClick={() => {
-              if (isPowerBI) {
-                keycloak.obj.logout({
-                  redirectUri: `${configuration.baseUrl}/cit-dashboard`,
-                });
-              } else {
-                keycloak.obj.logout({
-                  redirectUri: `${configuration.baseUrl}/investmentopportunities/home`,
-                });
+      {keycloak.obj.authenticated ? (
+        <div
+          className="dropdown-style px-0"
+          title={displayName}
+          id="user-dropdown"
+        >
+          {keycloak.obj.authenticated ? (
+            <Button
+              label={
+                <>
+                  {"Logout "}
+                  <FaSignOutAlt />
+                </>
               }
-            }}
-            styling="btn bcgov-button bcgov-normal-white"
-          />
-        ) : (
-          <Button
-            label={
-              <>
-                {"Login "}
-                <FaSignInAlt />
-              </>
-            }
-            onClick={() => {
-              if (isPowerBI && !isDashboard()) {
-                const loginWithIdir = keycloak.obj.createLoginUrl({
-                  idpHint: "idir",
-                  redirectUri: encodeURI(
-                    `${configuration.baseUrl}${window.location.pathname}`
-                  ),
-                });
-                window.location.href = loginWithIdir;
-              } else if (isDashboard()) {
-                const current = window.location.href.replace(
-                  "public",
-                  "internal"
-                );
-                const loginWithIdir = keycloak.obj.createLoginUrl({
-                  idpHint: "idir",
-                  redirectUri: current,
-                });
-                window.location.href = loginWithIdir;
-              } else {
-                keycloak.obj.login({
-                  redirectUri: `${configuration.baseUrl}${window.location.pathname}`,
-                });
+              onClick={() => {
+                if (isPowerBI) {
+                  keycloak.obj.logout({
+                    redirectUri: `${configuration.baseUrl}/cit-dashboard`,
+                  });
+                } else {
+                  keycloak.obj.logout({
+                    redirectUri: `${configuration.baseUrl}/investmentopportunities/home`,
+                  });
+                }
+              }}
+              styling="btn bcgov-button bcgov-normal-white"
+            />
+          ) : (
+            <Button
+              label={
+                <>
+                  {"Login "}
+                  <FaSignInAlt />
+                </>
               }
-            }}
-            styling="btn bcgov-button bcgov-normal-white"
-          />
-        )}
-      </div>
+              onClick={() => {
+                if (isPowerBI && !isDashboard()) {
+                  const loginWithIdir = keycloak.obj.createLoginUrl({
+                    idpHint: "idir",
+                    redirectUri: encodeURI(
+                      `${configuration.baseUrl}${window.location.pathname}`
+                    ),
+                  });
+                  window.location.href = loginWithIdir;
+                } else if (isDashboard()) {
+                  const current = window.location.href.replace(
+                    "public",
+                    "internal"
+                  );
+                  const loginWithIdir = keycloak.obj.createLoginUrl({
+                    idpHint: "idir",
+                    redirectUri: current,
+                  });
+                  window.location.href = loginWithIdir;
+                } else {
+                  keycloak.obj.login({
+                    redirectUri: `${configuration.baseUrl}${window.location.pathname}`,
+                  });
+                }
+              }}
+              styling="btn bcgov-button bcgov-normal-white"
+            />
+          )}
+        </div>
+      ) : null}
     </>
   );
 };

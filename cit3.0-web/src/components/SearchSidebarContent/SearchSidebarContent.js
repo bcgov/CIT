@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import Switch from "react-switch";
 import {
   Button,
-  Row,
   Col,
+  Collapse,
   Form,
   OverlayTrigger,
+  Row,
   Tooltip,
 } from "react-bootstrap";
 import { MdHelp } from "react-icons/md";
@@ -524,7 +525,7 @@ export default function SearchSidebarContent({
           aria-controls="example-collapse-text"
           aria-expanded={isGeneralOpen}
         >
-          {/* {isGeneralOpen ? "⏶" : "⏷"} */}
+          {isGeneralOpen ? "⏶" : "⏷"}
         </Button>
       </h2>
       <h3>Parcel Size</h3>
