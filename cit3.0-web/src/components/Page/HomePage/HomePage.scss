@@ -179,6 +179,30 @@ ul.dashed > li:before {
 }
 
 
+.bcgov-ciot-homepage-topics {
+    display: block;
+    float: left;
+    width: 80%;
+    margin-left: 25%;
+}
+
+.bcgov-ciot-help-panel {
+    display: block;
+    position: relative;
+    float: left;
+    margin-left: 25%;
+}
+
+.bcgov-ciot-hompage-desc,
+.bcgov-ciot-hompage-login {
+    display: block;
+    position: relative;
+    float: left;
+    width: 40%;
+    margin-left: 0;
+    margin-right: 30px;
+}
+
 @media screen and (max-width: 480px) {
     .bcgov-homepage-header img {
         display: none;
