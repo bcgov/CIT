@@ -1,7 +1,7 @@
 .unselected {
   color: #313132;
   border-color: #707070;
-  border-width: 2px;
+  border-width: 0;
 }
 
 .unselected:hover {
@@ -95,7 +95,7 @@ p {
 }
 
 .bcgov-text-input {
-  display: none;
+  display: block;
 }
 
 .form-control,
@@ -267,4 +267,75 @@ button.panel__header {
 
 .search-sidebar-content .col-auto {
   margin-left: 0;
+}
+
+.collapsing {
+  height: 0 !important;
+  width: 0 !important;
+  // color: transparent !important;
+}
+
+.search-sidebar-content .bcgov-filter-toggle,
+.search-sidebar-content .bcgov-filter-toggle:active,
+.search-sidebar-content .bcgov-filter-toggle:hover,
+.search-sidebar-content .bcgov-filter-toggle:focus,
+.search-sidebar-content .bcgov-filter-toggle:enabled {
+  border: 0px solid transparent !important;
+  outline: none !important;
+}
+
+.search-sidebar-content .bcgov-text-input {
+    border: none;
+    outline: none;
+    background-color: #c8e7f1;
+    width: 57px;
+    font-size: 11px;
+    padding: 2px 11px;
+}
+
+.bcgov-ciot-left {
+  display: block;
+  position: relative;
+  float: left;
+  text-align: left !important;
+}
+
+.bcgov-ciot-right {
+  display: block;
+  position: relative;
+  float: right;
+  text-align: right !important;
+}
+
+.search-sidebar-content .input-range {
+  margin-bottom: 0;
+}
+
+.search-sidebar-content textarea.bcgov-text-input {
+    border: none;
+    outline: none;
+    background-color: #c8e7f1;
+    width: 67px;
+    font-size: 10px;
+    padding: 2px;
+    margin: 3px 2px 0 0 !important;
+}
+
+.search-sidebar-content .bcgov-ciot-left textarea.bcgov-text-input {
+  float: left;
+  text-align: left;
+  position: relative;
+  left: 10px;
+}
+
+.search-sidebar-content .bcgov-ciot-right textarea.bcgov-text-input {
+  float: right;
+  text-align: right;
+}
+
+.search-sidebar-content .input-range-text-input .upper-left-label,
+.search-sidebar-content .input-range-text-input .lower-right-label,
+.search-sidebar-content .bcgov-ciot-left .input-range__label--min:nth-of-type(1),
+.search-sidebar-content .bcgov-ciot-right .input-range__label--max:nth-of-type(2) {
+  display: none;
 }

@@ -152,12 +152,12 @@ export default function SearchSidebarContent({
       isSelected:
         FORM_ZONING in search ? search[FORM_ZONING].includes("COMM") : false,
     },
-    {
-      label: "Residential",
-      code: "RESD",
-      isSelected:
-        FORM_ZONING in search ? search[FORM_ZONING].includes("RESD") : false,
-    },
+    // {
+    //   label: "Residential",
+    //   code: "RESD",
+    //   isSelected:
+    //     FORM_ZONING in search ? search[FORM_ZONING].includes("RESD") : false,
+    // },
     {
       label: "Agriculture",
       code: "AGRI",
@@ -507,30 +507,30 @@ export default function SearchSidebarContent({
     </Tooltip>
   );
 
-  const [isGeneralOpen, setGeneralOpen] = useState(true);
-  const [isServicingOpen, setServicingOpen] = useState(false);
-  const [isTransportationOpen, setTransportationOpen] = useState(false);
-  const [isNearbyCommunitiesOpen, setNearbyCommunitiesOpen] = useState(false);
-  const [isAdvancedAnROpen, setAdvancedAnROpen] = useState(false);
-  const [isRegionalDistrictOpen, setRegionalDistrictOpen] = useState(false);
+  // const [isGeneralOpen, setGeneralOpen] = useState(true);
+  // const [isServicingOpen, setServicingOpen] = useState(false);
+  // const [isTransportationOpen, setTransportationOpen] = useState(false);
+  // const [isNearbyCommunitiesOpen, setNearbyCommunitiesOpen] = useState(false);
+  // const [isAdvancedAnROpen, setAdvancedAnROpen] = useState(false);
+  // const [isRegionalDistrictOpen, setRegionalDistrictOpen] = useState(false);
 
   return (
     <div className="search-sidebar-content">
       {/* <h2>Filter your search</h2> */}
       <h2>
         General Site Details
-        <Button
+        {/* <Button
           className="bcgov-filter-toggle"
           onClick={() => setGeneralOpen(!isGeneralOpen)}
           aria-controls="example-collapse-text"
           aria-expanded={isGeneralOpen}
         >
           {isGeneralOpen ? "⏶" : "⏷"}
-        </Button>
+        </Button> */}
       </h2>
       <h3>Parcel Size</h3>
       <InlineNumberRangeFilter
-        show={isGeneralOpen}
+        // show={isGeneralOpen}
         inputRange={{ min: 0, max: 2000 }}
         units="acres"
         className=""
@@ -551,7 +551,7 @@ export default function SearchSidebarContent({
       />
       <h3>Zoning</h3>
       <InlineSelectFilter
-        show={isGeneralOpen}
+        // show={isGeneralOpen}
         filters={zoningFilters}
         setFilters={setZoningFilters}
         isSelected={zoningIsSelected}

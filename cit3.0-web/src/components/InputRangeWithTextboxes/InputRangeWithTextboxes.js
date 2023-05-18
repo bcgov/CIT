@@ -115,8 +115,9 @@ export default function InputRangeWithTextboxes(props) {
         />
       </div>
       <Row className="d-flex flex-nowrap justify-content-between">
-        <div className="input-range-text-input">
+        <div className="input-range-text-input  bcgov-ciot-left">
           <TextInput
+            className="bcgov-ciot-range-text"
             handleChange={updateMin}
             name={minName}
             rows={1}
@@ -125,8 +126,9 @@ export default function InputRangeWithTextboxes(props) {
             lowerRightLabel={units}
           />
         </div>
-        <div className="modal-text-input">
+        <div className="input-range-text-input  bcgov-ciot-right">
           <TextInput
+            className="bcgov-ciot-range-text"
             handleChange={updateMax}
             name={maxName}
             rows={1}

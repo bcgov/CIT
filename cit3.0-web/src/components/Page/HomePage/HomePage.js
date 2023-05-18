@@ -12,8 +12,8 @@ export default function HomePage() {
     <>
       <div className="w-100 header-div bcgov-homepage-header">
         <img
-          height="333px" // keep this height
-          width="600px"
+          height="280px" // keep this height
+          width="650px"
           src="/images/CIOT_homepage-banner.png"
           alt="Beautiful British Columbia"
         />
@@ -137,35 +137,6 @@ export default function HomePage() {
               </Container>
             </Col>
           </Row>
-        </Container>
-      </div>
-      <div className="bcgov-ciot-help-panel bcgov-ciot-button">
-        <Container className="bcgov-ciot-hompage-desc">
-          <h2>How does the program work?</h2>
-          <ul>
-            <li>
-              Investment properities are regulary being adding to the site
-            </li>
-            <li>
-              Properties will be zoned for industrial, commercial or
-              agricultural use
-            </li>
-            <li>Industrial properties of all sizes are listed</li>
-            <li>
-              Commercial &amp; agricultural properties are listed if they are
-              over 5 acres in size
-            </li>
-            <li>Land is for either lease or sale</li>
-            <li>All properties are free from constraint</li>
-          </ul>
-        </Container>
-        <Container className="bcgov-ciot-hompage-login">
-          <h2>Listing Administrators</h2>
-          <Button
-            onClick={() => history.push(`/investmentopportunities/dashboard`)}
-            styling="home-buttons bcgov-ciot-button"
-            label="Login here to add your new listings"
-          />
         </Container>
       </div>
     </>

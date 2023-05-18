@@ -7,10 +7,10 @@ const zoningFilters = [
     label: "Commercial",
     isSelected: false,
   },
-  {
-    label: "Residential",
-    isSelected: false,
-  },
+  // {
+  //   label: "Residential",
+  //   isSelected: false,
+  // },
   {
     label: "Agriculture",
     isSelected: false,

@@ -1,5 +1,5 @@
 .header-div {
-    height: 350px;
+    height: 326px;
     position: relative;
 }
 
@@ -96,11 +96,11 @@ ul.dashed > li:before {
 }
 
 .bcgov-homepage-header {
-    margin-right: 21%;
+    margin-right: 23.8%;
     display: block;
     position: relative;
     float: right;
-    width: 584px !important;
+    width: 500px !important;
 }
 
 .bcgov-homepage-header-text h1 {
@@ -111,7 +111,7 @@ ul.dashed > li:before {
     line-height: 1.2;
     display: block !important;
     float: left;
-    left: -73% !important;
+    left: -69% !important;
     background-color: #35aee3;
     width: 75%;
     text-align: left;
@@ -126,7 +126,7 @@ ul.dashed > li:before {
     float: left;
     top: 220px !important;
     text-align: left;
-    left: -44%;
+    left: -40%;
     width: 60%;
     font-size: 15pt;
 }
@@ -142,21 +142,17 @@ ul.dashed > li:before {
     background-color: #e8f4f9 !important;
     width: 25% !important;
     height: auto !important;
-    min-width: 400px;
     padding-top: 5px;
     padding-bottom: 5px;
+    min-height: 420px;
+    min-width: 500px;
+    float: left;
+    margin-left: 0 ;
+    margin-right: 20px;
 }
 
 .bcgov-homepage-text p {
     min-height: 118px;
-}
-
-.bcgov-homepage-topic {
-    min-height: 420px;
-    min-width: 450px;
-    float: left;
-    margin-left: 0 ;
-    margin-right: 30px;
 }
 
 .bcgov-ciot-homepage-topics {
@@ -182,8 +178,8 @@ ul.dashed > li:before {
 .bcgov-ciot-homepage-topics {
     display: block;
     float: left;
-    width: 55%;
-    margin-left: 23%;
+    width: 67%;
+    margin-left: 21%;
 }
 
 .bcgov-ciot-help-panel {
@@ -200,7 +196,7 @@ ul.dashed > li:before {
     float: left;
     width: 40%;
     margin-left: 0;
-    margin-right: 30px;
+    margin-right: 35px;
 }
 
 @media screen and (max-width: 480px) {
