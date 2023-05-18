@@ -518,7 +518,9 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
       />
       <SelectFilter
         label="Zoning"
-        filters={zoningFilters}
+        filters={zoningFilters.filter(
+          (element) => element.label !== "Residential"
+        )}
         setFilters={setZoningFilters}
         isSelected={zoningIsSelected}
         setIsSelected={setZoningIsSelected}
