@@ -96,7 +96,7 @@ ul.dashed > li:before {
 }
 
 .bcgov-homepage-header {
-    margin-right: 23.8%;
+    margin-right: 24.4%;
     display: block;
     position: relative;
     float: right;
@@ -106,27 +106,27 @@ ul.dashed > li:before {
 .bcgov-homepage-header-text h1 {
     color: white;
     position: relative !important;
-    top: 40px !important;
+    top: 11px !important;
     letter-spacing: 1pt;
     line-height: 1.2;
     display: block !important;
     float: left;
-    left: -69% !important;
+    left: -74.5% !important;
     background-color: #35aee3;
     width: 75%;
     text-align: left;
     padding: 30px;
     opacity: 85%;
-    font-size: 29pt;
+    font-size: 28pt;
 }
 
 .bcgov-homepage-header-text .sub-header-text {
     position: absolute !important;
     display: block;
     float: left;
-    top: 220px !important;
+    top: 175px !important;
     text-align: left;
-    left: -40%;
+    left: -45.5%;
     width: 60%;
     font-size: 15pt;
 }
@@ -199,7 +199,11 @@ ul.dashed > li:before {
     margin-right: 35px;
 }
 
-@media screen and (max-width: 480px) {
+@media screen and (max-width: 500px) {
+    body {
+        min-width: 500px;
+    }
+
     .bcgov-homepage-header img {
         display: none;
     }
