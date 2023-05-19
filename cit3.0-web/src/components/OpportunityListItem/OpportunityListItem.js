@@ -103,6 +103,9 @@ const OpportunityListItem = ({
     );
   };
 
+  const truncate = (str) =>
+    str.length > 252 ? `${str.substring(0, 252)} ...` : str;
+
   const saleOrLease = () => {
     const propertyStatus = options.propertyStatuses.find(
       (s) => s.code === opportunity.userInfo.saleOrLease.value
@@ -175,14 +178,7 @@ const OpportunityListItem = ({
                     paddingBottom: "0.5rem",
                   }}
                 >
-                  <LinesEllipsis
-                    className="note"
-                    text={opportunity.userInfo.opportunityDescription.value}
-                    maxLine="4"
-                    ellipsis="..."
-                    trimRight
-                    basedOn="letters"
-                  />
+                  {truncate(opportunity.userInfo.opportunityDescription.value)}
                 </Col>
                 <Col
                   style={{
