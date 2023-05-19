@@ -284,7 +284,8 @@ button.panel__header {
 .search-sidebar-content .btn::selection,
 .search-sidebar-content .btn:hover,
 .search-sidebar-content .btn:focus,
-.search-sidebar-content .btn:enabled {
+.search-sidebar-content .btn:enabled,
+.search-sidebar-content .bcgov-ciot-search-button button {
   border: 0px solid transparent !important;
   outline: none !important;
 }
@@ -361,9 +362,15 @@ button.panel__header {
   margin-right: 0 !important;
   float: right;
   display: block !important;
+  outline: none !important;
+  border: 0px solid transparent !important;
 }
 
 input[type=button] {
   outline: none !important;
   border: 0px solid transparent !important;
+}
+
+.bcgov-ciot-filter-switch {
+  margin-left: 15px;
 }

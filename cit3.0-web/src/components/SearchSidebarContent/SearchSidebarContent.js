@@ -483,6 +483,7 @@ export default function SearchSidebarContent({
       </Col>
       <Col xs="auto">
         <Switch
+          className="bcgov-ciot-filter-switch"
           checked={switchFilter.checked}
           onChange={switchFilter.onChange}
           onColor="#c8e7f1"
@@ -711,6 +712,7 @@ export default function SearchSidebarContent({
         </Col>
         <Col xs="auto">
           <Switch
+            className="bcgov-ciot-filter-switch"
             checked={postSecondarySwitchValue}
             onChange={(value) => {
               onQuery({ [FORM_POST_SECONDARY]: value ? "Y" : "N" });
@@ -736,6 +738,7 @@ export default function SearchSidebarContent({
         </Col>
         <Col xs="auto">
           <Switch
+            className="bcgov-ciot-filter-switch"
             checked={researchCentreSwitchValue}
             onChange={(value) => {
               onQuery({ [FORM_RESEARCH_CENTRE]: value ? "Y" : "N" });
