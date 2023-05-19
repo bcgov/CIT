@@ -12,6 +12,7 @@ import {
 } from "react-bootstrap";
 import { MdHelp } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import InputRangeWithTextboxes from "../InputRangeWithTextboxes/InputRangeWithTextboxes";
 import InlineSelectFilter from "../InlineSelectFilter/InlineSelectFilter";
 import InlineCommunityOrPopulationProximityFilter from "../InlineCommunityOrPopulationProximityFilter/InlineCommunityOrPopulationProximityFilter";
@@ -65,6 +66,7 @@ export default function SearchSidebarContent({
   resetFilters,
   search,
 }) {
+  const history = useHistory();
   const dispatch = useDispatch();
   const regionalDistricts = useSelector(
     (state) => state.options.regionalDistricts
@@ -772,13 +774,29 @@ export default function SearchSidebarContent({
         </Form.Control>
       </Form.Group>
       <hr className="hr-bold" />
-      <div className="d-flex justify-content-end">
+      <div className="d-flex bcgov-ciot-button">
         <Button
           styling="BC-Gov-SecondaryButton"
           label="Reset all filters"
           onClick={() => handleResetFilters()}
         >
           Reset all filters
+        </Button>
+      </div>
+      <div className="d-flex bcgov-ciot-search-button">
+        <Button
+          onClick={() => history.push(`/investmentopportunities/search`)}
+          width="150"
+        >
+          <span>Search&nbsp;&nbsp;</span>
+          <img
+            src="/images/searchIcon.svg"
+            className="bcgov-ciot-button-icon"
+            width="20"
+            height="20"
+            alt="Search"
+            styling="margin-top: -2px; width: 100px;"
+          />
         </Button>
       </div>
     </div>
