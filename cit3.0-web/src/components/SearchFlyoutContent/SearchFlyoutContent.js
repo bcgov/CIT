@@ -552,33 +552,6 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
         <Col xs="6">
           <h3>Site Servicing</h3>
         </Col>
-        <Col xs="auto" className="exclude-unknown-section">
-          <input
-            type="checkbox"
-            checked={excludeUnknowns}
-            value={excludeUnknowns}
-            onChange={() => {
-              onQuery({
-                [FORM_EXCLUDE_UNKNOWNS]: !excludeUnknowns ? "Y" : "N",
-              });
-              setExcludeUnknowns(!excludeUnknowns);
-            }}
-          />
-        </Col>
-        <Col xs="auto" className="exclude-unknown-section">
-          <span>
-            Exclude Unknown{" "}
-            <span>
-              <OverlayTrigger
-                placement="right"
-                delay={{ show: 100, hide: 100 }}
-                overlay={renderTooltip}
-              >
-                <MdHelp color="#2693e6" size="1.3em" />
-              </OverlayTrigger>
-            </span>
-          </span>
-        </Col>
       </Row>
       {siteServicingSection}
       <h3>Transportation</h3>
