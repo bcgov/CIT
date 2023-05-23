@@ -6,7 +6,7 @@ djangorestframework-gis==0.16
 django-cors-headers==3.5.0
 drf-yasg==1.20.0
 gunicorn==20.1.0
-uwsgi==-2.0.21
+uwsgi==2.0.21
 pyyaml==5.4
 uritemplate==3.0.1
 requests==2.24.0
