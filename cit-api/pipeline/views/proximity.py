@@ -1,22 +1,28 @@
-from django.http import HttpResponse
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from django.core import serializers
-from django.db.models import Sum, F
-from django.contrib.gis.geos import Point
-from django.contrib.gis.db.models.functions import Distance
-from django.contrib.gis.measure import D
 import json
 
-from pipeline.models.general import RegionalDistrict, Municipality, Road
-from pipeline.models.location_assets import Airport, Location, CustomsPortOfEntry, FirstResponder, Hospital
+from django.contrib.gis.db.models.functions import Distance
+from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import D
+from django.core import serializers
+from django.db.models import F, Sum
+from django.http import HttpResponse
+from pipeline.models.community import Community
+from pipeline.models.general import Municipality, RegionalDistrict, Road
+from pipeline.models.indian_reserve_band_name import IndianReserveBandName
+from pipeline.models.lake import Lake
+from pipeline.models.location_assets import (
+    Airport,
+    CustomsPortOfEntry,
+    FirstResponder,
+    Hospital,
+    Location,
+)
 from pipeline.models.railway import Railway
 from pipeline.models.river import River
-from pipeline.models.lake import Lake
-from pipeline.models.community import Community
-from pipeline.models.indian_reserve_band_name import IndianReserveBandName
 from pipeline.models.roads_and_highways import RoadsAndHighways
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 # TODO: Reduce properties per feature across all sets in GET
 
@@ -118,18 +124,18 @@ class ProximityView(APIView):
             highway['highway_distance'] = highway_check.first().distance.km
 
         lake = None
-        lake_check = Lake.objects.annotate(distance=Distance("geom", point)).filter(
-            geom__distance_lte=(point, D(km=100))).order_by('distance')[:1]
-        if lake_check:
-            lake = json.loads(serializers.serialize('geojson', lake_check, geometry_field=point))
-            lake['lake_distance'] = lake_check.first().distance.km
+        # lake_check = Lake.objects.annotate(distance=Distance("geom", point)).filter(
+        #     geom__distance_lte=(point, D(km=100))).order_by('distance')[:1]
+        # if lake_check:
+        #     lake = json.loads(serializers.serialize('geojson', lake_check, geometry_field=point))
+        #     lake['lake_distance'] = lake_check.first().distance.km
 
         river = None
-        river_check = River.objects.annotate(distance=Distance("geom", point)).filter(
-            geom__distance_lte=(point, D(km=100))).order_by('distance')[:1]
-        if river_check:
-            river = json.loads(serializers.serialize('geojson', river_check, geometry_field=point))
-            river['river_distance'] = river_check.first().distance.km
+        # river_check = River.objects.annotate(distance=Distance("geom", point)).filter(
+        #     geom__distance_lte=(point, D(km=100))).order_by('distance')[:1]
+        # if river_check:
+        #     river = json.loads(serializers.serialize('geojson', river_check, geometry_field=point))
+        #     river['river_distance'] = river_check.first().distance.km
 
         research_centre = None
         research_centre_check = Location.objects.annotate(distance=Distance("point", point)).filter(
