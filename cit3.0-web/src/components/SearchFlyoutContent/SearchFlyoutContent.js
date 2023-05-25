@@ -11,7 +11,6 @@ import CommunityOrPopulationProximityFilter from "../CommunityOrPopulationProxim
 import "./SearchFlyoutContent.scss";
 import { getOptions, setOptions } from "../../store/actions/options";
 
-const FORM_EXCLUDE_UNKNOWNS = "exclude_unknowns";
 const FORM_OPPORTUNITY_ROAD_CONNECTED = "opportunity_road_connected";
 const FORM_OPPORTUNITY_WATER_CONNECTED = "opportunity_water_connected";
 const FORM_OPPORTUNITY_SEWER_CONNECTED = "opportunity_sewer_connected";
@@ -283,12 +282,6 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
       : false
   );
 
-  const [excludeUnknowns, setExcludeUnknowns] = useState(
-    FORM_EXCLUDE_UNKNOWNS in search
-      ? search[FORM_EXCLUDE_UNKNOWNS] === "Y"
-      : false
-  );
-
   const [postSecondarySwitchValue, setPostSecondarySwitchValue] = useState(
     FORM_POST_SECONDARY in search ? search[FORM_POST_SECONDARY] === "Y" : false
   );
@@ -349,7 +342,7 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
       label: "Connectivity (50/10Mbps+)",
       checked: connectivitySwitchValue,
       onChange: (value) => {
-        onQuery({ [FORM_CONNECTIVITY]: !excludeUnknowns });
+        onQuery({ [FORM_CONNECTIVITY]: value ? "Y" : "N" });
         setConnectivitySwitchValue(value);
       },
       queryKey: FORM_CONNECTIVITY,
@@ -423,7 +416,6 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
     search = {};
     resetFilters();
     resetFilters();
-    setExcludeUnknowns(false);
     setParcelSizeIsSelected(false);
     setParcelSizeInputRange({ min: 0, max: 2000 });
     setParcelSizeDisplayRange({ min: 0, max: 2000 });
