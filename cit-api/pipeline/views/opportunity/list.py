@@ -65,14 +65,11 @@ class OpportunitiesList(generics.ListAPIView):
             if (regional_district_models is not None):
                 queryset = queryset.filter(geo_position__intersects=regional_district_models.geom)
 
-        exclude_unknowns = self.request.query_params.get('exclude_unknowns', None)
-        queryset = self.service_queryset(queryset, exclude_unknowns, 'opportunity_road_connected')
-        queryset = self.service_queryset(queryset, exclude_unknowns, 'opportunity_water_connected')
-        queryset = self.service_queryset(queryset, exclude_unknowns, 'opportunity_sewer_connected')
-        queryset = self.service_queryset(queryset, exclude_unknowns,
-                                         'opportunity_electrical_connected')
-        queryset = self.service_queryset(queryset, exclude_unknowns,
-                                         'opportunity_natural_gas_connected')
+        queryset = self.service_queryset(queryset, 'opportunity_road_connected')
+        queryset = self.service_queryset(queryset, 'opportunity_water_connected')
+        queryset = self.service_queryset(queryset, 'opportunity_sewer_connected')
+        queryset = self.service_queryset(queryset, 'opportunity_electrical_connected')
+        queryset = self.service_queryset(queryset, 'opportunity_natural_gas_connected')
 
         post_secondary_within_100km = self.request.query_params.get('post_secondary_within_100km',
                                                                     None)
@@ -143,7 +140,10 @@ class OpportunitiesList(generics.ListAPIView):
         connectivity = self.request.query_params.get('connectivity', None)
         if (connectivity == 'Y'):
             queryset = queryset.filter(
-                Q(network_avg__in=['50/10']) | Q(network_at_road__in=['50/10']))
+                Q(network_avg__in=['50/10']) & Q(network_at_road='Yes'))
+        elif (connectivity == 'N'):
+            queryset = queryset.filter(Q(network_at_road='No'))
+
 
         community_population_distance_min = float(
             self.request.query_params.get('community_population_distance_min', INVALID_INT))
@@ -216,7 +216,7 @@ class OpportunitiesList(generics.ListAPIView):
 
         return queryset
 
-    def service_queryset(self, queryset, exclude_unknowns, service_name):
+    def service_queryset(self, queryset, service_name):
         service_connected = self.request.query_params.get(service_name, None)
 
         if (service_name == 'opportunity_road_connected'):
