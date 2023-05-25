@@ -127,17 +127,6 @@ export default function Map({
             <Popup>{address || null}</Popup>
           </Marker>
         ) : null}
-        {JSON.stringify(nearbyResources) !== "{}"
-          ? Object.entries(nearbyResources).map(([resource, resourceData]) =>
-              resource !== "community" ? (
-                <ResourceMarker
-                  key={resource}
-                  resourceName={resource}
-                  resources={resourceData}
-                />
-              ) : null
-            )
-          : null}
       </>
     );
     zoomLevel = 5; // do not change!
