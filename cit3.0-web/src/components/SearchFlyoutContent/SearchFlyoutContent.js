@@ -5,6 +5,7 @@ import { Button } from "shared-components";
 import { Row, Col, Tooltip, OverlayTrigger, Form } from "react-bootstrap";
 import { MdHelp } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import NumberRangeFilter from "../NumberRangeFilter/NumberRangeFilter";
 import SelectFilter from "../SelectFilter/SelectFilter";
 import CommunityOrPopulationProximityFilter from "../CommunityOrPopulationProximityFilter/CommunityOrPopulationProximityFilter";
@@ -715,12 +716,28 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
         </Form.Control>
       </Form.Group>
       <hr className="hr-bold" />
-      <div className="d-flex justify-content-end">
-        <Button
-          styling="BC-Gov-SecondaryButton"
-          label="Reset all filters"
-          onClick={() => handleResetFilters()}
-        />
+      <div>
+        <Row>
+          <Col xs="auto">
+            <span>
+              {" "}
+              <Link
+                to="/investmentopportunities/disclaimer-contributor"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Terms of Use
+              </Link>
+            </span>{" "}
+          </Col>
+          <Col xs="auto" className="reset-button">
+            <Button
+              styling="BC-Gov-SecondaryButton"
+              label="Reset all filters"
+              onClick={() => handleResetFilters()}
+            />
+          </Col>
+        </Row>
       </div>
     </div>
   );

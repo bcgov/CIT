@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Button, Alert } from "shared-components";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import "./EDODashboard.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -207,6 +207,18 @@ export default function EDODashboard() {
             representative for a community. This is typically an Economic
             Development Officer, Chief Administrative Officer, Lands Manager, or
             Band Manager.
+          </li>
+          <li>
+            <span>
+              {" "}
+              <Link
+                to="/investmentopportunities/disclaimer-investor"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Terms of Use
+              </Link>
+            </span>{" "}
           </li>
         </ul>
         <div className="add-opportunity-button">{addOpportunityButton}</div>
