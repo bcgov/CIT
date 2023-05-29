@@ -2,7 +2,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import "./HomePage.scss";
 import { Button } from "shared-components";
-import DisclaimerCIOT from "../../DisclaimerCIOT/DisclaimerCIOT";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 
 export default function HomePage() {
@@ -198,11 +197,6 @@ export default function HomePage() {
                 </Row>
               </Col>
             </Container>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <DisclaimerCIOT />
           </Col>
         </Row>
       </Container>
