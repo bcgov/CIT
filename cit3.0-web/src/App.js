@@ -42,6 +42,8 @@ import HomePage from "./components/Page/HomePage/HomePage";
 import citHome from "./components/Page/citHome/citHome";
 
 import { useKeycloakWrapper } from "./hooks/useKeycloakWrapper";
+import DisclaimerInvestorCIOT from "./components/DisclaimerInvestorCIOT/DisclaimerInvestorCIOT";
+import DisclaimerContributorCIOT from "./components/DisclaimerContributorCIOT/DisclaimerContributorCIOT";
 
 function App() {
   const keycloak = useKeycloakWrapper();
@@ -264,6 +266,18 @@ function App() {
                   path="/datasources"
                   title="Community Information Tool - Data Sources"
                   component={Datasources}
+                />
+                <AppRoute
+                  exact
+                  path="/investmentopportunities/disclaimer-investor"
+                  title="Community Information Tool - Disclaimer"
+                  component={DisclaimerInvestorCIOT}
+                />
+                <AppRoute
+                  exact
+                  path="/investmentopportunities/disclaimer-contributor"
+                  title="Community Information Tool - Disclaimer"
+                  component={DisclaimerContributorCIOT}
                 />
               </Switch>
               <div className="footer">
