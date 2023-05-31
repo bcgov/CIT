@@ -718,7 +718,7 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
         </Form.Group>
         <hr className="hr-bold" />
       </div>
-      <div>
+      <div style={{ marginBottom: "20px" }}>
         <Row>
           <Col xs="auto">
             <span>
