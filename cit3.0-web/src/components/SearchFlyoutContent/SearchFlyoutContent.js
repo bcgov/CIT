@@ -698,24 +698,26 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
         </Col>
       </Row>
       <h3>Regional District</h3>
-      <Form.Group controlId="regional_district">
-        <Form.Label className="visually-hidden">To</Form.Label>
-        <Form.Control
-          as="select"
-          name="regional-district"
-          value={regionalDistrict}
-          onChange={(e) => handleRegionalDistrictChange(e.target.value)}
-        >
-          <option value="">All</option>
-          {regionalDistricts &&
-            regionalDistricts.map((district) => (
-              <option key={district.id} value={district.id}>
-                {district.name}
-              </option>
-            ))}
-        </Form.Control>
-      </Form.Group>
-      <hr className="hr-bold" />
+      <div style={{ marginRight: "15px" }}>
+        <Form.Group controlId="regional_district">
+          <Form.Label className="visually-hidden">To</Form.Label>
+          <Form.Control
+            as="select"
+            name="regional-district"
+            value={regionalDistrict}
+            onChange={(e) => handleRegionalDistrictChange(e.target.value)}
+          >
+            <option value="">All</option>
+            {regionalDistricts &&
+              regionalDistricts.map((district) => (
+                <option key={district.id} value={district.id}>
+                  {district.name}
+                </option>
+              ))}
+          </Form.Control>
+        </Form.Group>
+        <hr className="hr-bold" />
+      </div>
       <div>
         <Row>
           <Col xs="auto">
