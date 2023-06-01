@@ -641,7 +641,7 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
       <h3>Advanced Education &amp; Research</h3>
       <Row className="flex-nowrap">
         <Col xs={7}>
-          <p>Post-secondary Institute within 100km?:</p>
+          <p>Post-secondary Institute within 100km?</p>
         </Col>
         <Col xs="auto" className="no-padding">
           <p>No</p>
@@ -670,7 +670,7 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
       </Row>
       <Row className="flex-nowrap">
         <Col xs={7}>
-          <p>Research Centre within 100km?:</p>
+          <p>Research Centre within 100km?</p>
         </Col>
         <Col xs="auto" className="no-padding">
           <p>No</p>
