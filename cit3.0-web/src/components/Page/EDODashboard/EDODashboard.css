@@ -15,6 +15,17 @@
 
 .dashboard-header {
     text-align: left;
+    float: left;
+}
+
+.edo-dashboard .opportunity-table {
+    float: left !important;
+}
+
+.spinner-border {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .dashboard-header h2 {
@@ -23,6 +34,7 @@
 }
 
 .add-opportunity-button {
+    float: right;
     text-align: right;
 }
 
@@ -46,7 +58,9 @@ ul.dashed > li:before {
 
 .center-spinner-opportunities {
     height: 10vh;
-    display: flex;
+    display: block;
+    float: left;
+    width: 100%;
     align-items: center;
     justify-content: center;
 }
@@ -66,13 +80,13 @@ ul.dashed > li:before {
     padding: 0px  2px;
     border-radius: 2px;
     float: left;
+    margin-bottom: 30px;
 }
 
 .edo-dashboard .dashboard-instructions {
     display: block;
     position: relative;
-    top: -50px;
-    min-width: 60%;
+    min-width: 500px;
     max-width: 60%;
     float: left;
 }
@@ -110,4 +124,25 @@ ul.dashed > li:before {
     bottom: 0;
     display: block;
     float: right;
+}
+
+.edo-dashboard .opportunity-table-row {
+    margin-bottom: 30px;
+}
+
+.bcgov-ciot-opportunities {
+    float: left;
+    width: 100%;
+}
+
+@media (max-width: 767px) {
+  .edo-dashboard .opportunity-table .row {
+    margin-left: 0;
+    min-height: 400px;
+  }
+
+  .edo-dashboard .col-lg-3,
+  .edo-dashboard .col-md-3 {
+    padding-left: 0 !important;
+  }
 }

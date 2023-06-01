@@ -26,6 +26,19 @@ button.bcgov-view-properties {
   background-color: transparent !important;
   font-weight: bold;
   color: #000;
+  width: 100%;
+  text-align: right;
+  border-radius: 0;
+  padding-top: 12px !important;
+}
+
+button.bcgov-view-properties,
+button.bcgov-view-properties:hover {
+  border-top: 1px #79747e solid !important;
+}
+
+.opportunity-table-row .nested-link {
+  margin-right: 0;
 }
 
 .opportunity-table-row .btn-link:hover,
@@ -40,10 +53,24 @@ button.bcgov-view-properties {
   margin-left: 20px;
 }
 
+.opportunity-table-row .h-100 .col {
+  margin-left: 20px;
+}
+
+.opportunity-table-row p.border--pill {
+  margin-left: 18px;
+  padding-left: 8px;
+}
+
 @media (max-width: 767px) {
   .details {
     padding-left: 15px;
   }
+
+  .bcgov-opp-date-added {
+    min-height: 100px;
+  }
+
   .hide-point {
     display: none
   }

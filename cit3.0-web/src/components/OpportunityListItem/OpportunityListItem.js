@@ -139,13 +139,7 @@ const OpportunityListItem = ({
                   <div className="bcgov-opp-address">
                     <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
                   </div>
-                </Col>
-                <Col
-                  style={{
-                    marginRight: "0.5rem",
-                  }}
-                >
-                  <div className="d-flex flex-row flex-wrap align-content-end">
+                  <div className="d-flex flex-row flex-wrap">
                     {opportunity.siteInfo.parcelSize.value ? (
                       <p className="border--pill">
                         Parcel Size:{" "}
@@ -186,7 +180,9 @@ const OpportunityListItem = ({
                 >
                   {truncate(opportunity.userInfo.opportunityDescription.value)}
                 </Col>
-                <Col
+              </Row>
+              <Row className="h-100">
+                {/* <Col
                   style={{
                     alignSelf: "flex-end",
                     paddingBottom: "0.5rem",
@@ -196,17 +192,17 @@ const OpportunityListItem = ({
                   md={6}
                   lg={4}
                   className="text-right"
+                > */}
+                <Button
+                  className="p-0 bcgov-view-properties"
+                  variant="link"
+                  onClick={() => {
+                    window.open(opportunity.link, "_blank");
+                  }}
                 >
-                  <Button
-                    className="p-0 bcgov-view-properties"
-                    variant="link"
-                    onClick={() => {
-                      window.open(opportunity.link, "_blank");
-                    }}
-                  >
-                    View property details {">"}
-                  </Button>
-                </Col>
+                  View property details {">"}
+                </Button>
+                {/* </Col> */}
               </Row>
             </>
           ) : null}

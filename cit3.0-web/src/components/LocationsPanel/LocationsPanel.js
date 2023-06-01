@@ -49,9 +49,13 @@ const LocationsPanel = ({
                   <a
                     target="_blank"
                     rel="noreferrer"
-                    href={`/cit-dashboard/info/community/name/${encodeURIComponent(
-                      muni.name.toLowerCase()
-                    )}`}
+                    href={
+                      muni.name
+                        ? `/cit-dashboard/info/community/name/${encodeURIComponent(
+                            muni.name.toLowerCase()
+                          )}`
+                        : ""
+                    }
                   >
                     {muni.name} - {parseFloat(muni.distance).toFixed(2)}km
                   </a>
@@ -84,8 +88,10 @@ const LocationsPanel = ({
               <Col className="pl-0">
                 <span className="ml-2 link">
                   {firstNationCommunity.name
-                    .toLowerCase()
-                    .replace(/(^|\s)\S/g, (t) => t.toUpperCase())}{" "}
+                    ? firstNationCommunity.name
+                        .toLowerCase()
+                        .replace(/(^|\s)\S/g, (t) => t.toUpperCase())
+                    : ""}{" "}
                   - {parseFloat(firstNationCommunity.distance).toFixed(2)}
                   km
                 </span>

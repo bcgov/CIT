@@ -9,27 +9,20 @@ export default function HomePage() {
   const keycloak = useKeycloakWrapper();
   const history = useHistory();
   return (
-    <>
-      <div className="w-100 header-div bcgov-homepage-header">
-        <img
-          height="280px" // keep this height
-          width="650px"
-          src="/images/CIOT_homepage-banner.png"
-          alt="Beautiful British Columbia"
-        />
-      </div>
-      <div className="header-text bcgov-homepage-header-text">
-        <div className="d-flex flex-column align-items-end">
-          <h1 className="main-header-text bcgov-homepage-header-text">
-            Community Investment Opportunities
-          </h1>
-          <h2 className="sub-header-text bcgov-homepage-sub-header-text">
-            Connecting investors with opportunities in communities across
-            British Columbia
-          </h2>
-        </div>
-      </div>
-      <div className="bcgov-ciot-homepage-topics">
+    <div className="bcgov-ciot-homepage">
+      <img
+        className="bcgov-ciot-homepage-image"
+        src="/images/CIOT_homepage-banner.png"
+        alt="Beautiful British Columbia"
+      />
+      <h1 className="bcgov-homepage-header-text">
+        Community Investment Opportunities
+      </h1>
+      <h2 className="bcgov-homepage-sub-header-text">
+        Connecting investors with opportunities in communities across British
+        Columbia
+      </h2>
+      <div className="bcgov-ciot-home-page-topics">
         <Container className="mb-2 mt-3 w-50 box bcgov-homepage-topic">
           <Row className="mb-1 mt-3 w-100 box">
             <Col className="svg-box">
@@ -109,8 +102,8 @@ export default function HomePage() {
                       Help investors find the next big opportunity in your
                       community. Promote industrial, commercial and agricultural
                       properties available for sale or lease in your community
-                      and the tool will automatically add key location
-                      information to support site selection decisions.
+                      tool will automatically add key location information to
+                      support site selection decisions.
                     </p>
                   </Row>
                   <Row className="d-flex justify-content-start w-100 bcgov-ciot-button">
@@ -139,6 +132,8 @@ export default function HomePage() {
           </Row>
         </Container>
       </div>
-    </>
+      {/* <div className="bcgov-ciot-homepage-topics">
+      </div> */}
+    </div>
   );
 }

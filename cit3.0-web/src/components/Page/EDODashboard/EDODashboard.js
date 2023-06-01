@@ -221,7 +221,7 @@ export default function EDODashboard() {
           </li>
         </ul>
         <div className="add-opportunity-button">{addOpportunityButton}</div>
-        <hr ref={resultRef} />
+        <hr ref={resultRef} className="bcgov-ciot-opportunities" />
         {markAsSoldStatus === "Error" ? (
           <Container className="p-0 mt-3">
             <Alert
