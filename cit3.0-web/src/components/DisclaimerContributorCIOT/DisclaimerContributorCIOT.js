@@ -96,7 +96,7 @@ const DisclaimerContributorCIOT = () => (
       <li>
         <p>
           if Contributor used a form of BCeID to authenticate in setting up an
-          account to use the Site, the BCeID terms found at
+          account to use the Site, the BCeID terms found at{" "}
           <a
             href="https://www.bceid.ca/aboutbceid/agreements.aspx"
             target="_blank"
