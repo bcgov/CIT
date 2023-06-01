@@ -1,11 +1,15 @@
+import json
+import os
+import re
+from datetime import timedelta
+
+import requests
 from django.core.management.base import BaseCommand
 from django.utils.timezone import now
-from datetime import timedelta
-import os, requests, json, re
-from requests.auth import HTTPBasicAuth
-
 from pipeline.models.opportunity import Opportunity
 from pipeline.models.users.user import User
+from requests.auth import HTTPBasicAuth
+
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
@@ -72,11 +76,13 @@ def construct_email_body(opportunity_list):
         opportunity_links = opportunity_links + build_individual_opportunity_link(opportunity)
         opportunity_links = opportunity_links + "</p>"
 
-    email_body = "<p>It has been over 90 days since you modified one or more opportunities on the Community Investment Opportunities Tool. To ensure the tool remains up-to-date, we ask that you please confirm if the following opportunities are still available:</p>"
+    email_body = "<p>It has been over 90 days since you last updated the following investment opportunities in the Community Investment Opportunities Tool. </p>"
     email_body = email_body + opportunity_links
-    email_body = email_body + "<p>To re-submit a listing that is still available, please log in to <a href=\"" + build_full_dashboard_link() +  "\">your dashboard</a> on the Community Investment Opportunities Tool. Click \"Edit\" to review the details and information for an opportunity. Once you re-submit your listing, it will be reviewed for publishing.</p>"
-    email_body = email_body + "<p>If an opportunity has been sold or is no longer available, please log in to <a href=\"" + build_full_dashboard_link() +  "\">your dashboard</a>  and remove the opportunity.</p>"
-    email_body = email_body + "<p>Thanks for helping investors find their next opportunity in B.C.</p>"
+    email_body = email_body + "<p>To manage these listings, please log in to the <a href=\"" + build_full_dashboard_link() +  "\">Community Investment Tool</a>.</p>"
+    email_body = email_body + "<p>If the opportunity is still active, click on 'Edit Listing' to review and resubmit your listing.</p>"
+    email_body = email_body + "<p>If the opportunity has been sold, please select 'Close'.</p>"
+    email_body = email_body + "<p>If you wish to remove the opportunity from the site, please select 'Delete'.</p>"
+    email_body = email_body + "<p>Thank you for your cooperation in keeping the Community Investment Opportunities Tool up-to-date and valuable for investors.</p>"
 
     return email_body
 
