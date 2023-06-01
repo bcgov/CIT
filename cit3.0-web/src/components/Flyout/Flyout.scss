@@ -10,7 +10,6 @@
     .content {
       overflow: auto;
       overflow-x: hidden;
-      margin: 0.75rem;
       padding-top: 20px;
     }
   }
@@ -64,6 +63,7 @@
       transition: transform var(--secs);
       background-color: #F2F1F1;
       height: 100%;
+      padding-left: 15px;
       @media (orientation: portrait) { 
         width: var(--portrait-width); 
       }

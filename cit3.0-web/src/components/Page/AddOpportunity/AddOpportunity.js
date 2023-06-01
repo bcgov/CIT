@@ -61,7 +61,6 @@ export default function AddOpportunity() {
   const [hasApproval, setHasApproval] = useState(false);
   const [warning, setWarning] = useState([]);
   const [error, setError] = useState([]);
-  const [agreed, setAgreed] = useState(false);
   const [noAddressFlag, setNoAddressFlag] = useState(false);
   const [parcelInfo, setParcelInfo] = useState(false);
 
@@ -161,12 +160,9 @@ export default function AddOpportunity() {
     if (parcelOwner === "Private" && hasApproval !== "Yes") {
       errors = [...errors, "Please get the approval before listing this site."];
     }
-    if (!agreed) {
-      errors = [...errors, "Please agree to the Terms of use."];
-    }
     setWarning(warnings);
     setError(errors);
-    setChangePage(agreed && !errors.length && !isInvalidAddress);
+    setChangePage(!errors.length && !isInvalidAddress);
     if (!proximityInProgress && changePage) {
       closeModalAndContinue();
     }
@@ -479,9 +475,6 @@ export default function AddOpportunity() {
               setProximityInProgress={setProximityInProgress}
             />
           </Col>
-        </Row>
-        <Row>
-          <Terms agreed={agreed} setAgreed={setAgreed} />
         </Row>
       </Container>
       <ButtonRow onClick={goToNextPage} onCancelClick={onCancelClick} />

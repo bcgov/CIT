@@ -5,6 +5,7 @@ import { Button } from "shared-components";
 import { Row, Col, Tooltip, OverlayTrigger, Form } from "react-bootstrap";
 import { MdHelp } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import NumberRangeFilter from "../NumberRangeFilter/NumberRangeFilter";
 import SelectFilter from "../SelectFilter/SelectFilter";
 import CommunityOrPopulationProximityFilter from "../CommunityOrPopulationProximityFilter/CommunityOrPopulationProximityFilter";
@@ -640,7 +641,7 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
       <h3>Advanced Education &amp; Research</h3>
       <Row className="flex-nowrap">
         <Col xs={7}>
-          <p>Post-secondary Institute within 100km?:</p>
+          <p>Post-secondary Institute within 100km?</p>
         </Col>
         <Col xs="auto" className="no-padding">
           <p>No</p>
@@ -669,7 +670,7 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
       </Row>
       <Row className="flex-nowrap">
         <Col xs={7}>
-          <p>Research Centre within 100km?:</p>
+          <p>Research Centre within 100km?</p>
         </Col>
         <Col xs="auto" className="no-padding">
           <p>No</p>
@@ -697,30 +698,48 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
         </Col>
       </Row>
       <h3>Regional District</h3>
-      <Form.Group controlId="regional_district">
-        <Form.Label className="visually-hidden">To</Form.Label>
-        <Form.Control
-          as="select"
-          name="regional-district"
-          value={regionalDistrict}
-          onChange={(e) => handleRegionalDistrictChange(e.target.value)}
-        >
-          <option value="">All</option>
-          {regionalDistricts &&
-            regionalDistricts.map((district) => (
-              <option key={district.id} value={district.id}>
-                {district.name}
-              </option>
-            ))}
-        </Form.Control>
-      </Form.Group>
-      <hr className="hr-bold" />
-      <div className="d-flex justify-content-end">
-        <Button
-          styling="BC-Gov-SecondaryButton"
-          label="Reset all filters"
-          onClick={() => handleResetFilters()}
-        />
+      <div style={{ marginRight: "15px" }}>
+        <Form.Group controlId="regional_district">
+          <Form.Label className="visually-hidden">To</Form.Label>
+          <Form.Control
+            as="select"
+            name="regional-district"
+            value={regionalDistrict}
+            onChange={(e) => handleRegionalDistrictChange(e.target.value)}
+          >
+            <option value="">All</option>
+            {regionalDistricts &&
+              regionalDistricts.map((district) => (
+                <option key={district.id} value={district.id}>
+                  {district.name}
+                </option>
+              ))}
+          </Form.Control>
+        </Form.Group>
+        <hr className="hr-bold" />
+      </div>
+      <div style={{ marginBottom: "20px" }}>
+        <Row>
+          <Col xs="auto">
+            <span>
+              {" "}
+              <Link
+                to="/investmentopportunities/disclaimer-contributor"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Terms of Use
+              </Link>
+            </span>{" "}
+          </Col>
+          <Col xs="auto" className="reset-button">
+            <Button
+              styling="BC-Gov-SecondaryButton"
+              label="Reset all filters"
+              onClick={() => handleResetFilters()}
+            />
+          </Col>
+        </Row>
       </div>
     </div>
   );

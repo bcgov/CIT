@@ -68,7 +68,7 @@ const OpportunityListItem = ({
             className="p-0"
             onClick={() => handleModalOpen(opp.id)}
           >
-            Closed
+            Close
           </Button>
           <br />
           <NavLink to={`/delete/investmentopportunities/${opp.id}/`}>

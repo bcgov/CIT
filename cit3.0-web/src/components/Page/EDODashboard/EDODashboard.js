@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Button, Alert } from "shared-components";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import axios from "axios";
 import "./EDODashboard.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -162,14 +162,13 @@ export default function EDODashboard() {
       <div className="dashboard-container">
         <h1 className="dashboard-header">How it works</h1>
         <p className="dashboard-text">
-          Community representatives can add up to five properties per community
-          to be featured on the tool. To create a new listing, follow a simple
-          process to add some key information about the property. The tool will
-          automatically provide additional location information to help
-          investors and site selectors quickly evaluate whether the site meets
-          their specific needs. Investment opportunities are reviewed prior to
-          publication by a Provincial Regional Economic Operations Manager and
-          will go live within 3-5 business days.
+          To create a new listing, follow a simple process to add some key
+          information about the property. The tool will automatically provide
+          additional location information to help investors and site selectors
+          quickly evaluate whether the site meets their specific needs.
+          Investment opportunities are reviewed prior to publication by a
+          Provincial Regional Economic Operations Manager and will go live
+          within 3-5 business days.
         </p>
         <ul className="dashed">
           <li>
@@ -207,6 +206,18 @@ export default function EDODashboard() {
             representative for a community. This is typically an Economic
             Development Officer, Chief Administrative Officer, Lands Manager, or
             Band Manager.
+          </li>
+          <li>
+            <span>
+              {" "}
+              <Link
+                to="/investmentopportunities/disclaimer-investor"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Terms of Use
+              </Link>
+            </span>{" "}
           </li>
         </ul>
         <div className="add-opportunity-button">{addOpportunityButton}</div>
