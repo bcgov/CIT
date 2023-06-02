@@ -12,7 +12,7 @@ export default function HomePage() {
     <div className="bcgov-ciot-homepage">
       <img
         className="bcgov-ciot-homepage-image"
-        src="/images/CIOT_homepage-banner.png"
+        src="/images/shutterstock_2107265879.jpg"
         alt="Beautiful British Columbia"
       />
       <h1 className="bcgov-homepage-header-text">
