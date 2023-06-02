@@ -682,7 +682,7 @@ export default function SearchSidebarContent({
       />
       <div className="label-filter">
         <h2>Nearby Communities</h2>
-        <div className="checkbox-filter">
+        <div className="checkbox-filter-communities">
           <OverlayTrigger
             placement="right"
             delay={{ show: 100, hide: 100 }}
