@@ -1,11 +1,16 @@
-img.bcgov-ciot-homepage-image {
+.bcgov-ciot-homepage-image {
     margin-left: auto;
     margin-right: auto;
-    padding-left: 500px;
-    width: 965px;
+    width: 960px;
+    text-align: center;
+    display: block;
+}
+
+img.bcgov-ciot-homepage-image {
+    width: 982px;
     height: 278px;
     text-align: right;
-    display: block;
+    padding-left: 510px;
 }
 
 .bcgov-ciot-homepage-headings h1,
@@ -13,6 +18,7 @@ img.bcgov-ciot-homepage-image {
     margin-left: auto;
     margin-right: auto;
     display: block;
+    position: relative;
     width: 50%;   
 }
 
@@ -20,35 +26,31 @@ img.bcgov-ciot-homepage-image {
     color: white;
     background-color: #35aee3;
     position: relative;
-    left: -185px;
     letter-spacing: 1pt;
     line-height: 1.2;
-    position: relative;
-    margin-top: -230px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 700px;
-    text-align: left;
+    width: 680px;
     padding: 30px;
     opacity: 85%;
     font-size: 25pt;
+    left: -190px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -238px;
 }
 
 h2.bcgov-homepage-sub-header-text {
     color: #000;
-    position: relative;
-    left: -267px;
+    left: -265px;
     letter-spacing: 1pt;
     line-height: 1.2;
     position: relative;
-    margin-top: -30px;
-    margin-bottom: 55px;
     margin-left: auto;
     margin-right: auto;
+    margin-top: -30px;
+    margin-bottom: 55px;
     width: 531px;
     text-align: left;
     padding: 30px;
-    // padding-right: 150px;
     opacity: 85%;
     font-size: 12pt;
 }
@@ -152,12 +154,11 @@ ul.dashed > li:before {
 }
 
 .bcgov-homepage-header {
+    margin-left: auto;
+    margin-right: auto;
     display: block;
-    position: relative;
-    float: right;
-    width: 60% !important;
+    width: 600px !important;
 }
-
 
 .bcgov-ciot-homepage-top-row {
     margin: auto;

@@ -37,6 +37,14 @@ button.bcgov-view-properties:hover {
   border-top: 1px #79747e solid !important;
 }
 
+.opportunity-table-row button {
+    position: relative;
+    text-align: right;
+    bottom: 10px;
+    right: 0;
+    padding-top: 16px !important;
+}
+
 .opportunity-table-row .nested-link {
   margin-right: 0;
 }

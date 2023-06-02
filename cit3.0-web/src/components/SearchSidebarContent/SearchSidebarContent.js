@@ -720,7 +720,6 @@ export default function SearchSidebarContent({
           setCurrentPopulation={setProximityCurrentPopulation}
         />
       ) : null}
-
       <h2>Advanced Education &amp; Research</h2>
       <Row className="flex-nowrap">
         <Col xs={9}>

@@ -4,15 +4,6 @@
     padding: 5vh 0 5vh;
 }
 
-@media(max-width: 767px) {
-    .dashboard-container {
-        padding: 3rem 1.5rem;
-    }
-    .dashboard-container .container-fluid {
-        padding: 0;
-    }
-}
-
 .dashboard-header {
     text-align: left;
     float: left;
@@ -36,6 +27,11 @@
 .add-opportunity-button {
     float: right;
     text-align: right;
+}
+
+.add-opportunity-button button {
+    margin-left: 300px;
+    width: 300px;
 }
 
 ul.dashed {
@@ -136,13 +132,26 @@ ul.dashed > li:before {
 }
 
 @media (max-width: 767px) {
-  .edo-dashboard .opportunity-table .row {
-    margin-left: 0;
-    min-height: 400px;
-  }
+    .edo-dashboard .opportunity-table .row {
+        margin-left: 0;
+        min-height: 400px;
+    }
 
-  .edo-dashboard .col-lg-3,
-  .edo-dashboard .col-md-3 {
-    padding-left: 0 !important;
-  }
+    .edo-dashboard .col-lg-3,
+    .edo-dashboard .col-md-3 {
+        padding-left: 0 !important;
+    }
+
+    .dashboard-container {
+        padding: 3rem 1.5rem;
+    }
+    .dashboard-container .container-fluid {
+        padding: 0;
+    }
+
+    .add-opportunity-button button {
+        margin-left: 100px;
+        width: 300px;
+    }
+
 }

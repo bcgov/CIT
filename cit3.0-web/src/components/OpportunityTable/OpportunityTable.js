@@ -2,7 +2,7 @@ import Container from "react-bootstrap/Container";
 import { v4 } from "uuid";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import "./OpportunityTable.css";
+import "./OpportunityTable.scss";
 import OpportunityListItem from "../OpportunityListItem/OpportunityListItem";
 import OpportunityFactory from "../../store/factory/OpportunityFactory";
 

@@ -30,7 +30,7 @@
 }
 
 .container-fluid {
-  margin: 15px 0 0 0;
+  margin: 0;
 }
 
 .exclude-unknown-section {
@@ -198,7 +198,7 @@ body {
 h1,
 h2,
 h3 {
-  margin: 10px 0 20px 0;
+  margin: 30px 0 10px 0;
 }
 
 .title {
@@ -345,7 +345,7 @@ button.panel__header {
     width: 50px;
     font-size: 12px;
     padding: 2px;
-    margin: 3px 2px 0 0 !important;
+    margin: 3px 10px 0 0 !important;
 }
 
 .search-sidebar-content .bcgov-ciot-left textarea.bcgov-text-input {
@@ -362,8 +362,9 @@ button.panel__header {
 
 .search-sidebar-content .input-range-text-input .upper-left-label,
 .search-sidebar-content .input-range-text-input .lower-right-label,
-.search-sidebar-content .bcgov-ciot-left .input-range__label--min:nth-of-type(1),
-.search-sidebar-content .bcgov-ciot-right .input-range__label--max:nth-of-type(2) {
+.search-sidebar-content .input-range__label--min,
+.search-sidebar-content .input-range__label--max,
+.search-sidebar-content .input-range__label--value {
   display: none;
 }
 
