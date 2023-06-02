@@ -724,7 +724,7 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
             <span>
               {" "}
               <Link
-                to="/investmentopportunities/disclaimer-contributor"
+                to="/investmentopportunities/disclaimer-investor"
                 target="_blank"
                 rel="noopener noreferrer"
               >

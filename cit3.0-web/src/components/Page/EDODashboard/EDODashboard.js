@@ -211,7 +211,7 @@ export default function EDODashboard() {
             <span>
               {" "}
               <Link
-                to="/investmentopportunities/disclaimer-investor"
+                to="/investmentopportunities/disclaimer-contributor"
                 target="_blank"
                 rel="noopener noreferrer"
               >
