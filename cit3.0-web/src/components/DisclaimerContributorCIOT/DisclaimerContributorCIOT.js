@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./DisclaimerContributorCIOT.css";
 
 const DisclaimerContributorCIOT = () => (
@@ -79,18 +80,42 @@ const DisclaimerContributorCIOT = () => (
         </p>
       </li>
       <li>
-        <p>Contributor has read and agrees to the Terms of Use;</p>
+        <p>
+          Contributor has read and agrees to the{" "}
+          <span>
+            {" "}
+            <Link
+              to="/investmentopportunities/disclaimer-investor"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Terms of Use
+            </Link>
+          </span>
+          ;
+        </p>
       </li>
       <li>
         {" "}
         <p>
           in addition to the Province&#39;s general limitation of liability set
-          forth in the Terms of Use, Contributor agrees that under no
-          circumstances will the Province or any of its respective servants,
-          employees or agents be liable to Contributor or any person for any
-          direct, indirect, special, incidental, consequential or other damages
-          as a result of any use of any business dealings between Contributor,
-          Contributor&#39;s community and any third party;
+          forth in the{" "}
+          <span>
+            {" "}
+            <Link
+              to="/investmentopportunities/disclaimer-investor"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Terms of Use
+            </Link>
+          </span>
+          , Contributor agrees that under no circumstances will the Province or
+          any of its respective servants, employees or agents be liable to
+          Contributor or any person for any direct, indirect, special,
+          incidental, consequential or other damages as a result of any use of
+          any business dealings between Contributor, Contributor&#39;s community
+          and any third party;
         </p>
       </li>
       <li>
