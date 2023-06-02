@@ -1,9 +1,8 @@
-import { OverlayTrigger, Tooltip, useEffect, useState } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import "./InlineNumberRangeFilter.scss";
-import { Button } from "shared-components";
-import { Modal } from "react-bootstrap";
 import "react-input-range/src/scss/index.scss";
+import { OverlayTrigger } from "react-bootstrap";
 import InputRangeWithTextboxes from "../InputRangeWithTextboxes/InputRangeWithTextboxes";
 
 export default function InlineNumberRangeFilter(props) {
@@ -11,91 +10,45 @@ export default function InlineNumberRangeFilter(props) {
     inputRange,
     units,
     description,
-    label,
-    isDistance,
-    isSelected,
-    setIsSelected,
+    minInput,
+    setMinInput,
+    maxInput,
+    setMaxInput,
     inputRangeValue,
     setInputRangeValue,
-    displayRange,
-    setDisplayRange,
-    onSave,
+    cssClaseName,
+    isSelected,
+    setIsSelected,
+    tooltip,
   } = props;
-  const [show, setShow] = useState(false);
-  const [minInput, setMinInput] = useState(String(inputRange.min));
-  const [maxInput, setMaxInput] = useState(String(inputRange.max));
+
   const [validMax, setValidMax] = useState(true);
   const [validMin, setValidMin] = useState(true);
 
-  const inputRangeMax = inputRange.max;
-  const inputRangeMin = inputRange.min;
-
-  const handleSave = () => {
-    setIsSelected(true);
-    setShow(false);
-    setDisplayRange({
-      min: inputRangeValue.min,
-      max: inputRangeValue.max,
-    });
-    onSave({
-      min: inputRangeValue.min,
-      max: inputRangeValue.max,
-    });
-  };
-  const handleClear = () => {
-    setInputRangeValue({ min: inputRangeMin, max: inputRangeMax });
-    setMaxInput(String(inputRangeMax));
-    setMinInput(String(inputRangeMin));
-    setValidMin(true);
-    setValidMax(true);
-    setIsSelected(false);
-    setShow(false);
-    setDisplayRange({
-      min: inputRangeMin,
-      max: inputRangeMax,
-    });
-    onSave({
-      min: "",
-      max: "",
-    });
-  };
-  const handleShow = () => setShow(true);
-  const handleClose = () => {
-    setShow(false);
-    // Reset values to previous state
-    setInputRangeValue({ ...displayRange });
-    setMaxInput(String(displayRange.max));
-    setMinInput(String(displayRange.min));
-    setValidMin(true);
-    setValidMax(true);
-  };
-
-  const renderSaveTooltip = (saveProps) => (
-    <Tooltip id="button-tooltip" {...saveProps}>
-      Apply this filter
-    </Tooltip>
-  );
-
-  const renderClearTooltip = (clearProps) => (
-    <Tooltip id="button-tooltip" {...clearProps}>
-      Clear this filter
-    </Tooltip>
-  );
-
   return (
     <>
-      <Button
-        label="&#x2714;"
-        styling="bcgov-normal-blue btn bcgov-filter-apply"
-        onClick={handleSave}
-      />
-      <Button
-        label="&#x2716;"
-        styling="bcgov-normal-white mr-auto btn bcgov-filter-clear"
-        onClick={handleClear}
-        Tooltip="Enable this filter"
-      />
-      <p>{description}</p>
+      <div className={cssClaseName}>
+        <p>{description}</p>
+        {cssClaseName ? (
+          <div className="checkbox-sub-filter">
+            <OverlayTrigger
+              placement="right"
+              delay={{ show: 100, hide: 100 }}
+              overlay={tooltip}
+            >
+              <input
+                aria-labelledby="agree-label"
+                className="mr-2"
+                name="enable-parcel-check"
+                value="enable-parcel-check"
+                type="checkbox"
+                onChange={(e) => setIsSelected(e.target.checked)}
+                checked={isSelected}
+              />
+            </OverlayTrigger>
+          </div>
+        ) : null}
+      </div>
       {inputRangeValue ? (
         <InputRangeWithTextboxes
           inputRange={inputRange}
@@ -110,6 +63,7 @@ export default function InlineNumberRangeFilter(props) {
           validMin={validMin}
           setValidMax={setValidMax}
           setValidMin={setValidMin}
+          setIsSelected={(value) => setIsSelected(value)}
         />
       ) : null}
     </>
@@ -117,7 +71,7 @@ export default function InlineNumberRangeFilter(props) {
 }
 
 InlineNumberRangeFilter.defaultProps = {
-  isDistance: false,
+  cssClaseName: null,
 };
 
 InlineNumberRangeFilter.propTypes = {
@@ -127,19 +81,17 @@ InlineNumberRangeFilter.propTypes = {
   }).isRequired,
   units: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  isDistance: PropTypes.bool,
   isSelected: PropTypes.bool.isRequired,
   setIsSelected: PropTypes.func.isRequired,
+  minInput: PropTypes.number.isRequired,
+  setMinInput: PropTypes.func.isRequired,
+  maxInput: PropTypes.number.isRequired,
+  setMaxInput: PropTypes.func.isRequired,
   inputRangeValue: PropTypes.shape({
     max: PropTypes.number.isRequired,
     min: PropTypes.number.isRequired,
   }).isRequired,
   setInputRangeValue: PropTypes.func.isRequired,
-  displayRange: PropTypes.shape({
-    max: PropTypes.number.isRequired,
-    min: PropTypes.number.isRequired,
-  }).isRequired,
-  setDisplayRange: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
+  cssClaseName: PropTypes.string,
+  tooltip: PropTypes.func.isRequired,
 };

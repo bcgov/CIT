@@ -113,7 +113,7 @@ export default function InvestorMainView() {
         flyoutProps={{
           search,
           onQuery: (keyValues) => {
-            search = querystring.decode(query);
+            search = {};
             Object.entries(keyValues).forEach((keyValue) => {
               const [key, value] = keyValue;
               if (value !== "") {

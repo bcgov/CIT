@@ -133,6 +133,27 @@ h4 {
   padding-bottom: 0 !important;
 }
 
+.label-filter {
+  display:flex;
+}
+
+.sub-label-filter {
+  display:flex;
+  margin-bottom: -15px;
+}
+
+.checkbox-filter {
+  position:relative;
+  margin-left: 5px;
+  top: 22px;
+}
+
+.checkbox-sub-filter {
+  position:relative;
+  margin-left: 5px;
+  top: 1px;
+}
+
 .bcgov-filter-apply,
 .bcgov-filter-clear {
   display: none;
@@ -321,8 +342,8 @@ button.panel__header {
     border: none;
     outline: none;
     background-color: #c8e7f1;
-    width: 67px;
-    font-size: 10px;
+    width: 50px;
+    font-size: 12px;
     padding: 2px;
     margin: 3px 2px 0 0 !important;
 }

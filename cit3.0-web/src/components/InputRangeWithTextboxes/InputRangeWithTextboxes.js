@@ -20,6 +20,7 @@ export default function InputRangeWithTextboxes(props) {
     validMin,
     setValidMax,
     setValidMin,
+    setIsSelected,
   } = props;
 
   const inputRangeMax = inputRange.max;
@@ -98,6 +99,7 @@ export default function InputRangeWithTextboxes(props) {
     setMaxInput(String(updatedValue.max));
     setValidMin(true);
     setValidMax(true);
+    setIsSelected(true);
   };
 
   setMinInput(String(inputRangeValue.min));
@@ -115,7 +117,10 @@ export default function InputRangeWithTextboxes(props) {
         />
       </div>
       <Row className="d-flex flex-nowrap justify-content-between">
-        <div className="input-range-text-input  bcgov-ciot-left">
+        <div
+          className="input-range-text-input  bcgov-ciot-left"
+          style={{ textAlign: "center" }}
+        >
           <TextInput
             className="bcgov-ciot-range-text"
             handleChange={updateMin}
@@ -167,4 +172,5 @@ InputRangeWithTextboxes.propTypes = {
   validMin: PropTypes.bool.isRequired,
   setValidMax: PropTypes.func.isRequired,
   setValidMin: PropTypes.func.isRequired,
+  setIsSelected: PropTypes.func.isRequired,
 };

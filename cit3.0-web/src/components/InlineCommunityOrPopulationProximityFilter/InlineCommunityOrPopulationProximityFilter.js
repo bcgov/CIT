@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Button } from "shared-components";
-import { Modal, Container, Row } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import Select, { createFilter } from "react-select";
 import InputRangeWithTextboxes from "../InputRangeWithTextboxes/InputRangeWithTextboxes";
@@ -14,13 +13,16 @@ export default function InlineCommunityOrPopulationProximityFilter(props) {
     label,
     isSelected,
     setIsSelected,
-    displayRange,
-    setDisplayRange,
+    minInput,
+    setMinInput,
+    maxInput,
+    setMaxInput,
+    inputRangeValue,
+    setInputRangeValue,
     currentCommunity,
     setCurrentCommunity,
     currentPopulation,
     setCurrentPopulation,
-    onSave,
   } = props;
   const initialLabel = () => {
     if (currentCommunity !== null) {
@@ -31,26 +33,12 @@ export default function InlineCommunityOrPopulationProximityFilter(props) {
     }
     return "";
   };
-  const [show, setShow] = useState(false);
-  const [inputRangeValue, setInputRangeValue] = useState({
-    min: inputRange.min,
-    max: inputRange.max,
-  });
-  const [minInput, setMinInput] = useState(String(inputRange.min));
-  const [maxInput, setMaxInput] = useState(String(inputRange.max));
   const [validMax, setValidMax] = useState(true);
   const [validMin, setValidMin] = useState(true);
   const [
     displayCommunityOrPopulation,
     setDisplayCommunityOrPopulation,
   ] = useState(initialLabel());
-  const [isModified, setIsModified] = useState(false);
-  const [currentCommunityOnOpen, setCurrentCommunityOnOpen] = useState({});
-  const [currentPopulationOnOpen, setCurrentPopulationOnOpen] = useState({});
-
-  const inputRangeMax = inputRange.max;
-  const inputRangeMin = inputRange.min;
-
   const communityOptions = useSelector(
     (state) => state.options.communities
   ).map((option) => ({ value: option.id, label: option.place_name }));
@@ -103,117 +91,23 @@ export default function InlineCommunityOrPopulationProximityFilter(props) {
     setCurrentCommunity(null);
   };
 
-  const handleSave = () => {
-    setIsSelected(isModified);
-    setShow(false);
-    setDisplayRange({
-      min: inputRangeValue.min,
-      max: inputRangeValue.max,
-    });
-    if (currentCommunity !== null) {
-      setDisplayCommunityOrPopulation(currentCommunity.label);
-      onSave({
-        min: inputRangeValue.min,
-        max: inputRangeValue.max,
-        id: currentCommunity.value,
-      });
-    } else if (currentPopulation !== null) {
-      setDisplayCommunityOrPopulation(
-        `population of at least ${currentPopulation.label}`
-      );
-      onSave({
-        min: inputRangeValue.min,
-        max: inputRangeValue.max,
-        pop: currentPopulation.value,
-      });
-    }
-  };
-
-  const handleClear = () => {
-    setInputRangeValue({ min: inputRangeMin, max: inputRangeMax });
-    setMaxInput(String(inputRangeMax));
-    setMinInput(String(inputRangeMin));
-    setValidMin(true);
-    setValidMax(true);
-    setCurrentCommunity(null);
-    setCurrentPopulation(null);
-    setIsModified(false);
-    setIsSelected(false);
-    setShow(false);
-    setDisplayRange({
-      min: inputRangeMin,
-      max: inputRangeMax,
-    });
-    onSave({
-      min: "",
-      max: "",
-      id: "",
-      pop: "",
-    });
-  };
-  const handleShow = () => {
-    setShow(true);
-    setCurrentCommunityOnOpen(currentCommunity);
-    setCurrentPopulationOnOpen(currentPopulation);
-  };
-  const handleClose = () => {
-    setShow(false);
-    setInputRangeValue({ ...displayRange });
-    setMaxInput(String(displayRange.max));
-    setMinInput(String(displayRange.min));
-    setValidMin(true);
-    setValidMax(true);
-    setCurrentCommunity(currentCommunityOnOpen);
-    setCurrentPopulation(currentPopulationOnOpen);
-  };
-
-  const handleModified = (value, setStateFunction) => {
-    setIsModified(true);
-    setStateFunction(value);
-  };
-
   return (
     <>
-      <Button
-        label="&#x2714;"
-        styling="bcgov-normal-blue btn bcgov-filter-apply"
-        onClick={handleSave}
-      />
-      <Button
-        label="&#x2716;"
-        styling="bcgov-normal-white mr-auto btn bcgov-filter-clear"
-        onClick={handleClear}
-        Tooltip="Enable this filter"
-      />
-      {/* <Button
-        label={`${label}`}
-        styling={
-          isSelected
-            ? "bcgov-normal-blue filter-button selected btn"
-            : "bcgov-normal-white filter-button unselected btn"
-        }
-        onClick={handleShow}
-      /> */}
-      <br />
-      {/* {isSelected
-        ? `within ${displayRange.min} - ${displayRange.max} ${units} of ${displayCommunityOrPopulation}`
-        : ""} */}
       <p>Distance</p>
       <InputRangeWithTextboxes
         inputRange={inputRange}
         units={units}
         minInput={minInput}
-        setMinInput={(value) => handleModified(value, setMinInput)}
+        setMinInput={(value) => setMinInput(value)}
         maxInput={maxInput}
-        setMaxInput={(value) => handleModified(value, setMaxInput)}
+        setMaxInput={(value) => setMaxInput(value)}
         inputRangeValue={inputRangeValue}
-        setInputRangeValue={(value) =>
-          handleModified(value, setInputRangeValue)
-        }
+        setInputRangeValue={(value) => setInputRangeValue(value)}
         validMax={validMax}
         validMin={validMin}
         setValidMax={setValidMax}
         setValidMin={setValidMin}
+        setIsSelected={(value) => setIsSelected(value)}
       />
       <Container>
         <Row id="community-label">From this community</Row>
@@ -223,7 +117,7 @@ export default function InlineCommunityOrPopulationProximityFilter(props) {
             options={communityOptions}
             value={currentCommunity}
             defaultValue={currentCommunity}
-            onChange={(value) => handleModified(value, handleCommunityChange)}
+            onChange={(value) => handleCommunityChange(value)}
             className="w-100"
             filterOption={createFilter({ ignoreAccents: false })}
           />
@@ -234,7 +128,7 @@ export default function InlineCommunityOrPopulationProximityFilter(props) {
             aria-labelledby="population-label"
             options={populationOptions}
             value={currentPopulation}
-            onChange={(value) => handleModified(value, handlePopulationChange)}
+            onChange={(value) => handlePopulationChange(value)}
             className="w-100"
           />
         </Row>
@@ -257,11 +151,12 @@ InlineCommunityOrPopulationProximityFilter.propTypes = {
   label: PropTypes.string.isRequired,
   isSelected: PropTypes.bool.isRequired,
   setIsSelected: PropTypes.func.isRequired,
-  displayRange: PropTypes.shape({
-    max: PropTypes.number.isRequired,
-    min: PropTypes.number.isRequired,
-  }).isRequired,
-  setDisplayRange: PropTypes.func.isRequired,
+  minInput: PropTypes.number.isRequired,
+  setMinInput: PropTypes.func.isRequired,
+  maxInput: PropTypes.number.isRequired,
+  setMaxInput: PropTypes.func.isRequired,
+  inputRangeValue: PropTypes.number.isRequired,
+  setInputRangeValue: PropTypes.func.isRequired,
   currentCommunity: PropTypes.shape({
     value: PropTypes.number.isRequired,
     label: PropTypes.string.isRequired,
@@ -272,5 +167,4 @@ InlineCommunityOrPopulationProximityFilter.propTypes = {
     label: PropTypes.string.isRequired,
   }),
   setCurrentPopulation: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
 };
