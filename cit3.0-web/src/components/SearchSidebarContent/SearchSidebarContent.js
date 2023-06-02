@@ -404,7 +404,12 @@ export default function SearchSidebarContent({
     setproximityToCommunityOrPopulationDisplayRange(inputNearbyCommunityRange);
     setProximityCurrentCommunity(null);
     setProximityCurrentPopulation(null);
-    setZoningFilters(zoningFiltersInitial);
+    setZoningFilters(
+      zoningFilters.map((filter) => ({
+        ...filter,
+        isSelected: false,
+      }))
+    );
     setConnectivitySwitchValue(null);
     setRoadAccessSwitchValue(null);
     setWaterSwitchValue(null);
