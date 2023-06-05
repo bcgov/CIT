@@ -3,8 +3,9 @@ from pipeline.models.opportunity import PostSecondaryDistance,\
     CommunityDistance, MunicipalityDistance, IndianReserveBandDistance,\
     LakeDistance, RiverDistance, RoadsAndHighwaysDistance, AirportDistance,\
     RailwayDistance, PortAndTerminalDistance, CustomsPortOfEntryDistance,\
-    ResearchCentreDistance, FirstResponderDistance, HospitalDistance
+    ResearchCentreDistance, FirstResponderDistance, HospitalDistance, IndianReserveBandName
 from pipeline.models.general import Municipality, RegionalDistrict
+from pipeline.models.community import Community
 
 
 class OpportunityPostSecondarySerializer(serializers.ModelSerializer):
@@ -22,7 +23,7 @@ class OpportunityCommunitySerializer(serializers.ModelSerializer):
 class OpportunityIndianReserveBandSerializer(serializers.ModelSerializer):
     class Meta:
         model = IndianReserveBandDistance
-        fields = ('reserve_id', 'reserve_distance')
+        fields = ('reserve_id', 'reserve_distance','community_id', 'name', 'place_name')
 
 
 class OpportunityLakeSerializer(serializers.ModelSerializer):
@@ -100,10 +101,10 @@ class OpportunityRegionalDistrictSerializer(serializers.ModelSerializer):
 class MunicipalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = MunicipalityDistance
-        fields = ('municipality_distance', 'municipality_id')
+        fields = ('name','population','municipality_distance','municipality_id','community_id')
 
 
 class IndianReserveBandSerializer(serializers.ModelSerializer):
     class Meta:
         model = IndianReserveBandDistance
-        fields = ('reserve_distance', 'reserve_id')
+        fields = ('reserve_distance', 'reserve_id', 'community_id','name', 'place_name')

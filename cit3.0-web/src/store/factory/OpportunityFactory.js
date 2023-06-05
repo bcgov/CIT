@@ -87,12 +87,14 @@ function createRequestFromModel(state) {
     (m) => ({
       municipality_id: parseInt(m.pk, 10),
       municipality_distance: parseFloat(m.distance.toFixed(2)),
+      community_id: parseInt(m.community_id, 10),
     })
   );
   nearestLocations.nearest_first_nations_object = state.firstNationCommunities.map(
     (f) => ({
       reserve_id: parseInt(f.pk, 10),
-      reserve_distance: parseFloat(f.distance.toFixed(2)),
+      community_id: parseInt(f.pk, 10),
+      reserve_distance: parseFloat(f.distance).toFixed(2),
     })
   );
   if (state.physical.nearElevation.value) {

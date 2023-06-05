@@ -32,7 +32,7 @@ export default function Footer() {
         <FooterToggler />
         <div className="collapse navbar-collapse flex-grow-0" id="footerBar">
           <ul className="navbar-nav text-right">
-            {LinkElement("mailto:citinfo@gov.bc.ca", "Contact Us")}
+            {LinkElement("mailto:ciot@gov.bc.ca", "Contact Us")}
             {LinkElement("https://www2.gov.bc.ca", "BC Government")}
             {LinkElement(
               "https://www2.gov.bc.ca/gov/content/home/disclaimer",

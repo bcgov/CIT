@@ -1,0 +1,16 @@
+.disclaimer-container {
+    padding: 5vh 10vh 5vh;
+}
+
+@media(max-width: 767px) {
+    .disclaimer-container {
+        padding: 3rem 1.5rem;
+    }
+    .disclaimer-container .container-fluid {
+        padding: 0;
+    }
+}
+
+.disclaimer-header {
+    text-align: left;
+}
