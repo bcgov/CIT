@@ -78,7 +78,7 @@ def construct_email_body(opportunity_list):
 
     email_body = "<p>It has been over 90 days since you last updated the following investment opportunities in the Community Investment Opportunities Tool. </p>"
     email_body = email_body + opportunity_links
-    email_body = email_body + "<p>To manage these listings, please log in to the <a href=\"" + build_full_dashboard_link() +  "\">Community Investment Tool</a>.</p>"
+    email_body = email_body + "<p>To manage these listings, please log in to the <a href=\"" + build_full_dashboard_link() +  "\">Community Investment Opportunities Tool</a>.</p>"
     email_body = email_body + "<p>If the opportunity is still active, click on 'Edit Listing' to review and resubmit your listing.</p>"
     email_body = email_body + "<p>If the opportunity has been sold, please select 'Close'.</p>"
     email_body = email_body + "<p>If you wish to remove the opportunity from the site, please select 'Delete'.</p>"
