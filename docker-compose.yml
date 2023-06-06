@@ -35,7 +35,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: cittest1
+      POSTGRES_DB: cit
       POSTGRES_MULTIPLE_EXTENSIONS: postgis,pgrouting,pg_buffercache,pg_stat_statements
     volumes:
       - ./db/init.sql:/usr/share/postgresql/15/contrib/postgis-3.3/legacy_minimal.sql
