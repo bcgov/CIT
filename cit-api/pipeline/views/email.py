@@ -52,7 +52,7 @@ class EmailView(APIView):
             email_config = {
                 "bcc": [],
                 "bodyType": "html",
-                "body": "<p>A new opportunity has been submitted to the Investment Opportunities Tool for "+ str(municipality) + ", "+ str(district) +". Please review the listing to determine whether any revisions are required prior to publication.</p><p>Click here to view the listing: " + build_full_link(link) + "</p>",
+                "body": "<p>A new opportunity has been submitted to the Community Investment Opportunities Tool for "+ str(municipality) + ", "+ str(district) +". <p>Please review the opportunity to determine whether any revisions are required: " + build_full_link(link) + "</p><p>If the opportunity meets all eligibility requirements, you may approve and publish the opportunity.</p>",
                 "cc": [],
                 "delayTS": 0,
                 "encoding": "utf-8",

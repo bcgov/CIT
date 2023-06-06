@@ -1,13 +1,14 @@
-from rest_framework import generics
-from rest_framework import pagination
-from django.db.models import Q
 from django.contrib.gis.measure import D
-
-from pipeline.models.opportunity import Opportunity
-from pipeline.models.general import RegionalDistrict
+from django.db.models import Q
+from pipeline.models.cen_prof_detailed_csd_attrs_sp import (
+    CEN_PROF_DETAILED_CSD_ATTRS_SP,
+)
 from pipeline.models.community import Community
+from pipeline.models.general import RegionalDistrict
+from pipeline.models.location_assets import Location
+from pipeline.models.opportunity import Opportunity
 from pipeline.serializers.opportunity.get import OpportunityGetSerializer
-from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
+from rest_framework import generics, pagination
 
 MIN_TABLE_ID = 1
 MIN_DISTANCE = 0
@@ -64,14 +65,11 @@ class OpportunitiesList(generics.ListAPIView):
             if (regional_district_models is not None):
                 queryset = queryset.filter(geo_position__intersects=regional_district_models.geom)
 
-        exclude_unknowns = self.request.query_params.get('exclude_unknowns', None)
-        queryset = self.service_queryset(queryset, exclude_unknowns, 'opportunity_road_connected')
-        queryset = self.service_queryset(queryset, exclude_unknowns, 'opportunity_water_connected')
-        queryset = self.service_queryset(queryset, exclude_unknowns, 'opportunity_sewer_connected')
-        queryset = self.service_queryset(queryset, exclude_unknowns,
-                                         'opportunity_electrical_connected')
-        queryset = self.service_queryset(queryset, exclude_unknowns,
-                                         'opportunity_natural_gas_connected')
+        queryset = self.service_queryset(queryset, 'opportunity_road_connected')
+        queryset = self.service_queryset(queryset, 'opportunity_water_connected')
+        queryset = self.service_queryset(queryset, 'opportunity_sewer_connected')
+        queryset = self.service_queryset(queryset, 'opportunity_electrical_connected')
+        queryset = self.service_queryset(queryset, 'opportunity_natural_gas_connected')
 
         post_secondary_within_100km = self.request.query_params.get('post_secondary_within_100km',
                                                                     None)
@@ -142,7 +140,10 @@ class OpportunitiesList(generics.ListAPIView):
         connectivity = self.request.query_params.get('connectivity', None)
         if (connectivity == 'Y'):
             queryset = queryset.filter(
-                Q(network_avg__in=['50/10']) | Q(network_at_road__in=['50/10']))
+                Q(network_avg__in=['50/10']) & Q(network_at_road='Yes'))
+        elif (connectivity == 'N'):
+            queryset = queryset.filter(Q(network_at_road='No'))
+
 
         community_population_distance_min = float(
             self.request.query_params.get('community_population_distance_min', INVALID_INT))
@@ -165,11 +166,19 @@ class OpportunitiesList(generics.ListAPIView):
                 queryset, community_population_distance_min, community_population_distance_max,
                 proximity_population)
 
-        return queryset.select_related('nearest_port', 'nearest_airport', 'nearest_research_centre',
-        'nearest_customs_port_of_entry','nearest_coast_guard_station',
-        'nearest_ambulance_station', 'nearest_police_station', 'nearest_fire_station', 'nearest_health_center',
-        'nearest_railway','nearest_highway','nearest_river','nearest_lake',
-        'nearest_post_secondary', 'nearest_community', 'regional_district').order_by('id')
+        return queryset.select_related('nearest_port__port_id', 'nearest_airport__airport_id',
+                                       'nearest_research_centre','nearest_customs_port_of_entry',
+                                       'nearest_coast_guard_station', 'nearest_community__community_id',
+                                       'nearest_ambulance_station', 'nearest_police_station',
+                                       'nearest_fire_station', 'nearest_health_center',
+                                       'nearest_railway__railway_id','nearest_highway__highway_id',
+                                       'nearest_river','nearest_lake','nearest_post_secondary',
+                                       'regional_district', 'municipality').prefetch_related('nearest_first_nations__reserve_id',
+                                                                                             'nearest_first_nations__community_id',
+                                                                                             'nearest_municipalities__municipality_id',
+                                                                                             'nearest_municipalities__community_id__census_subdivision',
+                                                                                             'opportunity_preferred_development').order_by('id')
+
 
     def filter_opportunities_by_distance_from_community(self, queryset, community_distance_min,
                                                         community_distance_max,
@@ -207,73 +216,48 @@ class OpportunitiesList(generics.ListAPIView):
 
         return queryset
 
-    def service_queryset(self, queryset, exclude_unknowns, service_name):
+    def service_queryset(self, queryset, service_name):
         service_connected = self.request.query_params.get(service_name, None)
 
         if (service_name == 'opportunity_road_connected'):
-            if (service_connected is not None
-                    and (exclude_unknowns is None or exclude_unknowns == 'N')
-                    and service_connected == 'Y'):
+            if (service_connected is not None and service_connected == 'Y'):
+                queryset = queryset.filter(
+                    Q(opportunity_road_connected=service_connected))
+            elif (service_connected is not None and service_connected == 'N'):
                 queryset = queryset.filter(
                     Q(opportunity_road_connected=service_connected)
                     | Q(opportunity_road_connected='U'))
-            elif (service_connected is not None and exclude_unknowns == 'Y'
-                  and service_connected == 'Y'):
-                queryset = queryset.filter(opportunity_road_connected=service_connected)
-            elif (service_connected is not None and exclude_unknowns == 'Y'
-                  and service_connected == 'N'):
-                queryset = queryset.filter(~Q(opportunity_road_connected='U'))
         elif (service_name == 'opportunity_water_connected'):
-            if (service_connected is not None
-                    and (exclude_unknowns is None or exclude_unknowns == 'N')
-                    and service_connected == 'Y'):
+            if (service_connected is not None and service_connected == 'Y'):
+                queryset = queryset.filter(
+                    Q(opportunity_water_connected=service_connected))
+            elif (service_connected is not None and service_connected == 'N'):
                 queryset = queryset.filter(
                     Q(opportunity_water_connected=service_connected)
                     | Q(opportunity_water_connected='U'))
-            elif (service_connected is not None and exclude_unknowns == 'Y'
-                  and service_connected == 'Y'):
-                queryset = queryset.filter(opportunity_water_connected=service_connected)
-            elif (service_connected is not None and exclude_unknowns == 'Y'
-                  and service_connected == 'N'):
-                queryset = queryset.filter(~Q(opportunity_water_connected='U'))
         elif (service_name == 'opportunity_sewer_connected'):
-            if (service_connected is not None
-                    and (exclude_unknowns is None or exclude_unknowns == 'N')
-                    and service_connected == 'Y'):
+            if (service_connected is not None and service_connected == 'Y'):
+                queryset = queryset.filter(
+                    Q(opportunity_sewer_connected=service_connected))
+            elif (service_connected is not None and service_connected == 'N'):
                 queryset = queryset.filter(
                     Q(opportunity_sewer_connected=service_connected)
                     | Q(opportunity_sewer_connected='U'))
-            elif (service_connected is not None and exclude_unknowns == 'Y'
-                  and service_connected == 'Y'):
-                queryset = queryset.filter(opportunity_sewer_connected=service_connected)
-            elif (service_connected is not None and exclude_unknowns == 'Y'
-                  and service_connected == 'N'):
-                queryset = queryset.filter(~Q(opportunity_sewer_connected='U'))
         elif (service_name == 'opportunity_electrical_connected'):
-            if (service_connected is not None
-                    and (exclude_unknowns is None or exclude_unknowns == 'N')
-                    and service_connected == 'Y'):
+            if (service_connected is not None and service_connected == 'Y'):
+                queryset = queryset.filter(
+                    Q(opportunity_electrical_connected=service_connected))
+            elif (service_connected is not None and service_connected == 'N'):
                 queryset = queryset.filter(
                     Q(opportunity_electrical_connected=service_connected)
                     | Q(opportunity_electrical_connected='U'))
-            elif (service_connected is not None and exclude_unknowns == 'Y'
-                  and service_connected == 'Y'):
-                queryset = queryset.filter(opportunity_electrical_connected=service_connected)
-            elif (service_connected is not None and exclude_unknowns == 'Y'
-                  and service_connected == 'N'):
-                queryset = queryset.filter(~Q(opportunity_electrical_connected='U'))
         elif (service_name == 'opportunity_natural_gas_connected'):
-            if (service_connected is not None
-                    and (exclude_unknowns is None or exclude_unknowns == 'N')
-                    and service_connected == 'Y'):
+            if (service_connected is not None and service_connected == 'Y'):
+                queryset = queryset.filter(
+                    Q(opportunity_natural_gas_connected=service_connected))
+            elif (service_connected is not None and service_connected == 'N'):
                 queryset = queryset.filter(
                     Q(opportunity_natural_gas_connected=service_connected)
                     | Q(opportunity_natural_gas_connected='U'))
-            elif (service_connected is not None and exclude_unknowns == 'Y'
-                  and service_connected == 'Y'):
-                queryset = queryset.filter(opportunity_natural_gas_connected=service_connected)
-            elif (service_connected is not None and exclude_unknowns == 'Y'
-                  and service_connected == 'N'):
-                queryset = queryset.filter(~Q(opportunity_natural_gas_connected='U'))
 
         return queryset

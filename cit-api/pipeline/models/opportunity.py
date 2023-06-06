@@ -46,10 +46,22 @@ class MunicipalityDistance(models.Model):
                                         on_delete=models.SET_NULL,
                                         db_column="municipality_id",
                                         null=True)
+    community_id = models.ForeignKey(Community,
+                                     on_delete= models.SET_NULL,
+                                     db_column="community_id",
+                                     null=True)
     municipality_distance = models.DecimalField(max_digits=16,
                                                 decimal_places=4,
                                                 blank=False,
                                                 null=False)
+
+    @property
+    def name(self):
+        return self.municipality_id.name
+
+    @property
+    def population(self):
+        return self.community_id.population
 
 
 class IndianReserveBandDistance(models.Model):
@@ -57,7 +69,19 @@ class IndianReserveBandDistance(models.Model):
                                    on_delete=models.SET_NULL,
                                    db_column="reserve_id",
                                    null=True)
+    community_id = models.ForeignKey(Community,
+                                     on_delete= models.SET_NULL,
+                                     db_column="community_id",
+                                     null=True)
     reserve_distance = models.DecimalField(max_digits=16, decimal_places=4, blank=False, null=False)
+
+    @property
+    def name(self):
+        return self.reserve_id.name
+
+    @property
+    def place_name(self):
+        return self.community_id.place_name
 
 
 class LakeDistance(models.Model):

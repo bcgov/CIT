@@ -68,7 +68,7 @@ const OpportunityListItem = ({
             className="p-0"
             onClick={() => handleModalOpen(opp.id)}
           >
-            Closed
+            Close
           </Button>
           <br />
           <NavLink to={`/delete/investmentopportunities/${opp.id}/`}>
@@ -103,6 +103,9 @@ const OpportunityListItem = ({
     );
   };
 
+  const truncate = (str) =>
+    str.length > 252 ? `${str.substring(0, 252)} ...` : str;
+
   const saleOrLease = () => {
     const propertyStatus = options.propertyStatuses.find(
       (s) => s.code === opportunity.userInfo.saleOrLease.value
@@ -114,10 +117,7 @@ const OpportunityListItem = ({
 
   return (
     <div key={opportunity.id} className="opportunity-table-row w-100">
-      <Row
-        className={publicView ? "nested-link" : ""}
-        onClick={() => !!publicView && history.push(opportunity.link)}
-      >
+      <Row className={publicView ? "nested-link" : ""}>
         <Col md={3} lg={3}>
           <div className="border-list-item opportunity-table-map-container">
             <Map
@@ -178,14 +178,7 @@ const OpportunityListItem = ({
                     paddingBottom: "0.5rem",
                   }}
                 >
-                  <LinesEllipsis
-                    className="note"
-                    text={opportunity.userInfo.opportunityDescription.value}
-                    maxLine="4"
-                    ellipsis="..."
-                    trimRight
-                    basedOn="letters"
-                  />
+                  {truncate(opportunity.userInfo.opportunityDescription.value)}
                 </Col>
                 <Col
                   style={{
@@ -201,7 +194,9 @@ const OpportunityListItem = ({
                   <Button
                     className="p-0"
                     variant="link"
-                    onClick={() => setCurrentUrl(opportunity.link)}
+                    onClick={() => {
+                      window.open(opportunity.link, "_blank");
+                    }}
                   >
                     View property details
                   </Button>

@@ -17,14 +17,15 @@ from pipeline.serializers.opportunity.distance import (
     OpportunityFirstResponderSerializer, OpportunityHospitalSerializer, OpportunityCustomsPortOfEntrySerializer,
     OpportunityResearchCentreSerializer, OpportunityRiverSerializer, OpportunityLakeSerializer,
     OpportunityMunicipalitySerializer, OpportunityRegionalDistrictSerializer, OpportunityPortAndTerminalSerializer,
-    OpportunityRailwaySerializer, OpportunityRoadsAndHighwaysSerializer, OpportunityAirportSerializer)
+    OpportunityRailwaySerializer, OpportunityRoadsAndHighwaysSerializer, OpportunityAirportSerializer,
+    OpportunityIndianReserveBandSerializer, MunicipalitySerializer)
 
 
 class OpportunityGetSerializer(serializers.ModelSerializer):
     opportunity_preferred_development = serializers.PrimaryKeyRelatedField(
         queryset=PreferredDevelopment.objects.all(), many=True, required=False)
-    nearest_first_nations = serializers.SerializerMethodField()
-    nearest_municipalities = serializers.SerializerMethodField()
+    nearest_first_nations = OpportunityIndianReserveBandSerializer(many=True)
+    nearest_municipalities = MunicipalitySerializer(many=True)
     nearest_community = OpportunityCommunitySerializer(required=False)
     nearest_post_secondary = OpportunityPostSecondarySerializer(required=False)
     nearest_coast_guard_station = OpportunityFirstResponderSerializer(required=False)
@@ -113,31 +114,3 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
             "regional_district",
         )
 
-    def get_nearest_first_nations(self, instance):
-        nearest_first_nations = None
-        if instance.nearest_first_nations:
-            nearest_first_nations = []
-            nearest_fns = Community.objects.annotate(distance=Distance("point", instance.geo_position)).filter(point__distance_lte=(instance.geo_position, D(km=100)), community_type__in=["Rural First Nations Reserve", "Urban First Nations Reserve"]).order_by('distance')[:3]
-            for fn in nearest_fns:
-                mapped_fn = dict()
-                mapped_fn["name"] = fn.place_name
-                mapped_fn["link"] = fn.place_name
-                mapped_fn["distance"] = fn.distance.km
-                nearest_first_nations.append(mapped_fn)
-        return nearest_first_nations
-
-    def get_nearest_municipalities(self, instance):
-        index = 0
-        nearest_municipalities = list(instance.nearest_municipalities.all().values())
-        for municipality in nearest_municipalities:
-            nearest_municipalities[index]['municipality_name'] = Municipality.objects.get(
-                id=municipality['municipality_id_id']).name
-            community_queryset = Community.objects.filter(
-                municipality_id=municipality['municipality_id_id']).annotate(
-                    count=F('census_subdivision__pop_total_2016'))
-            nearest_municipalities[index]['municipality_population'] = 0
-            if len(community_queryset):
-                nearest_municipalities[index][
-                    'municipality_population'] = community_queryset.values()[0]['count']
-            index += 1
-        return nearest_municipalities

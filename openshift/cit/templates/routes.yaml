@@ -11,11 +11,11 @@ spec:
   tls:
     termination: edge
     certificate: |-
-{{ .Files.Get "cert.pem" | indent 6 }}
+{{ .Files.Get "../../private/certs/cit/communityinformationtool.gov.bc.ca.txt" | indent 6 }}
     key: |-
-{{ .Files.Get "cit.key" | indent 6 }}
+{{ .Files.Get "../../private/certs/cit/cit.key" | indent 6 }}
     caCertificate: |-
-{{ .Files.Get "cert-chain.pem" | indent 6 }}
+{{ .Files.Get "../../private/certs/cit/cert-chain.txt" | indent 6 }}
     insecureEdgeTerminationPolicy: Redirect
   to:
     kind: Service
@@ -31,41 +31,20 @@ metadata:
     app: {{ .Values.app_name }}-web
     name: {{ .Values.app_name }}-web
 spec:
+  host: {{ .Values.subdomain }}.communityinformationtool.gov.bc.ca
   port:
     targetPort: 8080-tcp
   tls:
     termination: edge
     certificate: |-
-{{ .Files.Get "cert.pem" | indent 6 }}
-    # The cit.key file is a secret so is added to the .gitignore and will not be included in the git repository
-    # See the OCP "secrets" where we've stored the value of the cit.key file so you can re-create as needed
+{{ .Files.Get "../../private/certs/cit/communityinformationtool.gov.bc.ca.txt" | indent 6 }}
     key: |-
-{{ .Files.Get "cit.key" | indent 6}}
+{{ .Files.Get "../../private/certs/cit/cit.key" | indent 6 }}
     caCertificate: |-
-{{ .Files.Get "cert-chain.pem" | indent 6 }}
+{{ .Files.Get "../../private/certs/cit/cert-chain.txt" | indent 6 }}
     insecureEdgeTerminationPolicy: Redirect
   to:
     kind: Service
     name: {{ .Values.app_name }}-web
     weight: 100
   wildcardPolicy: None
----
-# THESE ROUTES ARE NOT IN USE BECAUSE PATRONI IS NOT BEING USED IN OPENSHIFT
-#kind: Route
-#apiVersion: route.openshift.io/v1
-#metadata:
-#  name: {{ .Values.app_name }}-patroni
-#  labels:
-#    app: {{ .Values.app_name }}-patroni
-#    name: {{ .Values.app_name }}-patroni
-#spec:
-#  port:
-#    targetPort: 5432-tcp
-#  tls:
-#    insecureEdgeTerminationPolicy: Redirect
-#    termination: edge
-#  to:
-#    kind: Service
-#    name: {{ .Values.app_name }}-patroni
-#    weight: 100
-#  wildcardPolicy: None

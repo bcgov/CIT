@@ -96,14 +96,14 @@ export default function Map({
       <>
         <ChangeView center={changeView(coords)} zoom={16} />
         <LayersControl position="bottomleft">
-          <LayersControl.BaseLayer checked name="OpenStreetMap">
+          <LayersControl.BaseLayer name="OpenStreetMap">
             <TileLayer
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
           </LayersControl.BaseLayer>
 
-          <LayersControl.BaseLayer name="Satellite">
+          <LayersControl.BaseLayer checked name="Satellite">
             <TileLayer
               attribution='&copy; <a href="http://www.esri.com/">Esri</a> contributors'
               url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
@@ -127,17 +127,6 @@ export default function Map({
             <Popup>{address || null}</Popup>
           </Marker>
         ) : null}
-        {JSON.stringify(nearbyResources) !== "{}"
-          ? Object.entries(nearbyResources).map(([resource, resourceData]) =>
-              resource !== "community" ? (
-                <ResourceMarker
-                  key={resource}
-                  resourceName={resource}
-                  resources={resourceData}
-                />
-              ) : null
-            )
-          : null}
       </>
     );
     zoomLevel = 5; // do not change!
@@ -146,8 +135,8 @@ export default function Map({
     additionalComponents = (
       <>
         <TileLayer
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="http://www.esri.com/">Esri</a> contributors'
+          url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
         />
         <Marker position={coords} />
       </>

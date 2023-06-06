@@ -5,13 +5,13 @@ import { Button } from "shared-components";
 import { Row, Col, Tooltip, OverlayTrigger, Form } from "react-bootstrap";
 import { MdHelp } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import NumberRangeFilter from "../NumberRangeFilter/NumberRangeFilter";
 import SelectFilter from "../SelectFilter/SelectFilter";
 import CommunityOrPopulationProximityFilter from "../CommunityOrPopulationProximityFilter/CommunityOrPopulationProximityFilter";
 import "./SearchFlyoutContent.scss";
 import { getOptions, setOptions } from "../../store/actions/options";
 
-const FORM_EXCLUDE_UNKNOWNS = "exclude_unknowns";
 const FORM_OPPORTUNITY_ROAD_CONNECTED = "opportunity_road_connected";
 const FORM_OPPORTUNITY_WATER_CONNECTED = "opportunity_water_connected";
 const FORM_OPPORTUNITY_SEWER_CONNECTED = "opportunity_sewer_connected";
@@ -283,12 +283,6 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
       : false
   );
 
-  const [excludeUnknowns, setExcludeUnknowns] = useState(
-    FORM_EXCLUDE_UNKNOWNS in search
-      ? search[FORM_EXCLUDE_UNKNOWNS] === "Y"
-      : false
-  );
-
   const [postSecondarySwitchValue, setPostSecondarySwitchValue] = useState(
     FORM_POST_SECONDARY in search ? search[FORM_POST_SECONDARY] === "Y" : false
   );
@@ -349,7 +343,7 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
       label: "Connectivity (50/10Mbps+)",
       checked: connectivitySwitchValue,
       onChange: (value) => {
-        onQuery({ [FORM_CONNECTIVITY]: !excludeUnknowns });
+        onQuery({ [FORM_CONNECTIVITY]: value ? "Y" : "N" });
         setConnectivitySwitchValue(value);
       },
       queryKey: FORM_CONNECTIVITY,
@@ -423,7 +417,6 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
     search = {};
     resetFilters();
     resetFilters();
-    setExcludeUnknowns(false);
     setParcelSizeIsSelected(false);
     setParcelSizeInputRange({ min: 0, max: 2000 });
     setParcelSizeDisplayRange({ min: 0, max: 2000 });
@@ -518,7 +511,9 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
       />
       <SelectFilter
         label="Zoning"
-        filters={zoningFilters}
+        filters={zoningFilters.filter(
+          (element) => element.label !== "Residential"
+        )}
         setFilters={setZoningFilters}
         isSelected={zoningIsSelected}
         setIsSelected={setZoningIsSelected}
@@ -549,33 +544,6 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
       <Row className="flex-nowrap">
         <Col xs="6">
           <h3>Site Servicing</h3>
-        </Col>
-        <Col xs="auto" className="exclude-unknown-section">
-          <input
-            type="checkbox"
-            checked={excludeUnknowns}
-            value={excludeUnknowns}
-            onChange={() => {
-              onQuery({
-                [FORM_EXCLUDE_UNKNOWNS]: !excludeUnknowns ? "Y" : "N",
-              });
-              setExcludeUnknowns(!excludeUnknowns);
-            }}
-          />
-        </Col>
-        <Col xs="auto" className="exclude-unknown-section">
-          <span>
-            Exclude Unknown{" "}
-            <span>
-              <OverlayTrigger
-                placement="right"
-                delay={{ show: 100, hide: 100 }}
-                overlay={renderTooltip}
-              >
-                <MdHelp color="#2693e6" size="1.3em" />
-              </OverlayTrigger>
-            </span>
-          </span>
         </Col>
       </Row>
       {siteServicingSection}
@@ -673,7 +641,7 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
       <h3>Advanced Education &amp; Research</h3>
       <Row className="flex-nowrap">
         <Col xs={7}>
-          <p>Post-secondary Institute within 100km?:</p>
+          <p>Post-secondary Institute within 100km?</p>
         </Col>
         <Col xs="auto" className="no-padding">
           <p>No</p>
@@ -702,7 +670,7 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
       </Row>
       <Row className="flex-nowrap">
         <Col xs={7}>
-          <p>Research Centre within 100km?:</p>
+          <p>Research Centre within 100km?</p>
         </Col>
         <Col xs="auto" className="no-padding">
           <p>No</p>
@@ -730,30 +698,48 @@ export default function SearchFlyoutContent({ onQuery, resetFilters, search }) {
         </Col>
       </Row>
       <h3>Regional District</h3>
-      <Form.Group controlId="regional_district">
-        <Form.Label className="visually-hidden">To</Form.Label>
-        <Form.Control
-          as="select"
-          name="regional-district"
-          value={regionalDistrict}
-          onChange={(e) => handleRegionalDistrictChange(e.target.value)}
-        >
-          <option value="">All</option>
-          {regionalDistricts &&
-            regionalDistricts.map((district) => (
-              <option key={district.id} value={district.id}>
-                {district.name}
-              </option>
-            ))}
-        </Form.Control>
-      </Form.Group>
-      <hr className="hr-bold" />
-      <div className="d-flex justify-content-end">
-        <Button
-          styling="BC-Gov-SecondaryButton"
-          label="Reset all filters"
-          onClick={() => handleResetFilters()}
-        />
+      <div style={{ marginRight: "15px" }}>
+        <Form.Group controlId="regional_district">
+          <Form.Label className="visually-hidden">To</Form.Label>
+          <Form.Control
+            as="select"
+            name="regional-district"
+            value={regionalDistrict}
+            onChange={(e) => handleRegionalDistrictChange(e.target.value)}
+          >
+            <option value="">All</option>
+            {regionalDistricts &&
+              regionalDistricts.map((district) => (
+                <option key={district.id} value={district.id}>
+                  {district.name}
+                </option>
+              ))}
+          </Form.Control>
+        </Form.Group>
+        <hr className="hr-bold" />
+      </div>
+      <div style={{ marginBottom: "20px" }}>
+        <Row>
+          <Col xs="auto">
+            <span>
+              {" "}
+              <Link
+                to="/investmentopportunities/disclaimer-investor"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Terms of Use
+              </Link>
+            </span>{" "}
+          </Col>
+          <Col xs="auto" className="reset-button">
+            <Button
+              styling="BC-Gov-SecondaryButton"
+              label="Reset all filters"
+              onClick={() => handleResetFilters()}
+            />
+          </Col>
+        </Row>
       </div>
     </div>
   );

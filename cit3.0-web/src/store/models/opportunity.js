@@ -331,18 +331,20 @@ export class Opportunity {
     if (value && value.features) {
       this.state.municipalities = value.features.map((feature) => ({
         name: feature.properties.name,
-        link: feature.properties.link,
+        link: feature.properties.name,
         distance: feature.properties.distance,
         population: feature.properties.population,
         pk: feature.properties.pk,
+        community_id: feature.properties.community_id,
       }));
     } else {
       this.state.municipalities = value.map((feature) => ({
-        name: feature.municipality_name,
-        link: feature.municipality_link,
+        name: feature.name,
+        link: feature.name,
         distance: feature.municipality_distance,
-        population: feature.municipality_population,
+        population: feature.population,
         pk: feature.municipality_id,
+        community_id: feature.community_id,
       }));
     }
   }
@@ -353,22 +355,20 @@ export class Opportunity {
         name: feature.properties.place_name,
         link: feature.properties.place_name,
         distance: feature.properties.distance,
-        population: feature.properties.population,
         pk: feature.properties.pk,
       }));
     } else {
       this.state.firstNationCommunities = value.map((feature) => ({
-        name: feature.name,
-        link: feature.name,
-        distance: feature.distance,
-        population: feature.population,
-        pk: feature.pk,
+        name: feature.place_name,
+        link: feature.place_name,
+        distance: feature.reserve_distance,
+        pk: feature.reserve_id,
       }));
     }
   }
 
   createLink() {
-    this.state.link = createOpportunityLink(this.state.name, this.state.id);
+    this.state.link = createOpportunityLink(this.state.id, this.state.name);
   }
 
   set opportunityName(value) {
@@ -755,6 +755,8 @@ export class Opportunity {
   set community(value) {
     this.state.community.id = value.features && value.features[0].properties.pk;
     this.state.community.community_distance = value.community_distance;
+    this.state.community.municipality_id =
+      value.features[0].properties.municipality;
   }
 
   set opportunityLink(value) {

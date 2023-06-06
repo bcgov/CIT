@@ -6,7 +6,7 @@ import OpportunityApproveCallout from "./OpportunityApproveCallout";
 storiesOf("OpportunityApproveCallout", module).add("default", () => (
   <OpportunityApproveCallout
     privateNote="Here is a private note for administrators only."
-    publicNote="Here is a note sent the Community User or EDO."
+    publicNote="Here is a note sent the Community User."
     currentStatus="PUBL"
     approvalStatuses={[{ status_name: "Published", status_code: "PUBL" }]}
     onStatusChange={(change) => {

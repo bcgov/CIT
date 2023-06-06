@@ -42,13 +42,10 @@ const ReviewOpportunity = () => {
       keycloak.obj.token
     );
     dispatch(setOpportunityUser(user.id));
-    dispatch(setApprovalStatus("NEW"));
+    dispatch(setApprovalStatus("PEND"));
     await postOpportunity(opportunityModel, keycloak.obj.token)
       .then((response) => {
-        const opportunityLink = createOpportunityLink(
-          opportunityModel.name,
-          response.data.id
-        );
+        const opportunityLink = createOpportunityLink(response.data.id);
         sendAdminEmailNotification(
           response.data.id,
           opportunityLink,
@@ -70,7 +67,6 @@ const ReviewOpportunity = () => {
   };
 
   const handlePutpportunity = async () => {
-    dispatch(setApprovalStatus("NWED"));
     await putOpportunity(opportunityModel, keycloak.obj.token)
       .then(() => {
         dispatch(resetOpportunity());

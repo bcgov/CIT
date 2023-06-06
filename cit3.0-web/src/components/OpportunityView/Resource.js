@@ -242,9 +242,11 @@ export default function Resource({ title, itemsToDisplay, view }) {
       }
       return (
         <>
-          <Row className="mb-2" key={v4()}>
-            {key}: {items[key]}
-          </Row>
+          {["Nearest Lake", "Nearest River"].includes(key) ? null : (
+            <Row className="mb-2" key={v4()}>
+              {key}: {items[key]}
+            </Row>
+          )}
         </>
       );
     });
