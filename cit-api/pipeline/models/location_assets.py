@@ -202,8 +202,8 @@ class Project(Location):
     updated_fields = models.CharField(max_length=255, null=True, blank=True)
 
     # calculated fields
-    is_earliest_entry = models.NullBooleanField()
-    is_latest_entry = models.NullBooleanField()
+    is_earliest_entry = models.BooleanField(null=True)
+    is_latest_entry = models.BooleanField(null=True)
 
     class Meta:
         ordering = ("id", )

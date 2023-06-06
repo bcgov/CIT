@@ -235,7 +235,7 @@ class Opportunity(models.Model):
                                         null=True)
     # OLD: This is currently unused for submission
     opportunity_preferred_development = models.ManyToManyField(
-        PreferredDevelopment, db_column="opportunity_preferred_development", null=True)
+        PreferredDevelopment, db_column="opportunity_preferred_development")
     # NEW: This is preferred so user may add their own
     opportunity_preferred_development_v2 = models.CharField(max_length=255, null=True, blank=True)
 
@@ -261,12 +261,10 @@ class Opportunity(models.Model):
                                           null=True)
     nearest_municipalities = models.ManyToManyField(MunicipalityDistance,
                                                     db_column="nearest_municipalities",
-                                                    blank=True,
-                                                    null=True)
+                                                    blank=True)
     nearest_first_nations = models.ManyToManyField(IndianReserveBandDistance,
                                                    db_column="nearest_first_nations",
-                                                   blank=True,
-                                                   null=True)
+                                                   blank=True)
 
     # - Water
     nearest_lake = models.ForeignKey(LakeDistance,

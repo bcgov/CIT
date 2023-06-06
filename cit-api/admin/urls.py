@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.urls import re_path, include
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
@@ -47,17 +47,17 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    url(r'^swagger(?P<format>\.json|\.yaml)$',
+    re_path(r'^swagger(?P<format>\.json|\.yaml)$',
         schema_view.without_ui(cache_timeout=0),
         name='schema-json'),
-    url(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    url(r"^api/pipeline/", include('pipeline.pipeline-urls')),
-    url(r"^api/opportunity/", include('pipeline.opportunity-urls')),
-    url(r"^api/email/", include('pipeline.email-urls')),
-    url(r"^api/token/", auth_tokens.get_access_token),
-    url(r"^upload/", include(router.urls)),
-    url(r"^api/health/fail/", fail),
+    re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    re_path(r"^api/pipeline/", include('pipeline.pipeline-urls')),
+    re_path(r"^api/opportunity/", include('pipeline.opportunity-urls')),
+    re_path(r"^api/email/", include('pipeline.email-urls')),
+    re_path(r"^api/token/", auth_tokens.get_access_token),
+    re_path(r"^upload/", include(router.urls)),
+    re_path(r"^api/health/fail/", fail),
 ]
 
 urlpatterns += staticfiles_urlpatterns()
