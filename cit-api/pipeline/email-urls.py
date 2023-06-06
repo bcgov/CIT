@@ -1,5 +1,4 @@
-from django.conf.urls import url
-from django.urls import path, include
+from django.urls import path, re_path, include
 
 from rest_framework.routers import DefaultRouter
 
@@ -9,6 +8,6 @@ router = DefaultRouter()
 
 urlpatterns = [
     path("", include(router.urls)),
-    url(r"^admin/$", EmailView.as_view()),
-    url(r"^edo/", EdoEmailView.as_view()),
+    re_path(r"^admin/$", EmailView.as_view()),
+    re_path(r"^edo/", EdoEmailView.as_view()),
 ]
