@@ -2,6 +2,8 @@
 name: Email Image Build and Push
 
 on:
+  push:
+    branches: [production]
   workflow_dispatch:
 
 jobs:
@@ -11,16 +13,16 @@ jobs:
       # checkout the repo
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master
-      
+
       - name: "Build email image"
         run: |
-          docker build -f cit-api/Dockerfile.email . -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/email:develop
-      
-      - name: "Push email image to Openshift" 
+          docker build -f cit-api/Dockerfile.email . -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/email:production
+
+      - name: "Push email image to Openshift"
         uses: docker/login-action@v2
         with:
           registry: image-registry.apps.silver.devops.gov.bc.ca
           username: serviceaccount
           password: ${{ secrets.OCP_REGISTRY_PASSWORD }}
       - run: |
-          docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/email:develop
+          docker push image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/email:production

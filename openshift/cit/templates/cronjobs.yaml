@@ -29,8 +29,8 @@ spec:
                 - pipefail
                 - '-c'
                 - >
-                  trap "echo Backup failed; exit 0" ERR; 
-                  FILENAME=backup-devdb-`date +%Y-%m-%d_%H%M%S`.sql.gz; find 
+                  trap "echo Backup failed; exit 0" ERR;
+                  FILENAME=backup-devdb-`date +%Y-%m-%d_%H%M%S`.sql.gz; find
                   ./mnt -mtime +3 -type f -delete;
                   PGPASSWORD=$POSTGRES_DJANGO_PASSWORD pg_dump
                   --username=$POSTGRES_DJANGO_USER --host=$POSTGRES_HOST
@@ -99,7 +99,7 @@ spec:
           containers:
             - name: send-update-email
               image: >-
-                image-registry.openshift-image-registry.svc:5000/b4e935-tools/email:develop
+                image-registry.openshift-image-registry.svc:5000/b4e935-tools/email:production
               envFrom:
                 - secretRef:
                     name: {{ .Values.app_name }}-api-config
@@ -138,7 +138,7 @@ spec:
           containers:
             - name: bucket1
               image: >-
-                image-registry.openshift-image-registry.svc:5000/b4e935-tools/email:develop
+                image-registry.openshift-image-registry.svc:5000/b4e935-tools/email:production
               envFrom:
                 - secretRef:
                     name: {{ .Values.app_name }}-api-config
