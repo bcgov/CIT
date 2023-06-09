@@ -7,7 +7,7 @@
 
 .bcgov-opp-address {
   padding-top: 8px;
-  padding-left: 20px;
+  min-height: 70px;
 }
 
 .bcgov-opp-address::first-line {
@@ -15,10 +15,33 @@
 }
 
 .bcgov-opp-date-added {
+  padding-top: 20px;
   font-style: italic;
   color: #313132;
-  padding-top: 20px;
-  padding-left: 20px;
+}
+
+.search-page-layout .bcgov-ciot-opportunity-col {
+  padding-top: 10px !important;
+  padding-left: 15px !important;
+  min-height: 135px !important;
+}
+
+.bcgov-ciot-opportunity-col .row {
+  display: block !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.bcgov-cios-list-item-properties {
+  min-height: 90px;
+}
+
+.bcgov-opp-actions {
+  text-align: right;
+  width: 99%;
+  border-top: 1px solid #79747e;
+  padding-left: 15px !important;  
+  margin-right: 15px;  
 }
 
 button.bcgov-view-properties {
@@ -38,11 +61,12 @@ button.bcgov-view-properties:hover {
 }
 
 .opportunity-table-row button {
-    position: relative;
-    text-align: right;
-    bottom: 10px;
-    right: 0;
-    padding-top: 16px !important;
+  position: relative;
+  text-align: right;
+  bottom: 10px;
+  right: 0;
+  margin-top: 16px;
+  margin-left: 0;
 }
 
 .opportunity-table-row .nested-link {
@@ -61,14 +85,31 @@ button.bcgov-view-properties:hover {
   margin-left: 20px;
 }
 
-.opportunity-table-row .h-100 .col {
-  margin-left: 20px;
+.bcgov-ciot-opportunity-col {
+  padding-left: 0px;
+  min-height: 257px;
+}
+
+div.search-page-layout div.bcgov-ciot-opportunity-col {
+  padding-left: 15px !important;
 }
 
 .opportunity-table-row p.border--pill {
-  margin-left: 18px;
+  margin-left: 0;
   padding-left: 8px;
 }
+
+.bcgov-view-listing-link,
+.bcgov-edit-listing-link {
+    margin-left: 15px !important;
+}
+
+button.bcgov-view-listing-link,
+button.bcgov-edit-listing-link {
+  margin-top: 0;
+  top: 0 !important;
+}
+
 
 @media (max-width: 767px) {
   .details {
@@ -82,8 +123,15 @@ button.bcgov-view-properties:hover {
   .hide-point {
     display: none
   }
+
   .border-list-item {
     border-right: none;
     border-bottom: 2px #606060 solid;
   }
+
+  .bcgov-opp-actions {
+    text-align: right;
+    width: 95%;
+}
+
 }

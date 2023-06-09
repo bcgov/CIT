@@ -122,7 +122,7 @@ export default function EDODashboard() {
   } else if (tableData.length === 0) {
     dataSection = (
       <div className="edo-dashboard">
-        <h1 className="dashboard-header">
+        <h1 className="dashboard-promoted-opps">
           Your Community Promoted Opportunities
         </h1>
         <p className="dashboard-text">
@@ -141,7 +141,9 @@ export default function EDODashboard() {
   } else {
     dataSection = (
       <>
-        <h1 className="dashboard-header">Your Investment Opportunities</h1>
+        <h1 className="dashboard-opportunities">
+          Your Investment Opportunities
+        </h1>
         <OpportunityTable
           tableData={tableData}
           handleModalOpen={handleModalOpen}
@@ -160,68 +162,112 @@ export default function EDODashboard() {
   return (
     <div className="edo-dashboard">
       <div className="dashboard-container">
-        <h1 className="dashboard-header">How it works</h1>
-        <p className="dashboard-text">
-          To create a new listing, follow a simple process to add some key
-          information about the property. The tool will automatically provide
-          additional location information to help investors and site selectors
-          quickly evaluate whether the site meets their specific needs.
-          Investment opportunities are reviewed prior to publication by a
-          Provincial Regional Economic Operations Manager and will go live
-          within 3-5 business days.
-        </p>
-        <ul className="dashed">
-          <li>
+        <div className="dashboard-howitworks">
+          <h1 className="dashboard-header">How it works</h1>
+          <p className="dashboard-text">
+            To create a new listing, follow a simple process to add some key
+            information about the property. The tool will automatically provide
+            additional location information to help investors and site selectors
+            quickly evaluate evaluate whether the site meets their specific
+            needs. Investment Investment Investment Investment Investment
+            opportunities are reviewed prior to publication by a Provincial
+            Provincial Regional Economic Operations Manager and will go live
+            within 3-5 business days.
+          </p>
+        </div>
+        <Container className="dashboard-instructions">
+          <h2 className="dashboard-header">
             Before you add a listing, review the eligibility criteria to ensure
             the property meets the eligibility criteria.
-          </li>
-          <li>
-            Properties must be zoned for industrial, commercial or agricultural
-            use. Industrial properties of any size may be listed. Commercial and
-            agricultural properties may be listed if they are at least 5 acres
-            in size.
-          </li>
-          <li>Land must be available for sale or lease.</li>
-          <li>
-            Land may be publicly or privately owned but may only be listed with
-            the written permission of the landowner.
-          </li>
-          <li>
-            Land must be free of constraints that could impact the developable
-            area or range of land uses permitted on the property.
-            <br />
-            Potential constraints could include but are not limited to:
-            <ul className="dashed">
-              <li>Restrictions on title</li>
-              <li>Future planned roads or existing rights-of-way</li>
-              <li>Identified flood zone</li>
-              <li>
-                Presence of provincially significant cultural or natural
-                heritage features
-              </li>
-            </ul>
-          </li>
-          <li>
-            Investment opportunities can be added by an authorized
-            representative for a community. This is typically an Economic
-            Development Officer, Chief Administrative Officer, Lands Manager, or
-            Band Manager.
-          </li>
-          <li>
-            <span>
-              {" "}
-              <Link
-                to="/investmentopportunities/disclaimer-contributor"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Terms of Use
-              </Link>
-            </span>{" "}
-          </li>
-        </ul>
+          </h2>
+          <Row className="dashboard-row">
+            <Col className="svg-box" xs={2}>
+              <img
+                style={{ padding: "3%" }}
+                src="/images/building.svg"
+                alt="Find Properties"
+              />
+            </Col>
+            <Col className="svg-box" xs={10}>
+              <ul>
+                <li>
+                  Properties must be zoned for industrial, commercial or
+                  agricultural use. Industrial properties of any size may be
+                  listed. Commercial and agricultural properties may be listed
+                  if they are at least 5 acres in size.
+                </li>
+              </ul>
+            </Col>
+          </Row>
+          <Row className="dashboard-row">
+            <Col className="svg-box" xs={2}>
+              <img
+                style={{ padding: "3%" }}
+                src="/images/british-columbia.svg"
+                alt="Find Properties"
+              />
+            </Col>
+            <Col className="svg-box" xs={10}>
+              <ul>
+                <li>Land must be available for sale or lease.</li>
+                <li>
+                  Land may be publicly or privately owned but may only be listed
+                  with the written permission of the landowner.
+                </li>
+                <li>
+                  Land must be free of constraints that could impact the
+                  developable area or range of land uses permitted on the
+                  property.
+                </li>
+              </ul>
+            </Col>
+          </Row>
+          <Row className="dashboard-row">
+            <Col className="svg-box" xs={2}>
+              <img
+                style={{ padding: "3%" }}
+                src="/images/environmental.svg"
+                alt="Find Properties"
+              />
+            </Col>
+            <Col className="svg-box" xs={10}>
+              <ul>
+                <li>
+                  Potential constraints could include but are not limited to:
+                  <ul className="dashed">
+                    <li>Restrictions on title</li>
+                    <li>Future planned roads or existing rights-of-way</li>
+                    <li>Identified flood zone</li>
+                    <li>
+                      Presence of provincially significant cultural or natural
+                      heritage features
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </Col>
+          </Row>
+          <Row className="dashboard-row">
+            <Col className="svg-box" xs={2}>
+              <img
+                style={{ padding: "3%" }}
+                src="/images/team.svg"
+                alt="Find Properties"
+              />
+            </Col>
+            <Col className="svg-box" xs={10}>
+              <ul>
+                <li>
+                  Investment opportunities can be added by an authorized
+                  representative for a community. This is typically an Economic
+                  Development Officer, Chief Administrative Officer, Lands
+                  Manager, or Band Manager.
+                </li>
+              </ul>
+            </Col>
+          </Row>
+        </Container>
         <div className="add-opportunity-button">{addOpportunityButton}</div>
-        <hr ref={resultRef} className="bcgov-ciot-opportunities" />
         {markAsSoldStatus === "Error" ? (
           <Container className="p-0 mt-3">
             <Alert
@@ -233,7 +279,7 @@ export default function EDODashboard() {
           </Container>
         ) : null}
         {markAsSoldStatus === "Success" ? (
-          <Container className="p-0 mt-3">
+          <Container className="p-0 mt-3 xyz">
             <Alert
               icon={<MdCheckBox size={32} />}
               type="success"
@@ -246,7 +292,7 @@ export default function EDODashboard() {
           dataSection
         ) : (
           <>
-            <h1 className="dashboard-header">
+            <h1 className="dashboard-opportunities">
               Searching for Your Investment Opportunities
             </h1>
             <div className="center-spinner-opportunities">

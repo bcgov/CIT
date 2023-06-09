@@ -131,7 +131,7 @@ const OpportunityListItem = ({
             />
           </div>
         </Col>
-        <Col className="d-flex flex-column">
+        <Col className="d-flex flex-column bcgov-ciot-opportunity-col">
           {publicView ? (
             <>
               <Row>
@@ -139,7 +139,7 @@ const OpportunityListItem = ({
                   <div className="bcgov-opp-address">
                     <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
                   </div>
-                  <div className="d-flex flex-row flex-wrap">
+                  <div className="d-flex flex-row flex-wrap bcgov-opp-properties">
                     {opportunity.siteInfo.parcelSize.value ? (
                       <p className="border--pill">
                         Parcel Size:{" "}
@@ -170,7 +170,7 @@ const OpportunityListItem = ({
                   </div>
                 </Col>
               </Row>
-              <Row className="h-100">
+              <Row className="h-100 bcgov-cios-list-item-properties">
                 <Col
                   style={{
                     paddingLeft: "0",
@@ -182,17 +182,6 @@ const OpportunityListItem = ({
                 </Col>
               </Row>
               <Row className="h-100">
-                {/* <Col
-                  style={{
-                    alignSelf: "flex-end",
-                    paddingBottom: "0.5rem",
-                    marginRight: "0.5rem",
-                  }}
-                  sm={6}
-                  md={6}
-                  lg={4}
-                  className="text-right"
-                > */}
                 <Button
                   className="p-0 bcgov-view-properties"
                   variant="link"
@@ -217,8 +206,10 @@ const OpportunityListItem = ({
                     <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
                   </div>
                 </div>
-                <div className="bcgov-opp-date-added">
-                  Date added: {formatDate(opportunity.dateCreated)}
+                <div className="bcgov-opp-properties">
+                  <div className="bcgov-opp-date-added">
+                    Date added: {formatDate(opportunity.dateCreated)}
+                  </div>
                 </div>
                 <div className="bcgov-opp-actions">
                   {determineActions(opportunity)}

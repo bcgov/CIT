@@ -24,6 +24,11 @@
     margin-bottom: 15px;
 }
 
+h1.dashboard-header,
+h2.dashboard-header {
+    margin: 0 0 20px 0;
+}
+
 .add-opportunity-button {
     float: right;
     text-align: right;
@@ -59,12 +64,25 @@ ul.dashed > li:before {
     width: 100%;
     align-items: center;
     justify-content: center;
+    margin-top: 20px;
 }
 
+
+
+
+.edo-dashboard .opportunity-table-row .h-100 .col {
+    margin-left: 20px;
+}
+
+.edo-dashboard .opportunity-table-row p.border--pill {
+    margin-left: 18px;
+}
 .edo-dashboard .dashboard-howitworks {
-    margin-left: 10%;
-    min-width: 200px;
+    min-width: 30%;
     max-width: 350px;
+    float: left;
+    padding-bottom: 20px;
+    padding-right: 50px;
 }
 
 .edo-dashboard .dashboard-howitworks p {
@@ -76,15 +94,15 @@ ul.dashed > li:before {
     padding: 0px  2px;
     border-radius: 2px;
     float: left;
-    margin-bottom: 30px;
 }
 
 .edo-dashboard .dashboard-instructions {
     display: block;
     position: relative;
     min-width: 500px;
-    max-width: 60%;
+    max-width: 70%;
     float: left;
+    padding-left: 0;
 }
 
 .edo-dashboard .dashboard-instructions .dashboard-row {
@@ -92,13 +110,25 @@ ul.dashed > li:before {
     flex-wrap: wrap;
     margin-right: -15px;
     margin-left: -15px;
-    margin-top: 10px;
     margin-bottom: 10px;
 }
 
 .edo-dashboard .dashboard-instructions .dashboard-row img {
     width: 50%;
     height: 50%;
+}
+
+div.dashboard-instructions.container {
+    padding-left: 0 !important;
+}
+
+h1.dashboard-opportunities {
+    position: relative;
+    float: left;
+    display: block;
+    width: 100% !important;
+    padding-top:20px;
+    border-top: 1px #79747e solid;
 }
 
 .edo-dashboard .bcgov-opp-status {
@@ -113,6 +143,7 @@ ul.dashed > li:before {
 .edo-dashboard .bcgov-delete-listing-link {
     font-size: 12pt;
     position: relative;
+    margin-left: 15px;
     top: 2px;
 }
 
@@ -124,11 +155,24 @@ ul.dashed > li:before {
 
 .edo-dashboard .opportunity-table-row {
     margin-bottom: 30px;
+    padding-left: 0;
+}
+
+.edo-dashboard .bcgov-opp-properties {
+    padding-left: 0;
+}
+
+.edo-dashboard .bcgov-opp-properties {
+    min-height: 136px;
 }
 
 .bcgov-ciot-opportunities {
     float: left;
     width: 100%;
+}
+
+.bcgov-edit-listing-link {
+    margin-left: 15px;
 }
 
 @media (max-width: 767px) {
