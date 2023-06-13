@@ -135,51 +135,40 @@ const OpportunityListItem = ({
           {publicView ? (
             <>
               <Row>
-                <Col style={{ paddingLeft: "0" }}>
-                  <div className="bcgov-opp-address">
-                    <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
-                  </div>
-                  <div className="d-flex flex-row flex-wrap bcgov-opp-properties">
-                    {opportunity.siteInfo.parcelSize.value ? (
-                      <p className="border--pill">
-                        Parcel Size:{" "}
-                        <NumberFormat
-                          displayType="text"
-                          value={opportunity.siteInfo.parcelSize.value}
-                          suffix={` acres`}
-                          decimalScale={3}
-                          thousandSeparator={
-                            isNaN(opportunity.siteInfo.parcelSize.value)
-                              ? false
-                              : ","
-                          }
-                        />
-                      </p>
-                    ) : null}
-                    {opportunity.userInfo.currentZone.value && options ? (
-                      <p className="border--pill">{`Zoning: ${
-                        options.landUseZoning.find(
-                          (s) =>
-                            s.code === opportunity.userInfo.currentZone.value
-                        ).name
-                      }`}</p>
-                    ) : null}
-                    {opportunity.userInfo.saleOrLease.value && options ? (
-                      <p className="border--pill">{`${saleOrLease()}`}</p>
-                    ) : null}
-                  </div>
-                </Col>
+                <div className="bcgov-opp-address">
+                  <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
+                </div>
+                <div className="d-flex flex-row flex-wrap bcgov-opp-properties">
+                  {opportunity.siteInfo.parcelSize.value ? (
+                    <p className="border--pill">
+                      Parcel Size:{" "}
+                      <NumberFormat
+                        displayType="text"
+                        value={opportunity.siteInfo.parcelSize.value}
+                        suffix={` acres`}
+                        decimalScale={3}
+                        thousandSeparator={
+                          isNaN(opportunity.siteInfo.parcelSize.value)
+                            ? false
+                            : ","
+                        }
+                      />
+                    </p>
+                  ) : null}
+                  {opportunity.userInfo.currentZone.value && options ? (
+                    <p className="border--pill">{`Zoning: ${
+                      options.landUseZoning.find(
+                        (s) => s.code === opportunity.userInfo.currentZone.value
+                      ).name
+                    }`}</p>
+                  ) : null}
+                  {opportunity.userInfo.saleOrLease.value && options ? (
+                    <p className="border--pill">{`${saleOrLease()}`}</p>
+                  ) : null}
+                </div>
               </Row>
               <Row className="h-100 bcgov-cios-list-item-properties">
-                <Col
-                  style={{
-                    paddingLeft: "0",
-                    paddingTop: "0.5rem",
-                    paddingBottom: "0.5rem",
-                  }}
-                >
-                  {truncate(opportunity.userInfo.opportunityDescription.value)}
-                </Col>
+                {truncate(opportunity.userInfo.opportunityDescription.value)}
               </Row>
               <Row className="h-100">
                 <Button

@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import LinesEllipsis from "react-lines-ellipsis";
 import Map from "../Map/Map";
 import {
-  determineStatusTextColour,
+  determineStatusBackgroundColour,
   formatDate,
   getAddress,
 } from "../../helpers/helpers";
@@ -14,49 +14,78 @@ import "./OpportunityApprovalItem.css";
 const OpportunityApprovalItem = ({ opportunity }) => {
   const history = useHistory();
   return (
-    <div
-      key={opportunity.id}
-      className="opportunity-table-row w-100"
-      data-testid="OpportunityApprovalItem"
-    >
-      <Row>
-        <Col sm={3} md={3} lg={3} className="mr-3">
-          <div
-            style={{ borderRight: "2px solid #606060" }}
-            className="opportunity-approve-map-container"
-          >
-            <Map
-              coords={opportunity.coords}
-              isInteractive={false}
-              isSearchMode={false}
-            />
-          </div>
-        </Col>
-        <Col>
-          <Row>
-            <Col className="p-2">
-              <b>{opportunity ? getAddress(opportunity.address) : ""}</b>
-            </Col>
-            <Col className="p-2">{formatDate(opportunity.dateCreated)}</Col>
-            <Col className="p-2">
-              {determineStatusTextColour(opportunity.approvalStatus, true)}
-            </Col>
-            <Col>
+    <>
+      <div
+        key={opportunity.id}
+        className="opportunity-table-row w-100"
+        data-testid="OpportunityApprovalItem"
+      >
+        <Row>
+          <Col sm={3} md={3} lg={3} className="bc">
+            <div
+              style={{ borderRight: "2px solid #606060" }}
+              className="opportunity-approve-map-container"
+            >
+              <Map
+                coords={opportunity.coords}
+                isInteractive={false}
+                isSearchMode={false}
+              />
+            </div>
+          </Col>
+          <Col>
+            <Row className="bcgov-opp-inner-row">
+              <b className="bcgov-opp-address">
+                {opportunity ? getAddress(opportunity.address) : ""}
+              </b>
+              <div className="bcgov-opp-status">
+                {determineStatusBackgroundColour(
+                  opportunity.approvalStatus,
+                  true
+                )}
+              </div>
+            </Row>
+            <div className="bcgov-opp-inner-row-props">
+              <Row className="bcgov-opp-inner-row">
+                <em>Date Added: {formatDate(opportunity.dateCreated)}</em>
+              </Row>
+              <div className="bcgov-opp-inner-row">
+                {opportunity.privateNote ? (
+                  <>
+                    <b className="note-title">
+                      Internal Note from {opportunity.lastAdmin}:
+                    </b>
+                    <LinesEllipsis
+                      className="note pr-3"
+                      text={opportunity.privateNote}
+                      maxLine="3"
+                      ellipsis="..."
+                      trimRight
+                      basedOn="letters"
+                    />
+                  </>
+                ) : null}
+                {opportunity.publicNote ? (
+                  <>
+                    <b className="note-title">
+                      Comment from {opportunity.lastAdmin}:
+                    </b>
+                    <LinesEllipsis
+                      className="note pr-3"
+                      text={opportunity.publicNote}
+                      maxLine="3"
+                      ellipsis="..."
+                      trimRight
+                      basedOn="letters"
+                    />
+                  </>
+                ) : null}
+              </div>
+            </div>
+            <div className="bcgov-opp-action-row">
               <NavLink
                 style={{ textDecoration: "underline" }}
-                className="p-2"
-                to={`${opportunity.link}/approve`}
-                onClick={() =>
-                  history.push(
-                    `/manage/investmentopportunities/view/${opportunity.id}`
-                  )
-                }
-              >
-                View Listing
-              </NavLink>
-              <NavLink
-                style={{ textDecoration: "underline" }}
-                className="p-2"
+                className="p-2 bc-ciot-delete"
                 to={`/delete/investmentopportunities/${opportunity.id}/`}
                 onClick={() =>
                   history.push(
@@ -66,43 +95,23 @@ const OpportunityApprovalItem = ({ opportunity }) => {
               >
                 Delete
               </NavLink>
-            </Col>
-          </Row>
-          <Row>
-            {opportunity.privateNote ? (
-              <Col className="pl-0">
-                <b className="note-title">
-                  Internal Note from {opportunity.lastAdmin}:
-                </b>
-                <LinesEllipsis
-                  className="note pr-3"
-                  text={opportunity.privateNote}
-                  maxLine="3"
-                  ellipsis="..."
-                  trimRight
-                  basedOn="letters"
-                />
-              </Col>
-            ) : null}
-            {opportunity.publicNote ? (
-              <Col className="pl-0">
-                <b className="note-title">
-                  Comment from {opportunity.lastAdmin}:
-                </b>
-                <LinesEllipsis
-                  className="note pr-3"
-                  text={opportunity.publicNote}
-                  maxLine="3"
-                  ellipsis="..."
-                  trimRight
-                  basedOn="letters"
-                />
-              </Col>
-            ) : null}
-          </Row>
-        </Col>
-      </Row>
-    </div>
+              <NavLink
+                style={{ textDecoration: "underline" }}
+                className="bcgov-opp-action-right-border"
+                to={`${opportunity.link}/approve`}
+                onClick={() =>
+                  history.push(
+                    `/manage/investmentopportunities/view/${opportunity.id}`
+                  )
+                }
+              >
+                View Listing
+              </NavLink>
+            </div>
+          </Col>
+        </Row>
+      </div>
+    </>
   );
 };
 

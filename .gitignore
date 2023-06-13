@@ -150,4 +150,16 @@ cit-web/dist
 cit-web/.nuxt
 cit-web/static/sw.js
 
+.gitignore
 .htpasswd
+.yarnrc.yml
+.yarn/install-state.gz
+cit3.0-web/public/static/env.js
+cit3.0-web/src/components/Page/EDODashboard/EDODashboard.css
+cit3.0-web/yarn.lock
+node_modules/.yarn-state.yml
+package.json
+yarn.lock
+cit3.0-web/yarn.lock
+yarn.lock
+cit3.0-web/public/static/env.js

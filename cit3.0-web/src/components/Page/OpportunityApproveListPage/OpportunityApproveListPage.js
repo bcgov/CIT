@@ -70,7 +70,10 @@ const OpportunityApproveListPage = () => {
   }, []);
 
   return (
-    <div data-testid="OpportunityApproveListPage">
+    <div
+      data-testid="OpportunityApproveListPage"
+      className="OpportunityApproveListPage"
+    >
       <Flyout
         flyoutComponent={ApprovalFlyoutContent}
         flyoutProps={{
@@ -95,26 +98,6 @@ const OpportunityApproveListPage = () => {
         }}
       >
         <Container className="opportunity-list-wrap">
-          <Row>
-            <h3 className="">Opportunities</h3>
-          </Row>
-          <Row>
-            <Col sm={3} md={3} lg={3}>
-              &nbsp;
-            </Col>
-            <Col>
-              <b>Address</b>
-            </Col>
-            <Col>
-              <b>Date added</b>
-            </Col>
-            <Col>
-              <b>Status</b>
-            </Col>
-            <Col>
-              <b>Action(s)</b>
-            </Col>
-          </Row>
           {!isLoaded ? (
             <>
               <div className="center-spinner">

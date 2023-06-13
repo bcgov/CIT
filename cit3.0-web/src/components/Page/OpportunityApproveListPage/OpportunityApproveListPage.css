@@ -13,3 +13,93 @@
 .nav-link.nav-link:focus {
     color: #0631f3 !important;
 }
+
+.bcgov-ciot-buttons {
+    margin: 10px;
+}
+
+.OpportunityApproveListPage .sidebar {
+    padding: 30px;
+}
+
+.OpportunityApproveListPage .row.bcgov-opp-inner-row {
+    display: block !important;
+    position: relative !important;
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.OpportunityApproveListPage .bcgov-opp-inner-row {
+    display: block;
+    position: relative;
+    float: left;
+}
+
+.OpportunityApproveListPage .bcgov-ciot-button .btn-primary {
+    color: #fff;
+    padding-top: 6px;
+    border-radius: 6px;
+    background-color: #003366 !important;
+    margin-right: 0;
+}
+
+.OpportunityApproveListPage h2 {
+    font-size: 18pt;
+    font-weight: bolder;
+}
+
+.OpportunityApproveListPage b.bcgov-opp-address {
+    display: block;
+    position: relative;
+    float: left;
+}
+
+.OpportunityApproveListPage .bcgov-opp-status {
+    position: relative;
+    display: block;
+    float: right;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.OpportunityApproveListPage b.bcgov-opp-address::first-line {
+    font-size: 20pt !important;
+}
+
+.OpportunityApproveListPage .bcgov-opp-action-row {
+    display: block;
+    position: relative;
+    float: right;
+    width: 100%;
+    margin-right: 10px;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    border-top: 1px solid #79747e
+}
+
+.OpportunityApproveListPage .bcgov-opp-inner-row-props {
+    min-height: 145px !important;
+}
+
+.OpportunityApproveListPage .bcgov-opp-action-row a {
+    display: block;
+    position: relative;
+    float: right;
+    width: auto;
+    text-align: right;
+    text-wrap: nowrap;
+}
+
+.OpportunityApproveListPage .bcgov-opp-action-right-border {
+    padding: 0 10px 0 10px;
+    border-right: 1px solid #79747e;
+    margin-top: 8px;
+}
+
+.OpportunityApproveListPage a.bc-ciot-delete,
+.OpportunityApproveListPage a.bc-ciot-delete:visited,
+.OpportunityApproveListPage a.bc-ciot-delete:hover {
+    color: red;
+    text-decoration: none;
+}

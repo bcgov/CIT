@@ -67,8 +67,9 @@ ul.dashed > li:before {
     margin-top: 20px;
 }
 
-
-
+.edo-dashboard {
+    overflow-x: hidden;
+}
 
 .edo-dashboard .opportunity-table-row .h-100 .col {
     margin-left: 20px;
@@ -173,6 +174,24 @@ h1.dashboard-opportunities {
 
 .bcgov-edit-listing-link {
     margin-left: 15px;
+}
+
+@media (max-width: 1480px) {
+    .edo-dashboard: {
+        overflow-x: scroll;
+    }
+    
+    .edo-dashboard .dashboard-howitworks {
+        width: 100%;
+        max-width: 100%;
+        padding-right: 20px;
+    }
+    
+    .edo-dashboard .dashboard-instructions {
+        width: 100%;
+        max-width: 100%;
+        padding-right: 20px;
+    }
 }
 
 @media (max-width: 767px) {

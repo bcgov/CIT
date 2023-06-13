@@ -131,10 +131,10 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
   const order = ["NEW", "PEND", "NCOM", "NWED", "PUBL", "CLOS"];
 
   return (
-    <div>
-      <h3>{title}</h3>
-      <div className="d-flex flex-column my-3">
-        <h4 className="mb-3">Status</h4>
+    <div className="container-fluid">
+      <h2>{title}</h2>
+      <h3 className="mb-3">Status</h3>
+      <div className="d-flex row bcgov-ciot-buttons">
         {statuses &&
           statuses
             .sort(
@@ -156,7 +156,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
             ))}
       </div>
       <div className="my-3">
-        <h4 className="mb-3">Submitted Date</h4>
+        <h3 className="mb-3">Submitted Date</h3>
         <div className="d-flex flex-nowrap justify-content-around ml-3 light-input">
           <Form.Group controlId={FORM_SUB_FROM_INPUT}>
             <Form.Label>From</Form.Label>
@@ -197,7 +197,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
         </div>
       </div>
       <div className="my-3">
-        <h4 className="mb-3">Published Date</h4>
+        <h3 className="mb-3">Published Date</h3>
         <div className="d-flex flex-nowrap justify-content-around ml-3 light-input">
           <Form.Group controlId={FORM_PUB_FROM_INPUT}>
             <Form.Label>From</Form.Label>
@@ -238,7 +238,7 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
         </div>
       </div>
       <div className="my-3">
-        <h4 className="mb-3">Regional District</h4>
+        <h3 className="mb-3">Regional District</h3>
         <Form.Group controlId="regional_district">
           <Form.Label className="visually-hidden">To</Form.Label>
           <Form.Control
@@ -257,10 +257,10 @@ const ApprovalFlyoutContent = ({ title, onQuery, resetFilters, search }) => {
           </Form.Control>
         </Form.Group>
       </div>
-      <hr className="hr-bold" />
-      <div className="d-flex justify-content-end">
+      {/* <hr className="hr-bold" /> */}
+      <div className="d-flex bcgov-ciot-button justify-content-end">
         <Button
-          styling="BC-Gov-SecondaryButton"
+          styling="BC-Gov-SecondaryButton btn btn-primary"
           label="Reset all filters"
           onClick={() => handleResetFilters()}
         />
