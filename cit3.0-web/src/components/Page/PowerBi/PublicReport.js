@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import ReportOverview from "../../ReportOverview/ReportOverview";
-// import "../HomePage/HomePage.scss";
 
 export default function PublicReport() {
   const { zonetype, id, name } = useParams();
@@ -28,7 +27,6 @@ export default function PublicReport() {
     };
   }
 
-  console.log({ reportFilter });
   return (
     <>
       <Container className="my-4 user-story-top-container">
