@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Container } from "react-bootstrap";
 import ReportOverview from "../../ReportOverview/ReportOverview";
-import "../HomePage/HomePage.scss";
+// import "../HomePage/HomePage.scss";
 
 export default function PublicReport() {
   const { zonetype, id, name } = useParams();

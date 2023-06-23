@@ -16,12 +16,12 @@ const Header = () => {
   const [isAvailable, setIsAvailable] = useState(false);
 
   const title = () => {
-    if (location.pathname.includes("/investmentopportunities")) {
-      return "Community Investment Opportunities Tool";
-    }
-    if (location.pathname.includes("/manage/users/")) {
-      return "Community Investment Opportunities Tool";
-    }
+    // if (location.pathname.includes("/investmentopportunities")) {
+    //   return "Community Investment Opportunities Tool";
+    // }
+    // if (location.pathname.includes("/manage/users/")) {
+    //   return "Community Investment Opportunities Tool";
+    // }
     if (location.pathname.includes("/cit-dashboard")) {
       return "Community Information Tool";
     }
@@ -32,13 +32,10 @@ const Header = () => {
   };
 
   useEffect(() => {
-    if (
-      location.pathname.includes("/investmentopportunities") ||
-      location.pathname.includes("/manage/users/")
-    ) {
-      setIsPowerBI(false);
-    } else {
+    if (location.pathname.includes("/cit-dashboard")) {
       setIsPowerBI(true);
+    } else {
+      setIsPowerBI(false);
     }
   });
 
@@ -63,22 +60,13 @@ const Header = () => {
           </Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Item>
-              <Link
-                className="text-white main-header-text"
-                to={
-                  isPowerBI
-                    ? "/cit-dashboard/home"
-                    : "/investmentopportunities/home"
-                }
-              >
-                <div className="title">{title()}</div>
-              </Link>
+              <div className="title">{title()}</div>
             </Nav.Item>
           </Nav>
           {keycloak.obj && <UserProfile />}
         </Navbar>
       </header>
-      {keycloak.obj.authenticated && !isPowerBI ? (
+      {/* {keycloak.obj.authenticated && !isPowerBI ? (
         <div className="navigation-container no-print">
           <Button
             variant="link"
@@ -113,7 +101,7 @@ const Header = () => {
               </Button>
             )}
         </div>
-      ) : null}
+      ) : null} */}
     </>
   );
 };

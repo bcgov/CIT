@@ -28,9 +28,9 @@ const Login = () => {
   if (!keycloak) {
     return <Spinner animation="border" />;
   }
-  if (keycloak && keycloak.authenticated) {
-    return <Redirect to={redirect || "/investmentopportunities/dashboard"} />;
-  }
+  // if (keycloak && keycloak.authenticated) {
+  //   return <Redirect to={redirect || "/investmentopportunities/dashboard"} />;
+  // }
   if (isIE) {
     return <Redirect to={{ pathname: "/ienotsupported" }} />;
   }
