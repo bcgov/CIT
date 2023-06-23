@@ -3,7 +3,6 @@ import { Redirect } from "react-router-dom";
 import { Container, Row, Col, Spinner, Jumbotron } from "react-bootstrap";
 import { Button } from "shared-components";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { useQuery } from "../../../hooks/use-query";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
 
@@ -21,16 +20,12 @@ const usingIE = () => {
 };
 
 const Login = () => {
-  const { redirect } = useQuery();
   const keyCloakWrapper = useKeycloakWrapper();
   const keycloak = keyCloakWrapper.obj;
   const isIE = usingIE();
   if (!keycloak) {
     return <Spinner animation="border" />;
   }
-  // if (keycloak && keycloak.authenticated) {
-  //   return <Redirect to={redirect || "/investmentopportunities/dashboard"} />;
-  // }
   if (isIE) {
     return <Redirect to={{ pathname: "/ienotsupported" }} />;
   }

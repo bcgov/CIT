@@ -3,9 +3,7 @@ import axios from "axios";
 import {
   SET_USER_INFO,
   SET_USER_INFO_EMAIL,
-  SET_USER_INFO_MUNICIPALITY,
   SET_USER_INFO_NAME,
-  SET_USER_INFO_REGIONAL_DISTRICT,
   SET_USER_INFO_ROLE,
 } from "../constants/user";
 import USER_INITIALIZATION from "../models/user";
@@ -14,7 +12,6 @@ import {
   USER_URL,
   USER_TRACKING_URL,
 } from "../constants/api-urls";
-import UserFactory from "../factory/UserFactory";
 
 /**
  * @param {String} email
@@ -113,24 +110,4 @@ export function setUserInfoEmail(email) {
  */
 export function setUserInfoRole(role) {
   return { type: SET_USER_INFO_ROLE, payload: role };
-}
-
-/**
- * @param {Object[]} municipalities
- * @param {Number} municipalities[].id
- * @param {String} municipalities[].name
- * @return {Object} for redux reducer
- */
-export function setUserInfoMunicipalities(municipalities) {
-  return { type: SET_USER_INFO_MUNICIPALITY, payload: municipalities };
-}
-
-/**
- * @param {Object[]} regionalDistricts
- * @param {Number} regionalDistricts[].id
- * @param {String} regionalDistricts[].name
- * @return {Object} for redux reducer
- */
-export function setUserInfoRegionalDistricts(regionalDistricts) {
-  return { type: SET_USER_INFO_REGIONAL_DISTRICT, payload: regionalDistricts };
 }
