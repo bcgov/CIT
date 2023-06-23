@@ -1,43 +1,12 @@
 import "./Header.scss";
 
-import React, { useState, useEffect } from "react";
-import { useHistory, useLocation } from "react-router";
-import { Link } from "react-router-dom";
-import { Button, Navbar, Nav } from "react-bootstrap";
+import { Navbar, Nav } from "react-bootstrap";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import UserProfile from "./UserProfile";
-import Roles from "../../../constants/roles";
 
 const Header = () => {
   const keycloak = useKeycloakWrapper();
-  const history = useHistory();
-  const location = useLocation();
-  const [isPowerBI, setIsPowerBI] = useState(null);
-  const [isAvailable, setIsAvailable] = useState(false);
-
-  const title = () => {
-    // if (location.pathname.includes("/investmentopportunities")) {
-    //   return "Community Investment Opportunities Tool";
-    // }
-    // if (location.pathname.includes("/manage/users/")) {
-    //   return "Community Investment Opportunities Tool";
-    // }
-    if (location.pathname.includes("/cit-dashboard")) {
-      return "Community Information Tool";
-    }
-    if (location.pathname.includes("/userstory")) {
-      return "Community Information Tool";
-    }
-    return "";
-  };
-
-  useEffect(() => {
-    if (location.pathname.includes("/cit-dashboard")) {
-      setIsPowerBI(true);
-    } else {
-      setIsPowerBI(false);
-    }
-  });
+  const title = "Community Information Tool";
 
   return (
     <>
@@ -60,48 +29,12 @@ const Header = () => {
           </Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Item>
-              <div className="title">{title()}</div>
+              <div className="title">{title}</div>
             </Nav.Item>
           </Nav>
           {keycloak.obj && <UserProfile />}
         </Navbar>
       </header>
-      {/* {keycloak.obj.authenticated && !isPowerBI ? (
-        <div className="navigation-container no-print">
-          <Button
-            variant="link"
-            className="text-white"
-            onClick={() => history.push("/investmentopportunities/dashboard")}
-          >
-            Dashboard
-          </Button>
-          {keycloak.hasRole([
-            Roles.SUPER_ADMINISTRATOR,
-            Roles.SYSTEM_ADMINISTRATOR,
-          ]) && (
-            <Button
-              variant="link"
-              className="text-white"
-              onClick={() => history.push("/manage/investmentopportunities/")}
-            >
-              Manage Opportunities
-            </Button>
-          )}
-          {isAvailable &&
-            keycloak.hasRole([
-              Roles.SUPER_ADMINISTRATOR,
-              Roles.SYSTEM_ADMINISTRATOR,
-            ]) && (
-              <Button
-                variant="link"
-                className="text-white"
-                onClick={() => history.push("/manage/users/")}
-              >
-                Manage Users
-              </Button>
-            )}
-        </div>
-      ) : null} */}
     </>
   );
 };

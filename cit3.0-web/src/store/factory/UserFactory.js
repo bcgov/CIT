@@ -13,46 +13,6 @@ function createStateFromResponse(response) {
   };
 }
 
-/**
- * @param {Object} keycloak retrieved from keycloak userinfo endpoint
- * @returns {Object} state for redux store
- */
-function createStateFromKeyCloak(keycloak) {
-  return {
-    name: keycloak.displayName || keycloak.name,
-    email: keycloak.email,
-    role: "",
-    isAdmin: keycloak.client_roles.some((role) => role === "IDIR"),
-  };
-}
-
-/**
- * @param {Object} keycloak retrieved from keycloak userinfo endpoint
- * @returns {Object} state for redux store
- */
-function createRequestFromState(userModel) {
-  return {
-    name: userModel.name,
-    email: userModel.email,
-    role: userModel.role,
-  };
-}
-
-/**
- * @param {Object} userModel
- * @returns {Object} state for redux store
- */
-function createPostFromState(userModel) {
-  return {
-    name: userModel.name,
-    email: userModel.email,
-    role: userModel.role,
-  };
-}
-
 export default {
   createStateFromResponse,
-  createPostFromState,
-  createStateFromKeyCloak,
-  createRequestFromState,
 };
