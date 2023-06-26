@@ -54,25 +54,6 @@ const Login = () => {
       <Container className="unauth" fluid>
         <h2 className="my-4">Login to Community Information Tool</h2>
         <Row className="sign-in">
-          <Col>
-            <Jumbotron className="pl-0" style={{ background: "transparent" }}>
-              <h3 className="mb-4">
-                Log-in to the Community Investment Opportunities Tool
-              </h3>
-              <p className="mb-4">
-                Sign-in to promote properties available for sale or lease in
-                your community and the tool will automatically add key location
-                information to support site selection decisions.
-              </p>
-              <hr className="hr-bold" />
-              <Button
-                label="Sign In"
-                styling="bcgov-button bcgov-normal-blue btn mb-4"
-                onClick={handleLogin}
-              />
-              <p>Sign into the tool with your Business BCeID.</p>
-            </Jumbotron>
-          </Col>
           <Col md>
             <Jumbotron>
               <h3 className="mb-4">Don&apos;t have a Business BCeID?</h3>

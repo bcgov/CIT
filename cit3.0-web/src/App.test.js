@@ -29,7 +29,7 @@ test("renders text in header", async () => {
       </Provider>
     </ReactKeycloakProvider>
   );
-  const linkElement = getByText(/Community Investment Tool/i);
+  const linkElement = getByText(/Community Information Tool/i);
   expect(linkElement).toBeInTheDocument();
   await act(async () => promise);
 });
