@@ -10,66 +10,9 @@ function createStateFromResponse(response) {
     role: response.role,
     idp: response.idp,
     dateCreated: response.date_created,
-    municipalities: response.municipalities,
-    regionalDistricts: response.regional_districts,
-  };
-}
-
-/**
- * @param {Object} keycloak retrieved from keycloak userinfo endpoint
- * @returns {Object} state for redux store
- */
-function createStateFromKeyCloak(keycloak) {
-  return {
-    name: keycloak.displayName || keycloak.name,
-    email: keycloak.email,
-    role: "",
-    isAdmin: keycloak.client_roles.some((role) => role === "IDIR"),
-    municipalities: [],
-    regionalDistricts: [],
-  };
-}
-
-/**
- * @param {Object} keycloak retrieved from keycloak userinfo endpoint
- * @returns {Object} state for redux store
- */
-function createRequestFromState(userModel, opportunityModel) {
-  return {
-    name: userModel.name,
-    email: userModel.email,
-    role: userModel.role,
-    municipality:
-      opportunityModel.municipality &&
-      parseInt(opportunityModel.municipality.id, 10),
-    regional_district:
-      opportunityModel.regionalDistrict &&
-      parseInt(opportunityModel.regionalDistrict.id, 10),
-  };
-}
-
-/**
- * @param {Object} userModel
- * @param {Object} opportunityModel
- * @returns {Object} state for redux store
- */
-function createPostFromState(userModel, opportunityModel) {
-  return {
-    name: userModel.name,
-    email: userModel.email,
-    role: userModel.role,
-    municipality:
-      opportunityModel.municipality &&
-      parseInt(opportunityModel.municipality, 10),
-    regional_district:
-      opportunityModel.regionalDistrict &&
-      parseInt(opportunityModel.regionalDistrict, 10),
   };
 }
 
 export default {
   createStateFromResponse,
-  createPostFromState,
-  createStateFromKeyCloak,
-  createRequestFromState,
 };

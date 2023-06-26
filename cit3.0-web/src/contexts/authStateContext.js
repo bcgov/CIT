@@ -4,13 +4,7 @@ import { Button as SharedButton } from "shared-components";
 import { useDispatch, useSelector } from "react-redux";
 import Proptypes from "prop-types";
 import { useKeycloakWrapper } from "../hooks/useKeycloakWrapper";
-import {
-  getUser,
-  postUser,
-  setUser,
-  updateUserAssignments,
-} from "../store/actions/user";
-import UserFactory from "../store/factory/UserFactory";
+import { getUser, setUser } from "../store/actions/user";
 import useConfiguration from "../hooks/useConfiguration";
 
 export const AuthStateContext = React.createContext({
@@ -54,16 +48,6 @@ const AuthStateContextProvider = ({ children }) => {
             getUser({ email: user.email }).then((existingUser) => {
               if (existingUser.data.length) {
                 dispatch(setUser({ ...existingUser.data[0], idp }));
-                updateUserAssignments(existingUser.data[0], keycloak.obj.token)
-                  .then(() => {})
-                  .catch(() => {});
-              } else {
-                postUser(
-                  UserFactory.createStateFromKeyCloak(user),
-                  keycloak.obj.token
-                ).then((newUser) => {
-                  dispatch(setUser({ ...newUser.data, idp }));
-                });
               }
             });
           })

@@ -71,6 +71,7 @@ export default function ReportCompare() {
       "error",
       function reportErrored(event) {
         if (event) {
+          // eslint-disable-next-line no-console
           console.error(event.detail);
         }
       },

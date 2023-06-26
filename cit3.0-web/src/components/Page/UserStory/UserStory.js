@@ -13,7 +13,6 @@ import {
   ChevronDown,
   ChevronUp,
 } from "react-bootstrap-icons";
-import { useHistory } from "react-router-dom";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
 
@@ -35,7 +34,6 @@ import {
 } from "../../../helpers/userStoryData";
 
 import { userStoryPaths } from "../../../data/userStoryPaths.json";
-import "../HomePage/HomePage.scss";
 import "./UserStory.css";
 
 export default function UserStory() {
@@ -75,10 +73,6 @@ export default function UserStory() {
   const zoneLabel = useRef();
   const redirectUrl = useRef();
 
-  const history = useHistory();
-
-  const userName = keycloak ? keycloak.firstName : "";
-
   const userStoryUrl = "/userstory/internal";
 
   const singularize = (text) => {
@@ -115,8 +109,6 @@ export default function UserStory() {
       },
     });
     // snow plow end
-
-    console.log(zoneFilter.current);
 
     if (urlPath && !urlPath.includes("powerbi")) {
       window.location.href = encodeURI(`${configuration.baseUrl}/${urlPath}`);
