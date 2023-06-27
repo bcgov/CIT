@@ -50,6 +50,9 @@ subjects:
   - kind: User
     apiGroup: rbac.authorization.k8s.io
     name: jjstratton@github
+  - kind: User
+    apiGroup: rbac.authorization.k8s.io
+    name: areyeslo@github
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
