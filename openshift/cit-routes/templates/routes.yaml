@@ -6,16 +6,18 @@ metadata:
     app: {{ .Values.app_name }}-api
     name: {{ .Values.app_name }}-api
 spec:
+  host: {{ .Values.api_subdomain }}communityinformationtool.gov.bc.ca
+
   port:
     targetPort: 8080-tcp
   tls:
     termination: edge
     certificate: |-
-{{ .Files.Get "../../private/certs/cit/communityinformationtool.gov.bc.ca.txt" | indent 6 }}
+{{ .Files.Get "certs/communityinformationtool.gov.bc.ca.txt" | indent 6 }}
     key: |-
-{{ .Files.Get "../../private/certs/cit/cit.key" | indent 6 }}
+{{ .Files.Get "certs/cit.key" | indent 6 }}
     caCertificate: |-
-{{ .Files.Get "../../private/certs/cit/cert-chain.txt" | indent 6 }}
+{{ .Files.Get "certs/L1K_Chain.txt" | indent 6 }}
     insecureEdgeTerminationPolicy: Redirect
   to:
     kind: Service
@@ -31,17 +33,18 @@ metadata:
     app: {{ .Values.app_name }}-web
     name: {{ .Values.app_name }}-web
 spec:
-  host: {{ .Values.subdomain }}.communityinformationtool.gov.bc.ca
+  host: {{ .Values.web_subdomain }}communityinformationtool.gov.bc.ca
   port:
     targetPort: 8080-tcp
   tls:
     termination: edge
     certificate: |-
-{{ .Files.Get "../../private/certs/cit/communityinformationtool.gov.bc.ca.txt" | indent 6 }}
+{{ .Files.Get "certs/communityinformationtool.gov.bc.ca.txt" | indent 6 }}
     key: |-
-{{ .Files.Get "../../private/certs/cit/cit.key" | indent 6 }}
+{{ .Files.Get "certs/cit.key" | indent 6 }}
     caCertificate: |-
-{{ .Files.Get "../../private/certs/cit/cert-chain.txt" | indent 6 }}
+{{ .Files.Get "certs/L1K_Chain.txt" | indent 6 }}
+    insecureEdgeTerminationPolicy: Redirect
     insecureEdgeTerminationPolicy: Redirect
   to:
     kind: Service
