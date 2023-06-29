@@ -29,7 +29,7 @@ spec:
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
-  name: {{ .Values.app_name }}-web
+  name: {{ .Values.app_name }}-web2
   labels:
     app: {{ .Values.app_name }}-web
     name: {{ .Values.app_name }}-web
