@@ -1,3 +1,4 @@
 app_name: cit
 api_subdomain: api.
 web_subdomain: www.
+is_prod: true
