@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.11-slim-buster as compile
 ENV PYTHONUNBUFFERED 1
 
 ARG ENV_LEVEL
@@ -18,7 +18,7 @@ ARG USER_TRACKING_TO_EMAIL
 ARG AZURE_BLOB_STORAGE_CONNECTION_STRING
 ARG ROUTE_PLANNER_API_KEY
 
-RUN apt-get update && apt-get install -y libproj-dev gdal-bin libpq-dev libpython3-dev build-essential
+RUN apt-get update && apt-get install -y --no-install-recommends libproj-dev gdal-bin libpq-dev libpython3-dev build-essential gcc
 
 RUN mkdir /code
 WORKDIR /code

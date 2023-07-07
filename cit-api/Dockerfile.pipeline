@@ -1,7 +1,7 @@
-FROM python:3.6
+FROM python:3.11-slim-buster as compile
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get update && apt-get install -y libproj-dev gdal-bin libpq-dev libpython3-dev build-essential
+RUN apt-get update && apt-get install -y --no-install-recommends libproj-dev gdal-bin libpq-dev libpython3-dev build-essential gcc
 
 RUN mkdir /code
 WORKDIR /code
@@ -10,6 +10,6 @@ RUN pip install -r requirements.txt
 COPY . .
 
 RUN mv data/import/datafiles/* /code/data
-RUN python3 manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
 
 CMD /bin/sh ./entrypoint.pipeline.sh
