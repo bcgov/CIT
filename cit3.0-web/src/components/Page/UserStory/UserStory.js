@@ -15,6 +15,7 @@ import {
 } from "react-bootstrap-icons";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
+import Config from "../../../Config";
 
 import UserStoryItem from "../../UserStoryItem/UserStoryItem";
 import ReportOverview from "../../ReportOverview/ReportOverview";
@@ -111,7 +112,7 @@ export default function UserStory() {
     // snow plow end
 
     if (urlPath && !urlPath.includes("powerbi")) {
-      window.location.href = encodeURI(`${configuration.baseUrl}/${urlPath}`);
+      window.location.href = encodeURI(`${Config.ciotUrl}/${urlPath}`);
       return;
     }
 
