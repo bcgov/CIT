@@ -2,6 +2,7 @@
   window.env = window.env || {};
   // Environment variables
   window.env.apiUrl = "${REACT_APP_API_BASE_URL}";
+  window.env.ciotUrl = "${REACT_CIOT_API_BASE_URL}";
   window.env.keycloakUrl = "${REACT_APP_KEYCLOAK_URL}";
   window.env.keycloakRealm = "${REACT_APP_KEYCLOAK_REALM}";
   window.env.keycloakClient = "${REACT_APP_KEYCLOAK_CLIENT}";

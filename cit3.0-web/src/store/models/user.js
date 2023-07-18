@@ -3,7 +3,5 @@ const USER_INITIALIZATION = () => ({
   email: "",
   role: "",
   idp: "",
-  municipalities: [],
-  regionalDistricts: [],
 });
 export default USER_INITIALIZATION;

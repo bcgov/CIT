@@ -11,14 +11,10 @@ export default function ReportCriteriaSearch() {
   const [report, setReport] = useState(null);
   const [token, setToken] = useState(null);
   const [showReport, setShowReport] = useState(false);
-  const [isPrintLoading, setIsPrintLoading] = useState(false);
-  const [activePage, setActivePage] = useState("Criteria Search");
+  const [isPrintLoading] = useState(false);
 
   const groupId = Config.pbiGroupId;
   const reportId = Config.pbiReportIdSearch;
-
-  const delay = (milliseconds) =>
-    new Promise((resolve) => setTimeout(resolve, milliseconds));
 
   const layoutSettings = {
     panes: {
@@ -74,13 +70,15 @@ export default function ReportCriteriaSearch() {
     [
       "rendered",
       function reportRendered(e) {
-        console.log(e);
+        // eslint-disable-next-line no-console
+        console.error(e);
       },
     ],
     [
       "error",
       function reportErrored(event) {
         if (event) {
+          // eslint-disable-next-line no-console
           console.error(event.detail);
         }
       },
@@ -97,17 +95,6 @@ export default function ReportCriteriaSearch() {
       embedUrl: reportConfig.embedUrl,
       accessToken: reportToken,
     });
-  };
-
-  const setPage = async (displayName) => {
-    if (!report) return;
-    setActivePage(displayName);
-    const pages = await report.getPages();
-    const newPage = pages.find((page) => page.displayName === displayName);
-
-    if (newPage) {
-      report.setPage(newPage.name);
-    }
   };
 
   const handlePrint = async () => {

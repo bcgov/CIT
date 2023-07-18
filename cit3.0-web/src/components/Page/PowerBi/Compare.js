@@ -7,7 +7,7 @@ import Config from "../../../Config";
 import "./PowerBi.css";
 
 export default function Compare() {
-  const [report, setReport] = useState();
+  const [, setReport] = useState();
   const [token, setToken] = useState("");
   const [showReport, setShowReport] = useState(false);
 
@@ -68,12 +68,13 @@ export default function Compare() {
   };
 
   const eventHandlersMap = new Map([
-    ["loaded", function () {}],
-    ["rendered", function () {}],
+    ["loaded", () => {}],
+    ["rendered", () => {}],
     [
       "error",
-      function (event) {
+      (event) => {
         if (event) {
+          // eslint-disable-next-line no-console
           console.error(event.detail);
         }
       },

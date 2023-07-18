@@ -5,6 +5,8 @@ name: Data Pipeline - Bucket 4 monthly
 on:
   schedule:
     - cron: "0 0 1 * *"
+  workflow_dispatch:
+
 env: 
   BUCKET_COMMAND: bucket_4_monthly
 jobs:
