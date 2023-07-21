@@ -1,7 +1,8 @@
 (function (window) {
   window.env = window.env || {};
-  // Environment variables
+  // Environment variables are not secrets as of July 2023
   window.env.apiUrl = "http://localhost:8000";
+  window.env.ciotUrl = "http://localhost:3001";
   window.env.keycloakUrl = "https://dev.loginproxy.gov.bc.ca/auth/";
   window.env.keycloakRealm = "standard";
   window.env.keycloakClient = "community-information-tool-4411";

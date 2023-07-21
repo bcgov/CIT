@@ -24,7 +24,7 @@ export default function PowerBi() {
   const user = useSelector((state) => state.user);
   const configuration = useConfiguration();
   const [currentPage, setCurrentPage] = useState(null);
-  const [currentPageData, setCurrentPageData] = useState(null);
+  const [, setCurrentPageData] = useState(null);
   const [token, setToken] = useState(null);
   const [reportConfig, setReportConfig] = useState(null);
 
@@ -34,7 +34,7 @@ export default function PowerBi() {
 
   const groupId = Config.pbiGroupId;
 
-  const [reportId, setReportId] = useState(
+  const [reportId] = useState(
     location.pathname.includes("public")
       ? Config.pbiReportIdPublic
       : Config.pbiReportIdInternal
@@ -55,9 +55,7 @@ export default function PowerBi() {
   const tooltip = useRef(null);
 
   const searchRoute = "/search-communities";
-  const [setPage, setSetPage] = useState(
-    window.location.pathname.includes(searchRoute)
-  );
+  const [setPage] = useState(window.location.pathname.includes(searchRoute));
 
   // Modal
   const [show, setShow] = useState(false);
@@ -129,7 +127,10 @@ export default function PowerBi() {
       .then((res) => {
         setToken(res.data.access_token);
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        // eslint-disable-next-line no-console
+        console.error(err);
+      });
   }, []);
 
   useEffect(() => {
@@ -144,7 +145,10 @@ export default function PowerBi() {
         .then((data) => {
           setReportConfig(data.data);
         })
-        .catch((err) => console.error("error in getting report config", err));
+        .catch((err) => {
+          // eslint-disable-next-line no-console
+          console.error("error in getting report config", err);
+        });
     }
   }, [token]);
 
@@ -247,7 +251,7 @@ export default function PowerBi() {
             new Map([
               [
                 "loaded",
-                function () {
+                () => {
                   window.report
                     .getPages()
                     .then((data) => {
@@ -265,11 +269,17 @@ export default function PowerBi() {
                         ) {
                           window.report
                             .setPage(commReport[0].name)
-                            .catch((err) => console.log("setpage error:", err));
+                            .catch((err) => {
+                              // eslint-disable-next-line no-console
+                              console.error("setpage error:", err);
+                            });
                           if (filter()) {
                             window.report
                               .setFilters([filter()])
-                              .catch((err) => console.log("error: ", err));
+                              .catch((err) => {
+                                // eslint-disable-next-line no-console
+                                console.error("error: ", err);
+                              });
                           }
                         }
                       } else if (
@@ -277,13 +287,15 @@ export default function PowerBi() {
                         criteria.length &&
                         criteria[0].name !== currentPage
                       ) {
-                        window.report
-                          .setPage(criteria[0].name)
-                          .catch((err) => console.log("setpage error:", err));
+                        window.report.setPage(criteria[0].name).catch((err) => {
+                          // eslint-disable-next-line no-console
+                          console.error("setpage error:", err);
+                        });
                         if (filter()) {
-                          window.report
-                            .setFilters([filter()])
-                            .catch((err) => console.log("error: ", err));
+                          window.report.setFilters([filter()]).catch((err) => {
+                            // eslint-disable-next-line no-console
+                            console.error("error: ", err);
+                          });
                         }
                       }
                       window.report.refresh();
@@ -297,18 +309,22 @@ export default function PowerBi() {
                         );
                       }
                     })
-                    .catch((err) => console.log("error: ", err));
+                    .catch((err) => {
+                      // eslint-disable-next-line no-console
+                      console.error("error: ", err);
+                    });
                 },
               ],
               [
                 "error",
-                function (event) {
-                  console.log("ERROR:::", event.detail);
+                (event) => {
+                  // eslint-disable-next-line no-console
+                  console.error("ERROR:::", event.detail);
                 },
               ],
               [
                 "pageChanged",
-                function (event) {
+                (event) => {
                   if (currentPage !== event.detail.newPage.name) {
                     setCurrentPage(event.detail.newPage.name);
                     setCurrentPageData(event.detail.newPage);

@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 import { models } from "powerbi-client";
 import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
-import { Button, Modal, Toast } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import { Printer, LockFill } from "react-bootstrap-icons";
 import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
-import Roles from "../../constants/roles";
 import Config from "../../Config";
 import useConfiguration from "../../hooks/useConfiguration";
 import "./ReportOverview.css";
@@ -130,6 +129,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
       "error",
       function reportErrored(event) {
         if (event) {
+          // eslint-disable-next-line no-console
           console.error(event.detail);
         }
       },

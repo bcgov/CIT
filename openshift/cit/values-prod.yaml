@@ -8,6 +8,7 @@ limits_memory: 512Mi
 requests_cpu: 150m
 requests_memory: 512Mi
 docker_host: image-registry.openshift-image-registry.svc:5000
+subdomain: www
 #stateful_requests_cpu: 50m
 #stateful_requests_memory: 50Mi
 #stateful_limit_cpu: 500m

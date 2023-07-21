@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { Button } from "shared-components";
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
@@ -18,18 +17,8 @@ const UserProfile = () => {
     : fallbacDisplayName;
 
   const configuration = useConfiguration();
-  const [isPowerBI, setIsPowerBI] = useState(null);
-
-  useEffect(() => {
-    if (location.pathname.includes("/cit-dashboard")) {
-      setIsPowerBI(true);
-    } else {
-      setIsPowerBI(false);
-    }
-  }, []);
-
   const isDashboard = () => {
-    if (isPowerBI && location.pathname.includes("/cit-dashboard/public")) {
+    if (location.pathname.includes("/cit-dashboard/public")) {
       return true;
     }
     return false;
@@ -51,15 +40,9 @@ const UserProfile = () => {
               </>
             }
             onClick={() => {
-              if (isPowerBI) {
-                keycloak.obj.logout({
-                  redirectUri: `${configuration.baseUrl}/cit-dashboard`,
-                });
-              } else {
-                keycloak.obj.logout({
-                  redirectUri: `${configuration.baseUrl}/investmentopportunities/home`,
-                });
-              }
+              keycloak.obj.logout({
+                redirectUri: `${configuration.baseUrl}/cit-dashboard`,
+              });
             }}
             styling="btn bcgov-button bcgov-normal-white"
           />
@@ -72,7 +55,7 @@ const UserProfile = () => {
               </>
             }
             onClick={() => {
-              if (isPowerBI && !isDashboard()) {
+              if (!isDashboard()) {
                 const loginWithIdir = keycloak.obj.createLoginUrl({
                   idpHint: "idir",
                   redirectUri: encodeURI(

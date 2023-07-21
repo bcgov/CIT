@@ -1,0 +1,82 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ .Values.app_name }}-api
+  labels:
+    app: {{ .Values.app_name }}-api
+    name: {{ .Values.app_name }}-api
+spec:
+  host: {{ .Values.api_subdomain }}communityinformationtool.gov.bc.ca
+
+  port:
+    targetPort: 8080-tcp
+  tls:
+    termination: edge
+    certificate: |-
+{{ .Files.Get "certs/communityinformationtool.gov.bc.ca.txt" | indent 6 }}
+    key: |-
+{{ .Files.Get "certs/cit.key" | indent 6 }}
+    caCertificate: |-
+{{ .Files.Get "certs/L1K_Chain.txt" | indent 6 }}
+    insecureEdgeTerminationPolicy: Redirect
+  to:
+    kind: Service
+    name: {{ .Values.app_name }}-api
+    weight: 100
+  wildcardPolicy: None
+---
+{{ if .Values.is_prod }}
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ .Values.app_name }}-web2
+  labels:
+    app: {{ .Values.app_name }}-web
+    name: {{ .Values.app_name }}-web
+spec:
+  host: communityinformationtool.gov.bc.ca
+  port:
+    targetPort: 8080-tcp
+  tls:
+    termination: edge
+    certificate: |-
+{{ .Files.Get "certs/communityinformationtool.gov.bc.ca.txt" | indent 6 }}
+    key: |-
+{{ .Files.Get "certs/cit.key" | indent 6 }}
+    caCertificate: |-
+{{ .Files.Get "certs/L1K_Chain.txt" | indent 6 }}
+    insecureEdgeTerminationPolicy: Redirect
+    insecureEdgeTerminationPolicy: Redirect
+  to:
+    kind: Service
+    name: {{ .Values.app_name }}-web
+    weight: 100
+  wildcardPolicy: None
+{{ end }}
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ .Values.app_name }}-web
+  labels:
+    app: {{ .Values.app_name }}-web
+    name: {{ .Values.app_name }}-web
+spec:
+  host: {{ .Values.web_subdomain }}communityinformationtool.gov.bc.ca
+  port:
+    targetPort: 8080-tcp
+  tls:
+    termination: edge
+    certificate: |-
+{{ .Files.Get "certs/communityinformationtool.gov.bc.ca.txt" | indent 6 }}
+    key: |-
+{{ .Files.Get "certs/cit.key" | indent 6 }}
+    caCertificate: |-
+{{ .Files.Get "certs/L1K_Chain.txt" | indent 6 }}
+    insecureEdgeTerminationPolicy: Redirect
+    insecureEdgeTerminationPolicy: Redirect
+  to:
+    kind: Service
+    name: {{ .Values.app_name }}-web
+    weight: 100
+  wildcardPolicy: None

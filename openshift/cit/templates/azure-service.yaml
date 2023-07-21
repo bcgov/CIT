@@ -1,0 +1,13 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Values.app_name }}-external-azure-db
+  labels:
+    app: {{ .Values.app_name }}-external-azure-db
+    name: {{ .Values.app_name }}-external-azure-db
+spec:
+    type: ExternalName
+    externalName: psql-cit3-citz-bcgov-test.postgres.database.azure.com
+    selector: {}
+---

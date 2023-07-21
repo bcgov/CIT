@@ -141,8 +141,6 @@ class OpportunitiesList(generics.ListAPIView):
         if (connectivity == 'Y'):
             queryset = queryset.filter(
                 Q(network_avg__in=['50/10']) & Q(network_at_road='Yes'))
-        elif (connectivity == 'N'):
-            queryset = queryset.filter(Q(network_at_road='No'))
 
 
         community_population_distance_min = float(
@@ -223,41 +221,25 @@ class OpportunitiesList(generics.ListAPIView):
             if (service_connected is not None and service_connected == 'Y'):
                 queryset = queryset.filter(
                     Q(opportunity_road_connected=service_connected))
-            elif (service_connected is not None and service_connected == 'N'):
-                queryset = queryset.filter(
-                    Q(opportunity_road_connected=service_connected)
-                    | Q(opportunity_road_connected='U'))
+
         elif (service_name == 'opportunity_water_connected'):
             if (service_connected is not None and service_connected == 'Y'):
                 queryset = queryset.filter(
                     Q(opportunity_water_connected=service_connected))
-            elif (service_connected is not None and service_connected == 'N'):
-                queryset = queryset.filter(
-                    Q(opportunity_water_connected=service_connected)
-                    | Q(opportunity_water_connected='U'))
+
         elif (service_name == 'opportunity_sewer_connected'):
             if (service_connected is not None and service_connected == 'Y'):
                 queryset = queryset.filter(
                     Q(opportunity_sewer_connected=service_connected))
-            elif (service_connected is not None and service_connected == 'N'):
-                queryset = queryset.filter(
-                    Q(opportunity_sewer_connected=service_connected)
-                    | Q(opportunity_sewer_connected='U'))
+
         elif (service_name == 'opportunity_electrical_connected'):
             if (service_connected is not None and service_connected == 'Y'):
                 queryset = queryset.filter(
                     Q(opportunity_electrical_connected=service_connected))
-            elif (service_connected is not None and service_connected == 'N'):
-                queryset = queryset.filter(
-                    Q(opportunity_electrical_connected=service_connected)
-                    | Q(opportunity_electrical_connected='U'))
+
         elif (service_name == 'opportunity_natural_gas_connected'):
             if (service_connected is not None and service_connected == 'Y'):
                 queryset = queryset.filter(
                     Q(opportunity_natural_gas_connected=service_connected))
-            elif (service_connected is not None and service_connected == 'N'):
-                queryset = queryset.filter(
-                    Q(opportunity_natural_gas_connected=service_connected)
-                    | Q(opportunity_natural_gas_connected='U'))
 
         return queryset

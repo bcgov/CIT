@@ -64,24 +64,6 @@ export function useKeycloakWrapper() {
    */
   const email = () => userInfo && userInfo.email;
 
-  /**
-   * Return true if the user has permissions to edit this opportunity
-   */
-  const canUserEditOpportunity = (opportunity, edoId) =>
-    !!opportunity &&
-    (hasRole(Roles.SYSTEM_ADMINISTRATOR) ||
-      hasRole(Roles.SUPER_ADMINISTRATOR) ||
-      !opportunity.edoId === edoId);
-
-  /**
-   * Return true if the user has permissions to delete this property
-   */
-  const canUserDeleteOpportunity = (opportunity, edoId) =>
-    !!opportunity &&
-    (hasRole(Roles.SYSTEM_ADMINISTRATOR) ||
-      hasRole(Roles.SUPER_ADMINISTRATOR) ||
-      !opportunity.edoId === edoId);
-
   return {
     obj: keycloak,
     username: username(),
@@ -92,11 +74,8 @@ export function useKeycloakWrapper() {
     idp: idp(),
     isAdmin:
       hasRole(Roles.SYSTEM_ADMINISTRATOR) || hasRole(Roles.SUPER_ADMINISTRATOR),
-    isEdo: hasRole(Roles.SYSTEM_ADMINISTRATOR),
     roles: roles(),
     hasRole,
-    canEdit: canUserEditOpportunity(),
-    canDelete: canUserDeleteOpportunity(),
   };
 }
 

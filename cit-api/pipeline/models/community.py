@@ -18,7 +18,7 @@ class Community(models.Model):
     header_image = models.ImageField(null=True, blank=True, upload_to="community_images/")
     # TODO SY - make this into a choice field tuple
     community_type = models.CharField(null=True, blank=True, max_length=255)
-    is_coastal = models.NullBooleanField()
+    is_coastal = models.BooleanField(null=True)
 
     census_subdivision = models.ForeignKey('CEN_PROF_DETAILED_CSD_ATTRS_SP',
                                            null=True,
@@ -62,7 +62,7 @@ class Community(models.Model):
     # Band_Number
     band_number = models.IntegerField(null=True)
 
-    incorporated = models.NullBooleanField()
+    incorporated = models.BooleanField(null=True)
 
     # Last-Mile Status (June2020)
     last_mile_status = models.CharField(max_length=255, null=True, blank=True)
@@ -98,7 +98,7 @@ class Community(models.Model):
     num_timber_facilities = models.IntegerField(null=True)
 
     # Filters for mapbox
-    has_any_k12_school = models.NullBooleanField(null=True)
+    has_any_k12_school = models.BooleanField(null=True)
 
     @property
     def population(self):
