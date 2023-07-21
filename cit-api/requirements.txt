@@ -7,7 +7,7 @@ drf-yasg==1.21.5
 Pillow==9.4.0
 psycopg2-binary==2.9.5
 uwsgi==2.0.21
-pyyaml==5.4
+pyyaml==6.0.1
 uritemplate==3.0.1
 requests==2.24.0
 jsonschema==3.2.0
