@@ -44,8 +44,14 @@ spec:
                 name: {{ .Values.app_name }}-api-config
           imagePullPolicy: Always
           terminationMessagePolicy: File
+          volumeMounts:
+            - name: media
+              mountPath: /media
       restartPolicy: Always
       serviceAccount: default
+      volumes:
+        - name: media
+          emptyDir: {}
   strategy:
     type: RollingUpdate
     rollingUpdate:
