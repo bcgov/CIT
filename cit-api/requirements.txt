@@ -6,7 +6,7 @@ django-cors-headers==3.14.0
 drf-yasg==1.21.5
 Pillow==9.4.0
 psycopg2-binary==2.9.5
-uwsgi==2.0.21
+uwsgi==2.0.22
 pyyaml==6.0.1
 uritemplate==3.0.1
 requests==2.24.0
