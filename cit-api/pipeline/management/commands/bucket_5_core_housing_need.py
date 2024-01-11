@@ -4,10 +4,11 @@ from pathlib import Path
 from django.core.management.base import BaseCommand
 from azure.storage.blob import BlobServiceClient
 
-from pipeline.importers.bucket3 import CommunitiesImporter as importer
+from admin import settings
+
+from pipeline.importers.bucket5_core_housing_need import CoreHousingImporter as importer
 from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.models.general import DataSource
-from admin import settings
 
 
 class Command(BaseCommand):
@@ -40,10 +41,10 @@ class Command(BaseCommand):
         print("Importing newest list of data sources.")
         importer.import_data_sources()
         # Ensure that the data sources are updated
-        data_resources = DataSource.objects.filter(name__in=["communities"])
+        data_resources = DataSource.objects.filter(name__in=["core_housing"])
 
         for resource in data_resources:
             print(f"Importing {resource.display_name}...")
             import_csv_resources(resource.name)
 
-        print("Import process for bucket3 completed!")
+        print("Import process for Core Housing Need completed!")

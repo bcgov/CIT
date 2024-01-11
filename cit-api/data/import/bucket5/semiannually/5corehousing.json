@@ -1,0 +1,12 @@
+[
+    {
+      "name": "core_housing",
+      "display_name": "Core Housing",
+      "model_name": "CORE_HOUSING_NEED",
+      "source": "internal",
+      "source_type": "csv",
+      "source_file_path": "data/import/datafiles/bc_csd_2021_housing_need.csv",
+      "import_order": 10
+    }
+  ]
+  

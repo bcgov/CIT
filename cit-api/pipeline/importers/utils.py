@@ -1029,8 +1029,6 @@ def import_housing(URL):
             data['year']=pd.to_datetime(data['year'], format = '%y',errors='coerce').dt.year
             data['month']=pd.to_datetime(data['month'], format = '%b',errors='coerce').dt.month
 
-
-    
             user = settings.DATABASES['default']['USER']
             password = settings.DATABASES['default']['PASSWORD']
             database_name = settings.DATABASES['default']['NAME']
@@ -1042,6 +1040,7 @@ def import_housing(URL):
 
         except Exception as e:
             print(e)
+            
 def import_phdemographicdistribution(url, linkage_file):
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', "Upgrade-Insecure-Requests": "1","DNT": "1","Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","Accept-Language": "en-US,en;q=0.5","Accept-Encoding": "gzip, deflate"}
     s = requests.get(url,headers=headers)
@@ -1091,3 +1090,9 @@ def import_nbdphhspeeds(URL):
         database_url = 'postgresql://{user}:{password}@{Host}:5432/{database_name}'.format(user=user,password=password,Host=Host,database_name=database_name )
         engine = create_engine(database_url)
         nbdphhspeeds.to_sql(NBDPHHSpeeds._meta.db_table,if_exists = 'replace',con=engine,index=False)
+
+
+def import_core_housing_need(URL):
+    print(URL)
+    print("TRANSFORM DATA HERE")
+    pass

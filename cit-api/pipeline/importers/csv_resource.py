@@ -11,7 +11,8 @@ from pipeline.importers.utils import (import_data_into_point_model, read_csv,
                                       import_civic_leaders_from_csv, get_databc_last_modified_date,
                                       import_services, get_openca_last_modified_date,
                                       import_connectivity_project, import_naics_codes,
-                                      import_businesses_by_cid,import_bc_assessment_data,import_housing,import_census_subdivision_linkage,import_nbdphhspeeds,import_phdemographicdistribution)
+                                      import_businesses_by_cid,import_bc_assessment_data,import_housing,import_census_subdivision_linkage,import_nbdphhspeeds,import_phdemographicdistribution,
+                                      import_core_housing_need)
 
 FILES_DIR = settings.BASE_DIR
 
@@ -49,6 +50,8 @@ def import_resource(resource_type):
         'bc_assessment_regional_district'
     ]
     print(resource_type)
+    if resource_type == "core_housing":
+        import_core_housing_need(file_path)
     if resource_type == "communities":
         import_communities_from_csv(file_path)
     elif resource_type == "civic_leaders":

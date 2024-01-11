@@ -5,7 +5,7 @@
     "model_name": "Community",
     "source": "internal",
     "source_type": "csv",
-    "source_file_path": "data/COMMUNITIES_V6.csv",
+    "source_file_path": "data/import/datafiles/COMMUNITIES_V6.csv",
     "import_order": 10
   }
 ]
