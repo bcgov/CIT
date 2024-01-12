@@ -22,11 +22,8 @@ class CSDCoreHousingNeed(models.Model):
     class Meta:
         ordering = ("census_subdivision_id",)
 
-    def __repr__(self) -> str:
-        return (
-            f"<CSDCoreHousingNeed({0},{1},{2},{3})",
-            self.census_subdivision_id,
-            self.core_housing_examined,
-            self.core_housing_need,
-            self.core_housing_need_percentage,
-        )
+    def __str__(self) -> str:
+        return f"<CSDCoreHousingNeed({self.census_subdivision_id:8}, {self.core_housing_examined:8},{self.core_housing_need:8}, {self.core_housing_need_percentage:1.5})>"
+
+            
+        
