@@ -48,6 +48,9 @@ class CoreHousingImporter(BaseImporter):
                     except AssertionError:
                         print("IMPORT FAILED: Column headers not as expected")
                 if i > 3:
+                    if row[1].strip() == "x":
+                        # data set has x for all data col if data was not collected
+                        continue
                     csd: str = cls.extract_csd(row[0])
                     examined = int(row[TOTAL_EXAMINED_INDEX])
                     needed = int(row[TOTAL_NEEDED_INDEX])
