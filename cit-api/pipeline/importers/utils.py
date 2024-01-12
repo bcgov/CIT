@@ -37,6 +37,8 @@ from pipeline.models.connectivity_infrastructure_projects import ConnectivityInf
 from pipeline.models import NAICSCodes
 from pipeline.models.general import NBDPHHSpeeds,PHDemographicDistribution
 from sqlalchemy.sql.expression import false
+from pipeline.importers.bucket5_core_housing_need import CoreHousingImporter
+
 import requests
 import io
 import pandas as pd
@@ -1040,7 +1042,7 @@ def import_housing(URL):
 
         except Exception as e:
             print(e)
-            
+
 def import_phdemographicdistribution(url, linkage_file):
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.76 Safari/537.36', "Upgrade-Insecure-Requests": "1","DNT": "1","Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8","Accept-Language": "en-US,en;q=0.5","Accept-Encoding": "gzip, deflate"}
     s = requests.get(url,headers=headers)
@@ -1093,6 +1095,4 @@ def import_nbdphhspeeds(URL):
 
 
 def import_core_housing_need(URL):
-    print(URL)
-    print("TRANSFORM DATA HERE")
-    pass
+    CoreHousingImporter.etl(URL)

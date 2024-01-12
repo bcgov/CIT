@@ -49,10 +49,10 @@ def import_resource(resource_type):
         'bc_assessment_census_subdivision', 'bc_assessment_economic_region',
         'bc_assessment_regional_district'
     ]
-    print(resource_type)
+    print(f"resource_type: {resource_type}")
     if resource_type == "core_housing":
         import_core_housing_need(file_path)
-    if resource_type == "communities":
+    elif resource_type == "communities":
         import_communities_from_csv(file_path)
     elif resource_type == "civic_leaders":
         import_civic_leaders_from_csv(file_path)

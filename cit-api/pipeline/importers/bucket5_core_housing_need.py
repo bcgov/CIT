@@ -1,7 +1,62 @@
-import json
-from pipeline.models.general import DataSource
+import csv
+import re
+
+from typing import List
+
+from pipeline.models.core_housing_need import CSDCoreHousingNeed
 from pipeline.importers.base_importer import BaseImporter
-# need 5 pipelines with each own command for DevOps to build script batch. Regroup the json files to consider the schedule as well.
+
+TOTAL_EXAMINED_HEADER = "Households examined for core housing need status"
+TOTAL_EXAMINED_INDEX = 1
+TOTAL_NEEDED_HEADER = "Households in core housing need status"
+TOTAL_NEEDED_INDEX = 2
+
+CSD_REGEX = "\(([0-9]+)\)"
+
 
 class CoreHousingImporter(BaseImporter):
     DATA_SOURCES = ["data/import/bucket5/semiannually/5corehousing.json"]
+
+    @classmethod
+    def verify_data_headers(cls, row: List[str]):
+        assert row[TOTAL_EXAMINED_INDEX].strip() == TOTAL_EXAMINED_HEADER, row[
+            TOTAL_EXAMINED_INDEX
+        ]
+        assert row[TOTAL_NEEDED_INDEX].strip() == TOTAL_NEEDED_HEADER, row[
+            TOTAL_NEEDED_INDEX
+        ]
+
+    @classmethod
+    def extract_csd(cls, string: str):
+        pattern = re.compile(CSD_REGEX)
+        return pattern.search(string).groups()[0]
+
+    @classmethod
+    def etl(cls, file_path: str):
+        with open(file_path) as csv_file:
+            csv_reader = csv.reader(
+                csv_file,
+                delimiter=",",
+            )
+            for i, row in enumerate(csv_reader):
+                if i < 3:
+                    # first 3 rows are garbage
+                    continue
+                if i == 3:
+                    try:
+                        cls.verify_data_headers(row)
+                    except AssertionError:
+                        print("IMPORT FAILED: Column headers not as expected")
+                if i > 3:
+                    csd: str = cls.extract_csd(row[0])
+                    examined = int(row[TOTAL_EXAMINED_INDEX])
+                    needed = int(row[TOTAL_NEEDED_INDEX])
+                    percentage = needed / examined
+
+                    entry = CSDCoreHousingNeed(
+                        census_subdivision_id=csd,
+                        core_housing_examined=examined,
+                        core_housing_need=needed,
+                        core_housing_need_percentage=percentage,
+                    )
+                    print(entry)
