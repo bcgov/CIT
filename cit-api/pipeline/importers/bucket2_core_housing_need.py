@@ -64,3 +64,4 @@ class CoreHousingImporter(BaseImporter):
                     core_housing_need_percentage=percentage,
                 )
                 print(entry)
+                entry.save()
