@@ -37,7 +37,7 @@ from pipeline.models.connectivity_infrastructure_projects import ConnectivityInf
 from pipeline.models import NAICSCodes
 from pipeline.models.general import NBDPHHSpeeds,PHDemographicDistribution
 from sqlalchemy.sql.expression import false
-from pipeline.importers.bucket5_core_housing_need import CoreHousingImporter
+from pipeline.importers.bucket2_core_housing_need import CoreHousingImporter
 
 import requests
 import io
