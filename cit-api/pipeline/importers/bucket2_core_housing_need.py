@@ -15,7 +15,7 @@ CSD_REGEX = "\(([0-9]+)\)"
 
 
 class CoreHousingImporter(BaseImporter):
-    DATA_SOURCES = ["data/import/bucket5/semiannually/5corehousing.json"]
+    DATA_SOURCES = ["data/import/bucket2/semiannually/2core_housing.json"]
 
     @classmethod
     def verify_data_headers(cls, row: List[str]):
