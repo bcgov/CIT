@@ -51,7 +51,7 @@ def import_resource(resource_type):
     ]
     print(f"resource_type: {resource_type}")
     if resource_type == "core_housing":
-        import_core_housing_need(file_path)
+        import_core_housing_need(URL)
     elif resource_type == "communities":
         import_communities_from_csv(file_path)
     elif resource_type == "civic_leaders":

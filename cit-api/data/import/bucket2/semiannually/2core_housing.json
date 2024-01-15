@@ -5,8 +5,8 @@
       "model_name": "CORE_HOUSING_NEED",
       "source": "internal",
       "source_type": "csv",
-      "source_file_path": "data/import/datafiles/bc_csd_2021_housing_need.csv",
-      "import_order": 10
+      "external_url": "https://borealisdata.ca/api/access/datafile/466044",
+      "import_order": 2
     }
   ]
   
