@@ -3,7 +3,7 @@ on:
     workflow_dispatch:
 jobs:
     run_core_housing_need:
-      uses: bcgov/CIT/.github/workflows/reusable_job/run_pipeline_command.yml
+      uses: bcgov/CIT/.github/workflows/run_pipeline_command.yml@095f1b9c1a284bb85665701f9825f2adbb704b90
       with:
         BUCKET_COMMAND: bucket_2_core_housing_need
   
