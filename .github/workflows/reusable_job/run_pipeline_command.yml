@@ -1,0 +1,28 @@
+name: Reusable Pipeline Command
+
+on:
+  workflow_call:
+    inputs:
+      bucket_command:
+        required: true
+        type: string
+
+jobs:
+    reusable_run_pipeline_command:
+        runs-on: ubuntu-latest
+        steps:
+          # checkout the repo
+          - name: "Checkout GitHub Action"
+            uses: actions/checkout@master
+            
+          - name: "Generate env file"
+            run: |
+                echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
+                echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
+                echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
+                echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
+                echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+                echo 'BUCKET_COMMAND = ${{inputs.bucket_command}} >> .env
+    
+          - name: Start containers
+            run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline

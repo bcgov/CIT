@@ -1,0 +1,9 @@
+name: WIP
+on:
+    workflow_dispatch:
+jobs:
+    run_core_housing_need:
+      uses: bcgov/CIT/.github/workflows/reusable_job/run_pipeline_command.yml
+      with:
+        BUCKET_COMMAND: bucket_2_core_housing_need
+  

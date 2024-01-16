@@ -20,6 +20,7 @@ on:
         - bucket_1_census_subdivisions_2016
         - bucket_1_census_subdivisions
         - bucket_2_businesses_by_csd
+        - bucket_2_core_housing_need
         - bucket_2_housing
         - bucket_2_municipalities
         - bucket_2_nbd_phh_speeds

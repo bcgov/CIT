@@ -7,7 +7,19 @@ on:
   schedule:
     - cron: "0 0 1 */6 *"
   workflow_dispatch:
+
+  workflow_call:
+    inputs:
+      bucket_command: 
+        required: true
+        type: string
+
 jobs:
+  run_core_housing_need:
+    uses: bcgov/CIT/.github/workflows/reusable_job/run_pipeline_command.yml
+    with:
+      BUCKET_COMMAND: bucket_2_core_housing_need
+
   run-businesses-by-csd:
     runs-on: ubuntu-latest
     steps:
