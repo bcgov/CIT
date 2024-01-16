@@ -37,7 +37,7 @@ class CoreHousingImporter(BaseImporter):
     @classmethod
     def etl(cls, url: str):
         resp = get(url)
-        content = resp.content.decode('utf-8')
+        content = resp.content.decode("utf-8")
         csv_reader = csv.reader(content.splitlines(), delimiter=",")
         for i, row in enumerate(csv_reader):
             if i < 3:
