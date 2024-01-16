@@ -10,6 +10,7 @@ on:
         required: true
         options:
         - test
+        - test-WIP
         - prod
       buckets:
         type: choice
@@ -57,9 +58,18 @@ on:
 env: 
   BUCKET_COMMAND: ${{ github.event.inputs.buckets }}
 jobs:
-  run-test:
+  run-test-wip: 
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.environment == 'test' }}
+    steps:
+      - name: Run Pipeline Command (TEST)
+        uses: bcgov/CIT/.github/workflows/run_pipeline_command_on_test.yml@develop
+        with:
+          BUCKET_COMMAND: ${{ env.BUCKET_COMMAND }}
+  run-test:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.inputs.environment == 'test-WIP' }}
+    
     steps:
       # checkout the repo
       - name: "Checkout GitHub Actionthe relap"

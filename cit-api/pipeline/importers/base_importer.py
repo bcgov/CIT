@@ -5,7 +5,12 @@ from typing import List
 from pipeline.models.general import DataSource
 import concurrent.futures
 
-
+# JSyro started this pattern Jan 2024 should lead the much DRY'er code
+# BaseImporter knows how to collect the sources from the .json files. 
+# importer inherits this class, adds file path, and implements an ETL 
+# method that takes the source and runs the transformation the db.
+# This brings the code that collects the source data and transformation together 
+# instead of using importers/utils.py for unique transformations
 class BaseImporter(): 
     DATA_SOURCES: List[str] = []
 
