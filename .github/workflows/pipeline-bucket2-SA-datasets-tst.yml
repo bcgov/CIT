@@ -9,6 +9,11 @@ on:
   workflow_dispatch:
 
 jobs:
+  run_core_housing_need:
+    uses: bcgov/CIT/.github/workflows/run_pipeline_command_on_test.yml@develop
+    with:
+      BUCKET_COMMAND: bucket_2_core_housing_need
+
   run-businesses-by-csd:
     runs-on: ubuntu-latest
     steps:

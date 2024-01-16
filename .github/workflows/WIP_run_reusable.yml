@@ -1,9 +1,0 @@
-name: WIP
-on:
-    workflow_dispatch:
-jobs:
-    run_core_housing_need:
-      uses: jsyro/CIT/.github/workflows/run_pipeline_command.yml@develop
-      with:
-        BUCKET_COMMAND: bucket_2_core_housing_need
-  
