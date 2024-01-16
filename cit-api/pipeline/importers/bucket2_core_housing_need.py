@@ -17,7 +17,13 @@ TOTAL_NEEDED_INDEX = 2
 CSD_REGEX = "\(([0-9]+)\)"
 
 
+# JSyro started this pattern Jan 2024 should lead the much DRY'er code
+# One importer class that defines the sources files. BaseImporter knows how to collect the 
+# sources from the .json files. Implement an ETL method that takes the expected 
+# source and populates the db. Collects the source data and transformation together, 
+# instead of using importers/utils.py for unique transformations
 class CoreHousingImporter(BaseImporter):
+
     DATA_SOURCES = ["data/import/bucket2/semiannually/2core_housing.json"]
 
     @classmethod
@@ -63,5 +69,4 @@ class CoreHousingImporter(BaseImporter):
                     core_housing_need=needed,
                     core_housing_need_percentage=percentage,
                 )
-                print(entry)
                 entry.save()
