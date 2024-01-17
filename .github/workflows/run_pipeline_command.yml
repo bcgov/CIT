@@ -24,6 +24,10 @@ jobs:
       - name: Environment check
         run: | 
           echo "environment is ${{ github.event.inputs.environment }}"
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}'
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}'
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}'
+          echo 'BUCKET_COMMAND = ${{ github.event.inputs.bucket_command}}'
 
       - name: "Generate env file"
         run: |
