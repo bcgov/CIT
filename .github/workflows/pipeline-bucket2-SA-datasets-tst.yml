@@ -10,7 +10,8 @@ on:
 
 jobs:
   run_core_housing_need:
-    uses: bcgov/CIT/.github/workflows/run_pipeline_command.yml@develop
+    uses: bcgov/CIT/.github/workflows/WIP-run_pipeline_command.yml@develop
+    secrets: inherit
     with:
       bucket_command: bucket_2_core_housing_need
       environment: test
