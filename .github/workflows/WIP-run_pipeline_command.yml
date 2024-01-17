@@ -1,5 +1,7 @@
 name: Reusable Pipeline Command
 
+##JSyro, I never got this to work.... really hoped to remove some duplication
+
 on:
   workflow_call:
     inputs:
@@ -43,11 +45,7 @@ jobs:
       - name: Environment check
         run: | 
           echo "environment is ${{ inputs.environment }}"
-          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}'
-          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}'
-          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}'
-          echo 'BUCKET_COMMAND = ${{ inputs.bucket_command}}'
-
+          
       - name: "Generate env file"
         run: |
             echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 

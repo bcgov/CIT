@@ -10,7 +10,7 @@ on:
         required: true
         options:
         - test
-        # - test-reusable
+        - test-WIP
         - prod
       buckets:
         type: choice
@@ -58,13 +58,30 @@ on:
 env: 
   BUCKET_COMMAND: ${{ github.event.inputs.buckets }}
 jobs:
-  run-test: 
+  run-test:
+    runs-on: ubuntu-latest
     if: ${{ github.event.inputs.environment == 'test' }}
-    uses: bcgov/CIT/.github/workflows/WIP-run_pipeline_command.yml@develop
-    secrets: inherit
-    with:
-      BUCKET_COMMAND: ${{ github.event.inputs.buckets }}
-      environment: 'test'
+    
+    steps:
+      # checkout the repo
+      - name: "Checkout GitHub Actionthe relap"
+        uses: actions/checkout@master
+      
+      - name: Environment check
+        run: | 
+          echo "environment is ${{ github.event.inputs.environment }}"
+
+      - name: "Generate env file"
+        run: |
+            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
+            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
+            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
+            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
+            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+            echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
+
+      - name: Start containers
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
   run-prod:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.environment == 'prod' }}

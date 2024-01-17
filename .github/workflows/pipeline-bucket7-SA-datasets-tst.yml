@@ -21,8 +21,6 @@ jobs:
             echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
             echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
             echo 'BUCKET_COMMAND = bucket_7_bc_wildfire_zones' >> .env
-      - name: "check env"
-        run: cat .env
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
   run-bc-network-connectivity:
