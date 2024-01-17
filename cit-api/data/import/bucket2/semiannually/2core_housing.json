@@ -1,0 +1,12 @@
+[
+    {
+      "name": "core_housing",
+      "display_name": "Core Housing",
+      "model_name": "CORE_HOUSING_NEED",
+      "source": "internal",
+      "source_type": "csv",
+      "external_url": "https://borealisdata.ca/api/access/datafile/466044",
+      "import_order": 2
+    }
+  ]
+  

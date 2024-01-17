@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.contrib.gis.geos import Point
 
-from ...serializers.opportunity import OpportunitySerializer
+from ...serializers.opportunity.edit import OpportunitySerializer
 from ...models import Opportunity
 
 class OpportunitySerializerTest(TestCase):

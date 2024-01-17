@@ -16,8 +16,8 @@ services:
       context: ./cit-api
       dockerfile: Dockerfile.dev
     image: countable/cit
-    # volumes:
-    #   - ./cit-api:/code
+    volumes:
+      - ./cit-api:/code
     #   - static:/static
     #   - media:/code/data
     env_file:
@@ -28,9 +28,6 @@ services:
       - db
 
   db:
-    # image: mdillon/postgis
-    # image: postgis/postgis:15-3.3
-    # image: pgrouting/pgrouting
     image: kartoza/postgis:15-3.3
     environment:
       POSTGRES_USER: postgres
