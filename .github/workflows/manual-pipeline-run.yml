@@ -61,6 +61,7 @@ jobs:
   run-test: 
     if: ${{ github.event.inputs.environment == 'test' }}
     uses: bcgov/CIT/.github/workflows/run_pipeline_command.yml@develop
+    secrets: inherit
     with:
       BUCKET_COMMAND: ${{ inputs.buckets }}
       environment: 'test'
