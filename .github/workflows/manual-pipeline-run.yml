@@ -10,7 +10,6 @@ on:
         required: true
         options:
         - test
-        - test-WIP
         - prod
       buckets:
         type: choice
