@@ -14,7 +14,7 @@ on:
 jobs:
   run_pipeline_command-test:
     runs-on: ubuntu-latest
-    if: ${{ github.event.inputs.environment == 'test' }}
+    if: ${{ inputs.environment == 'test' }}
     
     steps:
       # checkout the repo
@@ -23,11 +23,11 @@ jobs:
       
       - name: Environment check
         run: | 
-          echo "environment is ${{ github.event.inputs.environment }}"
+          echo "environment is ${{ inputs.environment }}"
           echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}'
           echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}'
           echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}'
-          echo 'BUCKET_COMMAND = ${{ github.event.inputs.bucket_command}}'
+          echo 'BUCKET_COMMAND = ${{ inputs.bucket_command}}'
 
       - name: "Generate env file"
         run: |
@@ -36,7 +36,7 @@ jobs:
             echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
             echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
             echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = ${{ github.event.inputs.bucket_command}} >> .env
+            echo 'BUCKET_COMMAND = ${{ inputs.bucket_command}} >> .env
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
