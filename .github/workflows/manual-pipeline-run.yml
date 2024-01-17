@@ -60,7 +60,7 @@ env:
 jobs:
   run-test-wip: 
     if: ${{ github.event.inputs.environment == 'test-WIP' }}
-    uses: bcgov/CIT/.github/workflows/run_pipeline_command_on_test.yml@develop
+    uses: bcgov/CIT/.github/workflows/run_pipeline_command.yml@develop
     with:
       BUCKET_COMMAND: ${{ inputs.buckets }}
       environment: test
