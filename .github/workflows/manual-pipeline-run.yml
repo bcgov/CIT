@@ -63,7 +63,7 @@ jobs:
     uses: bcgov/CIT/.github/workflows/run_pipeline_command.yml@develop
     secrets: inherit
     with:
-      BUCKET_COMMAND: ${{ inputs.buckets }}
+      BUCKET_COMMAND: ${{ github.event.inputs.buckets }}
       environment: 'test'
   run-prod:
     runs-on: ubuntu-latest
