@@ -10,6 +10,25 @@ on:
         type: string  #['test','prod']
         description: Select the environment
         required: true
+    secrets:
+      POSTGRES_DB_TEST:
+        required: true
+      POSTGRES_DJANGO_USER_TEST:
+        required: true
+      POSTGRES_DJANGO_PASSWORD_TEST:
+        required: true
+      POSTGRES_HOST_TEST:
+        required: true
+      POSTGRES_DB_PROD:
+        required: true
+      POSTGRES_DJANGO_USER_PROD:
+        required: true
+      POSTGRES_DJANGO_PASSWORD_PROD:
+        required: true
+      POSTGRES_HOST_PROD:
+        required: true
+      ROUTE_PLANNER_API_KEY:
+        required: true
 
 jobs:
   run_pipeline_command-test:
