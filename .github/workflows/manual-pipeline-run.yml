@@ -59,13 +59,11 @@ env:
   BUCKET_COMMAND: ${{ github.event.inputs.buckets }}
 jobs:
   run-test-wip: 
-    runs-on: ubuntu-latest
     if: ${{ github.event.inputs.environment == 'test-WIP' }}
-    steps:
-      - name: Run Pipeline Command (TEST)
-        uses: bcgov/CIT/.github/workflows/run_pipeline_command_on_test.yml@develop
-        with:
-          BUCKET_COMMAND: ${{ env.BUCKET_COMMAND }}
+    uses: bcgov/CIT/.github/workflows/run_pipeline_command_on_test.yml@develop
+    with:
+      BUCKET_COMMAND: ${{ inputs.buckets }}
+      environment: test
   run-test:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.environment == 'test' }}
