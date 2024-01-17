@@ -12,7 +12,11 @@ jobs:
       # checkout the repo
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master
-        
+     
+      - name: "check secret"
+        run: |
+            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}'
+
       - name: "Generate env file"
         run: |
             echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
