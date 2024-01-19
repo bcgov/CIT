@@ -1,10 +1,8 @@
 import csv
 import re
-from io import BytesIO
 
 from typing import List
 from requests import get
-from zipfile import ZipFile
 
 from pipeline.models.core_housing_need import CSDCoreHousingNeed
 from pipeline.importers.base_importer import BaseImporter
@@ -18,10 +16,10 @@ CSD_REGEX = "\(([0-9]+)\)"
 
 
 class CoreHousingImporter(BaseImporter):
-    DATA_SOURCES = ["data/import/bucket2/semiannually/2core_housing.json"]
+    DATA_SOURCES = ["data/import/bucket2/semiannually/2core_housing_need.json"]
 
     @classmethod
-    def verify_data_headers(cls, row: List[str]):
+    def _verify_data_headers(cls, row: List[str]):
         assert row[TOTAL_EXAMINED_INDEX].strip() == TOTAL_EXAMINED_HEADER, row[
             TOTAL_EXAMINED_INDEX
         ]
@@ -30,7 +28,7 @@ class CoreHousingImporter(BaseImporter):
         ]
 
     @classmethod
-    def extract_csd(cls, string: str):
+    def _extract_csd(cls, string: str):
         pattern = re.compile(CSD_REGEX)
         return pattern.search(string).groups()[0]
 
@@ -45,14 +43,14 @@ class CoreHousingImporter(BaseImporter):
                 continue
             if i == 3:
                 try:
-                    cls.verify_data_headers(row)
+                    cls._verify_data_headers(row)
                 except AssertionError:
                     print("IMPORT FAILED: Column headers not as expected")
             if i > 3:
                 if row[1].strip() == "x":
                     # data set has x for all data col if data was not collected
                     continue
-                csd: str = cls.extract_csd(row[0])
+                csd: str = cls._extract_csd(row[0])
                 examined = int(row[TOTAL_EXAMINED_INDEX])
                 needed = int(row[TOTAL_NEEDED_INDEX])
                 percentage = needed / examined

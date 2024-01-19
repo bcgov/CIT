@@ -1,7 +1,9 @@
 from django.contrib.gis.db import models
 
 from pipeline.utils import serialize_regional_district_fields
-from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
+from pipeline.models.cen_prof_detailed_csd_attrs_sp import (
+    CEN_PROF_DETAILED_CSD_ATTRS_SP,
+)
 from pipeline.constants import WGS84_SRID
 
 
@@ -12,17 +14,26 @@ class DataSource(models.Model):
     display_name = models.CharField(max_length=127, null=True)
     model_name = models.CharField(max_length=127, null=True)
     source = models.CharField(max_length=127, choices=DATA_SOURCE_CHOICES, null=True)
-    source_type = models.CharField(max_length=127, choices=DATA_SOURCE_TYPE_CHOICES, null=True)
+    source_type = models.CharField(
+        max_length=127, choices=DATA_SOURCE_TYPE_CHOICES, null=True
+    )
 
     source_file_path = models.CharField(max_length=255, unique=True, null=True)
     resource_id = models.CharField(
         max_length=255,
         null=True,
-        help_text="Resource ID for datasets from the BC Data Catalogue or Open Government")
+        help_text="Resource ID for datasets from the BC Data Catalogue or Open Government",
+    )
     permalink_id = models.CharField(
-        max_length=255, null=True, help_text="Permalink ID for datasets from the BC Data Catalogue")
+        max_length=255,
+        null=True,
+        help_text="Permalink ID for datasets from the BC Data Catalogue",
+    )
     sub_resource_id = models.CharField(
-        max_length=255, null=True, help_text="Sub-resource ID for datasets from Open Government")
+        max_length=255,
+        null=True,
+        help_text="Sub-resource ID for datasets from Open Government",
+    )
     external_url = models.URLField(null=True)
     last_updated = models.DateTimeField(null=True)
     dataset = models.CharField(max_length=255, null=True)
@@ -32,7 +43,7 @@ class DataSource(models.Model):
         return self.name
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
 
 class Hex(models.Model):
@@ -55,7 +66,7 @@ class Service(models.Model):
     technology = models.CharField(max_length=63)
 
     class Meta:
-        unique_together = ('isp', 'hex', 'technology')
+        unique_together = ("isp", "hex", "technology")
 
 
 class Road(models.Model):
@@ -64,8 +75,8 @@ class Road(models.Model):
 
 
 class Municipality(models.Model):
-    ID_FIELD = 'LGL_ADMIN_AREA_ID'
-    NAME_FIELD = 'ADMIN_AREA_ABBREVIATION'
+    ID_FIELD = "LGL_ADMIN_AREA_ID"
+    NAME_FIELD = "ADMIN_AREA_ABBREVIATION"
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
@@ -73,13 +84,12 @@ class Municipality(models.Model):
     geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     oc_m_yr = models.CharField(
         max_length=4,
-        help_text=
-        "The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
+        help_text="The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
         " e.g., 2014.",
     )
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     def __str__(self):
         return self.name
@@ -108,18 +118,20 @@ class Municipality(models.Model):
 
 
 class SchoolDistrict(models.Model):
-    ID_FIELD = 'ADMIN_AREA_SID'
-    NAME_FIELD = 'SCHOOL_DISTRICT_NAME'
+    ID_FIELD = "ADMIN_AREA_SID"
+    NAME_FIELD = "SCHOOL_DISTRICT_NAME"
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
     geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
-    sd_num = models.CharField(max_length=5, )
-    community = models.ManyToManyField('Community')
+    sd_num = models.CharField(
+        max_length=5,
+    )
+    community = models.ManyToManyField("Community")
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     def __str__(self):
         return self.name
@@ -130,8 +142,8 @@ class SchoolDistrict(models.Model):
 
 
 class RegionalDistrict(models.Model):
-    ID_FIELD = 'LGL_ADMIN_AREA_ID'
-    NAME_FIELD = 'ADMIN_AREA_NAME'
+    ID_FIELD = "LGL_ADMIN_AREA_ID"
+    NAME_FIELD = "ADMIN_AREA_NAME"
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
@@ -140,13 +152,12 @@ class RegionalDistrict(models.Model):
     oc_m_yr = models.CharField(
         null=True,
         max_length=4,
-        help_text=
-        "The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
+        help_text="The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
         " e.g., 2014.",
     )
 
     class Meta:
-        ordering = ("name", )
+        ordering = ("name",)
 
     def __str__(self):
         return self.name
@@ -160,26 +171,34 @@ class RegionalDistrict(models.Model):
 
 
 class LocationDistance(models.Model):
-    community = models.ForeignKey('Community',
-                                  on_delete=models.DO_NOTHING,
-                                  related_name='distances',
-                                  help_text="Community for this distance")
-    location = models.ForeignKey('Location', on_delete=models.DO_NOTHING, related_name='distances')
-    distance = models.DecimalField(null=True,
-                                   blank=True,
-                                   max_digits=24,
-                                   decimal_places=4,
-                                   help_text="Birds' eye distance from community to Location (km)")
+    community = models.ForeignKey(
+        "Community",
+        on_delete=models.DO_NOTHING,
+        related_name="distances",
+        help_text="Community for this distance",
+    )
+    location = models.ForeignKey(
+        "Location", on_delete=models.DO_NOTHING, related_name="distances"
+    )
+    distance = models.DecimalField(
+        null=True,
+        blank=True,
+        max_digits=24,
+        decimal_places=4,
+        help_text="Birds' eye distance from community to Location (km)",
+    )
     driving_distance = models.DecimalField(
         null=True,
         blank=True,
         max_digits=24,
         decimal_places=4,
-        help_text="Driving distance from community to Location (km)")
+        help_text="Driving distance from community to Location (km)",
+    )
     travel_time = models.IntegerField(
         null=True,
         blank=True,
-        help_text="Travel time (in minutes) corresponding to driving distance")
+        help_text="Travel time (in minutes) corresponding to driving distance",
+    )
     travel_time_display = models.CharField(
         null=True,
         blank=True,
@@ -189,33 +208,34 @@ class LocationDistance(models.Model):
     within_municipality = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = ('community', 'location')
+        unique_together = ("community", "location")
         verbose_name = "Location Distance"
         verbose_name_plural = "Location Distances"
-        ordering = ("id", )
+        ordering = ("id",)
 
     def __str__(self):
-        return '{} to {}: {} km'.format(self.community.place_name, self.location.name,
-                                        self.distance)
+        return "{} to {}: {} km".format(
+            self.community.place_name, self.location.name, self.distance
+        )
 
 
 class WildfireZone(models.Model):
-    NAME_FIELD = 'FIRE_ZONE,LABEL'
+    NAME_FIELD = "FIRE_ZONE,LABEL"
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
-    #zone_name = models.CharField(max_length=127, null=True)
+    # zone_name = models.CharField(max_length=127, null=True)
     geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     risk_class = models.CharField(
         max_length=1,
-        help_text=
-        "A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 "
+        help_text="A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 "
         "(extreme).",
     )  # 1-5
 
     def __str__(self):
         return self.name
+
 
 class BCWildfireZone(models.Model):
     zone_id = models.IntegerField(null=True)
@@ -230,7 +250,7 @@ class BCWildfireZone(models.Model):
 
 
 class TsunamiZone(models.Model):
-    NAME_FIELD = 'TSUNAMI_NOTIFY_ZONE_ID'
+    NAME_FIELD = "TSUNAMI_NOTIFY_ZONE_ID"
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
     name = models.CharField(max_length=127)
@@ -239,8 +259,7 @@ class TsunamiZone(models.Model):
     geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     zone_class = models.CharField(
         max_length=1,
-        help_text=
-        "See https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/"
+        help_text="See https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/"
         "preparedbc/know-your-hazards/tsunamis - A-C:moderate D,E:low",
     )
 
@@ -264,15 +283,22 @@ class PageView(models.Model):
 
 class PHDemographicDistribution(models.Model):
     phh_id = models.IntegerField(primary_key=True)
-    phh_type = models.IntegerField()              # PHH Type: 1 = Centroid of a 2016 Census dissemination block; 2 = Atlas of Canada Placename point; 3 = 2016 Census Road Network Address Range Left; 4 = 2016 Census Road Network Address Range Right; 5 = Previous representative point Left; 6 = Previous representative point Right; 8 = PHH null points added on highways
-    population = models.FloatField()              # population (PHH representative)
-    total_private_dwellings = models.FloatField()   # total private dwellings
-    private_dwellings_usual_residents_occupied = models.FloatField()    # private dwellings occupied by usual residents
-    dbuid_ididu = models.IntegerField()         # 2016 Census dissemination block
-    hexuid_iduhex = models.TextField()          # Hexagon identifier
+    phh_type = (
+        models.IntegerField()
+    )  # PHH Type: 1 = Centroid of a 2016 Census dissemination block; 2 = Atlas of Canada Placename point; 3 = 2016 Census Road Network Address Range Left; 4 = 2016 Census Road Network Address Range Right; 5 = Previous representative point Left; 6 = Previous representative point Right; 8 = PHH null points added on highways
+    population = models.FloatField()  # population (PHH representative)
+    total_private_dwellings = models.FloatField()  # total private dwellings
+    private_dwellings_usual_residents_occupied = (
+        models.FloatField()
+    )  # private dwellings occupied by usual residents
+    dbuid_ididu = models.IntegerField()  # 2016 Census dissemination block
+    hexuid_iduhex = models.TextField()  # Hexagon identifier
     latitude = models.DecimalField(max_digits=9, decimal_places=6)
     longitude = models.DecimalField(max_digits=9, decimal_places=6)
-    census_subdivision = models.ForeignKey(CEN_PROF_DETAILED_CSD_ATTRS_SP, null=True, on_delete=models.SET_NULL)
+    census_subdivision = models.ForeignKey(
+        CEN_PROF_DETAILED_CSD_ATTRS_SP, null=True, on_delete=models.SET_NULL
+    )
+
 
 class NBDPHHSpeeds(models.Model):
     phh_id = models.IntegerField(primary_key=True)
