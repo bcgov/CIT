@@ -2,8 +2,8 @@ import csv
 import pandas as pd
 
 from requests import get
-
-from pipeline.models.core_housing_need import CSDCoreHousingNeed
+from pipeline.importers.utils import write_to_db
+from pipeline.models.municipal_tax_rates import MunicipalTaxRates, xlsx_col_to_db_col
 from pipeline.importers.base_importer import BaseImporter
 
 TOTAL_EXAMINED_HEADER = "Households examined for core housing need status"
@@ -22,4 +22,11 @@ class MunicipalTaxRatesImporter(BaseImporter):
         resp = get(url, headers={"User-Agent": "PostmanRuntime/7.36.1"})
         content = resp.content
         data = pd.read_excel(content, engine="openpyxl", skiprows=1)
+        data.rename(
+            columns={
+                data.columns[i]: name for i, name in enumerate(xlsx_col_to_db_col)
+            },
+            inplace=True,
+        )
         print(data)
+        write_to_db(MunicipalTaxRates, data)
