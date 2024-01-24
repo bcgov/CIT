@@ -3,27 +3,6 @@ from django.contrib.gis.db import models
 from enum import Enum
 
 
-class MunicipalTaxRatesPurpose(str, Enum):
-    MUNICIPAL = "Municipal"
-    REGIONAL_DISTRICT = "Reg'l District"
-    HOSPITAL = "Hospital"
-    SCHOOL = "School"
-    OTHER = "Other"
-    TOTAL = "Totals"
-
-
-class MunicipalTaxRatesSubjects(str, Enum):
-    RESIDENTIAL = "Residential"
-    UTILITIES = "Utilities"
-    SUPPORTIVE_HOUSING = "Hospital"
-    MAJOR_INDUSTRY = "Major Industry"
-    LIGHT_INDUSTRY = "Light Industry"
-    BUSINESS = "Business"
-    MANAGED_FOREST_LAND = "Managed Forest Land"
-    RECREATIONAL_NON_PROFIT = "Recreation Non-Profit"
-    FARM = "Farm1"
-
-
 xlsx_col_to_db_col = [
     "municipality_name",
     "municipality_type",

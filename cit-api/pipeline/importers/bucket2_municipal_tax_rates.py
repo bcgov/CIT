@@ -28,5 +28,4 @@ class MunicipalTaxRatesImporter(BaseImporter):
             },
             inplace=True,
         )
-        print(data)
         write_to_db(MunicipalTaxRates, data)

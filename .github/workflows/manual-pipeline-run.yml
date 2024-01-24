@@ -22,6 +22,7 @@ on:
         - bucket_2_businesses_by_csd
         - bucket_2_core_housing_need
         - bucket_2_housing
+        - bucket_2_municipal_tax_rates
         - bucket_2_municipalities
         - bucket_2_nbd_phh_speeds
         - bucket_2_phdeomographic
