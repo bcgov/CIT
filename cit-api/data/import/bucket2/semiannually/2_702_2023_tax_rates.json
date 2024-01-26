@@ -1,0 +1,11 @@
+[
+    {
+        "name": "municipal_tax_rates",
+        "display_name": "Municipal Tax Rates",
+        "model_name": "MUNICIPAL_TAX_RATES",
+        "source": "gov_asset",
+        "source_type": "csv",
+        "external_url": "https://www2.gov.bc.ca/assets/gov/british-columbians-our-governments/local-governments/finance/local-government-statistics/schedule702_2023.xlsx",
+        "import_order": 2
+    }
+]

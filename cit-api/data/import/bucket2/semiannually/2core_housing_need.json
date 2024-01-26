@@ -1,6 +1,6 @@
 [
   {
-    "name": "core_housing",
+    "name": "core_housing_need",
     "display_name": "Core Housing",
     "model_name": "CORE_HOUSING_NEED",
     "source": "internal",

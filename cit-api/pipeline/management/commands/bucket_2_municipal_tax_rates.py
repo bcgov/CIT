@@ -6,7 +6,9 @@ from azure.storage.blob import BlobServiceClient
 
 from admin import settings
 
-from pipeline.importers.bucket2_core_housing_need import CoreHousingImporter as importer
+from pipeline.importers.bucket2_municipal_tax_rates import (
+    MunicipalTaxRatesImporter as importer,
+)
 from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.models.general import DataSource
 
@@ -41,8 +43,7 @@ class Command(BaseCommand):
         print("Importing newest list of data sources.")
         importer.import_data_sources()
         # Ensure that the data sources are updated
-        data_resources = DataSource.objects.filter(name__in=["core_housing_need"])
-
+        data_resources = DataSource.objects.filter(name__in=["municipal_tax_rates"])
         for resource in data_resources:
             print(f"Importing {resource.display_name}...")
             import_csv_resources(resource.name)
