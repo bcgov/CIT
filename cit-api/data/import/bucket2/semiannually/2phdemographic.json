@@ -8,10 +8,7 @@
     "source_file_path": "data/dbuid_csduid.csv",
     "resource_id": "",
     "sub_resource_id": "",
-    "external_url": "https://www.ic.gc.ca/eic/site/720.nsf/vwapj/PHH-BC.csv/$file/PHH-BC.csv",
+    "external_url": "https://ised-isde.canada.ca/app/scr/sittibc/web/api/openData/PHH_2021_CSV.zip",
     "import_order": 1
-  } 
+  }
 ]
-  
-  
-  
