@@ -3,6 +3,14 @@ from numpy import int64
 import requests
 import copy
 import math
+import requests
+import io
+import pandas as pd
+
+from io import BytesIO
+from zipfile import ZipFile
+from urllib.request import urlopen
+
 from django.db import connection
 from django.apps import apps
 from django.conf import settings
@@ -35,12 +43,8 @@ from pipeline.models.general import (
     LocationDistance,
     SchoolDistrict,
     Municipality,
-    Hex,
     Service,
-    ISP,
     RegionalDistrict,
-    TsunamiZone,
-    BCWildfireZone,
 )
 from pipeline.models.location_assets import School, Hospital
 from pipeline.models.census_division_2016 import *
@@ -55,16 +59,7 @@ from pipeline.models.connectivity_infrastructure_projects import (
     ConnectivityInfrastructureProjects,
 )
 from pipeline.models import NAICSCodes
-from pipeline.models.general import NBDPHHSpeeds, PHDemographicDistribution
-from sqlalchemy.sql.expression import false
-from pipeline.importers.bucket2_core_housing_need import CoreHousingImporter
-
-import requests
-import io
-import pandas as pd
-from io import BytesIO
-from zipfile import ZipFile
-from urllib.request import urlopen
+from pipeline.models.general import PHDemographicDistribution
 
 
 RETRY_STRATEGY = Retry(total=3)
@@ -1292,63 +1287,3 @@ def import_phdemographicdistribution(url, linkage_file):
         )
         df_all_rows = pd.merge(PHH_BC, linkage, how="left")
         write_to_db(PHDemographicDistribution, df_all_rows)
-
-
-def import_nbdphhspeeds(URL):
-    url = URL
-    s = requests.get(url)
-    if s.ok:
-        resp = urlopen(url)
-        zipfile = ZipFile(BytesIO(resp.read()))
-        with zipfile.open("PHH_Speeds_Current-PHH_Vitesses_Actuelles_BC.csv") as f:
-            fields = [
-                "PHH_ID",
-                "Combined_lt5_1_Combine",
-                "Combined_5_1_Combine",
-                "Combined_10_2_Combine",
-                "Combined_25_5_Combine",
-                "Combined_50_10_Combine",
-            ]
-            PHH_BC = pd.read_csv(f, header=0, delimiter=",", usecols=fields)
-            PHH_BC.rename(
-                columns={
-                    PHH_BC.columns[0]: "phh_id",
-                    PHH_BC.columns[1]: "combined_lt5_1",
-                    PHH_BC.columns[2]: "combined_5_1",
-                    PHH_BC.columns[3]: "combined_10_2",
-                    PHH_BC.columns[4]: "Combined_25_5",
-                    PHH_BC.columns[5]: "combined_50_10",
-                },
-                inplace=True,
-            )
-        with zipfile.open(
-            "PHH_Speeds_Government_Support-PHH_Vitesses_Appui_Gouvernement_BC.csv"
-        ) as f:
-            fields = ["PHH_ID", "Combined_50_10_Combine"]
-            PHH_Gov_Suup = pd.read_csv(f, delimiter=",", usecols=fields)
-            PHH_Gov_Suup.rename(
-                columns={
-                    PHH_Gov_Suup.columns[0]: "phh_id",
-                    PHH_Gov_Suup.columns[1]: "combined_50_10_gov_supp",
-                },
-                inplace=True,
-            )
-        nbdphhspeeds = PHH_BC.merge(PHH_Gov_Suup, on="phh_id", how="left")
-        user = settings.DATABASES["default"]["USER"]
-        password = settings.DATABASES["default"]["PASSWORD"]
-        database_name = settings.DATABASES["default"]["NAME"]
-        Host = settings.DATABASES["default"]["HOST"]
-
-        database_url = (
-            "postgresql://{user}:{password}@{Host}:5432/{database_name}".format(
-                user=user, password=password, Host=Host, database_name=database_name
-            )
-        )
-        engine = create_engine(database_url)
-        nbdphhspeeds.to_sql(
-            NBDPHHSpeeds._meta.db_table, if_exists="replace", con=engine, index=False
-        )
-
-
-def import_core_housing_need(URL):
-    CoreHousingImporter.etl(URL)
