@@ -3,7 +3,7 @@ from django.contrib.gis.db import models
 
 
 class Housing_Data(models.Model):
-    census_subdivision_id	 = models.IntegerField(null=False, blank=False)
+    census_subdivision_id = models.IntegerField(null=False, blank=False)
     yearmonth = models.CharField(max_length=127,null=True)
     year = models.IntegerField(null=True)
     month = models.IntegerField(null=True)
