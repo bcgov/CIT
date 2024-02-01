@@ -20,13 +20,13 @@ from pipeline.importers.utils import (
     import_bc_assessment_data,
     import_housing,
     import_census_subdivision_linkage,
-    import_phdemographicdistribution,
 )
 
 from pipeline.importers.bucket2_municipal_tax_rates import MunicipalTaxRatesImporter
 from pipeline.importers.bucket2_core_housing_need import CoreHousingImporter
 from pipeline.importers.bucket2_csd_centroid import CSDCentroidImporter
 from pipeline.importers.bucket2_NBDPHHSpeeds import NBDPHHSpeedsImporter
+from pipeline.importers.bucket2_phdemographic import PHDemographicDistributionImporter
 
 FILES_DIR = settings.BASE_DIR
 
@@ -99,7 +99,7 @@ def import_resource(resource_type):
     elif resource_type == "Housing_Data":
         num_of_updates = import_housing(URL)
     elif resource_type == "phdemographicdistribution":
-        num_of_updates = import_phdemographicdistribution(URL, file_path)
+        num_of_updates = PHDemographicDistributionImporter.etl(URL, file_path)
     elif resource_type == "NBDPHHSpeeds":
         num_of_updates = NBDPHHSpeedsImporter.etl(URL)
     elif resource_type == "NAICS_Codes":
