@@ -5,7 +5,7 @@
     "model_name": "CSDCentroid",
     "source": "internal",
     "source_type": "csv",
-    "source_file_path": "data/import/datafiles/c2021_csd_centroid.csv",
+    "source_file_path": "data/c2021_csd_centroid.csv",
     "resource_id": "NULL",
     "sub_resource_id": "NULL",
     "import_order": 2
