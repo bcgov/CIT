@@ -31,3 +31,5 @@ from .business_by_census_subdivions import *
 from .connectivity_infrastructure_projects import *
 from .naics_codes import *
 from .BCNetworkConnectivity import *
+from .csd_centroid import *
+from .municipal_tax_rates import *
