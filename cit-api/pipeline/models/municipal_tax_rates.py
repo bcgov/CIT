@@ -40,4 +40,4 @@ class MunicipalTaxRates(models.Model):
         ordering = ("census_subdivision_id",)
 
     def __str__(self) -> str:
-        return f"<CSDCoreHousingNeed({self.census_subdivision_id:8}, {self.core_housing_examined:8},{self.core_housing_need:8}, {self.core_housing_need_percentage:1.5})>"
+        return f"<MunicipalTaxRates({self.census_subdivision_id:8}>"
