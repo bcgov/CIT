@@ -1,8 +1,5 @@
 from django.contrib.gis.db import models
 
-from enum import Enum
-
-
 xlsx_col_to_db_col = [
     "municipality_name",
     "municipality_type",
