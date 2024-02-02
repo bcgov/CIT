@@ -406,7 +406,6 @@ def get_route_planner_distance(origin, destination):
             destination_lng=destination.get_longitude(),
             destination_lat=destination.get_latitude(),
         )
-    )
 
     # print(api_url)
     
