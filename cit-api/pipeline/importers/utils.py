@@ -399,14 +399,14 @@ def calculate_municipality_flag_for_location_assets():
 
 def get_route_planner_distance(origin, destination):
     # print("calculating distance", origin, destination)
-    api_url = "https://router.api.gov.bc.ca/distance.json?points={origin_lng}%2C{origin_lat}%2C{destination_lng}"\
+    api_url = ("https://router.api.gov.bc.ca/distance.json?points={origin_lng}%2C{origin_lat}%2C{destination_lng}"\
         "%2C{destination_lat}".format(
             origin_lng=origin.longitude(),
             origin_lat=origin.latitude(),
             destination_lng=destination.get_longitude(),
             destination_lat=destination.get_latitude(),
         )
-
+    )
     # print(api_url)
     
     http = requests.Session()
