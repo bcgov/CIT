@@ -51,7 +51,7 @@ RETRY_STRATEGY = Retry(total=3)
 ADAPTER = HTTPAdapter(max_retries=RETRY_STRATEGY)
 
 def import_data_into_point_model(resource_type, Model, row, dry_run=False):
-    print("import_data_into_point_model", row)
+    # print("import_data_into_point_model", row)
 
     point = None
     location_fuzzy = False
@@ -66,10 +66,10 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
                           srid=WGS84_SRID)
         else:
             point = Point(row.geometry.x, row.geometry.y, srid=WGS84_SRID)
-        print(point)
+        # print(point)
         closest_community = (Community.objects.annotate(
             distance=Distance('point', point)).order_by('distance').first())
-        print(closest_community)
+        # print(closest_community)
     except TypeError:
         # When no point is present, try the municipality name description
         if not row.get("MUNICIPALITY"):
@@ -100,7 +100,7 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
     except Model.DoesNotExist:
         instance = Model(name=name, location_type=resource_type, point=point)
 
-    print("closest_community", closest_community)
+    # print("closest_community", closest_community)
 
     instance.closest_community = closest_community
     instance.closest_community_distance = closest_community.distance
@@ -334,7 +334,7 @@ def calculate_municipality_flag_for_location_assets():
 
 
 def get_route_planner_distance(origin, destination):
-    print("calculating distance", origin, destination)
+    # print("calculating distance", origin, destination)
     api_url = "https://router.api.gov.bc.ca/distance.json?points={origin_lng}%2C{origin_lat}%2C{destination_lng}"\
         "%2C{destination_lat}".format(
             origin_lng=origin.longitude(),
@@ -343,7 +343,7 @@ def get_route_planner_distance(origin, destination):
             destination_lat=destination.get_latitude(),
         )
 
-    print(api_url)
+    # print(api_url)
     
     http = requests.Session()
     http.mount("https://", ADAPTER)
@@ -355,7 +355,7 @@ def get_route_planner_distance(origin, destination):
                                 "apikey": settings.ROUTE_PLANNER_API_KEY
                             }, timeout=30)
 
-    print("response", response, response.content)
+    # print("response", response, response.content)
     route = response.json()
     distance = None
     travel_time = None
