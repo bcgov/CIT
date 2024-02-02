@@ -84,11 +84,10 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
             )
         else:
             point = Point(row.geometry.x, row.geometry.y, srid=WGS84_SRID)
-        closest_community = (
-            Community.objects.annotate(distance=Distance("point", point))
-            .order_by("distance")
-            .first()
-        )
+        # print(point)
+        closest_community = (Community.objects.annotate(
+            distance=Distance('point', point)).order_by('distance').first())
+        # print(closest_community)
     except TypeError:
         # When no point is present, try the municipality name description
         if not row.get("MUNICIPALITY"):
@@ -399,8 +398,8 @@ def calculate_municipality_flag_for_location_assets():
 
 
 def get_route_planner_distance(origin, destination):
-    api_url = (
-        "https://router.api.gov.bc.ca/distance.json?points={origin_lng}%2C{origin_lat}%2C{destination_lng}"
+    # print("calculating distance", origin, destination)
+    api_url = "https://router.api.gov.bc.ca/distance.json?points={origin_lng}%2C{origin_lat}%2C{destination_lng}"\
         "%2C{destination_lat}".format(
             origin_lng=origin.longitude(),
             origin_lat=origin.latitude(),
@@ -410,6 +409,7 @@ def get_route_planner_distance(origin, destination):
     )
 
     # print(api_url)
+    
     http = requests.Session()
     http.mount("https://", ADAPTER)
     http.mount("http://", ADAPTER)

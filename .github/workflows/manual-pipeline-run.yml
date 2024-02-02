@@ -26,7 +26,7 @@ on:
         - bucket_2_municipal_tax_rates
         - bucket_2_municipalities
         - bucket_2_nbd_phh_speeds
-        - bucket_2_phdeomographic
+        - bucket_2_phdemographic
         - bucket_2_regional_districts
         - bucket_2_school_districts
         - bucket_2_tourism_region
