@@ -3,6 +3,8 @@ import csv
 from pipeline.importers.base_importer import BaseImporter
 from pipeline.models.csd_centroid import CSDCentroid
 
+
+
 class CSDCentroidImporter(BaseImporter):
     DATA_SOURCES = ["data/import/bucket2/semiannually/2csd_centroid.json"]
 
@@ -16,14 +18,37 @@ class CSDCentroidImporter(BaseImporter):
                 continue #skip header row
 
             entry = CSDCentroid(
-                object_id = line[0],
-                census_year = line[1],
-                census_subdivision_id=line[2],
-                census_s_1=line[3],
-                census_s_2=line[4],
-                census_s_3=line[5],
-                x=line[6],
-                y=line[7]
+                id = line[0],
+                name = line[1],
+                closest_community_id=line[2],
+                closest_community_distance=line[3],
+                latitude=line[4],
+                census_subdivision_id=line[5],
+                location_name=line[6],
+                first_responders=line[7] or None,
+                diagnostic_facilities=line[8] or None,
+                timber_facilities=line[9] or None,
+                civic_facilities=line[10] or None,
+                airports=line[11] or None,
+                port_and_terminal=line[12] or None,
+                customs_ports_of_entry=line[13] or None,
+                local_govt_offices=line[14] or None,
+                laboratory_services=line[15] or None,
+                emergency_social_service_facilities=line[16] or None,
+                pharmacies=line[17] or None,
+                economic_projects=line[18] or None,
+                hospitals=line[19] or None,
+                service_bc_locations=line[20] or None,
+                schools=line[21] or None,
+                clinics=line[22] or None,
+                courts=line[23] or None,
+                post_secondary_institutions=line[24] or None,
+                research_centres=line[25] or None,
+                public_library=line[26] or None,
+                is_within_50km=line[27] or None,
+                longitude=line[28],
+                location_type_id=line[29],
+                location_website=line[30],
             )
             entry.save()
             num_records += 1
