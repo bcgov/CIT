@@ -29,6 +29,7 @@ on:
         - bucket_2_phdemographic
         - bucket_2_regional_districts
         - bucket_2_school_districts
+        - bucket_2_small_businesses
         - bucket_2_tourism_region
         - bucket_2_tsunami_zones
         - bucket_2_wildfire_zones
