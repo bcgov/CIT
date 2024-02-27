@@ -1,0 +1,11 @@
+[
+    {
+        "name": "smallbusiness",
+        "display_name": "Small Business count by CSD",
+        "model_name": "CSDSmallBusiness",
+        "source": "internal",
+        "source_type": "csv",
+        "external_url": "https://www2.gov.bc.ca/assets/gov/data/statistics/business-industry-trade/number-of-businesses/bus_location_counts_cdcsd.xlsx",
+        "import_order": 1
+    }
+]

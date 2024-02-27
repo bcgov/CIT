@@ -27,6 +27,7 @@ from pipeline.importers.bucket2_core_housing_need import CoreHousingImporter
 from pipeline.importers.bucket2_csd_centroid import CSDCentroidImporter
 from pipeline.importers.bucket2_NBDPHHSpeeds import NBDPHHSpeedsImporter
 from pipeline.importers.bucket2_phdemographic import PHDemographicDistributionImporter
+from pipeline.importers.bucket2_small_businesses import SmallBusinessesImporter
 
 FILES_DIR = settings.BASE_DIR
 
@@ -81,11 +82,13 @@ def import_resource(resource_type):
     ]
     print(f"resource_type: {resource_type}")
     if resource_type == "core_housing_need":
-        num_of_updates =  CoreHousingImporter.etl(URL)
+        num_of_updates = CoreHousingImporter.etl(URL)
     elif resource_type == "csd_centroid":
         num_of_updates = CSDCentroidImporter.etl(file_path)
     elif resource_type == "municipal_tax_rates":
         num_of_updates = MunicipalTaxRatesImporter.etl(URL)
+    elif resource_type == "smallbusiness":
+        num_of_updates = SmallBusinessesImporter.etl(URL)
     elif resource_type == "communities":
         num_of_updates = import_communities_from_csv(file_path)
     elif resource_type == "civic_leaders":
