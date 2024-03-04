@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('pipeline', '0193_delete_bad_csd_centroid_table'),
+        ('pipeline', '0194_delete_bad_csd_centroid_table'),
     ]
 
     operations = [
