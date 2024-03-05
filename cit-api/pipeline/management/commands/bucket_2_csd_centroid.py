@@ -46,5 +46,4 @@ class Command(BaseCommand):
         for resource in data_resources:
             print(f"Importing {resource.display_name}...")
             import_csv_resources(resource.name)
-
-        print("Import process for 'Feature to Point' completed!")
+            print(f"Import process for {resource.display_name} completed!")

@@ -46,4 +46,4 @@ class Command(BaseCommand):
 
         for resource in data_resources:
             import_csv_resources(resource.name)
-        print("Import process for Housing completed!")
+            print(f"Import process for {resource.display_name} completed!")
