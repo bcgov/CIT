@@ -3,19 +3,13 @@ import pandas as pd
 
 from requests import get
 from pipeline.importers.utils import write_to_db
-from pipeline.models.municipal_tax_rates import MunicipalTaxRates, xlsx_col_to_db_col
+from pipeline.models.municipal_land_title_transfers import MunicipalLandTitleTransfers, xlsx_col_to_db_col
 from pipeline.importers.base_importer import BaseImporter
 
-TOTAL_EXAMINED_HEADER = "Households examined for core housing need status"
-TOTAL_EXAMINED_INDEX = 1
-TOTAL_NEEDED_HEADER = "Households in core housing need status"
-TOTAL_NEEDED_INDEX = 2
-
-CSD_REGEX = "\(([0-9]+)\)"
 
 
-class MunicipalTaxRatesImporter(BaseImporter):
-    DATA_SOURCES = ["data/import/bucket2/semiannually/2_702_2023_tax_rates.json"]
+class MunicipalLandTitleTransfersImporter(BaseImporter):
+    DATA_SOURCES = ["data/import/bucket2/monthly/2municipal_land_title_transfers.json"]
 
     @classmethod
     def etl(cls, url: str):
@@ -28,5 +22,6 @@ class MunicipalTaxRatesImporter(BaseImporter):
             },
             inplace=True,
         )
-        write_to_db(MunicipalTaxRates, data)
+        data.insert(4, "year", 2023, True)
+        print(data)
         return len(data.index)

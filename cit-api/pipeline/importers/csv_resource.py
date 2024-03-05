@@ -23,6 +23,7 @@ from pipeline.importers.utils import (
 )
 
 from pipeline.importers.bucket2_municipal_tax_rates import MunicipalTaxRatesImporter
+from pipeline.importers.bucket2_municipal_land_title_transfers import MunicipalLandTitleTransfersImporter
 from pipeline.importers.bucket2_core_housing_need import CoreHousingImporter
 from pipeline.importers.bucket2_csd_centroid import CSDCentroidImporter
 from pipeline.importers.bucket2_NBDPHHSpeeds import NBDPHHSpeedsImporter
@@ -83,6 +84,8 @@ def import_resource(resource_type):
     print(f"resource_type: {resource_type}")
     if resource_type == "core_housing_need":
         num_of_updates = CoreHousingImporter.etl(URL)
+    elif resource_type == "municipal_land_title_transfers":
+        num_of_updates = MunicipalLandTitleTransfersImporter.etl(URL)
     elif resource_type == "csd_centroid":
         num_of_updates = CSDCentroidImporter.etl(file_path)
     elif resource_type == "municipal_tax_rates":
