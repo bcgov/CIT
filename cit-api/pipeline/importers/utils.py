@@ -85,8 +85,11 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
         else:
             point = Point(row.geometry.x, row.geometry.y, srid=WGS84_SRID)
         # print(point)
-        closest_community = (Community.objects.annotate(
-            distance=Distance('point', point)).order_by('distance').first())
+        closest_community = (
+            Community.objects.annotate(distance=Distance("point", point))
+            .order_by("distance")
+            .first()
+        )
         # print(closest_community)
     except TypeError:
         # When no point is present, try the municipality name description
@@ -399,7 +402,8 @@ def calculate_municipality_flag_for_location_assets():
 
 def get_route_planner_distance(origin, destination):
     # print("calculating distance", origin, destination)
-    api_url = ("https://router.api.gov.bc.ca/distance.json?points={origin_lng}%2C{origin_lat}%2C{destination_lng}"\
+    api_url = (
+        "https://router.api.gov.bc.ca/distance.json?points={origin_lng}%2C{origin_lat}%2C{destination_lng}"
         "%2C{destination_lat}".format(
             origin_lng=origin.longitude(),
             origin_lat=origin.latitude(),
@@ -408,7 +412,7 @@ def get_route_planner_distance(origin, destination):
         )
     )
     # print(api_url)
-    
+
     http = requests.Session()
     http.mount("https://", ADAPTER)
     http.mount("http://", ADAPTER)
@@ -809,11 +813,13 @@ def import_businesses_by_cid(tourism_file, url):
     # url ='https://agriculture.canada.ca/atlas/data_donnees/soc/businessesByCSD/csv/businesses_by_census_subdivision.zip'
     # tourism_file = "data/Tourism NAICS.xlsx"
     s = requests.get(url)
+    num_records = 0
     if s.ok:
         try:
             resp = urlopen(url)
             zipfile = ZipFile(BytesIO(resp.read()))
-            with zipfile.open("businesses_by_census_subdivision_2022.csv") as f:
+
+            with zipfile.open("June23_Loc_CSD_NAICS-6_ESR-9.csv") as f:
                 fields = ["SGC", "NAICS", "empcl", "FREQ"]
                 businesses = pd.read_csv(f, header=0, delimiter=",", usecols=fields)
                 businesses.rename(
@@ -839,9 +845,13 @@ def import_businesses_by_cid(tourism_file, url):
             businesses["sector"] = sectors
             businesses.head(10)
             write_to_db(BusinessesByCSD, businesses)
-
+            num_records = len(businesses)
         except Exception as e:
             print(e)
+        
+    else:
+        print("Error in fetching data from the url")
+    return num_records
 
 
 def import_naics_codes(url):
@@ -911,7 +921,7 @@ def import_connectivity_project(url):
                     data.columns[16]: "estimated_completion_date",
                     data.columns[17]: "economic_region",
                     data.columns[18]: "electoral_name",
-                    data.columns[19]: "primary_news_release"
+                    data.columns[19]: "primary_news_release",
                     # data.columns[19]:"place_type",
                     # data.columns[20]:"reserve_name",
                     # data.columns[21]:"nation"

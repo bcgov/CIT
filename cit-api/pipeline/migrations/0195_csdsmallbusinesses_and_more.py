@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('pipeline', '0192_rename_csd_centroid_to_match_old_xl_file'),
+        ('pipeline', '0194_csd_centroid_new_table_def'),
     ]
 
     operations = [
