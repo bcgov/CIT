@@ -23,7 +23,9 @@ from pipeline.importers.utils import (
 )
 
 from pipeline.importers.bucket2_municipal_tax_rates import MunicipalTaxRatesImporter
-from pipeline.importers.bucket2_municipal_land_title_transfers import MunicipalLandTitleTransfersImporter
+from pipeline.importers.bucket2_municipal_land_title_transfers import (
+    MunicipalLandTitleTransfersImporter,
+)
 from pipeline.importers.bucket2_core_housing_need import CoreHousingImporter
 from pipeline.importers.bucket2_csd_centroid import CSDCentroidImporter
 from pipeline.importers.bucket2_NBDPHHSpeeds import NBDPHHSpeedsImporter
@@ -52,6 +54,7 @@ def import_csv_resources(resource_type):
 
 def import_resource(resource_type):
     data_source = DataSource.objects.get(name=resource_type)
+    file_path = None
     if data_source.source_file_path:
         file_path = os.path.join(FILES_DIR, data_source.source_file_path)
     URL = data_source.external_url

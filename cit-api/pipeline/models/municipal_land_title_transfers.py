@@ -20,6 +20,7 @@ xlsx_col_to_db_col = [
 ]  # ORDER MUST MATCH COLUMN ORDER
 
 class MunicipalLandTitleTransfers(models.Model):
+    census_division_id = models.IntegerField() #joined through csd_linkage
     development_region = models.CharField(max_length=255)
     regional_district = models.CharField(max_length=255, null=False, primary_key=True)
     municipality = models.CharField(max_length=255, null=True)

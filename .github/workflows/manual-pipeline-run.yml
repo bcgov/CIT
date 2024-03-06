@@ -23,6 +23,7 @@ on:
         - bucket_2_core_housing_need
         - bucket_2_csd_centroid
         - bucket_2_housing
+        - bucket_2_municipal_land_title_transfers
         - bucket_2_municipal_tax_rates
         - bucket_2_municipalities
         - bucket_2_nbd_phh_speeds
