@@ -15,9 +15,7 @@ class MunicipalLandTitleTransfersImporter(BaseImporter):
     ]
 
     @classmethod
-    def etl(
-        cls, url: str, linkage_filepath: str = "data/import/datafiles/csd_linkage.csv"
-    ):
+    def etl(cls, url: str, linkage_filepath: str = "data/csd_linkage.csv"):
         resp = get(url, headers={"User-Agent": "PostmanRuntime/7.36.1"})
         content = resp.content
         data = pd.read_excel(content, engine="openpyxl", skiprows=1)
