@@ -29,3 +29,4 @@ class MunicipalTaxRatesImporter(BaseImporter):
             inplace=True,
         )
         write_to_db(MunicipalTaxRates, data)
+        return len(data.index)

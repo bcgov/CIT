@@ -35,3 +35,4 @@ from .core_housing_need import *
 from .csd_centroid import *
 from .municipal_tax_rates import *
 from .csd_small_businesses import *
+from .municipal_land_title_transfers import *

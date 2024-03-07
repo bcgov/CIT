@@ -1,0 +1,11 @@
+[
+  {
+    "name": "municipal_land_title_transfers",
+    "display_name": "Municipal Land Title Transfers",
+    "model_name": "MunicipalLandTitleTransfers",
+    "source": "internal",
+    "source_type": "csv",
+    "external_url": "https://catalogue.data.gov.bc.ca/dataset/c0aa52e1-ee9c-467e-b20b-89207bcbcf07/resource/db1349c2-f4fb-41c1-a2df-051e687c6e00/download/municipal_monthly_2023.xlsx",
+    "import_order": 3
+  }
+]
