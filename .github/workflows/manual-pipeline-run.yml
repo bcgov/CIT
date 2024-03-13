@@ -83,9 +83,13 @@ jobs:
             echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
+      
+      - name: docker-compose version
+        run: docker-compose --version
+
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-
+      
 
   run-prod:
     runs-on: ubuntu-latest
