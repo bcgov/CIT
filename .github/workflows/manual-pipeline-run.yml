@@ -92,7 +92,7 @@ jobs:
       
       - id: container_status
         name: Get Container Status
-        run: echo "::set-output name=container_status::$( docker ps --filter "status=exited" --format "{{.Status}}")
+        run: echo "::set-output name=container_status::$( docker ps --filter 'status=exited' --format '{{.Status}}')"
 
       - name: print status
         run: echo ${{ steps.container_status.outputs.* }}
