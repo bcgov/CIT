@@ -1,5 +1,5 @@
 #!/bin/bash
-echo docker-compose --version
+docker-compose --version
 
 ./wait-for-it.sh ${POSTGRES_HOST}:5432
 
