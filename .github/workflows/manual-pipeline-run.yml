@@ -90,9 +90,14 @@ jobs:
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
       
-      - name: Check success
-        run: docker ps -a
+      - id: container_status
+        name: Get Container Status
+        run: docker ps --filter "status=exited" --format "{{.Status}}"
 
+      - name: Check success
+        if: !contains( ${{ steps.container_status.outputs.container_status }} , 'Exited (0)')
+        run: echo "::error::Container returned non-zero exit code" && exit 1
+    
   run-prod:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.environment == 'prod' }}
