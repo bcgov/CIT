@@ -84,7 +84,7 @@ jobs:
             echo 'BUCKET_COMMAND = ${{ env.BUCKET_COMMAND }}' >> .env
 
       - name: Start containers
-        run: docker-compose -f --exit-code-from cit-api-pipeline cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
 
 
   run-prod:
