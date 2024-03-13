@@ -2,7 +2,7 @@
   {
     "name": "core_housing_need",
     "display_name": "Core Housing",
-    "model_name": "CORE_HOUSING_NEED",
+    "model_name": "CSDCoreHousingNeed",
     "source": "internal",
     "source_type": "csv",
     "external_url": "https://borealisdata.ca/api/access/datafile/466044",
