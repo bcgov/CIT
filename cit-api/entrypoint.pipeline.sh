@@ -12,3 +12,4 @@ else
     echo "Bucket command failed"
     exit 21
 fi
+exit 3
