@@ -93,7 +93,7 @@ jobs:
       - id: container_status
         name: Get Container Status
         run: | 
-          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}'}"
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
           echo "container_status=$container_status" >> $GITHUB_ENV
 
       - name: Check success
