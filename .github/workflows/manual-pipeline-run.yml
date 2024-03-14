@@ -64,7 +64,8 @@ jobs:
   run-test:
     runs-on: ubuntu-latest
     if: ${{ github.event.inputs.environment == 'test' }}
-    
+    env:
+      container_status: ""
     steps:
       # checkout the repo
       - name: "Checkout GitHub Actionthe relap"
@@ -91,14 +92,15 @@ jobs:
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
       
       - id: container_status
-        name: Get Container Status
+        name: check Container Status
         run: | 
           container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
-          echo "container_status=$container_status" >> $GITHUB_ENV
-
-      - name: Check success
-        if: "!contains( ${{env.container_status}} , 'Exited (0)')"
-        run: exit 1
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            exit 3
+          else 
+            echo "Container exited successfully"
+          fi
     
   run-prod:
     runs-on: ubuntu-latest
