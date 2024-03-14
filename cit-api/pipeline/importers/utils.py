@@ -197,10 +197,10 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
         if name == "None":
             if hasattr(Model, "ID_FIELD"):
                 name = f"Unnamed {resource_type} {row[Model.ID_FIELD]}"
-                print("Name", name)
+                # print("Name", name)
             else:
                 name = f"Unnamed {resource_type} {index}"
-                print("Name", name)
+                # print("Name", name)
 
         # Not forced unique names in the dataset
         if resource_type == "Indian Reserves and Band Names":
@@ -848,7 +848,7 @@ def import_businesses_by_cid(tourism_file, url):
             num_records = len(businesses)
         except Exception as e:
             print(e)
-        
+
     else:
         print("Error in fetching data from the url")
     return num_records
