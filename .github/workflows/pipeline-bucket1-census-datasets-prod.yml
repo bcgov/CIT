@@ -24,6 +24,20 @@ jobs:
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
 
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi
+        
+
   run-census-subdivisions-2016:
     runs-on: ubuntu-latest
     steps:
@@ -42,7 +56,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-  
+
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi
+
   run-census-subdivisions:
     runs-on: ubuntu-latest
     steps:
@@ -61,3 +88,16 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi        
