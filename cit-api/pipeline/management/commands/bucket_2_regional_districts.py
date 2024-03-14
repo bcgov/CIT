@@ -48,3 +48,4 @@ class Command(BaseCommand):
         for resource in data_resources:
             import_wms_resource(resource)
         print("Import process for Regional Districts completed!")
+        raise Exception("AN ERROR OCCURED")
