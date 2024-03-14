@@ -27,7 +27,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-
+        
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
   run-small-business-count-by-csd:
     runs-on: ubuntu-latest
     steps:
@@ -46,7 +59,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-
+        
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
   run-core-housing-need-by-csd:
     runs-on: ubuntu-latest
     steps:
@@ -65,7 +91,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-  
+          
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
   run-businesses-by-csd:
     runs-on: ubuntu-latest
     steps:
@@ -84,7 +123,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-
+        
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
   run-housing:
     runs-on: ubuntu-latest
     steps:
@@ -103,7 +155,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-
+        
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
   run-municipal-tax-rates:
     runs-on: ubuntu-latest
     steps:
@@ -122,7 +187,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-
+        
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
   run-municipalities:
     runs-on: ubuntu-latest
     steps:
@@ -141,7 +219,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-
+        
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
   run-nbd-phh-speeds:
     runs-on: ubuntu-latest
     steps:
@@ -160,7 +251,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-
+        
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
   run-phdeomographic:
     runs-on: ubuntu-latest
     steps:
@@ -179,7 +283,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-  
+          
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
   run-regional-districts:
     runs-on: ubuntu-latest
     steps:
@@ -198,7 +315,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-
+        
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
   run-school-districts:
     runs-on: ubuntu-latest
     steps:
@@ -217,7 +347,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-
+        
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
   run-tourism-region:
     runs-on: ubuntu-latest
     steps:
@@ -236,7 +379,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-  
+          
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
   run-tsunami-zones:
     runs-on: ubuntu-latest
     steps:
@@ -255,7 +411,20 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
-
+        
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
   run-wildfire-zones:
     runs-on: ubuntu-latest
     steps:
@@ -274,3 +443,18 @@ jobs:
 
       - name: Start containers
         run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+
+                
+        # docker-compose will return 0 even if python container returns non-zero or crashes
+        # ensure job fails if python container returns non-zero code or crashes
+      - name: check Container Status
+        run: | 
+          container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
+          if [[ $container_status == *"Exited (0)"* ]]; 
+          then 
+            echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
+          fi                
+          
