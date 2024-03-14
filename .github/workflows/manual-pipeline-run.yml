@@ -97,9 +97,10 @@ jobs:
           container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
           if [[ $container_status == *"Exited (0)"* ]]; 
           then 
-            exit 3
-          else 
             echo "Container exited successfully"
+          else 
+            echo "Container exited with error: $container_status"
+            exit 1
           fi
     
   run-prod:
