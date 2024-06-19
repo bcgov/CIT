@@ -356,7 +356,10 @@ export default function UserStory() {
 
   const header = (
     <>
-      <Image src="/images/CIT_CIOT_banner.png" alt="The Community Information Tool and the Community Investment Opportunities Tool will be decommissioned on July 3, 2024. If you have any questions, please contact connectedcommunities@gov.bc.ca" />
+      <img
+        src="/images/CIT_CIOT_banner.png"
+        alt="The Community Information Tool and the Community Investment Opportunities Tool will be decommissioned on July 3, 2024. If you have any questions, please contact connectedcommunities@gov.bc.ca"
+      />
       <h1>Welcome to the Community Information Tool.</h1>
       <p className="mb-3">
         The Community Information Tool compiles over 40 data sets offering
