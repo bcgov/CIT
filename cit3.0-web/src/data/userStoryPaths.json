@@ -157,22 +157,6 @@
           "value": "3-COMPARING",
           "label": "comparing an area to another one",
           "url": "powerbi-compare"
-        },
-        {
-          "id": "5479",
-          "code": "PROMOTING",
-          "group": "what",
-          "value": "4-PROMOTING",
-          "label": "promoting an investment opportunity in my community",
-          "url": "investmentopportunities/home"
-        },
-        {
-          "id": "5475",
-          "code": "VIEWING",
-          "group": "what",
-          "value": "1-VIEWING",
-          "label": "viewing investment opportunities matching my criteria",
-          "url": "investmentopportunities/home"
         }
       ]
     },
