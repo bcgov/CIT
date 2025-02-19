@@ -29,11 +29,20 @@ export default defineConfig({
   //     },
   //     include: [/\.js$/],
   //   },
-  optimizeDeps: {
-    esbuildOptions: {
-      loader: {
-        ".js": "jsx",
-      },
+  //   optimizeDeps: {
+  //     esbuildOptions: {
+  //       loader: {
+  //         ".js": "jsx",
+  //       },
+  //     },
+  //   },
+  //   optimizeDeps: {
+  //     include: ["shared-components"],
+  //   },
+  resolve: {
+    alias: {
+      "shared-components/build/components/loader/Loader.css":
+        "/src/styles/Loader.css",
     },
   },
   publicDir: "./public",

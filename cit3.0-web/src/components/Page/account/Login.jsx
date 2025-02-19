@@ -1,7 +1,8 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
 import { Container, Row, Col, Spinner, Jumbotron } from "react-bootstrap";
-import { Button } from "shared-components";
+// import "shared-components/build/components/loader/Loader.css";
+// import { Button } from "shared-components";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";

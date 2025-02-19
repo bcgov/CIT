@@ -1,14 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./PowerBi.css";
-import {
-  Button as ButtonLink,
-  Overlay,
-  Modal,
-  Container,
-  Row,
-} from "react-bootstrap";
-import { Button as SharedButton } from "shared-components";
+import { Button, Overlay, Modal, Container, Row } from "react-bootstrap";
 import { PowerBIEmbed } from "powerbi-client-react";
 import { models } from "powerbi-client";
 import { useSelector } from "react-redux";
@@ -212,13 +205,13 @@ export default function PowerBi() {
     <>
       <div id="embed-container">
         <div className="no-print cit-header">
-          <ButtonLink
+          <Button
             variant="link"
             className="text-white mr-5"
             onClick={saveAsPDF}
           >
             Save As PDF
-          </ButtonLink>
+          </Button>
           <button
             type="button"
             className="copy-btn btn primary"
@@ -415,7 +408,7 @@ export default function PowerBi() {
           ) : null}
         </Modal.Body>
         <Modal.Footer>
-          <SharedButton
+          <Button
             label="Close"
             styling="bcgov-normal-blue modal-save-button btn"
             onClick={handleClose}

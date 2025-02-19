@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Modal } from "react-bootstrap";
-import { Button as SharedButton } from "shared-components";
+import { Button as SharedButton, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Proptypes from "prop-types";
 import { useKeycloakWrapper } from "../hooks/useKeycloakWrapper";
