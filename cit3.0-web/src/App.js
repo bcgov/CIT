@@ -22,117 +22,118 @@ import CriteriaSearch from "./components/Page/PowerBi/CriteriaSearch";
 import PublicLayout from "./layouts/PublicLayout";
 
 function App() {
-  return (
-    <AuthStateContext.Consumer>
-      {(context) => {
-        if (!context.ready) {
-          return (
-            <PublicLayout>
-              <main className="center-spinner">
-                <Spinner animation="border" />
-              </main>
-            </PublicLayout>
-          );
-        }
-        return (
-          <div className="app-container">
-            <LoadingBar
-              style={{
-                zIndex: 9999,
-                backgroundColor: "#fcba19",
-                height: "3px",
-              }}
-            />
-            <Router>
-              <Header />
-              <Switch>
-                <Redirect exact from="/" to="/cit-dashboard/home" />
-                <Redirect
-                  exact
-                  from="/cit-dashboard"
-                  to="/cit-dashboard/home"
-                />
-                <AppRoute title="Login" path="/login" component={Login} />
-                <AppRoute title="Logout" path="/logout" component={Logout} />
-                <AppRoute
-                  title="Access Denied - Login to continue"
-                  path="/forbidden"
-                  component={AccessDenied}
-                />
-                <AppRoute
-                  protected
-                  path="/cit-dashboard/internal"
-                  title="Community Information Tool - Internal Report"
-                  layout={AuthLayout}
-                  component={PowerBi}
-                />
-                <AppRoute
-                  title="Community Information Tool - Community Report"
-                  path="/cit-dashboard/public"
-                  component={PowerBi}
-                />
-                <AppRoute
-                  title="Community Information Tool - Community Report"
-                  exact
-                  path="/cit-dashboard/info/:zonetype/:id"
-                  component={PublicReport}
-                />
-                <AppRoute
-                  title="Community Information Tool - Community Report"
-                  exact
-                  path="/cit-dashboard/info/:zonetype/name/:name"
-                  component={PublicReport}
-                />
-                <AppRoute
-                  path="/cit-dashboard/home"
-                  title="Community Information Tool"
-                  component={UserStory}
-                />
-                <AppRoute
-                  exact
-                  path="/userstory"
-                  title="Community Information Tool"
-                  component={UserStory}
-                />
-                <AppRoute
-                  exact
-                  path="/userstory/internal"
-                  title="Community Information Tool"
-                  component={UserStory}
-                />
-                <AppRoute
-                  exact
-                  path="/reports/publicreport"
-                  title="Community Information Tool"
-                  component={PublicReport}
-                />
-                <AppRoute
-                  exact
-                  path="/reports/Compare"
-                  title="Community Information Tool"
-                  component={Compare}
-                />
-                <AppRoute
-                  exact
-                  path="/reports/criteriasearch"
-                  title="Community Information Tool"
-                  component={CriteriaSearch}
-                />
-                <AppRoute
-                  path="/datasources"
-                  title="Community Information Tool - Data Sources"
-                  component={Datasources}
-                />
-              </Switch>
-              <div className="footer">
-                <Footer />
-              </div>
-            </Router>
-          </div>
-        );
-      }}
-    </AuthStateContext.Consumer>
-  );
+  // return (
+  //   <AuthStateContext.Consumer>
+  //     {(context) => {
+  //       if (!context.ready) {
+  //         return (
+  //           <PublicLayout>
+  //             <main className="center-spinner">
+  //               <Spinner animation="border" />
+  //             </main>
+  //           </PublicLayout>
+  //         );
+  //       }
+  //       return (
+  //         <div className="app-container">
+  //           <LoadingBar
+  //             style={{
+  //               zIndex: 9999,
+  //               backgroundColor: "#fcba19",
+  //               height: "3px",
+  //             }}
+  //           />
+  //           <Router>
+  //             <Header />
+  //             <Switch>
+  //               <Redirect exact from="/" to="/cit-dashboard/home" />
+  //               <Redirect
+  //                 exact
+  //                 from="/cit-dashboard"
+  //                 to="/cit-dashboard/home"
+  //               />
+  //               <AppRoute title="Login" path="/login" component={Login} />
+  //               <AppRoute title="Logout" path="/logout" component={Logout} />
+  //               <AppRoute
+  //                 title="Access Denied - Login to continue"
+  //                 path="/forbidden"
+  //                 component={AccessDenied}
+  //               />
+  //               <AppRoute
+  //                 protected
+  //                 path="/cit-dashboard/internal"
+  //                 title="Community Information Tool - Internal Report"
+  //                 layout={AuthLayout}
+  //                 component={PowerBi}
+  //               />
+  //               <AppRoute
+  //                 title="Community Information Tool - Community Report"
+  //                 path="/cit-dashboard/public"
+  //                 component={PowerBi}
+  //               />
+  //               <AppRoute
+  //                 title="Community Information Tool - Community Report"
+  //                 exact
+  //                 path="/cit-dashboard/info/:zonetype/:id"
+  //                 component={PublicReport}
+  //               />
+  //               <AppRoute
+  //                 title="Community Information Tool - Community Report"
+  //                 exact
+  //                 path="/cit-dashboard/info/:zonetype/name/:name"
+  //                 component={PublicReport}
+  //               />
+  //               <AppRoute
+  //                 path="/cit-dashboard/home"
+  //                 title="Community Information Tool"
+  //                 component={UserStory}
+  //               />
+  //               <AppRoute
+  //                 exact
+  //                 path="/userstory"
+  //                 title="Community Information Tool"
+  //                 component={UserStory}
+  //               />
+  //               <AppRoute
+  //                 exact
+  //                 path="/userstory/internal"
+  //                 title="Community Information Tool"
+  //                 component={UserStory}
+  //               />
+  //               <AppRoute
+  //                 exact
+  //                 path="/reports/publicreport"
+  //                 title="Community Information Tool"
+  //                 component={PublicReport}
+  //               />
+  //               <AppRoute
+  //                 exact
+  //                 path="/reports/Compare"
+  //                 title="Community Information Tool"
+  //                 component={Compare}
+  //               />
+  //               <AppRoute
+  //                 exact
+  //                 path="/reports/criteriasearch"
+  //                 title="Community Information Tool"
+  //                 component={CriteriaSearch}
+  //               />
+  //               <AppRoute
+  //                 path="/datasources"
+  //                 title="Community Information Tool - Data Sources"
+  //                 component={Datasources}
+  //               />
+  //             </Switch>
+  //             <div className="footer">
+  //               <Footer />
+  //             </div>
+  //           </Router>
+  //         </div>
+  //       );
+  //     }}
+  //   </AuthStateContext.Consumer>
+  // );
+  return <div>Hello World!</div>;
 }
 
 export default App;
