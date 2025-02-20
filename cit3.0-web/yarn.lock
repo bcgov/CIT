@@ -9323,15 +9323,15 @@ postcss@^8.4.27:
     picocolors "^1.1.1"
     source-map-js "^1.2.1"
 
-powerbi-client-react@^1.3.1:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/powerbi-client-react/-/powerbi-client-react-1.4.0.tgz#23a47735c9ca7ccfc306ed8649984972a5d73860"
-  integrity sha512-AfS96lP+emEc4drguCUqLG0s4cFa15OM9eqDaP1sJZ+ca0V+FdvFeI1bD6EyC3smPlpRcl862uSzYexVeUxdIQ==
+powerbi-client-react@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/powerbi-client-react/-/powerbi-client-react-2.0.0.tgz#5b9333d110537fbfed574ccde1ba3f7f0822b32a"
+  integrity sha512-u6P96DhuhJZwcbS7RN0zxU0M0ERAfgOEY9T+z3RVSQsoU0PNnhHRn/CMDXbmAwUsB6UgGxH7Izw0Kflr+RF9CA==
   dependencies:
     lodash.isequal "^4.5.0"
-    powerbi-client "^2.21.1"
+    powerbi-client "^2.23.1"
 
-powerbi-client@^2.17.2, powerbi-client@^2.21.1:
+powerbi-client@^2.23.1:
   version "2.23.1"
   resolved "https://registry.yarnpkg.com/powerbi-client/-/powerbi-client-2.23.1.tgz#8e19177907522b5f122b1c82b0f0baca6ac98fae"
   integrity sha512-r04gDDq8YkrkZjSwOw4UBgzPwudXnA+x8B9ekVE7XDlhTDC7tujbcT15Z+iLDrx+49Bj4qVez0PgjA9CgEFpGw==
