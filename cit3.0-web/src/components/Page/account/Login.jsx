@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { Container, Row, Col, Spinner, Jumbotron } from "react-bootstrap";
+import { Container, Row, Col, Spinner } from "react-bootstrap";
 // import "shared-components/build/components/loader/Loader.css";
 // import { Button } from "shared-components";
 import { FaExternalLinkAlt } from "react-icons/fa";
@@ -56,7 +56,7 @@ const Login = () => {
         <h2 className="my-4">Login to Community Information Tool</h2>
         <Row className="sign-in">
           <Col md>
-            <Jumbotron>
+            <Container className="p-4 mb-4 bg-light rounded">
               <h3 className="mb-4">Don&apos;t have a Business BCeID?</h3>
               <p>
                 1. Search to see if your entity is{" "}
@@ -81,7 +81,7 @@ const Login = () => {
                 </a>{" "}
                 <FaExternalLinkAlt />
               </p>
-            </Jumbotron>
+            </Container>
           </Col>
         </Row>
       </Container>
