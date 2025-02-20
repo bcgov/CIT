@@ -1,6 +1,6 @@
 import { Button } from "react-bootstrap";
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
-import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import useKeycloakWrapper from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
 
 /** Component that allows the user to logout, and gives information on current user's agency/roles */

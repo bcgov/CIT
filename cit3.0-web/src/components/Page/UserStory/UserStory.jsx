@@ -13,7 +13,7 @@ import {
   ChevronDown,
   ChevronUp,
 } from "react-bootstrap-icons";
-import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import useKeycloakWrapper from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
 import Config from "../../../Config";
 
@@ -59,9 +59,8 @@ export default function UserStory() {
   const [tsunamiZones, setTsunamiZones] = useState(null);
   const [wildfireZones, setWildfireZones] = useState(null);
   const [schoolDistricts, setSchoolDistricts] = useState(null);
-  const [healthAuthorityBoundaries, setHealthAuthorityBoundaries] = useState(
-    null
-  );
+  const [healthAuthorityBoundaries, setHealthAuthorityBoundaries] =
+    useState(null);
 
   const [isLoginWithIdir] = useState(keycloak.idp === "idir");
   const [isInternal] = useState(location.pathname.includes("internal"));

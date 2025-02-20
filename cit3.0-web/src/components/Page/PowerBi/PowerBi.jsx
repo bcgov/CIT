@@ -9,7 +9,7 @@ import { useLocation } from "react-router-dom";
 import { Typeahead } from "react-bootstrap-typeahead";
 import Config from "../../../Config";
 import { trackUser } from "../../../store/actions/user";
-import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import useKeycloakWrapper from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
 
 export default function PowerBi() {

@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export async function getCensusEconomicRegions() {
+  console.log("getCensusEconomicRegions");
   const url = "/api/opportunity/options/census-economic-regions";
 
   const response = await axios.get(url);

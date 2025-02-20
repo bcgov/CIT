@@ -1,7 +1,7 @@
 import "./Header.scss";
 
 import { Navbar, Nav } from "react-bootstrap";
-import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import useKeycloakWrapper from "../../../hooks/useKeycloakWrapper";
 import UserProfile from "./UserProfile";
 
 const Header = () => {

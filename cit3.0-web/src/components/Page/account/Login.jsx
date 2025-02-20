@@ -1,55 +1,48 @@
 import React from "react";
-import { Redirect } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { Container, Row, Col, Spinner } from "react-bootstrap";
-// import "shared-components/build/components/loader/Loader.css";
-// import { Button } from "shared-components";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { useKeycloakWrapper } from "../../../hooks/useKeycloakWrapper";
+import useKeycloakWrapper from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
 
-// @todo: Move to actions / status sources
-// const NEW_CIT_USER = 201;
-
-// check to see if user is using Internet Explorer
-// as their browser
+// Function to check if user is using Internet Explorer
 const usingIE = () => {
   const { userAgent } = window.navigator;
-  const isOldIE = userAgent.indexOf("MSIE "); // tag used for IE 10 or older
-  const isIE11 = userAgent.indexOf("Trident/"); // tag used for IE11
-  if (isOldIE > 0 || isIE11 > 0) return true;
-  return false;
+  return userAgent.includes("MSIE") || userAgent.includes("Trident/");
 };
 
 const Login = () => {
   const keyCloakWrapper = useKeycloakWrapper();
   const keycloak = keyCloakWrapper.obj;
   const isIE = usingIE();
+
   if (!keycloak) {
     return <Spinner animation="border" />;
   }
+
   if (isIE) {
-    return <Redirect to={{ pathname: "/ienotsupported" }} />;
+    return <Navigate to="/ienotsupported" replace />;
   }
+
   const configuration = useConfiguration();
 
   const handleLogin = () => {
+    let redirectUri = configuration.baseUrl;
+
     if (window.location.href.includes("cit-dashboard")) {
-      const loginWithIdir = keycloak.createLoginUrl({
-        idpHint: "idir",
-        redirectUri: encodeURI(`${configuration.baseUrl}/cit-dashboard/home`),
-      });
-      window.location.href = loginWithIdir;
+      redirectUri += "/cit-dashboard/home";
+    } else if (window.location.href.includes("userstory")) {
+      redirectUri = window.location.href;
     }
-    if (window.location.href.includes("userstory")) {
-      const loginWithIdir = keycloak.createLoginUrl({
-        idpHint: "idir",
-        redirectUri: window.location.href,
-      });
-      window.location.href = loginWithIdir;
-    } else {
-      keycloak.login();
-    }
+
+    const loginWithIdir = keycloak.createLoginUrl({
+      idpHint: "idir",
+      redirectUri: encodeURI(redirectUri),
+    });
+
+    window.location.href = loginWithIdir || keycloak.login();
   };
+
   return (
     <Container className="login" fluid>
       <Container className="unauth" fluid>

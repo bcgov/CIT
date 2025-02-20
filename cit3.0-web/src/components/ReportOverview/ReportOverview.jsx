@@ -5,7 +5,7 @@ import { PowerBIEmbed } from "powerbi-client-react";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
 import { Printer, LockFill } from "react-bootstrap-icons";
-import { useKeycloakWrapper } from "../../hooks/useKeycloakWrapper";
+import useKeycloakWrapper from "../../hooks/useKeycloakWrapper";
 import Config from "../../Config";
 import useConfiguration from "../../hooks/useConfiguration";
 import "./ReportOverview.css";
@@ -92,9 +92,8 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
     settings: { ...layoutSettings },
   };
 
-  const [embedReportConfig, setEmbedReportConfig] = useState(
-    inititalReportConfig
-  );
+  const [embedReportConfig, setEmbedReportConfig] =
+    useState(inititalReportConfig);
 
   const getReportConfig = async () => {
     const response = await axios.get(
@@ -240,8 +239,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
     if (!isLoginWithIdir) {
       setModalInfo({
         title: "Login Required",
-        body:
-          "Please note that you must be logged in with an IDIR to continue with BC Assessment Report",
+        body: "Please note that you must be logged in with an IDIR to continue with BC Assessment Report",
       });
       handleShow();
       return;
