@@ -1,5 +1,4 @@
 import React, { useLayoutEffect } from "react";
-import Proptypes from "prop-types";
 import { useLocation, Route } from "react-router-dom";
 import { Helmet } from "react-helmet";
 
@@ -10,10 +9,10 @@ import PublicLayout from "../../layouts/PublicLayout";
 
 const AppRoute = ({
   component: Component,
-  layout,
-  protected: usePrivateRoute,
-  roles,
-  title,
+  layout = () => <PublicLayout />,
+  protected: usePrivateRoute = false,
+  roles = [],
+  title = "Community Information Tool",
   ...rest
 }) => {
   const location = useLocation();
@@ -75,19 +74,13 @@ const AppRoute = ({
   );
 };
 
-AppRoute.defaultProps = {
-  layout: () => <PublicLayout />,
-  protected: false,
-  roles: [],
-  title: "Community Information Tool",
-};
-
-AppRoute.propTypes = {
-  component: Proptypes.func.isRequired,
-  layout: Proptypes.func,
-  protected: Proptypes.bool,
-  roles: Proptypes.arrayOf(Proptypes.string),
-  title: Proptypes.string,
-};
+// To be converted to an interface
+// AppRoute.propTypes = {
+//   component: Proptypes.func.isRequired,
+//   layout: Proptypes.func,
+//   protected: Proptypes.bool,
+//   roles: Proptypes.arrayOf(Proptypes.string),
+//   title: Proptypes.string,
+// };
 
 export default AppRoute;

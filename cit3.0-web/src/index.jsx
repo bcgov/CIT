@@ -1,5 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import axios from "axios";
 import Keycloak from "keycloak-js";
@@ -17,6 +17,8 @@ const keycloakProviderInitConfig = {
   pkceMethod: "S256",
   checkLoginIframe: false,
 };
+const container = document.getElementById("root");
+const root = createRoot(container);
 
 // const Index = () => <App />;
 
@@ -36,4 +38,4 @@ const Index = () => (
   </ReactKeycloakProvider>
 );
 
-ReactDOM.render(<Index />, document.getElementById("root"));
+root.render(<Index />);

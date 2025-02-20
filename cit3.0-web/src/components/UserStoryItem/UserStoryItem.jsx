@@ -1,5 +1,5 @@
+/* eslint-disable react/prop-types */
 import React from "react";
-import PropTypes from "prop-types";
 import Select, { createFilter } from "react-select";
 import { Button } from "react-bootstrap";
 import ReactHtmlParser from "react-html-parser";
@@ -7,8 +7,8 @@ import "./UserStoryItem.css";
 
 export default function UserStoryItem({
   userStory,
-  isLongVersion,
-  onUserStoryChange,
+  isLongVersion = true,
+  onUserStoryChange = null,
 }) {
   const userStoryYes = userStory.user_story_paths.find(
     (x) => x.label === "Yes"
@@ -136,13 +136,9 @@ export default function UserStoryItem({
   );
 }
 
-UserStoryItem.propTypes = {
-  userStory: PropTypes.shape().isRequired,
-  isLongVersion: PropTypes.bool,
-  onUserStoryChange: PropTypes.func,
-};
-
-UserStoryItem.defaultProps = {
-  isLongVersion: true,
-  onUserStoryChange: null,
-};
+// To be converted to an interface
+// UserStoryItem.propTypes = {
+//   userStory: PropTypes.shape().isRequired,
+//   isLongVersion: PropTypes.bool,
+//   onUserStoryChange: PropTypes.func,
+// };

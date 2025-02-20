@@ -1,16 +1,13 @@
+/* eslint-disable react/prop-types */
 import React from "react";
-import Proptypes from "prop-types";
 
-const PublicLayout = ({ children }) => (
+const PublicLayout = ({ children = <></> }) => (
   <main className="App-content">{children}</main>
 );
 
-PublicLayout.defaultProps = {
-  children: <></>,
-};
-
-PublicLayout.propTypes = {
-  children: Proptypes.shape(),
-};
+// To be converted to an interface
+// PublicLayout.propTypes = {
+//   children: Proptypes.shape(),
+// };
 
 export default PublicLayout;
