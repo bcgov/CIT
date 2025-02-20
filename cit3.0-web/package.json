@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@bcgov/bootstrap-theme": "github:bcgov/bootstrap-theme",
+    "@bcgov/bootstrap-v5-theme": "^1.0.1",
     "@react-keycloak/web": "^3.4.0",
-    "@reduxjs/toolkit": "^1.5.0",
+    "@reduxjs/toolkit": "^2.5.1",
     "@terraformer/wkt": "^2.0.7",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",

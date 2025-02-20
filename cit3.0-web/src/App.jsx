@@ -1,5 +1,5 @@
 import "bootstrap/dist/css/bootstrap.css";
-import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
+import "@bcgov/bootstrap-v5-theme/css/bootstrap-theme.min.css";
 
 import { BrowserRouter as Router, Switch, Redirect } from "react-router-dom";
 import "./App.css";
