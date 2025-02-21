@@ -1,22 +1,18 @@
 # base image
-FROM node:10.16 as build-deps
+FROM node:20 AS build-deps
 
 # set working directory
 ENV NODE_ROOT /usr/src/app
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-RUN npm install yarn -g --silent
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 COPY . .
 
-# Issue with babel mismatch in dependency
-ENV SKIP_PREFLIGHT_CHECK=true
-
 RUN yarn build
 
-FROM nginxinc/nginx-unprivileged:1.23-alpine
+FROM nginxinc/nginx-unprivileged:1.27-alpine
 USER root
 RUN apk add coreutils
 COPY --from=build-deps /usr/src/app/build /usr/share/nginx/html

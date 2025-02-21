@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "vite",
-    "build": "vite build",
+    "build": "vite build --emptyOutDir",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint .",
