@@ -76,7 +76,12 @@ function App() {
               />
             }
           />
-          {/* TODO: turn this into a protected route */}
+          {/* Note: 
+          this was a protected route in the inherited code
+          but it was pointing to the same component as 
+          /cit-dashboard/public hence there is no need
+          for a private route for this component
+          */}
           <Route
             path="/cit-dashboard/internal"
             element={
