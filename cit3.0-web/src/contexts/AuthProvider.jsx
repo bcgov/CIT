@@ -9,41 +9,28 @@ export const AuthContext = createContext({
   keycloak: null,
   isAuthenticated: false,
   initialized: false,
-  // onReady: () => {
-  //   console.log("onReady");
-  //   store.dispatch(setKeycloakReady(true));
-  // },
-  // onAuthLogout: () => {
-  //   console.log("onAuthLogout");
-  //   store.dispatch(clearJwt());
-  // },
-  // onAuthSuccess: () => {
-  //   console.log("onAuthSuccess");
-  //   if (keycloak.token) {
-  //     store.dispatch(saveJwt(keycloak.token));
-  //   }
-  // },
 });
 
 const keycloak = new Keycloak(Config.keycloakConfig);
 // The below replaces KeycloakEventHandler.jsx
 keycloak.onReady = () => {
-  console.log("onReady");
   store.dispatch(setKeycloakReady(true));
 };
 
 keycloak.onAuthLogout = () => {
-  console.log("onAuthLogout");
   store.dispatch(clearJwt());
 };
 
 keycloak.onAuthSuccess = () => {
-  console.log("onAuthSuccess");
   if (keycloak.token) {
     store.dispatch(saveJwt(keycloak.token));
   }
 };
-
+keycloak.onAuthRefreshSuccess = () => {
+  if (keycloak.token) {
+    store.dispatch(saveJwt(keycloak.token));
+  }
+};
 const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [initialized, setInitialized] = useState(false);
@@ -61,7 +48,6 @@ const AuthProvider = ({ children }) => {
         setInitialized(true);
       })
       .catch((e) => {
-        console.log("error with keycloak init");
         setInitialized(true); // Even if it fails, we should mark it as initialized
       });
     console;

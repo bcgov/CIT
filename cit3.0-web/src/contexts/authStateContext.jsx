@@ -10,9 +10,6 @@ export const AuthStateContext = React.createContext({
 
 const AuthStateContextProvider = ({ children }) => {
   const { keycloak, isAuthenticated, initialized } = useContext(AuthContext);
-  console.log("keycloak", keycloak);
-  console.log("isAuthenticated", isAuthenticated);
-  console.log("initialized", initialized);
   const [userInfo, setUserInfo] = useState(null);
   const [ready, setReady] = useState(false);
   const dispatch = useDispatch();

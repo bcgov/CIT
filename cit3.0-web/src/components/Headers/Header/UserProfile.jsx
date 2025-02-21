@@ -56,7 +56,6 @@ const UserProfile = () => {
                     `${configuration.baseUrl}${window.location.pathname}`
                   ),
                 });
-                console.log("loginWithIdir", loginWithIdir);
                 window.location.href = loginWithIdir;
               } else if (isDashboard()) {
                 const current = window.location.href.replace(
