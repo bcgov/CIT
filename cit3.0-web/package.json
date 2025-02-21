@@ -35,7 +35,7 @@
     "react-redux-loading-bar": "^5.0.8",
     "react-router-dom": "^7.2.0",
     "react-select": "^5.10.0",
-    "react-switch": "^6.0.0",
+    "react-switch": "^7.1.0",
     "redux": "^5.0.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-logger": "^3.0.6",
