@@ -8,8 +8,8 @@ const PowerBiReport = () => (
   </div>
 );
 
-PowerBiReport.propTypes = {};
+// PowerBiReport.propTypes = {};
 
-PowerBiReport.defaultProps = {};
+// PowerBiReport.defaultProps = {};
 
 export default PowerBiReport;

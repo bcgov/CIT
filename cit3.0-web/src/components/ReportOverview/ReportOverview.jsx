@@ -419,14 +419,14 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
   );
 }
 
-ReportOverview.propTypes = {
-  reportFilter: PropTypes.objectOf(PropTypes.any),
-  user: PropTypes.string,
-  handleLogin: PropTypes.func,
-};
+// ReportOverview.propTypes = {
+//   reportFilter: PropTypes.objectOf(PropTypes.any),
+//   user: PropTypes.string,
+//   handleLogin: PropTypes.func,
+// };
 
-ReportOverview.defaultProps = {
-  reportFilter: null,
-  user: null,
-  handleLogin: null,
-};
+// ReportOverview.defaultProps = {
+//   reportFilter: null,
+//   user: null,
+//   handleLogin: null,
+// };

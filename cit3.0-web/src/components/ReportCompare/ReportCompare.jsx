@@ -34,9 +34,8 @@ export default function ReportCompare() {
     settings: { ...layoutSettings },
   };
 
-  const [embedReportConfig, setEmbedReportConfig] = useState(
-    inititalReportConfig
-  );
+  const [embedReportConfig, setEmbedReportConfig] =
+    useState(inititalReportConfig);
 
   const getReportConfig = async () => {
     const response = await axios.get(
@@ -140,6 +139,6 @@ export default function ReportCompare() {
   );
 }
 
-ReportCompare.propTypes = {};
+// ReportCompare.propTypes = {};
 
-ReportCompare.defaultProps = {};
+// ReportCompare.defaultProps = {};

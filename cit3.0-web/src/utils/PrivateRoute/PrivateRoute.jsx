@@ -30,17 +30,17 @@ const PrivateRoute = ({
   );
 };
 
-PrivateRoute.defaultProps = {
-  claim: {},
-  componentProps: {},
-};
+// PrivateRoute.defaultProps = {
+//   claim: {},
+//   componentProps: {},
+// };
 
-PrivateRoute.propTypes = {
-  component: PropTypes.elementType.isRequired,
-  layout: PropTypes.elementType.isRequired,
-  roles: PropTypes.arrayOf(PropTypes.string).isRequired,
-  claim: PropTypes.shape(),
-  componentProps: PropTypes.shape(),
-};
+// PrivateRoute.propTypes = {
+//   component: PropTypes.elementType.isRequired,
+//   layout: PropTypes.elementType.isRequired,
+//   roles: PropTypes.arrayOf(PropTypes.string).isRequired,
+//   claim: PropTypes.shape(),
+//   componentProps: PropTypes.shape(),
+// };
 
 export default PrivateRoute;
