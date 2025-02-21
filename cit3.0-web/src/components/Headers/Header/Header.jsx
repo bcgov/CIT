@@ -32,7 +32,12 @@ const Header = () => {
               <div className="title">{title}</div>
             </Nav.Item>
           </Nav>
-          {keycloak.obj && <UserProfile />}
+
+          {keycloak.obj && (
+            <Navbar.Collapse className="justify-content-end">
+              <UserProfile />
+            </Navbar.Collapse>
+          )}
         </Navbar>
       </header>
     </>

@@ -38,7 +38,7 @@ const UserProfile = () => {
                 redirectUri: `${configuration.baseUrl}/cit-dashboard`,
               });
             }}
-            styling="btn bcgov-button bcgov-normal-white"
+            variant="light"
           >
             <>
               {"Logout "}
@@ -73,7 +73,7 @@ const UserProfile = () => {
                 });
               }
             }}
-            styling="btn bcgov-button bcgov-normal-white"
+            variant="light"
           >
             <>
               {"Login "}
