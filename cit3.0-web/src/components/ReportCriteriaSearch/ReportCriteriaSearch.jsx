@@ -35,9 +35,8 @@ export default function ReportCriteriaSearch() {
     settings: { ...layoutSettings },
   };
 
-  const [embedReportConfig, setEmbedReportConfig] = useState(
-    inititalReportConfig
-  );
+  const [embedReportConfig, setEmbedReportConfig] =
+    useState(inititalReportConfig);
 
   const getReportConfig = async () => {
     const response = await axios.get(
@@ -154,6 +153,6 @@ export default function ReportCriteriaSearch() {
   );
 }
 
-ReportCriteriaSearch.propTypes = {};
+// ReportCriteriaSearch.propTypes = {};
 
-ReportCriteriaSearch.defaultProps = {};
+// ReportCriteriaSearch.defaultProps = {};
