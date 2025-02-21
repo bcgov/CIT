@@ -12,36 +12,36 @@ const usingIE = () => {
 };
 
 const Login = () => {
-  const keyCloakWrapper = useKeycloakWrapper();
-  const keycloak = keyCloakWrapper.obj;
-  const isIE = usingIE();
+  // const keyCloakWrapper = useKeycloakWrapper();
+  // const keycloak = keyCloakWrapper.obj;
+  // const isIE = usingIE();
 
-  if (!keycloak) {
-    return <Spinner animation="border" />;
-  }
+  // if (!keycloak) {
+  //   return <Spinner animation="border" />;
+  // }
 
-  if (isIE) {
-    return <Navigate to="/ienotsupported" replace />;
-  }
+  // if (isIE) {
+  //   return <Navigate to="/ienotsupported" replace />;
+  // }
 
-  const configuration = useConfiguration();
+  // const configuration = useConfiguration();
 
-  const handleLogin = () => {
-    let redirectUri = configuration.baseUrl;
+  // const handleLogin = () => {
+  //   let redirectUri = configuration.baseUrl;
 
-    if (window.location.href.includes("cit-dashboard")) {
-      redirectUri += "/cit-dashboard/home";
-    } else if (window.location.href.includes("userstory")) {
-      redirectUri = window.location.href;
-    }
+  //   if (window.location.href.includes("cit-dashboard")) {
+  //     redirectUri += "/cit-dashboard/home";
+  //   } else if (window.location.href.includes("userstory")) {
+  //     redirectUri = window.location.href;
+  //   }
 
-    const loginWithIdir = keycloak.createLoginUrl({
-      idpHint: "idir",
-      redirectUri: encodeURI(redirectUri),
-    });
+  //   const loginWithIdir = keycloak.createLoginUrl({
+  //     idpHint: "idir",
+  //     redirectUri: encodeURI(redirectUri),
+  //   });
 
-    window.location.href = loginWithIdir || keycloak.login();
-  };
+  //   window.location.href = loginWithIdir || keycloak.login();
+  // };
 
   return (
     <Container className="login" fluid>

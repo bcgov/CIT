@@ -29,7 +29,6 @@ import PublicLayout from "./layouts/PublicLayout";
 
 function App() {
   const context = useContext(AuthStateContext);
-  console.log(context);
   if (!context.ready) {
     return (
       <PublicLayout>
@@ -62,21 +61,22 @@ function App() {
           />
           <Route
             path="/login"
-            element={<AppRoute title="Login" element={<Login />} />}
+            element={<AppRoute title="Login" element={Login} />}
           />
           <Route
             path="/logout"
-            element={<AppRoute title="Logout" component={<Logout />} />}
+            element={<AppRoute title="Logout" component={Logout} />}
           />
           <Route
             path="/forbidden"
             element={
               <AppRoute
                 title="Access Denied - Login to continue"
-                component={<AccessDenied />}
+                component={AccessDenied}
               />
             }
           />
+          {/* TODO: turn this into a protected route */}
           <Route
             path="/cit-dashboard/internal"
             element={
@@ -84,7 +84,7 @@ function App() {
                 protected
                 layout={AuthLayout}
                 title="Community Information Tool - Internal Report"
-                component={<PowerBi />}
+                component={PowerBi}
               />
             }
           />
@@ -93,7 +93,7 @@ function App() {
             element={
               <AppRoute
                 title="Community Information Tool - Community Report"
-                component={<PowerBi />}
+                component={PowerBi}
               />
             }
           />
@@ -102,7 +102,7 @@ function App() {
             element={
               <AppRoute
                 title="Community Information Tool - Community Report"
-                component={<PublicReport />}
+                component={PublicReport}
               />
             }
           />
@@ -111,7 +111,7 @@ function App() {
             element={
               <AppRoute
                 title="Community Information Tool - Community Report"
-                component={<PublicReport />}
+                component={PublicReport}
               />
             }
           />
@@ -120,7 +120,7 @@ function App() {
             element={
               <AppRoute
                 title="Community Information Tool"
-                component={<UserStory />}
+                component={UserStory}
               />
             }
           />
@@ -129,7 +129,7 @@ function App() {
             element={
               <AppRoute
                 title="Community Information Tool"
-                component={<UserStory />}
+                component={UserStory}
               />
             }
           />
@@ -138,7 +138,7 @@ function App() {
             element={
               <AppRoute
                 title="Community Information Tool"
-                component={<UserStory />}
+                component={UserStory}
               />
             }
           />
@@ -147,7 +147,7 @@ function App() {
             element={
               <AppRoute
                 title="Community Information Tool"
-                component={<PublicReport />}
+                component={PublicReport}
               />
             }
           />
@@ -156,7 +156,7 @@ function App() {
             element={
               <AppRoute
                 title="Community Information Tool"
-                component={<Compare />}
+                component={Compare}
               />
             }
           />
@@ -165,7 +165,7 @@ function App() {
             element={
               <AppRoute
                 title="Community Information Tool"
-                component={<CriteriaSearch />}
+                component={CriteriaSearch}
               />
             }
           />
@@ -174,7 +174,7 @@ function App() {
             element={
               <AppRoute
                 title="Community Information Tool - Data Sources"
-                component={<Datasources />}
+                component={Datasources}
               />
             }
           />

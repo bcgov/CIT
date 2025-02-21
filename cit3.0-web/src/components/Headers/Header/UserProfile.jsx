@@ -6,7 +6,6 @@ import useConfiguration from "../../../hooks/useConfiguration";
 /** Component that allows the user to logout, and gives information on current user's agency/roles */
 const UserProfile = () => {
   const keycloak = useKeycloakWrapper();
-
   const fallbacDisplayName =
     !!keycloak.firstName && !!keycloak.lastName
       ? `${keycloak.firstName} ${keycloak.lastName}`
@@ -33,42 +32,38 @@ const UserProfile = () => {
       >
         {keycloak.obj.authenticated ? (
           <Button
-            label={
-              <>
-                {"Logout "}
-                <FaSignOutAlt />
-              </>
-            }
+            label="Logout"
             onClick={() => {
               keycloak.obj.logout({
                 redirectUri: `${configuration.baseUrl}/cit-dashboard`,
               });
             }}
             styling="btn bcgov-button bcgov-normal-white"
-          />
+          >
+            <>
+              {"Logout "}
+              <FaSignOutAlt />
+            </>
+          </Button>
         ) : (
           <Button
-            label={
-              <>
-                {"Login "}
-                <FaSignInAlt />
-              </>
-            }
-            onClick={() => {
+            label="Login"
+            onClick={async () => {
               if (!isDashboard()) {
-                const loginWithIdir = keycloak.obj.createLoginUrl({
+                const loginWithIdir = await keycloak.obj.createLoginUrl({
                   idpHint: "idir",
                   redirectUri: encodeURI(
                     `${configuration.baseUrl}${window.location.pathname}`
                   ),
                 });
+                console.log("loginWithIdir", loginWithIdir);
                 window.location.href = loginWithIdir;
               } else if (isDashboard()) {
                 const current = window.location.href.replace(
                   "public",
                   "internal"
                 );
-                const loginWithIdir = keycloak.obj.createLoginUrl({
+                const loginWithIdir = await keycloak.obj.createLoginUrl({
                   idpHint: "idir",
                   redirectUri: current,
                 });
@@ -80,7 +75,12 @@ const UserProfile = () => {
               }
             }}
             styling="btn bcgov-button bcgov-normal-white"
-          />
+          >
+            <>
+              {"Login "}
+              <FaSignInAlt />
+            </>
+          </Button>
         )}
       </div>
     </>
