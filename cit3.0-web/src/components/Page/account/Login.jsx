@@ -5,47 +5,10 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import useKeycloakWrapper from "../../../hooks/useKeycloakWrapper";
 import useConfiguration from "../../../hooks/useConfiguration";
 
-// Function to check if user is using Internet Explorer
-const usingIE = () => {
-  const { userAgent } = window.navigator;
-  return userAgent.includes("MSIE") || userAgent.includes("Trident/");
-};
-
 const Login = () => {
-  // const keyCloakWrapper = useKeycloakWrapper();
-  // const keycloak = keyCloakWrapper.obj;
-  // const isIE = usingIE();
-
-  // if (!keycloak) {
-  //   return <Spinner animation="border" />;
-  // }
-
-  // if (isIE) {
-  //   return <Navigate to="/ienotsupported" replace />;
-  // }
-
-  // const configuration = useConfiguration();
-
-  // const handleLogin = () => {
-  //   let redirectUri = configuration.baseUrl;
-
-  //   if (window.location.href.includes("cit-dashboard")) {
-  //     redirectUri += "/cit-dashboard/home";
-  //   } else if (window.location.href.includes("userstory")) {
-  //     redirectUri = window.location.href;
-  //   }
-
-  //   const loginWithIdir = keycloak.createLoginUrl({
-  //     idpHint: "idir",
-  //     redirectUri: encodeURI(redirectUri),
-  //   });
-
-  //   window.location.href = loginWithIdir || keycloak.login();
-  // };
-
   return (
     <Container className="login" fluid>
-      <Container className="unauth" fluid>
+      <Container className="unauth p-4 mb-4">
         <h2 className="my-4">Login to Community Information Tool</h2>
         <Row className="sign-in">
           <Col md>

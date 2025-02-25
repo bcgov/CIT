@@ -61,7 +61,7 @@ function App() {
           />
           <Route
             path="/login"
-            element={<AppRoute title="Login" element={Login} />}
+            element={<AppRoute title="Login" component={Login} />}
           />
           <Route
             path="/logout"
