@@ -1,18 +1,17 @@
 import React from "react";
+import { describe, it, expect } from "vitest"; // Import Vitest functions
 import { render, screen } from "@testing-library/react";
-import { Router } from "react-router-dom";
-import { createMemoryHistory } from "history";
+import { MemoryRouter } from "react-router-dom";
 import NotFoundPage from "./NotFoundPage";
-
-const history = createMemoryHistory();
 
 describe("NotFoundPage", () => {
   it("renders correctly", () => {
     render(
-      <Router history={history}>
+      <MemoryRouter>
         <NotFoundPage />
-      </Router>
+      </MemoryRouter>
     );
+
     const notFoundPage = screen.getByTestId("NotFoundPage");
     expect(notFoundPage).toBeInTheDocument();
   });

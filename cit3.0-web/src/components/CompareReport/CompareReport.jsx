@@ -107,7 +107,11 @@ export default function CompareReport() {
 
   return (
     <>
-      <Container className={showReport ? "mt-6" : "hide-section"} fluid>
+      <Container
+        className={showReport ? "mt-6" : "hide-section"}
+        fluid
+        data-test-id="CompareReport"
+      >
         <PowerBIEmbed
           embedConfig={embedReportConfig}
           eventHandlers={eventHandlersMap}
