@@ -12,22 +12,22 @@ jobs:
       # checkout the repo
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master
-    
+
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_7_bc_wildfire_zones' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_7_bc_wildfire_zones' >> .env
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
 
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
       - name: check Container Status
-        run: | 
+        run: |
           container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
           if [[ $container_status == *"Exited (0)"* ]]; 
           then 
@@ -43,24 +43,23 @@ jobs:
       # checkout the repo
       - name: "Checkout GitHub Action"
         uses: actions/checkout@master
-        
+
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_7_bc_network_connectivity' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_TEST }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_TEST }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_TEST }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_TEST }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_7_bc_network_connectivity' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
 
-                      
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
       - name: check Container Status
-        run: | 
+        run: |
           container_status=$(docker ps --filter 'status=exited' --format '{{.Status}}')
           if [[ $container_status == *"Exited (0)"* ]]; 
           then 
@@ -69,4 +68,3 @@ jobs:
             echo "Container exited with error: $container_status"
             exit 1
           fi
-
