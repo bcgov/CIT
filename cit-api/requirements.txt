@@ -16,5 +16,5 @@ python-dateutil==2.9.0
 bcdata==0.7.1
 whitenoise==5.2.0
 python-keycloak==0.24.0
-azure-storage-blob==12.8.0
+azure-storage-blob==12.13.1
 openpyxl == 3.0.9
