@@ -20,6 +20,7 @@ from drf_yasg import openapi
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from rest_framework import routers
 from pipeline.views.file_upload import FileUploadViewSet
+from django.conf import settings
 
 from admin import auth_tokens
 
@@ -46,12 +47,16 @@ schema_view = get_schema_view(
     ],
 )
 
-urlpatterns = [
+# Swagger Documentation URLs (only in non-production environments)
+swagger_patterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$',
         schema_view.without_ui(cache_timeout=0),
         name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+] if settings.DEBUG else []
+
+urlpatterns = [
     re_path(r"^api/pipeline/", include('pipeline.pipeline-urls')),
     re_path(r"^api/opportunity/", include('pipeline.opportunity-urls')),
     re_path(r"^api/email/", include('pipeline.email-urls')),
@@ -60,4 +65,4 @@ urlpatterns = [
     re_path(r"^api/health/fail/", fail),
 ]
 
-urlpatterns += staticfiles_urlpatterns()
+urlpatterns = urlpatterns + staticfiles_urlpatterns() + swagger_patterns
