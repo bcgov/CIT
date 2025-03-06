@@ -380,7 +380,7 @@ export default function UserStory() {
     <Button
       type="button"
       variant="outline-primary"
-      className="user-story-button"
+      className="user-story-button w-auto"
       onClick={handleReset}
     >
       Reset search criteria
@@ -402,7 +402,7 @@ export default function UserStory() {
     <Button
       variant="primary"
       active
-      className="user-story-button"
+      className="user-story-button w-auto"
       onClick={() => showResult(redirectUrl.current)}
     >
       {isLongVersion ? "Let's go" : "View results for your new search"}{" "}
