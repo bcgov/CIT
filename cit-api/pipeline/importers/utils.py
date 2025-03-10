@@ -900,6 +900,10 @@ def import_connectivity_project(url):
         try:
             data1 = s.content.decode("utf8")
             data = pd.read_csv(io.StringIO(data1))
+            
+            # drop columns that are not used by the data model
+            data.drop(data.columns[[13, 19, 20]], axis=1, inplace=True)
+
             data.rename(
                 columns={
                     data.columns[0]: "project",
@@ -908,41 +912,32 @@ def import_connectivity_project(url):
                     data.columns[3]: "place_id",
                     data.columns[4]: "community_name",
                     data.columns[5]: "place_type",
-                    data.columns[6]: "latitude",
-                    data.columns[7]: "longitude",
-                    data.columns[8]: "phase",
-                    data.columns[9]: "num_housesholds_served",
-                    data.columns[10]: "speed",
-                    data.columns[11]: "status",
-                    data.columns[12]: "type_of_project",
-                    data.columns[13]: "project_description",
-                    data.columns[14]: "bc_funding",
-                    data.columns[15]: "estimated_start_date",
-                    data.columns[16]: "estimated_completion_date",
-                    data.columns[17]: "economic_region",
-                    data.columns[18]: "electoral_name",
-                    data.columns[19]: "primary_news_release",
-                    # data.columns[19]:"place_type",
-                    # data.columns[20]:"reserve_name",
-                    # data.columns[21]:"nation"
+                    data.columns[6]: "phase",
+                    data.columns[7]: "num_housesholds_served",
+                    data.columns[8]: "speed",
+                    data.columns[9]: "status",
+                    data.columns[10]: "type_of_project",
+                    data.columns[11]: "project_description",
+                    data.columns[12]: "bc_funding",
+                    data.columns[13]: "estimated_start_date",
+                    data.columns[14]: "estimated_completion_date",
+                    data.columns[15]: "economic_region",
+                    data.columns[16]: "electoral_name",
+                    data.columns[17]: "primary_news_release",
+                    data.columns[18]: "latitude",
+                    data.columns[19]: "longitude",
                 },
                 inplace=True,
             )
-            data["estimated_start_date"] = data["estimated_start_date"].str[1:]
-            data["estimated_completion_date"] = data["estimated_completion_date"].str[
-                1:
-            ]
+
+            data["estimated_start_date"] = data["estimated_start_date"].astype(str).str.strip()
+            data["estimated_completion_date"] = data["estimated_completion_date"].astype(str).str.strip()
             data["estimated_start_date"] = pd.to_datetime(
                 data["estimated_start_date"], format="%Y-%m-%d"
             )
             data["estimated_completion_date"] = pd.to_datetime(
                 data["estimated_completion_date"], format="%Y-%m-%d"
             )
-            # data.drop('Nation', axis=1, inplace=True)
-            # data.drop('Unnamed: 23', axis=1, inplace=True)
-            drop_list = ["CSDUID", "Nation", "Unnamed: 23"]
-            thisFilter = data.filter(drop_list)
-            data.drop(thisFilter, inplace=True, axis=1)
             write_to_db(ConnectivityInfrastructureProjects, data)
         except Exception as e:
             print(e)
