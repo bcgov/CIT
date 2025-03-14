@@ -1,5 +1,5 @@
 # Web framework and REST API
-Django==5.0.2              # Latest stable Django release (LTS as of early 2025)
+Django==5.0.13              # Latest stable Django release (LTS as of early 2025)
 djangorestframework==3.15.0 # Solid update, compatible with Django 5.0
 djangorestframework-csv==3.0.2  # Updated for better compatibility
 djangorestframework-gis==1.1  # Minor update, works with newer Django
