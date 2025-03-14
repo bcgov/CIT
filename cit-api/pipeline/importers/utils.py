@@ -901,7 +901,7 @@ def import_connectivity_project(url):
             data1 = s.content.decode("utf8")
             data = pd.read_csv(io.StringIO(data1))
             
-            # drop columns that are not used by the data model
+            # drop columns that are not used by the current data model
             data.drop(data.columns[[13, 19, 20]], axis=1, inplace=True)
 
             data.rename(
