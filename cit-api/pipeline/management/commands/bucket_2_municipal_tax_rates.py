@@ -6,7 +6,7 @@ from azure.storage.blob import BlobServiceClient
 
 from admin import settings
 
-from pipeline.importers.bucket2_municipal_tax_rates import (
+from pipeline.importers.bucket2.bucket2_municipal_tax_rates import (
     MunicipalTaxRatesImporter as importer,
 )
 from pipeline.importers.csv_resource import import_csv_resources

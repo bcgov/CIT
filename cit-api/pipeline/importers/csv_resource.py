@@ -22,15 +22,15 @@ from pipeline.importers.utils import (
     import_census_subdivision_linkage,
 )
 
-from pipeline.importers.bucket2_municipal_tax_rates import MunicipalTaxRatesImporter
-from pipeline.importers.bucket2_municipal_land_title_transfers import (
+from pipeline.importers.bucket2.bucket2_municipal_tax_rates import MunicipalTaxRatesImporter
+from pipeline.importers.bucket2.bucket2_municipal_land_title_transfers import (
     MunicipalLandTitleTransfersImporter,
 )
-from pipeline.importers.bucket2_core_housing_need import CoreHousingImporter
-from pipeline.importers.bucket2_csd_centroid import CSDCentroidImporter
-from pipeline.importers.bucket2_NBDPHHSpeeds import NBDPHHSpeedsImporter
-from pipeline.importers.bucket2_phdemographic import PHDemographicDistributionImporter
-from pipeline.importers.bucket2_small_businesses import SmallBusinessesImporter
+from pipeline.importers.bucket2.bucket2_core_housing_need import CoreHousingImporter
+from pipeline.importers.bucket2.bucket2_csd_centroid import CSDCentroidImporter
+from pipeline.importers.bucket2.bucket2_NBDPHHSpeeds import NBDPHHSpeedsImporter
+from pipeline.importers.bucket2.bucket2_phdemographic import PHDemographicDistributionImporter
+from pipeline.importers.bucket2.bucket2_small_businesses import SmallBusinessesImporter
 
 FILES_DIR = settings.BASE_DIR
 

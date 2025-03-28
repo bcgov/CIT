@@ -6,7 +6,7 @@ from azure.storage.blob import BlobServiceClient
 
 
 from pipeline.importers.csv_resource import import_csv_resources
-from pipeline.importers.bucket2_naics_codes import import_data_sources
+from pipeline.importers.bucket2.bucket2_naics_codes import import_data_sources
 from pipeline.models.general import DataSource
 from admin import settings
 

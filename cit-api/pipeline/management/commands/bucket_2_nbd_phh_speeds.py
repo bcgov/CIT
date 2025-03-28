@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 from azure.storage.blob import BlobServiceClient
 
 
-from pipeline.importers.bucket2_NBDPHHSpeeds import NBDPHHSpeedsImporter
+from pipeline.importers.bucket2.bucket2_NBDPHHSpeeds import NBDPHHSpeedsImporter
 from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.models.general import DataSource
 from admin import settings

@@ -6,7 +6,7 @@ from azure.storage.blob import BlobServiceClient
 
 
 from pipeline.importers.csv_resource import import_csv_resources
-from pipeline.importers.bucket2_small_businesses import SmallBusinessesImporter
+from pipeline.importers.bucket2.bucket2_small_businesses import SmallBusinessesImporter
 from pipeline.models.general import DataSource
 from admin import settings
 

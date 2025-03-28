@@ -4,7 +4,7 @@ from pathlib import Path
 from django.core.management.base import BaseCommand
 from azure.storage.blob import BlobServiceClient
 
-from pipeline.importers.bucket5_clinics import import_data_sources
+from pipeline.importers.bucket5.bucket5_clinics import import_data_sources
 from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.importers.databc_resource import import_databc_resources
 from pipeline.models.general import DataSource

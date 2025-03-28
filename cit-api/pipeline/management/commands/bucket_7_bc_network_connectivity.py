@@ -3,7 +3,7 @@ from pathlib import Path
 from django.core.management.base import BaseCommand
 from azure.storage.blob import BlobServiceClient
 from pipeline.importers.databc_resource import import_wms_resource
-from pipeline.importers.bucket7_bc_network_connectivity import import_data_sources
+from pipeline.importers.bucket7.bucket7_bc_network_connectivity import import_data_sources
 from pipeline.models.general import DataSource
 from admin import settings
 

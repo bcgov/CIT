@@ -5,7 +5,7 @@ from django.core.management.base import BaseCommand
 from azure.storage.blob import BlobServiceClient
 
 from pipeline.importers.databc_resource import import_databc_resources
-from pipeline.importers.bucket5_hospitals import import_data_sources
+from pipeline.importers.bucket5.bucket5_hospitals import import_data_sources
 from pipeline.models.general import DataSource
 from admin import settings
 

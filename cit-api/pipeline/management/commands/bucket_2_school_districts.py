@@ -6,7 +6,7 @@ from azure.storage.blob import BlobServiceClient
 
 
 from pipeline.importers.databc_resource import import_wms_resource
-from pipeline.importers.bucket2_school_districts import import_data_sources
+from pipeline.importers.bucket2.bucket2_school_districts import import_data_sources
 from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.models.general import DataSource
 from admin import settings

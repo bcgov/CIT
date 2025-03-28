@@ -6,7 +6,7 @@ from azure.storage.blob import BlobServiceClient
 
 from admin import settings
 
-from pipeline.importers.bucket2_csd_centroid import CSDCentroidImporter as importer
+from pipeline.importers.bucket2.bucket2_csd_centroid import CSDCentroidImporter as importer
 from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.models.general import DataSource
 

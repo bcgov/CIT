@@ -6,7 +6,7 @@ from azure.storage.blob import BlobServiceClient
 
 
 from pipeline.importers.databc_resource import import_wms_resource
-from pipeline.importers.bucket4_monthly import import_data_sources
+from pipeline.importers.bucket4.bucket4_monthly import import_data_sources
 from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.importers.shp_resource import import_shp_resources
