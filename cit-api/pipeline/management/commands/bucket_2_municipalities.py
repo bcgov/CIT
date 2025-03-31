@@ -4,7 +4,7 @@ from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.importers.bucket2.bucket2_municipalities import import_data_sources
 from pipeline.importers.shp_resource import import_shp_resources
 from pipeline.models.general import DataSource
-from pipeline.management.commands.util.blob_utils import download_static_files
+from pipeline.management.commands.util.azure_blob_utils import download_static_files
 
 
 class Command(BaseCommand):

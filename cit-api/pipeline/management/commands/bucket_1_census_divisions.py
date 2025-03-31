@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from pipeline.management.commands.util.blob_utils import download_static_files
+from pipeline.management.commands.util.azure_blob_utils import download_static_files
 from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.importers.bucket1.bucket1_census_divisions import import_data_sources
 from pipeline.models.general import DataSource

@@ -16,7 +16,7 @@ from pipeline.importers.utils import (
     calculate_regional_districts_for_communities)
 from pipeline.models.general import DataSource
 from admin import settings
-from pipeline.management.commands.util.blob_utils import download_static_files  # Adjust the import path as needed
+from pipeline.management.commands.util.azure_blob_utils import download_static_files  # Adjust the import path as needed
 
 
 class Command(BaseCommand):

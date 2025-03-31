@@ -5,7 +5,7 @@ from pipeline.importers.bucket2.bucket2_municipal_land_title_transfers import (
 )
 from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.models.general import DataSource
-from pipeline.management.commands.util.blob_utils import download_static_files
+from pipeline.management.commands.util.azure_blob_utils import download_static_files
 
 
 class Command(BaseCommand):

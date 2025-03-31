@@ -5,7 +5,7 @@ from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.importers.bucket7 import import_data_sources
 from pipeline.models.general import DataSource
-from pipeline.management.commands.util.blob_utils import download_static_files
+from pipeline.management.commands.util.azure_blob_utils import download_static_files
 
 
 class Command(BaseCommand):

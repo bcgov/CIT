@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand
 from pipeline.importers.bucket2.bucket2_businesses_by_csd import import_data_sources
 from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.models.general import DataSource
-from pipeline.management.commands.util.blob_utils import download_static_files
+from pipeline.management.commands.util.azure_blob_utils import download_static_files
 
 
 class Command(BaseCommand):

@@ -6,7 +6,7 @@ from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.importers.bucket5.bucket5_customs_ports_of_entry import import_data_sources
 from pipeline.models.general import DataSource
 from admin import settings
-from pipeline.management.commands.util.blob_utils import download_static_files
+from pipeline.management.commands.util.azure_blob_utils import download_static_files
 
 
 class Command(BaseCommand):

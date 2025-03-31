@@ -4,7 +4,7 @@ from pipeline.importers.bucket4.bucket4_semiannually import import_data_sources
 from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.importers.shp_resource import import_shp_resources
 from pipeline.models.general import DataSource
-from pipeline.management.commands.util.blob_utils import download_static_files
+from pipeline.management.commands.util.azure_blob_utils import download_static_files
 
 class Command(BaseCommand):
 
