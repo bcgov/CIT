@@ -1,11 +1,16 @@
 import datetime
 import os
+import json
 
 import dateutil.parser
 import msal
 
 from django.core.cache import cache
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseBadRequest
+
+from keycloak import KeycloakOpenID
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
 import requests
 s = requests.Session()
@@ -17,6 +22,13 @@ if "DJANGO_HTTP_PROXY" in os.environ:
 if "DJANGO_HTTPS_PROXY" in os.environ:
   s.proxies["https"] = os.environ.get("DJANGO_HTTPS_PROXY")
 
+keycloak_openid = KeycloakOpenID(
+    server_url=os.environ.get('KEY_CLOAK_URL'),
+    client_id=os.environ.get('KEY_CLOAK_CLIENT'),
+    realm_name=os.environ.get('KEY_CLOAK_REALM'),
+    client_secret_key=os.environ.get('KEYCLOAK_CLIENT_SECRET'),
+    verify=True,
+)
 
 def get_access_token(request):
     '''Returns AAD token using MSAL'''
@@ -60,3 +72,38 @@ def get_access_token(request):
 
     except Exception as ex:
         raise Exception('Error retrieving Access token\n' + str(ex))
+
+
+@csrf_exempt 
+def verify_token_view(request):
+    """
+    Django view to verify a JWT token coming via POST.
+    
+    The token is expected either in the cookies (with key "jwt_token")
+    or in the request body (as JSON or form data) with key "jwt_token".
+    """
+    # Try to get the token from cookies.
+    token = request.COOKIES.get("SMSESSION")
+    print(token)
+    print(request.COOKIES)
+    # If not in cookies, try to get it from POST data.
+    if not token:
+        if request.content_type == 'application/json':
+            try:
+                data = json.loads(request.body)
+                token = data.get("SMSESSION")
+            except json.JSONDecodeError:
+                return HttpResponseBadRequest("Invalid JSON data.")
+        else:
+            token = request.POST.get("SMSESSION")
+    
+    if not token:
+        return HttpResponseBadRequest("No JWT token provided.")
+    
+    # Verify the token.
+    token_info = verify_jwt(token)
+    
+    if token_info:
+        return JsonResponse({"valid": True, "payload": token_info})
+    else:
+        return JsonResponse({"valid": False, "error": "Invalid or expired JWT"}, status=401)

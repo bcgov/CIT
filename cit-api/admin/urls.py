@@ -54,7 +54,7 @@ swagger_patterns = [
         name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-] if settings.DEBUG else []
+] if True else []
 
 urlpatterns = [
     re_path(r"^api/pipeline/", include('pipeline.pipeline-urls')),
@@ -63,6 +63,7 @@ urlpatterns = [
     re_path(r"^api/token/", auth_tokens.get_access_token),
     re_path(r"^upload/", include(router.urls)),
     re_path(r"^api/health/fail/", fail),
+    re_path(r"^api/verify_jwt/", auth_tokens.verify_token_view),
 ]
 
 urlpatterns = urlpatterns + staticfiles_urlpatterns() + swagger_patterns
