@@ -37,8 +37,13 @@
 
 .user-story-image {
     min-height: 100vh !important;
-    width: 50vw;
     margin-right: 0;
+}
+
+@media (max-width: 576px) {
+    .user-story-image {
+        width: 50vw;
+    }
 }
 
 .x-smaller-section-container  {
