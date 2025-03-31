@@ -1,20 +1,31 @@
-Django==4.1.7
-djangorestframework==3.14.0
-djangorestframework-csv==2.1.1
-djangorestframework-gis==1.0
-django-cors-headers==3.14.0
-drf-yasg==1.21.5
-Pillow==9.4.0
-psycopg2-binary==2.9.5
-uwsgi==2.0.21
-pyyaml==6.0.1
-uritemplate==3.0.1
-requests==2.24.0
-jsonschema==3.2.0
-msal==1.5.1
-python-dateutil==2.9.0
-bcdata==0.7.1
-whitenoise==5.2.0
-python-keycloak==0.24.0
-azure-storage-blob==12.8.0
-openpyxl == 3.0.9
+# Web framework and REST API
+Django==5.0.2              # Latest stable Django release (LTS as of early 2025)
+djangorestframework==3.15.0 # Solid update, compatible with Django 5.0
+djangorestframework-csv==3.0.2  # Updated for better compatibility
+djangorestframework-gis==1.1  # Minor update, works with newer Django
+django-cors-headers==4.3.1  # Modern CORS handling
+drf-yasg==1.21.7          # Latest patch, supports Swagger/OpenAPI
+
+# Media and database
+Pillow==10.2.0            # Latest Pillow, better Apple Silicon support
+psycopg2-binary==2.9.9    # Latest binary for PostgreSQL compatibility
+
+# Server and utilities
+uwsgi==2.0.23             # Latest uWSGI release
+pyyaml==6.0.1             # Already recent, keeping it
+uritemplate==4.1.1        # Minor update for URI handling
+requests==2.31.0          # Modern requests library
+jsonschema==4.21.1        # Significant update, widely compatible
+msal==1.26.0              # Latest Microsoft Authentication Library
+python-dateutil==2.9.0    # Updated date utilities
+whitenoise==6.6.0         # Latest for static file serving
+
+# Third-party integrations
+bcdata==0.7.1             # No major updates noted, keeping as-is
+python-keycloak==3.9.0    # Big jump, aligns with modern Keycloak
+azure-storage-blob==12.19.1  # Latest Azure blob storage SDK
+openpyxl==3.1.2           # Updated for Excel file handling
+
+# Other needed to return
+setuptools==69.1.1  # A recent stable version as of Feb 2025
+GDAL==3.6.2  # Match the version from `gdalinfo --version`

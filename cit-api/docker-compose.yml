@@ -10,10 +10,3 @@ services:
       - ../.env
     ports:
       - 8000:8000
-  cit-email:
-    build:
-      context: ./
-      dockerfile: Dockerfile.email
-    image: countable/cit
-    env_file:
-      - ../.env
