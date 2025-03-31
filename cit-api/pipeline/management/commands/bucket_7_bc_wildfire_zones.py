@@ -4,7 +4,7 @@ from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.importers.bucket7.bucket7_bc_wildfire_zones import import_data_sources
 from pipeline.models.general import DataSource
 from admin import settings
-from pipeline.management.commands.util.base_bucket_7_import_command import download_static_files
+from pipeline.management.commands.util.blob_utils import download_static_files
 
 
 class Command(BaseCommand):

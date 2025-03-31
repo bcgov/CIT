@@ -1,17 +1,18 @@
-from pipeline.importers.bucket4.bucket4_monthly import import_data_sources
+from django.core.management.base import BaseCommand
 from pipeline.importers.databc_resource import import_wms_resource
+from pipeline.importers.bucket4.bucket4_monthly import import_data_sources
 from pipeline.models.general import DataSource
-from pipeline.management.commands.util.base_bucket_4_import_command import ImportBaseCommand
+from pipeline.management.commands.util.blob_utils import download_static_files
 
-
-class Command(ImportBaseCommand):
+class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        self.fetch_latest_static_files()
-        #Ensure that the data sources are updated
+        download_static_files(self.SUB_FOLDERS)
+
+        # Ensure that the data sources are updated
         print("Importing newest list of data sources.")
         import_data_sources()
-        #Ensure that the data sources are updated
+        # Ensure that the data sources are updated
         data_resources = DataSource.objects.filter(name__in=[
             'agricultural_land_reserve'
         ])

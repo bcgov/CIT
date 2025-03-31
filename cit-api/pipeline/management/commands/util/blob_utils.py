@@ -4,8 +4,8 @@ from azure.storage.blob import BlobServiceClient
 from admin import settings
 
 
-def fetch_static_files(sub_folders):
-    #If in test or prod make sure the most recent static files are fetched.
+def download_static_files(sub_folders):
+    # If in test or prod make sure the most recent static files are fetched.
     if settings.ENV_LEVEL in ['test', 'prod']:
         print("Pulling down latest static files.")
         for folder in sub_folders:
