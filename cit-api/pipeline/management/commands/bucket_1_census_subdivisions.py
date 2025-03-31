@@ -1,12 +1,16 @@
-from pipeline.management.commands.util.base_bucket_1_import_command import BaseImportCommand
+from django.core.management.base import BaseCommand
+from pipeline.management.commands.util.blob_utils import download_static_files
 from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.importers.bucket1.bucket1_census_subdivisions import import_data_sources
 from pipeline.models.general import DataSource
 
 
-class Command(BaseImportCommand):
+class Command(BaseCommand):
+    
+    SUB_FOLDERS = ['bc_assessment']
+    
     def handle(self, *args, **options):
-        self.fetch_static_files()
+        download_static_files(self.SUB_FOLDERS)
 
         #Ensure that the data sources are updated
         print("Importing newest list of data sources.")
