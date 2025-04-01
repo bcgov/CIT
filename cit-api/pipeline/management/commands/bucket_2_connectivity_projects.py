@@ -15,8 +15,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         #If in test or prod make sure the most recent static files are fetched.
+        print("settings.ENV_LEVEL ---------- ", settings.ENV_LEVEL)
         if settings.ENV_LEVEL in ['test', 'prod']:
-            print("Pulling down latest static files.")
+            print("Pulling down latest static files ****.")
+            
             for folder in self.SUB_FOLDERS:
                 folder_path = os.path.join(settings.AZURE_BLOB_STORAGE_LOCAL_PATH, folder)
                 print(folder_path)
