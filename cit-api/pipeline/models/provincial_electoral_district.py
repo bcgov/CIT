@@ -1,18 +1,13 @@
 from django.contrib.gis.db import models
-from django.contrib.gis.db.models import MultiPolygonField
-from django.contrib.gis.geos import Point
 
-from pipeline.constants import WGS84_SRID
+from .common.base_named_location import BaseNamedLocation
 
 
-class ProvincialElectoralDistrict(models.Model):
+class ProvincialElectoralDistrict(BaseNamedLocation):
     NAME_FIELD = "ED_NAME"
 
     electoral_district_id = models.IntegerField(null=True)
-    name = models.CharField(max_length=127)
     ed_abbreviation = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
 
     class Meta:
         ordering = ("id", )

@@ -1,10 +1,9 @@
 from django.contrib.gis.db import models
-from pipeline.constants import WGS84_SRID
 
-class BaseCensus(models.Model):
+from pipeline.models.common.base_geom_model import BaseGeomModel
+
+class BaseCensus(BaseGeomModel):
     census_year = models.IntegerField(null=True)
-    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     global_nonresp_sf_pct = models.FloatField(null=True)
     global_nonresp_lf_pct = models.FloatField(null=True)
     commute_total_by_mode = models.IntegerField(null=True)

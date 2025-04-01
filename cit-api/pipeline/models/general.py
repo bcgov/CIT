@@ -5,6 +5,8 @@ from pipeline.models.census.cen_prof_detailed_csd_attrs_sp import (
     CEN_PROF_DETAILED_CSD_ATTRS_SP,
 )
 from pipeline.constants import WGS84_SRID
+from pipeline.models.common.base_geom_model import BaseGeomModel
+from pipeline.models.common.base_named_location import BaseNamedLocation
 
 
 class DataSource(models.Model):
@@ -74,14 +76,11 @@ class Road(models.Model):
     best_broadband = models.CharField(max_length=5)
 
 
-class Municipality(models.Model):
+class Municipality(BaseNamedLocation):
     ID_FIELD = "LGL_ADMIN_AREA_ID"
     NAME_FIELD = "ADMIN_AREA_ABBREVIATION"
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
-    name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     oc_m_yr = models.CharField(
         max_length=4,
         help_text="The four-digit year that the most recent Order-In-Council or Ministerial Order was approved, "
@@ -117,14 +116,11 @@ class Municipality(models.Model):
     """
 
 
-class SchoolDistrict(models.Model):
+class SchoolDistrict(BaseNamedLocation):
     ID_FIELD = "ADMIN_AREA_SID"
     NAME_FIELD = "SCHOOL_DISTRICT_NAME"
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
-    name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     sd_num = models.CharField(
         max_length=5,
     )
@@ -141,14 +137,11 @@ class SchoolDistrict(models.Model):
     """
 
 
-class RegionalDistrict(models.Model):
+class RegionalDistrict(BaseNamedLocation):
     ID_FIELD = "LGL_ADMIN_AREA_ID"
     NAME_FIELD = "ADMIN_AREA_NAME"
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
-    name = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     oc_m_yr = models.CharField(
         null=True,
         max_length=4,
@@ -219,14 +212,11 @@ class LocationDistance(models.Model):
         )
 
 
-class WildfireZone(models.Model):
+class WildfireZone(BaseNamedLocation):
     NAME_FIELD = "FIRE_ZONE,LABEL"
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
-    name = models.CharField(max_length=127)
     # zone_name = models.CharField(max_length=127, null=True)
-    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     risk_class = models.CharField(
         max_length=1,
         help_text="A class value signifying the communities WUI Risk Class rating between 1 (low) and 5 "
@@ -237,26 +227,21 @@ class WildfireZone(models.Model):
         return self.name
 
 
-class BCWildfireZone(models.Model):
+class BCWildfireZone(BaseGeomModel):
     zone_id = models.IntegerField(null=True)
     centre_name = models.CharField(max_length=127, null=True)
     zone_name = models.CharField(max_length=127, null=True)
     headquarter_city_name = models.CharField(max_length=127, null=True)
-    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
 
     def __str__(self):
         return self.zone_name
 
 
-class TsunamiZone(models.Model):
+class TsunamiZone(BaseNamedLocation):
     NAME_FIELD = "TSUNAMI_NOTIFY_ZONE_ID"
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
-    name = models.CharField(max_length=127)
     tsunami_zone_name = models.CharField(max_length=127, null=True)
-    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
     zone_class = models.CharField(
         max_length=1,
         help_text="See https://www2.gov.bc.ca/gov/content/safety/emergency-preparedness-response-recovery/"
