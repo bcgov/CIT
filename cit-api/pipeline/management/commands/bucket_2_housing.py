@@ -1,15 +1,14 @@
-from django.core.management.base import BaseCommand
+from pipeline.management.commands.base.base_import_command import BaseImportCommand
 
 from pipeline.importers.bucket2.bucket2_housing import import_data_sources
 from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.models.general import DataSource
-from pipeline.management.commands.util.azure_blob_utils import download_static_files
 
 
-class Command(BaseCommand):
+class Command(BaseImportCommand):
 
     def handle(self, *args, **options):
-        download_static_files(self.SUB_FOLDERS)
+        self.download_static_files()
 
         #Ensure that the data sources are updated
         print("Importing newest list of data sources.")

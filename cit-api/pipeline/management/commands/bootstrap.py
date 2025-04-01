@@ -1,9 +1,4 @@
-import os
-
-from pathlib import Path
-from django.core.management.base import BaseCommand
-from azure.storage.blob import BlobServiceClient
-
+from pipeline.management.commands.base.base_import_command import BaseImportCommand
 from pipeline.importers.csv_resource import import_csv_resources
 from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.importers.data_sources import import_data_sources
@@ -15,15 +10,13 @@ from pipeline.importers.utils import (
     calculate_nearest_location_types_outside_50k, calculate_communities_for_schools,
     calculate_regional_districts_for_communities)
 from pipeline.models.general import DataSource
-from admin import settings
-from pipeline.management.commands.util.azure_blob_utils import download_static_files  # Adjust the import path as needed
 
 
-class Command(BaseCommand):
+class Command(BaseImportCommand):
     SUB_FOLDERS = ['bc_assessment']
 
     def handle(self, *args, **options):
-        download_static_files(self.SUB_FOLDERS)
+        self.download_static_files()
 
         #Ensure that the data sources are updated
         print("Importing newest list of data sources.")
