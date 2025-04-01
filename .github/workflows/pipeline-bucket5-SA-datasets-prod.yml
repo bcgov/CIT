@@ -18,15 +18,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_airports' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_airports' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
       - name: check Container Status
@@ -48,15 +48,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_civic_facilities' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_civic_facilities' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
       - name: check Container Status
@@ -78,15 +78,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_clinics' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_clinics' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
       - name: check Container Status
@@ -108,15 +108,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_customs_ports_of_entry' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_customs_ports_of_entry' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
       - name: check Container Status
@@ -138,15 +138,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_diagnostic_facilities' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_diagnostic_facilities' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
       - name: check Container Status
@@ -168,15 +168,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_emergency_social_service_facilities' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_emergency_social_service_facilities' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
       - name: check Container Status
@@ -198,15 +198,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_hospitals' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_hospitals' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
 
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
@@ -230,15 +230,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_laboratory_service' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_laboratory_service' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
           
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
@@ -263,15 +263,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_local_govt_offices' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_local_govt_offices' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
         
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
@@ -295,15 +295,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_pharmacies' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_pharmacies' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
           
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
@@ -327,15 +327,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_port_and_terminal' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_port_and_terminal' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
           
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
@@ -358,15 +358,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_public_library' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_public_library' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
           
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
@@ -389,15 +389,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_schools' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_schools' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
             
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
@@ -420,15 +420,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_servicebc_locations' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_servicebc_locations' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
           
       # docker-compose will return 0 even if python container returns non-zero or crashes
       # ensure job fails if python container returns non-zero code or crashes
@@ -451,15 +451,15 @@ jobs:
         
       - name: "Generate env file"
         run: |
-            echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
-            echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
-            echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
-            echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
-            echo 'BUCKET_COMMAND = bucket_5_timber_facilities' >> .env
+          echo 'POSTGRES_DB = ${{ secrets.POSTGRES_DB_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_USER = ${{ secrets.POSTGRES_DJANGO_USER_PROD }}' >> .env 
+          echo 'POSTGRES_DJANGO_PASSWORD = ${{ secrets.POSTGRES_DJANGO_PASSWORD_PROD }}' >> .env 
+          echo 'POSTGRES_HOST = ${{ secrets.POSTGRES_HOST_PROD }}' >> .env
+          echo 'ROUTE_PLANNER_API_KEY = ${{ secrets.ROUTE_PLANNER_API_KEY }}' >> .env 
+          echo 'BUCKET_COMMAND = bucket_5_timber_facilities' >> .env
 
       - name: Start containers
-        run: docker-compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
+        run: docker compose -f cit-api/docker-compose.yml up --build cit-api-pipeline
 
                   
       # docker-compose will return 0 even if python container returns non-zero or crashes
