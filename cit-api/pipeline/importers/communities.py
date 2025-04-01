@@ -6,7 +6,7 @@ from django.contrib.gis.measure import D
 
 from pipeline.models.community import Community
 from pipeline.models.general import WildfireZone, TsunamiZone, Road, Municipality
-from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
+from pipeline.models.census.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 
 from pipeline.constants import WGS84_SRID
 

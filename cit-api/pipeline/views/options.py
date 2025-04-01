@@ -10,10 +10,10 @@ from pipeline.models.property_status import PropertyStatus
 from pipeline.models.land_use_zoning import LandUseZoning
 from pipeline.models.general import RegionalDistrict
 from pipeline.models.tourism_region import TourismRegion
-from pipeline.models.census_economic_region import CensusEconomicRegion
+from pipeline.models.census.census_economic_region import CensusEconomicRegion
 from pipeline.models.community import Community
 from pipeline.models.natural_resource_region import NaturalResourceRegion
-from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
+from pipeline.models.census.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.models.general import BCWildfireZone
 from pipeline.models.general import TsunamiZone
 from pipeline.models.general import SchoolDistrict

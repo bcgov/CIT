@@ -1,8 +1,4 @@
 from django.contrib.gis.db import models
-from django.contrib.gis.db.models import MultiPolygonField
-from django.contrib.gis.geos import Point
-
-from pipeline.utils import get_quarterly_date_str_as_date
 from pipeline.constants import WGS84_SRID
 
 

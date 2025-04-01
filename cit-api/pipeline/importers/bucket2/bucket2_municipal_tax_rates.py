@@ -11,7 +11,8 @@ TOTAL_EXAMINED_INDEX = 1
 TOTAL_NEEDED_HEADER = "Households in core housing need status"
 TOTAL_NEEDED_INDEX = 2
 
-CSD_REGEX = "\(([0-9]+)\)"
+CSD_REGEX = r"\(([0-9]+)\)"
+
 
 
 class MunicipalTaxRatesImporter(BaseImporter):

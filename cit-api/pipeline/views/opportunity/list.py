@@ -1,6 +1,6 @@
 from django.contrib.gis.measure import D
 from django.db.models import Q
-from pipeline.models.cen_prof_detailed_csd_attrs_sp import (
+from pipeline.models.census.cen_prof_detailed_csd_attrs_sp import (
     CEN_PROF_DETAILED_CSD_ATTRS_SP,
 )
 from pipeline.models.community import Community
