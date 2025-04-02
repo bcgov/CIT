@@ -8,11 +8,11 @@ class BaseImportCommand(BaseCommand):
     
     SUB_FOLDERS = []
     
-    def download_static_files(sub_folders):
+    def download_static_files(self):
         # If in test or prod make sure the most recent static files are fetched.
         if settings.ENV_LEVEL in ['test', 'prod']:
             print("Pulling down latest static files.")
-            for folder in sub_folders:
+            for folder in self.SUB_FOLDERS:
                 folder_path = os.path.join(settings.AZURE_BLOB_STORAGE_LOCAL_PATH, folder)
                 print(folder_path)
                 Path(folder_path).mkdir(parents=True, exist_ok=True)
