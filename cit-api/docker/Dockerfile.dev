@@ -12,4 +12,4 @@ COPY . .
 RUN rm data/import/datafiles/*
 RUN python3 manage.py collectstatic --noinput
 
-CMD ./entrypoint.sh
+CMD ["./docker/entrypoint.sh"]

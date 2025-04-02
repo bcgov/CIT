@@ -4,7 +4,7 @@ services:
   cit-api-pipeline:
     build:
       context: ./
-      dockerfile: Dockerfile.pipeline
+      dockerfile: docker/Dockerfile.pipeline
     image: countable/cit
     env_file:
       - ../.env

@@ -28,4 +28,4 @@ RUN rm -rf data/import/datafiles/*
 RUN python manage.py collectstatic --noinput
 
 # Default command
-CMD ["./entrypoint.prod.sh"]
+CMD ["./docker/entrypoint.prod.sh"]

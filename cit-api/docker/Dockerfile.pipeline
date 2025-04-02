@@ -20,4 +20,4 @@ COPY . .
 RUN mv data/import/datafiles/* /code/data
 RUN python manage.py collectstatic --noinput
 
-CMD /bin/sh ./entrypoint.pipeline.sh
+CMD ["sh", "./docker/entrypoint.pipeline.sh"]
