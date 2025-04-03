@@ -1,9 +1,9 @@
 from django.contrib.gis.db import models
 
-from .common.base_named_location import BaseNamedLocation
+from .common.base_named_polygon import BaseNamedPolygon
 
 
-class NaturalResourceRegion(BaseNamedLocation):
+class NaturalResourceRegion(BaseNamedPolygon):
     NAME_FIELD = "REGION_NAME"
 
     org_unit = models.CharField(max_length=127)

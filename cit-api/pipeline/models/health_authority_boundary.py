@@ -1,9 +1,9 @@
 from django.contrib.gis.db import models
 
-from .common.base_named_location import BaseNamedLocation
+from .common.base_named_polygon import BaseNamedPolygon
 
 
-class HealthAuthorityBoundary(BaseNamedLocation):
+class HealthAuthorityBoundary(BaseNamedPolygon):
     NAME_FIELD = "HLTH_AUTHORITY_NAME"
 
     hlth_authority_id = models.CharField(max_length=32)

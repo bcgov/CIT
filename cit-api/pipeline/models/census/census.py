@@ -1,8 +1,8 @@
 from django.contrib.gis.db import models
 
-from pipeline.models.common.base_geom_model import BaseGeomModel
+from pipeline.models.common.base_polygon_geom import BasePolygonGeom
 
-class BaseCensus(BaseGeomModel):
+class BaseCensus(BasePolygonGeom):
     census_year = models.IntegerField(null=True)
     global_nonresp_sf_pct = models.FloatField(null=True)
     global_nonresp_lf_pct = models.FloatField(null=True)

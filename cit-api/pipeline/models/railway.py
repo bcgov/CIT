@@ -1,11 +1,10 @@
 from django.contrib.gis.db import models
-from django.contrib.gis.db.models import MultiLineStringField
-from django.contrib.gis.geos import Point
+from pipeline.models.common.base_named_line import BaseNamedLine
 
 from pipeline.constants import WGS84_SRID
 
 
-class Railway(models.Model):
+class Railway(BaseNamedLine):
     ID_FIELD = 'RAILWAY_TRACK_ID'
     NAME_FIELD = 'TRACK_NAME'
 
@@ -15,9 +14,6 @@ class Railway(models.Model):
     number_of_tracks = models.IntegerField(null=True)
     electrification = models.CharField(max_length=32)
     status = models.CharField(max_length=32)
-    name = models.CharField(max_length=127)
-    geom = models.MultiLineStringField(srid=WGS84_SRID, null=True)
-    geom_simplified = models.MultiLineStringField(srid=WGS84_SRID, null=True)
     operator_english_name = models.CharField(max_length=64)
     owner_name = models.CharField(max_length=32)
 

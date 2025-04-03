@@ -1,9 +1,9 @@
 from django.contrib.gis.db import models
 
-from .common.base_named_location import BaseNamedLocation
+from .common.base_named_polygon import BaseNamedPolygon
 
 
-class IndianReserveBandName(BaseNamedLocation):
+class IndianReserveBandName(BaseNamedPolygon):
     ID_FIELD = 'CLAB_ID'
     NAME_FIELD = 'BAND_NAME'
 

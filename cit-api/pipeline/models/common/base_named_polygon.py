@@ -1,8 +1,8 @@
 from django.contrib.gis.db import models
 
-from .base_geom_model import BaseGeomModel
+from .base_polygon_geom import BasePolygonGeom
 
-class BaseNamedLocation(BaseGeomModel):
+class BaseNamedPolygon(BasePolygonGeom):
     name = models.CharField(max_length=127)
 
     class Meta:

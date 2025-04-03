@@ -1,9 +1,9 @@
 from django.contrib.gis.db import models
 
-from .common.base_named_location import BaseNamedLocation
+from .common.base_named_polygon import BaseNamedPolygon
 
 
-class ProvincialElectoralDistrict(BaseNamedLocation):
+class ProvincialElectoralDistrict(BaseNamedPolygon):
     NAME_FIELD = "ED_NAME"
 
     electoral_district_id = models.IntegerField(null=True)

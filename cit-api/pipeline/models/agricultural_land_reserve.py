@@ -1,9 +1,9 @@
 from django.contrib.gis.db import models
 
-from .common.base_named_location import BaseNamedLocation
+from .common.base_named_polygon import BaseNamedPolygon
 
 
-class AgriculturalLandReserve(BaseNamedLocation):
+class AgriculturalLandReserve(BaseNamedPolygon):
     NAME_FIELD = "ALR_POLY_ID"
 
     feature_area_sqm = models.BigIntegerField(null=True)

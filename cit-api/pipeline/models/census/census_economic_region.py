@@ -1,8 +1,8 @@
 from django.contrib.gis.db import models
 
-from pipeline.models.common.base_named_location import BaseNamedLocation
+from pipeline.models.common.base_named_polygon import BaseNamedPolygon
 
-class CensusEconomicRegion(BaseNamedLocation):
+class CensusEconomicRegion(BaseNamedPolygon):
     NAME_FIELD = "ECONOMIC_REGION_NAME"
 
     census_year = models.CharField(max_length=32)

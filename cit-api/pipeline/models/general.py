@@ -5,8 +5,8 @@ from pipeline.models.census.cen_prof_detailed_csd_attrs_sp import (
     CEN_PROF_DETAILED_CSD_ATTRS_SP,
 )
 from pipeline.constants import WGS84_SRID
-from pipeline.models.common.base_geom_model import BaseGeomModel
-from pipeline.models.common.base_named_location import BaseNamedLocation
+from pipeline.models.common.base_polygon_geom import BasePolygonGeom
+from pipeline.models.common.base_named_polygon import BaseNamedPolygon
 
 
 class DataSource(models.Model):
@@ -76,7 +76,7 @@ class Road(models.Model):
     best_broadband = models.CharField(max_length=5)
 
 
-class Municipality(BaseNamedLocation):
+class Municipality(BaseNamedPolygon):
     ID_FIELD = "LGL_ADMIN_AREA_ID"
     NAME_FIELD = "ADMIN_AREA_ABBREVIATION"
 
@@ -116,7 +116,7 @@ class Municipality(BaseNamedLocation):
     """
 
 
-class SchoolDistrict(BaseNamedLocation):
+class SchoolDistrict(BaseNamedPolygon):
     ID_FIELD = "ADMIN_AREA_SID"
     NAME_FIELD = "SCHOOL_DISTRICT_NAME"
 
@@ -137,7 +137,7 @@ class SchoolDistrict(BaseNamedLocation):
     """
 
 
-class RegionalDistrict(BaseNamedLocation):
+class RegionalDistrict(BaseNamedPolygon):
     ID_FIELD = "LGL_ADMIN_AREA_ID"
     NAME_FIELD = "ADMIN_AREA_NAME"
 
@@ -212,7 +212,7 @@ class LocationDistance(models.Model):
         )
 
 
-class WildfireZone(BaseNamedLocation):
+class WildfireZone(BaseNamedPolygon):
     NAME_FIELD = "FIRE_ZONE,LABEL"
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
@@ -227,7 +227,7 @@ class WildfireZone(BaseNamedLocation):
         return self.name
 
 
-class BCWildfireZone(BaseGeomModel):
+class BCWildfireZone(BasePolygonGeom):
     zone_id = models.IntegerField(null=True)
     centre_name = models.CharField(max_length=127, null=True)
     zone_name = models.CharField(max_length=127, null=True)
@@ -237,7 +237,7 @@ class BCWildfireZone(BaseGeomModel):
         return self.zone_name
 
 
-class TsunamiZone(BaseNamedLocation):
+class TsunamiZone(BaseNamedPolygon):
     NAME_FIELD = "TSUNAMI_NOTIFY_ZONE_ID"
 
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
