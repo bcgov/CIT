@@ -170,24 +170,28 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
         )
 
     elif resource_type == "BC Network Connectivity":
-        instance, created = Model.objects.get_or_create(
-            bcnc_ncs_sysid=row["BCNC_NCS_SYSID"],
+        data_default = {
+            "bcnc_ncs_sysid" : row["BCNC_NCS_SYSID"],
+            "population": row["POPULATION"],
+            "total_dwellings": row["TOTAL_DWELLINGS"],
+            "usual_residences": row["USUAL_RESIDENCES"],
+            "td_underserved_50mpbs": row["TD_UNDERSERVED_50MBPS"],
+            "internet_zone": row["INTERNET_ZONE"],
+            "mobile_wireless_coverage": row["MOBILE_WIRELESS_COVERAGE"],
+            "percent_served_5_mbps": row["PERCENT_SERVED_5_MBPS"],
+            "percent_served_50_mbps": row["PERCENT_SERVED_50_MBPS"],
+            "cable_providers": row["CABLE_PROVIDERS"],
+            "fibre_providers": row["FIBRE_PROVIDERS"],
+            "dsl_providers": row["DSL_PROVIDERS"],
+            "fixed_wireless_providers": row["FIXED_WIRELESS_PROVIDERS"],
+            "satellite_providers": row["SATELLITE_PROVIDERS"],
+            "mobile_wireless_providers": row["MOBILE_WIRELESS_PROVIDERS"],
+            "transport_fibre_providers": row["TRANSPORT_FIBRE_PROVIDERS"],    
+        }
+        instance, created = Model.objects.update_or_create(
             hex_code_id=row["HEX_CODE_ID"],
-            population=row["POPULATION"],
-            total_dwellings=row["TOTAL_DWELLINGS"],
-            usual_residences=row["USUAL_RESIDENCES"],
-            td_underserved_50mpbs=row["TD_UNDERSERVED_50MBPS"],
-            internet_zone=row["INTERNET_ZONE"],
-            mobile_wireless_coverage=row["MOBILE_WIRELESS_COVERAGE"],
-            percent_served_5_mbps=row["PERCENT_SERVED_5_MBPS"],
-            percent_served_50_mbps=row["PERCENT_SERVED_50_MBPS"],
-            cable_providers=row["CABLE_PROVIDERS"],
-            fibre_providers=row["FIBRE_PROVIDERS"],
-            dsl_providers=row["DSL_PROVIDERS"],
-            fixed_wireless_providers=row["FIXED_WIRELESS_PROVIDERS"],
-            satellite_providers=row["SATELLITE_PROVIDERS"],
-            mobile_wireless_providers=row["MOBILE_WIRELESS_PROVIDERS"],
-            transport_fibre_providers=row["TRANSPORT_FIBRE_PROVIDERS"],
+            defaults=data_default,
+            create_defaults=data_default
         )
 
     else:
