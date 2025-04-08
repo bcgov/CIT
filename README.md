@@ -96,14 +96,14 @@ yarn lint:fix
 To run the Django unit tests for the api use the following command from within the cit-api directory:
 
 ```
-python3 runtests.py
+python3 tests/runtests.py
 ```
 
 or to run them in the cit-api docker container:
 
 ```
 docker exec -it cit_cit-api_1 bash
-python3 runtests.py
+python3 tests/runtests.py
 ```
 
 to target and run only specific tests you can use:

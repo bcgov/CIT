@@ -1,9 +1,9 @@
 from django.contrib.gis.db import models
 from pipeline.models.general import (RegionalDistrict, SchoolDistrict, WildfireZone, TsunamiZone, )
-from pipeline.models.census_economic_region import CensusEconomicRegion
+from pipeline.models.census.census_economic_region import CensusEconomicRegion
 from pipeline.models.health_authority_boundary import HealthAuthorityBoundary 
 from pipeline.models.tourism_region import TourismRegion
-from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
+from pipeline.models.census.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.models.natural_resource_region import NaturalResourceRegion
 
 class LinkageWithCensus(models.Model):

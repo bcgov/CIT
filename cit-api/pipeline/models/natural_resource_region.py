@@ -1,17 +1,12 @@
 from django.contrib.gis.db import models
-from django.contrib.gis.db.models import MultiPolygonField
-from django.contrib.gis.geos import Point
 
-from pipeline.constants import WGS84_SRID
+from .common.base_named_polygon import BaseNamedPolygon
 
 
-class NaturalResourceRegion(models.Model):
+class NaturalResourceRegion(BaseNamedPolygon):
     NAME_FIELD = "REGION_NAME"
 
-    name = models.CharField(max_length=127)
     org_unit = models.CharField(max_length=127)
-    geom = models.MultiPolygonField(srid=WGS84_SRID, null=True)
-    geom_simplified = models.MultiPolygonField(srid=WGS84_SRID, null=True)
 
     class Meta:
         ordering = ("id", )

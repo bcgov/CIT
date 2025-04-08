@@ -80,7 +80,7 @@ def serialize_community_detail_fields(obj):
 
 
 def serialize_regional_district_fields(regional_district):
-    from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
+    from pipeline.models.census.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 
     census_subdivisions = CEN_PROF_DETAILED_CSD_ATTRS_SP.objects.filter(
         community__regional_district=regional_district)

@@ -33,11 +33,11 @@ from pipeline.constants import WGS84_SRID
 from pipeline.models import LinkageWithCensus
 from pipeline.models.tourism_region import TourismRegion
 from pipeline.models.community import Community
-from pipeline.models.business_by_census_subdivions import BusinessesByCSD
-from pipeline.models.cen_prof_detailed_csd_attrs_sp import (
+from pipeline.models.census.business_by_census_subdivions import BusinessesByCSD
+from pipeline.models.census.cen_prof_detailed_csd_attrs_sp import (
     CEN_PROF_DETAILED_CSD_ATTRS_SP,
 )
-from pipeline.models.census_economic_region import CensusEconomicRegion
+from pipeline.models.census.census_economic_region import CensusEconomicRegion
 from pipeline.models.general import (
     DataSource,
     LocationDistance,
@@ -47,8 +47,8 @@ from pipeline.models.general import (
     RegionalDistrict,
 )
 from pipeline.models.location_assets import School, Hospital
-from pipeline.models.census_division_2016 import *
-from pipeline.models.census_subdivision_2016 import *
+from pipeline.models.census.census_division_2016 import *
+from pipeline.models.census.census_subdivision_2016 import *
 from pipeline.constants import LOCATION_TYPES
 
 from requests.adapters import HTTPAdapter

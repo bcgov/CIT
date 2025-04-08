@@ -4,7 +4,7 @@ from django.contrib.gis.geos import Point
 
 from pipeline.constants import WGS84_SRID
 
-from .cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
+from .census.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 
 
 class CSDCoreHousingNeed(models.Model):

@@ -1,7 +1,7 @@
 from django.contrib.gis.db import models
 
 from pipeline.utils import serialize_regional_district_fields
-from pipeline.models.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
+from pipeline.models.census.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
 from pipeline.constants import WGS84_SRID
 
 class ConnectivityInfrastructureProjects(models.Model):
