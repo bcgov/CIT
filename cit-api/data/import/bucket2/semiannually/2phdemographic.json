@@ -5,7 +5,7 @@
     "model_name": "phdemographicdistribution",
     "source": "statscan",
     "source_type": "csv",
-    "source_file_path": "data/dbuid_csduid.csv",
+    "source_file_path": "data/import/datafiles/dbuid_csduid.csv",
     "resource_id": "",
     "sub_resource_id": "",
     "external_url": "https://ised-isde.canada.ca/app/scr/sittibc/web/api/openData/PHH_2021_CSV.zip",
