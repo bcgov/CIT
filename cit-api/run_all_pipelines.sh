@@ -47,7 +47,7 @@ commands=(
     "python3 manage.py bucket_2_tourism_region"
     "python3 manage.py bucket_2_tsunami_zones"
     "python3 manage.py bucket_2_wildfire_zones"
-    # "python3 manage.py bucket_3"
+    "python3 manage.py bucket_3"
     "python3 manage.py bucket_4_monthly"
     "python3 manage.py bucket_4_semiannually"
     "python3 manage.py bucket_5_airports"
@@ -64,7 +64,8 @@ commands=(
     "python3 manage.py bucket_5_port_and_terminal"
     "python3 manage.py bucket_5_public_library"
     "python3 manage.py bucket_5_schools"
-    "python3 manage.py bucket_5_semiannually"
+    # below runs all bucket_5 commands
+    # "python3 manage.py bucket_5_semiannually"
     "python3 manage.py bucket_5_servicebc_locations"
     "python3 manage.py bucket_5_timber_facilities"
     "python3 manage.py bucket_7_bc_network_connectivity"
