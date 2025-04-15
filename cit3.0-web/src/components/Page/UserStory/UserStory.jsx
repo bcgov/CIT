@@ -110,10 +110,11 @@ export default function UserStory() {
     });
     // snow plow end
 
-    if (urlPath && !urlPath.includes("powerbi")) {
-      window.location.href = encodeURI(`${Config.ciotUrl}/${urlPath}`);
-      return;
-    }
+    // CIOT URL
+    // if (urlPath && !urlPath.includes("powerbi")) {
+    //   window.location.href = encodeURI(`${Config.ciotUrl}/${urlPath}`);
+    //   return;
+    // }
 
     setPowerBiReport(urlPath);
     setIsLongVersion(false);
