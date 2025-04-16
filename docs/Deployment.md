@@ -1,14 +1,13 @@
-# Deployment Steps for CIT/CIOT
+# Deployment Steps for CIT
 
-The intention of this document is to provide steps for deployment of the CIT/CIOT.
+The intention of this document is to provide steps for deployment of the CIT.
 
 ## Good to Know
 
 - The CIT Dev environment is not currently working, the test environment has been configured to use the image tagged with `develop`.
 - The CIT workflow is named **"Frontend Build and Push (Test)"**, but it tags and builds the image as `develop`. Nevertheless, with the change above, it is actually pushing to test.
-- The build process for the CIT and the CIOT will not succeed if there are any linting errors.
+- The build process for the CIT will not succeed if there are any linting errors.
 - **CIT actions:** [CIT Actions Workflow](https://github.com/bcgov/CIT/actions/workflows/deploy-dev-web.yml)
-- **CIOT actions:** [CIOT Actions Workflow](https://github.com/bcgov/CIOT/actions/workflows/deploy-dev-web.yml)
 - The apps are deployed with NGINX and have no health checks, so they might require a hard refresh for you to see the changes.
   - Nevertheless, the NGINX headers have been changed on the `banner` branch. Feel free to use it as a reference and change it in your own branch for users to be able to see the changes immediately.
 
@@ -16,7 +15,7 @@ The intention of this document is to provide steps for deployment of the CIT/CIO
 
 ## Instructions
 
-The following outlines the instructions to deploy to the CIT or the CIOT:
+The following outlines the instructions to deploy to the CIT:
 
 1. Create a branch for the change that you need to do, and commit and push your changes.
 2. Depending on the application, visit the action page as per the links above.
@@ -26,10 +25,6 @@ The following outlines the instructions to deploy to the CIT or the CIOT:
    - **For the CIT:**
      ```bash
      oc -n [CIT-NAMESPACE]-tools tag cit-frontend:develop cit-frontend:[ENV] (prod)
-     ```
-   - **For the CIOT:**
-     ```bash
-     oc -n [CIOT-NAMESPACE]-tools tag ciot-web:develop ciot-web:[ENV] (prod or test)
      ```
 6. Wait for the deployment to complete.
 

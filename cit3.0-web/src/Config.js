@@ -1,6 +1,5 @@
 const Config = {
   apiUrl: window.env.apiUrl,
-  ciotUrl: window.env.ciotUrl,
   keycloakConfig: {
     url: window.env.keycloakUrl,
     realm: window.env.keycloakRealm,

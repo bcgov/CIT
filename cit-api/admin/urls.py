@@ -59,7 +59,6 @@ swagger_patterns = [
 urlpatterns = [
     re_path(r"^api/pipeline/", include('pipeline.urls.pipeline-urls')),
     re_path(r"^api/opportunity/", include('pipeline.urls.opportunity-urls')),
-    re_path(r"^api/email/", include('pipeline.urls.email-urls')),
     re_path(r"^api/token/", auth_tokens.get_access_token),
     re_path(r"^upload/", include(router.urls)),
     re_path(r"^api/health/fail/", fail),

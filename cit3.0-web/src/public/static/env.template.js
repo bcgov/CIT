@@ -2,7 +2,6 @@
   window.env = window.env || {};
   // Environment variables
   window.env.apiUrl = "${VITE_API_BASE_URL}";
-  window.env.ciotUrl = "${VITE_CIOT_API_BASE_URL}";
   window.env.keycloakUrl = "${VITE_KEYCLOAK_URL}";
   window.env.keycloakRealm = "${VITE_KEYCLOAK_REALM}";
   window.env.keycloakClient = "${VITE_KEYCLOAK_CLIENT}";
