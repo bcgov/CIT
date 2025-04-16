@@ -6,8 +6,6 @@ const Config = {
     clientId: window.env.keycloakClient,
   },
   snowplowUrl: window.env.snowplowUrl,
-  geocoderKey: window.env.geocoderKey,
-  routePlannerKey: window.env.routePlannerKey,
   pbiReportIdPublic: window.env.pbiReportIdPublic,
   pbiReportIdInternal: window.env.pbiReportIdInternal,
   pbiReportIdCompare: window.env.pbiReportIdCompare,
