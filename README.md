@@ -1,12 +1,6 @@
 [![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)]()
 # B.C. Community Information Hub
 
-This repo contains the B.C. Community Investment Opportunity Tool and the Community Information Dashboard.
-
-## B.C. Community Investment Opportunity Tool
-
-  The [Community Investment Opportunity Tool&#128279;](https://communityinformationtool.gov.bc.ca/investmentopportunities/home) is a place where Economic Development Officers (EDO) can go to post possible investment opportunities for their respective communities. This tool includes a user authenticated portion where EDO's can go to see their currently posted investment opportunities as well as post new ones. It also includes a public facing view where possible investors can go to see all the currently available opportunities in the province or narrow down the opportunities on a set of filterable criteria.
-
 ## B.C. Community Information Dashboard
 
 The [Community Information Dashboard&#128279;](https://communityinformationtool.gov.bc.ca/cit-dashboard/home) is a dashboard for authenticated users and the public to get insight and statistics on communities around the province. The tool provides multiple ways for the information to be viewed including: Filtering by amenities and services, Regional district or municipality, and community type. The authenticated view allows Ministry employees greater access and control over the data for reports this includes restricted and sensitive data.
