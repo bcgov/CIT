@@ -22,7 +22,7 @@ test("header renders correctly", () => {
   useKeycloak.mockReturnValue({ keycloak: { authenticated: false } });
   render(
     <Provider store={store}>
-      <Router history={history}>
+      <Router location={history.location} navigator={history}>
         <Header />
       </Router>
     </Provider>
