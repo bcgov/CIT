@@ -1,0 +1,89 @@
+# Tests that rely on the committed code, without needing the docker images to be built
+name: run-tests
+
+on:
+  workflow_call:
+
+concurrency:
+  group: run-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  vitest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: ./cit3.0-web
+      - name: Run vitest with coverage
+        run: yarn coverage
+        working-directory: ./cit3.0-web
+      - name: SonarCloud Scan (frontend)
+        uses: SonarSource/sonarqube-scan-action@v5.1.0
+        with:
+          projectBaseDir: ./cit3.0-web
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        working-directory: ./cit-api
+      - name: Run Python tests with coverage
+        run: |
+          pip install coverage
+          coverage run --source=./ --omit=*/migrations/*,*/tests/*,*/__init__.py -m unittest discover
+          coverage xml -o coverage.xml
+        working-directory: ./cit-api
+      - name: SonarCloud Scan (api)
+        uses: SonarSource/sonarqube-scan-action@v5.1.0
+        with:
+          projectBaseDir: ./cit-api
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: dev env setup
+        uses: ./.github/actions/dev-env-setup
+      - run: yarn run eslint -f @microsoft/eslint-formatter-sarif -o results.sarif . || true
+        working-directory: ./app
+      - name: Remove entries with suppressions from SARIF
+        run: |
+          node - <<EOF
+          const fs = require('fs');
+
+          // Read the SARIF file
+          const sarifData = fs.readFileSync('results.sarif', 'utf8');
+          const sarifJson = JSON.parse(sarifData);
+
+          // Remove entries with suppressions
+          sarifJson.runs.forEach(run => {
+            run.results = run.results.filter(result => !result.suppressions || result.suppressions?.length === 0);
+          });
+
+          // Write the modified SARIF file
+          fs.writeFileSync('results.sarif', JSON.stringify(sarifJson, null, 2));
+          EOF
+        working-directory: ./app
+      - uses: github/codeql-action/upload-sarif@429e1977040da7a23b6822b13c129cd1ba93dbb2
+        with:
+          sarif_file: app/results.sarif
