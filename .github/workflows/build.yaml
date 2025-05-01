@@ -58,7 +58,7 @@ jobs:
           context: ${{ matrix.context }}
           # builder: ${{ steps.buildx.outputs.name }}
           push: true
-          file: ${{ matrix.dockerfile }}
+          file: ${{ matrix.context }}${{ matrix.dockerfile }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           secrets: |
