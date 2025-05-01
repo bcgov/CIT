@@ -1,6 +1,9 @@
 # This workflow contains zap scanning
 name: zap-scan
 
+permissions:
+  contents: read
+
 on:
   workflow_call:
 
