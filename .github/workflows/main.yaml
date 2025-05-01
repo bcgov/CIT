@@ -12,6 +12,9 @@ jobs:
   build:
     uses: ./.github/workflows/build.yaml
 
+  run-tests:
+    uses: ./.github/workflows/run-tests.yaml
+
   scan-images:
     needs: [build]
     uses: ./.github/workflows/scan-images.yaml
