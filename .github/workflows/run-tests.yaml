@@ -8,6 +8,10 @@ concurrency:
   group: run-tests-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 jobs:
   vitest:
     runs-on: ubuntu-latest
