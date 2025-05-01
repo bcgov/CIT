@@ -49,7 +49,8 @@
     "test": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "coverage": "vitest run --coverage --silent"
+    "coverage": "vitest run --coverage --silent",
+    "coverage:report": "vitest run --coverage.enabled --coverage.provider=v8 --coverage.reportOnFailure --bail=0"
   },
   "eslintConfig": {
     "extends": [

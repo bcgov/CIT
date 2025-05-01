@@ -23,7 +23,7 @@ jobs:
         run: yarn install --frozen-lockfile
         working-directory: ./cit3.0-web
       - name: Run vitest with coverage
-        run: yarn coverage || true
+        run: yarn coverage:report || true
         working-directory: ./cit3.0-web
       - name: Upload frontend coverage
         uses: actions/upload-artifact@v4
