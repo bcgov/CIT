@@ -24,7 +24,7 @@ jobs:
             name: frontend
           - image: ghcr.io/bcgov/cit/cit-api
             context: ./cit-api/
-            dockerfile: ./docker/Dockerfile
+            dockerfile: docker/Dockerfile
             name: api
     permissions:
       contents: read
