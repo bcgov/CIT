@@ -1,0 +1,22 @@
+name: "Local CCBC app run"
+description: "Runs the CCBC app locally"
+runs:
+  using: composite
+  steps:
+    - name: start postgres and create database
+      shell: bash
+      env:
+        PGPASSWORD: mysecretpassword
+      run: |
+        docker run --rm -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres:15
+        # Wait for PostgreSQL to be ready
+        until docker exec $(docker ps -q -f ancestor=postgres:15) pg_isready -U postgres; do
+          echo "Waiting for PostgreSQL to be ready..."
+          sleep 2
+        done
+    - name: start frontend
+      shell: bash
+      run: docker run -d --network=host -e "VITE_API_BASE_URL=http://localhost:8000/" -e "VITE_KEYCLOAK_URL=https://dev.loginproxy.gov.bc.ca/auth/" -e "VITE_KEYCLOAK_REALM=standard" -e "VITE_KEYCLOAK_CLIENT=community-information-tool-4411" -p 8080:8080 ghcr.io/bcgov/cit/cit-frontend:sha-${{ github.sha }}
+    - name: start api
+      shell: bash
+      run: docker run -d --network=host -e "POSTGRES_DJANGO_USER=postgres" -e "PGPASSPOSTGRES_DJANGO_PASSWORD=mysecretpassword" -e "POSTGRES_HOST=localhost" -p 8000:8000 ghcr.io/bcgov/cit/cit-api:sha-${{ github.sha }}

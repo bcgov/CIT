@@ -15,3 +15,7 @@ jobs:
   scan-images:
     needs: [build]
     uses: ./.github/workflows/scan-images.yaml
+
+  zap-scan:
+    needs: [build]
+    uses: ./.github/workflows/zap-scan.yaml
