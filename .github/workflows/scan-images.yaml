@@ -1,6 +1,10 @@
 # This workflow contains all static image scanning
 name: scan-images
 
+permissions:
+  contents: read
+  security-events: write
+
 on:
   workflow_call:
 
