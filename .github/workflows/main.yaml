@@ -14,6 +14,7 @@ jobs:
 
   run-tests:
     uses: ./.github/workflows/run-tests.yaml
+    secrets: inherit
 
   scan-images:
     needs: [build]
