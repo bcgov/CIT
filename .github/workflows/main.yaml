@@ -1,6 +1,9 @@
 # Main workflow, orchestrating and triggering other workflows
 name: main
 
+permissions:
+  contents: read
+
 on:
   workflow_call: # be sure to use 'secrets: inherit' in the caller
   push:

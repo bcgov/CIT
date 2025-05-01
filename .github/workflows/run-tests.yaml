@@ -1,6 +1,11 @@
 # Tests that rely on the committed code, without needing the docker images to be built
 name: run-tests
 
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
 on:
   workflow_call:
 
