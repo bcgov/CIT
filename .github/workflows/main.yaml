@@ -1,0 +1,13 @@
+# Main workflow, orchestrating and triggering other workflows
+name: main
+
+on:
+  workflow_call: # be sure to use 'secrets: inherit' in the caller
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
