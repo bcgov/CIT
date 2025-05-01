@@ -19,12 +19,12 @@ jobs:
       matrix:
         include:
           - image: ghcr.io/bcgov/cit/cit-frontend
-            context: .
-            dockerfile: cit3.0-web/Dockerfile
+            context: ./cit3.0-web/
+            dockerfile: Dockerfile
             name: frontend
           - image: ghcr.io/bcgov/cit/cit-api
-            context: .
-            dockerfile: cit-api/docker/Dockerfile
+            context: ./cit-api/
+            dockerfile: ./docker/Dockerfile
             name: api
     permissions:
       contents: read
