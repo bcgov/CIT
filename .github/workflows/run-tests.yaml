@@ -90,34 +90,36 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  eslint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-        working-directory: ./cit3.0-web
-      - name: Run ESLint
-        run: yarn run eslint -f @microsoft/eslint-formatter-sarif -o results.sarif . || true
-        working-directory: ./cit3.0-web
-      - name: Remove entries with suppressions from SARIF
-        run: |
-          node - <<EOF
-          const fs = require('fs');
+    # Uncomment the following block to enable ESLint SARIF upload
+    # needs eslint config for the frontend
+#   eslint:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - name: Install dependencies
+#         run: yarn install --frozen-lockfile
+#         working-directory: ./cit3.0-web
+#       - name: Run ESLint
+#         run: yarn run eslint -f @microsoft/eslint-formatter-sarif -o results.sarif . || true
+#         working-directory: ./cit3.0-web
+#       - name: Remove entries with suppressions from SARIF
+#         run: |
+#           node - <<EOF
+#           const fs = require('fs');
 
-          // Read the SARIF file
-          const sarifData = fs.readFileSync('results.sarif', 'utf8');
-          const sarifJson = JSON.parse(sarifData);
+#           // Read the SARIF file
+#           const sarifData = fs.readFileSync('results.sarif', 'utf8');
+#           const sarifJson = JSON.parse(sarifData);
 
-          // Remove entries with suppressions
-          sarifJson.runs.forEach(run => {
-            run.results = run.results.filter(result => !result.suppressions || result.suppressions?.length === 0);
-          });
+#           // Remove entries with suppressions
+#           sarifJson.runs.forEach(run => {
+#             run.results = run.results.filter(result => !result.suppressions || result.suppressions?.length === 0);
+#           });
 
-          // Write the modified SARIF file
-          fs.writeFileSync('results.sarif', JSON.stringify(sarifJson, null, 2));
-          EOF
-        working-directory: ./cit3.0-web
-      - uses: github/codeql-action/upload-sarif@429e1977040da7a23b6822b13c129cd1ba93dbb2
-        with:
-          sarif_file: cit3.0-web/results.sarif
+#           // Write the modified SARIF file
+#           fs.writeFileSync('results.sarif', JSON.stringify(sarifJson, null, 2));
+#           EOF
+#         working-directory: ./cit3.0-web
+#       - uses: github/codeql-action/upload-sarif@429e1977040da7a23b6822b13c129cd1ba93dbb2
+#         with:
+#           sarif_file: cit3.0-web/results.sarif
