@@ -89,7 +89,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: yarn run eslint -f @microsoft/eslint-formatter-sarif -o results.sarif . || true
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Run ESLint
+        run: yarn run eslint -f @microsoft/eslint-formatter-sarif -o results.sarif . || true
         working-directory: ./cit3.0-web
       - name: Remove entries with suppressions from SARIF
         run: |
