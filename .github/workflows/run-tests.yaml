@@ -25,6 +25,11 @@ jobs:
       - name: Run vitest with coverage
         run: yarn coverage || true
         working-directory: ./cit3.0-web
+      - name: Upload frontend coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage
+          path: cit3.0-web/src/coverage/lcov.info
 
   python:
     runs-on: ubuntu-latest
@@ -46,9 +51,14 @@ jobs:
       - name: Run Python tests with coverage
         run: |
           pip install coverage
-          coverage run --source=./ --omit=*/migrations/*,*/tests/*,*/__init__.py -m unittest discover || true
+          coverage run --source=./ tests/runtests.py || true
           coverage xml -o coverage.xml
         working-directory: ./cit-api
+      - name: Upload backend coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: cit-api/coverage.xml
 
   sonarcloud:
     runs-on: ubuntu-latest
@@ -57,6 +67,16 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Download frontend coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-coverage
+          path: cit3.0-web/src/coverage
+      - name: Download backend coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-coverage
+          path: cit-api
       - name: SonarCloud Scan (monorepo)
         uses: SonarSource/sonarqube-scan-action@v5.1.0
         with:
