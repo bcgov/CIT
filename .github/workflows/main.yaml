@@ -3,6 +3,8 @@ name: main
 
 permissions:
   contents: read
+  packages: write
+  security-events: write
 
 on:
   workflow_call: # be sure to use 'secrets: inherit' in the caller
