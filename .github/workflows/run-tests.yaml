@@ -25,13 +25,6 @@ jobs:
       - name: Run vitest with coverage
         run: yarn coverage || true
         working-directory: ./cit3.0-web
-      - name: SonarCloud Scan (frontend)
-        uses: SonarSource/sonarqube-scan-action@v5.1.0
-        with:
-          projectBaseDir: ./cit3.0-web
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   python:
     runs-on: ubuntu-latest
@@ -56,10 +49,18 @@ jobs:
           coverage run --source=./ --omit=*/migrations/*,*/tests/*,*/__init__.py -m unittest discover || true
           coverage xml -o coverage.xml
         working-directory: ./cit-api
-      - name: SonarCloud Scan (api)
+
+  sonarcloud:
+    runs-on: ubuntu-latest
+    needs: [vitest, python]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: SonarCloud Scan (monorepo)
         uses: SonarSource/sonarqube-scan-action@v5.1.0
         with:
-          projectBaseDir: ./cit-api
+          projectBaseDir: .
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
