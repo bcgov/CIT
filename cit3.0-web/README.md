@@ -1,10 +1,6 @@
 # Frontend Application
 
-This frontend application contains two high-level business objectives: Community Investment Opportunities Tool, and Community Information Tool.
-
-## Community Investment Opportunities Tool
-
-The Community Investment Opportunity Tool is a place where Economic Development Officers (EDO) can go to post possible investment opportunities for their respective communities. This tool includes a user authenticated portion where EDO's can go to see their currently posted investment opportunities as well as to post new ones. It also includes a public facing view where possible investors can go to see all the currently available opportunities in the province or narrow down the opportunities on a set of filterable criteria.
+This frontend application contains the Community Information Tool.
 
 ## Community Information Tool
 
