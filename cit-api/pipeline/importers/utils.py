@@ -67,8 +67,6 @@ ADAPTER = HTTPAdapter(max_retries=RETRY_STRATEGY)
 
 
 def import_data_into_point_model(resource_type, Model, row, dry_run=False):
-    # print("import_data_into_point_model", row)
-
     point = None
     location_fuzzy = False
 
@@ -84,13 +82,11 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
             )
         else:
             point = Point(row.geometry.x, row.geometry.y, srid=WGS84_SRID)
-        # print(point)
         closest_community = (
             Community.objects.annotate(distance=Distance("point", point))
             .order_by("distance")
             .first()
         )
-        # print(closest_community)
     except TypeError:
         # When no point is present, try the municipality name description
         if not row.get("MUNICIPALITY"):
@@ -125,7 +121,6 @@ def import_data_into_point_model(resource_type, Model, row, dry_run=False):
         instance = Model(name=name, location_type=resource_type, point=point)
 
     # print("closest_community", closest_community)
-
     instance.closest_community = closest_community
     instance.closest_community_distance = closest_community.distance
     instance.location_fuzzy = location_fuzzy
@@ -733,7 +728,7 @@ def get_openca_last_modified_date(data_source):
 
 
 def import_community_descriptions():
-    community_descriptions_file = "data/community_descriptions.csv"
+    community_descriptions_file = "data/import/datafiles/community_descriptions.csv"
 
     with open(community_descriptions_file, "r") as csv_file:
         csv_reader = csv.DictReader(csv_file, delimiter=",")

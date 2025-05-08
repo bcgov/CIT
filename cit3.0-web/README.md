@@ -1,39 +1,44 @@
 # Frontend Application
 
-This frontend application contains two high-level business objectives: Community Investment Opportunities Tool, and Community Information Tool.
-
-## Community Investment Opportunities Tool
-
-The Community Investment Opportunity Tool is a place where Economic Development Officers (EDO) can go to post possible investment opportunities for their respective communities. This tool includes a user authenticated portion where EDO's can go to see their currently posted investment opportunities as well as to post new ones. It also includes a public facing view where possible investors can go to see all the currently available opportunities in the province or narrow down the opportunities on a set of filterable criteria.
+This frontend application contains the Community Information Tool.
 
 ## Community Information Tool
 
-This is an embedded PowerBI report in addition to a home page and web interface. The home page allows a user to choose to view the public report or to use their IDIR to log in to view the internal report.  A logged in user has the option to view either the internal report or the public report.  The data viewing functionality is implemented in the PowerBI environment.  The web interface allows a user to Save to PDF (or print) the currently selected report page as well as to create and copy to clipboard a link to the Tool for a specific community or regional district.  
+This is an embedded PowerBI report in addition to a home page and web interface. The home page allows a user to choose to view the public report or to use their IDIR to log in to view the internal report. A logged in user has the option to view either the internal report or the public report. The data viewing functionality is implemented in the PowerBI environment. The web interface allows a user to Save to PDF (or print) the currently selected report page as well as to create and copy to clipboard a link to the Tool for a specific community or regional district.
 
-## Prerequisites:
+## Prerequisites
 
-1. Copy environment variables
+#### Copy environment variables
 
-  ```bash
-  cp .env.template .env
-  # create a public/static/env.js from the template with the appropriate env variables
-  # Or run the following if you are on linux
-  envsubst < public/static/env.template.js > public/static/env.js && exec nginx -g 'daemon off;'
-  ```
+```
+cp .env.template .env
+```
 
-2. Start all CIT docker containers, most importantly `cit-api` and `cit-db`.
+#### Ensure the file public/static/env.js exists.
 
-3. Setting up a local keycloak is an option for developing new user personas
+This file contains hardcoded environment values
 
-  - Navigate to keycloak instance: <https://localhost:8080>
-  - Follow this [article](https://medium.com/keycloak/keycloak-realm-client-configuration-dfd7c8583489) to set up realm and client.
+#### Start all CIT docker containers, most importantly `cit-api` and `cit-db`.
 
-4. Start up the frontend
+```
+docker-compose up -d cit-api db
+```
 
-  - There are two ways to start the frontend application depending on development purposes.
+## Start up the frontend
 
-    - `yarn start` on the command line is highly recommended for fast development iteration, through hot-module reloading.
-    - `docker-compose up -d cit-web` is another way to instantiate the application more statically.
+There are two ways to start the frontend application depending on development purposes.
+
+- ✅ Recommended: Hot-reload Development Server
+
+```
+yarn start
+```
+
+- 🐳 Alternative: Docker-based Static Container
+
+```
+docker-compose up -d cit-web
+```
 
 ## Available Scripts
 
@@ -56,24 +61,6 @@ Builds the app for production to the `build` folder.\ It correctly bundles React
 The build is minified and the filenames include the hashes.\ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-### `yarn storybook`
-
-Starts a local storybook on port 6006.
-
-### `yarn build-storybook`
-
-Builds a portable storybook distribution.
 
 ### `yarn lint`
 
@@ -107,4 +94,3 @@ Runs ESLint on all files and automatically fixes any errors found.
 
 - Hot module reloading with `yarn start` doesn't always bust the build files in the browser. Known areas to refresh the page on an edit is the redux store files in `src/store/`.
 - Environment variables must both be entered in .env and src/public/static/env.js for the application to run
-- Using `npx generate-react-cli component MyNewComponent` you can save time creating files, read more about the tool here: <https://www.npmjs.com/package/generate-react-cli>

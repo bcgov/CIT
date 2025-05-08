@@ -1,6 +1,6 @@
 from pipeline.management.commands.base.base_import_command import BaseImportCommand
 from pipeline.importers.csv_resource import import_csv_resources
-from pipeline.importers.bucket7 import import_data_sources
+from pipeline.importers.bucket7.bucket7 import import_data_sources
 from pipeline.models.general import DataSource
 
 class Command(BaseImportCommand):
