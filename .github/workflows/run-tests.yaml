@@ -1,0 +1,125 @@
+# Tests that rely on the committed code, without needing the docker images to be built
+name: run-tests
+
+permissions:
+  contents: read
+  actions: read
+  id-token: write
+
+on:
+  workflow_call:
+
+concurrency:
+  group: run-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+jobs:
+  vitest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+        working-directory: ./cit3.0-web
+      - name: Run vitest with coverage
+        run: yarn coverage:report || true
+        working-directory: ./cit3.0-web
+      - name: Upload frontend coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-coverage
+          path: cit3.0-web/src/coverage/lcov.info
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install GDAL dependencies
+        run: sudo apt-get update && sudo apt-get install -y gdal-bin libgdal-dev
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        working-directory: ./cit-api
+      - name: Run Python tests with coverage
+        run: |
+          pip install coverage
+          coverage run --source=./ tests/runtests.py || true
+          coverage xml -o coverage.xml
+        working-directory: ./cit-api
+      - name: Upload backend coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-coverage
+          path: cit-api/coverage.xml
+
+  sonarcloud:
+    runs-on: ubuntu-latest
+    needs: [vitest, python]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Download frontend coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: frontend-coverage
+          path: cit3.0-web/src/coverage
+      - name: Download backend coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-coverage
+          path: cit-api
+      - name: SonarCloud Scan (monorepo)
+        uses: SonarSource/sonarqube-scan-action@v5.1.0
+        with:
+          projectBaseDir: .
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+    # Uncomment the following block to enable ESLint SARIF upload
+    # needs eslint config for the frontend
+#   eslint:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - name: Install dependencies
+#         run: yarn install --frozen-lockfile
+#         working-directory: ./cit3.0-web
+#       - name: Run ESLint
+#         run: yarn run eslint -f @microsoft/eslint-formatter-sarif -o results.sarif . || true
+#         working-directory: ./cit3.0-web
+#       - name: Remove entries with suppressions from SARIF
+#         run: |
+#           node - <<EOF
+#           const fs = require('fs');
+
+#           // Read the SARIF file
+#           const sarifData = fs.readFileSync('results.sarif', 'utf8');
+#           const sarifJson = JSON.parse(sarifData);
+
+#           // Remove entries with suppressions
+#           sarifJson.runs.forEach(run => {
+#             run.results = run.results.filter(result => !result.suppressions || result.suppressions?.length === 0);
+#           });
+
+#           // Write the modified SARIF file
+#           fs.writeFileSync('results.sarif', JSON.stringify(sarifJson, null, 2));
+#           EOF
+#         working-directory: ./cit3.0-web
+#       - uses: github/codeql-action/upload-sarif@429e1977040da7a23b6822b13c129cd1ba93dbb2
+#         with:
+#           sarif_file: cit3.0-web/results.sarif

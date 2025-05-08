@@ -48,7 +48,9 @@
     "build": "vite build --emptyOutDir",
     "test": "vitest",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "coverage": "vitest run --coverage --silent",
+    "coverage:report": "vitest run --coverage.enabled --coverage.provider=v8 --coverage.reportOnFailure --coverage.reporter=lcov --bail=0"
   },
   "eslintConfig": {
     "extends": [

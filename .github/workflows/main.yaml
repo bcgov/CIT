@@ -1,0 +1,32 @@
+# Main workflow, orchestrating and triggering other workflows
+name: main
+
+permissions:
+  contents: read
+  packages: write
+  security-events: write
+  actions: read
+  id-token: write
+
+on:
+  workflow_call: # be sure to use 'secrets: inherit' in the caller
+  push:
+    branches: ["develop"]
+  pull_request:
+    branches: [develop]
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+
+  run-tests:
+    uses: ./.github/workflows/run-tests.yaml
+    secrets: inherit
+
+  scan-images:
+    needs: [build]
+    uses: ./.github/workflows/scan-images.yaml
+
+  zap-scan:
+    needs: [build]
+    uses: ./.github/workflows/zap-scan.yaml
