@@ -1,0 +1,11 @@
+{
+  "name": "CIT",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/bcgov/CIT.git",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "release-it": "^19.0.2",
+    "@release-it/conventional-changelog": "^10.0.1"
+  }
+}
