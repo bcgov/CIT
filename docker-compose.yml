@@ -1,5 +1,3 @@
-version: "3.3"
-
 services:
   cit-web:
     container_name: cit-web
@@ -23,7 +21,7 @@ services:
     env_file:
       - cit-api/.env
     ports:
-      - 8000:8000
+      - "8000:8000"
     depends_on:
       - db
 
@@ -36,9 +34,10 @@ services:
       POSTGRES_MULTIPLE_EXTENSIONS: postgis,pgrouting,pg_buffercache,pg_stat_statements
     volumes:
       - ./db/init.sql:/usr/share/postgresql/15/contrib/postgis-3.3/legacy_minimal.sql
-      - ./db/cittest1.sql:/docker-entrypoint-initdb.d/setup-db.sql
+#      - ./db/cittest1.sql:/docker-entrypoint-initdb.d/setup-db.sql
+      - cit-db-data:/var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - "5432:5432"
 
   patroni-db:
     # image: mdillon/postgis
@@ -54,4 +53,7 @@ services:
     # - ./db/init.sql:/usr/share/postgresql/15/contrib/postgis-3.3/legacy_minimal.sql
     # - ./db/cittest1.sql:/docker-entrypoint-initdb.d/setup-db.sql
     ports:
-      - 5432:5432
+      - "5432:5432"
+
+volumes:
+  cit-db-data:
