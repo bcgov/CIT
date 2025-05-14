@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/runtime": "^7.26.10",
     "@bcgov/bootstrap-v5-theme": "^1.0.1",
     "@react-keycloak/web": "^3.4.0",
     "@reduxjs/toolkit": "^2.5.1",
