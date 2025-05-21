@@ -1,6 +1,6 @@
 # Web framework and REST API
-Django==5.0.2              # Latest stable Django release (LTS as of early 2025)
-djangorestframework==3.15.0 # Solid update, compatible with Django 5.0
+Django==5.0.14              # Latest stable Django release (LTS as of early 2025)
+djangorestframework==3.15.2 # Solid update, compatible with Django 5.0
 djangorestframework-csv==3.0.2  # Updated for better compatibility
 djangorestframework-gis==1.1  # Minor update, works with newer Django
 django-cors-headers==4.3.1  # Modern CORS handling
@@ -27,5 +27,5 @@ azure-storage-blob==12.19.1  # Latest Azure blob storage SDK
 openpyxl==3.1.2           # Updated for Excel file handling
 
 # Other needed to return
-setuptools==69.1.1  # A recent stable version as of Feb 2025
+setuptools==70.0.0
 GDAL==3.6.2  # Match the version from `gdalinfo --version`
