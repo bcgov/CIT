@@ -6,6 +6,9 @@ cit.pem
 # Local app
 docker-compose.override.yml
 
+# PyCharm folder
+.idea
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
