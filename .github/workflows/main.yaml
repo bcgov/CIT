@@ -19,6 +19,9 @@ jobs:
   build:
     uses: ./.github/workflows/build.yaml
 
+  check-conventional-commits:
+    uses: ./.github/workflows/check-conventional-commits.yaml
+
   run-tests:
     uses: ./.github/workflows/run-tests.yaml
     secrets: inherit
