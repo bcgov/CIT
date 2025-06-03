@@ -1,10 +1,10 @@
 [![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)]()
 
-# B.C. Community Information Hub
+# Community Information Tool
 
-## B.C. Community Information Dashboard
-
-The [Community Information Dashboard&#128279;](https://communityinformationtool.gov.bc.ca/cit-dashboard/home) is a dashboard for authenticated users and the public to get insight and statistics on communities around the province. The tool provides multiple ways for the information to be viewed including: Filtering by amenities and services, Regional district or municipality, and community type. The authenticated view allows Ministry employees greater access and control over the data for reports this includes restricted and sensitive data.
+The [Community Information Tool](https://communityinformationtool.gov.bc.ca/cit-dashboard/home) compiles over 40 data sets offering insights into regions across B.C. 
+with integrated socio-economic, connectivity and community assets data. This interactive tool supports community, 
+regional and province-wide planning, which is essential to building thriving communities.
 
 ## Table of contents
 
