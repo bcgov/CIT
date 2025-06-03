@@ -24,9 +24,13 @@ regional and province-wide planning, which is essential to building thriving com
 
 The infrastructure has evolved over time. Currently the infrastructure is hosted in three locations:
 
-🐙 API and GUI are hosted on Openshift (OCP) run by the BC Gov't Platform Services team. This infrastructure is managed by the HELM charts found in the "Openshift" folder.
+🐙 API and GUI are hosted on Openshift (OCP) run by the BC Gov't Platform Services team. This infrastructure is managed 
+by the HELM charts found in the "Openshift" folder.
 
-🛢️ Database and PowerBI Embedded are hosted in a production Resource Group on Azure Landing Zone. Prior to Landing zone this was unmanned by code. There is a Terraform structure that used be used for the testing environment that never made it into managing production. However with the migration to OCP, much of this has been obsoleted and there's a TODO to clean this up.
+🛢️ Database and PowerBI Embedded are hosted in a production Resource Group on Azure Landing Zone. Prior to Landing zone 
+this was unmanned by code. There is a Terraform structure that used be used for the testing environment that never made 
+it into managing production. However with the migration to OCP, much of this has been obsoleted and there's a TODO to 
+clean this up.
 
 📊 PowerBI Service is hosted on Azure by BG Gov't PowerBI Team.
 
