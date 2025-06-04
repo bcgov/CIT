@@ -18,7 +18,8 @@ Detailed instructions
 ## Setting up remote backend
 
 ```
-az storage account create --resource-group CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01 --name tfstatecit  --sku Standard_LRS --encryption-services blob
+az storage account create --resource-group CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01 --name tfstatecit \
+  --sku Standard_LRS --encryption-services blob
 az storage account keys list --resource-group CLNPD1-ZCACN-RGP-CITZ-ICT-Cit01 --account-name tfstatecit
 az storage container create --name tfstate --account-name tfstatecit --account-key $ACCOUNT_KEY
 ```
@@ -27,11 +28,11 @@ Assumption: AzureCLI is installed
 
 ```az login```
 
-get the list of accounts to obtain the "id" of the required account.  This is the subscription id.
+Get the list of accounts to obtain the "id" of the required account. This is the subscription id.
 
 ```az account list```
 
-use that subscription id to set it as the default for convince.
+use that subscription id to set it as the default for convincing.
 
 ```az account set -s "be5{redacted}}61283"```
 same with setting the default resource group for ease.
@@ -47,7 +48,8 @@ az storage account create --name tfstatecittest  --sku Standard_LRS --encryption
 # Now get the keys we need to access the store:
 az storage account keys list --account-name tfstatecittest
 
-# create a container in the newly created datastore. The account-name is the name from the account create above, and the account-key is from the account key list from above.
+# create a container in the newly created datastore. The account-name is the name from the account create above, 
+# and the account-key is from the account key list from above.
 az storage container create --name tfstate --account-name tfstatecittest --account-key <SECRET-FROM-ACCOUNT-KEY-LIST>
 
 # Create a file that holds the account key (above) in a file for the TF backend to use during init:
