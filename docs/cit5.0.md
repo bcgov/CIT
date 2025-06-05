@@ -26,7 +26,6 @@ we did the following:
 Things to consider for future:
 - adding functionality to the DB to autoscale on high demands.
 - adding functionality to scale up the PowerBI Embedded during hight load / high request periods.
-- update the Terraform code to obsolete the old infrastructure that's now hosted on OCP
 - Add a security group (outside our controls, we have to ask ISB to create it for us) that we can place the PowerBI 
 - Embedded service into. This doesn't have any immediate benefits, but it'll set us up for future requirements that 
 - are likely to come down on us that restrict access to the PowerBI Service.

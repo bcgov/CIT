@@ -15,24 +15,26 @@ regional and province-wide planning, which is essential to building thriving com
 
 ### Local development
 
-- [Setting up a local development environment](docs/Local_Environment_Setup.md)
+- [Setting up a local development environment](docs/local_setup/Local_Environment_Setup.md)
 - [Setting up cit-web local development environment for hot-reload](cit3.0-web/README.md)
-- [Importing Data](docs/DATA.md)
-- [Django Testing](docs/Local_Environment_Setup.md#django-testing)
+- [Importing Data](docs/local_setup/DATA.md)
+- [Django Testing](docs/local_setup/Local_Environment_Setup.md#django-testing)
+
+### Additional
+- [CIT 5.0](docs/cit5.0.md)
+- [CIT 3.0 Web](cit3.0-web/README.md)
 
 ### Infrastructure
 
-The infrastructure has evolved over time. Currently the infrastructure is hosted in three locations:
+The infrastructure has evolved over time. Currently, the infrastructure is hosted in three locations:
 
-🐙 API and GUI are hosted on Openshift (OCP) run by the BC Gov't Platform Services team. This infrastructure is managed 
+🐙 API and GUI are hosted on Openshift (OCP) run by the BC Gov Platform Services team. This infrastructure is managed 
 by the HELM charts found in the "Openshift" folder.
 
 🛢️ Database and PowerBI Embedded are hosted in a production Resource Group on Azure Landing Zone. Prior to Landing zone 
-this was unmanned by code. There is a Terraform structure that used be used for the testing environment that never made 
-it into managing production. However with the migration to OCP, much of this has been obsoleted and there's a TODO to 
-clean this up.
+this was unmanned by code.
 
-📊 PowerBI Service is hosted on Azure by BG Gov't PowerBI Team.
+📊 PowerBI Service is hosted on Azure by BG Gov PowerBI Team.
 
 - [CIT Architecture](docs/CIT-CIOT-Arch-Current.jpg)
 - [PowerBI Embedded](docs/PowerBI_Embedded.md)

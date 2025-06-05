@@ -10,11 +10,11 @@ To use PowerBI Embedded, a user must have a PowerBI Pro or PowerBI Premium licen
 PowerBI Service. The embedded reports and dashboards are built and managed through the PowerBI Service and then 
 embedded into a custom application or website using an iframe.
 
-The licensing costs for PowerBI Embedded at the time of this writing is $952.32 per month. There are likely 
+The licensing costs for PowerBI Embedded at the time of this writing are $952.32 per month. There are likely 
 additional costs for PowerBI Service.
 
 It is important to note that PowerBI Embedded is not a standalone service, and requires a PowerBI Pro or PowerBI 
-Premium license in order to use it.
+Premium license to use it.
 
 The PowerBI Embedded service does not have any special configuration.  The bulk of the setup is done through the 
 manual setup of the App Service and Service Principals described below.

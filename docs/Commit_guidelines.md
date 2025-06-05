@@ -1,8 +1,6 @@
 ## Commit Message Guidelines
 
-Similar to [Angular's guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines), we follow the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) format for our commit messages. 
-This leads to more readable messages that are easy to follow when looking through the project history. 
-We use the git commit messages to generate the change log upon releasing.
+Similar to [Angular's guidelines](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines), we follow the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) format for our commit messages. This leads to more readable messages that are easy to follow when looking through the project history. We use the git commit messages to generate the change log upon releasing.
 
 The commit message header must be formatted as follows:
 
@@ -24,8 +22,7 @@ Must be one of the following:
 
 ### Breaking changes
 
-If the change is a breaking change, add a `!` after the type, e.g. `feat!`. A breaking change is any change that 
-would require manual intervention from a team member or a user to ensure business continuity.
+If the change is a breaking change, add a `!` after the type, e.g. `feat!`. A breaking change is any change that would require manual intervention from a team member or a user to ensure business continuity.
 
 ### Scope
 
@@ -34,6 +31,7 @@ If a change affects multiple scopes, do not provide a scope in your commit messa
 The following scopes may be used:
 
 - **front-end**: for changes that affect only the front-end code
-- **api**: for changes that affect the api code
+- **server**: for changes that affect the server code
+- **db**: for changes that affect the database code
 - **devops**: for changes that affect the deployment configurations, such as the helm charts or terraform config
 - **deps**: for changes that affect the application's dependencies

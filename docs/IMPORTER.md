@@ -3,16 +3,19 @@
 The importer is run using the bootstrap.py file in `./cit-api/pipeline/management/commands/bootstrap.py`.
 
 The data pipelines have been segmented into "buckets" to allow for sequencing of dependent data and to account 
-for differing periodic updates. In other words, some data is dependant on other data, so we have control the 
-sequence forcing the use of separate buckets. On top of that, different data sources are updated throughout 
+for differing periodic updates. 
+In other words, some data is dependent on other data, so we have control of the 
+sequence forcing the use of separate buckets. 
+On top of that, different data sources are updated throughout 
 the year at different frequencies. So we need different "buckets" to control the timing of the workflow run.
 
-The Github Workflows have several buckets that execute the data pipeline.  Please reference them for details.
-eg: /.github/workflows/pipeline-bucket1-census-datasets-prod.yml
+The GitHub Workflows have several buckets that execute the data pipeline. 
+Please reference them for details.
+Example: `/.github/workflows/pipeline-bucket1-census-datasets-prod.yml`
 
-The first step in the import process determines if the environment is **Test** or **Prod**.  The next step creates 
-a file structure in the deployed resource in order to ensure the structure exists for when the newest set of 
-static files are downloaded and imported.
+The first step in the import process determines if the environment is **Test** or **Prod**. 
+The next step creates a file structure in the deployed resource to ensure the structure exists 
+for when the newest set of  static files are downloaded and imported.
 
 The most important of these files is the _datasources.json_.  It is a JSON representation of all the datasources 
 we are importing, along with the location of the file, the resource ID (for the BC data API), or dataset name 

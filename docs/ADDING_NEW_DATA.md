@@ -11,11 +11,11 @@ To add new datasets:
 docker-compose exec web python manage.py import_data_sources
 ```
 
-Note: In production environments, the django application uses the unprivileged Postgres user `django` 
-(without write permissions). In order to import any data, we need to switch to the `migrator` user 
+**Note**: In production environments, the django application uses the unprivileged Postgres user `django` 
+(without write permissions). To import any data, we need to switch to the `migrator` user 
 (the `--settings=cit-api.settings_migrator` flag, which uses the database settings in `settings_migrator.py`):
 
-```
+```shell
 docker-compose exec web python manage.py import_data_sources --settings=cit-api.settings_migrator
 ```
 
@@ -120,15 +120,16 @@ The LimitPerPage should be left at 1000 unless the dataset is very large per ent
 The last Expanded column is specific to the api endpoint and will describe all of the columns that will be retrieved. 
  This line needs to be edited to conform to the data that is available from the API.
 
-If you need a way to update a large number of columns, an easy trick is to delete this Expanded Column 2 line, 
-remove the ',' from the Expanded Column 1 line so the syntax is correct, and change the very last line to 
-Expanded Column 1.
+If you need a way to update a large number of columns, an easy trick is:
+- delete this Expanded Column 2 line
+- remove the ',' from the Expanded Column 1 line so the syntax is correct
+- change the very last line to Expanded Column 1.
 
 Now you can press Done and the query preview will show one column. You can select the small icon in the 
-top right of table, To the right of 'Column1' in the row header. This icon will ask you which columns you would 
+top right of the table, To the right of 'Column1' in the row header. This icon will ask you which columns you would 
 like to expand. The default is that all columns are selected (this is what you want). Also be sure to uncheck the 
-'Use original column name as prefix' as this will make everything Column1.id, Column1.name, etc.... 
-instead of id, name, etc.
+'Use original column name as prefix' as this will make everything `Column1.id, Column1.name, etc.`
+instead of `id, name, etc`.
 
 Select OK and this query is done.
 
