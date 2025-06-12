@@ -14,7 +14,7 @@ psycopg2-binary==2.9.9    # Latest binary for PostgreSQL compatibility
 uwsgi==2.0.23             # Latest uWSGI release
 pyyaml==6.0.1             # Already recent, keeping it
 uritemplate==4.1.1        # Minor update for URI handling
-requests==2.31.0          # Modern requests library
+requests==2.32.4          # Modern requests library
 jsonschema==4.21.1        # Significant update, widely compatible
 msal==1.26.0              # Latest Microsoft Authentication Library
 python-dateutil==2.9.0    # Updated date utilities
