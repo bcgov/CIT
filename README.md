@@ -17,7 +17,7 @@ regional and province-wide planning, which is essential to building thriving com
 
 - [Setting up a local development environment](docs/development/Local_Environment_Setup.md)
 - [Setting up cit-web local development environment for hot-reload](cit-web/README.md)
-- [Importing Data](docs/development/DATA.md)
+- [Importing Data](docs/data/DATA.md)
 - [Django Testing](docs/development/Local_Environment_Setup.md#django-testing)
 
 ### Services

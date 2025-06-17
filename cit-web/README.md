@@ -1,6 +1,6 @@
-# Frontend Application
+# CIT Web Service
 
-This frontend application contains the Community Information Tool.
+This application contains the Community Information Tool web interface.
 
 ## Community Information Tool
 
