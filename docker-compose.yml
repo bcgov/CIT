@@ -1,9 +1,9 @@
 services:
   cit-web:
     container_name: cit-web
-    build: ./cit3.0-web
+    build: ./cit-web
     env_file:
-      - cit3.0-web/.env
+      - cit-web/.env
     restart: always
     ports:
       - "80:8080"

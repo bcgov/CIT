@@ -156,6 +156,6 @@ cit-web/.nuxt
 cit-web/static/sw.js
 
 .htpasswd
-/cit3.0-web/src/coverage
+/cit-web/src/coverage
 cit-api/django_commands_log.txt
 /node_modules

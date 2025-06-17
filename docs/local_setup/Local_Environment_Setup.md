@@ -82,7 +82,7 @@ docker-compose up db -d --build
 docker-compose up cit-api -d --build
 ```
 
-And then to run the Community investment tool see [README](https://github.com/bcgov/CIT/blob/develop/cit3.0-web/README.md).
+And then to run the Community investment tool see [README](https://github.com/bcgov/CIT/blob/develop/cit-web/README.md).
 
 Once the app is running you can access the Community Investment Tool Front end at 
 [http://localhost:3000](http://localhost:3000), 
@@ -108,7 +108,7 @@ to open a shell in inside the django service.
 CIT consists of three main docker containers when running locally, these are defined in `docker-compose.yml` 
 and respective Dockerfiles.
 
-- `cit-web` - Builds and hosts `./cit3.0-web` on port 80, utilizing npm and nginx.
+- `cit-web` - Builds and hosts `./cit-web` on port 80, utilizing npm and nginx.
 - `cit-api` - Builds and hosts `./cit-api` on port 8000, utilizing python 3.6, in addition to providing 
   swagger on `*:8000/swagger/`
 - `db` - Stands up a Postgres database for cit-api to use on port 5432

@@ -16,13 +16,12 @@ regional and province-wide planning, which is essential to building thriving com
 ### Local development
 
 - [Setting up a local development environment](docs/local_setup/Local_Environment_Setup.md)
-- [Setting up cit-web local development environment for hot-reload](cit3.0-web/README.md)
+- [Setting up cit-web local development environment for hot-reload](cit-web/README.md)
 - [Importing Data](docs/local_setup/DATA.md)
 - [Django Testing](docs/local_setup/Local_Environment_Setup.md#django-testing)
 
 ### Additional
-- [CIT 5.0](docs/cit5.0.md)
-- [CIT 3.0 Web](cit3.0-web/README.md)
+- [CIT Web](cit-web/README.md)
 
 ### Infrastructure
 
