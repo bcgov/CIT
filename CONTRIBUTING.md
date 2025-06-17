@@ -1,40 +1,44 @@
-# Contribution
+# Contributor guide
 
-## How to contribute
-Government employees, public and members of the private sector are encouraged to contribute to the repository by 
-**forking and submitting a pull request**.
+## Creating issues
 
-(If you are new to GitHub, you might start with a [basic tutorial](https://help.github.com/articles/set-up-git) and check out a more detailed guide to 
-[pull requests](https://help.github.com/articles/using-pull-requests/).)
+- Any team member can, and should, create issues to prioritize and track the work.
+- Check if the card already exists on the board.
+- Card Title: Noun + verb/action
+- Tags: use the existing ones. Don't create tags. Talk with the team first!
+- New cards should remain in the Backlog and prioritized with the product owner
 
-Pull requests will be evaluated by the repository guardians on a schedule and if deemed beneficial will be committed to 
-the master.
+## Refining cards
 
-All contributors retain the original copyright to their stuff, but by contributing to this project, you grant a 
-world-wide, royalty-free, perpetual, irrevocable, non-exclusive, transferable license to all users **under the terms 
-of the license under which this project is distributed.**
+- T-shirt sizing for new cards as a way to facilitate preliminary review / prioritization by PO
+- Estimating/Reviewing cards async before refinement/sprint planning
+- Backlog refinement/sprint planning meetings should happen before the end of the current sprint
+- Card should pass Definition of Ready (DoR) before it can be moved as a sprint candidate
+- Use planning-poker/estimation tool: [PlanIt Poker](https://app.planitpoker.com)
 
 ## Git Workflow
 
 ### Creating a Pull Request
 
 - Branch new features off the `develop` branch.
-- Naming convention based off the problem at hand.  (i.e., update-export-for-fault-tolerance)
-- Before pushing your new feature up to GitHub, make sure to pull in the latest develop, and fix any merge conflicts 
-- that might happen.
-`git pull origin develop`
-- Push your branch up to GitHub.
-`git push origin <branchname>`
-- open a pull request against develop and request a team member to review it.
-- once reviewed and approved, merge the request
+- Branch naming policy is as follows: [issue#]-brief-description. 
+  In the event that an issue does not already exist for the changes being made in a branch, one should be made.
+- Make draft pull requests early and often to facilitate a transparent process.
+- When a PR is ready, post a request for review with a link to the branch in Teams.
+- Reviews can be done by the first person who gets to it.
+  If the code needs explaining, request the author to walk you through it.
+- Follow peer review best practices by suggesting opportunities to improve code during peer review,
+  merging as soon as the code is better than the code in the target branch and release ready.
+- Treat any opportunity for improvement feedback identified during peer review but not implemented in the PR 
+  where it was raised as technical debt worthy of a new issue referencing the PR where the comments first came up.
+- When necessary, use git rebase to sync a feature branch with `develop` branch.
+  This keeps a tidier history in git, however, can be destructive, so do cautiously.
 
 ### Merging your code into develop.
 
 - GitHub will not let you merge code that has not passed the following checks
   - The pipeline builds correctly
-
   - Another developer has performed a code review, and you have implemented requested changes
-
   - Your branch is not behind develop in terms of commits.  If it is, pull the changes into your branch and resolve 
   - any merge conflicts.
 - Once these conditions are met GitHub will allow you to merge in your code.
