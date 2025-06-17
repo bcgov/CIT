@@ -10,6 +10,7 @@ regional and province-wide planning, which is essential to building thriving com
 
 ### General
 
+- [Repository](https://github.com/bcgov/CIT)
 - [Contributing](docs/development/CONTRIBUTING.md)
 - [Deployment](docs/deployment/Deployment.md)
 
@@ -23,7 +24,7 @@ regional and province-wide planning, which is essential to building thriving com
 ### Services
 - [CIT Web](cit-web/README.md)
 - [CIT API](cit-api/README.md)
-- [Importer](docs/IMPORTER.md)
+- [Importer](docs/data/IMPORTER.md)
 
 ### Infrastructure
 

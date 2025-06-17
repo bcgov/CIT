@@ -171,7 +171,7 @@ To add new datasets:
 - Add an entry to `./cit-api/data/data_sources.json`.
 - Update data sources (the `DataSource` model) in database:
 
-```
+```shell
 docker-compose exec web python manage.py import_data_sources
 ```
 
@@ -194,7 +194,7 @@ Most of the other models should go into `./cit-api/pipeline/models/general.py`.
 
 Location assets have these required constants:
 
-```
+```shell
 LATITUDE_FIELD = 'LATITUDE_COLUMN_NAME'
 LONGITUDE_FIELD = 'LONGITUDE_COLUMN_NAME'
 NAME_FIELD = 'NAME_COLUMN_NAME'
@@ -206,7 +206,7 @@ In addition, these are optional constants, and if these are included, then these
 imported into the `location_phone`, `location_email`, `location_website` fields. (See the `Location` 
 base model for more information about the shared fields.)
 
-```
+```shell
 PHONE_FIELD = 'PHONE_NUMBER_COLUMN_NAME'
 WEBSITE_FIELD = 'WEBSITE_COLUMN_NAME'
 EMAIL_FIELD = 'EMAIL_ADDRESS_COLUMN_NAME'
@@ -225,7 +225,7 @@ custom importer code to be written. See `./cit-api/pipeline/importers/csv_resour
 - After adding a new Django model, run the following command to propagate the changes to the database 
   (i.e. make migrations and migrate the database):
 
-```
+```shell
 docker-compose exec web python manage.py makemigrations
 docker-compose exec web python manage.py migrate
 ```
@@ -233,6 +233,6 @@ docker-compose exec web python manage.py migrate
 - Import your new dataset (replace `MY_RESOURCE_NAME` with the resource `name` field of the new entry you added 
   in data_sources.json, and use the appropriate importer for the data type):
 
-```
+```shell
 docker-compose exec web python manage.py import_databc MY_RESOURCE_NAME
 ```

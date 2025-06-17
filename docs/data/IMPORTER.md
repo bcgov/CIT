@@ -11,6 +11,7 @@ the year at different frequencies. So we need different "buckets" to control the
 
 The GitHub Workflows have several buckets that execute the data pipeline. 
 Please reference them for details.
+
 Example: `/.github/workflows/pipeline-bucket1-census-datasets-prod.yml`
 
 The first step in the import process determines if the environment is **Test** or **Prod**. 
@@ -32,11 +33,9 @@ There are four different types of imports:
 * DATABC API sources
 * Shapefiles
 
-
 Resources fall into 2 categories:
 
 * Location resources (_ex. Hospitals_)
-
 * Area resources (_ex. School Districts_)
 
 If the resource being imported is a location resource it runs the _import_data_into_point_model_ 
@@ -49,17 +48,15 @@ greatly increases the time needed to run the import process.
 ## Known Issues
 
 * Missing communities in the communities_v6.csv spreadsheet
-
     - there are communities in BC that are recognized by the province but are not recognized federally
 	- since these communities are missing from the sheet and the way the data structure was originally built 
     - there is a small workaround for the opportunity tool to get nearest municipality populations.
-
 
 ## Future work
 
 During this project we incurred some technical debt that was not able to be resolved due to the time 
 constraints of this project.  Given more time we would have liked to further explore implementing:
 
-    - restructuring of the data so that the municipality is the central object not the community.
-	- decoupling of the import process so that singular imports can be done on just municipalities or census data 
-      and so on.
+- restructuring of the data so that the municipality is the central object not the community.
+- decoupling of the import process so that singular imports can be done on just municipalities or census data 
+  and so on.

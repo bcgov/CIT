@@ -23,7 +23,6 @@ including Docker Desktop and Docker Hub_.
 
 ```shell
 git clone https://github.com/bcgov/CIT
-
 ```
 
 2. Install [Docker](https://docs.docker.com/engine/install/ubuntu/) and [Docker Compose](https://docs.docker.com/compose/install/) or any other containerization solution.
@@ -34,7 +33,6 @@ eg: for `cit-api` in `/cit-api` directory
 
 ```shell
 cp .env.template .env
-
 ```
 
 ### Running the project in docker
@@ -43,7 +41,6 @@ To start the entire project in Docker:
 
 ```shell
 docker-compose up -d --build
-
 ```
 
 You can create a new terminal and run commands to interact with the application:
