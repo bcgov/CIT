@@ -20,20 +20,27 @@ regional and province-wide planning, which is essential to building thriving com
 - [Importing Data](docs/local_setup/DATA.md)
 - [Django Testing](docs/local_setup/Local_Environment_Setup.md#django-testing)
 
-### Additional
+### Services
 - [CIT Web](cit-web/README.md)
+- [CIT API](cit-api/README.md)
+- [Importer](docs/IMPORTER.md)
 
 ### Infrastructure
 
 The infrastructure has evolved over time. Currently, the infrastructure is hosted in three locations:
 
-🐙 API and GUI are hosted on Openshift (OCP) run by the BC Gov Platform Services team. This infrastructure is managed 
-by the HELM charts found in the "Openshift" folder.
+🐙 API and GUI are hosted on Openshift (OCP) run by the BC Gov Platform Services team. 
+This infrastructure is managed by the HELM charts found in the "Openshift" folder.
 
-🛢️ Database and PowerBI Embedded are hosted in a production Resource Group on Azure Landing Zone. Prior to Landing zone 
-this was unmanned by code.
+🛢️ Database and PowerBI Embedded are hosted in a production Resource Group on Azure Landing Zone. 
+Prior to Landing zone this was unmanned by code.
 
 📊 PowerBI Service is hosted on Azure by BG Gov PowerBI Team.
 
 - [CIT Architecture](docs/CIT-CIOT-Arch-Current.jpg)
-- [PowerBI Embedded](docs/PowerBI_Embedded.md)
+
+### PowerBI
+
+- [PowerBI Embedded](docs/powerbi/PowerBI_Embedded.md)
+- [Azure OAuth PowerBI Embedded](docs/powerbi/AZURE_OAUTH_POWERBI-EMBEDDED.md)
+- [Power BI Embedding Example](docs/powerbi/Power%20BI%20Embedding.pdf)
