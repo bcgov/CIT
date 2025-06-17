@@ -10,15 +10,15 @@ regional and province-wide planning, which is essential to building thriving com
 
 ### General
 
-- [Contributing](docs/CONTRIBUTING.md)
-- [Deployment](docs/Deployment.md)
+- [Contributing](docs/development/CONTRIBUTING.md)
+- [Deployment](docs/deployment/Deployment.md)
 
 ### Local development
 
-- [Setting up a local development environment](docs/local_setup/Local_Environment_Setup.md)
+- [Setting up a local development environment](docs/development/Local_Environment_Setup.md)
 - [Setting up cit-web local development environment for hot-reload](cit-web/README.md)
-- [Importing Data](docs/local_setup/DATA.md)
-- [Django Testing](docs/local_setup/Local_Environment_Setup.md#django-testing)
+- [Importing Data](docs/development/DATA.md)
+- [Django Testing](docs/development/Local_Environment_Setup.md#django-testing)
 
 ### Services
 - [CIT Web](cit-web/README.md)
@@ -37,7 +37,7 @@ Prior to Landing zone this was unmanned by code.
 
 📊 PowerBI Service is hosted on Azure by BG Gov PowerBI Team.
 
-- [CIT Architecture](docs/CIT-CIOT-Arch-Current.jpg)
+- [CIT Architecture](docs/architecture/CIT-CIOT-Arch-Current.jpg)
 
 ### PowerBI
 

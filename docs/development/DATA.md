@@ -163,4 +163,4 @@ the `source_file_path` on the DataSource instance.)
 
 ### Adding new datasets
 
-See [ADDING_NEW_DATA.md](../ADDING_NEW_DATA.md).
+See [ADDING_NEW_DATA.md](../data/PowerBI.md).
