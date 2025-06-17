@@ -10,7 +10,7 @@ regional and province-wide planning, which is essential to building thriving com
 
 ### General
 
-- [Contributing](CONTRIBUTING.md)
+- [Contributing](docs/CONTRIBUTING.md)
 - [Deployment](docs/Deployment.md)
 
 ### Local development
