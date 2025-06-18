@@ -13,6 +13,7 @@ regional and province-wide planning, which is essential to building thriving com
 - [Repository](https://github.com/bcgov/CIT)
 - [Contributing](docs/development/CONTRIBUTING.md)
 - [Deployment](docs/deployment/Deployment.md)
+- [Architecture](docs/architecture/CIT-CIOT-Arch.jpg)
 
 ### Local development
 
@@ -38,7 +39,7 @@ Prior to Landing zone this was unmanned by code.
 
 📊 PowerBI Service is hosted on Azure by BG Gov PowerBI Team.
 
-- [CIT Architecture](docs/architecture/CIT-CIOT-Arch-Current.jpg)
+- [CIT Architecture](docs/architecture/CIT-CIOT-Arch.jpg)
 
 ### PowerBI
 

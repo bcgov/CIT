@@ -119,6 +119,7 @@ CLIENT_SECRET=
 
 
 ## PowerBI REST API OAuth tokens
+
 ---
 
 We use the [msal](https://github.com/AzureAD/microsoft-authentication-library-for-python) library for Python to generate OAuth access tokens. To generate a token, send a GET request 
