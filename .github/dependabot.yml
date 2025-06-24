@@ -1,0 +1,31 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  - package-ecosystem: "pip" # See documentation for possible values
+    directory: "/cit-api" # Location of package manifests
+    schedule:
+      interval: "weekly"
+    commit-message:
+      # Prefix all commit messages with "chore: "
+      prefix: 'chore'
+    groups:
+      minor-and-patch:
+        update-types:
+          - 'minor'
+          - 'patch'
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/cit3.0-web" # Location of package manifests
+    schedule:
+      interval: "weekly"
+    commit-message:
+      # Prefix all commit messages with "chore: "
+      prefix: 'chore'
+    groups:
+      minor-and-patch:
+        update-types:
+          - 'minor'
+          - 'patch'
