@@ -13,7 +13,7 @@
     "@vitejs/plugin-react": "4",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",
-    "jest-environment-jsdom": "^29.7.0",
+    "jest-environment-jsdom": "^30.0.2",
     "keycloak-js": "^26.2.0",
     "leaflet": "^1.7.1",
     "powerbi-client": "^2.23.1",
