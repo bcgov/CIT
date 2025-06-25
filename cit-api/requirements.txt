@@ -1,30 +1,30 @@
 # Web framework and REST API
 Django==5.0.14              # Latest stable Django release (LTS as of early 2025)
-djangorestframework==3.15.2 # Solid update, compatible with Django 5.0
+djangorestframework==3.16.0 # Solid update, compatible with Django 5.0
 djangorestframework-csv==3.0.2  # Updated for better compatibility
-djangorestframework-gis==1.1  # Minor update, works with newer Django
-django-cors-headers==4.3.1  # Modern CORS handling
-drf-yasg==1.21.7          # Latest patch, supports Swagger/OpenAPI
+djangorestframework-gis==1.2.0  # Minor update, works with newer Django
+django-cors-headers==4.7.0  # Modern CORS handling
+drf-yasg==1.21.10          # Latest patch, supports Swagger/OpenAPI
 
 # Media and database
 Pillow==10.2.0            # Latest Pillow, better Apple Silicon support
-psycopg2-binary==2.9.9    # Latest binary for PostgreSQL compatibility
+psycopg2-binary==2.9.10    # Latest binary for PostgreSQL compatibility
 
 # Server and utilities
-uwsgi==2.0.23             # Latest uWSGI release
-pyyaml==6.0.1             # Already recent, keeping it
-uritemplate==4.1.1        # Minor update for URI handling
+uwsgi==2.0.30             # Latest uWSGI release
+pyyaml==6.0.2             # Already recent, keeping it
+uritemplate==4.2.0        # Minor update for URI handling
 requests==2.32.4          # Modern requests library
-jsonschema==4.21.1        # Significant update, widely compatible
-msal==1.26.0              # Latest Microsoft Authentication Library
+jsonschema==4.24.0        # Significant update, widely compatible
+msal==1.32.3              # Latest Microsoft Authentication Library
 python-dateutil==2.9.0    # Updated date utilities
-whitenoise==6.6.0         # Latest for static file serving
+whitenoise==6.9.0         # Latest for static file serving
 
 # Third-party integrations
-bcdata==0.7.1             # No major updates noted, keeping as-is
+bcdata==0.15.0             # No major updates noted, keeping as-is
 python-keycloak==3.9.0    # Big jump, aligns with modern Keycloak
-azure-storage-blob==12.19.1  # Latest Azure blob storage SDK
-openpyxl==3.1.2           # Updated for Excel file handling
+azure-storage-blob==12.25.1  # Latest Azure blob storage SDK
+openpyxl==3.1.5           # Updated for Excel file handling
 
 # Other needed to return
 setuptools==78.1.1
