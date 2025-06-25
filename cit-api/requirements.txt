@@ -17,7 +17,7 @@ uritemplate==4.2.0        # Minor update for URI handling
 requests==2.32.4          # Modern requests library
 jsonschema==4.24.0        # Significant update, widely compatible
 msal==1.32.3              # Latest Microsoft Authentication Library
-python-dateutil==2.9.0    # Updated date utilities
+python-dateutil==2.9.0.post0    # Updated date utilities
 whitenoise==6.9.0         # Latest for static file serving
 
 # Third-party integrations
