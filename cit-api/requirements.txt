@@ -7,7 +7,7 @@ django-cors-headers==4.7.0  # Modern CORS handling
 drf-yasg==1.21.10          # Latest patch, supports Swagger/OpenAPI
 
 # Media and database
-Pillow==10.2.0            # Latest Pillow, better Apple Silicon support
+Pillow==11.2.1            # Latest Pillow, better Apple Silicon support
 psycopg2-binary==2.9.10    # Latest binary for PostgreSQL compatibility
 
 # Server and utilities
