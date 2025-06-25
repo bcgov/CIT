@@ -22,7 +22,7 @@ whitenoise==6.9.0         # Latest for static file serving
 
 # Third-party integrations
 bcdata==0.15.0             # No major updates noted, keeping as-is
-python-keycloak==3.9.0    # Big jump, aligns with modern Keycloak
+python-keycloak==5.6.0    # Big jump, aligns with modern Keycloak
 azure-storage-blob==12.25.1  # Latest Azure blob storage SDK
 openpyxl==3.1.5           # Updated for Excel file handling
 
