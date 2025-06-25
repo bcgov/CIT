@@ -27,5 +27,5 @@ azure-storage-blob==12.25.1  # Latest Azure blob storage SDK
 openpyxl==3.1.5           # Updated for Excel file handling
 
 # Other needed to return
-setuptools==78.1.1
+setuptools==80.9.0
 GDAL==3.6.2  # Match the version from `gdalinfo --version`
