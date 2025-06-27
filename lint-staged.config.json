@@ -1,0 +1,5 @@
+{
+  "*.{js,jsx,ts,tsx}": [
+    "cd cit-web && yarn lint"
+  ]
+}
