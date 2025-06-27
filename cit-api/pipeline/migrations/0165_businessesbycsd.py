@@ -1,6 +1,7 @@
-
-from django.db import migrations, models
 import django.db.models.deletion
+from django.db import migrations, models
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -8,7 +9,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-
         migrations.CreateModel(
             name='BusinessesByCSD',
             fields=[
@@ -16,7 +16,14 @@ class Migration(migrations.Migration):
                 ('employee_class', models.IntegerField()),
                 ('number_of_businesses', models.IntegerField()),
                 ('sector', models.CharField(max_length=127, null=True)),
-                ('census_subdivision', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='pipeline.CEN_PROF_DETAILED_CSD_ATTRS_SP')),
+                (
+                    'census_subdivision',
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to='pipeline.CEN_PROF_DETAILED_CSD_ATTRS_SP',
+                    ),
+                ),
             ],
         ),
     ]

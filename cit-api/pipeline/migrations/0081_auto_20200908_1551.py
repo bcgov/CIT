@@ -28,12 +28,20 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='community',
             name='power_pop_2km_capacity',
-            field=models.FloatField(blank=True, help_text='POP Capacity (Gbps) for communities that are within 2km of POP', null=True),
+            field=models.FloatField(
+                blank=True,
+                help_text='POP Capacity (Gbps) for communities that are within 2km of POP',
+                null=True,
+            ),
         ),
         migrations.AddField(
             model_name='community',
             name='power_remaining_pop_capacity',
-            field=models.FloatField(blank=True, help_text='Remaining Capacity of POP (Gbps) - (-1 indicates capacity is unknown)', null=True),
+            field=models.FloatField(
+                blank=True,
+                help_text='Remaining Capacity of POP (Gbps) - (-1 indicates capacity is unknown)',
+                null=True,
+            ),
         ),
         migrations.AddField(
             model_name='community',
@@ -43,7 +51,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='community',
             name='transmission_line_voltage',
-            field=models.FloatField(blank=True, help_text='Transmission Line Voltage (kV)', null=True),
+            field=models.FloatField(
+                blank=True, help_text='Transmission Line Voltage (kV)', null=True
+            ),
         ),
         migrations.AddField(
             model_name='community',

@@ -17,11 +17,23 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='locationdistance',
             name='driving_distance',
-            field=models.DecimalField(blank=True, decimal_places=4, help_text='Driving distance from community to Location (km)', max_digits=24, null=True),
+            field=models.DecimalField(
+                blank=True,
+                decimal_places=4,
+                help_text='Driving distance from community to Location (km)',
+                max_digits=24,
+                null=True,
+            ),
         ),
         migrations.AlterField(
             model_name='locationdistance',
             name='distance',
-            field=models.DecimalField(blank=True, decimal_places=4, help_text="Birds' eye distance from community to Location (km)", max_digits=24, null=True),
+            field=models.DecimalField(
+                blank=True,
+                decimal_places=4,
+                help_text="Birds' eye distance from community to Location (km)",
+                max_digits=24,
+                null=True,
+            ),
         ),
     ]

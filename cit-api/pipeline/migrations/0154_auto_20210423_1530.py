@@ -44,7 +44,7 @@ def add_preferred_developments(apps, schema_editor):
         ["Technology", "", "TECH"],
         ["Tourism", "", "TOUR"],
         ["Waste Management and Remediation Services", "", "WAST"],
-        ["Wholesale Trade", "", "WOTR"]
+        ["Wholesale Trade", "", "WOTR"],
     ]
     for option in developments:
         p = PreferredDevelopment.objects.filter(code=option[2]).first()
@@ -59,6 +59,7 @@ def add_preferred_developments(apps, schema_editor):
 def undo_add_preferred_developments(apps, schema_editor):
     pass
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -66,10 +67,12 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(add_preferred_developments, undo_add_preferred_developments),
+        migrations.RunPython(
+            add_preferred_developments, undo_add_preferred_developments
+        ),
         migrations.AddField(
             model_name='opportunity',
             name='opportunity_preferred_development_v2',
             field=models.CharField(blank=True, max_length=255, null=True),
-        )
+        ),
     ]

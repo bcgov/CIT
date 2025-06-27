@@ -14,6 +14,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='opportunity',
             name='parcel_geometry',
-            field=django.contrib.gis.db.models.fields.PolygonField(null=True, srid=3005),
+            field=django.contrib.gis.db.models.fields.PolygonField(
+                null=True, srid=3005
+            ),
         ),
     ]

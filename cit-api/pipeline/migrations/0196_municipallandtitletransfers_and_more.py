@@ -14,7 +14,10 @@ class Migration(migrations.Migration):
             name='MunicipalLandTitleTransfers',
             fields=[
                 ('development_region', models.CharField(max_length=255)),
-                ('regional_district', models.CharField(max_length=255, primary_key=True, serialize=False)),
+                (
+                    'regional_district',
+                    models.CharField(max_length=255, primary_key=True, serialize=False),
+                ),
                 ('municipality', models.CharField(max_length=255, null=True)),
                 ('statistic_type', models.CharField(max_length=255, null=True)),
                 ('year', models.IntegerField()),
@@ -51,5 +54,5 @@ class Migration(migrations.Migration):
             model_name='csdcentroid',
             name='name',
             field=models.CharField(max_length=127),
-        )       
+        ),
     ]

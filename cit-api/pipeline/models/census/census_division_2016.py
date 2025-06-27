@@ -2,6 +2,7 @@ from django.contrib.gis.db import models
 
 from .census import BaseCensus
 
+
 class census_division_2016(models.Model):
 
     census_division_id = models.IntegerField(primary_key=True, null=False, blank=False)
@@ -12,7 +13,7 @@ class census_division_2016(models.Model):
     pop_2011_2016_pct_change = models.FloatField(null=True)
 
     class Meta:
-        ordering = ("census_division_id", )
+        ordering = ("census_division_id",)
 
     def __str__(self):
         return self.census_division_name

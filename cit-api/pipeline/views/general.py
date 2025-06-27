@@ -1,37 +1,43 @@
-from django.http import HttpResponse
 from django.core.serializers import serialize
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-
-from rest_framework import generics
+from drf_yasg.utils import swagger_auto_schema
+from rest_framework import generics, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import viewsets
-
-from drf_yasg.utils import swagger_auto_schema
 
 from pipeline.models.community import Community
-from pipeline.models.general import (LocationDistance, Service, RegionalDistrict, SchoolDistrict,
-                                     DataSource,  PageView)
-from pipeline.serializers.general import (
-    LocationDistanceSerializer,
-    ServiceListSerializer,
-    RegionalDistrictSerializer,
-    RegionalDistrictDetailSerializer,
-    SchoolDistrictSerializer,
-    DataSourceSerializer,
-    PageViewSerializer,
+from pipeline.models.general import (
+    DataSource,
+    LocationDistance,
+    PageView,
+    RegionalDistrict,
+    SchoolDistrict,
+    Service,
 )
 from pipeline.serializers.community import (
-    CommunitySerializer,
     CommunityCSVRenderer,
     CommunityCSVSerializer,
-    CommunitySearchSerializer,
     CommunityDetailSerializer,
+    CommunitySearchSerializer,
+    CommunitySerializer,
 )
-from pipeline.utils import (serialize_communities_for_regional_districts,
-                            communities_advanced_search, get_hidden_explore_report_pages,
-                            get_communities_with_insufficient_data)
+from pipeline.serializers.general import (
+    DataSourceSerializer,
+    LocationDistanceSerializer,
+    PageViewSerializer,
+    RegionalDistrictDetailSerializer,
+    RegionalDistrictSerializer,
+    SchoolDistrictSerializer,
+    ServiceListSerializer,
+)
+from pipeline.utils import (
+    communities_advanced_search,
+    get_communities_with_insufficient_data,
+    get_hidden_explore_report_pages,
+    serialize_communities_for_regional_districts,
+)
 
 
 class DataSourcesList(generics.ListAPIView):
@@ -69,22 +75,28 @@ class CommunityViewSet(viewsets.GenericViewSet):
     def advanced_search(self, request):
         communities = communities_advanced_search(request.query_params)
         hidden_report_pages = get_hidden_explore_report_pages(communities)
-        communities_with_insufficient_data = get_communities_with_insufficient_data(communities)
+        communities_with_insufficient_data = get_communities_with_insufficient_data(
+            communities
+        )
 
         community_ids = communities.values_list('id', flat=True)
-        return Response({
-            "communities": community_ids,
-            "hidden_report_pages": hidden_report_pages,
-            "communities_with_insufficient_data": communities_with_insufficient_data
-        })
+        return Response(
+            {
+                "communities": community_ids,
+                "hidden_report_pages": hidden_report_pages,
+                "communities_with_insufficient_data": communities_with_insufficient_data,
+            }
+        )
 
     @action(detail=False)
     def geojson(self, request):
         return HttpResponse(
-            serialize('geojson',
-                      Community.objects.all(),
-                      geometry_field='point',
-                      fields=('pk', 'place_name', 'community_type', 'regional_district')),
+            serialize(
+                'geojson',
+                Community.objects.all(),
+                geometry_field='point',
+                fields=('pk', 'place_name', 'community_type', 'regional_district'),
+            ),
             content_type="application/json",
         )
 
@@ -97,19 +109,23 @@ class CommunityViewSet(viewsets.GenericViewSet):
     @action(detail=True)
     def population(self, request, pk=None):
         community = self.get_object()
-        return Response({
-            "community": community.id,
-            "population": community.census_subdivision.pop_total_2016
-        })
+        return Response(
+            {
+                "community": community.id,
+                "population": community.census_subdivision.pop_total_2016,
+            }
+        )
 
 
 class ServiceList(generics.ListAPIView):
     serializer_class = ServiceListSerializer
 
     def get_queryset(self):
-        return Service.objects.filter(hex__community__isnull=False)\
-            .prefetch_related("hex__community")\
+        return (
+            Service.objects.filter(hex__community__isnull=False)
+            .prefetch_related("hex__community")
             .select_related("isp")
+        )
 
 
 class LocationDistanceList(generics.ListAPIView):
@@ -135,16 +151,20 @@ class RegionalDistrictViewSet(viewsets.GenericViewSet):
 
     @action(detail=False)
     def communities(self, request):
-        regional_districts = serialize_communities_for_regional_districts(self.get_queryset())
+        regional_districts = serialize_communities_for_regional_districts(
+            self.get_queryset()
+        )
         return Response(regional_districts)
 
     @action(detail=False)
     def geojson(self, request):
         return HttpResponse(
-            serialize('geojson',
-                      RegionalDistrict.objects.all(),
-                      geometry_field='geom_simplified',
-                      fields=('pk', 'name')),
+            serialize(
+                'geojson',
+                RegionalDistrict.objects.all(),
+                geometry_field='geom_simplified',
+                fields=('pk', 'name'),
+            ),
             content_type="application/json",
         )
 
@@ -152,8 +172,6 @@ class RegionalDistrictViewSet(viewsets.GenericViewSet):
 class SchoolDistrictList(generics.ListAPIView):
     queryset = SchoolDistrict.objects.all()
     serializer_class = SchoolDistrictSerializer
-
-
 
 
 class PageViewList(generics.ListCreateAPIView):

@@ -1,10 +1,11 @@
 import csv
-import pandas as pd
 
+import pandas as pd
 from requests import get
+
+from pipeline.importers.base_importer import BaseImporter
 from pipeline.importers.utils import write_to_db
 from pipeline.models.municipal_tax_rates import MunicipalTaxRates, xlsx_col_to_db_col
-from pipeline.importers.base_importer import BaseImporter
 
 TOTAL_EXAMINED_HEADER = "Households examined for core housing need status"
 TOTAL_EXAMINED_INDEX = 1
@@ -12,7 +13,6 @@ TOTAL_NEEDED_HEADER = "Households in core housing need status"
 TOTAL_NEEDED_INDEX = 2
 
 CSD_REGEX = r"\(([0-9]+)\)"
-
 
 
 class MunicipalTaxRatesImporter(BaseImporter):

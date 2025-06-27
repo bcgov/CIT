@@ -10,7 +10,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunSQL("""
+        migrations.RunSQL(
+            """
             update pipeline_municipalitydistance
             set community_id = community_municipality.community_id
             from (select pipeline_community.id as "community_id", pipeline_community.municipality_id 
@@ -20,5 +21,6 @@ class Migration(migrations.Migration):
                  ) community_municipality
             where pipeline_municipalitydistance.community_id is null and 
                 pipeline_municipalitydistance.municipality_id = community_municipality.municipality_id;
-        """)
+        """
+        )
     ]

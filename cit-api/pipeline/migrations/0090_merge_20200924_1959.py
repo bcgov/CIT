@@ -10,5 +10,4 @@ class Migration(migrations.Migration):
         ('pipeline', '0089_dataset'),
     ]
 
-    operations = [
-    ]
+    operations = []

@@ -2,17 +2,31 @@
 
 from django.db import migrations
 
+
 def unpopulate_statuses(apps, schema_editor):
     ApprovalStatus = apps.get_model("pipeline", "ApprovalStatus")
     ApprovalStatus.objects().all().delete()
 
+
 def populate_statuses(apps, schema_editor):
     ApprovalStatus = apps.get_model("pipeline", "ApprovalStatus")
     statuses = [
-        ["Pending Review", "Opportunity has been submitted and is awaiting approval.", "PEND"],
+        [
+            "Pending Review",
+            "Opportunity has been submitted and is awaiting approval.",
+            "PEND",
+        ],
         ["Needs to be edited", "Opportunity has been sent back for editing.", "EDIT"],
-        ["Not completed", "Opportunity has been saved by submitter in an incomplete state.", "NCOM"],
-        ["Published", "Opportunity has been approved and is now publicly viewable.", "PUBL"]
+        [
+            "Not completed",
+            "Opportunity has been saved by submitter in an incomplete state.",
+            "NCOM",
+        ],
+        [
+            "Published",
+            "Opportunity has been approved and is now publicly viewable.",
+            "PUBL",
+        ],
     ]
     for status in statuses:
         approval_status = ApprovalStatus()
@@ -22,12 +36,11 @@ def populate_statuses(apps, schema_editor):
         approval_status.active_status = True
         approval_status.save()
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
         ('pipeline', '0117_auto_20210217_1906'),
     ]
 
-    operations = [
-        migrations.RunPython(populate_statuses, unpopulate_statuses)
-    ]
+    operations = [migrations.RunPython(populate_statuses, unpopulate_statuses)]

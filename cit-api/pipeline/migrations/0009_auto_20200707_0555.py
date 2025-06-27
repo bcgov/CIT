@@ -13,6 +13,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='community',
             name='hexuid',
-            field=models.CharField(help_text='ID of spatial hex used to color province by connectivity quality.', max_length=15),
+            field=models.CharField(
+                help_text='ID of spatial hex used to color province by connectivity quality.',
+                max_length=15,
+            ),
         ),
     ]

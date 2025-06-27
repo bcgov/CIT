@@ -18,6 +18,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='community',
             name='header_image',
-            field=models.ImageField(blank=True, null=True, upload_to='community_images/'),
+            field=models.ImageField(
+                blank=True, null=True, upload_to='community_images/'
+            ),
         ),
     ]

@@ -14,6 +14,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='road',
             name='geom',
-            field=django.contrib.gis.db.models.fields.LineStringField(null=True, srid=4326),
+            field=django.contrib.gis.db.models.fields.LineStringField(
+                null=True, srid=4326
+            ),
         ),
     ]

@@ -10,7 +10,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunSQL("""DROP VIEW IF EXISTS public.cit_opportunities_vw;
+        migrations.RunSQL(
+            """DROP VIEW IF EXISTS public.cit_opportunities_vw;
             CREATE OR REPLACE VIEW public.cit_opportunities_vw
             AS
             SELECT o.id AS opportunity_id,
@@ -379,5 +380,6 @@ class Migration(migrations.Migration):
                 o.network_avg
             FROM pipeline_opportunity o
 			WHERE o.deleted = false;
-        """)
+        """
+        )
     ]

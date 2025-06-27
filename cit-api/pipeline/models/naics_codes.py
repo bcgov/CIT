@@ -1,7 +1,9 @@
 from django.contrib.gis.db import models
 from django.contrib.gis.db.models import MultiPolygonField
 from django.contrib.gis.geos import Point
+
 from pipeline.constants import WGS84_SRID
+
 
 class NAICSCodes(models.Model):
     level = models.IntegerField()

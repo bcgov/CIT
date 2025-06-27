@@ -1,14 +1,21 @@
-import requests
 import bcdata
 import pandas as pd
-
+import requests
 from django.apps import apps
 
-from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA, BC_ALBERS_SRID, WGS84_SRID
+from pipeline.constants import BC_ALBERS_SRID, SOURCE_DATABC, SOURCE_OPENCA, WGS84_SRID
+from pipeline.importers.utils import (
+    _generate_bcdata_geom,
+    _generate_geom,
+    calculate_muni_or_rd,
+    get_databc_last_modified_date,
+    get_openca_last_modified_date,
+    import_data_into_area_model,
+    import_data_into_point_model,
+    import_tsunami_full_description,
+    remove_french_description,
+)
 from pipeline.models.general import DataSource
-from pipeline.importers.utils import (import_data_into_point_model, import_data_into_area_model,
-                                      get_databc_last_modified_date, get_openca_last_modified_date,
-                                      _generate_geom, _generate_bcdata_geom, calculate_muni_or_rd, import_tsunami_full_description, remove_french_description)
 
 API_URL = "https://catalogue.data.gov.bc.ca/api/3/action/datastore_search?resource_id={resource_id}&limit=10000"
 LOCATION_RESOURCES = [
@@ -30,8 +37,9 @@ LOCATION_RESOURCES = [
 
 
 def import_databc_resources(resource_type):
-    databc_resource_names = DataSource.objects.filter(source_type="api").values_list("name",
-                                                                                     flat=True)
+    databc_resource_names = DataSource.objects.filter(source_type="api").values_list(
+        "name", flat=True
+    )
     if resource_type not in ['all', *databc_resource_names]:
         print("Error: Resource type {} not supported".format(resource_type))
         return
@@ -77,12 +85,14 @@ def import_wms_resource(resource):
     ds = bcdata.get_data(resource.dataset, as_gdf=True, query=query)
     for index, row in ds.iterrows():
         model_class = apps.get_model("pipeline", resource.model_name)
-        #print(resource.name)
-        #print(row)
+        # print(resource.name)
+        # print(row)
         if resource.name in LOCATION_RESOURCES:
             instance = import_data_into_point_model(resource.name, model_class, row)
         else:
-            instance = import_data_into_area_model(resource.display_name, model_class, row, index)
+            instance = import_data_into_area_model(
+                resource.display_name, model_class, row, index
+            )
             geos_geom_out, geos_geom_simplified = _generate_bcdata_geom(row, WGS84_SRID)
             instance.geom = geos_geom_out
             instance.geom_simplified = geos_geom_simplified
@@ -91,4 +101,3 @@ def import_wms_resource(resource):
         if resource.name == 'census_economic_region':
             remove_french_description(instance)
         instance.save()
-

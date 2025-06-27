@@ -10,7 +10,7 @@ class HealthAuthorityBoundary(BaseNamedPolygon):
     hlth_authority_code = models.IntegerField(null=True)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     def __str__(self):
         return self.name

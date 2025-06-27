@@ -13,6 +13,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='location',
             name='location_fuzzy',
-            field=models.BooleanField(default=False, help_text='This field should be set to True if the `point` field was not present in the original dataset and is inferred or approximated by other fields.'),
+            field=models.BooleanField(
+                default=False,
+                help_text='This field should be set to True if the `point` field was not present in the original dataset and is inferred or approximated by other fields.',
+            ),
         ),
     ]

@@ -13,26 +13,46 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='opportunity',
             name='opportunity_electrical_connected',
-            field=models.CharField(choices=[('Y', 'Yes'), ('N', 'No'), ('U', 'Unknown')], default='U', max_length=1),
+            field=models.CharField(
+                choices=[('Y', 'Yes'), ('N', 'No'), ('U', 'Unknown')],
+                default='U',
+                max_length=1,
+            ),
         ),
         migrations.AlterField(
             model_name='opportunity',
             name='opportunity_natual_gas_connected',
-            field=models.CharField(choices=[('Y', 'Yes'), ('N', 'No'), ('U', 'Unknown')], default='U', max_length=1),
+            field=models.CharField(
+                choices=[('Y', 'Yes'), ('N', 'No'), ('U', 'Unknown')],
+                default='U',
+                max_length=1,
+            ),
         ),
         migrations.AlterField(
             model_name='opportunity',
             name='opportunity_road_connected',
-            field=models.CharField(choices=[('Y', 'Yes'), ('N', 'No'), ('U', 'Unknown')], default='U', max_length=1),
+            field=models.CharField(
+                choices=[('Y', 'Yes'), ('N', 'No'), ('U', 'Unknown')],
+                default='U',
+                max_length=1,
+            ),
         ),
         migrations.AlterField(
             model_name='opportunity',
             name='opportunity_sewer_connected',
-            field=models.CharField(choices=[('Y', 'Yes'), ('N', 'No'), ('U', 'Unknown')], default='U', max_length=1),
+            field=models.CharField(
+                choices=[('Y', 'Yes'), ('N', 'No'), ('U', 'Unknown')],
+                default='U',
+                max_length=1,
+            ),
         ),
         migrations.AlterField(
             model_name='opportunity',
             name='opportunity_water_connected',
-            field=models.CharField(choices=[('Y', 'Yes'), ('N', 'No'), ('U', 'Unknown')], default='U', max_length=1),
+            field=models.CharField(
+                choices=[('Y', 'Yes'), ('N', 'No'), ('U', 'Unknown')],
+                default='U',
+                max_length=1,
+            ),
         ),
     ]

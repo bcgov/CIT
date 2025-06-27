@@ -10,5 +10,4 @@ class Migration(migrations.Migration):
         ('pipeline', '0011_firstresponders'),
     ]
 
-    operations = [
-    ]
+    operations = []

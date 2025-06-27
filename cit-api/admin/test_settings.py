@@ -2,14 +2,11 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY",
-                            'testsecret')  
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", 'testsecret')
 
 DEBUG = bool(os.environ.get("DEBUG", False))
 
-INSTALLED_APPS = [
-    'pipeline'
-]
+INSTALLED_APPS = ['pipeline']
 
 ROOT_URLCONF = 'admin.urls'
 
@@ -20,10 +17,8 @@ DATABASES = {
     'default': {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
         'NAME': os.environ.get("POSTGRES_DB", 'postgres'),
-        'USER': os.environ.get("POSTGRES_TEST_USER",
-                               'postgres'),  
-        'PASSWORD': os.environ.get("POSTGRES_TEST_PASSWORD",
-                                   'postgres'),  
+        'USER': os.environ.get("POSTGRES_TEST_USER", 'postgres'),
+        'PASSWORD': os.environ.get("POSTGRES_TEST_PASSWORD", 'postgres'),
         'HOST': 'db',
         'PORT': 5432,
     }
@@ -38,10 +33,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = '/media/'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS':
-    'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE':
-    100,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
@@ -49,6 +42,5 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_PERMISSION_CLASSES': [],
-    'UNAUTHENTICATED_USER':
-    None,
+    'UNAUTHENTICATED_USER': None,
 }

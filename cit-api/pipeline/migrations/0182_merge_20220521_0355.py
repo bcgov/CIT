@@ -6,9 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        
         ('pipeline', '0181_change_view'),
     ]
 
-    operations = [
-    ]
+    operations = []

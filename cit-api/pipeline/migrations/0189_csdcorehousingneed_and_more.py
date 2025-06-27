@@ -13,7 +13,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CSDCoreHousingNeed',
             fields=[
-                ('census_subdivision_id', models.IntegerField(primary_key=True, serialize=False)),
+                (
+                    'census_subdivision_id',
+                    models.IntegerField(primary_key=True, serialize=False),
+                ),
                 ('core_housing_examined', models.IntegerField(null=True)),
                 ('core_housing_need', models.IntegerField(null=True)),
                 ('core_housing_need_percentage', models.FloatField(null=True)),

@@ -10,5 +10,4 @@ class Migration(migrations.Migration):
         ('pipeline', '0159_nbdphhspeeds_combined_5_1_gov_supp'),
     ]
 
-    operations = [
-    ]
+    operations = []

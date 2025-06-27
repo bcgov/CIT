@@ -13,6 +13,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='civicleader',
             name='position',
-            field=models.CharField(choices=[('mayor', 'Mayor'), ('councillor', 'Councillor')], max_length=255),
+            field=models.CharField(
+                choices=[('mayor', 'Mayor'), ('councillor', 'Councillor')],
+                max_length=255,
+            ),
         ),
     ]

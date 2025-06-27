@@ -14,7 +14,10 @@ class Migration(migrations.Migration):
             name='BCNetworkConnectivity',
             fields=[
                 ('bcnc_ncs_sysid', models.FloatField(null=True)),
-                ('hex_code_id', models.CharField(max_length=127, primary_key=True, serialize=False)),
+                (
+                    'hex_code_id',
+                    models.CharField(max_length=127, primary_key=True, serialize=False),
+                ),
                 ('population', models.FloatField(null=True)),
                 ('total_dwellings', models.FloatField(null=True)),
                 ('usual_residences', models.FloatField(null=True)),
@@ -26,10 +29,19 @@ class Migration(migrations.Migration):
                 ('cable_providers', models.CharField(max_length=127, null=True)),
                 ('fibre_providers', models.CharField(max_length=127, null=True)),
                 ('dsl_providers', models.CharField(max_length=127, null=True)),
-                ('fixed_wireless_providers', models.CharField(max_length=127, null=True)),
+                (
+                    'fixed_wireless_providers',
+                    models.CharField(max_length=127, null=True),
+                ),
                 ('satellite_providers', models.CharField(max_length=127, null=True)),
-                ('mobile_wireless_providers', models.CharField(max_length=127, null=True)),
-                ('transport_fibre_providers', models.CharField(max_length=127, null=True)),
+                (
+                    'mobile_wireless_providers',
+                    models.CharField(max_length=127, null=True),
+                ),
+                (
+                    'transport_fibre_providers',
+                    models.CharField(max_length=127, null=True),
+                ),
             ],
         ),
     ]

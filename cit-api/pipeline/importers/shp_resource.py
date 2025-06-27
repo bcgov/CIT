@@ -43,32 +43,43 @@ PROJCS["PCS_Lambert_Conformal_Conic",
 'CMATYPE', feat.get('CMATYPE'), '\n',
 '''
 
-import zipfile
 import copy
 import json
 import logging
 import os
-import requests
 import tempfile
+import zipfile
 
+import requests
 from django.apps import apps
-from django.contrib.gis.geos.prototypes.io import wkt_w
-from django.contrib.gis.gdal import DataSource as gdalDataSource
-from django.contrib.gis.geos import GEOSGeometry, MultiPolygon, Polygon, LineString, MultiLineString
 from django.conf import settings
+from django.contrib.gis.gdal import DataSource as gdalDataSource
+from django.contrib.gis.geos import (
+    GEOSGeometry,
+    LineString,
+    MultiLineString,
+    MultiPolygon,
+    Polygon,
+)
+from django.contrib.gis.geos.prototypes.io import wkt_w
 
-from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA
-from pipeline.models.general import DataSource, Road, Hex, ISP, Service
-from pipeline.constants import BC_ALBERS_SRID, WGS84_SRID
-from pipeline.importers.utils import (import_data_into_area_model, get_databc_last_modified_date,
-                                      get_openca_last_modified_date, _generate_geom)
+from pipeline.constants import BC_ALBERS_SRID, SOURCE_DATABC, SOURCE_OPENCA, WGS84_SRID
+from pipeline.importers.utils import (
+    _generate_geom,
+    get_databc_last_modified_date,
+    get_openca_last_modified_date,
+    import_data_into_area_model,
+)
+from pipeline.models.general import ISP, DataSource, Hex, Road, Service
 
 logger = logging.getLogger(__name__)
 csduid_to_geo_uid = {}
 
 
 def import_shp_resources(resource_type):
-    shp_resource_names = DataSource.objects.filter(source_type="shp").values_list("name", flat=True)
+    shp_resource_names = DataSource.objects.filter(source_type="shp").values_list(
+        "name", flat=True
+    )
 
     if resource_type == "roads":
         import_roads()
@@ -118,6 +129,7 @@ def import_resource(resource_type):
 
 def import_northern_rockies_census_division(data_source):
     from pipeline.models import RegionalDistrict
+
     """
     {'CNSSR': 2016, 'CNSSDVSND': '5901', 'CNSSDVSNNM': 'East Kootenay', 'CNSSDVSNTP': 'RD', 'CNSSDVSNT1': 'Regional District', 'AREA_SQM': 27849712862.3922, 'FEAT_LEN': 1070461.9249, 'OBJECTID': 115}
     """
@@ -136,7 +148,9 @@ def import_northern_rockies_census_division(data_source):
         print(row)
 
         NORTHERN_ROCKIES_NAME = "Northern Rockies Regional Municipality"
-        instance, created = RegionalDistrict.objects.get_or_create(name=NORTHERN_ROCKIES_NAME)
+        instance, created = RegionalDistrict.objects.get_or_create(
+            name=NORTHERN_ROCKIES_NAME
+        )
 
         print("instance", instance)
         instance.area_id = row["OBJECTID"]
@@ -212,7 +226,9 @@ def import_roads():
         if feat.get('Avail_50_1'):
             road.best_broadband = '50/10'
 
-        road.geom = _coerce_to_multilinestring(GEOSGeometry(feat.geom.wkt, srid=WGS84_SRID))
+        road.geom = _coerce_to_multilinestring(
+            GEOSGeometry(feat.geom.wkt, srid=WGS84_SRID)
+        )
         roads.append(road)
 
     Road.objects.bulk_create(roads, 1000)

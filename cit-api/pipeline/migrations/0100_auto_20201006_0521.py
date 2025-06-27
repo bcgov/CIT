@@ -13,16 +13,28 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='datasource',
             name='permalink_id',
-            field=models.CharField(help_text='Permalink ID for datasets from the BC Data Catalogue', max_length=255, null=True),
+            field=models.CharField(
+                help_text='Permalink ID for datasets from the BC Data Catalogue',
+                max_length=255,
+                null=True,
+            ),
         ),
         migrations.AlterField(
             model_name='datasource',
             name='resource_id',
-            field=models.CharField(help_text='Resource ID for datasets from the BC Data Catalogue or Open Government', max_length=255, null=True),
+            field=models.CharField(
+                help_text='Resource ID for datasets from the BC Data Catalogue or Open Government',
+                max_length=255,
+                null=True,
+            ),
         ),
         migrations.AlterField(
             model_name='datasource',
             name='sub_resource_id',
-            field=models.CharField(help_text='Sub-resource ID for datasets from Open Government', max_length=255, null=True),
+            field=models.CharField(
+                help_text='Sub-resource ID for datasets from Open Government',
+                max_length=255,
+                null=True,
+            ),
         ),
     ]

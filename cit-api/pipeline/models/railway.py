@@ -1,7 +1,7 @@
 from django.contrib.gis.db import models
-from pipeline.models.common.base_named_line import BaseNamedLine
 
 from pipeline.constants import WGS84_SRID
+from pipeline.models.common.base_named_line import BaseNamedLine
 
 
 class Railway(BaseNamedLine):
@@ -18,7 +18,7 @@ class Railway(BaseNamedLine):
     owner_name = models.CharField(max_length=32)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     def __str__(self):
         return self.name

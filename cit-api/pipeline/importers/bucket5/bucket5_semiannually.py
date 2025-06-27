@@ -1,5 +1,6 @@
 from pipeline.importers.base_importer import BaseImporter
 
+
 class Bucket5SemiannualImporter(BaseImporter):
     DATA_SOURCES = [
         "data/import/bucket5/semiannually/5airports.json",
@@ -18,6 +19,7 @@ class Bucket5SemiannualImporter(BaseImporter):
         "data/import/bucket5/semiannually/5servicebc_locations.json",
         "data/import/bucket5/semiannually/5timber_facilities.json",
     ]
+
 
 def import_data_sources():
     Bucket5SemiannualImporter.import_data_sources()

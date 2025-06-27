@@ -2,6 +2,7 @@
 
 from django.db import migrations
 
+
 def change_zoning_status(apps, schema_editor):
     LandUseZoning = apps.get_model("pipeline", "LandUseZoning")
     zoning = ["Agriculture", "", "AGRI"]
@@ -45,6 +46,7 @@ def undo_change_zoning_status(apps, schema_editor):
         opportunity.save()
 
     LandUseZoning.objects.get(code="AGRI").delete()
+
 
 class Migration(migrations.Migration):
 

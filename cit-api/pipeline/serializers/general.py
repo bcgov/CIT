@@ -1,8 +1,14 @@
 from rest_framework import serializers
 
 from pipeline.constants import DATABC_PERMALINK_URL
-from pipeline.models.general import (LocationDistance, Service, RegionalDistrict, SchoolDistrict,
-                                     DataSource, PageView)
+from pipeline.models.general import (
+    DataSource,
+    LocationDistance,
+    PageView,
+    RegionalDistrict,
+    SchoolDistrict,
+    Service,
+)
 
 
 class DataSourceSerializer(serializers.ModelSerializer):
@@ -23,9 +29,9 @@ class DataSourceSerializer(serializers.ModelSerializer):
 class ServiceListSerializer(serializers.ModelSerializer):
     queryset = Service.objects.all()
     isp = serializers.SlugRelatedField(read_only=True, slug_field='name')
-    communities = serializers.PrimaryKeyRelatedField(read_only=True,
-                                                     many=True,
-                                                     source='hex.community')
+    communities = serializers.PrimaryKeyRelatedField(
+        read_only=True, many=True, source='hex.community'
+    )
 
     class Meta:
         model = Service
@@ -91,8 +97,6 @@ class SchoolDistrictSerializer(serializers.ModelSerializer):
     class Meta:
         model = SchoolDistrict
         fields = ("id", "name", "sd_num", "community")
-
-
 
 
 class PageViewSerializer(serializers.ModelSerializer):
