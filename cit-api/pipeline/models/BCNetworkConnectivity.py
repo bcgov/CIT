@@ -1,4 +1,6 @@
 from django.contrib.gis.db import models
+
+
 class BCNetworkConnectivity(models.Model):
     bcnc_ncs_sysid = models.FloatField(null=True)
     hex_code_id = models.CharField(max_length=127, primary_key=True)

@@ -10,7 +10,7 @@ class ProvincialElectoralDistrict(BaseNamedPolygon):
     ed_abbreviation = models.CharField(max_length=127)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     def __str__(self):
         return self.name

@@ -10,5 +10,4 @@ class Migration(migrations.Migration):
         ('pipeline', '0124_landusezoning_preferreddevelopment_propertystatus'),
     ]
 
-    operations = [
-    ]
+    operations = []

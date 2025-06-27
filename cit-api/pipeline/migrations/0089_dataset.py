@@ -13,12 +13,35 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Dataset',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('name', models.CharField(max_length=127)),
                 ('display_name', models.CharField(max_length=127)),
                 ('model_name', models.CharField(max_length=127)),
-                ('source', models.CharField(choices=[('internal', 'Internal'), ('databc', 'BC Data Catalogue')], max_length=127)),
-                ('source_type', models.CharField(choices=[('CSV', 'CSV'), ('API', 'DATABC'), ('SHP', 'SHP')], max_length=127)),
+                (
+                    'source',
+                    models.CharField(
+                        choices=[
+                            ('internal', 'Internal'),
+                            ('databc', 'BC Data Catalogue'),
+                        ],
+                        max_length=127,
+                    ),
+                ),
+                (
+                    'source_type',
+                    models.CharField(
+                        choices=[('CSV', 'CSV'), ('API', 'DATABC'), ('SHP', 'SHP')],
+                        max_length=127,
+                    ),
+                ),
                 ('csv_path', models.CharField(max_length=255)),
                 ('resource_id', models.CharField(max_length=255)),
                 ('permalink_id', models.CharField(max_length=255)),

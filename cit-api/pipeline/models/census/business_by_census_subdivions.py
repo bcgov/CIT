@@ -1,9 +1,14 @@
 from django.contrib.gis.db import models
 
-from pipeline.models.census.cen_prof_detailed_csd_attrs_sp import CEN_PROF_DETAILED_CSD_ATTRS_SP
+from pipeline.models.census.cen_prof_detailed_csd_attrs_sp import (
+    CEN_PROF_DETAILED_CSD_ATTRS_SP,
+)
+
 
 class BusinessesByCSD(models.Model):
-    census_subdivision = models.ForeignKey(CEN_PROF_DETAILED_CSD_ATTRS_SP, null=True, on_delete=models.SET_NULL)
+    census_subdivision = models.ForeignKey(
+        CEN_PROF_DETAILED_CSD_ATTRS_SP, null=True, on_delete=models.SET_NULL
+    )
     naics_code = models.IntegerField(primary_key=True)
     employee_class = models.IntegerField()
     number_of_businesses = models.IntegerField()

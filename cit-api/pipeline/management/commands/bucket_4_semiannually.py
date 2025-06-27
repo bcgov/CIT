@@ -1,9 +1,13 @@
-from pipeline.management.commands.base.base_import_command import BaseImportCommand
-from pipeline.importers.databc_resource import import_wms_resource, import_databc_resources
 from pipeline.importers.bucket4.bucket4_semiannually import import_data_sources
 from pipeline.importers.csv_resource import import_csv_resources
+from pipeline.importers.databc_resource import (
+    import_databc_resources,
+    import_wms_resource,
+)
 from pipeline.importers.shp_resource import import_shp_resources
+from pipeline.management.commands.base.base_import_command import BaseImportCommand
 from pipeline.models.general import DataSource
+
 
 class Command(BaseImportCommand):
 
@@ -15,12 +19,23 @@ class Command(BaseImportCommand):
         import_data_sources()
 
         # Ensure that the data sources are updated
-        data_resources = DataSource.objects.filter(name__in=[
-            'census_economic_region', 'courts', 'health_authority_boundaries',
-            'indian_reserve_and_band_name', 'lakes', 'natural_resource_regions',
-            'post_secondary_institutions', 'provincial_electoral_district',
-            'railways', 'research_centres', 'rivers', 'road_and_highways', 'services'
-        ])
+        data_resources = DataSource.objects.filter(
+            name__in=[
+                'census_economic_region',
+                'courts',
+                'health_authority_boundaries',
+                'indian_reserve_and_band_name',
+                'lakes',
+                'natural_resource_regions',
+                'post_secondary_institutions',
+                'provincial_electoral_district',
+                'railways',
+                'research_centres',
+                'rivers',
+                'road_and_highways',
+                'services',
+            ]
+        )
 
         for resource in data_resources:
             if resource.source_type == "wms":

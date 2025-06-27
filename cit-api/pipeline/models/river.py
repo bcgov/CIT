@@ -10,7 +10,7 @@ class River(BaseNamedPolygon):
     area_id = models.IntegerField(null=True, help_text="Original ID of data point")
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     def __str__(self):
         return self.name

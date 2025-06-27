@@ -10,5 +10,4 @@ class Migration(migrations.Migration):
         ('pipeline', '0123_auto_20210303_2236'),
     ]
 
-    operations = [
-    ]
+    operations = []

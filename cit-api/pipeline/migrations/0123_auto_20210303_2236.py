@@ -11,9 +11,17 @@ def populate_statuses(apps, schema_editor):
 
     statuses = [
         ["New", "Opportunity has just been submitted", "NEW"],
-        ["Pending Edit from Community User/EDO", "Opportunity has been saved by submitter in an incomplete state.", "NCOM"],
-        ["New - Edited", "Opportunity has been udpate by EDO for further review", "NWED"],
-        ["Closed/Won", "Opportunity has been Closed or Won.", "CLOS"]
+        [
+            "Pending Edit from Community User/EDO",
+            "Opportunity has been saved by submitter in an incomplete state.",
+            "NCOM",
+        ],
+        [
+            "New - Edited",
+            "Opportunity has been udpate by EDO for further review",
+            "NWED",
+        ],
+        ["Closed/Won", "Opportunity has been Closed or Won.", "CLOS"],
     ]
     # Add New status
     for status in statuses:
@@ -24,11 +32,16 @@ def populate_statuses(apps, schema_editor):
         approval_status.active_status = True
         approval_status.save()
 
+
 def unpopulate_statuses(apps, schema_editor):
     ApprovalStatus = apps.get_model("pipeline", "ApprovalStatus")
     statuses = [
-        ["New - Edited", "Opportunity has been udpate by EDO for further review", "NWED"],
-        ["Closed/Won", "Opportunity has been Closed or Won.", "CLOS"]
+        [
+            "New - Edited",
+            "Opportunity has been udpate by EDO for further review",
+            "NWED",
+        ],
+        ["Closed/Won", "Opportunity has been Closed or Won.", "CLOS"],
     ]
     ApprovalStatus.objects.filter(status_code="NWED").delete()
     ApprovalStatus.objects.filter(status_code="CLOS").delete()
@@ -39,6 +52,7 @@ def unpopulate_statuses(apps, schema_editor):
     approval_status.status_code = "EDIT"
     approval_status.active_status = True
     approval_status.save()
+
 
 class Migration(migrations.Migration):
 

@@ -10,5 +10,4 @@ class Migration(migrations.Migration):
         ('pipeline', '0148_user_is_admin'),
     ]
 
-    operations = [
-    ]
+    operations = []

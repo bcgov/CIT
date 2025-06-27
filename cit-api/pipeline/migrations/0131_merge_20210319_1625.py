@@ -10,5 +10,4 @@ class Migration(migrations.Migration):
         ('pipeline', '0130_merge_20210318_1840'),
     ]
 
-    operations = [
-    ]
+    operations = []

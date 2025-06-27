@@ -1,11 +1,24 @@
 from rest_framework import serializers
-from pipeline.models.opportunity import PostSecondaryDistance,\
-    CommunityDistance, MunicipalityDistance, IndianReserveBandDistance,\
-    LakeDistance, RiverDistance, RoadsAndHighwaysDistance, AirportDistance,\
-    RailwayDistance, PortAndTerminalDistance, CustomsPortOfEntryDistance,\
-    ResearchCentreDistance, FirstResponderDistance, HospitalDistance, IndianReserveBandName
-from pipeline.models.general import Municipality, RegionalDistrict
+
 from pipeline.models.community import Community
+from pipeline.models.general import Municipality, RegionalDistrict
+from pipeline.models.opportunity import (
+    AirportDistance,
+    CommunityDistance,
+    CustomsPortOfEntryDistance,
+    FirstResponderDistance,
+    HospitalDistance,
+    IndianReserveBandDistance,
+    IndianReserveBandName,
+    LakeDistance,
+    MunicipalityDistance,
+    PortAndTerminalDistance,
+    PostSecondaryDistance,
+    RailwayDistance,
+    ResearchCentreDistance,
+    RiverDistance,
+    RoadsAndHighwaysDistance,
+)
 
 
 class OpportunityPostSecondarySerializer(serializers.ModelSerializer):
@@ -23,7 +36,13 @@ class OpportunityCommunitySerializer(serializers.ModelSerializer):
 class OpportunityIndianReserveBandSerializer(serializers.ModelSerializer):
     class Meta:
         model = IndianReserveBandDistance
-        fields = ('reserve_id', 'reserve_distance','community_id', 'name', 'place_name')
+        fields = (
+            'reserve_id',
+            'reserve_distance',
+            'community_id',
+            'name',
+            'place_name',
+        )
 
 
 class OpportunityLakeSerializer(serializers.ModelSerializer):
@@ -41,13 +60,13 @@ class OpportunityRiverSerializer(serializers.ModelSerializer):
 class OpportunityRoadsAndHighwaysSerializer(serializers.ModelSerializer):
     class Meta:
         model = RoadsAndHighwaysDistance
-        fields = ('highway_id', 'highway_distance','name')
+        fields = ('highway_id', 'highway_distance', 'name')
 
 
 class OpportunityAirportSerializer(serializers.ModelSerializer):
     class Meta:
         model = AirportDistance
-        fields = ('airport_id', 'airport_distance','name')
+        fields = ('airport_id', 'airport_distance', 'name')
 
 
 class OpportunityRailwaySerializer(serializers.ModelSerializer):
@@ -59,13 +78,13 @@ class OpportunityRailwaySerializer(serializers.ModelSerializer):
 class OpportunityPortAndTerminalSerializer(serializers.ModelSerializer):
     class Meta:
         model = PortAndTerminalDistance
-        fields = ('port_id', 'port_distance','name')
+        fields = ('port_id', 'port_distance', 'name')
 
 
 class OpportunityCustomsPortOfEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomsPortOfEntryDistance
-        fields = ('customs_port_id', 'customs_port_distance','name')
+        fields = ('customs_port_id', 'customs_port_distance', 'name')
 
 
 class OpportunityResearchCentreSerializer(serializers.ModelSerializer):
@@ -101,10 +120,22 @@ class OpportunityRegionalDistrictSerializer(serializers.ModelSerializer):
 class MunicipalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = MunicipalityDistance
-        fields = ('name','population','municipality_distance','municipality_id','community_id')
+        fields = (
+            'name',
+            'population',
+            'municipality_distance',
+            'municipality_id',
+            'community_id',
+        )
 
 
 class IndianReserveBandSerializer(serializers.ModelSerializer):
     class Meta:
         model = IndianReserveBandDistance
-        fields = ('reserve_distance', 'reserve_id', 'community_id','name', 'place_name')
+        fields = (
+            'reserve_distance',
+            'reserve_id',
+            'community_id',
+            'name',
+            'place_name',
+        )

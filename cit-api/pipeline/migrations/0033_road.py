@@ -14,8 +14,19 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Road',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('geom', django.contrib.gis.db.models.fields.LineStringField(srid=4326)),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
+                (
+                    'geom',
+                    django.contrib.gis.db.models.fields.LineStringField(srid=4326),
+                ),
                 ('best_broadband', models.CharField(max_length=5)),
             ],
         ),

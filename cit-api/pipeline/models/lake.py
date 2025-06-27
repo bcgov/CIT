@@ -8,7 +8,7 @@ class Lake(BaseNamedPolygon):
     NAME_FIELD = 'GNIS_NAME_1'
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     def __str__(self):
         return self.name

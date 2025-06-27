@@ -2,6 +2,7 @@ from django.contrib.gis.db import models
 
 from pipeline.models.common.base_polygon_geom import BasePolygonGeom
 
+
 class BaseCensus(BasePolygonGeom):
     census_year = models.IntegerField(null=True)
     global_nonresp_sf_pct = models.FloatField(null=True)
@@ -502,6 +503,6 @@ class BaseCensus(BasePolygonGeom):
     visible_minority_pct_female = models.FloatField(null=True)
     feature_area_sqm = models.FloatField(null=True)
     feature_length_m = models.FloatField(null=True)
-    
+
     class Meta:
         abstract = True

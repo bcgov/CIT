@@ -13,6 +13,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='user',
             name='deleted',
-            field=models.BooleanField(default=False, help_text='This is for soft deletes'),
+            field=models.BooleanField(
+                default=False, help_text='This is for soft deletes'
+            ),
         ),
     ]

@@ -13,6 +13,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='datasource',
             name='source',
-            field=models.CharField(choices=[('internal', 'Provided by Network BC team'), ('databc', 'BC Data Catalogue')], max_length=127, null=True),
+            field=models.CharField(
+                choices=[
+                    ('internal', 'Provided by Network BC team'),
+                    ('databc', 'BC Data Catalogue'),
+                ],
+                max_length=127,
+                null=True,
+            ),
         ),
     ]

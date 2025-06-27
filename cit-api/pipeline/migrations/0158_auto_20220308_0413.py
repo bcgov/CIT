@@ -13,12 +13,23 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Housing_Data',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('census_subdivision_id', models.IntegerField()),
                 ('yearmonth', models.CharField(max_length=127, null=True)),
                 ('year', models.IntegerField(null=True)),
                 ('month', models.IntegerField(null=True)),
-                ('total_building_permits', models.DecimalField(decimal_places=4, max_digits=16, null=True)),
+                (
+                    'total_building_permits',
+                    models.DecimalField(decimal_places=4, max_digits=16, null=True),
+                ),
             ],
             options={
                 'ordering': ('id',),
@@ -27,6 +38,9 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='housing_data',
-            constraint=models.UniqueConstraint(fields=('census_subdivision_id', 'month', 'year'), name='Primary_Key_Constraint'),
+            constraint=models.UniqueConstraint(
+                fields=('census_subdivision_id', 'month', 'year'),
+                name='Primary_Key_Constraint',
+            ),
         ),
     ]

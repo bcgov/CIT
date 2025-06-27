@@ -4,7 +4,6 @@ from pipeline.importers.base_importer import BaseImporter
 from pipeline.models.csd_centroid import CSDCentroid
 
 
-
 class CSDCentroidImporter(BaseImporter):
     DATA_SOURCES = ["data/import/bucket2/semiannually/2csd_centroid.json"]
 
@@ -15,11 +14,11 @@ class CSDCentroidImporter(BaseImporter):
         csv_reader = csv.reader(content.readlines(), delimiter=",")
         for l, line in enumerate(csv_reader):
             if l == 0:
-                continue #skip header row
+                continue  # skip header row
 
             entry = CSDCentroid(
-                id = line[0],
-                name = line[1],
+                id=line[0],
+                name=line[1],
                 closest_community_id=line[2],
                 closest_community_distance=line[3],
                 latitude=line[4],

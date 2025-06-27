@@ -14,12 +14,16 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='censussubdivision',
             name='geom',
-            field=django.contrib.gis.db.models.fields.MultiPolygonField(null=True, srid=4326),
+            field=django.contrib.gis.db.models.fields.MultiPolygonField(
+                null=True, srid=4326
+            ),
         ),
         migrations.AddField(
             model_name='censussubdivision',
             name='geom_simplified',
-            field=django.contrib.gis.db.models.fields.MultiPolygonField(null=True, srid=4326),
+            field=django.contrib.gis.db.models.fields.MultiPolygonField(
+                null=True, srid=4326
+            ),
         ),
         migrations.AddField(
             model_name='community',

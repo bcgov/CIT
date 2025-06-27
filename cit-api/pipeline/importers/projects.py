@@ -75,7 +75,12 @@ def import_projects(dir_path):
         if filename.endswith(".csv"):
             print("filename", filename)
 
-            with open(os.path.join(dir_path, filename), mode='r', encoding='utf-8-sig', errors='ignore') as f:
+            with open(
+                os.path.join(dir_path, filename),
+                mode='r',
+                encoding='utf-8-sig',
+                errors='ignore',
+            ) as f:
 
                 skip_projects_csv_preamble_rows(f, filename)
                 reader = csv.DictReader(f)
@@ -89,7 +94,9 @@ def import_projects(dir_path):
 
                         print("project", project)
 
-                        instance = import_data_into_point_model("projects", Project, project, dry_run=True)
+                        instance = import_data_into_point_model(
+                            "projects", Project, project, dry_run=True
+                        )
                         print("instance", instance)
                     except Exception as e:
                         print("exception", e)
@@ -138,11 +145,21 @@ def handle_projects_fields_edge_cases(project, filename):
 
     project["SOURCE_DATE"] = get_last_update_field_from_filename(filename)
 
-    if "START_DATE" in project.keys() and "STANDARDIZED_START_DATE" not in project.keys():
-        project["STANDARDIZED_START_DATE"] = get_standardized_project_date(project["START_DATE"])
+    if (
+        "START_DATE" in project.keys()
+        and "STANDARDIZED_START_DATE" not in project.keys()
+    ):
+        project["STANDARDIZED_START_DATE"] = get_standardized_project_date(
+            project["START_DATE"]
+        )
 
-    if "COMPLETION_DATE" in project.keys() and "STANDARDIZED_COMPLETION_DATE" not in project.keys():
-        project["STANDARDIZED_COMPLETION_DATE"] = get_standardized_project_date(project["COMPLETION_DATE"])
+    if (
+        "COMPLETION_DATE" in project.keys()
+        and "STANDARDIZED_COMPLETION_DATE" not in project.keys()
+    ):
+        project["STANDARDIZED_COMPLETION_DATE"] = get_standardized_project_date(
+            project["COMPLETION_DATE"]
+        )
 
     NON_NUMERIC = r'[^0-9.]'
 
@@ -156,17 +173,19 @@ def handle_projects_fields_edge_cases(project, filename):
         project["OPERATING_JOBS"] = re.sub(NON_NUMERIC, '', project["OPERATING_JOBS"])
 
     if "CONSTRUCTION_JOBS" in project.keys() and project["CONSTRUCTION_JOBS"]:
-        project["CONSTRUCTION_JOBS"] = re.sub(NON_NUMERIC, '', project["CONSTRUCTION_JOBS"])
+        project["CONSTRUCTION_JOBS"] = re.sub(
+            NON_NUMERIC, '', project["CONSTRUCTION_JOBS"]
+        )
 
     # if a project is missing the lat/lon columns, try to look for other (more recent) years
     # to see if they contain the lat/lon columns. we import project csv files in reverse
     # chronological order, and older years tend to be missing columns.
-    if (
-        ("LATITUDE" not in project.keys() and "LONGITUDE" not in project.keys()) or
-            (not project['LATITUDE'] and not project['LONGITUDE'])):
+    if ("LATITUDE" not in project.keys() and "LONGITUDE" not in project.keys()) or (
+        not project['LATITUDE'] and not project['LONGITUDE']
+    ):
         existing_projects = Project.objects.filter(
-            project_id=project['PROJECT_ID'],
-            point__isnull=False)
+            project_id=project['PROJECT_ID'], point__isnull=False
+        )
         if existing_projects:
             print("existing_projects", existing_projects)
             existing_project = existing_projects.first()
@@ -196,7 +215,11 @@ def get_standardized_project_date(fuzzy_date):
     if re.search(QUARTER_PATTERN, quarter):
         quarter_cleaned = quarter
     else:
-        quarter_cleaned = QUARTERS_MAP[quarter.strip().lower()] if quarter.strip().lower() in QUARTERS_MAP else None
+        quarter_cleaned = (
+            QUARTERS_MAP[quarter.strip().lower()]
+            if quarter.strip().lower() in QUARTERS_MAP
+            else None
+        )
 
     if quarter_cleaned:
         return '{}-{}'.format(year, quarter_cleaned)
@@ -211,8 +234,14 @@ def get_last_update_field_from_filename(filename):
 
 
 def calculate_earliest_latest_entries():
-    for project_id in Project.objects.order_by("project_id").distinct().values_list("project_id", flat=True):
-        project_entries = Project.objects.filter(project_id=project_id).order_by("project_id", "source_date")
+    for project_id in (
+        Project.objects.order_by("project_id")
+        .distinct()
+        .values_list("project_id", flat=True)
+    ):
+        project_entries = Project.objects.filter(project_id=project_id).order_by(
+            "project_id", "source_date"
+        )
         earliest_project_entry = project_entries.first()
         earliest_project_entry.is_earliest_entry = True
         earliest_project_entry.save()

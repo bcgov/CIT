@@ -1,14 +1,15 @@
+import base64
+import calendar
+import csv
+import json
+import os
+from datetime import date, timedelta
+from io import StringIO
+
+import requests
 from django.core.management.base import BaseCommand
 from django.db import connection
-from datetime import date, timedelta
-import csv
-import os
-import requests
-import json
-from io import StringIO
 from requests.auth import HTTPBasicAuth
-import calendar
-import base64
 
 
 class Command(BaseCommand):
@@ -22,17 +23,25 @@ class Command(BaseCommand):
                 print(response.text)
             print("IDIR tracking report could not complete!")
 
+
 def send_tracking_email():
     token_request_body = {'grant_type': 'client_credentials'}
-    response = requests.post(os.environ.get("EMAIL_AUTH_HOST"),
-                             data=token_request_body, auth=HTTPBasicAuth(os.environ.get("EMAIL_CLIENT_ID"), os.environ.get("EMAIL_CLIENT_SECRET")))
+    response = requests.post(
+        os.environ.get("EMAIL_AUTH_HOST"),
+        data=token_request_body,
+        auth=HTTPBasicAuth(
+            os.environ.get("EMAIL_CLIENT_ID"), os.environ.get("EMAIL_CLIENT_SECRET")
+        ),
+    )
     if response.status_code == 200:
         access_token = response.json()["access_token"]
         headers = {
             "Authorization": "Bearer " + access_token,
             "Content-Type": "application/json",
         }
-        response = requests.get(os.environ.get("EMAIL_SERVICE_HOST") + "/api/v1/health", headers=headers)
+        response = requests.get(
+            os.environ.get("EMAIL_SERVICE_HOST") + "/api/v1/health", headers=headers
+        )
         # Get time span
         today = date.today()
         three_weeks_ago = today - timedelta(weeks=3)
@@ -62,19 +71,25 @@ def send_tracking_email():
                     {
                         "content": f"{encoded_csv_content}",
                         "encoding": "base64",
-                        "filename": f"{environment_level}_cit_user_bca_access_from_{from_date}_to_{to_date}.csv"
+                        "filename": f"{environment_level}_cit_user_bca_access_from_{from_date}_to_{to_date}.csv",
                     }
-                ]
+                ],
             }
             email_config_json = json.dumps(email_config)
             print("Sending attachment to databc...")
-            response = requests.post(os.environ.get("EMAIL_SERVICE_HOST") + "/api/v1/email", data=email_config_json, headers=headers)
+            response = requests.post(
+                os.environ.get("EMAIL_SERVICE_HOST") + "/api/v1/email",
+                data=email_config_json,
+                headers=headers,
+            )
         return response
     else:
         print(response.text)
 
+
 def construct_email_body(from_date, to_date):
     return f"List of CIT BCA User Accesses for {from_date} to {to_date}"
+
 
 def get_user_tracking(from_date, to_date):
     data_temp = StringIO()
@@ -82,7 +97,8 @@ def get_user_tracking(from_date, to_date):
     writer = csv.writer(data_temp, quoting=csv.QUOTE_NONNUMERIC)
     with connection.cursor() as cursor:
         cursor.execute(
-            f"SELECT ut.report_url, ut.date_viewed, u.name, u.email FROM pipeline_usertracking ut JOIN pipeline_user u ON u.id = ut.user_id WHERE ut.date_viewed BETWEEN '{from_date}'::timestamp AND '{to_date}'::timestamp;")
+            f"SELECT ut.report_url, ut.date_viewed, u.name, u.email FROM pipeline_usertracking ut JOIN pipeline_user u ON u.id = ut.user_id WHERE ut.date_viewed BETWEEN '{from_date}'::timestamp AND '{to_date}'::timestamp;"
+        )
         columns = [col[0] for col in cursor.description]
         writer.writerow(columns)
         for row in cursor.fetchall():
@@ -90,6 +106,7 @@ def get_user_tracking(from_date, to_date):
         writer.writerows(output)
     data_temp.seek(0)
     return data_temp.read()
+
 
 def encode_csv_file(csv_content):
     urlSafeEncodedBytes = base64.urlsafe_b64encode(csv_content.encode("utf-8"))

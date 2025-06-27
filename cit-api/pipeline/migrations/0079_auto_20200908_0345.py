@@ -56,7 +56,11 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterModelOptions(
             name='locationdistance',
-            options={'ordering': ('id',), 'verbose_name': 'Location Distance', 'verbose_name_plural': 'Location Distances'},
+            options={
+                'ordering': ('id',),
+                'verbose_name': 'Location Distance',
+                'verbose_name_plural': 'Location Distances',
+            },
         ),
         migrations.AlterModelOptions(
             name='municipality',

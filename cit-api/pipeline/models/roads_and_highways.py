@@ -1,7 +1,7 @@
 from django.contrib.gis.db import models
-from pipeline.models.common.base_named_line import BaseNamedLine
 
 from pipeline.constants import WGS84_SRID
+from pipeline.models.common.base_named_line import BaseNamedLine
 
 
 class RoadsAndHighways(BaseNamedLine):
@@ -17,7 +17,7 @@ class RoadsAndHighways(BaseNamedLine):
     number_of_lanes = models.IntegerField(null=True)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     def __str__(self):
         return self.name

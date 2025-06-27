@@ -1,66 +1,60 @@
-import csv
-from numpy import int64
-import requests
 import copy
-import math
-import requests
+import csv
 import io
-import pandas as pd
-
+import math
 from io import BytesIO
-from zipfile import ZipFile
 from urllib.request import urlopen
+from zipfile import ZipFile
 
-from django.db import connection
+import pandas as pd
+import requests
 from django.apps import apps
 from django.conf import settings
-from django.contrib.gis.geos import Point
 from django.contrib.gis.db.models.functions import Distance
-from django.core.files import File
-from django.core.exceptions import FieldDoesNotExist
-from django.contrib.gis.measure import D
-from django.utils.dateparse import parse_datetime
-from django.utils.timezone import make_aware
 from django.contrib.gis.geos import (
     GEOSGeometry,
-    MultiPolygon,
-    Polygon,
     LineString,
     MultiLineString,
+    MultiPolygon,
+    Point,
+    Polygon,
 )
+from django.contrib.gis.measure import D
+from django.core.exceptions import FieldDoesNotExist
+from django.core.files import File
+from django.db import connection
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import make_aware
+from numpy import int64
+from requests.adapters import HTTPAdapter
+from requests.packages.urllib3.util.retry import Retry
+from sqlalchemy import create_engine
 
-from pipeline.constants import WGS84_SRID
-from pipeline.models import LinkageWithCensus
-from pipeline.models.tourism_region import TourismRegion
-from pipeline.models.community import Community
+from pipeline.constants import LOCATION_TYPES, WGS84_SRID
+from pipeline.models import LinkageWithCensus, NAICSCodes
 from pipeline.models.census.business_by_census_subdivions import BusinessesByCSD
 from pipeline.models.census.cen_prof_detailed_csd_attrs_sp import (
     CEN_PROF_DETAILED_CSD_ATTRS_SP,
 )
-from pipeline.models.census.census_economic_region import CensusEconomicRegion
-from pipeline.models.general import (
-    DataSource,
-    LocationDistance,
-    SchoolDistrict,
-    Municipality,
-    Service,
-    RegionalDistrict,
-)
-from pipeline.models.location_assets import School, Hospital
 from pipeline.models.census.census_division_2016 import *
+from pipeline.models.census.census_economic_region import CensusEconomicRegion
 from pipeline.models.census.census_subdivision_2016 import *
-from pipeline.constants import LOCATION_TYPES
-
-from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.util.retry import Retry
-from sqlalchemy import create_engine
-from pipeline.models.Housing_Data import Housing_Data
+from pipeline.models.community import Community
 from pipeline.models.connectivity_infrastructure_projects import (
     ConnectivityInfrastructureProjects,
 )
-from pipeline.models import NAICSCodes
-from pipeline.models.general import PHDemographicDistribution
-
+from pipeline.models.general import (
+    DataSource,
+    LocationDistance,
+    Municipality,
+    PHDemographicDistribution,
+    RegionalDistrict,
+    SchoolDistrict,
+    Service,
+)
+from pipeline.models.Housing_Data import Housing_Data
+from pipeline.models.location_assets import Hospital, School
+from pipeline.models.tourism_region import TourismRegion
 
 RETRY_STRATEGY = Retry(total=3)
 ADAPTER = HTTPAdapter(max_retries=RETRY_STRATEGY)
@@ -166,7 +160,7 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
 
     elif resource_type == "BC Network Connectivity":
         data_default = {
-            "bcnc_ncs_sysid" : row["BCNC_NCS_SYSID"],
+            "bcnc_ncs_sysid": row["BCNC_NCS_SYSID"],
             "population": row["POPULATION"],
             "total_dwellings": row["TOTAL_DWELLINGS"],
             "usual_residences": row["USUAL_RESIDENCES"],
@@ -181,12 +175,12 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
             "fixed_wireless_providers": row["FIXED_WIRELESS_PROVIDERS"],
             "satellite_providers": row["SATELLITE_PROVIDERS"],
             "mobile_wireless_providers": row["MOBILE_WIRELESS_PROVIDERS"],
-            "transport_fibre_providers": row["TRANSPORT_FIBRE_PROVIDERS"],    
+            "transport_fibre_providers": row["TRANSPORT_FIBRE_PROVIDERS"],
         }
         instance, created = Model.objects.update_or_create(
             hex_code_id=row["HEX_CODE_ID"],
             defaults=data_default,
-            create_defaults=data_default
+            create_defaults=data_default,
         )
 
     else:
@@ -903,7 +897,7 @@ def import_connectivity_project(url):
         try:
             data1 = s.content.decode("utf8")
             data = pd.read_csv(io.StringIO(data1))
-            
+
             # drop columns that are not used by the current data model
             data.drop(data.columns[[13, 19, 20]], axis=1, inplace=True)
 
@@ -933,8 +927,12 @@ def import_connectivity_project(url):
                 inplace=True,
             )
 
-            data["estimated_start_date"] = data["estimated_start_date"].astype(str).str.strip()
-            data["estimated_completion_date"] = data["estimated_completion_date"].astype(str).str.strip()
+            data["estimated_start_date"] = (
+                data["estimated_start_date"].astype(str).str.strip()
+            )
+            data["estimated_completion_date"] = (
+                data["estimated_completion_date"].astype(str).str.strip()
+            )
             data["estimated_start_date"] = pd.to_datetime(
                 data["estimated_start_date"], format="%Y-%m-%d"
             )

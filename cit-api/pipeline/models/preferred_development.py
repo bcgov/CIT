@@ -7,7 +7,7 @@ class PreferredDevelopment(models.Model):
     description = models.CharField(max_length=255, null=True)
 
     class Meta:
-        ordering = ("pk", )
+        ordering = ("pk",)
 
     def __str__(self):
         return self.name

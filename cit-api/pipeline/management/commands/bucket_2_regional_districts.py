@@ -1,6 +1,6 @@
-from pipeline.management.commands.base.base_import_command import BaseImportCommand
-from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.importers.bucket2.bucket2_regional_districts import import_data_sources
+from pipeline.importers.databc_resource import import_wms_resource
+from pipeline.management.commands.base.base_import_command import BaseImportCommand
 from pipeline.models.general import DataSource
 
 

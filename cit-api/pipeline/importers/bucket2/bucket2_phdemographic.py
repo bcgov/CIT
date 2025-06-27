@@ -1,16 +1,18 @@
 import json
-import pandas as pd
 from io import BytesIO
-from zipfile import ZipFile
 from urllib.request import urlopen
+from zipfile import ZipFile
 
-from pipeline.models.general import PHDemographicDistribution
+import pandas as pd
+
 from pipeline.importers.base_importer import BaseImporter
 from pipeline.importers.utils import write_to_db
+from pipeline.models.general import PHDemographicDistribution
+
+
 class PHDemographicDistributionImporter(BaseImporter):
     DATA_SOURCES = ['data/import/bucket2/semiannually/2phdemographic.json']
-    
-    
+
     @classmethod
     def etl(cls, url, linkage_file) -> int:
         resp = urlopen(url)
@@ -29,17 +31,18 @@ class PHDemographicDistributionImporter(BaseImporter):
                     "Longitude",
                 ]
                 PHH_BC = pd.read_csv(f, header=0, delimiter=",", usecols=fields)
-                #file was moved and csv columns were changed, map them back to col names
-                PHH_BC.rename(columns={
-                    PHH_BC.columns[0]:"phh_id",
-                    PHH_BC.columns[1]:"phh_type",
-                    PHH_BC.columns[2]:"population",
-                    PHH_BC.columns[3]:"total_private_dwellings",
-                    PHH_BC.columns[4]:"private_dwellings_usual_residents_occupied",
-                    PHH_BC.columns[5]:"dbuid_ididu",
-                    PHH_BC.columns[6]:"hexuid_iduhex",
+                # file was moved and csv columns were changed, map them back to col names
+                PHH_BC.rename(
+                    columns={
+                        PHH_BC.columns[0]: "phh_id",
+                        PHH_BC.columns[1]: "phh_type",
+                        PHH_BC.columns[2]: "population",
+                        PHH_BC.columns[3]: "total_private_dwellings",
+                        PHH_BC.columns[4]: "private_dwellings_usual_residents_occupied",
+                        PHH_BC.columns[5]: "dbuid_ididu",
+                        PHH_BC.columns[6]: "hexuid_iduhex",
                     },
-                    inplace=True
+                    inplace=True,
                 )
 
             linkage = pd.read_csv(linkage_file)
