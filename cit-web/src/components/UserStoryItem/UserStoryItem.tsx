@@ -11,7 +11,7 @@ export default function UserStoryItem({
   onUserStoryChange = null,
 }) {
   const userStoryYes = userStory.user_story_paths.find(
-    (x) => x.label === "Yes"
+    (x) => x.label === "Yes",
   );
   const userStoryNo = userStory.user_story_paths.find((x) => x.label === "No");
 
@@ -121,7 +121,7 @@ export default function UserStoryItem({
             <Select
               placeholder=""
               value={userStory.user_story_paths.find(
-                (x) => x.value === userStory.selectedValue
+                (x) => x.value === userStory.selectedValue,
               )}
               options={userStory.user_story_paths}
               styles={selectStyle}

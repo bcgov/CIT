@@ -30,7 +30,7 @@ export default function PowerBi() {
   const [reportId] = useState(
     location.pathname.includes("public")
       ? Config.pbiReportIdPublic
-      : Config.pbiReportIdInternal
+      : Config.pbiReportIdInternal,
   );
 
   const [community, setCommunity] = useState("");
@@ -121,7 +121,6 @@ export default function PowerBi() {
         setToken(res.data.access_token);
       })
       .catch((err) => {
-        // eslint-disable-next-line no-console
         console.error(err);
       });
   }, []);
@@ -133,13 +132,12 @@ export default function PowerBi() {
           `https://api.powerbi.com/v1.0/myorg/groups/${groupId}/reports/${reportId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         )
         .then((data) => {
           setReportConfig(data.data);
         })
         .catch((err) => {
-          // eslint-disable-next-line no-console
           console.error("error in getting report config", err);
         });
     }
@@ -153,7 +151,7 @@ export default function PowerBi() {
           { accessLevel: "view" },
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         )
         .then((data) => {
           setEmbedToken(data.data.token);
@@ -249,10 +247,10 @@ export default function PowerBi() {
                     .getPages()
                     .then((data) => {
                       const commReport = data.filter(
-                        (report) => report.displayName === "Community Overview"
+                        (report) => report.displayName === "Community Overview",
                       );
                       const criteria = data.filter(
-                        (report) => report.displayName === "Criteria Search"
+                        (report) => report.displayName === "Criteria Search",
                       );
                       if (community || regionalDistrict || setPage) {
                         if (
@@ -263,14 +261,12 @@ export default function PowerBi() {
                           window.report
                             .setPage(commReport[0].name)
                             .catch((err) => {
-                              // eslint-disable-next-line no-console
                               console.error("setpage error:", err);
                             });
                           if (filter()) {
                             window.report
                               .setFilters([filter()])
                               .catch((err) => {
-                                // eslint-disable-next-line no-console
                                 console.error("error: ", err);
                               });
                           }
@@ -281,12 +277,10 @@ export default function PowerBi() {
                         criteria[0].name !== currentPage
                       ) {
                         window.report.setPage(criteria[0].name).catch((err) => {
-                          // eslint-disable-next-line no-console
                           console.error("setpage error:", err);
                         });
                         if (filter()) {
                           window.report.setFilters([filter()]).catch((err) => {
-                            // eslint-disable-next-line no-console
                             console.error("error: ", err);
                           });
                         }
@@ -298,12 +292,11 @@ export default function PowerBi() {
                             user_id: user.id,
                             report_url: window.location.href,
                           },
-                          keycloak.obj.token
+                          keycloak.obj.token,
                         );
                       }
                     })
                     .catch((err) => {
-                      // eslint-disable-next-line no-console
                       console.error("error: ", err);
                     });
                 },
@@ -311,7 +304,6 @@ export default function PowerBi() {
               [
                 "error",
                 (event) => {
-                  // eslint-disable-next-line no-console
                   console.error("ERROR:::", event.detail);
                 },
               ],

@@ -18,7 +18,7 @@ describe("App Route", () => {
         <MemoryRouter>
           <AppRoute component={() => <p>Title Test Page</p>} title={title} />
         </MemoryRouter>
-      </Provider>
+      </Provider>,
     );
 
     // Ensure the document title updates before checking

@@ -36,19 +36,19 @@ export default function Footer() {
             {LinkElement("https://www2.gov.bc.ca", "BC Government")}
             {LinkElement(
               "https://www2.gov.bc.ca/gov/content/home/disclaimer",
-              "Disclaimer"
+              "Disclaimer",
             )}
             {LinkElement(
               "https://www2.gov.bc.ca/gov/content/home/privacy",
-              "Privacy"
+              "Privacy",
             )}
             {LinkElement(
               "https://www2.gov.bc.ca/gov/content/home/accessibility",
-              "Accessibility"
+              "Accessibility",
             )}
             {LinkElement(
               "https://www2.gov.bc.ca/gov/content/home/copyright",
-              "Copyright"
+              "Copyright",
             )}
           </ul>
         </div>

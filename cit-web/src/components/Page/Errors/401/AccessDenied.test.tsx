@@ -11,7 +11,7 @@ describe("AccessDenied", () => {
     render(
       <Router history={history}>
         <AccessDenied />
-      </Router>
+      </Router>,
     );
     const AccessDeniedPage = screen.getByTestId("AccessDeniedPage");
     expect(AccessDeniedPage).toBeInTheDocument();

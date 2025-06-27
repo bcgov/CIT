@@ -27,7 +27,7 @@ const renderLogin = () => {
       <Router history={history}>
         <Login />
       </Router>
-    </Provider>
+    </Provider>,
   );
 };
 
@@ -65,7 +65,7 @@ describe("login", () => {
         <Router history={history}>
           <Login />
         </Router>
-      </Provider>
+      </Provider>,
     );
     expect(history.location.pathname).toBe("/search");
   });
@@ -81,7 +81,7 @@ describe("login", () => {
       type: "POST",
       status: 201,
     };
-    // eslint-disable-next-line
+
     const store = mockStore({
       network: {
         activateUser: activatedAction,
@@ -93,7 +93,7 @@ describe("login", () => {
         <Router history={history}>
           <Login />
         </Router>
-      </Provider>
+      </Provider>,
     );
     expect(history.location.pathname).toBe("/search");
   });
