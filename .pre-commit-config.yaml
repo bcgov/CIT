@@ -1,0 +1,22 @@
+repos:
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0 # Use the latest stable version or match your CI
+    hooks:
+      - id: flake8
+        additional_dependencies: []
+        args: [--config=./cit-api/.flake8]
+        exclude: .git,__pycache__,build,dist,migrations,venv
+
+  - repo: https://github.com/psf/black
+    rev: 24.4.2 # Use the latest stable version or match your CI
+    hooks:
+      - id: black
+        args: [--config=./cit-api/pyproject.toml]
+        exclude: '\\migrations\\'
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2 # Use the latest stable version or match your CI
+    hooks:
+      - id: isort
+        args: [--settings-path=./cit-api/pyproject.toml]
+        skip: migrations

@@ -1,0 +1,10 @@
+
+[tool.isort]
+profile = "black"
+line_length = 88
+skip = ["migrations", "venv", "pipeline/migrations"]
+
+[tool.black]
+line-length = 88
+skip-string-normalization = true
+exclude = '(pipeline/migrations|migrations|venv)'
