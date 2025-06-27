@@ -12,8 +12,6 @@ clnpdictprbi01 - This is the Power BI Embedded resource used as a connector for 
 psql-cit3-citz-bcgov-prod - the prod and following test PSQL databases actively used.
 psql-cit3-citz-bcgov
 
-tfstatecit - Storage to hold the Terraform state files.  These are important and should be preserved.
-
 web-cit3-citz-bcgov-prod - this is the web service actively used for the frontend.
 web-cit3-citz-bcgov
 

@@ -26,15 +26,15 @@ jobs:
           fetch-depth: 0
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-        working-directory: ./cit3.0-web
+        working-directory: ./cit-web
       - name: Run vitest with coverage
         run: yarn coverage:report || true
-        working-directory: ./cit3.0-web
+        working-directory: ./cit-web
       - name: Upload frontend coverage
         uses: actions/upload-artifact@v4
         with:
           name: frontend-coverage
-          path: cit3.0-web/src/coverage/lcov.info
+          path: cit-web/src/coverage/lcov.info
 
   python:
     runs-on: ubuntu-latest
@@ -76,7 +76,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: frontend-coverage
-          path: cit3.0-web/src/coverage
+          path: cit-web/src/coverage
       - name: Download backend coverage
         uses: actions/download-artifact@v4
         with:
@@ -98,10 +98,10 @@ jobs:
 #       - uses: actions/checkout@v4
 #       - name: Install dependencies
 #         run: yarn install --frozen-lockfile
-#         working-directory: ./cit3.0-web
+#         working-directory: ./cit-web
 #       - name: Run ESLint
 #         run: yarn run eslint -f @microsoft/eslint-formatter-sarif -o results.sarif . || true
-#         working-directory: ./cit3.0-web
+#         working-directory: ./cit-web
 #       - name: Remove entries with suppressions from SARIF
 #         run: |
 #           node - <<EOF
@@ -119,7 +119,7 @@ jobs:
 #           // Write the modified SARIF file
 #           fs.writeFileSync('results.sarif', JSON.stringify(sarifJson, null, 2));
 #           EOF
-#         working-directory: ./cit3.0-web
+#         working-directory: ./cit-web
 #       - uses: github/codeql-action/upload-sarif@429e1977040da7a23b6822b13c129cd1ba93dbb2
 #         with:
-#           sarif_file: cit3.0-web/results.sarif
+#           sarif_file: cit-web/results.sarif

@@ -5,7 +5,7 @@ on:
   push:
     branches: [openshift]
     paths:
-      - 'cit3.0-web/**'
+      - 'cit-web/**'
   workflow_dispatch:
 
 jobs:
@@ -18,7 +18,7 @@ jobs:
 
       - name: "Build frontend"
         run: |
-          docker build cit3.0-web -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:develop
+          docker build cit-web -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/cit-frontend:latest -t image-registry.apps.silver.devops.gov.bc.ca/b4e935-tools/cit-frontend:develop
           docker images
       
       #- name: "Push frontend to Azure"

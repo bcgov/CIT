@@ -19,7 +19,7 @@ jobs:
       matrix:
         include:
           - image: ghcr.io/bcgov/cit/cit-frontend
-            context: ./cit3.0-web/
+            context: ./cit-web/
             dockerfile: Dockerfile
             name: frontend
           - image: ghcr.io/bcgov/cit/cit-api

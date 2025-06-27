@@ -31,8 +31,9 @@ ALLOWED_HOSTS = ['*']
 ENV_LEVEL = os.environ.get('ENV_LEVEL', 'dev')
 
 ADMINS = (
-    ('Clark', 'clark@countable.ca'),
-    ('Merwyn', 'merwyn.Pereira@gov.bc.ca'),
+    ('Rafael', 'rafael.solorzano@gov.bc.ca'),
+    ('Rumesha', 'rumesha.ranathunga@gov.bc.ca'),
+    ('Olek', 'oleksandr.sokolov@gov.bc.ca'),
 )
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
