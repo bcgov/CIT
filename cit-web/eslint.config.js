@@ -1,9 +1,11 @@
-import react from "eslint-plugin-react";
-import prettier from "eslint-plugin-prettier";
-import airbnb from "eslint-config-airbnb";
+import js from "@eslint/js";
+import reactPlugin from "eslint-plugin-react";
+import prettierPlugin from "eslint-plugin-prettier";
+import airbnbBase from "eslint-config-airbnb-base";
 import prettierConfig from "eslint-config-prettier";
 
 export default [
+  js.configs.recommended,
   {
     files: ["**/*.{js,jsx,ts,tsx}"],
     languageOptions: {
@@ -19,13 +21,12 @@ export default [
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
-          tsx: true,
         },
       },
     },
     plugins: {
-      react,
-      prettier,
+      react: reactPlugin,
+      prettier: prettierPlugin,
     },
     settings: {
       "import/resolver": {
@@ -33,12 +34,16 @@ export default [
           extensions: [".js", ".jsx", ".ts", ".tsx"],
         },
       },
+      react: {
+        version: "detect",
+      },
     },
     ignores: ["node_modules/", "build/"],
     rules: {
-      ...airbnb.rules,
+      ...airbnbBase.rules,
       ...prettierConfig.rules,
-      "react/jsx-filename-extension": "off",
+      ...reactPlugin.configs.recommended.rules,
+      "react/jsx-filename-extension": ["off"],
       "react/react-in-jsx-scope": "off",
       "react/jsx-props-no-spreading": "off",
       "react/jsx-one-expression-per-line": "off",
