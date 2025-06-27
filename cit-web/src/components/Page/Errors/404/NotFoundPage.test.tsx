@@ -9,7 +9,7 @@ describe("NotFoundPage", () => {
     render(
       <MemoryRouter>
         <NotFoundPage />
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     const notFoundPage = screen.getByTestId("NotFoundPage");

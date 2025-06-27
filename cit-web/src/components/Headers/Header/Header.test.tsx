@@ -25,7 +25,7 @@ test("header renders correctly", () => {
       <Router location={history.location} navigator={history}>
         <Header />
       </Router>
-    </Provider>
+    </Provider>,
   );
   const headerEl = screen.getByTestId("Header");
   expect(headerEl).toBeInTheDocument();
@@ -47,7 +47,7 @@ xit("User displays default if no user name information found", () => {
       <Router history={history}>
         <Header />
       </Router>
-    </Provider>
+    </Provider>,
   );
   const name = getByText("default");
   expect(name).toBeVisible();
@@ -72,7 +72,7 @@ describe("UserProfile user name display", () => {
         <Router history={history}>
           <Header />
         </Router>
-      </Provider>
+      </Provider>,
     );
     const name = getByText("display name");
     expect(name).toBeVisible();
@@ -96,7 +96,7 @@ describe("UserProfile user name display", () => {
         <Router history={history}>
           <Header />
         </Router>
-      </Provider>
+      </Provider>,
     );
     const name = getByText("firstName lastName");
     expect(name).toBeVisible();
@@ -119,7 +119,7 @@ describe("UserProfile user name display", () => {
         <Router history={history}>
           <Header />
         </Router>
-      </Provider>
+      </Provider>,
     );
     fireEvent.click(getByText(/test user/i));
     expect(getByText(/agencyVal/i)).toBeInTheDocument();

@@ -100,7 +100,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
       `https://api.powerbi.com/v1.0/myorg/groups/${groupId}/reports/${reportId}`,
       {
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
     return response.data;
   };
@@ -111,7 +111,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
       { accessLevel: "view" },
       {
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
     return response.data.token;
   };
@@ -128,7 +128,6 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
       "error",
       function reportErrored(event) {
         if (event) {
-          // eslint-disable-next-line no-console
           console.error(event.detail);
         }
       },
@@ -212,7 +211,7 @@ export default function ReportOverview({ reportFilter, user, handleLogin }) {
     const url = `${
       configuration.baseUrl
     }/cit-dashboard/info/${encodeURIComponent(
-      reportFilter.zoneType.toLowerCase().replace(" ", "-")
+      reportFilter.zoneType.toLowerCase().replace(" ", "-"),
     )}/${reportFilter.zoneId}`;
 
     reportUrl.current = url;

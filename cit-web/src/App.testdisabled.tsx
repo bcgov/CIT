@@ -26,7 +26,7 @@ describe("App Component", () => {
               <App />
             </MemoryRouter>
           </Provider>
-        </ReactKeycloakProvider>
+        </ReactKeycloakProvider>,
       );
 
       const linkElement = getByText(/Community Information Tool/i);

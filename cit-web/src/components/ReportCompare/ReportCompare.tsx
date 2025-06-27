@@ -42,7 +42,7 @@ export default function ReportCompare() {
       `https://api.powerbi.com/v1.0/myorg/groups/${groupId}/reports/${reportId}`,
       {
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
     return response.data;
   };
@@ -53,7 +53,7 @@ export default function ReportCompare() {
       { accessLevel: "view" },
       {
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
     return response.data.token;
   };
@@ -70,7 +70,6 @@ export default function ReportCompare() {
       "error",
       function reportErrored(event) {
         if (event) {
-          // eslint-disable-next-line no-console
           console.error(event.detail);
         }
       },

@@ -18,7 +18,7 @@ const PrivateRoute = ({
 
   if (!keycloak.authenticated) {
     const redirectTo = encodeURIComponent(
-      `${location.pathname}${location.search}`
+      `${location.pathname}${location.search}`,
     );
     return <Navigate to={`/login?redirect=${redirectTo}`} replace />;
   }

@@ -30,7 +30,7 @@ describe("logout", () => {
     render(
       <Router history={history}>
         <LogoutPage />
-      </Router>
+      </Router>,
     );
 
     expect(history.location.pathname).toBe("/");
