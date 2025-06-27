@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: lint-staged
+        name: lint-staged
+        entry: npx lint-staged
+        language: node
+        types: [js, jsx, ts, tsx]
+        pass_filenames: false
