@@ -28,4 +28,4 @@ openpyxl==3.1.5           # Updated for Excel file handling
 
 # Other needed to return
 setuptools==80.9.0
-GDAL==3.6.2  # Match the version from `gdalinfo --version`
+GDAL==3.11.0  # Match the version from `gdalinfo --version`
