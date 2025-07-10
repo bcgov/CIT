@@ -83,6 +83,8 @@ def import_wms_resource(resource):
             instance = import_data_into_point_model(resource.name, model_class, row)
         else:
             instance = import_data_into_area_model(resource.display_name, model_class, row, index)
+            if instance is None:
+                continue
             geos_geom_out, geos_geom_simplified = _generate_bcdata_geom(row, WGS84_SRID)
             instance.geom = geos_geom_out
             instance.geom_simplified = geos_geom_simplified
