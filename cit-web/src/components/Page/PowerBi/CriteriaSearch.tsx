@@ -42,16 +42,15 @@ export default function CriteriaSearch() {
     settings: { ...layoutSettings },
   };
 
-  const [embedReportConfig, setEmbedReportConfig] = useState(
-    inititalReportConfig
-  );
+  const [embedReportConfig, setEmbedReportConfig] =
+    useState(inititalReportConfig);
 
   const getReportConfig = async () => {
     const response = await axios.get(
       `https://api.powerbi.com/v1.0/myorg/groups/${groupId}/reports/${reportId}`,
       {
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
     return response.data;
   };
@@ -62,7 +61,7 @@ export default function CriteriaSearch() {
       { accessLevel: "view" },
       {
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
     return response.data.token;
   };
@@ -74,7 +73,6 @@ export default function CriteriaSearch() {
       "error",
       (event) => {
         if (event) {
-          // eslint-disable-next-line no-console
           console.error(event.detail);
         }
       },

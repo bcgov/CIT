@@ -2,8 +2,8 @@ from django.contrib.gis.db import models
 from django.contrib.gis.db.models import PointField
 from django.contrib.gis.geos import Point
 
-from pipeline.utils import get_quarterly_date_str_as_date
 from pipeline.constants import WGS84_SRID
+from pipeline.utils import get_quarterly_date_str_as_date
 
 
 class Location(models.Model):
@@ -11,8 +11,7 @@ class Location(models.Model):
     point = PointField(null=True, blank=True, srid=WGS84_SRID)
     location_fuzzy = models.BooleanField(
         default=False,
-        help_text=
-        "This field should be set to True if the `point` field was not present in the original dataset "
+        help_text="This field should be set to True if the `point` field was not present in the original dataset "
         "and is inferred or approximated by other fields.",
     )
 
@@ -48,7 +47,7 @@ class Location(models.Model):
         # Note: `name` and `location_type` are not unique; e.g. there are two mills in different cities
         # named "West Fraser Mills Ltd."
         unique_together = [['name', 'point', 'location_type']]
-        ordering = ("id", )
+        ordering = ("id",)
 
 
 class Hospital(Location):
@@ -66,7 +65,7 @@ class Hospital(Location):
     num_communities_within_50km = models.IntegerField(null=True, blank=True)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     '''
     {
@@ -126,7 +125,7 @@ class Court(Location):
     court_level = models.CharField(max_length=20)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     '''
     {
@@ -164,7 +163,9 @@ class Project(Location):
     project_description = models.CharField(max_length=255, null=True, blank=True)
     estimated_cost = models.IntegerField(null=True, blank=True)
     update_activity = models.CharField(max_length=255, null=True, blank=True)
-    environmental_assessment_stage = models.CharField(max_length=255, null=True, blank=True)
+    environmental_assessment_stage = models.CharField(
+        max_length=255, null=True, blank=True
+    )
     construction_type = models.CharField(max_length=255, null=True, blank=True)
     construction_subtype = models.CharField(max_length=255, null=True, blank=True)
     project_type = models.CharField(max_length=255, null=True, blank=True)
@@ -191,7 +192,9 @@ class Project(Location):
     start_date = models.CharField(max_length=255, null=True, blank=True)
     completion_date = models.CharField(max_length=255, null=True, blank=True)
     standardized_start_date = models.CharField(max_length=255, null=True, blank=True)
-    standardized_completion_date = models.CharField(max_length=255, null=True, blank=True)
+    standardized_completion_date = models.CharField(
+        max_length=255, null=True, blank=True
+    )
 
     first_entry_date = models.CharField(max_length=255, null=True, blank=True)
     last_update = models.CharField(max_length=255, null=True, blank=True)
@@ -206,7 +209,7 @@ class Project(Location):
     is_latest_entry = models.BooleanField(null=True)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     def get_standardized_start_date_as_date(self):
         if not self.standardized_start_date:
@@ -257,7 +260,7 @@ class ServiceBCLocation(Location):
     WEBSITE_FIELD = 'Website_URL'
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     '''
     {
@@ -288,10 +291,12 @@ class School(Location):
     public_or_independent = models.CharField(null=True, blank=True, max_length=255)
     school_education_level = models.CharField(null=True, blank=True, max_length=255)
 
-    school_district = models.ForeignKey('SchoolDistrict', null=True, on_delete=models.SET_NULL)
+    school_district = models.ForeignKey(
+        'SchoolDistrict', null=True, on_delete=models.SET_NULL
+    )
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     '''
     {
@@ -323,10 +328,12 @@ class PostSecondaryInstitution(Location):
     LONGITUDE_FIELD = 'Longitude'
 
     institution_type = models.CharField(null=True, blank=True, max_length=255)
-    economic_development_region = models.CharField(null=True, blank=True, max_length=255)
+    economic_development_region = models.CharField(
+        null=True, blank=True, max_length=255
+    )
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     '''
     {
@@ -357,7 +364,7 @@ class Clinic(Location):
     hours = models.TextField(null=True, blank=True)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     '''
     {
@@ -402,7 +409,7 @@ class FirstResponder(Location):
     keywords = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     def category(self):
         return self.keywords.split(';')[0].strip()
@@ -452,7 +459,7 @@ class DiagnosticFacility(Location):
     ser_cd_dsc = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     '''
     OrderedDict([
@@ -481,7 +488,7 @@ class TimberFacility(Location):
     bus_cat_ds = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     '''
     OrderedDict([
@@ -528,7 +535,7 @@ class CivicFacility(Location):
     bus_cat_ds = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     def category(self):
         return self.keywords.split(';')[0].strip()
@@ -562,7 +569,6 @@ class CivicFacility(Location):
     '''
 
 
-
 class ResearchCentre(Location):
     LATITUDE_FIELD = 'LATITUDE'
     LONGITUDE_FIELD = 'LONGITUDE'
@@ -570,14 +576,16 @@ class ResearchCentre(Location):
     WEBSITE_FIELD = 'RESEARCH_CENTRE_WEBSITE_URL'
 
     research_specialties = models.CharField(null=True, blank=True, max_length=255)
-    research_centre_affiliation = models.CharField(null=True, blank=True, max_length=255)
+    research_centre_affiliation = models.CharField(
+        null=True, blank=True, max_length=255
+    )
     institution = models.CharField(null=True, blank=True, max_length=255)
     inst_acrnm = models.CharField(null=True, blank=True, max_length=255)
     research_sector = models.CharField(null=True, blank=True, max_length=255)
     cntr_type = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     '''
     {'_id': 1, 'RESEARCH_CENTRE_ID': 1, 'CENSUS_YEAR': 2011, 'CENSUS_SUBDIVISION_ID': 5915020, 'RESEARCH_CENTRE_NAME': 'The Centre for Advanced Wood Processing', 'RESEARCH_SPECIALTIES': 'Wood Products Processing, Advanced Wood Products Manufacturing', 'RESEARCH_CENTRE_AFFILIATION': 'University', 'INSTITUTION': 'University of British Columbia', 'INST_ACRNM': 'UBC', 'RESEARCH_CENTRE_ADDRESS': '2424 Main Mall', 'RESEARCH_CENTRE_MUNICIPALITY': 'Vancouver', 'RESEARCH_SECTOR': 'Forestry', 'RESEARCH_CENTRE_WEBSITE_URL': 'http://cawp.ubc.ca/', 'DATA_UPDATED_YEAR': 2014, 'POSTAL_CODE': '', 'SOURCE': '', 'NOTES': '', 'CNTR_TYPE': '', 'LONGITUDE': -123.2499699, 'LATITUDE': 49.260633}
@@ -608,7 +616,7 @@ class Airport(Location):
     seaplane_access_ind = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     '''
     OrderedDict([('CUST_ORG', 'Ministry of Forest, Lands and Natural Resource Operations and Rural Development - GeoBC '), ('BUS_CAT_CL', 'airTransportation'), ('BUS_CAT_DS', 'Air Transportation'), ('OCCPNT_TYP', 'BC Airports'), ('SRCDATA_ID', '455'), ('SRC_ID_IND', 'N'), ('NAME', 'Terrace (Northwest Regional) Airport'), ('DESCRIPTION', 'airport'), ('ADDRESS', '4401 Bristol Rd, Terrace, BC'), ('ALIAS_ADDR', '4401 Bristol Rd, Terrace, BC'), ('ST_ADDRESS', '4401 Bristol Rd'), ('POSTAL_CD', ''), ('LOCALITY', 'Terrace'), ('CONT_PHONE', '250-635-2659'), ('CONT_EMAIL', ''), ('CONT_FAX', ''), ('WEBSITE', ''), ('IMAGE_URL', ''), ('LATITUDE', '54.4686111'), ('LONGITUDE', '-128.5783333'), ('KEYWORDS', 'aerodrome; airport; airstrip; runway'), ('DT_UPDATE', '20200205073805'), ('GEOCD_IND', ''), ('AER_STATUS', 'Certified'), ('AIRCR_ACS', 'Y'), ('DATA_SRCE', 'Canadian Flight Supplement'), ('DATASRC_YR', '2014'), ('ELEVATION', '217.32'), ('FUEL_AVAIL', 'Y'), ('HELI_ACS', 'N'), ('IATA', ''), ('ICAO', 'CYXT'), ('MX_RWAY_LN', '2285.39'), ('NUM_RWAY', '2'), ('OIL_AVAIL', 'Y'), ('RWAY_SURF', 'asphalt'), ('SEAPLN_ACC', 'N'), ('TC_LID', ''), ('SHAPE', ''), ('SEQ_ID', '578'), ('X', '833323.8826999993'), ('Y', '1054949.9463999951')])
@@ -634,7 +642,7 @@ class PortAndTerminal(Location):
     street_address = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
 
 class LaboratoryService(Location):
@@ -653,7 +661,7 @@ class LaboratoryService(Location):
     organization_name = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
 
 class LocalGovernmentOffice(Location):
@@ -668,7 +676,7 @@ class LocalGovernmentOffice(Location):
     occupant_type_description = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
 
 class EmergencySocialServiceFacility(Location):
@@ -681,7 +689,7 @@ class EmergencySocialServiceFacility(Location):
     status = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
 
 class CustomsPortOfEntry(Location):
@@ -689,12 +697,14 @@ class CustomsPortOfEntry(Location):
     LONGITUDE_FIELD = 'LONGITUDE'
     NAME_FIELD = 'CUSTOMS_PORT_NAME'
 
-    customs_port_street_address = models.CharField(null=True, blank=True, max_length=255)
+    customs_port_street_address = models.CharField(
+        null=True, blank=True, max_length=255
+    )
     customs_port_type = models.CharField(null=True, blank=True, max_length=255)
     customs_port_municipality = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
 
 class Pharmacy(Location):
@@ -713,7 +723,7 @@ class Pharmacy(Location):
     organization_name = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
 
 class PublicLibrary(Location):
@@ -733,7 +743,4 @@ class PublicLibrary(Location):
     street_address = models.CharField(null=True, blank=True, max_length=255)
 
     class Meta:
-        ordering = ("id", )
-
-
-
+        ordering = ("id",)

@@ -3,6 +3,7 @@
 import django.contrib.gis.db.models.fields
 from django.db import migrations, models
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -10,7 +11,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunSQL("""DROP VIEW IF EXISTS public.cit_regions_distribution_vw;
+        migrations.RunSQL(
+            """DROP VIEW IF EXISTS public.cit_regions_distribution_vw;
         CREATE OR REPLACE VIEW public.cit_regions_distribution_vw AS
           SELECT DISTINCT 'All of British Columbia'::text AS zone_type,
     'All of British Columbia'::text AS zone_name,
@@ -86,5 +88,6 @@ UNION
     csd.census_subdivision_id
    FROM pipeline_linkagewithcensus lk
      JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
-     JOIN pipeline_naturalresourceregion nrr ON lk.natural_resource_region_id = nrr.id;;""")
+     JOIN pipeline_naturalresourceregion nrr ON lk.natural_resource_region_id = nrr.id;;"""
+        )
     ]

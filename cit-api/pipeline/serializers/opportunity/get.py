@@ -1,29 +1,42 @@
-from rest_framework import serializers
 import json
-from django.db.models import F
+
+from django.contrib.gis.db.models.functions import Distance
 from django.contrib.gis.measure import D
-from pipeline.models.location_assets import Airport
+from django.db.models import F
+from rest_framework import serializers
+
 from pipeline.models.community import Community
 from pipeline.models.general import Municipality
 from pipeline.models.indian_reserve_band_name import IndianReserveBandName
-from pipeline.models.location_assets import PortAndTerminal, CustomsPortOfEntry
-from pipeline.models.roads_and_highways import RoadsAndHighways
-from django.contrib.gis.db.models.functions import Distance
+from pipeline.models.location_assets import Airport, CustomsPortOfEntry, PortAndTerminal
 from pipeline.models.opportunity import Opportunity
 from pipeline.models.preferred_development import PreferredDevelopment
 from pipeline.models.railway import Railway
+from pipeline.models.roads_and_highways import RoadsAndHighways
 from pipeline.serializers.opportunity.distance import (
-    OpportunityCommunitySerializer, OpportunityPostSecondarySerializer,
-    OpportunityFirstResponderSerializer, OpportunityHospitalSerializer, OpportunityCustomsPortOfEntrySerializer,
-    OpportunityResearchCentreSerializer, OpportunityRiverSerializer, OpportunityLakeSerializer,
-    OpportunityMunicipalitySerializer, OpportunityRegionalDistrictSerializer, OpportunityPortAndTerminalSerializer,
-    OpportunityRailwaySerializer, OpportunityRoadsAndHighwaysSerializer, OpportunityAirportSerializer,
-    OpportunityIndianReserveBandSerializer, MunicipalitySerializer)
+    MunicipalitySerializer,
+    OpportunityAirportSerializer,
+    OpportunityCommunitySerializer,
+    OpportunityCustomsPortOfEntrySerializer,
+    OpportunityFirstResponderSerializer,
+    OpportunityHospitalSerializer,
+    OpportunityIndianReserveBandSerializer,
+    OpportunityLakeSerializer,
+    OpportunityMunicipalitySerializer,
+    OpportunityPortAndTerminalSerializer,
+    OpportunityPostSecondarySerializer,
+    OpportunityRailwaySerializer,
+    OpportunityRegionalDistrictSerializer,
+    OpportunityResearchCentreSerializer,
+    OpportunityRiverSerializer,
+    OpportunityRoadsAndHighwaysSerializer,
+)
 
 
 class OpportunityGetSerializer(serializers.ModelSerializer):
     opportunity_preferred_development = serializers.PrimaryKeyRelatedField(
-        queryset=PreferredDevelopment.objects.all(), many=True, required=False)
+        queryset=PreferredDevelopment.objects.all(), many=True, required=False
+    )
     nearest_first_nations = OpportunityIndianReserveBandSerializer(many=True)
     nearest_municipalities = MunicipalitySerializer(many=True)
     nearest_community = OpportunityCommunitySerializer(required=False)
@@ -34,7 +47,9 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
     nearest_fire_station = OpportunityFirstResponderSerializer(required=False)
     nearest_health_center = OpportunityHospitalSerializer(required=False)
     nearest_research_centre = OpportunityResearchCentreSerializer(required=False)
-    nearest_customs_port_of_entry = OpportunityCustomsPortOfEntrySerializer(required=False)
+    nearest_customs_port_of_entry = OpportunityCustomsPortOfEntrySerializer(
+        required=False
+    )
     nearest_port = OpportunityPortAndTerminalSerializer(required=False)
     nearest_railway = OpportunityRailwaySerializer(required=False)
     nearest_airport = OpportunityAirportSerializer(required=False)
@@ -113,4 +128,3 @@ class OpportunityGetSerializer(serializers.ModelSerializer):
             "municipality",
             "regional_district",
         )
-

@@ -1,11 +1,11 @@
 import csv
 import re
-
 from typing import List
+
 from requests import get
 
-from pipeline.models.core_housing_need import CSDCoreHousingNeed
 from pipeline.importers.base_importer import BaseImporter
+from pipeline.models.core_housing_need import CSDCoreHousingNeed
 
 TOTAL_EXAMINED_HEADER = "Households examined for core housing need status"
 TOTAL_EXAMINED_INDEX = 1

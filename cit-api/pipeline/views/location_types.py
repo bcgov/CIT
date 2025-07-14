@@ -1,42 +1,41 @@
 import json
 
-from django.http import HttpResponse
 from django.core.serializers import serialize
-
+from django.http import HttpResponse
 from rest_framework import generics
 from rest_framework.views import APIView
 
 from pipeline.models.location_assets import (
-    Location,
-    FirstResponder,
-    DiagnosticFacility,
-    TimberFacility,
+    Airport,
     CivicFacility,
-    Hospital,
-    Project,
-    ServiceBCLocation,
-    School,
     Clinic,
     Court,
+    DiagnosticFacility,
+    FirstResponder,
+    Hospital,
+    Location,
     PostSecondaryInstitution,
+    Project,
     ResearchCentre,
-    Airport,
+    School,
+    ServiceBCLocation,
+    TimberFacility,
 )
 from pipeline.serializers.location_types import (
-    FirstResponderSerializer,
-    DiagnosticFacilitySerializer,
-    TimberFacilitySerializer,
+    AirportSerializer,
     CivicFacilitySerializer,
-    HospitalSerializer,
-    ProjectSerializer,
-    ServiceBCLocationSerializer,
-    SchoolSerializer,
-    PostSecondaryInstitutionSerializer,
     ClinicSerializer,
     CourtSerializer,
-    ResearchCentreSerializer,
-    AirportSerializer,
+    DiagnosticFacilitySerializer,
+    FirstResponderSerializer,
+    HospitalSerializer,
     LocationSerializer,
+    PostSecondaryInstitutionSerializer,
+    ProjectSerializer,
+    ResearchCentreSerializer,
+    SchoolSerializer,
+    ServiceBCLocationSerializer,
+    TimberFacilitySerializer,
 )
 
 
@@ -49,38 +48,63 @@ class LocationGeoJSONList(APIView):
     schema = None
 
     def get(self, request, format=None):
-        unique_projects_query = Project.objects.order_by('project_id',
-                                                         '-source_date').distinct('project_id')
+        unique_projects_query = Project.objects.order_by(
+            'project_id', '-source_date'
+        ).distinct('project_id')
         unique_project_ids = unique_projects_query.values_list('id', flat=True)
-        unique_projects_location_query = Location.objects.filter(id__in=unique_project_ids)
+        unique_projects_location_query = Location.objects.filter(
+            id__in=unique_project_ids
+        )
         projects_serialized = json.loads(
-            serialize('geojson',
-                      unique_projects_location_query,
-                      geometry_field='point',
-                      fields=('name', 'location_type', 'location_phone', 'location_email',
-                              'location_website')))
+            serialize(
+                'geojson',
+                unique_projects_location_query,
+                geometry_field='point',
+                fields=(
+                    'name',
+                    'location_type',
+                    'location_phone',
+                    'location_email',
+                    'location_website',
+                ),
+            )
+        )
 
         # use project_name instead of name for Projects
         for project in projects_serialized["features"]:
             project["properties"]["name"] = unique_projects_query.get(
-                name=project["properties"]["name"]).project_name
+                name=project["properties"]["name"]
+            ).project_name
 
         # TODO: remove deprecated economic_projects and natural_resource_projects datasets
-        location_types_to_exclude = ["projects", "natural_resource_projects", "economic_projects"]
+        location_types_to_exclude = [
+            "projects",
+            "natural_resource_projects",
+            "economic_projects",
+        ]
         other_location_types_query = Location.objects.exclude(
-            location_type__in=location_types_to_exclude)
+            location_type__in=location_types_to_exclude
+        )
 
-        other_location_types_serialized = serialize('geojson',
-                                                    other_location_types_query,
-                                                    geometry_field='point',
-                                                    fields=('name', 'location_type',
-                                                            'location_phone', 'location_email',
-                                                            'location_website'))
+        other_location_types_serialized = serialize(
+            'geojson',
+            other_location_types_query,
+            geometry_field='point',
+            fields=(
+                'name',
+                'location_type',
+                'location_phone',
+                'location_email',
+                'location_website',
+            ),
+        )
 
         all_location_types_serialized = json.loads(other_location_types_serialized)
 
         # add modified Projects back to full queryset
-        all_location_types_serialized["features"].extend(projects_serialized["features"])
+        all_location_types_serialized["features"].extend(
+            projects_serialized["features"]
+        )
 
         return HttpResponse(
             json.dumps(all_location_types_serialized),
@@ -119,7 +143,9 @@ class ProjectList(generics.ListAPIView):
 
 
 class LatestProjectList(generics.ListAPIView):
-    queryset = Project.objects.order_by('project_id', '-source_date').distinct('project_id')
+    queryset = Project.objects.order_by('project_id', '-source_date').distinct(
+        'project_id'
+    )
     serializer_class = ProjectSerializer
 
 

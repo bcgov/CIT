@@ -1,16 +1,16 @@
 from django.contrib.gis.db import models
 
-from pipeline.utils import serialize_regional_district_fields
+from pipeline.constants import WGS84_SRID
 from pipeline.models.census.cen_prof_detailed_csd_attrs_sp import (
     CEN_PROF_DETAILED_CSD_ATTRS_SP,
 )
-from pipeline.constants import WGS84_SRID
-from pipeline.models.common.base_polygon_geom import BasePolygonGeom
 from pipeline.models.common.base_named_polygon import BaseNamedPolygon
+from pipeline.models.common.base_polygon_geom import BasePolygonGeom
+from pipeline.utils import serialize_regional_district_fields
 
 
 class DataSource(models.Model):
-    from pipeline.constants import DATA_SOURCE_TYPE_CHOICES, DATA_SOURCE_CHOICES
+    from pipeline.constants import DATA_SOURCE_CHOICES, DATA_SOURCE_TYPE_CHOICES
 
     name = models.CharField(max_length=127, unique=True)
     display_name = models.CharField(max_length=127, null=True)

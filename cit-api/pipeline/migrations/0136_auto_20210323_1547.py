@@ -2,12 +2,11 @@
 
 from django.db import migrations, models
 
+
 def populate_statuses(apps, schema_editor):
     LandUseZoning = apps.get_model("pipeline", "LandUseZoning")
-    LandUseZoning.objects.get(code="INDH").delete();
-    zonings = [
-        ["Industrial (Heavy)", "", "INDH"]
-    ]
+    LandUseZoning.objects.get(code="INDH").delete()
+    zonings = [["Industrial (Heavy)", "", "INDH"]]
     # Add new zone
     for zoningInfo in zonings:
         zoning = LandUseZoning()
@@ -19,6 +18,7 @@ def populate_statuses(apps, schema_editor):
 
 def unpopulate_statuses(apps, schema_editor):
     pass
+
 
 class Migration(migrations.Migration):
 

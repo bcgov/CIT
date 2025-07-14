@@ -18,6 +18,10 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='dataset',
             name='source_type',
-            field=models.CharField(choices=[('csv', 'CSV'), ('api', 'DATABC'), ('shp', 'SHP')], max_length=127, null=True),
+            field=models.CharField(
+                choices=[('csv', 'CSV'), ('api', 'DATABC'), ('shp', 'SHP')],
+                max_length=127,
+                null=True,
+            ),
         ),
     ]

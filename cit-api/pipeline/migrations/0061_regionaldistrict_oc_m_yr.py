@@ -13,6 +13,10 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='regionaldistrict',
             name='oc_m_yr',
-            field=models.CharField(help_text='The four-digit year that the most recent Order-In-Council or Ministerial Order was approved,  e.g., 2014.', max_length=4, null=True),
+            field=models.CharField(
+                help_text='The four-digit year that the most recent Order-In-Council or Ministerial Order was approved,  e.g., 2014.',
+                max_length=4,
+                null=True,
+            ),
         ),
     ]

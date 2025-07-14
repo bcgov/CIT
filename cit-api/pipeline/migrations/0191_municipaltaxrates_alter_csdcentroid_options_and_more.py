@@ -2,7 +2,8 @@
 
 from django.db import migrations, models
 
-#fixed automatic migrations by adding the models to the models/__init__.py file
+# fixed automatic migrations by adding the models to the models/__init__.py file
+
 
 class Migration(migrations.Migration):
 
@@ -14,7 +15,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='MunicipalTaxRates',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('census_subdivision_id', models.IntegerField(null=True)),
                 ('municipality_name', models.CharField(max_length=127)),
                 ('municipality_type', models.CharField(max_length=127)),
@@ -57,5 +66,5 @@ class Migration(migrations.Migration):
             model_name='csdcentroid',
             name='y',
             field=models.FloatField(),
-        )
+        ),
     ]

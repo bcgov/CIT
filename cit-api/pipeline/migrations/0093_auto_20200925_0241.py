@@ -38,11 +38,19 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='dataset',
             name='source',
-            field=models.CharField(choices=[('internal', 'Internal'), ('databc', 'BC Data Catalogue')], max_length=127, null=True),
+            field=models.CharField(
+                choices=[('internal', 'Internal'), ('databc', 'BC Data Catalogue')],
+                max_length=127,
+                null=True,
+            ),
         ),
         migrations.AlterField(
             model_name='dataset',
             name='source_type',
-            field=models.CharField(choices=[('CSV', 'CSV'), ('API', 'DATABC'), ('SHP', 'SHP')], max_length=127, null=True),
+            field=models.CharField(
+                choices=[('CSV', 'CSV'), ('API', 'DATABC'), ('SHP', 'SHP')],
+                max_length=127,
+                null=True,
+            ),
         ),
     ]

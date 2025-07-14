@@ -1,15 +1,18 @@
-import json, requests
-import pandas as pd
-
-from sqlalchemy import create_engine
-from django.conf import settings
+import json
+from io import BytesIO
 from urllib.request import urlopen
 from zipfile import ZipFile
-from io import BytesIO
 
-from pipeline.models.general import NBDPHHSpeeds
+import pandas as pd
+import requests
+from django.conf import settings
+from sqlalchemy import create_engine
+
 from pipeline.importers.base_importer import BaseImporter
 from pipeline.importers.utils import write_to_db
+from pipeline.models.general import NBDPHHSpeeds
+
+
 class NBDPHHSpeedsImporter(BaseImporter):
     DATA_SOURCES = ["data/import/bucket2/semiannually/2NBDPHHSpeeds.json"]
 
@@ -53,5 +56,5 @@ class NBDPHHSpeedsImporter(BaseImporter):
                     inplace=True,
                 )
             nbdphhspeeds = PHH_BC.merge(PHH_Gov_Suup, on="phh_id", how="left")
-            write_to_db(NBDPHHSpeeds,nbdphhspeeds)
+            write_to_db(NBDPHHSpeeds, nbdphhspeeds)
             return len(nbdphhspeeds)

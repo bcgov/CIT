@@ -20,5 +20,4 @@ class Migration(migrations.Migration):
                 ('class_title', models.CharField(max_length=255, null=True)),
             ],
         ),
-       
     ]

@@ -1,8 +1,9 @@
+import concurrent.futures
 import json
 from abc import ABC
 from typing import List
+
 from pipeline.models.general import DataSource
-import concurrent.futures
 
 
 # JSyro started this pattern Jan 2024 should lead the much DRY'er code

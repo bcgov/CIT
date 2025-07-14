@@ -53,14 +53,14 @@ const UserProfile = () => {
                 const loginWithIdir = await keycloak.obj.createLoginUrl({
                   idpHint: "idir",
                   redirectUri: encodeURI(
-                    `${configuration.baseUrl}${window.location.pathname}`
+                    `${configuration.baseUrl}${window.location.pathname}`,
                   ),
                 });
                 window.location.href = loginWithIdir;
               } else if (isDashboard()) {
                 const current = window.location.href.replace(
                   "public",
-                  "internal"
+                  "internal",
                 );
                 const loginWithIdir = await keycloak.obj.createLoginUrl({
                   idpHint: "idir",

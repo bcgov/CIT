@@ -2,18 +2,23 @@
 
 from django.db import migrations
 
+
 def update_status_name_ncom(apps, schema_editor):
     approval_status = apps.get_model("pipeline", "ApprovalStatus")
 
     # Update NCOM status description
-    new_status_name = approval_status.objects.filter(status_code__in=['NCOM']).update(status_name='Pending Edit from Community User')
+    new_status_name = approval_status.objects.filter(status_code__in=['NCOM']).update(
+        status_name='Pending Edit from Community User'
+    )
 
 
 def rollback_status_name_ncom(apps, schema_editor):
     approval_status = apps.get_model("pipeline", "ApprovalStatus")
 
     # Update NCOM status description
-    original_status_name = approval_status.objects.filter(status_code__in=['NCOM']).update(status_name='Pending Edit from Community User/EDO')
+    original_status_name = approval_status.objects.filter(
+        status_code__in=['NCOM']
+    ).update(status_name='Pending Edit from Community User/EDO')
 
 
 class Migration(migrations.Migration):

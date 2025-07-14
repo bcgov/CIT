@@ -1,14 +1,22 @@
-from django.test import TestCase
 from django.contrib.gis.geos import Point
+from django.test import TestCase
 
-from ...serializers.opportunity.edit import OpportunitySerializer
 from ...models import Opportunity
+from ...serializers.opportunity.edit import OpportunitySerializer
+
 
 class OpportunitySerializerTest(TestCase):
     def test_contains_expected_fields(self):
         serializer = OpportunitySerializer()
         field_names = serializer.Meta.fields
-        expected_fields = ['id', 'address', 'point', 'approval_status', 'date_created', 'date_updated']
+        expected_fields = [
+            'id',
+            'address',
+            'point',
+            'approval_status',
+            'date_created',
+            'date_updated',
+        ]
         self.assertCountEqual(field_names, expected_fields)
 
     def test_field_content(self):
@@ -16,8 +24,3 @@ class OpportunitySerializerTest(TestCase):
         serializer = OpportunitySerializer(instance=opportunity)
         self.assertEqual(opportunity.address, serializer['address'].value)
         self.assertEqual(opportunity.point, serializer['point'].value)
-
-
-
-    
-            

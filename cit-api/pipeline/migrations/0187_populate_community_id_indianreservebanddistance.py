@@ -10,12 +10,14 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunSQL("""
+        migrations.RunSQL(
+            """
             update pipeline_indianreservebanddistance 
             set community_id = reserve_id
             where community_id is null and 
                   reserve_id in (
                      select pipeline_community.id 
                      from pipeline_community);
-        """)
+        """
+        )
     ]

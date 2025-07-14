@@ -3,12 +3,14 @@ from django.contrib.gis.db import models
 
 class CSDCentroid(models.Model):
     id = models.IntegerField(primary_key=True)
-    census_subdivision_id = models.IntegerField(null=False, blank=False) 
+    census_subdivision_id = models.IntegerField(null=False, blank=False)
 
     name = models.CharField(max_length=127, null=False)
-    closest_community_id = models.CharField(max_length=127, null=True) # currently null
-    closest_community_distance = models.CharField(max_length=127, null=True) # currently null
-    
+    closest_community_id = models.CharField(max_length=127, null=True)  # currently null
+    closest_community_distance = models.CharField(
+        max_length=127, null=True
+    )  # currently null
+
     latitude = models.FloatField(null=False)
     longitude = models.FloatField(null=False)
     location_name = models.CharField(max_length=127)

@@ -1,6 +1,8 @@
-from pipeline.management.commands.base.base_import_command import BaseImportCommand
-from pipeline.importers.bucket2.bucket2_csd_centroid import CSDCentroidImporter as importer
+from pipeline.importers.bucket2.bucket2_csd_centroid import (
+    CSDCentroidImporter as importer,
+)
 from pipeline.importers.csv_resource import import_csv_resources
+from pipeline.management.commands.base.base_import_command import BaseImportCommand
 from pipeline.models.general import DataSource
 
 

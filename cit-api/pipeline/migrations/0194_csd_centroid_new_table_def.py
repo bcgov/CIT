@@ -17,7 +17,10 @@ class Migration(migrations.Migration):
                 ('census_subdivision_id', models.IntegerField()),
                 ('name', models.CharField(max_length=127, null=True)),
                 ('closest_community_id', models.CharField(max_length=127, null=True)),
-                ('closest_community_distance', models.CharField(max_length=127, null=True)),
+                (
+                    'closest_community_distance',
+                    models.CharField(max_length=127, null=True),
+                ),
                 ('latitude', models.FloatField()),
                 ('longitude', models.FloatField()),
                 ('location_name', models.CharField(max_length=127)),

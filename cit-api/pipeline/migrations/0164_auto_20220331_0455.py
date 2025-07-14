@@ -15,12 +15,31 @@ class Migration(migrations.Migration):
             name='census_division_2016',
             fields=[
                 ('census_year', models.IntegerField(null=True)),
-                ('census_division_id', models.IntegerField(primary_key=True, serialize=False)),
+                (
+                    'census_division_id',
+                    models.IntegerField(primary_key=True, serialize=False),
+                ),
                 ('census_division_name', models.CharField(max_length=127)),
-                ('census_division_type_code', models.CharField(max_length=12, null=True)),
-                ('census_division_type_desc', models.CharField(max_length=127, null=True)),
-                ('geom', django.contrib.gis.db.models.fields.MultiPolygonField(null=True, srid=4326)),
-                ('geom_simplified', django.contrib.gis.db.models.fields.MultiPolygonField(null=True, srid=4326)),
+                (
+                    'census_division_type_code',
+                    models.CharField(max_length=12, null=True),
+                ),
+                (
+                    'census_division_type_desc',
+                    models.CharField(max_length=127, null=True),
+                ),
+                (
+                    'geom',
+                    django.contrib.gis.db.models.fields.MultiPolygonField(
+                        null=True, srid=4326
+                    ),
+                ),
+                (
+                    'geom_simplified',
+                    django.contrib.gis.db.models.fields.MultiPolygonField(
+                        null=True, srid=4326
+                    ),
+                ),
                 ('global_nonresp_sf_pct', models.FloatField(null=True)),
                 ('global_nonresp_lf_pct', models.FloatField(null=True)),
                 ('commute_total_by_mode', models.IntegerField(null=True)),
@@ -529,13 +548,32 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='census_subdivision_2016',
             fields=[
-                ('census_subdivision_id', models.IntegerField(primary_key=True, serialize=False)),
+                (
+                    'census_subdivision_id',
+                    models.IntegerField(primary_key=True, serialize=False),
+                ),
                 ('census_subdivision_name', models.CharField(max_length=127)),
-                ('census_subdivision_type_code', models.CharField(max_length=12, null=True)),
-                ('census_subdivision_type_desc', models.CharField(max_length=127, null=True)),
+                (
+                    'census_subdivision_type_code',
+                    models.CharField(max_length=12, null=True),
+                ),
+                (
+                    'census_subdivision_type_desc',
+                    models.CharField(max_length=127, null=True),
+                ),
                 ('census_year', models.IntegerField(null=True)),
-                ('geom', django.contrib.gis.db.models.fields.MultiPolygonField(null=True, srid=4326)),
-                ('geom_simplified', django.contrib.gis.db.models.fields.MultiPolygonField(null=True, srid=4326)),
+                (
+                    'geom',
+                    django.contrib.gis.db.models.fields.MultiPolygonField(
+                        null=True, srid=4326
+                    ),
+                ),
+                (
+                    'geom_simplified',
+                    django.contrib.gis.db.models.fields.MultiPolygonField(
+                        null=True, srid=4326
+                    ),
+                ),
                 ('global_nonresp_sf_pct', models.FloatField(null=True)),
                 ('global_nonresp_lf_pct', models.FloatField(null=True)),
                 ('commute_total_by_mode', models.IntegerField(null=True)),

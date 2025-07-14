@@ -1,6 +1,7 @@
 # Run from command line :
 # python manage.py import_subdivisions
 from django.core.management.base import BaseCommand
+
 from pipeline.importers.shp_resource import import_shp_resources
 
 

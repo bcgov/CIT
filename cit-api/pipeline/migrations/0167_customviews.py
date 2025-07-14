@@ -3,6 +3,7 @@
 import django.contrib.gis.db.models.fields
 from django.db import migrations, models
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -10,7 +11,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunSQL("""DROP VIEW IF EXISTS public.cit_regions_distribution_vw;
+        migrations.RunSQL(
+            """DROP VIEW IF EXISTS public.cit_regions_distribution_vw;
         CREATE OR REPLACE VIEW public.cit_regions_distribution_vw AS
         SELECT DISTINCT 'All of British Columbia'::text AS zone_type,
         'All of British Columbia'::text AS zone_name,
@@ -69,9 +71,10 @@ class Migration(migrations.Migration):
             csd.census_subdivision_id
         FROM pipeline_linkagewithcensus lk
             JOIN pipeline_cen_prof_detailed_csd_attrs_sp csd ON lk.census_subdivision_id = csd.census_subdivision_id
-            JOIN pipeline_schooldistrict sd ON lk.school_district_id = sd.area_id;"""),
-
-        migrations.RunSQL("""DROP VIEW IF EXISTS public.cit_census_subdivisions_vw;
+            JOIN pipeline_schooldistrict sd ON lk.school_district_id = sd.area_id;"""
+        ),
+        migrations.RunSQL(
+            """DROP VIEW IF EXISTS public.cit_census_subdivisions_vw;
                     CREATE OR REPLACE VIEW public.cit_census_subdivisions_vw AS
                     SELECT '2021'::text AS data_year,
                         pipeline_cen_prof_detailed_csd_attrs_sp.census_subdivision_id,
@@ -495,5 +498,6 @@ class Migration(migrations.Migration):
                         pipeline_census_subdivision_2016.pop_total_2016,
                         pipeline_census_subdivision_2016.pop_total_2011,
                         pipeline_census_subdivision_2016.pop_2011_2016_pct_change
-                    FROM pipeline_census_subdivision_2016;""")
+                    FROM pipeline_census_subdivision_2016;"""
+        ),
     ]

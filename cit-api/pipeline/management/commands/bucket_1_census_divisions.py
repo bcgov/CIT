@@ -1,12 +1,13 @@
-from pipeline.management.commands.base.base_import_command import BaseImportCommand
-from pipeline.importers.databc_resource import import_wms_resource
 from pipeline.importers.bucket1.bucket1_census_divisions import import_data_sources
+from pipeline.importers.databc_resource import import_wms_resource
+from pipeline.management.commands.base.base_import_command import BaseImportCommand
 from pipeline.models.general import DataSource
 
+
 class Command(BaseImportCommand):
-    
+
     SUB_FOLDERS = ['bc_assessment']
-    
+
     def handle(self, *args, **options):
         self.download_static_files()
 
@@ -15,9 +16,9 @@ class Command(BaseImportCommand):
         import_data_sources()
 
         # Ensure that the data sources are updated
-        data_resources = DataSource.objects.filter(name__in=[
-            'census_divisions'
-        ]).order_by('import_order')
+        data_resources = DataSource.objects.filter(
+            name__in=['census_divisions']
+        ).order_by('import_order')
 
         for resource in data_resources:
             if resource.source_type == "wms":

@@ -4,33 +4,36 @@ from django.apps import apps
 from django.conf import settings
 
 from pipeline.constants import SOURCE_DATABC, SOURCE_OPENCA, SOURCE_STATSCAN
-from pipeline.models.general import DataSource
-from pipeline.importers.communities import import_communities_from_csv
-from pipeline.importers.projects import import_projects
-from pipeline.importers.utils import (
-    import_data_into_point_model,
-    read_csv,
-    import_civic_leaders_from_csv,
-    get_databc_last_modified_date,
-    import_services,
-    get_openca_last_modified_date,
-    import_connectivity_project,
-    import_naics_codes,
-    import_businesses_by_cid,
-    import_bc_assessment_data,
-    import_housing,
-    import_census_subdivision_linkage,
-)
-
-from pipeline.importers.bucket2.bucket2_municipal_tax_rates import MunicipalTaxRatesImporter
+from pipeline.importers.bucket2.bucket2_core_housing_need import CoreHousingImporter
+from pipeline.importers.bucket2.bucket2_csd_centroid import CSDCentroidImporter
 from pipeline.importers.bucket2.bucket2_municipal_land_title_transfers import (
     MunicipalLandTitleTransfersImporter,
 )
-from pipeline.importers.bucket2.bucket2_core_housing_need import CoreHousingImporter
-from pipeline.importers.bucket2.bucket2_csd_centroid import CSDCentroidImporter
+from pipeline.importers.bucket2.bucket2_municipal_tax_rates import (
+    MunicipalTaxRatesImporter,
+)
 from pipeline.importers.bucket2.bucket2_NBDPHHSpeeds import NBDPHHSpeedsImporter
-from pipeline.importers.bucket2.bucket2_phdemographic import PHDemographicDistributionImporter
+from pipeline.importers.bucket2.bucket2_phdemographic import (
+    PHDemographicDistributionImporter,
+)
 from pipeline.importers.bucket2.bucket2_small_businesses import SmallBusinessesImporter
+from pipeline.importers.communities import import_communities_from_csv
+from pipeline.importers.projects import import_projects
+from pipeline.importers.utils import (
+    get_databc_last_modified_date,
+    get_openca_last_modified_date,
+    import_bc_assessment_data,
+    import_businesses_by_cid,
+    import_census_subdivision_linkage,
+    import_civic_leaders_from_csv,
+    import_connectivity_project,
+    import_data_into_point_model,
+    import_housing,
+    import_naics_codes,
+    import_services,
+    read_csv,
+)
+from pipeline.models.general import DataSource
 
 FILES_DIR = settings.BASE_DIR
 

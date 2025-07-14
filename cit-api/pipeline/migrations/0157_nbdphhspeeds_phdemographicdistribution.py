@@ -13,7 +13,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='NBDPHHSpeeds',
             fields=[
-                ('phh_id', models.IntegerField(max_length=12, primary_key=True, serialize=False)),
+                (
+                    'phh_id',
+                    models.IntegerField(
+                        max_length=12, primary_key=True, serialize=False
+                    ),
+                ),
                 ('combined_lt5_1', models.BooleanField(default=False)),
                 ('combined_5_1', models.BooleanField(default=False)),
                 ('combined_10_2', models.BooleanField(default=False)),
@@ -24,7 +29,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PHDemographicDistribution',
             fields=[
-                ('phh_id', models.IntegerField(max_length=12, primary_key=True, serialize=False)),
+                (
+                    'phh_id',
+                    models.IntegerField(
+                        max_length=12, primary_key=True, serialize=False
+                    ),
+                ),
                 ('phh_type', models.IntegerField()),
                 ('population', models.FloatField()),
                 ('total_private_dwellings', models.FloatField()),

@@ -1,9 +1,21 @@
 from rest_framework import serializers
 
-from pipeline.models.location_assets import (FirstResponder, DiagnosticFacility, TimberFacility,
-                                             CivicFacility, Hospital, Project, ServiceBCLocation,
-                                             School, Clinic, Court, PostSecondaryInstitution,
-                                              ResearchCentre, Airport, Location)
+from pipeline.models.location_assets import (
+    Airport,
+    CivicFacility,
+    Clinic,
+    Court,
+    DiagnosticFacility,
+    FirstResponder,
+    Hospital,
+    Location,
+    PostSecondaryInstitution,
+    Project,
+    ResearchCentre,
+    School,
+    ServiceBCLocation,
+    TimberFacility,
+)
 
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -11,8 +23,15 @@ class LocationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Location
-        fields = ("id", "name", "community_id", "location_type", "get_latitude", "get_longitude",
-                  "location_fuzzy")
+        fields = (
+            "id",
+            "name",
+            "community_id",
+            "location_type",
+            "get_latitude",
+            "get_longitude",
+            "location_fuzzy",
+        )
 
 
 class FirstResponderSerializer(serializers.ModelSerializer):
@@ -124,13 +143,18 @@ class ProjectSerializer(serializers.ModelSerializer):
     longitude = serializers.FloatField(source="get_longitude")
     community = serializers.IntegerField(source="closest_community_id")
     provincial_funding = serializers.IntegerField(source="provinvial_funding")
-    standardized_start_date = serializers.DateField(source='get_standardized_start_date_as_date')
+    standardized_start_date = serializers.DateField(
+        source='get_standardized_start_date_as_date'
+    )
     standardized_completion_date = serializers.DateField(
-        source='get_standardized_completion_date_as_date')
+        source='get_standardized_completion_date_as_date'
+    )
     standardized_start_date_quarter = serializers.CharField(
-        source='get_standardized_start_date_as_quarter')
+        source='get_standardized_start_date_as_quarter'
+    )
     standardized_completion_date_quarter = serializers.CharField(
-        source='get_standardized_completion_date_as_quarter')
+        source='get_standardized_completion_date_as_quarter'
+    )
 
     class Meta:
         model = Project
@@ -286,7 +310,6 @@ class CourtSerializer(serializers.ModelSerializer):
             "hours_of_operation",
             "court_level",
         )
-
 
 
 class ResearchCentreSerializer(serializers.ModelSerializer):

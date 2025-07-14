@@ -2,6 +2,7 @@ from django.contrib.gis.db import models
 
 from pipeline.models.common.base_named_polygon import BaseNamedPolygon
 
+
 class CensusEconomicRegion(BaseNamedPolygon):
     NAME_FIELD = "ECONOMIC_REGION_NAME"
 
@@ -9,7 +10,7 @@ class CensusEconomicRegion(BaseNamedPolygon):
     economic_region_id = models.IntegerField(null=True)
 
     class Meta:
-        ordering = ("id", )
+        ordering = ("id",)
 
     def __str__(self):
         return self.name

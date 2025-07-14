@@ -1,0 +1,2 @@
+
+yarn lint-staged --config lint-staged.config.json

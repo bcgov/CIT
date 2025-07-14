@@ -50,7 +50,7 @@ export default function CompareReport() {
       `https://api.powerbi.com/v1.0/myorg/groups/${groupId}/reports/${reportId}`,
       {
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
     return response.data;
   };
@@ -61,7 +61,7 @@ export default function CompareReport() {
       { accessLevel: "view" },
       {
         headers: { Authorization: `Bearer ${token}` },
-      }
+      },
     );
     return response.data.token;
   };

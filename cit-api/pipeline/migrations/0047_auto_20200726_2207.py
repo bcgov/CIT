@@ -13,11 +13,19 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='community',
             name='percent_10_2',
-            field=models.FloatField(blank=True, help_text='portion (0-1) of area with 10/2 speeds (calc. by road length)', null=True),
+            field=models.FloatField(
+                blank=True,
+                help_text='portion (0-1) of area with 10/2 speeds (calc. by road length)',
+                null=True,
+            ),
         ),
         migrations.AlterField(
             model_name='community',
             name='percent_5_1',
-            field=models.FloatField(blank=True, help_text='portion (0-1) of area with 5/1 speeds (calc. by road length)', null=True),
+            field=models.FloatField(
+                blank=True,
+                help_text='portion (0-1) of area with 5/1 speeds (calc. by road length)',
+                null=True,
+            ),
         ),
     ]

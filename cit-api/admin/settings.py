@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+# needed to run locally
+# GDAL_LIBRARY_PATH = '/opt/homebrew/Cellar/gdal/3.10.2/lib/libgdal.dylib'
+# GEOS_LIBRARY_PATH = '/opt/homebrew/Cellar/geos/3.12.2/lib/libgeos_c.dylib'
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -19,8 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY",
-                            'devsecret')  # default secret key for dev environments
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY", 'devsecret'
+)  # default secret key for dev environments
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG", False))
@@ -86,11 +91,13 @@ DATABASES = {
     'default': {
         "ENGINE": "django.contrib.gis.db.backends.postgis",
         'NAME': os.environ.get("POSTGRES_DB", 'postgres'),
-        'USER': os.environ.get("POSTGRES_DJANGO_USER",
-                               'postgres'),  # default user for dev environments
-        'PASSWORD': os.environ.get("POSTGRES_DJANGO_PASSWORD",
-                                   'postgres'),  # default password for dev environments
-        'HOST': os.environ.get("POSTGRES_HOST", 'db'),
+        'USER': os.environ.get(
+            "POSTGRES_DJANGO_USER", 'postgres'
+        ),  # default user for dev environments
+        'PASSWORD': os.environ.get(
+            "POSTGRES_DJANGO_PASSWORD", 'mysecretpassword'
+        ),  # default password for dev environments
+        'HOST': os.environ.get("POSTGRES_HOST", '127.0.01'),
         'PORT': 5432,
     }
 }
@@ -119,10 +126,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = '/media/'
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS':
-    'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE':
-    100,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
     'DEFAULT_RENDERER_CLASSES': (
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
@@ -130,8 +135,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': [],
     'DEFAULT_PERMISSION_CLASSES': [],
-    'UNAUTHENTICATED_USER':
-    None,
+    'UNAUTHENTICATED_USER': None,
 }
 
 # Caching
@@ -169,13 +173,13 @@ LOGGING = {
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
-            'formatter': 'simple'
+            'formatter': 'simple',
         },
         'mail_admins': {
             'level': 'ERROR',
             'class': 'django.utils.log.AdminEmailHandler',
-            'filters': ['require_debug_false']
-        }
+            'filters': ['require_debug_false'],
+        },
     },
     'loggers': {
         'django': {
@@ -186,9 +190,11 @@ LOGGING = {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
-        }
-    }
+        },
+    },
 }
 
-AZURE_BLOB_STORAGE_CONNECTION_STRING = os.environ.get('AZURE_BLOB_STORAGE_CONNECTION_STRING', None)
+AZURE_BLOB_STORAGE_CONNECTION_STRING = os.environ.get(
+    'AZURE_BLOB_STORAGE_CONNECTION_STRING', None
+)
 AZURE_BLOB_STORAGE_LOCAL_PATH = './data/'

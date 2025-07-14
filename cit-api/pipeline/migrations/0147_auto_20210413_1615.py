@@ -10,7 +10,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunSQL("""CREATE OR REPLACE VIEW public.cit_opportunities_vw
+        migrations.RunSQL(
+            """CREATE OR REPLACE VIEW public.cit_opportunities_vw
         AS
         SELECT o.id AS opportunity_id,
             o.opportunity_address,
@@ -409,5 +410,6 @@ class Migration(migrations.Migration):
                 WHERE r.id = o.regional_district_id) AS regional_district,
             o.network_at_road,
             o.network_avg
-        FROM pipeline_opportunity o;""")
+        FROM pipeline_opportunity o;"""
+        )
     ]

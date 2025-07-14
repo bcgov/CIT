@@ -1,8 +1,9 @@
-from requests import get
 import pandas as pd
+from requests import get
+
 from pipeline.importers.base_importer import BaseImporter
-from pipeline.models.csd_small_businesses import CSDSmallBusinesses
 from pipeline.importers.utils import write_to_db
+from pipeline.models.csd_small_businesses import CSDSmallBusinesses
 
 
 class SmallBusinessesImporter(BaseImporter):

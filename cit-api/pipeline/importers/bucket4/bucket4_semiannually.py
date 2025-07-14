@@ -1,5 +1,6 @@
 from pipeline.importers.base_importer import BaseImporter
 
+
 # need 5 pipelines with each own command for DevOps to build script batch. Regroup the json files to consider the schedule as well.
 class Bucket4SemiannualImporter(BaseImporter):
     DATA_SOURCES = [
@@ -17,6 +18,7 @@ class Bucket4SemiannualImporter(BaseImporter):
         "data/import/bucket4/semiannually/4road_and_highways.json",
         "data/import/bucket4/semiannually/4services.json",
     ]
+
 
 def import_data_sources():
     Bucket4SemiannualImporter.import_data_sources()
