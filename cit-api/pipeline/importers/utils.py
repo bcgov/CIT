@@ -646,7 +646,7 @@ def import_services(url):
             resp = urlopen(url)
             zipfile = ZipFile(BytesIO(resp.read()))
             with zipfile.open("ISP_Hex_FSI.csv") as f:
-                fields = ["HEXuid_HEXidu", "ISPname_NomFSI", "Technology"]
+                fields = ["HEXuid_HEXidu", "Name_Nom", "Technology"]
                 services = pd.read_csv(f, header=0, delimiter=",", usecols=fields)
                 services.rename(
                     columns={
