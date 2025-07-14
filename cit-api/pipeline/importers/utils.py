@@ -203,6 +203,10 @@ def import_data_into_area_model(resource_type, Model, row, index=None):
 
         # Not forced unique names in the dataset
         if resource_type == "Indian Reserves and Band Names":
+            band_name = row[Model.NAME_FIELD]
+            if not band_name:
+                print(f"Skipping record Indian Reserves and Band Names with {Model.ID_FIELD} {row.get(Model.ID_FIELD)}: missing {Model.NAME_FIELD}")
+                return
             name = f"{row[Model.NAME_FIELD]}, {row[Model.ID_FIELD]}"
         instance, created = Model.objects.get_or_create(name=name)
 
