@@ -5,7 +5,7 @@ This backend application contains the Community Information Tool API service.
 ## Data Import
 - [Importing data](../docs/data/DATA.md)
 - [PowerBI](../docs/data/PowerBI.md)
-- [Importer](../docs/data/IMPORTER.md)
+- [Importer](../docs/archive/IMPORTER.md)
 
 ## Email Integration
 

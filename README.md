@@ -26,7 +26,7 @@ regional and province-wide planning, which is essential to building thriving com
 ### Services
 - [CIT Web](cit-web/README.md)
 - [CIT API](cit-api/README.md)
-- [Importer](docs/data/IMPORTER.md)
+- [Importer](docs/archive/IMPORTER.md)
 
 ### Infrastructure
 

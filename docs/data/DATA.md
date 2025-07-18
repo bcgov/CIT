@@ -1,8 +1,10 @@
 # CIT-4.0 Data Changes
 With the newest version of CIT, the process of importing data has been updated. The data has been decoupled to a 
-certain point where specific datasets have been organized into groups that can be run separately. In the previous 
-version, an Azure Container was running the import-data.sh script which ran the bootstrap command. Now that the data 
-has been decoupled into groups, each group has its own command that can be run by executing:
+certain point where specific datasets have been organized into groups that can be run separately. 
+
+In the previous version, an Azure Container was running the `import-data.sh` script which ran the `bootstrap` command. 
+
+Now that the data has been decoupled into groups, each group has its own command that can be run by executing:
 
 ```shell
 python3 manage.py 'bucket_command' ex. python3 manage.py bucket_1
@@ -12,7 +14,7 @@ Most buckets have been grouped together based on a certain schedule that they sh
 Semi-Annually etc.
 
 Github Actions have been created to run each bucket on its determined schedule. An email will be sent when its been 
-run successfully or not. A Github Action has also been created to run any bucket manually where the user will be 
+run successfully or not. A GitHub Action has also been created to run any bucket manually where the user will be 
 given a choice of what environment they would like to run it in and which bucket to run.
 
 This has cut down the time it takes to import the data significantly, however further decoupling could take place to 
@@ -22,17 +24,17 @@ Below is a list of each dataset included in each bucket:
 
 - Bucket 1 - census
 - Bucket 2 Semiannually - housing, municipalities, NBDPHHSpeeds, Northern Rockies Census Division, phdemographic, 
-- regional districts, tourism region, tsunami zones, wildfire zones
+  regional districts, tourism region, tsunami zones, wildfire zones
 - Bucket 2 Weekly - hexes, roads
 - Bucket 3 - communities
 - Bucket 4 Monthly - agricultural land reserve
 - Bucket 4 Semiannually - census economic region, courts, health authority boundaries, indian reserve, and band name, 
-- lakes, natural resource regions, post secondary institutions, provincial electoral district, railways, research 
-- centres, rivers, road, and highways, services
+  lakes, natural resource regions, post secondary institutions, provincial electoral district, railways, research 
+  centres, rivers, road, and highways, services
 - Bucket 5 Monthly - economic projects, first responders
 - Bucket 5 Semiannually (fully decoupled datasets with their own commands) - airports, civic facilities, clinics, 
-- customs ports of entry, diagnostic facilities, emergency social service facilities, hospitals, laboratory services, 
-- pharmacies, port and terminal, public library, schools, servicebc locations, timber facilities
+  customs ports of entry, diagnostic facilities, emergency social service facilities, hospitals, laboratory services, 
+  pharmacies, port and terminal, public library, schools, servicebc locations, timber facilities
 - Bucket 6 - bc assessment
 - Bucket 7 - linkage csd
 

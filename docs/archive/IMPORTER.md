@@ -1,5 +1,7 @@
 # How the Importer works
 
+**NOTE: Deprecated since CIT 4.0. See [current docs](../data/DATA.md) for the reference.**
+
 The importer is run using the bootstrap.py file in `./cit-api/pipeline/management/commands/bootstrap.py`.
 
 The data pipelines have been segmented into "buckets" to allow for sequencing of dependent data and to account 
