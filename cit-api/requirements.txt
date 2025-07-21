@@ -15,17 +15,17 @@ uwsgi==2.0.30             # Latest uWSGI release
 pyyaml==6.0.2             # Already recent, keeping it
 uritemplate==4.2.0        # Minor update for URI handling
 requests==2.32.4          # Modern requests library
-jsonschema==4.24.0        # Significant update, widely compatible
+jsonschema==4.25.0        # Significant update, widely compatible
 msal==1.32.3              # Latest Microsoft Authentication Library
 python-dateutil==2.9.0.post0    # Updated date utilities
 whitenoise==6.9.0         # Latest for static file serving
 
 # Third-party integrations
-bcdata==0.15.0             # No major updates noted, keeping as-is
+bcdata==0.16.0.post1             # No major updates noted, keeping as-is
 python-keycloak==3.9.0    # Big jump, aligns with modern Keycloak
-azure-storage-blob==12.25.1  # Latest Azure blob storage SDK
+azure-storage-blob==12.26.0  # Latest Azure blob storage SDK
 openpyxl==3.1.5           # Updated for Excel file handling
 
 # Other needed to return
 setuptools==80.9.0
-GDAL==3.6.2  # Match the version from `gdalinfo --version`
+GDAL==3.11.3  # Match the version from `gdalinfo --version`
