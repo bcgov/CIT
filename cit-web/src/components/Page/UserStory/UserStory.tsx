@@ -6,6 +6,7 @@ import {
   Col,
   Collapse,
   Spinner,
+  Alert,
 } from "react-bootstrap";
 import {
   ArrowRight,
@@ -350,6 +351,31 @@ export default function UserStory() {
 
   const header = (
     <>
+      <Alert variant="primary" className="mb-4">
+        <Alert.Heading>
+          Community Information Tool (CIT) - User Feedback Opportunity
+        </Alert.Heading>
+        <p className="mb-3">
+          <strong>Help shape the future of the CIT!</strong>
+        </p>
+        <p className="mb-3">
+          We're looking for participants to share their experiences using the
+          Community Information Tool (CIT) to explore communities across B.C.
+          Your feedback will help us understand how the CIT compares to other
+          tools and how it can better support users like you.
+        </p>
+        <p className="mb-0">
+          To volunteer for this opportunity please fill out the following short{" "}
+          <a
+            href="https://submit.digital.gov.bc.ca/app/form/submit?f=da600f98-0f9b-4ae5-b7de-e728ec03a8ec"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            survey
+          </a>
+          .
+        </p>
+      </Alert>
       <h1>Welcome to the Community Information Tool.</h1>
       <p className="mb-3">
         The Community Information Tool compiles over 40 data sets offering
