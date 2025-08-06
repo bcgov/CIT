@@ -380,7 +380,7 @@ export default function UserStory() {
           card as a thank you.*
         </p>
         <p>
-          <span className="font-italic">
+          <span className="fst-italic">
             *Government employees (Municipal, Provincial, or Federal) are not
             eligible for gift-cards.
           </span>
