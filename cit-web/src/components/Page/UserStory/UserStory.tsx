@@ -375,6 +375,16 @@ export default function UserStory() {
           </a>
           .
         </p>
+        <p>
+          If selected to participate in an interview, you may receive a $60 gift
+          card as a thank you.*
+        </p>
+        <p>
+          <span className="font-italic">
+            *Government employees (Municipal, Provincial, or Federal) are not
+            eligible for gift-cards.
+          </span>
+        </p>
       </Alert>
       <h1>Welcome to the Community Information Tool.</h1>
       <p className="mb-3">
