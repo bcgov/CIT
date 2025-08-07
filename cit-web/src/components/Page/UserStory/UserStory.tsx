@@ -353,33 +353,31 @@ export default function UserStory() {
     <>
       <Alert variant="primary" className="mb-4">
         <Alert.Heading>
-          Community Information Tool (CIT) - User Feedback Opportunity
+          Help shape the future of the Community Information Tool (CIT)
         </Alert.Heading>
-        <p className="mb-3">
-          <strong>Help shape the future of the CIT!</strong>
-        </p>
         <p className="mb-3">
           We're looking for participants to share their experiences using the
           Community Information Tool (CIT) to explore communities across B.C.
           Your feedback will help us understand how the CIT compares to other
           tools and how it can better support users like you.
         </p>
-        <p className="mb-0">
-          To volunteer for this opportunity please fill out the following short{" "}
-          <a
+        <p className="mb-3">Volunteer for this opportunity before Aug 15th;</p>
+        <div className="mb-3">
+          <Button
             href="https://submit.digital.gov.bc.ca/app/form/submit?f=da600f98-0f9b-4ae5-b7de-e728ec03a8ec"
             target="_blank"
             rel="noopener noreferrer"
+            variant="primary"
+            as="a"
           >
-            survey
-          </a>
-          .
+            Sign Up to Participate
+          </Button>
+        </div>
+        <p className="mb-3">
+          If selected to participate in an interview, you may receive{" "}
+          <strong>a $60 gift card as a thank you</strong>.*
         </p>
-        <p>
-          If selected to participate in an interview, you may receive a $60 gift
-          card as a thank you.*
-        </p>
-        <p>
+        <p className="mb-0">
           <span className="fst-italic">
             *Government employees (Municipal, Provincial, or Federal) are not
             eligible for gift-cards.
