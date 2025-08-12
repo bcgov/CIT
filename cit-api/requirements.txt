@@ -1,6 +1,6 @@
 # Web framework and REST API
 Django==5.0.14              # Latest stable Django release (LTS as of early 2025)
-djangorestframework==3.16.0 # Solid update, compatible with Django 5.0
+djangorestframework==3.16.1 # Solid update, compatible with Django 5.0
 djangorestframework-csv==3.0.2  # Updated for better compatibility
 djangorestframework-gis==1.2.0  # Minor update, works with newer Django
 django-cors-headers==4.7.0  # Modern CORS handling
@@ -28,4 +28,4 @@ openpyxl==3.1.5           # Updated for Excel file handling
 
 # Other needed to return
 setuptools==80.9.0
-GDAL==3.6.2  # Match the version from `gdalinfo --version`
+GDAL==3.11.3  # Match the version from `gdalinfo --version`
