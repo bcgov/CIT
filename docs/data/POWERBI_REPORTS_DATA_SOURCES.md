@@ -1,6 +1,7 @@
 # 📊 Power BI Report Data Flow
 
-We have 2 main report segments in Power BI at the moment:
+We have 2 main report segments in Power BI at the moment:  
+This document provides an understanding of the **data tables directly used** by each report page.
 
 - **Overview**  
   Has 5 pages:
@@ -21,16 +22,19 @@ The following filters work for all reports (passed from the React app):
 - `zone_name` (e.g., Abbotsford)
 - `zone_id`
 
+> `Region Distribution` and `Census Profile URLs` are used for the purpose of filters.
+
 ---
 
 ## Report: Internal – BCA
 
-This report has a single page.  
+This report has a single page. `BC ASSESSMENT`
 **Main Power BI tables used:**
 
 - `BCA Census Subdivision`
 - `Agricultural Land Reserve`
-- `Region Distribution`
+- `Region Distribution` and `Dim Census Subdivision` (drives page filters like zone_type, zone_name, zone_id and is referenced in measures, e.g., via SELECTEDVALUE('Region Distribution'[zone_type]))
+  Dimension table links to your fact tables like BCA Census Subdivision, Agricultural Land Reserve, etc.
 
 ---
 
@@ -63,6 +67,8 @@ This report has a single page.
 
 ### Page 1: Connectivity
 
+- `Region Distribution` and `Dim Census Subdivision` (drives page filters like zone_type, zone_name, zone_id and is referenced in measures, e.g., via SELECTEDVALUE('Region Distribution'[zone_type]))
+
 > **Other filters in page:**  
 > Filters by year (2016 and 2021 for `Census Demographics`)
 
@@ -72,26 +78,24 @@ This report has a single page.
 - `Connectivity`
 - `Service`
 - `Connectivity Projects`
-- `Dim Census Subdivision`
 
 **Data Mapping Table:**
 
-| SECTION               | Table                                                                                                                                                       | Visual                              | Field                                                              | Filters/Remarks                                                  |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------- |
-| Census Demographics   | Census<br><br>Filters by year and region using below tables<br>Region Distribution/Region Distribution 2<br>and Dim Census Subdivision (for region filters) | Total Population                    | pop_total_census                                                   |                                                                  |
-|                       |                                                                                                                                                             | Population Change %                 | (pop_total_census - pop_total_prev_census) / pop_total_prev_census |                                                                  |
-|                       |                                                                                                                                                             | Provincial Pop Change %             |                                                                    | Population Change % above without region filters (province-wide) |
-|                       |                                                                                                                                                             | Median Age                          | Census[pop_median_age]                                             |                                                                  |
-|                       |                                                                                                                                                             | Province Median Age                 |                                                                    | Returns 46 when the year is "2016", otherwise returns 45.5.      |
-|                       |                                                                                                                                                             | Median Household Income             | hshld_income_median                                                | defaults when no region - SelectedYear = "2016" ? 55136 : 75000  |
-|                       |                                                                                                                                                             | Prov. Median Household Income       |                                                                    | Returns 55136 when the year is "2016", otherwise returns 75000.  |
-| Connectivity          | Connectivity                                                                                                                                                | Households with 50/10 Connection    | SUM[totalconnected]                                                | forces year = 2021                                               |
-|                       |                                                                                                                                                             | Total households in selected region | SUM[totalhouseholds]                                               |                                                                  |
-|                       |                                                                                                                                                             | Connected HouseHolds                | SUM[totalconnected]<br>SUM[totalhouseholds]                        |                                                                  |
-|                       | Dim Census Subdivision                                                                                                                                      |                                     | CSDUID                                                             |                                                                  |
-| Network Services      | Service                                                                                                                                                     | Available Services in the area      | Service Provider (isp_id in original table)<br>and count           |                                                                  |
-|                       |                                                                                                                                                             | Service Providers in the area       | Service Provider (isp_id in original table)                        | forces year = 2021                                               |
-| Connectivity Projects | Connectivity Projects                                                                                                                                       | table                               | project_name, proponent, status, Project Benefits                  | forces year = 2021                                               |
+| SECTION               | Table                                                   | Visual                              | Field                                                                | Filters/Remarks    |
+| --------------------- | ------------------------------------------------------- | ----------------------------------- | -------------------------------------------------------------------- | ------------------ |
+| Census Demographics   | Census<br>Region Distribution<br>Dim Census Subdivision | Total Population                    | `pop_total_census`                                                   |                    |
+|                       |                                                         | Population Change %                 | `(pop_total_census - pop_total_prev_census) / pop_total_prev_census` |                    |
+|                       |                                                         | Provincial Pop Change %             | same formula without region filters (province-wide)                  |                    |
+|                       |                                                         | Median Age                          | `Census[pop_median_age]`                                             |                    |
+|                       |                                                         | Province Median Age                 | hardcoded values for year                                            |                    |
+|                       |                                                         | Median Household Income             | `hshld_income_median`                                                | year-based default |
+|                       |                                                         | Prov. Median Household Income       | hardcoded values for year                                            |                    |
+| Connectivity          | Connectivity                                            | Households with 50/10 Connection    | `SUM(totalconnected)`                                                | year = 2021        |
+|                       |                                                         | Total households in selected region | `SUM(totalhouseholds)`                                               |                    |
+|                       |                                                         | Connected HouseHolds                | `SUM(totalconnected)`, `SUM(totalhouseholds)`                        |                    |
+| Network Services      | Service                                                 | Available Services in the area      | ISP name/count                                                       |                    |
+|                       |                                                         | Service Providers in the area       | ISP name                                                             | year = 2021        |
+| Connectivity Projects | Connectivity Projects                                   | Table                               | `project_name`, `proponent`, `status`, `Project Benefits`            | year = 2021        |
 
 ---
 
@@ -110,26 +114,26 @@ This report has a single page.
 
 **Data Mapping Table:**
 
-| SECTION           | Table                         | Visual                                                                                                                            | Field                                                                                                                                         | Filters/Remarks                                                                    |
-| ----------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Health            | Location                      | Hospitals                                                                                                                         | SUM('Location'[Hospitals])                                                                                                                    |                                                                                    |
-|                   |                               | Pharmacies                                                                                                                        | sum('Location'[Pharmacies])                                                                                                                   |                                                                                    |
-|                   |                               | Laboratory Service                                                                                                                | sum('Location'[Laboratory Service])                                                                                                           |                                                                                    |
-|                   |                               | Diagnostic Facilities                                                                                                             | sum('Location'[Diagnostic Facilities])                                                                                                        |                                                                                    |
-|                   |                               | Clinics                                                                                                                           | sum('Location'[Clinics])                                                                                                                      |                                                                                    |
-| Transportation    | Location                      | Port And Terminal                                                                                                                 | sum('Location'[Port And Terminal])                                                                                                            |                                                                                    |
-|                   |                               | Customs Ports Of Entry                                                                                                            | sum('Location'[Customs Ports Of Entry])                                                                                                       |                                                                                    |
-|                   |                               | Airports                                                                                                                          | sum('Location'[Airports])                                                                                                                     |                                                                                    |
-| Public            | Location                      | Emergency Social Service Facilities                                                                                               | sum('Location'[Emergency Social Service Facilities])                                                                                          |                                                                                    |
-|                   |                               | Civic Facilities                                                                                                                  | sum('Location'[Civic Facilities])                                                                                                             |                                                                                    |
-|                   |                               | Courts                                                                                                                            | sum('Location'[Courts])                                                                                                                       |                                                                                    |
-|                   |                               | Service BC Locations                                                                                                              | sum('Location'[Service BC Locations])                                                                                                         |                                                                                    |
-|                   |                               | Local Govt Offices                                                                                                                | sum('Location'[Local Govt Offices])                                                                                                           |                                                                                    |
-|                   |                               | First Responders                                                                                                                  | sum('Location'[First Responders])                                                                                                             |                                                                                    |
-|                   |                               | Public Library                                                                                                                    | sum('Location'[Public Library])                                                                                                               |                                                                                    |
-| Education         | Location                      | Calculated similar way to above                                                                                                   |                                                                                                                                               |                                                                                    |
-| Facility Selector | Dim Location Type             | A distinct, alphabetically sorted list (max 101) of location type descriptions excluding "Major Projects" and "Timber Facilities" |                                                                                                                                               | The slicer is bound to Dim Location Type[Location Type Desc] (or [Location Type]). |
-| Facilty Map       | Location<br>Dim Location Type |                                                                                                                                   | Location[Location Name],<br>Dim Location Type[Location Type]<br>CALCULATE(SUM('Location'[Latitude]))<br>CALCULATE(SUM('Location'[Longitude])) | Dim Location Type (1) ──► (∗) Location (via Location Type key).                    |
+| SECTION           | Table                         | Visual                                                                              | Field                                                     | Filters/Remarks                                  |
+| ----------------- | ----------------------------- | ----------------------------------------------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------ |
+| Health            | Location                      | Hospitals                                                                           | `SUM(Hospitals)`                                          |                                                  |
+|                   |                               | Pharmacies                                                                          | `SUM(Pharmacies)`                                         |                                                  |
+|                   |                               | Laboratory Service                                                                  | `SUM(Laboratory Service)`                                 |                                                  |
+|                   |                               | Diagnostic Facilities                                                               | `SUM(Diagnostic Facilities)`                              |                                                  |
+|                   |                               | Clinics                                                                             | `SUM(Clinics)`                                            |                                                  |
+| Transportation    | Location                      | Port And Terminal                                                                   | `SUM(Port And Terminal)`                                  |                                                  |
+|                   |                               | Customs Ports Of Entry                                                              | `SUM(Customs Ports Of Entry)`                             |                                                  |
+|                   |                               | Airports                                                                            | `SUM(Airports)`                                           |                                                  |
+| Public            | Location                      | Emergency Social Service Facilities                                                 | `SUM(Emergency Social Service Facilities)`                |                                                  |
+|                   |                               | Civic Facilities                                                                    | `SUM(Civic Facilities)`                                   |                                                  |
+|                   |                               | Courts                                                                              | `SUM(Courts)`                                             |                                                  |
+|                   |                               | Service BC Locations                                                                | `SUM(Service BC Locations)`                               |                                                  |
+|                   |                               | Local Govt Offices                                                                  | `SUM(Local Govt Offices)`                                 |                                                  |
+|                   |                               | First Responders                                                                    | `SUM(First Responders)`                                   |                                                  |
+|                   |                               | Public Library                                                                      | `SUM(Public Library)`                                     |                                                  |
+| Education         | Location                      | Similar calculation to above                                                        |                                                           |                                                  |
+| Facility Selector | Dim Location Type             | Distinct list of location types (excludes "Major Projects" and "Timber Facilities") |                                                           | Bound to `Dim Location Type[Location Type Desc]` |
+| Facility Map      | Location<br>Dim Location Type |                                                                                     | `Location Name`, `Location Type`, `Latitude`, `Longitude` | `Dim Location Type` links to `Location`          |
 
 ---
 
@@ -148,23 +152,20 @@ This report has a single page.
 
 **Data Mapping Table:**
 
-| SECTION                               | Table                                             | Visual                                               | Field                                                                                                                                                                   | Filters/Remarks |
-| ------------------------------------- | ------------------------------------------------- | ---------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
-| Summary Left                          | Census (filters applied for region)               | Labour Force                                         | SUM('Census'[labour_force_total]) census_year 2016                                                                                                                      |                 |
-|                                       |                                                   |                                                      | SUM('Census'[labour_force_total]) census_year 2021                                                                                                                      |                 |
-|                                       |                                                   |                                                      | DIVIDE([Labour Force 2021],[Labour Force 2016])-1)\*100                                                                                                                 |                 |
-|                                       |                                                   | Labour Force Participation                           | calculated similarly                                                                                                                                                    |                 |
-|                                       |                                                   | Unemployment Rate                                    |                                                                                                                                                                         |                 |
-|                                       |                                                   | Employment Rate                                      |                                                                                                                                                                         |                 |
-| Summary Right (province wide)         | Census (for all zone types)                       | Calculated similarly but without region/zone filters |                                                                                                                                                                         |                 |
-| Labour Force by Occupation            | Census Attributes<br>Census<br>2016 and 2021 data | Graph                                                | Census Attributes[Category] = "Occupation"                                                                                                                              |                 |
-| Labour Force by Industry              | Census Attributes<br>Census<br>2016 and 2021 data | Graph                                                | Census Attributes[Category] = "Industry"                                                                                                                                |                 |
-| Educational Attainment                | Census Attributes<br>Census<br>2016 and 2021 data | Graph                                                | Census Attributes[Category] = "Education"                                                                                                                               |                 |
-| Employment in Resource Sectors        | Census                                            | with and without (whole province) any zone filters   | DIVIDE((SUM('Census'[industry_agriculture])+SUM('Census'[industry_mining])),SUM('Census'[num_employed]),0)                                                              |                 |
-| Top Industries by Business Count      | Business by Census                                | Graph                                                | top 5 two-digit NAICS by business count.                                                                                                                                |                 |
-| Share of Business in Resource Sectors | Business by Census                                | Graph                                                | where 2_digit_NAIC = '11' and 2_digit_NAIC = '21'<br>for Total Count of Business Mining & Oil & Gas and<br>Total Count of Business Agriculture Forestry Fishing Hunting |                 |
-|                                       |                                                   | % of all businesses                                  | Above 2 sectors as a percentage of total number_of_businesses                                                                                                           |                 |
-| Top Major Projects by Project Type    | Project                                           | Graph                                                | Compute project counts by type and show top 10                                                                                                                          |                 |
+| SECTION                               | Table                       | Visual                                     | Field                                                                    | Filters/Remarks |
+| ------------------------------------- | --------------------------- | ------------------------------------------ | ------------------------------------------------------------------------ | --------------- |
+| Summary Left                          | Census                      | Labour Force                               | `SUM(labour_force_total)` for 2016 & 2021                                |                 |
+|                                       |                             | Labour Force Participation                 | calculated from labour force and working-age population                  |                 |
+|                                       |                             | Unemployment Rate                          | derived from unemployed/ labour force                                    |                 |
+|                                       |                             | Employment Rate                            | derived from employed / working-age population                           |                 |
+| Summary Right (province wide)         | Census                      | Province-wide Labour Force & Participation | same as above but without region/zone filters                            |                 |
+| Labour Force by Occupation            | Census Attributes<br>Census | Graph                                      | `Category = "Occupation"`                                                |                 |
+| Labour Force by Industry              | Census Attributes<br>Census | Graph                                      | `Category = "Industry"`                                                  |                 |
+| Educational Attainment                | Census Attributes<br>Census | Graph                                      | `Category = "Education"`                                                 |                 |
+| Employment in Resource Sectors        | Census                      | Resource Sector %                          | `(SUM(industry_agriculture) + SUM(industry_mining)) / SUM(num_employed)` |                 |
+| Top Industries by Business Count      | Business by Census          | Graph                                      | Top 5 NAICS two-digit codes by business count                            |                 |
+| Share of Business in Resource Sectors | Business by Census          | Graph                                      | Sectors `NAIC=11` and `NAIC=21` as % of total                            |                 |
+| Top Major Projects by Project Type    | Project                     | Graph                                      | Project counts by type, top 10                                           |                 |
 
 ---
 
@@ -179,15 +180,43 @@ This report has a single page.
 
 **Data Mapping Table:**
 
-| SECTION             | Table                                              | Visual                       | Field                                                                        |
-| ------------------- | -------------------------------------------------- | ---------------------------- | ---------------------------------------------------------------------------- |
-| Census Demographics | Census (filters applied for region)                | Summary                      | SUM calculated for each year 2016 and 2021, similar to other projects        |
-|                     |                                                    |                              | SUM('Census'[labour_force_total]) census_year 2021                           |
-|                     |                                                    |                              | DIVIDE([Labour Force 2021],[Labour Force 2016])-1)\*100                      |
-| Social              | Census (Census_Population_Age derived from Census) | Population by Age and Gender | Age Groups By gender<br>year and region filters are in affect                |
-|                     | Census                                             | Visible Minorities           | [pop_total_census]-[(visible_minority_num_male+visible_minority_num_female)] |
-|                     |                                                    | Indigenous Identification    | [aboriginal_identity]<br>[pop_total_census] - [aboriginal_identity]          |
-| Income              | Census Attributes                                  | Total Income Distribution    | Amounts for Income Category where Census Attributes[Category] = "Income"     |
-|                     |                                                    | Total Low-Income Status      | Census Attributes[Category] = "Low Income"                                   |
-| Housing             | Census                                             |                              |                                                                              |
-| Building Permits    | Housing                                            |                              |                                                                              |
+| SECTION             | Table                           | Visual                       | Field                                                                            | Filters/Remarks |
+| ------------------- | ------------------------------- | ---------------------------- | -------------------------------------------------------------------------------- | --------------- |
+| Census Demographics | Census                          | Summary                      | `SUM(labour_force_total)` for 2016 & 2021, growth %, etc.                        |                 |
+| Social              | Census<br>Census_Population_Age | Population by Age and Gender | Age groups by gender with region/year filters                                    |                 |
+|                     | Census                          | Visible Minorities           | `pop_total_census` - `(visible_minority_num_male + visible_minority_num_female)` |                 |
+|                     | Census                          | Indigenous Identification    | `aboriginal_identity` and complement                                             |                 |
+| Income              | Census Attributes               | Total Income Distribution    | `Category = "Income"`                                                            |                 |
+|                     |                                 | Total Low-Income Status      | `Category = "Low Income"`                                                        |                 |
+| Housing             | Census                          |                              | Building permits, housing variables                                              |                 |
+| Building Permits    | Housing                         |                              | Permit counts and types                                                          |                 |
+
+---
+
+## Report: CS
+
+This report has a single page. `Criteria Search`
+**Main Power BI tables used:**
+
+- `Census`
+- `Connectivity`
+- `Dim Communities`
+- `Dim Census Subdivision`
+- `Region Distribution` and `Dim Census Subdivision` (drives page filters like zone_type, zone_name, zone_id and is referenced in measures, e.g., via SELECTEDVALUE('Region Distribution'[zone_type]))
+  Dimension table links to your fact tables like BCA Census Subdivision, Agricultural Land Reserve, etc.
+
+### Data Mapping Table
+
+| SECTION      | Table                                   | Visual                              |
+| ------------ | --------------------------------------- | ----------------------------------- |
+| Map          | Dim Census Subdivision                  | Map                                 |
+|              | Dim Census Subdivision, Dim Communities | Census Subdivisions and Communities |
+| Demographics | Census, Connectivity                    | Averages                            |
+
+---
+
+## Report: Compare
+
+This report has a single page. `Compare`
+
+> Uses the some common components from Overview Report in a comparision view
