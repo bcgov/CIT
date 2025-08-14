@@ -361,7 +361,7 @@ export default function UserStory() {
           Your feedback will help us understand how the CIT compares to other
           tools and how it can better support users like you.
         </p>
-        <p className="mb-3">Volunteer for this opportunity before Aug 15th;</p>
+        <p className="mb-3">Volunteer for this opportunity before Aug 22nd;</p>
         <div className="mb-3">
           <Button
             href="https://submit.digital.gov.bc.ca/app/form/submit?f=da600f98-0f9b-4ae5-b7de-e728ec03a8ec"
