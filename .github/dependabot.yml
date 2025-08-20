@@ -11,21 +11,23 @@ updates:
       interval: "weekly"
     commit-message:
       # Prefix all commit messages with "chore: "
-      prefix: 'chore'
+      prefix: "chore"
+    ignore:
+      - dependency-name: "gdal"
     groups:
       minor-and-patch:
         update-types:
-          - 'minor'
-          - 'patch'
+          - "minor"
+          - "patch"
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/cit3.0-web" # Location of package manifests
     schedule:
       interval: "weekly"
     commit-message:
       # Prefix all commit messages with "chore: "
-      prefix: 'chore'
+      prefix: "chore"
     groups:
       minor-and-patch:
         update-types:
-          - 'minor'
-          - 'patch'
+          - "minor"
+          - "patch"
