@@ -83,7 +83,7 @@ jobs:
           name: backend-coverage
           path: cit-api
       - name: SonarCloud Scan (monorepo)
-        uses: SonarSource/sonarqube-scan-action@v5.1.0
+        uses: SonarSource/sonarqube-scan-action@v5.3.1
         with:
           projectBaseDir: .
         env:
