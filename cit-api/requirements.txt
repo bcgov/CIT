@@ -3,27 +3,27 @@ Django==5.0.14              # Latest stable Django release (LTS as of early 2025
 djangorestframework==3.16.1 # Solid update, compatible with Django 5.0
 djangorestframework-csv==3.0.2  # Updated for better compatibility
 djangorestframework-gis==1.2.0  # Minor update, works with newer Django
-django-cors-headers==4.7.0  # Modern CORS handling
-drf-yasg==1.21.10          # Latest patch, supports Swagger/OpenAPI
+django-cors-headers==4.9.0  # Modern CORS handling
+drf-yasg==1.21.11          # Latest patch, supports Swagger/OpenAPI
 
 # Media and database
 Pillow==11.3.0            # Latest Pillow, better Apple Silicon support
-psycopg2-binary==2.9.10    # Latest binary for PostgreSQL compatibility
+psycopg2-binary==2.9.11    # Latest binary for PostgreSQL compatibility
 
 # Server and utilities
-uwsgi==2.0.30             # Latest uWSGI release
-pyyaml==6.0.2             # Already recent, keeping it
+uwsgi==2.0.31             # Latest uWSGI release
+pyyaml==6.0.3             # Already recent, keeping it
 uritemplate==4.2.0        # Minor update for URI handling
 requests==2.32.5          # Modern requests library
 jsonschema==4.25.1        # Significant update, widely compatible
-msal==1.33.0              # Latest Microsoft Authentication Library
+msal==1.34.0              # Latest Microsoft Authentication Library
 python-dateutil==2.9.0.post0    # Updated date utilities
-whitenoise==6.9.0         # Latest for static file serving
+whitenoise==6.11.0         # Latest for static file serving
 
 # Third-party integrations
 bcdata==0.16.0.post1             # No major updates noted, keeping as-is
 python-keycloak==3.9.0    # Big jump, aligns with modern Keycloak
-azure-storage-blob==12.26.0  # Latest Azure blob storage SDK
+azure-storage-blob==12.27.1  # Latest Azure blob storage SDK
 openpyxl==3.1.5           # Updated for Excel file handling
 
 # Other needed to return
