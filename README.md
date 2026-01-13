@@ -1,4 +1,5 @@
 [![Lifecycle:Maturing](https://img.shields.io/badge/Lifecycle-Maturing-007EC6)]()
+![status](https://img.shields.io/badge/status-archived-lightgrey?style=flat-square)
 
 # Community Information Tool
 
