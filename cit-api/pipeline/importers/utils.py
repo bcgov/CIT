@@ -742,7 +742,7 @@ def import_community_descriptions():
             header_image_path = row["header_image_path"]
 
             matching_communities = Community.objects.filter(
-                census_subdivision__id=census_subdivision_id
+                census_subdivision__pk=census_subdivision_id
             )
             if matching_communities.count() > 1:
                 if row["census_subdivision_name"] == "Northern Rockies":
@@ -765,7 +765,7 @@ def import_community_descriptions():
                     community = Community.objects.get(place_name="Hollyburn")
             elif matching_communities.count() == 1:
                 community = Community.objects.get(
-                    census_subdivision__id=census_subdivision_id
+                    census_subdivision__pk=census_subdivision_id
                 )
             else:
                 continue
